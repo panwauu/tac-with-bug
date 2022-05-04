@@ -1,0 +1,928 @@
+{
+  "Subscription": {
+    "freelicense": "Du hast Glück! Du wurdest als außergewöhnliche:r Spieler:in ausgewählt und erhältst den vollen Funktionsumfang auch ohne Zahlungen.",
+    "running": "Du bist ein aktiver Unterstützer von Tac-With-Bug! Vielen Dank für deine Hilfe",
+    "runningNextPayment": "Die nächste Zahlung ist am {time} fällig.",
+    "expiring": "Du hast dein Abonnement beendet. Deine Vorteile enden am {time}.",
+    "buttonPlanMonthly": "Monat",
+    "buttonPlanYearly": "Jahr",
+    "buttonPlanQuaterly": "Quartal",
+    "headerAdditionalPay": "Ich freue mich natürlich auch über zusätzliche, einmalige Unterstützungen:",
+    "buttonAdditionalPay": "Zusätzliches Karma via",
+    "paypalFeeDisclaimer": "% deiner Spende geht an PayPal**",
+    "paymentPerTime": "Zahlung einmal im",
+    "New": {
+      "successDetail": "Vielen Dank, dass du mich und Tac-With-Bug unterstützt! Genieße deine Vorteile und das zusätzliche Glück.",
+      "successSummary": "Abonnement eingetragen",
+      "errorDetail": "Entschuldigung! Beim Verbinden deines Abonnements mit deinem Account ist ein Fehler passiert. Bitte kontaktiere mich über das Impresssum.",
+      "errorSummary": "Das hat nicht geklappt!",
+      "bookingErrorDetail": "Entschuldigung! Buchen des Abonnements ist etwas schiefgegangen. Versuche es in einem Moment erneut.",
+      "bookingErrorSummary": "Das hat nicht geklappt!"
+    },
+    "Cancel": {
+      "button": "Unterstützung beenden",
+      "confirm": "Schade, dass du dein Abonnement beenden möchtest aber trotzdem Vielen Dank, dass du Tac-With-Bug unterstützt hast! Wenn du das Abonnement beendest wirst du noch weiter die Vorteile nutzen können, bis die nächste Zahlung fällig gewesen wäre. Bist du dir sicher, dass du dein Abonnement beenden möchtest?",
+      "successDetail": "Dein Abonnement wurde erfolgreich beendet. Vielen Dank, dass du Tac-With-Bug unterstützt hast.",
+      "successSummary": "Abonnement beendet",
+      "errorDetail": "Entschuldigung! Beim beenden deines Abonnements ist etwas schiefgegangen. Versuche es einfach in einem Moment erneut.",
+      "errorSummary": "Das hat nicht geklappt!"
+    },
+    "aboutMeHeader": "Hallo Tac-Fan,",
+    "aboutMe1": "Ich bin Oskar, 24 Jahre alt und wohne in München. Während meines Maschinenbaustudiums habe ich das Programmieren gelernt. Als neue Herausforderung im November-Lockdown habe ich begonnen mir das Programmieren von Websiten anzueignen, womit ich vorher noch keine Erfahrungen hatte. Nach einigen Tutorials bin ich gleich über Weihnachten in das Projekt Tac-With-Bug eingestiegen. Seitdem habe ich jede freie Minute neben meiner Arbeit als wissenschaftlicher Mitarbeiter der TU München in diese Website gesteckt.",
+    "aboutMe2": "Zusätzlich zu der ganzen Entwicklungsarbeit fallen auch laufende Kosten an. Eine Website hostet sich leider nicht von selbst. Um diesem Projekt weiter eine Zukunft zu geben seid jetzt Ihr gefragt! Mit eurer Unterstützung ermöglicht ihr mir das Betreiben der Seite und auch langfristig weitere Updates und Verbesserungen auf dem Weg zu Tac-Without-Bug.",
+    "price": "2€ pro Monat*",
+    "featureKarma1": "Karma:",
+    "featureKarma2": "Du hilfst mir meine Fixkosten zu decken und entschädigst mich für all meine Programmierstunden!**",
+    "featureBallsColor": "Auswahl deiner Kugelfarbe!",
+    "featureStats": "Voller Zugriff auf alle Statistiken!",
+    "tournamentTeam": "Tournieranmeldung mit festem Partner und Teamnamen!",
+    "featureLuck": "Glücksgarantie***",
+    "nSubscriptions": "Anzahl Sponsoren",
+    "becomingSponsor": "Werde Sponsor:",
+    "disclaimer1": "*: Das Abonnement kann natürlich jederzeit beendet werden",
+    "disclaimer2": "**: Paypal verlangt leider eine feste Gebühr von etwa 0,35€ pro Transaktion zusätzlich zu einem Prozentsatz von etwa 2,5%. Dies führt dazu, dass bei regelmäßigen, kleinen Zahlungen die Gebühr anteilsmäßig steigt. Es kommt also am meisten deiner Spende tatsächlich bei mir an, wenn du selten aber dafür einen hohen Betrag zahlst.",
+    "disclaimer3": "***: Dies bezieht sich selbstverständlich lediglich auf persönliches Glück",
+    "disclaimer3Link": "(Mehr Info)",
+    "Tag": {
+      "sponsor": "Sponsor",
+      "sponsorsOnly": "Sponsor werden"
+    }
+  },
+  "Stats": {
+    "headerTable": "Tac-With-Bug in Zahlen",
+    "headerDays": "Neue Spieler:innen/Spiele nach Wochentag",
+    "headerHours": "Neue Spieler:innen/Spiele nach Uhrzeit",
+    "headerWeeks": "Spieler:innen/Spiele nach Kalenderwoche",
+    "users": "Spieler:innen",
+    "games": "Spiele",
+    "monday": "Montag",
+    "tuesday": "Dienstag",
+    "wednesday": "Mittwoch",
+    "thursday": "Donnerstag",
+    "friday": "Freitag",
+    "saturday": "Samstag",
+    "sunday": "Sonntag",
+    "activeUsers": "Aktive Spieler:innen",
+    "newUsers": "Neue Spieler:innen",
+    "headerActivityHeatmap": "Aktivität nach Tageszeit und Wochentag",
+    "headerLocales": "Von Spielern genutzte Sprachen",
+    "headerUserAgent": "Technische Geräte der Nutzer",
+    "others": "Andere",
+    "DeviceTypes": {
+      "mobile": "Handy",
+      "tablet": "Tablet",
+      "desktop": "Desktop",
+      "others": "Andere"
+    }
+  },
+  "Home": {
+    "Spielersuche": "Spielersuche",
+    "Games": "Spiele",
+    "Waiting": "Warteraum",
+    "Tournament": "Turnier",
+    "Leaderboard": "Leaderboard",
+    "TutorialOverview": "Tutorials",
+    "Subscription": "Sponsor werden",
+    "HOF": "Hall of Fame",
+    "Settings": "Einstellungen",
+    "Stats": "Server Statistiken",
+    "Copyright": "Copyright",
+    "Datenschutz": "Datenschutzerklärung",
+    "Impressum": "Impressum",
+    "FAQ": "FAQ",
+    "signout": "Abmelden",
+    "PlayerSearch": "Spielersuche",
+    "Landing": "Startseite"
+  },
+  "Leaders": {
+    "wins": "Siege",
+    "winshare": "Siegquote",
+    "rank": "Rang",
+    "name": "Name",
+    "teams": "Teams",
+    "cards": "Karten",
+    "date": "Datum",
+    "Time": {
+      "thisYear": "Dieses Jahr",
+      "thisWeek": "Diese Woche",
+      "thisMonth": "Diesen Monat",
+      "alltime": "Gesamt"
+    }
+  },
+  "CountdownTimer": {
+    "days": "Tage | Tag | Tage",
+    "hours": "Stunden | Stunde | Stunden",
+    "minutes": "Minuten | Minute | Minuten",
+    "seconds": "Sekunden | Sekunde | Sekunden"
+  },
+  "Tournament": {
+    "backButton": "Zurück zur Übersicht",
+    "deadlinesHeader": "Termine und Fristen",
+    "signupbegin": "Anmeldestart",
+    "signUpDeadline": "Anmeldeschluss",
+    "gameTime": "Spiel",
+    "timePerGame": "Zeit pro Spiel",
+    "waitingPlayers": "Spieler Warteliste",
+    "registrationList": "Anmeldeliste ({x} Teams fehlen noch)",
+    "otherTeams": "Andere Teams",
+    "signUpConfirmationText": "Bist du dir sicher, dass du an den Spielterminen Zeit hast? Dies ist für das Erlebnis aller sehr wichtig!",
+    "SignUp": {
+      "openModalButton": "Anmelden",
+      "title": "Turnieranmeldung",
+      "nonSponsorText": "Die Wahl eines eigenen Teamnamens ist leider Sponsoren vorbehalten. Werde jetzt Sponsor und unterstütze die Entwicklung dieser Plattform oder hoffe, dass das Glück dir das nächste Mal einen besseren Namen beschert.",
+      "invalidTeamName": "Wähle einen Teamname, der 5 bis 25 Zeichen hat und natürlich noch nicht verwendet wird. Möglich sind Buchstaben, Ziffern oder die Sonderzeichen [._ +<>-].",
+      "teamNamePlaceholder": "Teamname",
+      "selectButtonWithPartner": "Mit festem Partner anmelden",
+      "selectButtonAlone": "Partner vermitteln",
+      "submitButton": "Team anmelden",
+      "notNewTeamName": "Es existiert bereits ein Team mit diesem Namen"
+    },
+    "helpModal": {
+      "title": "Hilfe",
+      "signUpHeader": "Anmeldung",
+      "signUpContent": "In der Anmeldung gilt First-Come-First-Served. Also das Team, das als erstes vollständig ist kommt auch rein. Jedes hinzugefügte Mitglied muss der Teilnahme explizit zustimmen. Nachdem das Turnier vollständig ist, ist keine Abmeldung mehr möglich.",
+      "gameTimeHeader": "Spieltermine",
+      "gameTimeContent": "Für die Spiele gibt es feste Zeitslots, zu denen diese stattfinden müssen. Bitte versichere dich, dass du zu den Spielterminen tatsächlich Zeit hast. Zusätzlich müssen die Spiele in der angegebenen Zeit beendet werden.",
+      "tournamentProcessHeader": "Turnierablauf",
+      "tournamentProcessContent": "Zu den Spielterminen werden die Spiele in deiner Spieletabelle auftauchen. Sie müssen dann gespielt werden. Über den Chat könnt ihr euch mit dem gegnerischen Team austauschen und gerne auch auf einen Video/Audiochat eurer Wahl wechseln.",
+      "winnerHeader": "Gewinner",
+      "winnerContent": "Es gibt ein K-O-System. Das Team, das gewinnt kommt weiter. Das letzte Team hat gewonnen. Grundsätzlich hat ein Team gewonnen, wenn das Spiel in der erforderlichen Zeit gewonnen wird. Im Falle einer überschreitung der Zeit gewinnt das Team, das schneller gespielt hat! Es ist generell nicht vorgesehen, dass dieser Fall eintritt."
+    },
+    "StatusBadge": {
+      "signUpWaiting": "Anmeldephase geplant",
+      "signUp": "Anmeldephase läuft",
+      "signUpEnded": "Anmeldephase abgeschlossen",
+      "running": "Turnier läuft",
+      "ended": "Turnier beendet",
+      "signUpFailed": "Nicht genug Teilnehmer!",
+      "planned": "In Planung",
+      "aborted": "Abgebrochen"
+    },
+    "CountdownTimer": {
+      "signUpWaiting": "Anmeldephase beginnt in:",
+      "signUp": "Anmeldephase endet in:",
+      "signUpEnded": "Turnier beginnt in:",
+      "nextGame": "Nächste Runde beginnt in:",
+      "gameEnd": "Runde endet in:"
+    },
+    "Brackets": {
+      "bracketList0": "Finale",
+      "bracketList1": "Halbfinale",
+      "bracketList2": "Viertelfinale",
+      "bracketList3": "Achtelfinale",
+      "bracketList4": "Sechzehntelfinale",
+      "bracketTBDTeam": "Noch nicht bekannt"
+    },
+    "Toast": {
+      "you-created-a-team-summary": "Team erstellt",
+      "you-created-a-team-detail": "Dein Team {teamName} wurde für das Turnier {tournamentTitle} angemeldet. Warte darauf, dass deine Mitspieler ihre Teilnahme bestätigen.",
+      "invited-to-a-team-summary": "Nehme am Turnier teil!",
+      "invited-to-a-team-detail": "Der Spieler {playerName} hat dich dazu eingeladen, mit ihm im Team {teamName} das Turnier {tournamentTitle} zu bestreiten. Bestätige deine Teilnahme auf der Turnierseite und stelle dich der Herausforderung.",
+      "you-joined-team-incomplete-summary": "Du bist dem Team beigetreten",
+      "you-joined-team-incomplete-detail": "Du bist jetzt Teil des Teams {teamName}. Du musst noch warten, bis ihr vollständig seid und alle Teampartner ihre Teilnahme am Turnier zugestimmt haben.",
+      "you-joined-team-complete-detail": "Dein Team {teamName} ist vollständig und bereit. Halte dir die Termine frei und greife nach der Krone!",
+      "you-joined-team-complete-summary": "Du bist dem Team beigetreten",
+      "player-joined-team-incomplete-summary": "Neuer Mitspieler für Turnier",
+      "player-joined-team-incomplete-detail": "Der Spieler {playerName} hat sich deinem Team angeschlossen! Ihr müsst noch warten bis ihr vollständig seid und alle Mitspieler Ihre Teilnahme bestätigt haben.",
+      "player-joined-team-complete-summary": "Turnierteam vollständig!",
+      "player-joined-team-complete-detail": "{playerName} hat sich deinem Team {teamName} angeschlossen. Ihr seid jetzt bereit das Turnier {tournamentTitle} zu rocken!",
+      "you-activated-complete-summary": "Teilnahme bestätigt",
+      "you-activated-complete-detail": "Du hast deine Teilnahme am Turnier {tournamentTitle} mit deinem Team {teamName} bestätigt. Ihr seid jetzt vollständig und bereit im Turnier voll durchzustarten!",
+      "you-activated-incomplete-summary": "Teilnahme bestätigt",
+      "you-activated-incomplete-detail": "Du hast deine Teilnahme am Turnier {tournamentTitle} bestätigt. Ihr müsst noch warten bis ihr vollständig seid und alle weiteren Spieler ihre Teilnahme bestätigt haben.",
+      "player-activated-team-complete-summary": "Turnierteam vollständig!",
+      "player-activated-team-complete-detail": "Dein Mitspieler {playerName} hat sich bereit erklärt mit dir im Turnier {tournamentTitle} die Spitze anzupeilen. Euer Team ist jetzt vollständig!",
+      "player-activated-team-incomplete-summary": "Turnierteam fast vollständig!",
+      "player-activated-team-incomplete-detail": "Dein Mitspieler {playerName} ist jetzt Teil des Teams. Ihr seid damit einen Schritt näher am vollständigen Team. Wartet noch darauf, dass alle Mitspieler ihre Teilnahme bestätigen.",
+      "you-left-tournament-summary": "Team verlassen",
+      "you-left-tournament-detail": "Du wurdest erfolgreich vom Turnier {tournamentTitle} abgemeldet. Vielleicht klappt es ja beim nächsten Mal.",
+      "partner-left-tournament-summary": "Du verlierst einen Mitstreiter im Turnier!",
+      "partner-left-tournament-detail": "Dein Mitspieler {playerName} hat sich entschlossen das Turnierteam zu verlassen. Suche neue und zuverlässigere Partner!",
+      "signUpEnded-you-partizipate-summary": "Gratulation zur Turnierteilnahme",
+      "signUpEnded-you-partizipate-detail": "Das Turnier {tournamentTitle} wird mit dir stattfinden. Denke daran dir die Termine in den Kalender einzutragen!",
+      "signUpEnded-you-wont-partizipate-summary": "Turnier findet ohne dich statt",
+      "signUpEnded-you-wont-partizipate-detail": "Leider hast du keinen Platz im Turnier {tournamentTitle} ergattern können. Versuche es bei nächsten Mal erneut.",
+      "signUp-failed-summary": "Turnier findet nicht statt",
+      "signUp-failed-detail": "Das Turnier {tournamentTitle} wird nicht stattfinden. Leider haben sich nicht genug Teilnehmer gefunden.",
+      "started-summary": "Turnier gestartet",
+      "started-detail": "Das Turnier {tournamentTitle} geht los. Du kannst über das Menu zu der Turnier Seite navigieren und den Stand verfolgen.",
+      "round-started-summary": "{roundName} gestartet",
+      "round-started-detail": "Das Turnier {tournamentTitle} geht in die nächste Runde. Die Teilnehmer können die Spiele jetzt in der Spieletabelle sehen.",
+      "round-ended-summary": "{roundName} beendet",
+      "round-ended-detail": "Das {roundName} des Turniers {tournamentTitle} ist jetzt vorbei.",
+      "ended-summary": "Turnier beendet",
+      "ended-detail": "Das Turnier {tournamentTitle} wurde beendet. Gratulation an das Team {teamName} für das {players1} und {players2} gespielt haben."
+    },
+    "pastTableHeader": "Vergangene Turniere",
+    "CreatePrivate": {
+      "createdSummary": "Turnier wurde erstellt",
+      "createdDetail": "Das Turnier wurde erstellt und muss jetzt von dir bearbeitet werden. Füge Spieler hinzu und sortiere sie in Teams.",
+      "tournamentName": "Turniername:",
+      "tournamentNameInvalid": "Der Turniername muss mindestens 8 Zeichen haben.",
+      "playersAndTeams": "Spieler und Teams:",
+      "4p": "4 Spieler pro Spiel",
+      "6p2t": "6 Spieler pro Spiel - 2 Teams pro Spiel",
+      "6p3t": "6 Spieler pro Spiel - 3 Teams pro Spiel",
+      "nTeams": "Anzahl Teams:"
+    },
+    "TournamentsTable": {
+      "title": "Turniertitel",
+      "date": "Startdatum"
+    },
+    "TournamentTable": {
+      "status": "Status",
+      "type": "Turniertyp",
+      "public": "Öffentlich",
+      "private": "Privat"
+    },
+    "Overview": {
+      "header": "Turnierübersicht",
+      "tournaments": "Turniere",
+      "createPrivate": "Privates Turnier erstellen"
+    },
+    "EditPrivate": {
+      "notCompleteMessage": "Es fehlen noch Teams, die Teams sind noch nicht vollständing oder es haben noch nicht alle Teilnehmer ihre Teilnahme bestätigt.",
+      "startButton": "Turnier starten",
+      "addTeamButton": "Neues Team hinzufügen",
+      "header": "Turnierteams zusammenstellen:"
+    },
+    "Private": {
+      "confirmAbort": "Bist du dir sicher, dass du das Turnier abbrechen möchtest?",
+      "playersPerGame": "Anzahl Spieler pro Team",
+      "teamsPerGame": "Anzahl Teams pro Spiel",
+      "playersPerTournament": "Anzahl Teams",
+      "admin": "Admin",
+      "abortButton": "Turnier abbrechen",
+      "HelpModal": {
+        "privateHeader": "Was ist ein privates Turnier?",
+        "privateContent": "Die privaten Turniere sind für dich und deine Freunde gedacht, um kleine KO-Turniere zu veranstalten. Im Gegensatz zu den öffentlichen Turnieren, kann hier nicht jeder teilnehmen. Es gibt einen Turnier-Admin, der sich um die Organisation des Turniers kümmert.",
+        "planningHeader": "Planungsphase",
+        "planningContent": "Die Person, der das Turnier erstellt hat, wird zum Admin des Turniers. Dieser stellt in der Planungsphase die Teams zusammen. Er vergibt die Teamnamen und lädt Spieler zu den Teams ein. Die eingeladenen Spieler müssen allerdings ihre Teilnahme bestätigen. Sind alle Teams vollständig und alle Spieler bestätigt, kann der Admin das Turnier beginnen.",
+        "runningHeader": "Während des Turniers",
+        "runningContent": "Im privaten Turnier gibt es keine festgelegten Zeiten zu denen die Spiele stattfinden. Stattdesssen kann der Admin jedes Spiel nach Bedarf starten. Ein Spiel kann natürlich nur gestartet werden, wenn die spielenden Teams bereits feststehen."
+      },
+      "abortedPlayersList": "Spielerliste:"
+    }
+  },
+  "GameView": {
+    "socketDisconnectedOverlay": "Die Verbindung zum Server konnte nicht herstellt werden. Lade die Seite neu!",
+    "reconnectionFailedSummary": "Verbindungsproblem",
+    "reconnectionFailedDetail": "Oh nein. Es gab ein Problem mit der Verbindung zum Server. Bitte melde dich erneut an. Viel Glück!",
+    "socketReconnectingOverlay": "Die Verbindung zum Server ist unterbrochen. Wir versuchen die Verbindung wiederherzustellen!",
+    "refreshPageButton": "Seite neu laden"
+  },
+  "Landing": {
+    "Games": {
+      "tooltip": "Zu den Spielen",
+      "title": "Deine Spiele",
+      "openGames": "{X} offene Spiele",
+      "wonGames": "{X} gewonnene Spiele",
+      "lostGames": "{X} verlorene Spiele",
+      "teamGames": "{X} Team-Tac Spiele",
+      "lastGames": "Letzte Spiele:"
+    },
+    "Waiting": {
+      "tooltip": "Zu den Warteräumen",
+      "title": "Bereit zum Spielen?",
+      "inRoom": "Du bist Teil eines Raums",
+      "inNoRoom": "Du bist in keinem Warteraum",
+      "playersWaiting": "{X} Spieler auf der Suche",
+      "openRooms": "{X} offene Warteräume",
+      "noGamesGoToWaiting": "Du hast keine laufenden Spiele. Erstelle einen Warteraum!",
+      "description": "Hier kannst du deine laufenden Spiele fortsetzen und Mitspieler für eine neue Runde finden",
+      "waitingRoomsHeader": "Neues Spiel vereinbaren",
+      "openGames": "Offene Spiele ({n})",
+      "openGamesWarning": "Du hast noch {openGames} offene Spiele. Bitte versuche diese zu beenden, bevor du ein neues beginnst."
+    },
+    "Tournament": {
+      "tooltip": "Zu den Turnieren",
+      "title": "Turniere",
+      "lastWinners": "Letzte Sieger:",
+      "noActiveTournament": "Keine aktiven Turniere"
+    }
+  },
+  "Chat": {
+    "submitButton": "Senden",
+    "textPlaceholder": "Nachricht tippen",
+    "Channels": {
+      "Game": "Spiel",
+      "Waiting": "Warteraum",
+      "general": "Allgemein",
+      "news": "News"
+    },
+    "startNewChatButton": "Neuer Chat",
+    "MenuOptions": {
+      "privates": "Chats",
+      "groups": "Gruppenchats",
+      "channels": "Kanäle",
+      "recent": "Neueste"
+    },
+    "GroupChatEditor": {
+      "addPlayer": "Spieler hinzufügen",
+      "leaveButton": "Chat verlassen"
+    },
+    "ChatCreator": {
+      "startButton": "Chat starten",
+      "single": "Privat",
+      "group": "Gruppenchat"
+    },
+    "deletedPlayer": "Gelöscht",
+    "mayNotUseOverlay": "Du darfst in diesem Chat leider gerade keine Nachricht schreiben, da du dich in einem laufenden Spiel mit einem der Chatteilnehmer befindest.",
+    "Dates": {
+      "today": "Heute",
+      "yesterday": "Gestern"
+    }
+  },
+  "Game": {
+    "viewerModeText": "Du befindest dich im Zuschauermodus. Du siehst daher auch keine Karten! Du kannst den Spielchat lesen aber keine Nachrichten in diesem abschicken.",
+    "viewerModeTag": "Zuschauermodus",
+    "toViewerButton": "Zuschauen",
+    "CardActionButton": {
+      "beenden": "Spiel beenden",
+      "aussetzen": "Aussetzen",
+      "abwerfen": "Abwerfen",
+      "Karten weitergeben": "Karten weitergeben",
+      "tauschen": "Karte tauschen",
+      "teufel": "Teufel spielen",
+      "narr": "Narr spielen"
+    },
+    "GameModal": {
+      "title": {
+        "settings": "Einstellungen",
+        "assistance": "Regelhilfe",
+        "errorreport": "Fehler melden",
+        "statistic": "Spielstatistik"
+      },
+      "Settings": {
+        "audioVolume": "Lautstärke:",
+        "colorBlindness": "Kugeln optimieren für Farbenblinde:",
+        "colorBlindnessOn": "An",
+        "colorBlindnessOff": "Aus",
+        "position": "Position:",
+        "checkBoxAbsolute": "Absolut positioniert",
+        "checkBox4_0": "Immer unten rechts",
+        "checkBox4_1": "Immer unten links",
+        "checkBox4_2": "Immer oben links",
+        "checkBox4_3": "Immer oben rechts",
+        "checkBox6_0": "Immer unten links",
+        "checkBox6_1": "Immer links mittig",
+        "checkBox6_2": "Immer oben links",
+        "checkBox6_3": "Immer oben rechts",
+        "checkBox6_4": "Immer rechts mittig",
+        "checkBox6_5": "Immer unten rechts"
+      },
+      "ShortManual": {
+        "1": "Eine Kugel vom Vorfeld auf das Startfeld legen oder ein Feld im UZS ziehen.",
+        "4": "Vier Felder rückwärts (gegen den UZS) ziehen.",
+        "7": "Sieben mal ein Feld im UZS ziehen (kann auf beliebig viele eigene Spielkugeln verteilt werden), im Vorbeiziehen werfen, im Haus vor und rückwärts ziehen möglich",
+        "8": "Acht Felder im UZS ziehen oder den nächsten Spieler aussetzen lassen, der dann eine Karte ungenutzt ablegen muss.",
+        "13": "Eine Kugel vom Vorfeld auf das Startfeld legen oder dreizehn Felder im UZS ziehen.",
+        "basisspiel": "Basisspiel",
+        "meisterkarten": "Meisterkarten",
+        "trickser": "Zwei beliebige Spielkugeln auf dem Spielkreis tauschen.",
+        "trickserCardName": "TRICKSER",
+        "tac": "Zug des vorherigen Spielers rückgängig machen und dessen Karte für sich selbst verwenden.",
+        "narrCardName": "Der Narr",
+        "narr": "Wird der Narr ausgespielt, gibt jeder Spieler seine Karten verdeckt an den Spieler rechts neben sich weiter. Der Spieler, der den Narr ausgespielt hat, muss aus den neu erhaltenen Karten sofort eine beliebige Karte ausspielen.",
+        "engelCardName": "Der Engel",
+        "engel": "Wer den Engel ausspielt, muss für den im UZS folgenden Spieler sofort eine Spielkugel vom Vorfeld auf des Startfeld setzen (ins Spiel bringen). Wenn beim folgenden Spieler keine Kugel mehr im Vorfeld liegt, so muss für ihn eine beliebige Kugel wahlweise 1 oder 13 Felder im UZS gezogen werden.",
+        "kriegerCardName": "Der Krieger",
+        "krieger": "Der Spieler, der den Krieger ausspielt, muss mit einer seiner eigenen Kugeln die im UZS nächste Spielkugel werfen.",
+        "teufelCardName": "Der Teufel",
+        "teufel": "Wer die Teufelskarte spielt, darf sich die Karten des im UZS nächsten Spielers anschauen und sofort eine von dessen Karten ausspielen und die Funktion mit dessen Kugeln ausführen.",
+        "detailed": "Die vollständige Anleitung gibt es auf der",
+        "detailedLink": "offiziellen Tac Website"
+      }
+    },
+    "EndedOverlay": {
+      "statistic": "Statistik",
+      "backButton": "Zurück",
+      "wonInX": "Ihr habt in {X} Zügen gewonnen!",
+      "aborted": "Das Spiel wurde abgebrochen",
+      "wonWith": "Du hast mit {players} gewonnen!",
+      "lostWith": "Du hast mit {players} verloren!",
+      "playersConnector": "und"
+    },
+    "Rematch": {
+      "title": "Rückspiel",
+      "description": "Es wird ein Warteraum mit allen Spielern dieses Spiels erstellt. Dieser wird gelöscht wenn ein Spieler kein Rückspiel möchte.",
+      "startButton": "Rückspiel starten",
+      "errorGeneralSummary": "Warteraum konnte nicht erstellt werden",
+      "errorGeneralDetail": "Der Warteraum für das Rückspiel konnte nicht erstellt werden. Probiere es erneut.",
+      "errorAlreadyInWaitingSummary": "Rückspiel nicht möglich",
+      "errorAlreadyInWaitingDetail": "Ein Spieler aus dem Spiel ist schon in einem Warteraum und möchte kein Rückspiel.",
+      "errorNotOnlineSummary": "Rückspiel nicht möglich",
+      "errorNotOnlineDetail": "Ein Spieler aus dem Spiel ist nicht online. Es kann daher kein Rückspiel erstellt werden.",
+      "rematchNotAllowed": "Ein Rückspiel kann für dieses Spiel nicht mehr erstellt werden. Entweder wurde eines bereits erstelllt oder ein Spieler ist nicht mehr online oder es ist schon zu viel Zeit seit dem Spiel vergangen."
+    },
+    "Statistic": {
+      "Cards": {
+        "title": "Karten",
+        "actionCardsTotal": "Anzahl Sonderkarten",
+        "actionCardsPlayed": "Anzahl genutzter Sonderkarten",
+        "1o13cardsLayed": "Anzahl Rauskommkarten",
+        "actionCardsTotalshort": "Sonderkarten",
+        "actionCardsPlayedshort": "davon benutzt",
+        "1o13cardsLayedshort": "1/13"
+      },
+      "Actions": {
+        "title": "Aktionen",
+        "kickedBalls": "Anzahl geworfene Kugeln",
+        "numberSkipped": "Zahl an Aussetzen",
+        "timePerPlay": "Zeit pro Zug [s]",
+        "kickedBallsshort": "Geworfen",
+        "numberSkippedshort": "Aussetzen",
+        "timePerPlayshort": "Zeit"
+      },
+      "CardsTable": {
+        "title": "Kartentabelle",
+        "card": "Karte",
+        "narr": "Narr",
+        "teufel": "Teufel",
+        "krieger": "Krieger",
+        "engel": "Engel",
+        "tac": "TAC",
+        "trickser": "TRICKSER"
+      },
+      "time": "Gesamtspielzeit:"
+    },
+    "Instructions": {
+      "needToTrade": "Du musst eine Karte tauschen!",
+      "needToChooseCard": "Wähle eine Karte",
+      "needToWait": "Du musst warten!",
+      "waitingFor": "Es fehlen noch: ",
+      "needToNarr": "Du musst deine Karten weitergeben!",
+      "needToNarrButton": "Drücke dafür den Button",
+      "narrWaitingFor": "Es müssen noch ihre Karten weitergeben: ",
+      "currentlyPlaying": "Es spielt gerade: ",
+      "needToSkip": "Du musst aussetzen!",
+      "needToTeufel": "Du hast einen Teufel gespielt - Spiele jetzt für {name}!",
+      "yourTurn": "Du bist dran!",
+      "needToDiscard": "Du musst eine Karte abwerfen!",
+      "buttonOrOtherCard": "Betätige den Button in der Mitte oder wähle eine andere Karte",
+      "moveOrOtherCard": "Bewege eine Kugel oder wähle eine andere Karte",
+      "remainingSteps": "Du musst noch {steps} Schritte verteilen"
+    },
+    "WatchingPlayers": {
+      "nooneWatching": "Keine Zuschauer",
+      "anonymousWatching": "{n} anonymer Zuschauer | {n} anonyme Zuschauer",
+      "buttonLabel": "{n} Zuschauer | {n} Zuschauer"
+    }
+  },
+  "Games": {
+    "stati": {
+      "lost": "verloren",
+      "won": "gewonnen",
+      "aborted": "abgebrochen",
+      "running": "im gange"
+    },
+    "tableTitle": "Liste deiner Spiele",
+    "tableNoGames": "Keine Spiele gefunden.",
+    "tableLoading": "Spiele werden geladen. Bitte warten.",
+    "columnTitles": {
+      "gameID": "SpieleID",
+      "status": "Status",
+      "teams": "Teams",
+      "team": "Team",
+      "created": "Erstellt am:",
+      "playerSearch": "Teams durchsuchen",
+      "statusFilterAll": "Alle",
+      "newGame": "Neues Spiel"
+    }
+  },
+  "Waiting": {
+    "Icons": {
+      "players": "{X} Spieler",
+      "teams": "{X} Team | {X} Teams",
+      "meister": "Meister",
+      "normal": "Normal",
+      "public": "Offen",
+      "private": "Privat"
+    },
+    "noRoomsPlaceholder": "Leider gibt es keinen offenen Warteraum, der deinen Filterkriterien entspricht. Erstelle einen und warte, dass deine Freunde dazustoßen!",
+    "WaitingGameCreator": {
+      "startButton": "Neuen Raum erstellen",
+      "title": "Neuen Spielraum erstellen",
+      "submitButton": "Erstellen",
+      "player4Name": "4 Spieler",
+      "player6Name": "6 Spieler",
+      "teams1Name": "Team-Tac",
+      "teams2Name": "2 Teams",
+      "teams3Name": "3 Teams",
+      "meisterTrueName": "Meister",
+      "meisterFalseName": "Normal",
+      "privateTrueName": "Privat",
+      "privateFalseName": "Öffentlich"
+    },
+    "joinRandomGameButton": "Bestem Spiel beitreten",
+    "removePlayerConfirmSelf": "Sicher, dass du diesen Warteraum verlassen möchtest?",
+    "removePlayerConfirmOther": "Sicher, dass du einen Spieler aus dem Warteraum entlassen möchtest?",
+    "switchGameConfirm": "Sicher, dass du den Warteraum wechseln möchtest?",
+    "switchGameConfirmPrivate": "Dieser Raum wurde als geschlossene Runde erstellt. Sicher, dass du den Warteraum wechseln möchtest?",
+    "joinGamePrivate": "Dieser Raum wurde als geschlossene Runde erstellt. Bist du sicher, dass du in dieser Runde willkommen bist?",
+    "leaveRematch": "Bist du dir sicher, dass du dieses Rematch verlassen möchtest?"
+  },
+  "Login": {
+    "username": "Benutzername",
+    "password": "Passwort",
+    "passwordRepeat": "Passwort wiederholen",
+    "email": "E-Mail",
+    "emailOrUsername": "E-Mail oder Benutzername",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "RequestNewPassword": {
+      "button": "Neues Passwort beantragen",
+      "successMsg": "Dir wurde ein neues Passwort geschickt!",
+      "errorMsg": "Dir konnte kein neues Passwort geschickt werden. Der Benutzername oder die Email ist vermutlich falsch."
+    },
+    "SignUp": {
+      "button": "Neuen Benutzer anlegen",
+      "usernameTooShort": "Benutzername muss mindestens 3 Zeichen haben",
+      "usernameTooLong": "Benutzername darf maximal 12 Zeichen haben",
+      "usernameWrongChar": "Benutzername darf nur Buchstaben enthalten",
+      "usernameNotAvailable": "Der Benutzername ist nicht mehr frei",
+      "emailInvalid": "Bitte gebe eine korrekte E-Mail an",
+      "emailNotAvailable": "Diese E-Mail ist nicht mehr frei",
+      "passwordTooShort": "Passwort muss mindestens 6 Zeichen haben",
+      "passwordTooLong": "Passwort darf maximal 20 Zeichen haben",
+      "passwordUnequal": "Passwörter sind nicht gleich",
+      "errorMsg": "Benutzer konnte nicht erstellt werden",
+      "successMsg": "Aktivierungsemail versandt",
+      "successMsgDetail": "Dein Spielerprofil wurde erstellt. Sehr gut! Du erhältst jetzt eine Mail mit einem Link um deine Email-Adresse zu bestätigen und deinen Account freizuschalten.",
+      "passwordChoose": "Wähle ein Passwort",
+      "passwordStrong": "Stark",
+      "passwordMedium": "Mittel",
+      "passwordWeak": "Schwach",
+      "passwordMaxLetters": "Höchstens 64 Zeichen",
+      "passwordMinLetters": "Mindestens 8 Zeichen"
+    },
+    "SignIn": {
+      "errorMsg": "Anmelden fehlgeschlagen!",
+      "errorMsgPassword": "Passwort ist falsch!",
+      "errorMsgEmail": "Deine Email ist noch nicht aktiviert. Sehe in deinem Email-Account nach. Keine E-Mail? ",
+      "errorMsgEmailLink": "Klicke hier für eine Neue",
+      "errorMsgUser": "Benutzername existiert nicht!",
+      "activationErrorMsg": "Aktivierung des Accounts fehlgeschlagen!",
+      "activationSuccessMsg": "Aktivierung des Accounts erfolgreich!",
+      "errorHeader": "Login fehlgeschlagen",
+      "newActivationSummary": "Email verschickt",
+      "newActivationDetail": "Eine neue Aktivierungsmail wurde verschickt. Öffne den Link in der Email um deinen Account freizuschalten.",
+      "activationSuccessDetails": "Deine Emailadresse ist jetzt bestätigt und dein Account aktiviert. Logge dich ein und starte durch!"
+    }
+  },
+  "Settings": {
+    "ChangeMail": {
+      "header": "Email ändern",
+      "newMail": "Neue E-Mail Adresse",
+      "emailInvalid": "Bitte gebe eine korrekte E-Mail an",
+      "password": "Passwort",
+      "button": "E-Mail Adresse ändern",
+      "successMsg": "Deine E-Mail Adresse wurde erfolgreich geändert",
+      "errorMsgGeneral": "Deine E-Mail Adresse konnte nicht geändert werden. Probiere es erneut",
+      "errorMsgEmail": "Diese E-Mail Adresse ist nicht mehr frei. Wähle eine andere",
+      "errorMsgPwd": "Das Passwort war falsch. Versuche es erneut",
+      "toastSummaryFailure": "Fehlgeschlagen!",
+      "toastSummarySuccess": "E-Mail geändert!"
+    },
+    "ChangePassword": {
+      "header": "Passwort ändern",
+      "currentPassword": "Aktuelles Passwort",
+      "newPassword": "Neues Passwort",
+      "newPasswordRepeat": "Neues Passwort Wiederholung",
+      "passwordTooShort": "Passwort muss mindestens 6 Zeichen haben",
+      "passwordTooLong": "Passwort darf maximal 20 Zeichen haben",
+      "passwordUnequal": "Passwörter sind nicht gleich",
+      "button": "Passwort ändern",
+      "successMsg": "Dein Passwort wurde erfolgreich geändert",
+      "errorMsgGeneral": "Dein Passwort konnte nicht geändert werden. Probiere es erneut",
+      "errorMsgPwd": "Das Passwort war falsch. Versuche es erneut",
+      "toastSummaryFailure": "Fehlgeschlagen!",
+      "toastSummarySuccess": "Passwort geändert!"
+    },
+    "UploadProfilePicture": {
+      "header": "Profilbild ändern",
+      "ChooseFile": "Eigenes Profilbild hochladen",
+      "DeletePicture": "Neues zufälliges Profilbild",
+      "successMsgUpload": "Dein Profilbild wurde hochgeladen und kann jetzt gesehen werden",
+      "errorMsgUpload": "Beim Hochladen gab es ein Problem. Bitte versuche es erneut",
+      "toastSummaryFailureUpload": "Hochladen fehlgeschlagen!",
+      "toastSummarySuccessUpload": "Neues Profilbild!",
+      "successMsgDelete": "Dein Profilbild wurde geändert",
+      "errorMsgDelete": "Beim Ändern gab es ein Problem. Bitte versuche es erneut",
+      "toastSummaryFailureDelete": "Ändern fehlgeschlagen!",
+      "toastSummarySuccessDelete": "Profilbild geändert!",
+      "privacyDisclaimer": "Achtung: Dieses Bild kann aktuell von allen angemeldeten Benutzern eingesehen werden!",
+      "Modal": {
+        "header": "Profilbild zuschneiden",
+        "reset": "Reset",
+        "submit": "Hochladen"
+      }
+    },
+    "DeleteProfile": {
+      "header": "Profil entfernen",
+      "confirmPrompt": "Achtung! Das Löschen kann nicht wieder rückgängig gemacht werden! Möchtest du fortfahren?",
+      "button": "Account löschen",
+      "errorTitle": "Löschen Fehlgeschlagen!",
+      "errorMsg": "Das ist Löschen ist fehlgeschlagen. Bitte probiere es erneut.",
+      "successTitle": "Account gelöscht!",
+      "successMsg": "Dein Account wurde erfolgreich gelöscht. Du wirst gleich abgemeldet."
+    },
+    "Language": {
+      "header": "Sprache",
+      "de": "Deutsch",
+      "en": "Englisch",
+      "ru": "Russisch",
+      "applicationLanguage": "Sprache der Anwendung:",
+      "originCountry": "Land für das Profil"
+    },
+    "ChangeUsername": {
+      "disclaimerRememberUsername": "Achtung: Du wirst nach der Änderung abgemeldet. Präge dir deinen neuen Namen gut ein!",
+      "toastSummaryFailure": "Die Änderung hat nicht funktioniert",
+      "errorMsgUsername": "Dieser Benutzername ist nicht mehr verfügbar. Probiere es mit einem anderen erneut.",
+      "errorMsgGeneral": "Am Server gab es einen Fehler. Versuche es später nochmal",
+      "errorMsgPwd": "Das Passwort war falsch. Versuche es erneut",
+      "button": "Benutzername ändern",
+      "header": "Benutzername ändern",
+      "toastSummarySuccess": "Benutzername geändert",
+      "successMsg": "Du musst dich mit deinem neuen Benutzernamen anmelden. Genieße deine neue Identität.",
+      "newUsername": "Neuer Benutzername"
+    },
+    "Audio": {
+      "header": "Lautstärke"
+    }
+  },
+  "Profile": {
+    "mostFrequent": "Häufigster Spieler",
+    "mostFrequentExp": "Spieler mit dem am meisten Spiele (auch Coop) gespielt wurden",
+    "bestPlayer": "Bester Mitspieler",
+    "bestPlayerExp": "Spieler der als Mitspieler die höchste Siegquote erzielt hat",
+    "worstPlayer": "Erzfeind",
+    "worstPlayerExp": "Spieler der als Gegner die höchste Siegquote erzielt hat",
+    "success": "Erfolg",
+    "successExp": "Anteil der gewonnen Spiele in Prozent",
+    "generosity": "Großzügigkeit",
+    "generosityExp": "Anteil an getauschten Sonderkarten in Prozent",
+    "aggression": "Aggression",
+    "aggressionExp": "Geworfene Kugeln geteilt durch geworfene plus verlorere Kugeln",
+    "decision": "Entscheidungskraft",
+    "decisionExp": "Durchschnittliche Spielzeit pro Zug in eine Skala von 0-100 umgerechnet. Alles schneller als 10s führt zu einer perfekten 100. Formel: '100 * min(1, 10 * AnzahlZüge / gesamteSpielzeit)'",
+    "resentment": "Missgunst",
+    "resentmentExp": "Wie viel Prozent der 8er-Karten zum Aussetzen verwendet werden",
+    "usage": "Nutzungsquote",
+    "usageExp": "Anteil der tatsächlich benutzen Karten in Prozent",
+    "wIconSymbol": "W",
+    "wIconExp": "Steht für ein gewonnenes Spiel",
+    "lIconSymbol": "L",
+    "lIconExp": "Steht für ein verlorenes Spiel",
+    "tIconSymbol": "T",
+    "tIconExp": "Steht für ein absolviertes Team-Tac Spiel",
+    "rIconSymbol": "R",
+    "rIconExp": "Steht für ein laufendes Spiel",
+    "aIconSymbol": "X",
+    "aIconExp": "Steht für ein abgebrochenenes Spiel",
+    "expHeader": "Statistikerklärungen",
+    "lastGamesHeader": "Letzte Spiele:",
+    "abortionrate": "Durchhaltestärke",
+    "abortionrateExp": "Anteil an Spielen, die bis zum Ende gespielt wurden und nicht abgebrochen wurden",
+    "NetworkGraph": {
+      "togetherWith": "{nGames} Spiele mit {username} zusammen gespielt | {nGames} Spiel mit {username} zusammen gespielt | {nGames} Spiele mit {username} zusammen gespielt",
+      "wonOf": "Davon {nGames} gewonnen",
+      "playedAgainst": "{nGames} Spiele gegen {username} gespielt | {nGames} Spiel gegen {username} gespielt | {nGames} Spiele gegen {username} gespielt",
+      "team": "{nGames} Spiele im Team-Modus gespielt|{nGames} Spiel im Team-Modus gespielt|{nGames} Spiele im Team-Modus gespielt"
+    },
+    "DistributionGraph": {
+      "4er": "4-Spieler",
+      "6er": "6-Spieler",
+      "team": "Team",
+      "aborted": "Abgebrochen",
+      "running": "Laufend",
+      "won": "gewonnen",
+      "lost": "verloren",
+      "teamEnded": "Team Spiele beendet",
+      "teamAborted": "Team Spiele abgebrochen"
+    },
+    "DescriptionEditor": {
+      "placeholder": "Ich bin ein unbeschriebenes Blatt...",
+      "editPlaceholder": "Deine Profilbeschreibung ist noch ganz leer.\nNimm dir einen Moment Zeit und schreibe etwas! 💪",
+      "descriptionTooLong": "Deine Beschreibung hat 150 Buchstaben überschritten. Kürze sie zum Wohle aller ein."
+    },
+    "menuOverview": "Übersicht",
+    "menuAchievements": "Erfolge",
+    "menuGames": "Spiele",
+    "menuFriends": "Freunde",
+    "menuSocials": "Soziales",
+    "Friends": {
+      "username": "Benutzername",
+      "friendssince": "Freunde seit"
+    },
+    "TournamentParticipations": {
+      "tournamentTitle": "Turnier",
+      "tournamentResult": "Ergebnis"
+    },
+    "registeredOn": "Nutzer seit:"
+  },
+  "Tutorial": {
+    "0": {
+      "0": {
+        "title": "Begrüßung",
+        "detail": "Hallo, dieses Tutorial soll den Spieler der das TAC Original bereits kennt in das Spiel auf dieser Website einführen. Klicke auf den Pfeil um mit dem Tutorial zu beginnen."
+      },
+      "1": {
+        "title": "Spieleinstellungen",
+        "detail": "Zuerst solltest du deine Einstellungen anpassen. Finde im Spiel die Einstellung und sehe dir diese an!"
+      },
+      "2": {
+        "title": "Karte auswählen",
+        "detail": "Du wählst eine Karte an indem du sie anklickst. Ist sie ausgewählt, schaut sie oben aus den anderen heraus. Kannst du eine Karte nicht spielen ist sie dunkelgrau. Wähle eine Karte aus, die du spielen kannst!"
+      },
+      "3": {
+        "title": "Kugel bewegen",
+        "detail": "Du kannst eine Kugel entweder zum Ziel ziehen, oder zuerst die Kugel und dann das Zielfeld anklicken. Bewege jetzt eine Kugel!"
+      },
+      "4": {
+        "title": "Karte ändern",
+        "detail": "Hast du die falsche Karte ausgewählt, kannst du einfach wieder eine andere auswählen. Wähle die Karte '8' aus!"
+      },
+      "5": {
+        "title": "Sonderfunktionen",
+        "detail": "Manchmal möchtest du nicht eine Kugel bewegen, sondern eine Sonderfunktion ausführen. Dafür entsteht ein Textfeld in der Mitte des Spielfeldes. Lasse den nächsten Spieler aussetzen!"
+      },
+      "6": {
+        "title": "Aussetzen",
+        "detail": "Jetzt gibt es noch einige Quizfragen zur Spieloberfläche. Welcher Spieler muss aussetzen?",
+        "answer-0": "-Kai-",
+        "answer-1": "-Oskar-",
+        "answer-2": "-Sophia-",
+        "answer-3": "Du"
+      },
+      "7": {
+        "title": "Nächster Spieler",
+        "detail": "Welcher Spieler ist gerade dran?",
+        "answer-0": "-Sophia-",
+        "answer-1": "-Oskar-",
+        "answer-2": "-Kai-",
+        "answer-3": "Du"
+      },
+      "8": {
+        "title": "Kartenstapel",
+        "detail": "Welcher Spieler teilt als nächstes aus und in wie oft wird noch ausgeteilt bis wieder gemischt werden muss?",
+        "answer-0": "-Oskar-, noch 1 mal",
+        "answer-1": "-Sophia-, noch 2 mal",
+        "answer-2": "-Kai-, nächste Runde wird neu gemischt",
+        "answer-3": "Du, noch 3 mal"
+      },
+      "9": {
+        "title": "Kurzanleitung",
+        "detail": "Auch hier gibt es eine Übersicht zu den Sonderkarten. Suche das Hilfefeld und sehe es dir an!"
+      },
+      "10": {
+        "title": "Los gehts!",
+        "detail": "Du bist jetzt bereit für das echte Spielen. Verlasse das Spiel indem du auf das TAC Logo im Spiel klickst und beende so dieses Tutorial."
+      },
+      "title": "Einführung in Tac-With-Bug",
+      "time": "Dauer: ca. 3 Minuten",
+      "description": "Diese Einführung richtet sich an Personen, die das Spiel TAC bereits kennen. Es handelt sich um eine kurze Einführung in die Bedienung des Spiels auf dieser Website."
+    },
+    "Encouragement": {
+      "0": "Fabelhaft!",
+      "1": "Bravo!",
+      "2": "Super!",
+      "3": "Klasse!",
+      "4": "Sehr gut gemacht!",
+      "5": "Mega!",
+      "6": "Top!",
+      "7": "Gut gemacht!",
+      "8": "Du bist Spitze!",
+      "9": "Traumhaft!"
+    },
+    "nextQuestion": "Mache mit der nächsten Frage weiter",
+    "quizWrongAnswer": "Deine Antwort war falsch. Probiere eine der anderen Antworten!",
+    "quizSubmitButton": "Frage Beantworten",
+    "toGameButton": "Zum Spielbrett",
+    "resetButton": "Zurücksetzen",
+    "stopTutorial": "Tutorial abbrechen",
+    "openTutorial": "Tutorial",
+    "ButtonStartOverwiew": {
+      "start": "Los gehts!",
+      "restart": "Wiederholen",
+      "resume": "Fortsetzen"
+    },
+    "Basic": {
+      "title": "Basisspiel"
+    },
+    "Meister": {
+      "title": "Meisterkarten"
+    },
+    "tutorialHeader": "Tutorials",
+    "moreTutorialsInFuture": "Für die Zukunft sind hier weitere Tutorials geplant, um auch neuen Spielern das TAC näherzubringen. Bitte habe noch etwas Geduld!",
+    "replaysInFuture": "Zur Erklärung komplexer Spielzüge sollen diese aufgezeichnet werden und dann wiederholt werden. Schreib mir gerne, wenn du Vorschläge für solche Spielzüge hast.",
+    "replayHeader": "Spielzugwiederholung"
+  },
+  "FAQ": {
+    "title": "Häufig gestellte Fragen",
+    "Contribute": {
+      "header": "Zu Tac-With-Bug beitragen",
+      "localesQ": "Wie kann ich Fehler in einzelnen Sprache verbessern?",
+      "localesA": "Die einzelnen Textelemente können Open-Source von allen Spielern verwaltet werden. Ich freue mich sehr, wenn alle Sprachen verbessert werden! Dafür braucht ihr einen GitHub Account - Weitere Informationen dafür findet ihr <a target='_blank' rel='noopener noreferrer' href='{link}'>hier</a>. Wenn ihr euch andere Sprachen wünscht, dann könnt ihr mir einfach schreiben.",
+      "bugsQ": "Was kann ich tun, wenn ich Fehler entdecke?",
+      "bugsA": "Fehler werden von Zeit zu Zeit auftreten. Entschuldigung dafür. Meist löst ein Neuladen der Seite das Problem. Wenn dir ein Fehler mehrfach auffällt, dann schreibe mir einfach eine Mail. Bitte beschreibe den Fehler möglichst genau und füge hinzu welchen Browser du benutzt."
+    },
+    "Game": {
+      "header": "Im Spiel",
+      "unfairCardsQ": "Ich habe immer schlechte Karten. Werden die Karten nicht gerecht gemischt?",
+      "unfairCardsA": "Tac ist nunmal ein Glücksspiel. Auch im echten Spiel kann es gut mal sein, dass man lange keine Rauskommen-Karten hat oder länger keine guten Karten hat. Das ist Teil des Spiels.",
+      "teufelNoCardsQ": "Warum kann ich meine Karten nicht mehr sehen?",
+      "teufelNoCardsA": "Wenn der Spieler vor dir einen Teufel spielt bekommt er deine karten und du kannst deine Karten nicht mehr sehen. Auch wenn du beim Narr deine Karten schon weitergegeben hast, kannst du ebenfalls deine Karten nicht mehr sehen. Im Zweifel Seite-Neuladen probieren.",
+      "tacNotPlayingQ": "Ich kann ein Tac auswählen aber es wird nicht gespielt?",
+      "tacNotPlayingA": "Auf Tac-With-Bug vergisst man schnell, dass man nach dem Tac die getacte Karte auch noch selbst nutzen muss. Wenn man das Tac auswählt, bewegen sich die Kugeln und machen den letzten Zug rückgängig. Jetzt müsst ihr aber noch eine eigene Kugel bewegen bzw. die Karte selbst nutzen."
+    },
+    "documentedBugs": {
+      "header": "Bekannte Fehler",
+      "sevenSplitQ": "Aufteilen der Sieben",
+      "sevenSplitA": "Beim 6er Tac in 3er Teams bzw. beim Team-Tac ist es möglich, dass man mehrere Personen hat bei denen man mitspielen kann. Bei einer 7 muss man sich nach offiziellen Regeln zu Beginn des Zuges entscheiden bei welchem Spieler man spielen möchte. Bei Tac-With-Bug kann man bei jedem Einzelschritt neu entscheiden wessen Kugeln man bewegen möchte. Die Korrektur dieses Fehlers steht noch aus!"
+    },
+    "techStack": {
+      "header": "Tech-Stack",
+      "description": "Nachdem ich für das Frontend sowieso JavaScript lernen musste, habe ich es für eine gute Idee gehalten auch das Backend in dieser Sprache zu schreiben. In der Umgebung NodeJS gibt es eine große Community und viel Support von anderen Entwicklern. Mit ExpressJS kann man sehr einfach REST-APIs schreiben. Schnell hat mir die schwache Typisierung der Sprache große Probleme gemacht, die ich von den C-Sprachen so nicht gewohnt war und habe deshalb auf TypeScript umgestellt. Dieser Schritt war auf jeden Fall sinnvoll und ich würde jedem empfehlen, direkt mit TypeScript zu starten. Jetzt wünschte ich mir, ich hätte den Server in einer anderen Sprache geschrieben wie z.B. Go. Das Frontend ist im dem Framework Vue programmiert, was ein tollen und intuitives Open-Source Framework ist. Dazu habe ich eine Vielzahl an weiteren Bibliotheken verwendet. Besonders erwähnenswert ist da PrimeVue, eine UI Component Library, und Socket.io, eine WebSocket Implementierung zur Echtzeit Serverkommunikation. Links zu den erwähnenswerten Bibliotheken finden ihr unter diesem Artikel. Alle Bibliotheken sind frei zugänglich und ohne solche wäre ein Projekt wie dieses nicht umsetzbar!"
+    }
+  },
+  "HOF": {
+    "header": "Hall of Fame",
+    "verlag1": "Besonders bedanken möchte ich mich beim ",
+    "verlagLink": "Tac-Verlag",
+    "verlag2": ", der mir die Entwicklung dieser Seite erlaubt und mich dabei unterstützt hat:",
+    "spende": "Neben all den Sponsoren, die mich mit regelmäßigen unterstützen, habe ich herrausragend großzügige Spenden erhalten von:",
+    "lang": "Danke für das Helfen bei den Übersetzungen:",
+    "privat": "Zuletzt noch ein kleines Dankeschön an meine Familie und Freunde, die mich seitdem regelmäßig beraten und es aushalten, dass es kein anderes Thema mehr gibt:"
+  },
+  "Friends": {
+    "Toast": {
+      "new-friendship-request-summary": "Neue Freundschaftanfrage",
+      "new-friendship-request-detail": "Du hast eine neue Freundschaftanfrage von {username} erhalten. Entscheide dich, ob du sie annehmen möchtest.",
+      "friend-confirmed-request-summary": "Freundschaftanfrage bestätigt",
+      "friend-confirmed-request-detail": "{username} hat deine Anfrage bestätigt. Ihr seid jetzt Freunde!",
+      "friend-withdraw-request-summary": "Freundschaftsanfrage zurückgezogen",
+      "friend-withdraw-request-detail": "{username} hat seine Freundschaftanfrage zurückgezogen.",
+      "friend-declined-request-summary": "Freundschaftsanfrage abgelehnt",
+      "friend-declined-request-detail": "{username} hat deine Anfrage leider abgelehnt.",
+      "friend-cancelled-friendship-summary": "Freundschaft beendet",
+      "friend-cancelled-friendship-detail": "{username} hat eure Freundschaft beendet",
+      "request-done-summary": "Freundschaft angefragt",
+      "request-done-detail": "Du hast eine Freundschaftsanfrage an {username} geschickt.",
+      "you-confirmed-friendship-summary": "Freundschaft geschlossen",
+      "you-confirmed-friendship-detail": "Du bist jetzt mit {username} befreundet.",
+      "you-declined-request-summary": "Freundschaft abgelehnt",
+      "you-declined-request-detail": "Du hast die Anfrage von {username} abgelehnt.",
+      "you-withdraw-request-summary": "Freundschaftsanfrage zurückgezogen",
+      "you-withdraw-request-detail": "Du hast deine Freundschaftsanfrage an {username} zurückgezogen.",
+      "you-cancelled-friendship-summary": "Freundschaft beendet",
+      "you-cancelled-friendship-detail": "Du bist nicht mehr mit {username} befreundet.",
+      "error-summary": "Fehler",
+      "error-detail": "Es ist ein Fehler passiert. Versuche es erneut."
+    },
+    "FriendButton": {
+      "requestFriend": "Freund:in hinzufügen",
+      "cancelFriendship": "Freund:in entfernen",
+      "withdrawRequest": "Anfrage zurücknehmen",
+      "acceptRequest": "Anfrage annehmen"
+    }
+  },
+  "Toast": {
+    "GenericError": {
+      "summary": "Da ist etwas schiefgegangen",
+      "detail": "Am Server ist ein Fehler aufgetreten. Aktualisiere die Seite und versuche es erneut."
+    }
+  },
+  "Connection": {
+    "ServerSideLogoutSummary": "Du wurdest abgemeldet!",
+    "ServerSideLogoutDetail": "Du wurdest von Server abgemeldet. Melde dich einfach erneut an."
+  },
+  "RunningGamesWidget": {
+    "emptyTable": "Aktuell laufen keine Spiele. Suche nach Mitspielern im Warteraum.",
+    "Header": "Laufende Spiele",
+    "Description": "Klicke einfach auf ein Spiel um zuzusehen."
+  },
+  "Advertisement": {
+    "signUpButton": "Registrieren",
+    "gamesButton": "Zu den Spielen",
+    "tutorialButton": "Zu den Tutorials",
+    "FunFacts": {
+      "nGames4": "Beendete Spiele zu 4.:",
+      "nGames6": "Beendete Spiele zu 6.:",
+      "registeredUsers": "Anzahl der Spieler:",
+      "fastestGame": "Schnellstes Spiel:",
+      "averagePlayingTime": "Durschnittliche Spieldauer:",
+      "nFriends": "Geschlossene Freundschaften:",
+      "nTutorials": "Absolvierte Tutorialschritte:",
+      "mostLoved": "Am meisten genutzte Kugel:",
+      "leastLoved": "Am wenigsten genutzte Kugel:",
+      "nColorBlinds": "Anzahl farbenblinder Spieler:",
+      "longestGame": "Längstes Spiel:"
+    },
+    "description1": "Tac-With-Bug ist eine online Mehrspieler Verison des beliebten Brettspiels",
+    "description2": ". Trete gegen Freunde und Fremde zu Viert oder zu Sechst an. Oder spiele Team-Tac und versuche einen neuen Rekord aufzustellen."
+  },
+  "PlayersAutoComplete": {
+    "placeholder": "Spieler"
+  }
+}

@@ -1,0 +1,928 @@
+{
+  "Subscription": {
+    "freelicense": "You're lucky! You have been selected as an exceptional player and receive the full range of functions without payment.",
+    "running": "You are an active supporter of Tac-With-Bug! Thank you for your help",
+    "runningNextPayment": "The next payment is due on {time}.",
+    "expiring": "You have ended your subscription. Your benefits end on {time}.",
+    "buttonPlanMonthly": "month",
+    "buttonPlanYearly": "year",
+    "buttonPlanQuaterly": "quarter",
+    "headerAdditionalPay": "Of course, I am also looking forward to additional, one-time support:",
+    "buttonAdditionalPay": "Additional karma via",
+    "paypalFeeDisclaimer": "% of your donation goes to PayPal **",
+    "paymentPerTime": "Payment once in",
+    "New": {
+      "successDetail": "Thank you for supporting me and Tac-With-Bug! Enjoy your advantages and the extra luck.",
+      "successSummary": "Subscription registered",
+      "errorDetail": "Sorry! An error occurred while connecting your subscription to your account. Please contact me via the imprint.",
+      "errorSummary": "That didn`t work!",
+      "bookingErrorDetail": "Sorry! Something went wrong booking the subscription. Try again in a moment.",
+      "bookingErrorSummary": "That didn`t work!"
+    },
+    "Cancel": {
+      "button": "End support",
+      "confirm": "It's a shame that you want to end your subscription, but thank you very much for supporting Tac-With-Bug! If you end the subscription you will still be able to take advantage of the benefits until the next payment is due. Are you sure you want to end your subscription?",
+      "successDetail": "Your subscription ended successfully. Thank you for supporting Tac-With-Bug.",
+      "successSummary": "Subscription ended",
+      "errorDetail": "Sorry! Something went wrong when you ended your subscription. Just try again in a moment.",
+      "errorSummary": "That didn`t work!"
+    },
+    "aboutMeHeader": "Hello Tac-Fan,",
+    "aboutMe1": "I'm Oskar, 24 years old and live in Munich. I learned programming during my mechanical engineering degree. As a new challenge in the November lockdown, I started to learn how to program websites, something I had no experience with before. After a few tutorials, I started the Tac-With-Bug project over Christmas. Since then, I have put every free minute into this website alongside my work as a research assistant at the Technical University of Munich.",
+    "aboutMe2": "In addition to the entire development work, there are also running costs. Unfortunately, a website does not host itself. In order to give this project a future, you are now asked! With your support you will enable me to operate the site and also in the long term to make further updates and improvements on the way to Tac-Without-Bug.",
+    "price": "€ 2 per month *",
+    "featureKarma1": "Karma:",
+    "featureKarma2": "You help me to cover my fixed costs and compensate me for all my programming hours!",
+    "featureBallsColor": "Choosing your ball color!",
+    "featureStats": "Full access to all statistics!",
+    "tournamentTeam": "Tournament registration with a permanent partner and team name!",
+    "featureLuck": "Happiness guarantee**",
+    "nSubscriptions": "Number of sponsors",
+    "becomingSponsor": "Become a sponsor:",
+    "disclaimer1": "*: The subscription can of course be terminated at any time",
+    "disclaimer2": "**: PayPal unfortunately requires a fixed fee of around € 0.35 per transaction in addition to a percentage of around 2.5%. As a result, the fee increases proportionally for regular, small payments. So most of your donation actually reaches me if you rarely pay a large amount for it.",
+    "disclaimer3": "***: Of course, this only refers to personal happiness",
+    "disclaimer3Link": "(More info)",
+    "Tag": {
+      "sponsor": "Sponsor",
+      "sponsorsOnly": "Sponsors only"
+    }
+  },
+  "Stats": {
+    "headerTable": "Tac-With-Bug in Numbers",
+    "headerDays": "New Players/Games by Day of the Week",
+    "headerHours": "New Players/Games by Time of Day",
+    "headerWeeks": "Players/Games by Calendar Week",
+    "users": "Players",
+    "games": "Games",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "activeUsers": "Active players",
+    "newUsers": "New players",
+    "headerActivityHeatmap": "Activity by Day and Time",
+    "headerLocales": "Languages ​​used by Players",
+    "others": "Others",
+    "DeviceTypes": {
+      "mobile": "Mobile",
+      "tablet": "Tablet",
+      "desktop": "Desktop",
+      "others": "Others"
+    },
+    "headerUserAgent": "Technical Devices of the Players"
+  },
+  "Home": {
+    "Spielersuche": "Search Users",
+    "Games": "Games",
+    "Waiting": "Find a game",
+    "Tournament": "Competition",
+    "Leaderboard": "Leaderboard",
+    "TutorialOverview": "Tutorials",
+    "Subscription": "Become a sponsor",
+    "HOF": "Hall of Fame",
+    "Settings": "Settings",
+    "Stats": "Server statistics",
+    "Copyright": "Copyright",
+    "Datenschutz": "Data protection",
+    "Impressum": "Imprint",
+    "FAQ": "FAQ",
+    "signout": "Sign out",
+    "PlayerSearch": "Player search",
+    "Landing": "Home page"
+  },
+  "Leaders": {
+    "wins": "Wins",
+    "winshare": "Win Rate",
+    "rank": "Rank",
+    "name": "Name",
+    "teams": "Teams",
+    "cards": "Cards",
+    "date": "Date",
+    "Time": {
+      "thisYear": "This Year",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "alltime": "Total"
+    }
+  },
+  "CountdownTimer": {
+    "days": "Days | Day | Days",
+    "hours": "Hours | Hour | Hours",
+    "minutes": "Minutes | Minute | Minutes",
+    "seconds": "Seconds | Second | Seconds"
+  },
+  "Tournament": {
+    "backButton": "Back to overview",
+    "deadlinesHeader": "Dates and deadlines",
+    "signupbegin": "Review start",
+    "signUpDeadline": "Registration deadline",
+    "gameTime": "game",
+    "timePerGame": "Time per game",
+    "waitingPlayers": "Player waiting list",
+    "registrationList": "Registration list ({x} more teams are required)",
+    "otherTeams": "Other teams",
+    "signUpConfirmationText": "Are you sure you have time on game dates? This is very important for everyone's experience!",
+    "SignUp": {
+      "openModalButton": "Log In",
+      "title": "Tournament registration",
+      "nonSponsorText": "The choice of the name of team is unfortunately reserved for sponsors. Become a sponsor now and support the development of this platform or hope that luck will bring you a better name next time.",
+      "invalidTeamName": "Choose a team name that has 5 to 25 characters and of course is not in use yet. Letters, numbers or the special characters [._ <> -] are possible.",
+      "teamNamePlaceholder": "Teamname",
+      "selectButtonWithPartner": "Register with a permanent partner",
+      "selectButtonAlone": "Mediate partners",
+      "submitButton": "Register team",
+      "notNewTeamName": "Team name already taken"
+    },
+    "helpModal": {
+      "title": "Help",
+      "signUpHeader": "Registration",
+      "signUpContent": "When registering, first-come-first-served applies. So the team that is complete first comes in. Each added member must explicitly agree to participate. After the tournament is complete, it is no longer possible to cancel.",
+      "gameTimeHeader": "Game dates",
+      "gameTimeContent": "There are fixed time slots for the games at which they must take place. Please make sure that you actually have time for the game dates. In addition, the games must be completed in the specified time.",
+      "tournamentProcessHeader": "Tournament schedule",
+      "tournamentProcessContent": "At the game dates, the games will appear in your game table. They then have to be played. You can use the chat to exchange ideas with the opposing team and also switch to a video / audio chat of your choice.",
+      "winnerHeader": "winner",
+      "winnerContent": "There is a K-O system. The team that wins gets ahead. The last team won. Basically a team has won if the game is won in the required time. If the time is exceeded, the team that played faster wins! It is generally not intended that this will occur."
+    },
+    "StatusBadge": {
+      "signUpWaiting": "Registration phase planned",
+      "signUp": "Registration phase is running",
+      "signUpEnded": "Registration phase completed",
+      "running": "Tournament is running",
+      "ended": "Tournament ended",
+      "signUpFailed": "Not enough participants!",
+      "planned": "In planning",
+      "aborted": "Canceled"
+    },
+    "CountdownTimer": {
+      "signUpWaiting": "Registration phase begins in:",
+      "signUp": "Registration phase ends in:",
+      "signUpEnded": "Tournament starts in:",
+      "nextGame": "Next round starts in:",
+      "gameEnd": "Round ends in:"
+    },
+    "Brackets": {
+      "bracketList0": "The final",
+      "bracketList1": "Semifinals",
+      "bracketList2": "Quarter finals",
+      "bracketList3": "Round of 16",
+      "bracketList4": "Round of 16",
+      "bracketTBDTeam": "Not yet known"
+    },
+    "Toast": {
+      "you-created-a-team-summary": "Team created",
+      "you-created-a-team-detail": "Your team {teamName} has been registered for the tournament {tournamentTitle}. Wait for your fellow players to confirm their participation.",
+      "invited-to-a-team-summary": "Take part in the tournament!",
+      "invited-to-a-team-detail": "Player {playerName} has invited you to play the tournament {tournamentTitle} with him on team {teamName}. Confirm your participation on the tournament website and face the challenge.",
+      "you-joined-team-incomplete-summary": "You joined the team",
+      "you-joined-team-incomplete-detail": "You are now part of the {teamName} team. You still have to wait until you are complete and all team partners have agreed to participate in the tournament.",
+      "you-joined-team-complete-detail": "Your team {teamName} is complete and ready. Keep the dates free and reach for the crown!",
+      "you-joined-team-complete-summary": "You joined the team",
+      "player-joined-team-incomplete-summary": "New player for tournament",
+      "player-joined-team-incomplete-detail": "The player {playerName} has joined your team! You have to wait until you are complete and all players have confirmed their participation.",
+      "player-joined-team-complete-summary": "Tournament team complete!",
+      "player-joined-team-complete-detail": "{playerName} has joined your team {teamName}. You are now ready to rock the tournament {tournamentTitle}!",
+      "you-activated-complete-summary": "Participation confirmed",
+      "you-activated-complete-detail": "You have confirmed your participation in the tournament {tournamentTitle} with your team {teamName}. You are now complete and ready to take off in the tournament!",
+      "you-activated-incomplete-summary": "Participation confirmed",
+      "you-activated-incomplete-detail": "You have confirmed your participation in the {tournamentTitle} tournament. You have to wait until you are complete and all other players have confirmed their participation.",
+      "player-activated-team-complete-summary": "Tournament team complete!",
+      "player-activated-team-complete-detail": "Your teammate {playerName} has agreed to aim for the top with you in the tournament {tournamentTitle}. Your team is now complete!",
+      "player-activated-team-incomplete-summary": "Tournament team almost complete!",
+      "player-activated-team-incomplete-detail": "Your teammate {playerName} is now part of the team. You are one step closer to the full team. Wait for all players to confirm their participation.",
+      "you-left-tournament-summary": "Leave team",
+      "you-left-tournament-detail": "You have been successfully de-registered from the {tournamentTitle} tournament. Maybe it works the next time.",
+      "partner-left-tournament-summary": "You lose a competitor in the tournament!",
+      "partner-left-tournament-detail": "Your teammate {playerName} has decided to leave the tournament team. Find new and more reliable partners!",
+      "signUpEnded-you-partizipate-summary": "Congratulations on participating in the tournament",
+      "signUpEnded-you-partizipate-detail": "The tournament {tournamentTitle} will take place with you. Remember to enter the dates in the calendar!",
+      "signUpEnded-you-wont-partizipate-summary": "Tournament takes place without you",
+      "signUpEnded-you-wont-partizipate-detail": "Unfortunately you couldn't get a place in the {tournamentTitle} tournament. Try again next time.",
+      "signUp-failed-summary": "Tournament does not take place",
+      "signUp-failed-detail": "The tournament {tournamentName} will not take place. Unfortunately not enough participants were found.",
+      "started-summary": "Tournament started",
+      "started-detail": "The tournament {tournamentName} starts. You can use the menu to navigate to the tournament page and follow the status.",
+      "round-started-summary": "{roundName} started",
+      "round-started-detail": "The tournament {tournamentName} goes into the next round. Participants can now see the games in the games table.",
+      "round-ended-summary": "{roundName} finished",
+      "round-ended-detail": "The {roundName} of the {tournamentName} tournament is now over.",
+      "ended-summary": "Tournament ended",
+      "ended-detail": "The tournament {tournamentName} has ended. Congratulations to the team {teamName} for playing {players1} and {players2}."
+    },
+    "pastTableHeader": "Past tournaments",
+    "CreatePrivate": {
+      "createdSummary": "Tournament has been created",
+      "createdDetail": "The tournament has been created and you need to edit it. Add players and sort them into teams.",
+      "tournamentName": "Tournament name:",
+      "tournamentNameInvalid": "The tournament name must have at least 8 characters.",
+      "playersAndTeams": "Players and Teams:",
+      "4p": "4 players per game",
+      "6p2t": "6 players per game - 2 teams per game",
+      "6p3t": "6 players per game - 3 teams per game",
+      "nTeams": "Number of teams:"
+    },
+    "TournamentsTable": {
+      "title": "Tournament title",
+      "date": "Start date"
+    },
+    "TournamentTable": {
+      "status": "Status",
+      "type": "Type",
+      "public": "Public",
+      "private": "Private"
+    },
+    "Overview": {
+      "header": "Tournament Overview",
+      "tournaments": "Tournaments",
+      "createPrivate": "Create private tournament"
+    },
+    "EditPrivate": {
+      "notCompleteMessage": "Teams are still missing, the teams are not yet complete or not all participants have confirmed their participation.",
+      "startButton": "Start tournament",
+      "addTeamButton": "Add new team",
+      "header": "Assemble tournament teams:"
+    },
+    "Private": {
+      "confirmAbort": "Are you sure you want to cancel the tournament?",
+      "playersPerGame": "Number of players per team",
+      "teamsPerGame": "Number of teams per game",
+      "playersPerTournament": "Number of teams",
+      "admin": "Admin",
+      "abortButton": "Abort tournament",
+      "HelpModal": {
+        "privateHeader": "What is a private tournament?",
+        "privateContent": "The private tournaments are for you and your friends to have small knockout tournaments. In contrast to the public tournaments, not everyone can participate here. There is a tournament admin who takes care of the organization of the tournament.",
+        "planningHeader": "Planning phase",
+        "planningContent": "The person who created the tournament becomes the admin of the tournament. In the planning phase, he puts the teams together. He assigns the team names and invites players to the teams. However, the invited players must confirm their participation. If all teams are complete and all players are confirmed, the admin can start the tournament.",
+        "runningHeader": "During the tournament",
+        "runningContent": "In the private tournament there are no fixed times when the games take place. Instead, the admin can launch any game as needed. Of course, a game can only be started if the playing teams have already been determined."
+      },
+      "abortedPlayersList": "Player List:"
+    }
+  },
+  "GameView": {
+    "socketDisconnectedOverlay": "The connection to the server could not be established. \nReload the page!",
+    "reconnectionFailedSummary": "Connection problem",
+    "reconnectionFailedDetail": "Oh no. There was a problem connecting to the server. Please log in again. Good luck!",
+    "socketReconnectingOverlay": "The connection to the server is interrupted. \nWe're trying to reconnect!",
+    "refreshPageButton": "refresh page"
+  },
+  "Landing": {
+    "Games": {
+      "tooltip": "To the games",
+      "title": "Your games",
+      "openGames": "{X} open games",
+      "wonGames": "{X} games won",
+      "lostGames": "{X} lost games",
+      "teamGames": "{X} Team-Tac games",
+      "lastGames": "Last games:"
+    },
+    "Waiting": {
+      "tooltip": "To the waiting rooms",
+      "title": "Ready to play?",
+      "inRoom": "You are part of a room",
+      "inNoRoom": "You are not in any waiting room",
+      "playersWaiting": "{X} players waiting",
+      "openRooms": "{X} open spaces",
+      "noGamesGoToWaiting": "You don't have any games in progress. \nCreate a waiting room!",
+      "description": "Here you can continue your current games and find other players for a new round",
+      "waitingRoomsHeader": "Arrange a new game",
+      "openGames": "Open games ({n})",
+      "openGamesWarning": "You still have {openGames} open games. Please try to finish them before starting a new one."
+    },
+    "Tournament": {
+      "tooltip": "To the tournaments",
+      "title": "Tournaments",
+      "lastWinners": "Last winners:",
+      "noActiveTournament": "No active tournaments"
+    }
+  },
+  "Chat": {
+    "submitButton": "Send",
+    "textPlaceholder": "Type a message",
+    "Channels": {
+      "Game": "Game",
+      "Waiting": "Waiting room",
+      "general": "General",
+      "news": "News"
+    },
+    "startNewChatButton": "New chat",
+    "MenuOptions": {
+      "privates": "Chat",
+      "groups": "group chats",
+      "channels": "channels",
+      "recent": "Latest"
+    },
+    "GroupChatEditor": {
+      "addPlayer": "Add Player",
+      "leaveButton": "Leave this chat"
+    },
+    "ChatCreator": {
+      "startButton": "Start chat",
+      "single": "Private",
+      "group": "Group chat"
+    },
+    "deletedPlayer": "Deleted",
+    "mayNotUseOverlay": "Unfortunately, you are not allowed to write a message in this chat because you are in a running game with one of the chat participants.",
+    "Dates": {
+      "today": "Today",
+      "yesterday": "Yesterday"
+    }
+  },
+  "Game": {
+    "viewerModeText": "You are in spectator mode. So you don't see any cards! You can read the game chat but you cannot send messages in it.",
+    "viewerModeTag": "Spectator mode",
+    "toViewerButton": "Watch",
+    "CardActionButton": {
+      "beenden": "Finish game",
+      "aussetzen": "Skip next player",
+      "abwerfen": "Discard the card",
+      "Karten weitergeben": "Pass on cards",
+      "tauschen": "Swap card",
+      "teufel": "Play devil",
+      "narr": "Play fool"
+    },
+    "GameModal": {
+      "title": {
+        "settings": "Settings",
+        "assistance": "Control help",
+        "errorreport": "Report an error",
+        "statistic": "Game statistics"
+      },
+      "Settings": {
+        "audioVolume": "Volume:",
+        "colorBlindness": "Optimizing balls for color blind people:",
+        "colorBlindnessOn": "An",
+        "colorBlindnessOff": "Out",
+        "position": "Position:",
+        "checkBoxAbsolute": "Absolutely positioned",
+        "checkBox4_0": "Always at the bottom right",
+        "checkBox4_1": "Always at the bottom left",
+        "checkBox4_2": "Always at the top left",
+        "checkBox4_3": "Always at the top right",
+        "checkBox6_0": "Always at the bottom left",
+        "checkBox6_1": "Always center left",
+        "checkBox6_2": "Always at the top left",
+        "checkBox6_3": "Always at the top right",
+        "checkBox6_4": "Always right in the middle",
+        "checkBox6_5": "Always at the bottom right"
+      },
+      "ShortManual": {
+        "1": "Place a ball from the apron on the starting field or move a field in the UZS.",
+        "4": "Move four spaces backwards (against the UZS).",
+        "7": "Move a field seven times in the UZS (can be distributed over any number of your own balls), throw while passing, move forwards and backwards in the house",
+        "8": "Move eight spaces in the UZS or let the next player sit out, who then has to discard a card unused.",
+        "13": "Place a ball from the apron on the starting field or move thirteen fields in the UZS.",
+        "basisspiel": "Basic spiel",
+        "meisterkarten": "Master cards",
+        "trickser": "Swap any two balls on the circle.",
+        "trickserCardName": "TRICKSER",
+        "tac": "Undo the previous player's move and use that card for yourself.",
+        "narrCardName": "The fool",
+        "narr": "If the fool is played, each player passes his cards face down to the player to the right of him. The player who played the fool must immediately play any card from the newly received cards.",
+        "engelCardName": "The angel",
+        "engel": "If you play the angel, you must immediately place a ball from the apron on the starting field for the following player in the UZS (bring it into play). If the next player has no more balls in front of them, any ball must be moved either 1 or 13 spaces in the UZS for him.",
+        "kriegerCardName": "The warrior",
+        "krieger": "The player who leads the warrior must throw the next game ball in the UZS with one of his own balls.",
+        "teufelCardName": "The devil",
+        "teufel": "Whoever plays the devil card may look at the cards of the next player in the UZS and immediately play one of his cards and carry out the function with his balls.",
+        "detailed": "The full instructions are available on the",
+        "detailedLink": "official Tac website"
+      }
+    },
+    "EndedOverlay": {
+      "statistic": "Statistics",
+      "backButton": "Back",
+      "wonInX": "You won {X} moves!",
+      "aborted": "The game was canceled",
+      "wonWith": "You won with {players}!",
+      "lostWith": "You lost with {players}!",
+      "playersConnector": "and"
+    },
+    "Rematch": {
+      "title": "Return leg",
+      "description": "A waiting room will be created with all the players in this game. This will be deleted if a player does not want a second leg.",
+      "startButton": "Start the second leg",
+      "errorGeneralSummary": "Waiting room could not be created",
+      "errorGeneralDetail": "The waiting room for the second leg could not be created. \nTry again.",
+      "errorAlreadyInWaitingSummary": "Rematch not possible",
+      "errorAlreadyInWaitingDetail": "A player from the game is already in a waiting room and does not want a second leg.",
+      "errorNotOnlineSummary": "Second leg not possible",
+      "errorNotOnlineDetail": "A player from the game is not online. \nIt is therefore not possible to create a second leg.",
+      "rematchNotAllowed": "A return leg can no longer be created for this game. \nEither one has already been created, a player is no longer online, or too much time has passed since the game."
+    },
+    "Statistic": {
+      "Cards": {
+        "title": "Cards",
+        "actionCardsTotal": "Amount of special cards",
+        "actionCardsPlayed": "Amount of used special cards",
+        "1o13cardsLayed": "Amount of 1/13-Cards",
+        "actionCardsTotalshort": "Special cards",
+        "actionCardsPlayedshort": "used of it",
+        "1o13cardsLayedshort": "1/13"
+      },
+      "Actions": {
+        "title": "Actions",
+        "kickedBalls": "Number of kicked balls",
+        "numberSkipped": "Number of skipped moves",
+        "timePerPlay": "Time per move [s]",
+        "kickedBallsshort": "Kicked",
+        "numberSkippedshort": "Skipped",
+        "timePerPlayshort": "Time"
+      },
+      "CardsTable": {
+        "title": "Map table",
+        "card": "map",
+        "narr": "fool",
+        "teufel": "devil",
+        "krieger": "warrior",
+        "engel": "Obstacle",
+        "tac": "TAC",
+        "trickser": "TRICKSER"
+      },
+      "time": "Total playing time:"
+    },
+    "Instructions": {
+      "needToTrade": "You have to swap a card!",
+      "needToChooseCard": "Choose a card",
+      "needToWait": "You have to wait!",
+      "waitingFor": "There are still missing:",
+      "needToNarr": "You have to pass your cards!",
+      "needToNarrButton": "To do this, press the button",
+      "narrWaitingFor": "They still have to pass on their cards:",
+      "currentlyPlaying": "It is currently playing:",
+      "needToSkip": "You have to sit out!",
+      "needToTeufel": "You played the devil - play now for {name}!",
+      "yourTurn": "It's your turn!",
+      "needToDiscard": "You have to discard a card!",
+      "buttonOrOtherCard": "Press the button in the middle or choose another card",
+      "moveOrOtherCard": "Move a ball or choose another card",
+      "remainingSteps": "You still have to distribute {steps} steps"
+    },
+    "WatchingPlayers": {
+      "nooneWatching": "No spectators",
+      "anonymousWatching": "{n} anonymous viewer | {n} anonymous viewers",
+      "buttonLabel": "{n} spectator | {n} spectators"
+    }
+  },
+  "Games": {
+    "stati": {
+      "lost": "lost",
+      "won": "won",
+      "aborted": "canceled",
+      "running": "ongoing"
+    },
+    "tableTitle": "List of your games",
+    "tableNoGames": "No games found.",
+    "tableLoading": "Games are loading. Please wait.",
+    "columnTitles": {
+      "gameID": "GamesID",
+      "status": "Status",
+      "teams": "Teams",
+      "team": "Team",
+      "created": "Created on:",
+      "playerSearch": "Browse teams",
+      "statusFilterAll": "All",
+      "newGame": "New game"
+    }
+  },
+  "Waiting": {
+    "Icons": {
+      "players": "{X} player",
+      "teams": "{X} Team | {X} Teams",
+      "meister": "master",
+      "normal": "Normal",
+      "public": "Open",
+      "private": "Private"
+    },
+    "noRoomsPlaceholder": "Unfortunately, there is no open waiting room that matches your filter criteria. Create one and wait for your friends to join!",
+    "WaitingGameCreator": {
+      "startButton": "Create a new room",
+      "title": "Create new room",
+      "submitButton": "Create room",
+      "player4Name": "4 Players",
+      "player6Name": "6 Players",
+      "teams1Name": "Team-Tac",
+      "teams2Name": "2 Teams",
+      "teams3Name": "3 Teams",
+      "meisterTrueName": "With",
+      "meisterFalseName": "Without Mastercards",
+      "privateTrueName": "Private",
+      "privateFalseName": "Public"
+    },
+    "joinRandomGameButton": "Join the best game",
+    "removePlayerConfirmSelf": "Are you sure you want to leave this waiting room?",
+    "removePlayerConfirmOther": "Are you sure you want to release a player from the waiting room?",
+    "switchGameConfirm": "Are you sure you want to change the waiting room?",
+    "switchGameConfirmPrivate": "This room was created as a closed round. Are you sure you want to change the waiting room?",
+    "joinGamePrivate": "This room was created as a closed round. Are you sure you are welcome in this round?",
+    "leaveRematch": "Are you sure you want to leave this rematch?"
+  },
+  "Login": {
+    "username": "Username",
+    "password": "Password",
+    "passwordRepeat": "Repeat password",
+    "email": "E-mail",
+    "emailOrUsername": "Email or username",
+    "signIn": "Login",
+    "signUp": "Sign-Up",
+    "RequestNewPassword": {
+      "button": "Request a new password",
+      "successMsg": "You have been sent a new password!",
+      "errorMsg": "A problem occured. Try again!"
+    },
+    "SignUp": {
+      "button": "Create new user",
+      "usernameTooShort": "Username must have at least 3 characters",
+      "usernameTooLong": "Username can have a maximum of 12 characters",
+      "usernameWrongChar": "Username can only contain letters",
+      "usernameNotAvailable": "The username is no longer available",
+      "emailInvalid": "Please enter a correct email",
+      "emailNotAvailable": "This email is no longer free",
+      "passwordTooShort": "Password must have at least 6 characters",
+      "passwordTooLong": "Password can have a maximum of 20 characters",
+      "passwordUnequal": "Passwords are not identical",
+      "errorMsg": "User could not be created",
+      "successMsg": "Activation email sent",
+      "successMsgDetail": "Your player profile has been created. Very good! You will now receive an email with a link to confirm your email address and activate your account.",
+      "passwordChoose": "Choose a password",
+      "passwordStrong": "Strong",
+      "passwordMedium": "middle",
+      "passwordWeak": "Weak",
+      "passwordMaxLetters": "A maximum of 64 characters",
+      "passwordMinLetters": "At least 8 characters"
+    },
+    "SignIn": {
+      "errorMsg": "Login failed!",
+      "errorMsgPassword": "Password is wrong!",
+      "errorMsgEmail": "Your email is not yet activated. Check your email account. No email?",
+      "errorMsgEmailLink": "Click here for a new one",
+      "errorMsgUser": "Username does not exist!",
+      "activationErrorMsg": "Activation of the account failed!",
+      "activationSuccessMsg": "Activation of the account successful!",
+      "errorHeader": "Login failed",
+      "newActivationSummary": "Email sent",
+      "newActivationDetail": "A new activation email has been sent. \nOpen the link in the email to activate your account.",
+      "activationSuccessDetails": "Your email address is now confirmed and your account is activated. \nLog in and get started!"
+    }
+  },
+  "Settings": {
+    "ChangeMail": {
+      "header": "Change E-Mail",
+      "newMail": "New E-mail adress",
+      "emailInvalid": "Please enter a correct email",
+      "password": "password",
+      "button": "Change E-Mail address",
+      "successMsg": "Your email address has been changed successfully",
+      "errorMsgGeneral": "Your email address could not be changed. Try again",
+      "errorMsgEmail": "This email address is no longer available. Choose another one",
+      "errorMsgPwd": "The password was wrong. try again",
+      "toastSummaryFailure": "Failed!",
+      "toastSummarySuccess": "Email changed!"
+    },
+    "ChangePassword": {
+      "header": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "newPasswordRepeat": "New password repetition",
+      "passwordTooShort": "Password must have at least 6 characters",
+      "passwordTooLong": "Password can have a maximum of 20 characters",
+      "passwordUnequal": "Passwords are not the same",
+      "button": "Change Password",
+      "successMsg": "Your password has been changed successfully",
+      "errorMsgGeneral": "Your password could not be changed. Try again",
+      "errorMsgPwd": "The password was wrong. try again",
+      "toastSummaryFailure": "Failed!",
+      "toastSummarySuccess": "Password changed!"
+    },
+    "UploadProfilePicture": {
+      "header": "Profile picture",
+      "ChooseFile": "Upload your own profile picture",
+      "DeletePicture": "New random profile picture",
+      "successMsgUpload": "Your profile picture has been uploaded and can now be seen",
+      "errorMsgUpload": "There was a problem uploading. Please try again",
+      "toastSummaryFailureUpload": "Upload failed!",
+      "toastSummarySuccessUpload": "New profile picture!",
+      "successMsgDelete": "Your profile picture has been changed",
+      "errorMsgDelete": "There was a problem changing it. Please try again",
+      "toastSummaryFailureDelete": "Change failed!",
+      "toastSummarySuccessDelete": "Profile picture changed!",
+      "privacyDisclaimer": "Attention: This picture can currently be viewed by all registered users!",
+      "Modal": {
+        "header": "Crop profile picture",
+        "reset": "Reset",
+        "submit": "Upload"
+      }
+    },
+    "DeleteProfile": {
+      "header": "Delete profile permanently",
+      "confirmPrompt": "Attention! The deletion cannot be undone! Do you want to continue",
+      "button": "delete account",
+      "errorTitle": "Delete Failed!",
+      "errorMsg": "That is delete failed. Please try again.",
+      "successTitle": "Account deleted!",
+      "successMsg": "Your account has been successfully deleted. You will be logged off in a moment."
+    },
+    "Language": {
+      "header": "Language",
+      "de": "German",
+      "en": "English",
+      "ru": "Russian",
+      "applicationLanguage": "Application language:",
+      "originCountry": "Country for the profile"
+    },
+    "ChangeUsername": {
+      "disclaimerRememberUsername": "Attention: You will be logged out after the change. Memorize your new name well!",
+      "toastSummaryFailure": "The change didn't work",
+      "errorMsgUsername": "This username is no longer available. Try again with a different one.",
+      "errorMsgGeneral": "There was an error on the server. Try again later",
+      "errorMsgPwd": "The password was wrong. Try again",
+      "button": "Change username",
+      "header": "Change username",
+      "toastSummarySuccess": "Username changed",
+      "successMsg": "You have to log in with your new username. Enjoy your new identity.",
+      "newUsername": "New username"
+    },
+    "Audio": {
+      "header": "Volume"
+    }
+  },
+  "Profile": {
+    "mostFrequent": "Most frequent fellow",
+    "mostFrequentExp": "Player with whom the most games (including Team-Games) were played",
+    "bestPlayer": "Best teammate",
+    "bestPlayerExp": "Player who achieved the highest win rate as a teammate",
+    "worstPlayer": "Archenemy",
+    "worstPlayerExp": "Player who achieved the highest win rate as an opponent",
+    "success": "Success",
+    "successExp": "Percentage of won games",
+    "generosity": "Generosity",
+    "generosityExp": "Share of special cards exchanged in percent",
+    "aggression": "Aggression",
+    "aggressionExp": "Thrown balls divided by thrown plus lost balls",
+    "decision": "Decision-making",
+    "decisionExp": "Average playing time per move converted to a scale of 0-100. Anything faster than 10s leads to a perfect 100. Formula: '100 * min (1, 10 * number of moves / total playing time)'",
+    "resentment": "Resentment",
+    "resentmentExp": "What percentage of the 8 cards are used to suspend",
+    "usage": "Usage rate",
+    "usageExp": "Percentage of cards actually used",
+    "wIconSymbol": "W",
+    "wIconExp": "Stands for a won game",
+    "lIconSymbol": "L",
+    "lIconExp": "Stands for a lost game",
+    "tIconSymbol": "T",
+    "tIconExp": "Stands for a completed team tac game",
+    "rIconSymbol": "R",
+    "rIconExp": "Represents a game in progress",
+    "aIconSymbol": "X",
+    "aIconExp": "Stands for an aborted game",
+    "expHeader": "Statements of statistics",
+    "lastGamesHeader": "Last games:",
+    "abortionrate": "Perseverance",
+    "abortionrateExp": "Proportion of games that were played to the end and not abandoned",
+    "NetworkGraph": {
+      "togetherWith": "{nGames} games played together with {username} | {nGames} game played together with {username} | Played {nGames} games together with {username}",
+      "wonOf": "Of these, {nGames} won",
+      "playedAgainst": "{nGames} games played against {username} | {nGames} game played against {username} | Played {nGames} games against {username}",
+      "team": "{nGames} games played in team mode | {nGames} game played in team mode | {nGames} games played in team mode"
+    },
+    "DistributionGraph": {
+      "4er": "4-Players",
+      "6er": "6-Players",
+      "team": "Team",
+      "aborted": "Aborted",
+      "running": "Running",
+      "won": "won",
+      "lost": "lost",
+      "teamEnded": "Team games ended",
+      "teamAborted": "Team games aborted"
+    },
+    "DescriptionEditor": {
+      "placeholder": "I am a blank slate ...",
+      "editPlaceholder": "Your profile description is still completely empty.\nTake a moment and write something! 💪",
+      "descriptionTooLong": "Your description exceeded 150 letters. \nShorten them for the benefit of all."
+    },
+    "menuOverview": "Overview",
+    "menuAchievements": "Achievements",
+    "menuGames": "Games",
+    "menuFriends": "Friends",
+    "menuSocials": "Social",
+    "Friends": {
+      "username": "Username",
+      "friendssince": "Friends since"
+    },
+    "TournamentParticipations": {
+      "tournamentTitle": "Competition",
+      "tournamentResult": "Result"
+    },
+    "registeredOn": "User since:"
+  },
+  "Tutorial": {
+    "0": {
+      "0": {
+        "title": "greeting",
+        "detail": "Hello, this tutorial is intended to introduce the player who already knows the TAC Original to the game on this website. Click on the arrow to start the tutorial."
+      },
+      "1": {
+        "title": "game settings",
+        "detail": "First you should adjust your settings. Find the setting in the game and check it out!"
+      },
+      "2": {
+        "title": "select map",
+        "detail": "You select a card by clicking on it. If she is selected, she looks out above the others. If you cannot play a card, it is dark gray. Choose a map to play!"
+      },
+      "3": {
+        "title": "move ball",
+        "detail": "You can either drag a ball to the target, or first click the ball and then the target field. Now move a ball!"
+      },
+      "4": {
+        "title": "change map",
+        "detail": "If you chose the wrong card, you can simply choose a different one. Select card '8'!"
+      },
+      "5": {
+        "title": "special functions",
+        "detail": "Sometimes you don't want to move a ball, but perform a special function. A text field is created in the middle of the playing field. Let the next player sit out!"
+      },
+      "6": {
+        "title": "expose",
+        "detail": "Now there are some quiz questions about the game interface. Which player has to sit out?",
+        "answer-0": "-Kai-",
+        "answer-1": "-Oskar-",
+        "answer-2": "-Sophia-",
+        "answer-3": "From"
+      },
+      "7": {
+        "title": "next player",
+        "detail": "Which player is it right now?",
+        "answer-0": "-Sophia-",
+        "answer-1": "-Oskar-",
+        "answer-2": "-Kai-",
+        "answer-3": "From"
+      },
+      "8": {
+        "title": "deck of cards",
+        "detail": "Which player will deal next and how many times will it be dealt before it has to be shuffled again?",
+        "answer-0": "-Oscar-, one more time",
+        "answer-1": "-Sophia-, 2 more times",
+        "answer-2": "-Kai-, next round will be reshuffled",
+        "answer-3": "You, 3 more times"
+      },
+      "9": {
+        "title": "quick start Guide",
+        "detail": "There is also an overview of the special cards here. Find the help box and check it out!"
+      },
+      "10": {
+        "title": "Here we go!",
+        "detail": "You are now ready for real gaming. Exit the game by clicking on the TAC logo in game and this will end this tutorial."
+      },
+      "title": "Introduction to Tac With Bug",
+      "time": "Duration: approx. 3 minutes",
+      "description": "This introduction is intended for people who already know the game TAC. It is a brief introduction to the operation of the game on this website."
+    },
+    "Encouragement": {
+      "0": "Congratulations!",
+      "1": "Bravo!",
+      "2": "Revolutionary!",
+      "3": "Outstanding!",
+      "4": "Very well done!",
+      "5": "Marvellous!",
+      "6": "Glorious!",
+      "7": "Well done!",
+      "8": "You're great!",
+      "9": "You're a champion!"
+    },
+    "nextQuestion": "Move on to the next question",
+    "quizWrongAnswer": "Your answer was wrong. Try one of the other answers!",
+    "quizSubmitButton": "Answer question",
+    "toGameButton": "To the game board",
+    "resetButton": "Reset to default",
+    "stopTutorial": "Cancel the tutorial",
+    "openTutorial": "Tutorial",
+    "ButtonStartOverwiew": {
+      "start": "Here we go!",
+      "restart": "To repeat",
+      "resume": "Continue"
+    },
+    "Basic": {
+      "title": "Basic spiel"
+    },
+    "Meister": {
+      "title": "Master cards"
+    },
+    "tutorialHeader": "Tutorials",
+    "moreTutorialsInFuture": "More tutorials are planned for the future to explain TAC to new players. Please be patient!",
+    "replaysInFuture": "To explain complex moves, these should be recorded and then repeated. Feel free to write me if you have any suggestions for such moves.",
+    "replayHeader": "Replay of Game Sequences"
+  },
+  "FAQ": {
+    "title": "frequently asked Questions",
+    "Contribute": {
+      "header": "Contribute to Tac-With-Bug",
+      "localesQ": "How can I correct mistakes in individual languages?",
+      "localesA": "The individual text elements can be managed open source by all players. I am very happy when all languages are improved! You need a GitHub account for this - you can find more information <a target='_blank' rel='noopener noreferrer' href='{link}'>here</a> . If you want other languages, you can just write to me.",
+      "bugsQ": "What can I do if I discover errors?",
+      "bugsA": "Errors will occur from time to time. I apologize. Usually reloading the page solves the problem. If you notice a mistake several times, just write me an email. Please describe the error as precisely as possible and include which browser you are using."
+    },
+    "Game": {
+      "header": "In the game",
+      "unfairCardsQ": "I always have bad cards. What's wrong with that?",
+      "unfairCardsA": "Tac is a game of chance. In a real game, too, it can happen that you have no exit cards for a long time or that you have no good cards for a long time. It's part of the game.",
+      "teufelNoCardsQ": "I can no longer see my cards?",
+      "teufelNoCardsA": "If the player plays a devil in front of you, he gets your cards and you can no longer see your cards. Even if you have already passed your cards to the fool, you can no longer see your cards either. If in doubt, try page reloading.",
+      "tacNotPlayingQ": "I can choose a tac but it won't be played?",
+      "tacNotPlayingA": "On Tac-With-Bug you quickly forget that you have to use the clocked card yourself after the Tac. When you select the tac, the balls move, undoing the last move. Now you have to move your own ball or use the card yourself."
+    },
+    "documentedBugs": {
+      "header": "Known bugs",
+      "sevenSplitQ": "Splitting the seven",
+      "sevenSplitA": "With 6er Tac in teams of 3 or with Team Tac it is possible that you have several people with whom you can play. On a 7 you have to decide at the beginning of your turn which player you want to play with according to official rules. With Tac-With-Bug you can decide which balls you want to move with every single step. The correction of this error is still pending!"
+    },
+    "techStack": {
+      "header": "Tech-Stack",
+      "description": "After I had to learn JavaScript for the frontend anyway, I thought it was a good idea to write the backend in this language as well. There is a large community and a lot of support from other developers in the NodeJS environment. ExpressJS makes it very easy to write REST APIs. The weak typing of the language quickly gave me big problems that I was not used to from the C languages, so I switched to TypeScript. This step definitely made sense, and I would recommend anyone starting with TypeScript right away. Now I wish I had written the server in a different language such as Go. The front end is programmed in the Vue framework, which is a great and intuitive open source framework. I used a variety of other libraries for this purpose. Particularly noteworthy is PrimeVue, a UI component library, and Socket.io, a WebSocket implementation for real-time server communication. You can find links to the libraries worth mentioning under this article. All libraries are freely accessible and without them a project like this would not be possible!"
+    }
+  },
+  "HOF": {
+    "header": "Hall of Fame",
+    "verlag1": "I would particularly like to thank the",
+    "verlagLink": "Tac publishing house",
+    "verlag2": "who allowed me to develop this site and supported me:",
+    "spende": "In addition to all the sponsors who regularly support me, I have received extremely generous donations from:",
+    "lang": "Thanks for helping with the translations:",
+    "privat": "Finally, a small thank you to my family and friends, who have been advising me regularly since then and who have endured the fact that there is no other topic:"
+  },
+  "Friends": {
+    "Toast": {
+      "new-friendship-request-summary": "New friend request",
+      "new-friendship-request-detail": "You have received a new friend request from {username}. \nMake up your mind if you want to accept it.",
+      "friend-confirmed-request-summary": "Friend request confirmed",
+      "friend-confirmed-request-detail": "{username} has confirmed your request. \nYou are friends now!",
+      "friend-withdraw-request-summary": "Friend request withdrawn",
+      "friend-withdraw-request-detail": "{username} withdrew his friend request.",
+      "friend-declined-request-summary": "Friend request declined",
+      "friend-declined-request-detail": "Unfortunately, {username} has declined your request.",
+      "friend-cancelled-friendship-summary": "Friendship ended",
+      "friend-cancelled-friendship-detail": "{username} has ended your friendship",
+      "request-done-summary": "Friendship requested",
+      "request-done-detail": "You have sent a friend request to {username}.",
+      "you-confirmed-friendship-summary": "Friendship made",
+      "you-confirmed-friendship-detail": "You are now friends with {username}.",
+      "you-declined-request-summary": "Friendship refused",
+      "you-declined-request-detail": "You declined {username} 's request.",
+      "you-withdraw-request-summary": "Friend request withdrawn",
+      "you-withdraw-request-detail": "You withdrew your friend request to {username}.",
+      "you-cancelled-friendship-summary": "Friendship ended",
+      "you-cancelled-friendship-detail": "You are no longer friends with {username}.",
+      "error-summary": "failure",
+      "error-detail": "A mistake happened. \nTry again."
+    },
+    "FriendButton": {
+      "requestFriend": "Add friend",
+      "cancelFriendship": "Remove Friend",
+      "withdrawRequest": "Withdraw request",
+      "acceptRequest": "Accept request"
+    }
+  },
+  "Toast": {
+    "GenericError": {
+      "summary": "Something went wrong",
+      "detail": "An error occurred on the server. Refresh the page and try again."
+    }
+  },
+  "Connection": {
+    "ServerSideLogoutSummary": "You have been logged out!",
+    "ServerSideLogoutDetail": "You have been logged out of the server. Just sign in again."
+  },
+  "RunningGamesWidget": {
+    "emptyTable": "There are currently no games running. Look for fellow players in the waiting section.",
+    "Header": "Ongoing games",
+    "Description": "Just click on a game to watch."
+  },
+  "Advertisement": {
+    "signUpButton": "Sign-Up",
+    "gamesButton": "To the games",
+    "tutorialButton": "To the tutorials",
+    "FunFacts": {
+      "nGames4": "Finished games with 4 players:",
+      "nGames6": "Finished games with 6 players:",
+      "registeredUsers": "Number of players:",
+      "fastestGame": "Fastest game:",
+      "averagePlayingTime": "Average playing time:",
+      "nFriends": "New Friendships:",
+      "nTutorials": "Completed tutorial steps:",
+      "leastLoved": "Least used ball:",
+      "mostLoved": "Most used ball:",
+      "nColorBlinds": "Number of color blind players:",
+      "longestGame": "Longest game:"
+    },
+    "description1": "Tac-With-Bug is an online multiplayer version of the popular board game",
+    "description2": ". Compete against friends and strangers in games of four or six players. \nOr play Team Tac and try to set a new record."
+  },
+  "PlayersAutoComplete": {
+    "placeholder": "Player"
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "engines": {
+    "node": "16.x"
+  },
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --es-module-specifier-resolution=node ./dist/server/src/index.js",
+    "devStart": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node ./dist/server/src/index.js",
+    "test": "jest --coverage --detectOpenHandles",
+    "testWatch": "jest --watchAll --coverage --detectOpenHandles",
+    "tsc": "tsc",
+    "tscWatch": "tsc --watch",
+    "client": "openapi --input ./src/swagger.json --output ../client/src/generatedClient --useUnionTypes",
+    "building": "echo 'build started' && tsoa spec-and-routes && openapi --input ./src/swagger.json --output ../client/src/generatedClient --useUnionTypes && echo 'build ended'",
+    "buildWatch": "onchange \"src/routes/*.controller.ts\" -e \"src/routes/routes.ts\" -i -k -- npm run building",
+    "lint": "eslint -c .eslintrc.js ./src",
+    "checkLocales": "node ./dist/server/src/entrypoints/checkLocales.js ../../../../email/locales && node ./dist/server/src/entrypoints/checkLocales.js ../../../../../client/src/locales",
+    "sanitizeCaptures": "node ./dist/server/src/entrypoints/sanitizeCapture.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dicebear/avatars": "^4.10.2",
+    "@dicebear/avatars-bottts-sprites": "^4.10.2",
+    "axios": "^0.25.0",
+    "bcrypt": "^5.0.1",
+    "cli-progress": "^3.10.0",
+    "compression": "^1.7.4",
+    "dotenv": "^10.0.0",
+    "email-templates": "^8.0.8",
+    "email-validator": "^2.0.4",
+    "express": "^4.17.2",
+    "helmet": "^4.6.0",
+    "heroku-ssl-redirect": "^0.1.1",
+    "ical-generator": "^1.15.4",
+    "joi": "^17.5.0",
+    "json-stable-stringify": "^1.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "minimist": "^1.2.6",
+    "multer": "^1.4.4",
+    "neverthrow": "^4.3.1",
+    "node-schedule": "^2.1.0",
+    "nodemailer": "^6.7.2",
+    "onchange": "^7.1.0",
+    "pg": "^8.7.1",
+    "pug": "^3.0.2",
+    "sharp": "^0.29.3",
+    "socket.io": "^4.4.1",
+    "swagger-ui-express": "^4.3.0",
+    "tsoa": "^3.14.1",
+    "ua-parser-js": "^1.0.2",
+    "uuid": "^8.3.2",
+    "winston": "^3.4.0",
+    "winston-transport": "^4.4.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.16.8",
+    "@types/bcrypt": "^5.0.0",
+    "@types/chance": "^1.1.3",
+    "@types/cli-progress": "^3.9.2",
+    "@types/compression": "^1.7.2",
+    "@types/email-templates": "^8.0.4",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^27.4.0",
+    "@types/json-stable-stringify": "^1.0.33",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/lodash": "^4.14.178",
+    "@types/minimist": "^1.2.2",
+    "@types/multer": "^1.4.7",
+    "@types/node": "^16.11.21",
+    "@types/node-schedule": "^1.3.2",
+    "@types/nodemailer": "^6.4.4",
+    "@types/pg": "^8.6.4",
+    "@types/sharp": "^0.29.5",
+    "@types/supertest": "^2.0.11",
+    "@types/swagger-ui-express": "^4.1.3",
+    "@types/ua-parser-js": "^0.7.36",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "chance": "^1.1.8",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.7.0",
+    "eslint-plugin-sonarjs": "^0.11.0",
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.13",
+    "openapi-typescript-codegen": "^0.9.3",
+    "socket.io-client": "^4.4.1",
+    "supertest": "^6.2.2",
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.5.4"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "./src/*",
+      "./coverage/*"
+    ],
+    "delay": 200
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "plugins": [
+          "@babel/plugin-transform-modules-commonjs"
+        ]
+      }
+    }
+  }
+}

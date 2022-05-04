@@ -1,0 +1,93 @@
+import * as tCard from '../../../shared/types/typesCard';
+import * as tBall from '../../../shared/types/typesBall';
+import * as tStatistic from '../../../shared/types/typesStatistic';
+
+import { ballPlayer } from './ballUtils'
+
+export function initalizeStatistic(nPlayers: number): tStatistic.gameStatistic[] {
+    const initStatistic: tStatistic.gameStatistic[] = []
+    for (let i = 0; i < nPlayers; i++) {
+        initStatistic.push({
+            'cards': {
+                'total': [0, 0, 0],
+                '7': [0, 0, 0],
+                '1': [0, 0, 0],
+                '13': [0, 0, 0],
+                '8': [0, 0, 0],
+                'trickser': [0, 0, 0],
+                'tac': [0, 0, 0],
+                'engel': [0, 0, 0],
+                'teufel': [0, 0, 0],
+                'krieger': [0, 0, 0],
+                'narr': [0, 0, 0],
+                '4': [0, 0, 0],
+            },
+            'actions': {
+                'nMoves': 0,
+                'nBallsLost': 0,
+                'nBallsKickedEnemy': 0,
+                'nBallsKickedOwnTeam': 0,
+                'nBallsKickedSelf': 0,
+                'timePlayed': 0,
+                'nAbgeworfen': 0,
+                'nAussetzen': 0,
+            }
+        })
+    }
+    return initStatistic
+}
+
+function isTrackedCard(value: string, cards: tStatistic.gameStatisticCardsType): value is keyof tStatistic.gameStatisticCardsType {
+    return value in cards;
+}
+
+export function statisticAnalyseAction(move: tBall.moveTextOrBall, ballsBefore: tBall.ballsType, ballsAfter: tBall.ballsType, aussetzenFlag: boolean, teams: number[][], deltaTime: number, cardsBefore: tCard.cardsType, statistic: tStatistic.gameStatistic[], narrFlagSave: boolean[], teufelFlag: boolean) {
+    const nPlayer: number = move[0]
+
+    // Count nMoves and time (only after the first move)
+    statistic[nPlayer].actions.timePlayed += Math.min(deltaTime, 300)
+    statistic[nPlayer].actions.nMoves += 1
+
+    // Do not return if confirmation of narr
+    if (move[2] === 'narr' && narrFlagSave.some((e) => e === true)) { return; }
+
+    // cards
+    const cardTitle = cardsBefore.players[(move[0] + (teufelFlag ? 1 : 0)) % cardsBefore.players.length][move[1]]
+    if (cardTitle.indexOf('-') === -1) {
+        if (move[2] != 'tauschen') {
+            statistic[nPlayer].cards['total'][0] += 1
+            if (move[2] != 'abwerfen') {
+                statistic[nPlayer].cards['total'][1] += 1
+            }
+        } else {
+            statistic[nPlayer].cards['total'][2] += 1
+        }
+
+        if (isTrackedCard(cardTitle, statistic[nPlayer].cards)) {
+            if (move[2] != 'tauschen') {
+                statistic[nPlayer].cards[cardTitle][0] += 1
+                if (move[2] != 'abwerfen') {
+                    statistic[nPlayer].cards[cardTitle][1] += 1
+                }
+            } else {
+                statistic[nPlayer].cards[cardTitle][2] += 1
+            }
+        }
+    }
+
+    // balls lost/kicked
+    ballsBefore.forEach((ball, ballIndex) => {
+        if (ball.state != 'house' && ballsAfter[ballIndex].state === 'house') {
+            const nPlayerLost = ballPlayer(ballIndex)
+            const ownTeamIndex = teams.findIndex((team) => team.includes(nPlayer))
+            statistic[nPlayerLost].actions.nBallsLost += 1;
+            if (nPlayerLost === nPlayer) { statistic[nPlayer].actions.nBallsKickedSelf += 1 }
+            else if (teams[ownTeamIndex].includes(nPlayerLost)) { statistic[nPlayer].actions.nBallsKickedOwnTeam += 1 }
+            else { statistic[nPlayer].actions.nBallsKickedEnemy += 1 }
+        }
+    })
+
+    if (move[2] === 'abwerfen') { statistic[nPlayer].actions.nAbgeworfen += 1 }
+
+    if (aussetzenFlag) { statistic[nPlayer].actions.nAussetzen += 1 }
+}

@@ -1,0 +1,381 @@
+.cardFly {
+    height: calc(7 / 100 * var(--board-size-in-px));
+    transform: translate(-50%, -50%);
+    border-radius: 9%/5.42%;
+}
+
+.cardFlyContainer {
+    top: 50%;
+    left: 50%;
+    height: 0;
+    width: 0;
+    z-index: 210;
+}
+
+.cardFlyContainer0 {
+    animation: cardFly0 1.5s linear infinite;
+}
+
+.cardFlyContainer1 {
+    animation: cardFly1 1.5s linear infinite;
+}
+
+.cardFlyContainer2 {
+    animation: cardFly2 1.5s linear infinite;
+}
+
+.cardFlyContainer3 {
+    animation: cardFly3 1.5s linear infinite;
+}
+
+@keyframes cardFly0 {
+    0% {
+        opacity: 0;
+        transform: translate(calc(16 / 100 * var(--board-size-in-px)), calc(16 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(14 / 100 * var(--board-size-in-px)), calc(14 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(9 / 100 * var(--board-size-in-px)), calc(9 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(7 / 100 * var(--board-size-in-px)), calc(7 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly1 {
+    0% {
+        opacity: 0;
+        transform: translate(calc(-16 / 100 * var(--board-size-in-px)), calc(16 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(-14 / 100 * var(--board-size-in-px)), calc(14 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(-9 / 100 * var(--board-size-in-px)), calc(9 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-7 / 100 * var(--board-size-in-px)), calc(7 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly2 {
+    0% {
+        opacity: 0;
+        transform: translate(calc(-16 / 100 * var(--board-size-in-px)), calc(-16 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(-14 / 100 * var(--board-size-in-px)), calc(-14 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(-9 / 100 * var(--board-size-in-px)), calc(-9 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-7 / 100 * var(--board-size-in-px)), calc(-7 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly3 {
+    0% {
+        opacity: 0;
+        transform: translate(calc(16 / 100 * var(--board-size-in-px)), calc(-16 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(14 / 100 * var(--board-size-in-px)), calc(-14 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(9 / 100 * var(--board-size-in-px)), calc(-9 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(7 / 100 * var(--board-size-in-px)), calc(-7 / 100 * var(--board-size-in-px)));
+    }
+}
+
+.cardFlyContainer0-6 {
+    animation: cardFly0-6 1.5s linear infinite;
+}
+
+.cardFlyContainer1-6 {
+    animation: cardFly1-6 1.5s linear infinite;
+}
+
+.cardFlyContainer2-6 {
+    animation: cardFly2-6 1.5s linear infinite;
+}
+
+.cardFlyContainer3-6 {
+    animation: cardFly3-6 1.5s linear infinite;
+}
+
+.cardFlyContainer4-6 {
+    animation: cardFly4-6 1.5s linear infinite;
+}
+
+.cardFlyContainer5-6 {
+    animation: cardFly5-6 1.5s linear infinite;
+}
+
+@keyframes cardFly0-6 {
+    0% {
+        opacity: 0;
+        transform: translate(0, calc(23 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(0, calc(20 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(0, calc(13 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(0, calc(10 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly1-6 {
+    0% {
+        opacity: 0;
+        transform: translate(calc(-19.918 / 100 * var(--board-size-in-px)), calc(11.5 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(-17.32 / 100 * var(--board-size-in-px)), calc( 10 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(-11.258 / 100 * var(--board-size-in-px)), calc(6.5 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-8.66 / 100 * var(--board-size-in-px)), calc(5 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly2-6 {
+    0% {
+        opacity: 0;
+        transform: translate(calc(-19.918 / 100 * var(--board-size-in-px)), calc( -11.5 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(-17.32 / 100 * var(--board-size-in-px)), calc( -10 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(-11.258 / 100 * var(--board-size-in-px)), calc(-6.5 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-8.66 / 100 * var(--board-size-in-px)), calc( -5 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly3-6 {
+    0% {
+        opacity: 0;
+        transform: translate(0, calc(-23 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(0, calc(-20 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(0, calc(-13 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(0, calc(-10 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly4-6 {
+    0% {
+        opacity: 0;
+        transform: translate(calc(19.918 / 100 * var(--board-size-in-px)), calc(-11.5 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(17.32 / 100 * var(--board-size-in-px)), calc(-10 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(11.258 / 100 * var(--board-size-in-px)), calc(-6.5 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(8.66 / 100 * var(--board-size-in-px)), calc( -5 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly5-6 {
+    0% {
+        opacity: 0;
+        transform: translate(calc(19.918 / 100 * var(--board-size-in-px)), calc(11.5 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(17.32 / 100 * var(--board-size-in-px)), calc(10 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(11.258 / 100 * var(--board-size-in-px)), calc(6.5 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(8.66 / 100 * var(--board-size-in-px)), calc(5 / 100 * var(--board-size-in-px)));
+    }
+}
+
+.cardFlyContainer0-6_turned {
+    animation: cardFly0-6_turned 1.5s linear infinite;
+}
+
+.cardFlyContainer1-6_turned {
+    animation: cardFly1-6_turned 1.5s linear infinite;
+}
+
+.cardFlyContainer2-6_turned {
+    animation: cardFly2-6_turned 1.5s linear infinite;
+}
+
+.cardFlyContainer3-6_turned {
+    animation: cardFly3-6_turned 1.5s linear infinite;
+}
+
+.cardFlyContainer4-6_turned {
+    animation: cardFly4-6_turned 1.5s linear infinite;
+}
+
+.cardFlyContainer5-6_turned {
+    animation: cardFly5-6_turned 1.5s linear infinite;
+}
+
+@keyframes cardFly0-6_turned {
+    0% {
+        opacity: 0;
+        transform: translate(calc(-11.5 / 100 * var(--board-size-in-px)), calc( 19.918 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(-10 / 100 * var(--board-size-in-px)), calc( 17.32 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(-6.5 / 100 * var(--board-size-in-px)), calc( 11.258 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-5 / 100 * var(--board-size-in-px)), calc(8.66 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly1-6_turned {
+    0% {
+        opacity: 0;
+        transform: translate(calc(-23 / 100 * var(--board-size-in-px)), 0);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(-20 / 100 * var(--board-size-in-px)), 0);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(-13 / 100 * var(--board-size-in-px)), 0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-10 / 100 * var(--board-size-in-px)), 0);
+    }
+}
+
+@keyframes cardFly2-6_turned {
+    0% {
+        opacity: 0;
+        transform: translate(calc(-11.5 / 100 * var(--board-size-in-px)), calc( -19.918 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(-10 / 100 * var(--board-size-in-px)), calc( -17.32 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(-6.5 / 100 * var(--board-size-in-px)), calc( -11.258 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-5 / 100 * var(--board-size-in-px)), calc( -8.66 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly3-6_turned {
+    0% {
+        opacity: 0;
+        transform: translate(calc(11.5 / 100 * var(--board-size-in-px)), calc(-19.918 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(10 / 100 * var(--board-size-in-px)), calc(-17.32 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(6.5 / 100 * var(--board-size-in-px)), calc(-11.258 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(5 / 100 * var(--board-size-in-px)), calc(-8.66 / 100 * var(--board-size-in-px)));
+    }
+}
+
+@keyframes cardFly4-6_turned {
+    0% {
+        opacity: 0;
+        transform: translate(calc(23 / 100 * var(--board-size-in-px)), 0);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(20 / 100 * var(--board-size-in-px)), 0);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(13 / 100 * var(--board-size-in-px)), 0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(10 / 100 * var(--board-size-in-px)), 0);
+    }
+}
+
+@keyframes cardFly5-6_turned {
+    0% {
+        opacity: 0;
+        transform: translate(calc(11.5 / 100 * var(--board-size-in-px)), calc(19.918 / 100 * var(--board-size-in-px)));
+    }
+    20% {
+        opacity: 1;
+        transform: translate(calc(10 / 100 * var(--board-size-in-px)), calc(17.32 / 100 * var(--board-size-in-px)));
+    }
+    80% {
+        opacity: 1;
+        transform: translate(calc(6.5 / 100 * var(--board-size-in-px)), calc(11.258 / 100 * var(--board-size-in-px)));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(5 / 100 * var(--board-size-in-px)), calc( 8.66 / 100 * var(--board-size-in-px)));
+    }
+}
