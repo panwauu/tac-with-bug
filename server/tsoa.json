@@ -1,0 +1,23 @@
+{
+  "entryFile": "./src/server.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/routes/*.controller.ts"],
+  "spec": {
+    "outputDirectory": "./src",
+    "specVersion": 3,
+    "securityDefinitions": {
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "host": "",
+    "basePath": "gameApi"
+  },
+  "routes": {
+    "basePath": "gameApi",
+    "routesDir": "src/routes/",
+    "authenticationModule": "./src/helpers/authentication.ts"
+  }
+}

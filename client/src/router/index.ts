@@ -1,0 +1,213 @@
+import { createRouter, createWebHashHistory } from 'vue-router';
+import { i18n, setLocaleAndLoadMessages } from '@/services/i18n';
+import { locales, fallbackLocale } from '../../../shared/shared/locales';
+const Game = () => import('@/views/Game.vue');
+const Home = () => import('@/views/Home.vue');
+const Settings = () => import('@/views/Home/Settings.vue');
+const Profile = () => import('@/views/Home/Profile.vue');
+const ProfileOverview = () => import('@/views/Home/Profile/Profile.vue');
+const ProfileGames = () => import('@/views/Home/Profile/Games.vue');
+const ProfileFriends = () => import('@/views/Home/Profile/Friends.vue');
+const ProfileAchievements = () => import('@/views/Home/Profile/Achievements.vue');
+const ProfileSocials = () => import('@/views/Home/Profile/Socials.vue');
+const Tournament = () => import('@/views/Home/Tournament.vue');
+const TournamentsOverview = () => import('@/views/Home/Tournament/TournamentsOverview.vue');
+const PublicTournament = () => import('@/views/Home/Tournament/PublicTournament.vue');
+const PrivateTournament = () => import('@/views/Home/Tournament/PrivateTournament.vue');
+const Tutorial = () => import('@/views/Tutorial.vue');
+const Impressum = () => import('@/components/ImpressumInformation.vue');
+const Copyright = () => import('@/components/CopyrightInformation.vue');
+const Datenschutz = () => import('@/components/DatenschutzInformation.vue');
+const Leaders = () => import('@/views/Home/Leaders.vue');
+const Landing = () => import('@/views/Home/Landing.vue');
+const Stats = () => import('@/views/Home/Stats.vue');
+const TutorialOverview = () => import('@/views/Home/TutorialOverview.vue');
+const Subscription = () => import('@/views/Home/Subscription.vue');
+const FAQ = () => import('@/views/Home/FAQ.vue');
+const HallOfFame = () => import('@/views/Home/HallOfFame.vue');
+const PlayerSearch = () => import('@/views/Home/PlayerSearch.vue');
+const Advertisement = () => import('@/views/Home/AdvertisementView.vue');
+
+const regexp = locales.join('|')
+const routes = [
+  {
+    path: `/:locale(${regexp})?/game`,
+    name: 'Game',
+    component: Game,
+  },
+  {
+    path: `/:locale(${regexp})?/tutorial`,
+    name: 'Tutorial',
+    component: Tutorial,
+  },
+  {
+    path: `/:locale(${regexp})?`,
+    component: Home,
+    children: [
+      {
+        path: 'settings',
+        name: 'Settings',
+        component: Settings
+      },
+      {
+        path: 'impressum',
+        name: 'Impressum',
+        component: Impressum,
+      },
+      {
+        path: 'copyright',
+        name: 'Copyright',
+        component: Copyright,
+      },
+      {
+        path: 'datenschutz',
+        name: 'Datenschutz',
+        component: Datenschutz,
+      },
+      {
+        path: 'leaders',
+        name: 'Leaders',
+        component: Leaders,
+      },
+      {
+        path: 'profile/:username',
+        component: Profile,
+        props: true,
+        children: [
+          {
+            path: '',
+            name: 'Profile',
+            props: true,
+            component: ProfileOverview,
+          },
+          {
+            path: 'games',
+            name: 'Profile-Games',
+            props: true,
+            component: ProfileGames,
+          },
+          {
+            path: 'friends',
+            name: 'Profile-Friends',
+            props: true,
+            component: ProfileFriends,
+          },
+          {
+            path: 'achievements',
+            name: 'Profile-Achievements',
+            props: true,
+            component: ProfileAchievements,
+          },
+          {
+            path: 'socials',
+            name: 'Profile-Socials',
+            props: true,
+            component: ProfileSocials,
+          },
+        ]
+      },
+      {
+        path: 'tournament',
+        component: Tournament,
+        props: true,
+        children: [
+          {
+            path: 'overview',
+            name: 'TournamentOverview',
+            component: TournamentsOverview,
+          },
+          {
+            path: 'private/:id',
+            name: 'PrivateTournament',
+            props: true,
+            component: PrivateTournament,
+          },
+          {
+            path: 'public/:id',
+            name: 'PublicTournament',
+            props: true,
+            component: PublicTournament,
+          },
+        ]
+      },
+      {
+        path: 'stats',
+        name: 'Stats',
+        component: Stats,
+      },
+      {
+        path: 'tutorialoverview',
+        name: 'TutorialOverview',
+        component: TutorialOverview,
+      },
+      {
+        path: 'subscription',
+        name: 'Subscription',
+        component: Subscription,
+      },
+      {
+        path: 'faq',
+        name: 'FAQ',
+        component: FAQ,
+      },
+      {
+        path: 'hof',
+        name: 'HOF',
+        component: HallOfFame,
+      },
+      {
+        path: 'playersearch',
+        name: 'PlayerSearch',
+        component: PlayerSearch,
+      },
+      {
+        path: 'advert',
+        name: 'Advertisement',
+        component: Advertisement,
+      },
+      {
+        path: '',
+        name: 'Landing',
+        component: Landing,
+      },
+    ]
+  },
+]
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes
+})
+
+router.beforeEach(async (to, from, next) => {
+  //Redirect unnamed Routes to Landing to avoid unmatched Routes
+  if (to.name == null) { return next({ name: 'Landing' }) }
+
+  if (localStorage.getItem('alreadyVisited') == null) {
+    localStorage.setItem('alreadyVisited', 'true')
+    return next({ name: 'Advertisement' })
+  }
+
+  let toLocale = to.params?.locale as string | undefined;
+  const fromLocale = from.params?.locale as string | undefined;
+
+  if (fromLocale != null && toLocale === undefined) {
+    to.params.locale = fromLocale
+    return next(to)
+  }
+
+  if (toLocale == null || toLocale === '') {
+    toLocale = fallbackLocale
+  }
+
+  if (!(locales as string[]).includes(toLocale)) {
+    console.log(`Push to another locale as ${toLocale} is not supported`)
+    toLocale = fallbackLocale
+  }
+
+  setLocaleAndLoadMessages(i18n, toLocale)
+
+  return next()
+})
+
+export default router

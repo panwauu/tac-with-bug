@@ -1,0 +1,314 @@
+<template>
+  <div class="leaderBoardPage p-card">
+    <SelectButton
+      v-model="selectedDate"
+      class="timeSelect"
+      :options="dateOptions"
+      optionLabel="name"
+      @click="changeTimeFrame()"
+    />
+    <TabView>
+      <TabPanel header="TAC">
+        <DataTable
+          v-model:first="first"
+          :value="data"
+          :autoLayout="true"
+          :loading="loading"
+          :paginator="true"
+          :pageLinkSize="3"
+          :totalRecords="totalNumber"
+          :rows="rows"
+          :lazy="true"
+          @page="onPage()"
+        >
+          <Column field="index" :header="$t('Leaders.rank')" />
+          <Column field="username" :header="$t('Leaders.name')">
+            <template #body="slotProps">
+              <PlayerWithPicture :nameFirst="false" :username="slotProps.data.username" />
+            </template>
+          </Column>
+          <Column field="winshare" :header="$t('Leaders.winshare')" />
+          <Column field="wins" :header="$t('Leaders.wins')" />
+        </DataTable>
+      </TabPanel>
+      <TabPanel header="4er Team-Tac">
+        <DataTable
+          v-model:first="firstCoop4"
+          :value="dataCoop4"
+          :autoLayout="true"
+          :loading="loading"
+          :paginator="true"
+          :pageLinkSize="3"
+          :totalRecords="totalNumberCoop4"
+          :rows="rows"
+          :lazy="true"
+          @page="onPageCoop(4)"
+        >
+          <Column field="index" :header="$t('Leaders.rank')" />
+          <Column field="team" :header="$t('Leaders.teams')">
+            <template #body="slotProps">
+              <div class="teamContainer">
+                <div
+                  v-for="teamIndex in Math.floor(
+                    slotProps.data.team.length / 2
+                  )"
+                  :key="`team4-${teamIndex}`"
+                  class="team"
+                >
+                  <PlayerWithPicture
+                    :nameFirst="false"
+                    :username="slotProps.data.team[2 * teamIndex - 2]"
+                  />
+                  <PlayerWithPicture
+                    :nameFirst="false"
+                    :username="slotProps.data.team[2 * teamIndex - 1]"
+                  />
+                </div>
+              </div>
+            </template>
+          </Column>
+          <Column field="count" :header="$t('Leaders.cards')" />
+          <Column field="lastplayed" :header="$t('Leaders.date')">
+            <template #body="slotProps">
+              <div>{{ createDateString(slotProps.data.lastplayed) }}</div>
+            </template>
+          </Column>
+        </DataTable>
+      </TabPanel>
+      <TabPanel header="6er Team-Tac">
+        <DataTable
+          v-model:first="firstCoop6"
+          :value="dataCoop6"
+          :autoLayout="true"
+          :loading="loading"
+          :paginator="true"
+          :pageLinkSize="3"
+          :totalRecords="totalNumberCoop6"
+          :rows="rows"
+          :lazy="true"
+          @page="onPageCoop(6)"
+        >
+          <Column field="index" :header="$t('Leaders.rank')" />
+          <Column field="team" :header="$t('Leaders.teams')">
+            <template #body="slotProps">
+              <div class="teamContainer">
+                <div
+                  v-for="teamIndex in Math.floor(
+                    slotProps.data.team.length / 2
+                  )"
+                  :key="`team4-${teamIndex}`"
+                  class="team"
+                >
+                  <PlayerWithPicture
+                    :nameFirst="false"
+                    :username="slotProps.data.team[2 * teamIndex - 2]"
+                  />
+                  <PlayerWithPicture
+                    :nameFirst="false"
+                    :username="slotProps.data.team[2 * teamIndex - 1]"
+                  />
+                </div>
+              </div>
+            </template>
+          </Column>
+          <Column field="count" :header="$t('Leaders.cards')" />
+          <Column field="lastplayed" :header="$t('Leaders.teams')">
+            <template #body="slotProps">
+              <div>{{ createDateString(slotProps.data.lastplayed) }}</div>
+            </template>
+          </Column>
+        </DataTable>
+      </TabPanel>
+    </TabView>
+  </div>
+</template>
+
+<script setup lang="ts">
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import SelectButton from 'primevue/selectbutton';
+import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
+
+import { ref } from 'vue';
+import { Service } from '@/generatedClient/index';
+import { i18n } from '@/services/i18n';
+
+let rows = ref(10)
+let totalNumber = ref(0)
+let first = ref(0)
+let data = ref([] as {
+  username: string
+  wins: number
+  winshare: string
+  index: number
+}[])
+let loading = ref(false)
+let totalNumberCoop4 = ref(0)
+let firstCoop4 = ref(0)
+let dataCoop4 = ref([] as {
+  team: any,
+  count: number
+  index: number
+  lastplayed: number
+}[])
+let loadingCoop4 = ref(false)
+let totalNumberCoop6 = ref(0)
+let firstCoop6 = ref(0)
+let dataCoop6 = ref([] as {
+  team: any,
+  count: number
+  index: number
+  lastplayed: number
+}[])
+let loadingCoop6 = ref(false)
+
+const dateOptions = [
+  { name: i18n.global.t('Leaders.Time.alltime'), startDate: 0, endDate: null },
+  {
+    name: i18n.global.t('Leaders.Time.thisYear'),
+    startDate: new Date(new Date().getUTCFullYear(), 0, 1).getTime(),
+    endDate: null,
+  },
+  {
+    name: i18n.global.t('Leaders.Time.thisMonth'),
+    startDate: new Date(
+      new Date().getUTCFullYear(),
+      new Date().getUTCMonth(),
+      1
+    ).getTime(),
+    endDate: null,
+  },
+  {
+    name: i18n.global.t('Leaders.Time.thisWeek'),
+    startDate: getMonday().getTime(),
+    endDate: null,
+  },
+]
+
+let selectedDate = ref(dateOptions[2])
+
+onPage();
+onPageCoop(4);
+onPageCoop(6);
+
+
+function getMonday() {
+  const date = new Date();
+  date.setUTCHours(0, 0, 0, 0);
+  const day = new Date().getUTCDay() || 7;
+  date.setUTCHours(-24 * (day - 1));
+  return date;
+}
+
+function changeTimeFrame() {
+  first.value = 0;
+  firstCoop4.value = 0;
+  firstCoop6.value = 0;
+  onPage();
+  onPageCoop(4);
+  onPageCoop(6);
+}
+
+async function onPage() {
+  loading.value = true;
+  Service.getWinnerLeaderboard(
+    rows.value,
+    first.value,
+    selectedDate.value.startDate,
+    selectedDate.value.endDate ?? undefined
+  )
+    .then((res) => {
+      data.value = [];
+      res.username.forEach((username: string, index: number) =>
+        data.value.push({
+          username: username,
+          wins: res.wins[index],
+          winshare: res.winshare[index] + ' %',
+          index: index + 1 + first.value,
+        })
+      );
+      totalNumber.value = typeof res.nPlayers === 'string' ? parseInt(res.nPlayers) : res.nPlayers;
+      loading.value = false;
+    });
+}
+
+async function onPageCoop(nPlayers: number) {
+  const first = nPlayers === 4 ? firstCoop4.value : firstCoop6.value;
+
+  if (nPlayers === 6) {
+    loadingCoop6.value = true;
+  } else {
+    loadingCoop4.value = true;
+  }
+  Service.getCoopLeaderboard(
+    rows.value,
+    first,
+    nPlayers,
+    selectedDate.value.startDate,
+    selectedDate.value.endDate ?? undefined
+  )
+    .then((res) => {
+      if (nPlayers === 6) {
+        dataCoop6.value = [];
+      } else {
+        dataCoop4.value = [];
+      }
+      res.count.forEach((count: number, index: number) => {
+        let data = {
+          team: res.team[index],
+          count: count,
+          index: index + 1 + first,
+          lastplayed: res.lastplayed[index],
+        };
+        if (nPlayers === 6) {
+          dataCoop6.value.push(data);
+        } else {
+          dataCoop4.value.push(data);
+        }
+      });
+      if (nPlayers === 6) {
+        loadingCoop6.value = false;
+        totalNumberCoop6.value = typeof res.nGames === 'string' ? parseInt(res.nGames) : res.nGames;
+      } else {
+        loadingCoop4.value = false;
+        totalNumberCoop4.value = typeof res.nGames === 'string' ? parseInt(res.nGames) : res.nGames;
+      }
+    });
+}
+
+function createDateString(seconds: number) {
+  let d = new Date(seconds);
+  return d.toLocaleDateString();
+}
+</script>
+
+<style scoped>
+.leaderBoardPage {
+  flex: 0 1 800px;
+  max-width: 100%;
+  padding: 10px;
+}
+.team {
+  display: flex;
+  flex-direction: column;
+  margin-right: 5px;
+}
+
+.teamContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 500px) {
+  .teamContainer {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.timeSelect {
+  margin: 10px;
+}
+</style>

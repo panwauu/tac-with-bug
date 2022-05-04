@@ -1,0 +1,18 @@
+GET http://localhost:3000/gameApi/retrieveCapture?gameID=108
+
+###
+
+GET https://tac-with-bug.herokuapp.com/gameApi/retrieveCapture?gameID=7
+
+###
+
+GET https://tac-with-bug.herokuapp.com/gameApi/retrieveCapture?gameID=11
+
+###
+DELETE http://localhost:3000/gameApi/removeCaptures
+
+###
+DELETE https://tac-with-bug.herokuapp.com/gameApi/removeCaptures
+
+###
+GET https://tac-with-bug.herokuapp.com/gameApi/recalculatePlayerStatisticsAll

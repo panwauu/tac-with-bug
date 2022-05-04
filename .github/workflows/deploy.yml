@@ -1,0 +1,151 @@
+# Keep in Sync with test.yml
+
+name: Deploy to Heroku
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: tac        
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 16.x
+      env: 
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+        cache: 'npm'
+        cache-dependency-path: |
+          server/package-lock.json
+          client/package-lock.json
+    - name: Install shared modules
+      run: |
+        cd shared
+        npm ci
+    - name: Install server modules
+      run: |
+        cd server
+        npm ci
+    - name: Linting
+      run: |
+        cd server
+        npm run lint
+    - name: Build server documentation
+      run: |
+        cd server
+        npm run building
+    - name: Run typescript build
+      run: |
+        cd server
+        npm run tsc
+    - name: Check Locale Files (All languages and identical keys)
+      run: |
+        cd server
+        npm run checkLocales
+    - name: Install client modules
+      run: |
+        cd client
+        npm ci
+    - name: Run client lint
+      run: |
+        cd client
+        npm run lint
+    - name: Run client tsc
+      run: |
+        cd client
+        npm run tsc
+    - name: Build Vue Files
+      run: |
+        cd client
+        npm run build
+    - name: Clone Heroku Database
+      run: |
+        # heroku pg:backups:capture --app=tac-with-bug
+        heroku pg:backups:download -o tac.dump --app=tac-with-bug
+        pg_restore --verbose --no-acl --no-owner -h localhost -U postgres -d tac -j 8 -p 5432 tac.dump
+        psql -h localhost -U postgres -d tac -c 'UPDATE users SET currentsubscription=Null;';
+        psql -h localhost -U postgres -d tac -c 'DELETE FROM subscriptions;';
+        psql -h localhost -U postgres -d tac -c 'DELETE FROM waitinggames;';
+      env: 
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        PGPASSWORD: postgres
+    - name: Run server test
+      run: |
+        cd server
+        npm run test
+      env:
+        PAYPAL_PLAN_ID_DEV_MONTHLY: ${{ secrets.PAYPAL_PLAN_ID_DEV_MONTHLY }}
+        PAYPAL_PLAN_ID_DEV_QUATERLY: ${{ secrets.PAYPAL_PLAN_ID_DEV_QUATERLY }}
+        PAYPAL_PLAN_ID_DEV_YEARLY: ${{ secrets.PAYPAL_PLAN_ID_DEV_YEARLY }}
+    - name: Deploy - Heroku login credentials
+      run: |
+        cat > ~/.netrc <<EOF
+          machine api.heroku.com
+            login $HEROKU_EMAIL
+            password $HEROKU_API_KEY
+          machine git.heroku.com
+            login $HEROKU_EMAIL
+            password $HEROKU_API_KEY
+        EOF
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+    - name: Push to heroku
+      run: |
+        cd server
+        git init
+        git config user.name "Oskar Baumann"
+        git config user.email ${{ secrets.HEROKU_EMAIL }}
+        heroku git:remote --app $HEROKU_APP_NAME
+        git add -A;
+        git commit -m "Deploy";
+        git push --force heroku master;
+      env:
+        HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+    - name: Sanity check of tac-with-bug
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: 'https://tac-with-bug.herokuapp.com'
+        method: 'GET'
+    - name: Advance deployed tag
+      uses: actions/github-script@v5
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}          
+        script: |
+          try {
+            await github.rest.git.deleteRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "tags/deployed"
+            })
+          } catch (e) {
+            console.log("The deployed tag doesn't exist yet: " + e)
+          }
+          await github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.sha,
+            ref: "refs/tags/deployed"
+          })

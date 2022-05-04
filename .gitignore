@@ -1,0 +1,36 @@
+.DS_Store
+node_modules
+coverage
+server/public
+server/.git
+server/.env
+server/dist
+server/src/swagger.json
+server/src/routes/routes.ts
+client/src/locales/.git
+client/src/locales/README.md
+client/src/locales/docs
+client/src/generatedClient
+
+# local env files
+.env.local
+.env.*.local
+*.pem
+
+*.dump
+postgres-data
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
