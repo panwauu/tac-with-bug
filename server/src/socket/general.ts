@@ -22,7 +22,7 @@ export async function registerSocketNspGeneral(nsp: GeneralNamespace, pgPool: pg
 
     nsp.use(generalSocketIOAuthentication)
 
-    registerTournamentBus(pgPool)
+    registerTournamentBus()
 
     nsp.on('connection', async (socket) => {
         socket.on('disconnect', async () => { terminateSocket(pgPool, socket) });

@@ -107,7 +107,6 @@ function updateMenu() {
   flex: 0 1 800px;
   max-width: 100%;
   margin-top: 70px;
-  max-width: 100%;
 }
 
 .profileInformation {

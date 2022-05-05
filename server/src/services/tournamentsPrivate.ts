@@ -179,7 +179,6 @@ export async function startPrivateTournament(pgPool: pg.Pool, tournament: tTourn
 export type startTournamentGameError = 'TOURNAMENT_NOT_FOUND' | 'COULD_NOT_FIND_GAME'
 export async function startTournamentGame(pgPool: pg.Pool, tournament: tTournament.privateTournament, tournamentRound: number, roundGame: number): Promise<Result<tTournament.privateTournament, startTournamentGameError>> {
     if (tournament.data.brackets?.[tournamentRound]?.[roundGame] == null) { return err('COULD_NOT_FIND_GAME') }
-    tournament.data.brackets[tournamentRound][roundGame]
 
     let playerids: number[] = []
     tournament.data.brackets[tournamentRound][roundGame].teams.forEach((t) => { playerids = playerids.concat(tournament.teams[t].playerids) })

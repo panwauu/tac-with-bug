@@ -116,7 +116,6 @@ export async function abortGame(pgPool: pg.Pool, gameID: number) {
     if (game.privateTournamentId != null) { await updatePrivateTournamentFromGame(pgPool, game, true) }
     if (game.publicTournamentId != null) { await updatePublicTournamentFromGame(pgPool, game, true) }
     await pgPool.query('UPDATE games SET status=\'aborted\' WHERE id=$1;', [gameID])
-    game.status === 'aborted'
 
     game.playerIDs.forEach((id) => {
         const socket = getSocketByUserID(id)

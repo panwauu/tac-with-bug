@@ -166,38 +166,27 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
 
 export function pushChangedPublicTournament(tournament: tTournament.publicTournament) { nsp.emit('tournament:public:update', tournament) }
 
-export async function registerTournamentBus(sqlClient: pg.Pool) {
-    sqlClient //TBD
+export async function registerTournamentBus() {
     tournamentBus.on('signUp-failed', async (data: { playerids: number[], tournamentTitle: string }) => {
         getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUp-failed', { tournamentTitle: data.tournamentTitle }))
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('signUpEnded-you-partizipate', async (data: { playerids: number[], tournamentTitle: string }) => {
         getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUpEnded-you-partizipate', { tournamentTitle: data.tournamentTitle }))
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('signUpEnded-you-wont-partizipate', async (data: { playerids: number[], tournamentTitle: string }) => {
         getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: data.tournamentTitle }))
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('started', async (data: { tournamentTitle: string }) => {
         nsp.emit('tournament:toast:started', { tournamentTitle: data.tournamentTitle })
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('round-started', async (data: { tournamentTitle: string, roundsToFinal: number }) => {
         nsp.emit('tournament:toast:round-started', { tournamentTitle: data.tournamentTitle, roundsToFinal: data.roundsToFinal })
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('round-ended', async (data: { tournamentTitle: string, roundsToFinal: number }) => {
         nsp.emit('tournament:toast:round-ended', { tournamentTitle: data.tournamentTitle, roundsToFinal: data.roundsToFinal })
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('ended', async (data: { tournamentTitle: string, winner: tTournament.team }) => {
         nsp.emit('tournament:toast:ended', { tournamentTitle: data.tournamentTitle, winner: data.winner })
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
-    })
-    tournamentBus.on('updateTournament', async () => {
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
 }
 
