@@ -1,6 +1,10 @@
-![TWB Logo](./client/src/assets/TwbLogo.png)
+[![TWB Logo](client/src/assets/TwbLogo.png)](https://tac-with-bug.herokuapp.com/)
 
-# Getting started
+[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is a online Multiplayer for the boardgame [TAC](https://shop.spiel-tac.de/Home). The game is a Vue webapp with a Node backend. Contributions are welcome.
+
+# Getting Started Guide
+
+Two step guide to get started with the [Tac-With-Bug](https://tac-with-bug.herokuapp.com/) development.
 
 ## Database Setup
 
@@ -41,37 +45,37 @@ Flags:
 
 ## Package Setup
 
-The project is divided into three main parts:
+[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is divided into three main parts:
 
-| Folder              | Description |
-| ------------------- | ----------- |
-| [client](client)    | This folder contains the Vue source code for the project |
-| [server](server)    | This folder contains source code related to the server and is also the heroku root |
-| [shared](shared)    | This folder contains shared interfaces and data across server and client |
+| Folder             | Description                           |
+| ------------------ | ------------------------------------- |
+| [client](./client) | Vue source code for the web interface |
+| [server](./server) | Node server code                      |
+| [shared](./shared) | Shared interfaces and data            |
 
-To build server and client you need to install all npm packages and build the server typescript code:
+First all packages have to be installed and built.
 
 ```shell
 cd shared
+npm install
+
+cd client
 npm install
 
 cd server
 npm install
 npm run building
 npm run tsc
-
-cd client
-npm run install
 ```
 
-Afterwards you can start server and client:
+Afterwards you can start the server and client.
 
-```bash
+```shell
 cd server
 npm run devStart
 ```
 
-```bash
+```shell
 cd client
 npm run dev
 ```
