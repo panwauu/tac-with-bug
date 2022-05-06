@@ -1,4 +1,6 @@
-# Local Development Setup
+![TWB Logo](./client/src/assets/TwbLogo.png)
+
+# Getting started
 
 ## Database Setup
 
@@ -37,63 +39,39 @@ Flags:
         Password of this user will be applied to all users so that you can login into all of them
 ```
 
-The dump is downloaded using the [heroku CLI](https://devcenter.heroku.com/categories/command-line). Oskar can provide you with the dump.
+## Package Setup
 
-## Shared modules
+The project is divided into three main parts:
 
-There is a module called `shared` where mainly the shared types for socket.io between server and client are defined. Before you can use server or socket you need to install all the dependencies in the shared folder:
+| Folder              | Description |
+| ------------------- | ----------- |
+| [client](client)    | This folder contains the Vue source code for the project |
+| [server](server)    | This folder contains source code related to the server and is also the heroku root |
+| [shared](shared)    | This folder contains shared interfaces and data across server and client |
 
-```
+To build server and client you need to install all npm packages and build the server typescript code:
+
+```shell
+cd shared
+npm install
+
 cd server
 npm install
+npm run building
+npm run tsc
+
+cd client
+npm run install
 ```
 
-## Server-Side Setup
+Afterwards you can start server and client:
 
-First install the server node modules:
-
-```
-cd server
-npm install
-```
-
-To start the OpenAPI generator and ts-compiler use:
-
-```
-cd server
-npm run buildWatch
-```
-
-```
-cd server
-npm run tscWatch
-```
-
-To start the server:
-
-```
+```bash
 cd server
 npm run devStart
 ```
 
-## Client-Side Setup
-
-```
-cd client
-npm install
-```
-
-To start the vue server
-
-```
+```bash
 cd client
 npm run dev
-```
-
-# Access Heroku Error Logs
-
-```
-heroku pg:psql cobalt
-SET client_encoding TO 'UTF8';
-SELECT * FROM logs ORDER BY timestamp DESC;
 ```
