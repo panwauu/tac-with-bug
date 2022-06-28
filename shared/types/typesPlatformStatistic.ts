@@ -20,6 +20,7 @@ export type localeDataset = Array<{ locale: string; nUsers: number }>
 export interface platformFunFacts {
     nGames4: number,
     nGames6: number,
+    nGamesTeam: number,
     registeredUsers: number,
     fastestGame: number,
     longestGame: number,
