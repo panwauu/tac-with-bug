@@ -4,7 +4,6 @@
       :networkData="networkData"
       :username="username"
       :peopleData="peopleData"
-      :showSponsorOverlay="showSponsorOverlay"
       :loading="loading"
       style="width: 100%"
     />
@@ -13,18 +12,11 @@
 
 <script setup lang="ts">
 import NetworkUserGraph from '@/components/NetworkUserGraph.vue';
-import { computed, ref, watch } from 'vue';
-import { injectStrict, SubscriptionStateKey } from '@/services/injections';
-import { username as loggedInUsername } from '@/services/useUser';
+import { ref, watch } from 'vue';
 import { Service } from '@/generatedClient';
 import router from '@/router/index';
 
-const subscriptionState = injectStrict(SubscriptionStateKey)
 const props = defineProps<{ username: string }>();
-
-const showSponsorOverlay = computed(() => {
-  return props.username != loggedInUsername.value && !subscriptionState.isSub()
-})
 
 let loading = ref(true)
 let networkData = ref({ edges: [] as any[], nodes: [] as any[] })
