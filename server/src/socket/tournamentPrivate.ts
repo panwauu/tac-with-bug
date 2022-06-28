@@ -5,7 +5,6 @@ import Joi from 'joi';
 
 import logger from '../helpers/logger';
 import { getPrivateTournament } from '../services/tournamentsPrivate';
-import { isSubscribed } from '../paypal/paypal';
 import { getUser } from '../services/user';
 import { abortPrivateTournament, activatePlayer, addPlayer, createPrivateTournament, removePlayer, startPrivateTournament, startTournamentGame } from '../services/tournamentsPrivate';
 import { nspGeneral } from './general';
@@ -44,10 +43,6 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
                 logger.error('Event forbidden for unauthenticated user (tournament:leaveTournament)', { stack: new Error().stack })
                 return cb({ status: 500, error: 'Unauth' })
             }
-
-            const user = await getUser(pgPool, { id: socket.data.userID })
-            if (user.isErr()) { return cb({ status: 500, error: user.error }) }
-            if (!(await isSubscribed(pgPool, socket.data.userID))) { return cb({ status: 500, error: 'Sponsors only' }) }
 
             const tournament = await createPrivateTournament(pgPool, data.title, socket.data.userID, data.nTeams, data.playersPerTeam, data.teamsPerMatch, data.tournamentType)
             if (tournament.isErr()) { return cb({ status: 500, error: tournament.error }) }

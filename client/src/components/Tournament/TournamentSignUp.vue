@@ -16,10 +16,6 @@
     style="max-width: 500px"
     @hide="generateNewName"
   >
-    <div v-if="!subscriptionState.isSub()" class="nonSponsorSignUp">
-      <div style="text-align: center">{{ $t("Tournament.SignUp.nonSponsorText") }}</div>
-      <SubscriptionTag style="margin-top: 10px" />
-    </div>
     <div class="teamSignUp">
       <span class="p-float-label" style="min-width: 230px; margin: 20px">
         <InputText
@@ -28,7 +24,6 @@
           type="text"
           style="width: 100%"
           :class="validTeamName ? '' : 'p-invalid'"
-          :disabled="!subscriptionState.isSub()"
         />
         <label for="signUpTeamName">{{ $t("Tournament.SignUp.teamNamePlaceholder") }}</label>
         <div
@@ -73,20 +68,18 @@ import SelectButton from 'primevue/selectbutton';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 import PlayersAutoComplete from '@/components/PlayersAutoComplete.vue';
-import SubscriptionTag from '@/components/SubscriptionTag.vue';
 
 import { publicTournament } from '@/../../shared/types/typesTournament';
 
 import { computed, ref } from 'vue';
 import { i18n } from '@/services/i18n';
 import { Service } from '@/generatedClient/index';
-import { injectStrict, SocketKey, SubscriptionStateKey } from '@/services/injections';
+import { injectStrict, SocketKey } from '@/services/injections';
 import { isLoggedIn, username } from '@/services/useUser';
 
 const props = defineProps<{ tournament: publicTournament }>()
 
 const socket = injectStrict(SocketKey)
-const subscriptionState = injectStrict(SubscriptionStateKey)
 
 const signUpAloneModel = ref([
   {
@@ -164,50 +157,6 @@ generateNewName()
 </script>
 
 <style scoped>
-.signUpWrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.signUpList {
-  margin: 10px;
-}
-
-.team {
-  margin: 20px;
-}
-
-.teamTag {
-  font-weight: bold;
-  text-align: left;
-  font-size: 0.6rem;
-}
-
-.teamBody {
-  background: var(--surface-d);
-  border-radius: 5px;
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.notActivatedPlayer {
-  color: #ffe082;
-  text-decoration-line: underline;
-  text-decoration-style: dashed;
-}
-
-.nonSponsorSignUp {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
 .teamSignUp {
   position: relative;
   display: flex;
@@ -225,27 +174,5 @@ generateNewName()
 .teamSignUpPlayerSelectActive {
   max-height: 100px;
   margin-top: 20px;
-}
-
-.teamSignUpSubscriptionLimiter {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.teamSignUpSubscriptionLimiter::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: var(--surface-a);
-  opacity: 0.6;
 }
 </style>

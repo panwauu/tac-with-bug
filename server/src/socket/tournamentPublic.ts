@@ -7,8 +7,6 @@ import logger from '../helpers/logger';
 import { getPublicTournamentByID, getCurrentPublicTournament } from '../services/tournamentsPublic';
 import { tournamentBus } from '../services/tournaments';
 import { registerTeam, joinTeam, leaveTournament, activateUser } from '../services/tournamentsRegister';
-import { isASweetName } from '../services/SweetNameGenerator';
-import { isSubscribed } from '../paypal/paypal';
 import { generateIcal } from '../communicationUtils/icalGenerator';
 import { sendTournamentInvitation, sendTournamentReminder } from '../communicationUtils/email';
 import { getUser } from '../services/user';
@@ -39,7 +37,6 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
         });
         const { error } = schema.validate(data);
         if (error != null) { logger.error('JOI Error', error); return }
-        if (!(await isSubscribed(pgPool, socket.data.userID)) && !isASweetName(data.name)) { return }
 
         try {
             const user = await getUser(pgPool, { id: socket.data.userID })

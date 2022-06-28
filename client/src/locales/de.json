@@ -129,7 +129,6 @@
     "SignUp": {
       "openModalButton": "Anmelden",
       "title": "Turnieranmeldung",
-      "nonSponsorText": "Die Wahl eines eigenen Teamnamens ist leider Sponsoren vorbehalten. Werde jetzt Sponsor und unterstütze die Entwicklung dieser Plattform oder hoffe, dass das Glück dir das nächste Mal einen besseren Namen beschert.",
       "invalidTeamName": "Wähle einen Teamname, der 5 bis 25 Zeichen hat und natürlich noch nicht verwendet wird. Möglich sind Buchstaben, Ziffern oder die Sonderzeichen [._ +<>-].",
       "teamNamePlaceholder": "Teamname",
       "selectButtonWithPartner": "Mit festem Partner anmelden",

@@ -129,7 +129,6 @@
     "SignUp": {
       "openModalButton": "Log In",
       "title": "Tournament registration",
-      "nonSponsorText": "The choice of the name of team is unfortunately reserved for sponsors. Become a sponsor now and support the development of this platform or hope that luck will bring you a better name next time.",
       "invalidTeamName": "Choose a team name that has 5 to 25 characters and of course is not in use yet. Letters, numbers or the special characters [._ <> -] are possible.",
       "teamNamePlaceholder": "Teamname",
       "selectButtonWithPartner": "Register with a permanent partner",
