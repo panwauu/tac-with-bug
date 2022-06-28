@@ -59,16 +59,12 @@
     <div v-if="loading" class="chartSponsorOverlay">
       <i class="pi pi-spin pi-spinner" style="font-size: 4rem" />
     </div>
-    <div v-if="showSponsorOverlay" class="chartSponsorOverlay">
-      <SubscriptionTag />
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import Button from 'primevue/button';
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
-import SubscriptionTag from '@/components/SubscriptionTag.vue';
 
 import { onUnmounted, onMounted, watch, ref } from 'vue';
 import cytoscape from 'cytoscape';
@@ -77,7 +73,6 @@ const props = defineProps<{
   networkData: any,
   peopleData: any,
   username: string,
-  showSponsorOverlay: boolean,
   loading: boolean,
 }>()
 
@@ -201,9 +196,7 @@ const resetGraph = () => {
   if (cy.value != null && props.networkData != null) {
     selectedUser.value = null;
     cy.value?.elements()?.remove();
-    if (!props.showSponsorOverlay) {
-      cy.value?.add(enrichDataModel());
-    }
+    cy.value?.add(enrichDataModel());
     cy.value?.layout(layout)?.run();
 
     cy.value?.nodes()?.on('select', (event: any) => {
@@ -266,11 +259,6 @@ watch(
   () => props.networkData,
   () => { resetGraph() },
   { deep: true }
-)
-
-watch(
-  () => props.showSponsorOverlay,
-  () => { resetGraph() }
 )
 </script>
 
