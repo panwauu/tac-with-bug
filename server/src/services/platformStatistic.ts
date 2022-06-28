@@ -1,24 +1,13 @@
 import pg from 'pg';
 import type { activityHeatmap, dayDataset, hourDataset, localeDataset, platformFunFacts, platformStats, userAgentAnalysisData, weekDataset, weekDatasetData } from '../../../shared/types/typesPlatformStatistic';
 
-export async function getPlatformStatisticOverview(pgPool: pg.Pool) {
-    const dbResUsers = await pgPool.query('SELECT COUNT(id) FROM users WHERE activated=true;')
-    const dbResGameWith4 = await pgPool.query('SELECT COUNT(id) FROM games WHERE status!=\'running\' AND status!=\'aborted\' AND n_players = 4;')
-    const dbResGameWith6 = await pgPool.query('SELECT COUNT(id) FROM games WHERE status!=\'running\' AND status!=\'aborted\' AND n_players = 6;')
-
-    return {
-        users: dbResUsers.rows[0].count as number,
-        games4: dbResGameWith4.rows[0].count as number,
-        games6: dbResGameWith6.rows[0].count as number
-    }
-}
-
 export async function getPlatformFunFacts(pgPool: pg.Pool): Promise<platformFunFacts> {
     const dbResUsers = await pgPool.query<{ activated: number, color_blind: number }>('SELECT SUM(CASE WHEN activated=true THEN 1 ELSE 0 END)::int as activated, SUM(CASE WHEN color_blindness_flag=true THEN 1 ELSE 0 END)::int as color_blind FROM users;')
 
-    const gamesRes = await pgPool.query<{ games4: number, games6: number, average_game_duration: number, fastest_game: number, longest_game: number }>(`SELECT 
+    const gamesRes = await pgPool.query<{ games4: number, games6: number, gamesteam: number, average_game_duration: number, fastest_game: number, longest_game: number }>(`SELECT 
         CAST(sum(games4flag) as INT) as games4,
         CAST(sum(games6flag) as INT) as games6,
+        CAST(sum(gamesteamflag) as INT) as gamesteam,
         EXTRACT(epoch FROM avg(gameDuration))::INT as average_game_duration,
         EXTRACT(epoch FROM min(gameDuration))::INT as fastest_game,
         EXTRACT(epoch FROM max(gameDuration))::INT as longest_game
@@ -26,6 +15,7 @@ export async function getPlatformFunFacts(pgPool: pg.Pool): Promise<platformFunF
         (SELECT 
             CASE WHEN n_players = 4 THEN 1 ELSE 0 END as games4flag,
             CASE WHEN n_players = 6 THEN 1 ELSE 0 END as games6flag,
+            CASE WHEN CAST(game->>'coop' AS BOOLEAN) = true THEN 1 ELSE 0 END as gamesteamflag,
             lastplayed - created as gameDuration
         FROM games WHERE status!='running' AND status!='aborted') as t;`)
 
@@ -40,6 +30,7 @@ export async function getPlatformFunFacts(pgPool: pg.Pool): Promise<platformFunF
     return {
         nGames4: gamesRes.rows[0].games4,
         nGames6: gamesRes.rows[0].games6,
+        nGamesTeam: gamesRes.rows[0].gamesteam,
         fastestGame: gamesRes.rows[0].fastest_game,
         longestGame: gamesRes.rows[0].longest_game,
         averagePlayingTime: gamesRes.rows[0].average_game_duration,

@@ -916,7 +916,8 @@
       "leastLoved": "Least used ball:",
       "mostLoved": "Most used ball:",
       "nColorBlinds": "Number of color blind players:",
-      "longestGame": "Longest game:"
+      "longestGame": "Longest game:",
+      "nGamesTeam": "Completed team-games:"
     },
     "description1": "Tac-With-Bug is an online multiplayer version of the popular board game",
     "description2": ". Compete against friends and strangers in games of four or six players. \nOr play Team Tac and try to set a new record."

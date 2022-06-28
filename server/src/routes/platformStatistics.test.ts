@@ -17,14 +17,6 @@ describe('Platform Statistic Test Suite', () => {
         await server.destroy()
     })
 
-    test('Get Statistics Overview', async () => {
-        const response = await agent.get('/gameApi/getTWBStatistic/')
-        expect(response.statusCode).toBe(200)
-        expect(parseInt(response.body.users)).toBeGreaterThan(0)
-        expect(parseInt(response.body.games4)).toBeGreaterThan(0)
-        expect(parseInt(response.body.games6)).toBeGreaterThan(0)
-    })
-
     test('Test week data extrapolation with synthetic data', async () => {
         const dayDataset: dayDataset = Array.from(Array(7).keys()).map(() => [1 / 7, 1 / 7, 1 / 7])
         const hourDataset: hourDataset = Array.from(Array(24).keys()).map(() => [1 / 24, 1 / 24, 1 / 24])

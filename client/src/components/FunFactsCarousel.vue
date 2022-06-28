@@ -37,6 +37,7 @@ const funfacts = reactive({
   gamesAndUsers: {
     nGames4: 0,
     nGames6: 0,
+    nGamesTeam: 0,
     registeredUsers: 0,
   },
   gameDurations: {
@@ -58,6 +59,7 @@ const funfacts = reactive({
 Service.getPlatformFunFacts().then((res) => {
   funfacts.gamesAndUsers.nGames4 = res.nGames4
   funfacts.gamesAndUsers.nGames6 = res.nGames6
+  funfacts.gamesAndUsers.nGamesTeam = res.nGamesTeam
   funfacts.gamesAndUsers.registeredUsers = res.registeredUsers
   funfacts.gameDurations.fastestGame = getIntervalString(res.fastestGame)
   funfacts.gameDurations.longestGame = getIntervalString(res.longestGame)
