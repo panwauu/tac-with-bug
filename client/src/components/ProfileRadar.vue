@@ -1,9 +1,6 @@
 <template>
-  <div class="radarContainer">
+  <div>
     <Chart ref="profileRadarChart" type="radar" :data="chartData" :options="chartOptions" />
-    <div v-if="showSponsorOverlay" class="chartSponsorOverlay">
-      <SubscriptionTag />
-    </div>
   </div>
 </template>
 
@@ -11,14 +8,12 @@
 import { ref, watch, onMounted } from 'vue';
 import Chart from 'primevue/chart';
 import { Service } from '@/generatedClient/index';
-import SubscriptionTag from '@/components/SubscriptionTag.vue';
 import { i18n } from '@/services/i18n';
 import { username as loggedInUsername } from '@/services/useUser';
 
 const props = defineProps<{
   data: number[],
   username: string,
-  showSponsorOverlay: boolean
 }>();
 
 let profileRadarChart = ref<any | null>(null)
@@ -86,7 +81,7 @@ const resetGraph = async (data: any) => {
     }
   }
 
-  if (!props.showSponsorOverlay && loggedInUsername.value != props.username) {
+  if (loggedInUsername.value != props.username) {
     newChartDataset.push({
       label: props.username,
       backgroundColor: '#c6373750',
@@ -109,25 +104,4 @@ watch(() => props.data, () => { resetGraph(props.data) }, { deep: true })
 </script>
 
 <style scoped>
-.chartSponsorOverlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.chartSponsorOverlay::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: var(--surface-a);
-  opacity: 0.6;
-}
 </style>

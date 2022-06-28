@@ -2,14 +2,12 @@
   <div class="chartNextToEachOtherContainer">
     <ProfileRadar
       :username="username"
-      :showSponsorOverlay="showSponsorOverlay"
       :data="radarData"
       class="chartNextToEachOther"
     />
     <UserGamesDougnut
       :data="gamesDistributionData"
       :username="username"
-      :showSponsorOverlay="showSponsorOverlay"
       class="chartNextToEachOther"
       style="padding: 0 20px"
     />
@@ -21,16 +19,8 @@ import ProfileRadar from '@/components/ProfileRadar.vue';
 import UserGamesDougnut from '@/components/UserGamesDougnut.vue';
 
 import type { gamesDistributionData } from '@/../../shared/types/typesPlayerStatistic';
-import { computed } from 'vue';
-import { injectStrict, SubscriptionStateKey } from '@/services/injections';
-import { username as loggedInUsername } from '@/services/useUser';
 
-const subscriptionState = injectStrict(SubscriptionStateKey)
-const props = defineProps<{ username: string, radarData: number[], gamesDistributionData: gamesDistributionData }>();
-
-const showSponsorOverlay = computed(() => {
-  return props.username != loggedInUsername.value && !subscriptionState.isSub()
-})
+defineProps<{ username: string, radarData: number[], gamesDistributionData: gamesDistributionData }>();
 </script>
 
 <style scoped>
