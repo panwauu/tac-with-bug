@@ -138,14 +138,14 @@ import { ref, onMounted, computed, onUnmounted, watch } from 'vue';
 import router from '@/router/index';
 import { i18n } from '@/services/i18n';
 import { useToast } from 'primevue/usetoast';
-const toast = useToast();
-import { injectStrict, SocketKey, SubscriptionStateKey } from '@/services/injections';
+import { useSubscription } from '@/services/useSubscription';
+import { injectStrict, SocketKey } from '@/services/injections';
 import { PayPalButtonsComponent } from '@paypal/paypal-js';
 import { isLoggedIn } from '@/services/useUser';
-
-const subscriptionState = injectStrict(SubscriptionStateKey)
+const toast = useToast();
 
 const socket = injectStrict(SocketKey);
+const subscriptionState = useSubscription(socket);
 
 let nSubscriptions = ref(0)
 const planModel = [
