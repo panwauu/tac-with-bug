@@ -104,8 +104,6 @@ export async function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSo
     });
 
     socket.on('friends:ofUser', async (username, callback) => {
-        if (socket.data.userID === undefined) { logger.error('Event forbidden for unauthenticated user (friends:ofUser)', { stack: new Error().stack }); return }
-
         const { error } = Joi.string().required().validate(username);
         if (error != null) { return callback({ status: 422, error: error }) }
 
