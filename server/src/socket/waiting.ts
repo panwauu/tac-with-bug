@@ -6,7 +6,6 @@ import logger from '../helpers/logger';
 import { changeColor, deleteWaitingGame, getWaitingGames, removePlayer as removePlayerWaiting, addPlayer, createWaitingGame, movePlayer as movePlayerWaiting, setPlayerReady, createRematchGame } from '../services/waiting';
 import { createGame } from '../services/game';
 import { getGame } from '../services/game';
-import { isSubscribed } from '../paypal/paypal';
 import { emitGamesUpdate, emitRunningGamesUpdate } from './games';
 import { sendUpdatesOfGameToPlayers } from './game';
 import { getUser } from '../services/user';
@@ -136,8 +135,6 @@ export async function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSo
         });
         const { error } = schema.validate(data);
         if (error != null) { logger.error('JOI Error', error); return }
-
-        if (!(await isSubscribed(pgPool, socket.data.userID))) { return }
 
         await changeColor(pgPool, data.gameID, data.username, data.color, socket.data.userID)
         emitGetGames()
