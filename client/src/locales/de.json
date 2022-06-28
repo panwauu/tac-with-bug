@@ -917,7 +917,10 @@
       "leastLoved": "Am wenigsten genutzte Kugel:",
       "nColorBlinds": "Anzahl farbenblinder Spieler:",
       "longestGame": "Längstes Spiel:",
-      "nGamesTeam": "Beendete Team-Spiele:"
+      "nGamesTeam": "Beendete Team-Spiele:",
+      "bestTeamGame": "Bestes Team-Tac Spiel:",
+      "worstTeamGame": "Längstes Team-Tac Spiel:",
+      "averageTeamGame": "Durchschnitt der Team-Tac Ergebnisse:"
     },
     "description1": "Tac-With-Bug ist eine online Mehrspieler Verison des beliebten Brettspiels",
     "description2": ". Trete gegen Freunde und Fremde zu Viert oder zu Sechst an. Oder spiele Team-Tac und versuche einen neuen Rekord aufzustellen."

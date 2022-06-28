@@ -1,13 +1,35 @@
 import pg from 'pg';
 import type { activityHeatmap, dayDataset, hourDataset, localeDataset, platformFunFacts, platformStats, userAgentAnalysisData, weekDataset, weekDatasetData } from '../../../shared/types/typesPlatformStatistic';
 
+const cacheDurationFunFactsInMS = 60 * 60e3; // Update once per hour
+let cachedPlatformFunFacts: Promise<{ data: platformFunFacts, date: number }> | null = null
+
 export async function getPlatformFunFacts(pgPool: pg.Pool): Promise<platformFunFacts> {
+    if (cachedPlatformFunFacts == null) {
+        cachedPlatformFunFacts = calculatePlatformFunFacts(pgPool).then((res) => { return { data: res, date: Date.now() } })
+    }
+
+    let platformFunFacts = await cachedPlatformFunFacts
+
+    if ((Date.now() - platformFunFacts.date) > cacheDurationFunFactsInMS) {
+        cachedPlatformFunFacts = calculatePlatformFunFacts(pgPool).then((res) => { return { data: res, date: Date.now() } })
+        platformFunFacts = await cachedPlatformFunFacts
+    }
+
+    return platformFunFacts.data;
+}
+
+export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
     const dbResUsers = await pgPool.query<{ activated: number, color_blind: number }>('SELECT SUM(CASE WHEN activated=true THEN 1 ELSE 0 END)::int as activated, SUM(CASE WHEN color_blindness_flag=true THEN 1 ELSE 0 END)::int as color_blind FROM users;')
 
-    const gamesRes = await pgPool.query<{ games4: number, games6: number, gamesteam: number, average_game_duration: number, fastest_game: number, longest_game: number }>(`SELECT 
+    const gamesRes = await pgPool.query<{ games4: number, games6: number, gamesteam: number, teammincards: number, teamavgcards: number, teammaxcards: number, average_game_duration: number, fastest_game: number, longest_game: number }>(`
+    SELECT 
         CAST(sum(games4flag) as INT) as games4,
         CAST(sum(games6flag) as INT) as games6,
         CAST(sum(gamesteamflag) as INT) as gamesteam,
+        CAST(min(CASE WHEN gamesteamflag = 1 THEN playedcards ELSE NULL END) as INTEGER) as teammincards,
+		CAST(avg(CASE WHEN gamesteamflag = 1 THEN playedcards ELSE NULL END) as INTEGER) as teamavgcards,
+		CAST(max(CASE WHEN gamesteamflag = 1 THEN playedcards ELSE NULL END) as INTEGER) as teammaxcards,
         EXTRACT(epoch FROM avg(gameDuration))::INT as average_game_duration,
         EXTRACT(epoch FROM min(gameDuration))::INT as fastest_game,
         EXTRACT(epoch FROM max(gameDuration))::INT as longest_game
@@ -16,7 +38,8 @@ export async function getPlatformFunFacts(pgPool: pg.Pool): Promise<platformFunF
             CASE WHEN n_players = 4 THEN 1 ELSE 0 END as games4flag,
             CASE WHEN n_players = 6 THEN 1 ELSE 0 END as games6flag,
             CASE WHEN CAST(game->>'coop' AS BOOLEAN) = true THEN 1 ELSE 0 END as gamesteamflag,
-            lastplayed - created as gameDuration
+            lastplayed - created as gameDuration,
+            (SELECT SUM(cards) FROM (SELECT CAST(jsonb_extract_path(value, 'cards', 'total', '0') AS INTEGER) as cards FROM jsonb_array_elements(game->'statistic')) as tcards) as playedcards
         FROM games WHERE status!='running' AND status!='aborted') as t;`)
 
     const tutorialRes = await pgPool.query(`SELECT sum(tutorial)::INT as absolved_tutorial_steps FROM
@@ -34,6 +57,9 @@ export async function getPlatformFunFacts(pgPool: pg.Pool): Promise<platformFunF
         fastestGame: gamesRes.rows[0].fastest_game,
         longestGame: gamesRes.rows[0].longest_game,
         averagePlayingTime: gamesRes.rows[0].average_game_duration,
+        bestTeamGame: gamesRes.rows[0].teammincards,
+        worstTeamGame: gamesRes.rows[0].teammaxcards,
+        averageTeamGame: gamesRes.rows[0].teamavgcards,
         registeredUsers: dbResUsers.rows[0].activated,
         nFriends: friendsRes.rows[0].number_friends,
         nTutorials: tutorialRes.rows[0].absolved_tutorial_steps,

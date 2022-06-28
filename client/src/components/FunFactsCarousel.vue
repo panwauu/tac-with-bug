@@ -45,6 +45,11 @@ const funfacts = reactive({
     longestGame: '0:00:00',
     averagePlayingTime: '0:00:00',
   },
+  teamStats: {
+    bestTeamGame: 0,
+    worstTeamGame: 0,
+    averageTeamGame: 0,
+  },
   colors: {
     mostLoved: 'red',
     leastLoved: 'blue',
@@ -64,6 +69,9 @@ Service.getPlatformFunFacts().then((res) => {
   funfacts.gameDurations.fastestGame = getIntervalString(res.fastestGame)
   funfacts.gameDurations.longestGame = getIntervalString(res.longestGame)
   funfacts.gameDurations.averagePlayingTime = getIntervalString(res.averagePlayingTime)
+  funfacts.teamStats.bestTeamGame = res.bestTeamGame
+  funfacts.teamStats.worstTeamGame = res.worstTeamGame
+  funfacts.teamStats.averageTeamGame = res.averageTeamGame
   funfacts.misc.nFriends = res.nFriends
   funfacts.misc.nTutorials = res.nTutorials
   funfacts.colors.mostLoved = res.colors[0]
