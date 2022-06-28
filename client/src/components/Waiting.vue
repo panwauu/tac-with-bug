@@ -133,7 +133,6 @@
       class="activeGame"
       :game="waitingStore.ownGame"
       :active="true"
-      :isSub="subscriptionState.isSub()"
       @move-player="movePlayer"
       @remove-player="removePlayer"
       @ready-player="setPlayerReady"
@@ -146,7 +145,6 @@
       v-for="(game, index) in filteredWaitingGames"
       :key="`WaitingGame-${String(index)}`"
       :game="game"
-      :isSub="subscriptionState.isSub()"
       :class="[waitingStore.ownGame != null ? 'inactiveGame' : '']"
       @click="joinGame(game)"
     />
@@ -170,7 +168,7 @@ import Heart from '@/components/icons/HeartSymbol.vue'
 import { ref, computed, onUnmounted } from 'vue';
 import { i18n } from '@/services/i18n';
 import router from '@/router/index';
-import { injectStrict, SocketKey, SubscriptionStateKey } from '@/services/injections';
+import { injectStrict, SocketKey } from '@/services/injections';
 import type { startGameType, waitingGame } from '@/../../shared/types/typesWaiting';
 import { isLoggedIn, username } from '@/services/useUser';
 import { useServerInfoStore } from '@/store/serverInfo';
@@ -178,7 +176,6 @@ import { useWaitingStore } from '@/store/waiting';
 const infoStore = useServerInfoStore()
 
 const socket = injectStrict(SocketKey)
-const subscriptionState = injectStrict(SubscriptionStateKey)
 
 const waitingStore = useWaitingStore()
 

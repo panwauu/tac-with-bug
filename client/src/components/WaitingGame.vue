@@ -132,7 +132,7 @@
         </div>
       </div>
     </div>
-    <OverlayPanel ref="opRef" class="ballsOverlay">
+    <OverlayPanel ref="opRef">
       <BallsImage
         v-for="color in colors"
         :key="`overlayBall-${color}`"
@@ -140,9 +140,6 @@
         :color="color"
         @click="switchColor(color)"
       />
-      <div v-if="!isSub" class="ballsSubscriptionLimiter">
-        <SubscriptionTag />
-      </div>
     </OverlayPanel>
     <div v-if="active" class="footerWithButtons p-card-footer">
       <Button
@@ -169,7 +166,6 @@
 import Button from 'primevue/button';
 import OverlayPanel from 'primevue/overlaypanel';
 import PlayerWithPicture from './PlayerWithPicture.vue';
-import SubscriptionTag from '@/components/SubscriptionTag.vue';
 import Brain from '@/components/icons/BrainSymbol.vue';
 import Heart from '@/components/icons/HeartSymbol.vue';
 import PlayersTwo from '@/components/icons/PlayersTwo.vue';
@@ -183,7 +179,7 @@ import { username } from '@/services/useUser';
 
 import BallsImage from './assets/BallsImage.vue';
 
-const props = withDefaults(defineProps<{ game: waitingGame, active?: boolean, isSub: boolean }>(), { active: false })
+const props = withDefaults(defineProps<{ game: waitingGame, active?: boolean }>(), { active: false })
 
 const emit = defineEmits<{
   (eventName: 'move-player', data: { gameID: number, username: string, steps: number }): void
@@ -354,31 +350,5 @@ const switchColor = (color: string) => {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-}
-
-.ballsOverlay {
-  position: relative;
-}
-
-.ballsSubscriptionLimiter {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.ballsSubscriptionLimiter::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: var(--surface-a);
-  opacity: 0.6;
 }
 </style>

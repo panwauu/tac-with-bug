@@ -4,7 +4,6 @@
       <WaitingGame
         :game="game"
         :active="true"
-        :isSub="subscriptionState.isSub()"
         @move-player="movePlayer"
         @remove-player="removePlayer"
         @ready-player="setPlayerReady"
@@ -41,11 +40,10 @@ import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast';
 const toast = useToast();
 import router from '@/router/index'
-import { injectStrict, SocketKey, SubscriptionStateKey } from '@/services/injections'
+import { injectStrict, SocketKey } from '@/services/injections'
 import { useWaitingStore } from '@/store/waiting'
 
 const waitingStore = useWaitingStore()
-const subscriptionState = injectStrict(SubscriptionStateKey);
 
 defineEmits(['closeGame', 'update:modalVisible', 'update:modalState'])
 const socket = injectStrict(SocketKey);
