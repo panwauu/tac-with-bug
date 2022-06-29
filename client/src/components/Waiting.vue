@@ -184,20 +184,20 @@ const nPlayersOptions = [
   { name: i18n.global.t('Waiting.WaitingGameCreator.player4Name'), value: 4 },
   { name: i18n.global.t('Waiting.WaitingGameCreator.player6Name'), value: 6 }
 ]
-let nPlayersSelection = ref<typeof nPlayersOptions[0] | null>(null)
+const nPlayersSelection = ref<typeof nPlayersOptions[0] | null>(null)
 
 const nTeamsOptions = [
   { name: i18n.global.t('Waiting.WaitingGameCreator.teams1Name'), value: 1 },
   { name: i18n.global.t('Waiting.WaitingGameCreator.teams2Name'), value: 2 },
   { name: i18n.global.t('Waiting.WaitingGameCreator.teams3Name'), value: 3 }
 ]
-let nTeamsSelection = ref<typeof nTeamsOptions[0] | null>(null)
+const nTeamsSelection = ref<typeof nTeamsOptions[0] | null>(null)
 
 const meisterOptions = [{ name: 'Meister', value: true }, { name: 'Normal', value: false }]
-let meisterSelection = ref<typeof meisterOptions[0] | null>(null)
+const meisterSelection = ref<typeof meisterOptions[0] | null>(null)
 
 const privateOptions = [{ name: 'Öffentlich', value: false }, { name: 'Privat', value: true }]
-let privateSelection = ref<typeof privateOptions[0] | null>(privateOptions[0])
+const privateSelection = ref<typeof privateOptions[0] | null>(privateOptions[0])
 
 const filteredWaitingGames = computed(() => waitingStore.games.filter((waitingGame) => {
   return (nPlayersSelection.value == null || waitingGame.nPlayers === nPlayersSelection.value.value) &&
@@ -206,7 +206,7 @@ const filteredWaitingGames = computed(() => waitingStore.games.filter((waitingGa
     (privateSelection.value == null || waitingGame.private === privateSelection.value.value)
 }))
 
-let gameCreatorVisible = ref(false)
+const gameCreatorVisible = ref(false)
 
 socket.on('waiting:startGame', startGameHandler);
 onUnmounted(() => {
@@ -235,7 +235,7 @@ function movePlayer(data: { gameID: number, username: string, steps: number }) {
 }
 
 function removePlayer(usernameToRemove: string) {
-  let confirmText = i18n.global.t(
+  const confirmText = i18n.global.t(
     usernameToRemove === username.value
       ? 'Waiting.removePlayerConfirmSelf'
       : 'Waiting.removePlayerConfirmOther'

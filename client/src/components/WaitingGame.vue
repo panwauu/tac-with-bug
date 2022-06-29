@@ -188,7 +188,7 @@ const emit = defineEmits<{
   (eventName: 'color-player', username: string, gameID: number, color: string): void
 }>()
 
-let opRef = ref<OverlayPanel | null>(null);
+const opRef = ref<OverlayPanel | null>(null);
 
 const colors = computed(() => {
   return [
