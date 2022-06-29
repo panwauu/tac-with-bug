@@ -236,4 +236,3 @@ async function getUserAgentAnalysis(pgPool: pg.Pool): Promise<userAgentAnalysisD
 
     return { deviceTypes, browserNames, osNames }
 }
-
