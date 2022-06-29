@@ -49,7 +49,7 @@
             <template #body="slotProps">
               <div class="teamContainer">
                 <div
-                  v-for="teamIndex in Math.floor(
+                  v-for="teamIndex in Math.ceil(
                     slotProps.data.team.length / 2
                   )"
                   :key="`team4-${teamIndex}`"
@@ -60,6 +60,7 @@
                     :username="slotProps.data.team[2 * teamIndex - 2]"
                   />
                   <PlayerWithPicture
+                    v-if="slotProps.data.team[2 * teamIndex - 1] != null"
                     :nameFirst="false"
                     :username="slotProps.data.team[2 * teamIndex - 1]"
                   />
@@ -93,7 +94,7 @@
             <template #body="slotProps">
               <div class="teamContainer">
                 <div
-                  v-for="teamIndex in Math.floor(
+                  v-for="teamIndex in Math.ceil(
                     slotProps.data.team.length / 2
                   )"
                   :key="`team4-${teamIndex}`"
@@ -104,6 +105,7 @@
                     :username="slotProps.data.team[2 * teamIndex - 2]"
                   />
                   <PlayerWithPicture
+                    v-if="slotProps.data.team[2 * teamIndex - 1] != null"
                     :nameFirst="false"
                     :username="slotProps.data.team[2 * teamIndex - 1]"
                   />
@@ -148,7 +150,7 @@ let loading = ref(false)
 let totalNumberCoop4 = ref(0)
 let firstCoop4 = ref(0)
 let dataCoop4 = ref([] as {
-  team: any,
+  team: string[],
   count: number
   index: number
   lastplayed: number
@@ -157,7 +159,7 @@ let loadingCoop4 = ref(false)
 let totalNumberCoop6 = ref(0)
 let firstCoop6 = ref(0)
 let dataCoop6 = ref([] as {
-  team: any,
+  team: string[],
   count: number
   index: number
   lastplayed: number
