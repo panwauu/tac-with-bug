@@ -280,10 +280,10 @@ nextTick(() => {
     const serverInfoStore = useServerInfoStore()
     messagesStore.initStore()
 
-    watch(() => waitingStore.ownGame, () => {
-        if (waitingStore.ownGame != null) {
-            messagesStore.addChannel(`w-${waitingStore.ownGame.id}`)
-            messagesStore.selectChat(true, `w-${waitingStore.ownGame.id}`)
+    watch(() => waitingStore.ownGame?.id, (newID, oldID) => {
+        if (newID != null && oldID == null) {
+            messagesStore.addChannel(`w-${newID.toString()}`)
+            messagesStore.selectChat(true, `w-${newID.toString()}`)
         } else {
             messagesStore.removeWaitingRoomChannels()
         }
