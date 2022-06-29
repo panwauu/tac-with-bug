@@ -40,7 +40,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
 
         try {
             if (socket.data.userID === undefined) {
-                logger.error('Event forbidden for unauthenticated user (tournament:leaveTournament)', { stack: new Error().stack })
+                logger.error('Event forbidden for unauthenticated user (tournament:private:create)', { stack: new Error().stack })
                 return cb({ status: 500, error: 'Unauth' })
             }
 
@@ -66,7 +66,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
 
         try {
             if (socket.data.userID === undefined) {
-                logger.error('Event forbidden for unauthenticated user (tournament:leaveTournament)', { stack: new Error().stack })
+                logger.error('Event forbidden for unauthenticated user (tournament:private:planAddPlayer)', { stack: new Error().stack })
                 return cb({ status: 500, error: 'Unauth' })
             }
 
@@ -89,7 +89,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             pushChangedPrivateTournament(newTournament.value)
             return cb({ status: 200, data: newTournament.value })
         } catch (err) {
-            logger.error('Error in tournament:private:addPlayer', err)
+            logger.error('Error in tournament:private:planAddPlayer', err)
             return cb({ status: 500, error: err })
         }
     })
@@ -104,7 +104,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
 
         try {
             if (socket.data.userID === undefined) {
-                logger.error('Event forbidden for unauthenticated user (tournament:leaveTournament)', { stack: new Error().stack })
+                logger.error('Event forbidden for unauthenticated user (tournament:private:planRemovePlayer)', { stack: new Error().stack })
                 return cb({ status: 500, error: 'Unauth' })
             }
 
@@ -126,7 +126,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             pushChangedPrivateTournament(newTournament.value)
             return cb({ status: 200, data: newTournament.value })
         } catch (err) {
-            logger.error('Error in tournament:private:addPlayer', err)
+            logger.error('Error in tournament:private:planRemovePlayer', err)
             return cb({ status: 500, error: err })
         }
     })
@@ -138,7 +138,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
 
         try {
             if (socket.data.userID === undefined) {
-                logger.error('Event forbidden for unauthenticated user (tournament:leaveTournament)', { stack: new Error().stack })
+                logger.error('Event forbidden for unauthenticated user (tournament:private:acceptParticipation)', { stack: new Error().stack })
                 return cb({ status: 500, error: 'Unauth' })
             }
 
@@ -155,7 +155,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             pushChangedPrivateTournament(newTournament.value)
             return cb({ status: 200, data: newTournament.value })
         } catch (err) {
-            logger.error('Error in tournament:private:addPlayer', err)
+            logger.error('Error in tournament:private:acceptParticipation', err)
             return cb({ status: 500, error: err })
         }
     })
@@ -167,7 +167,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
 
         try {
             if (socket.data.userID === undefined) {
-                logger.error('Event forbidden for unauthenticated user (tournament:leaveTournament)', { stack: new Error().stack })
+                logger.error('Event forbidden for unauthenticated user (tournament:private:declineParticipation)', { stack: new Error().stack })
                 return cb({ status: 500, error: 'Unauth' })
             }
 
@@ -184,7 +184,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             pushChangedPrivateTournament(newTournament.value)
             return cb({ status: 200, data: newTournament.value })
         } catch (err) {
-            logger.error('Error in tournament:private:addPlayer', err)
+            logger.error('Error in tournament:private:declineParticipation', err)
             return cb({ status: 500, error: err })
         }
     })
@@ -196,7 +196,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
 
         try {
             if (socket.data.userID === undefined) {
-                logger.error('Event forbidden for unauthenticated user (tournament:leaveTournament)', { stack: new Error().stack })
+                logger.error('Event forbidden for unauthenticated user (tournament:private:start)', { stack: new Error().stack })
                 return cb({ status: 500, error: 'Unauth' })
             }
 
@@ -212,7 +212,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             pushChangedPrivateTournament(newTournament.value)
             return cb({ status: 200, data: newTournament.value })
         } catch (err) {
-            logger.error('Error in tournament:private:addPlayer', err)
+            logger.error('Error in tournament:private:start', err)
             return cb({ status: 500, error: err })
         }
     })
@@ -224,7 +224,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
 
         try {
             if (socket.data.userID === undefined) {
-                logger.error('Event forbidden for unauthenticated user (tournament:leaveTournament)', { stack: new Error().stack })
+                logger.error('Event forbidden for unauthenticated user (tournament:private:abort)', { stack: new Error().stack })
                 return cb({ status: 500, error: 'Unauth' })
             }
 
@@ -240,7 +240,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             pushChangedPrivateTournament(newTournament.value)
             return cb({ status: 200, data: newTournament.value })
         } catch (err) {
-            logger.error('Error in tournament:private:addPlayer', err)
+            logger.error('Error in tournament:private:abort', err)
             return cb({ status: 500, error: err })
         }
     })
@@ -256,7 +256,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
 
         try {
             if (socket.data.userID === undefined) {
-                logger.error('Event forbidden for unauthenticated user (tournament:leaveTournament)', { stack: new Error().stack })
+                logger.error('Event forbidden for unauthenticated user (tournament:private:startGame)', { stack: new Error().stack })
                 return cb({ status: 500, error: 'Unauth' })
             }
 
@@ -281,7 +281,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             pushChangedPrivateTournament(newTournament.value)
             return cb({ status: 200, data: newTournament.value })
         } catch (err) {
-            logger.error('Error in tournament:private:addPlayer', err)
+            logger.error('Error in tournament:private:startGame', err)
             return cb({ status: 500, error: err })
         }
     })

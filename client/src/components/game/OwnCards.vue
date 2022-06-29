@@ -60,7 +60,7 @@ function clickCard(event: Event) {
       props.own
     )
   ) {
-    let id = parseInt((event.target as HTMLElement).id);
+    const id = parseInt((event.target as HTMLElement).id);
     props.cardsState.setSelectedCard(id);
   }
 }

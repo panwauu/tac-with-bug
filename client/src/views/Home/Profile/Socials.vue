@@ -18,9 +18,9 @@ import router from '@/router/index';
 
 const props = defineProps<{ username: string }>();
 
-let loading = ref(true)
-let networkData = ref({ edges: [] as any[], nodes: [] as any[] })
-let peopleData = ref({})
+const loading = ref(true)
+const networkData = ref({ edges: [] as any[], nodes: [] as any[] })
+const peopleData = ref({})
 
 updateData()
 watch(() => props.username, () => updateData())

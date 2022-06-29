@@ -147,16 +147,16 @@ const toast = useToast();
 const socket = injectStrict(SocketKey);
 const subscriptionState = useSubscription(socket);
 
-let nSubscriptions = ref(0)
+const nSubscriptions = ref(0)
 const planModel = [
   { name: i18n.global.t('Subscription.buttonPlanMonthly'), value: 'MONTHLY' },
   { name: i18n.global.t('Subscription.buttonPlanQuaterly'), value: 'QUATERLY' },
   { name: i18n.global.t('Subscription.buttonPlanYearly'), value: 'YEARLY' },
 ]
-let selectedPlan = ref(planModel[2])
+const selectedPlan = ref(planModel[2])
 
-let button = ref<PayPalButtonsComponent | undefined>()
-let paypal = ref(loadScript({
+const button = ref<PayPalButtonsComponent | undefined>()
+const paypal = ref(loadScript({
   'client-id': import.meta.env.VITE_PAYPAL_CLIENT_ID as string,
   intent: 'subscription',
   vault: true,

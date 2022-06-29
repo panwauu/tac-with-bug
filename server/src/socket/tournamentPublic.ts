@@ -55,7 +55,7 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
             socket.emit('tournament:toast:you-created-a-team', dataForClient)
             getSocketsOfPlayerIDs(nsp, teamToRegister.playerids.filter((_, i) => teamToRegister.activated[i] === false)).forEach((s) => s.emit('tournament:toast:invited-to-a-team', dataForClient))
         } catch (err) {
-            logger.error('Tournament Socket Error', err)
+            logger.error('Error in tournament:public:registerTeam', err)
         }
     });
 
@@ -96,7 +96,7 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
                 getSocketsOfPlayerIDs(nsp, tournament.registerTeams.map((t) => t.playerids).flat()).forEach((s) => s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: tournament.title }))
             }
         } catch (err) {
-            logger.error('Tournament Socket Error', err)
+            logger.error('Error in tournament:public:joinTeam', err)
         }
     });
 
@@ -133,7 +133,7 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
                 getSocketsOfPlayerIDs(nsp, tournament.registerTeams.map((t) => t.playerids).flat()).forEach((s) => s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: tournament.title }))
             }
         } catch (err) {
-            logger.error('Tournament Socket Error', err)
+            logger.error('Error in tournament:public:activateUser', err)
         }
     });
 
@@ -156,7 +156,7 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
             socket.emit('tournament:toast:you-left-tournament', dataForClient)
             getSocketsOfPlayerIDs(nsp, registerTeamForNotification.playerids).forEach((s) => s.emit('tournament:toast:partner-left-tournament', dataForClient))
         } catch (err) {
-            logger.error('Tournament Socket Error', err)
+            logger.error('Error in tournament:public:leaveTournament', err)
         }
     });
 }
