@@ -41,7 +41,9 @@ export async function queryLeaderboardCoop(sqlClient: pg.Pool, limit: number, of
             id, 
             lastplayed, 
             count(*) OVER() AS full_count, 
-            (SELECT SUM(cards) FROM (SELECT CAST(jsonb_extract_path(value, 'cards', 'total', '0') AS INTEGER) as cards FROM jsonb_array_elements(game->'statistic')) as tcards) as cards 
+            CAST(
+                (SELECT SUM(cards) FROM (SELECT CAST(jsonb_extract_path(value, 'cards', 'total', '0') AS INTEGER) as cards FROM jsonb_array_elements(game->'statistic')) as tcards
+            ) as INTEGER) as cards 
         FROM games 
         WHERE CAST(game->>'coop' AS BOOLEAN) = true AND status='won' AND n_players = $3 AND created >= $4 AND created <= $5
         ORDER BY cards LIMIT $1 OFFSET $2
