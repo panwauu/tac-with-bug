@@ -115,7 +115,6 @@ import CountdownTimer from '@/components/CountdownTimer.vue';
 import SubscriptionTag from '@/components/SubscriptionTag.vue';
 import YinYang from '@/components/icons/YinYang.vue';
 import Luck from '@/components/icons/LuckSymbol.vue';
-import Crown from '@/components/icons/CrownSymbol.vue';
 import SelectButton from 'primevue/selectbutton';
 import Message from 'primevue/message';
 
