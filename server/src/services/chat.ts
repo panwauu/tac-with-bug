@@ -76,7 +76,7 @@ export async function insertChatMessage(pgPool: pg.Pool, sender_user_id: number,
 }
 
 export async function markChatAsRead(pgPool: pg.Pool, userid: number, chatid: number): Promise<void> {
-    await pgPool.query('DELETE FROM chat_messages_unread USING users_to_chats WHERE users_to_chats.userid = $1 AND users_to_chats.chatid = $2;', [userid, chatid])
+    await pgPool.query('DELETE FROM chat_messages_unread USING users_to_chats WHERE chat_messages_unread.users_to_chats_id = users_to_chats.id AND users_to_chats.userid = $1 AND users_to_chats.chatid = $2;', [userid, chatid])
 }
 
 export type loadChatError = 'USER_NOT_PART_OF_CHAT'
