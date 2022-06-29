@@ -19,20 +19,6 @@
             </div>
           </div>
           <div class="FeatureElement">
-            <img class="FeatureIcon" src="@/assets/balls/blackWhite.png">
-            <div class="FeatureText">{{ $t("Subscription.featureBallsColor") }}</div>
-          </div>
-          <div class="FeatureElement">
-            <i class="pi pi-chart-bar FeatureIcon" style="font-size: 1.6rem" />
-            <div class="FeatureText">{{ $t("Subscription.featureStats") }}</div>
-          </div>
-          <div class="FeatureElement">
-            <div class="FeatureIcon" style="width: 30px">
-              <Crown :rank="2" />
-            </div>
-            <div class="FeatureText">{{ $t("Subscription.tournamentTeam") }}</div>
-          </div>
-          <div class="FeatureElement">
             <Luck class="FeatureIcon" />
             <div class="FeatureText">{{ $t("Subscription.featureLuck") }}</div>
           </div>
