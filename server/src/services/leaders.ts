@@ -30,7 +30,7 @@ export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, 
 
 export interface coopBoardType {
     nGames: number,
-    team: any[],
+    team: string[][],
     count: number[],
     lastplayed: number[],
 }
