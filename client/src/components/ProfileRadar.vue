@@ -16,9 +16,9 @@ const props = defineProps<{
   username: string,
 }>();
 
-let profileRadarChart = ref<any | null>(null)
+const profileRadarChart = ref<any | null>(null)
 
-let chartData = ref({
+const chartData = ref({
   labels: [
     i18n.global.t('Profile.success'),
     i18n.global.t('Profile.generosity'),

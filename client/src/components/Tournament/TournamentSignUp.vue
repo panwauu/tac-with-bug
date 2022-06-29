@@ -92,10 +92,10 @@ const signUpAloneModel = ref([
   }
 ])
 
-let displaySignUpTeam = ref(false)
-let signUpAlone = ref<null | { value: boolean, name: string }>(null)
-let signUpPartner = ref('')
-let signUpTeamName = ref('')
+const displaySignUpTeam = ref(false)
+const signUpAlone = ref<null | { value: boolean, name: string }>(null)
+const signUpPartner = ref('')
+const signUpTeamName = ref('')
 
 function startTeamSignUp() {
   signUpAlone.value = null;

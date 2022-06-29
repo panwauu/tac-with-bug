@@ -189,8 +189,8 @@ const style = [
   },
 ]
 
-let cy: null | any = ref(null)
-let selectedUser: null | any = ref(null)
+const cy: null | any = ref(null)
+const selectedUser: null | any = ref(null)
 
 const resetGraph = () => {
   if (cy.value != null && props.networkData != null) {

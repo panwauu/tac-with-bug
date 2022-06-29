@@ -25,8 +25,8 @@ import { initTournamentWinners } from './services/useTournamentWinners';
 const toast = useToast()
 
 const socket = injectStrict(SocketKey);
-let gamesSummary = useGamesSummary(socket);
-let friendsState = userFriends(socket);
+const gamesSummary = useGamesSummary(socket);
+const friendsState = userFriends(socket);
 
 provide(GamesSummaryKey, gamesSummary)
 provide(FriendsStateKey, friendsState)
