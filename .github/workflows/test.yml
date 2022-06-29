@@ -1,5 +1,3 @@
-# Keep in sync with deploy.ps1
-
 name: Test PR
 
 on: pull_request
