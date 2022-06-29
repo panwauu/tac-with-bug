@@ -11,7 +11,7 @@ import Chart from 'primevue/chart';
 import { i18n } from '@/services/i18n';
 
 const props = defineProps<{ data: gamesDistributionData, username: string }>();
-let userGamesDoughnutChart = ref<null | Chart>();
+const userGamesDoughnutChart = ref<null | Chart>();
 
 const chartData = ref({
   labels: [
