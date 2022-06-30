@@ -26,7 +26,7 @@ export const useMessagesStore = defineStore('messages', {
                 icon: 'pi pi-clock',
                 children: state.chats.sort((a, b) => Date.parse(b.lastMessage) - Date.parse(a.lastMessage)).slice(0, 5).map((o) => {
                     return {
-                        label: o.groupTitle ?? o.players?.filter((p) => p != username.value)[0] ?? i18n.global.t('Chat.deletedPlayer'),
+                        label: o.groupTitle ?? o.players?.filter((p) => p !== username.value)[0] ?? i18n.global.t('Chat.deletedPlayer'),
                         id: o.chatid,
                         created: o.created,
                         numberOfUnread: o.numberOfUnread
@@ -41,7 +41,7 @@ export const useMessagesStore = defineStore('messages', {
                 expanded: state.expandedChats[0],
                 children: state.chats.filter((o) => !o.groupChat).sort((a, b) => Date.parse(b.lastMessage) - Date.parse(a.lastMessage)).map((o) => {
                     return {
-                        label: o.players?.filter((p) => p != username.value)[0] ?? i18n.global.t('Chat.deletedPlayer'),
+                        label: o.players?.filter((p) => p !== username.value)[0] ?? i18n.global.t('Chat.deletedPlayer'),
                         id: o.chatid,
                         created: o.created,
                         numberOfUnread: o.numberOfUnread
@@ -82,7 +82,7 @@ export const useMessagesStore = defineStore('messages', {
             if (state.selectedChat.type == 'channel') { return state.selectedChat.id }
             const chat = state.chats.find(c => c.chatid === parseInt(state.selectedChat.id))
             if (chat?.groupChat) { return chat.groupTitle }
-            return chat?.players?.find(p => p != username.value) ?? i18n.global.t('Chat.deletedPlayer')
+            return chat?.players?.find(p => p !== username.value) ?? i18n.global.t('Chat.deletedPlayer')
         },
         getChatIcon: (state) => {
             if (state.selectedChat.type == 'channel') { return 'hashtag' }
@@ -96,21 +96,21 @@ export const useMessagesStore = defineStore('messages', {
         notificationsChat: (state) => { return state.chats.reduce((p, c) => p += c.numberOfUnread, 0) },
         notificationsChannels: (state) => { return state.channels.reduce((p, c) => p += c.missedMessages, 0) },
         mayNotUseChat: (state) => {
-            if (state.selectedChat.type != 'chat' || username.value == null) { return false }
+            if (state.selectedChat.type !== 'chat' || username.value == null) { return false }
 
             const chat = state.chats.find(c => c.chatid === parseInt(state.selectedChat.id))
             if (chat == null) { return false }
 
             const infoStore = useServerInfoStore()
             const bannedPlayers = infoStore.runningGames.filter((g) => g.teams.flat().includes(username.value ?? ''))
-                .map((g) => g.teams.flat()).flat().filter((p) => p != username.value)
+                .map((g) => g.teams.flat()).flat().filter((p) => p !== username.value)
 
             return bannedPlayers.some((p) => chat.players.includes(p))
         },
         getDateGroupedChatMessages: (state) => {
             const messages: { date: string, messages: chatMessage[] }[] = []
             state.chatMessages.forEach((m) => {
-                if (messages.length === 0 || new Date(messages[messages.length - 1].date).toDateString() != new Date(m.created).toDateString()) {
+                if (messages.length === 0 || new Date(messages[messages.length - 1].date).toDateString() !== new Date(m.created).toDateString()) {
                     messages.push({ date: m.created, messages: [m] })
                 } else {
                     messages[messages.length - 1].messages.push(m)
@@ -167,7 +167,7 @@ export const useMessagesStore = defineStore('messages', {
             const channelObj = this.channels.find((c) => c.id === channel)
             const isEmojiInGame = messages.length > 0 && (isEmoji(messages[messages.length - 1].body) && router.currentRoute.value.query.gameID != null && channel === `g-${router.currentRoute.value.query.gameID}`)
             const toCurrentOpenChannel = this.selectedChat.type === 'channel' && channel === this.selectedChat.id && chatStore.displayChat
-            if (channelObj != null && updateFromServer && messages[messages.length - 1].sender != username.value && !isEmojiInGame && !toCurrentOpenChannel) {
+            if (channelObj != null && updateFromServer && messages[messages.length - 1].sender !== username.value && !isEmojiInGame && !toCurrentOpenChannel) {
                 channelObj.missedMessages += 1
             }
 
@@ -227,7 +227,7 @@ export const useMessagesStore = defineStore('messages', {
         addChannel(channel: string, endDate?: number) { if (this.channels.find((c) => c.id === channel) == null) { this.channels.push({ id: channel, missedMessages: 0, endDate: endDate ?? null }) } },
         removeGameChannels() {
             if (this.channels.find((c) => c.id.substring(0, 2) === 'g-') != null) {
-                this.channels = this.channels.filter((c) => c.id.substring(0, 2) != 'g-')
+                this.channels = this.channels.filter((c) => c.id.substring(0, 2) !== 'g-')
             }
             if (this.selectedChat.type === 'channel' && this.selectedChat.id.substring(0, 2) === 'g-') {
                 this.selectChat(true, 'general')
@@ -242,19 +242,19 @@ export const useMessagesStore = defineStore('messages', {
             newRunningGameIDs.forEach((id) => { this.addChannel(`g-${id}`) })
 
             const serverInfoStore = useServerInfoStore()
-            if (oldRouteGameID != null && oldRouteGameID != newRouteGameID && !serverInfoStore.runningGames.filter((g) => g.teams.flat().includes(username.value ?? '-')).map((g) => g.id.toString()).includes(oldRouteGameID)) {
+            if (oldRouteGameID != null && oldRouteGameID !== newRouteGameID && !serverInfoStore.runningGames.filter((g) => g.teams.flat().includes(username.value ?? '-')).map((g) => g.id.toString()).includes(oldRouteGameID)) {
                 const channelIndex = this.channels.findIndex((c) => c.id === `g-${oldRouteGameID}`)
-                if (channelIndex != -1 && this.channels[channelIndex].endDate == null) { this.channels.splice(channelIndex, 1) }
+                if (channelIndex !== -1 && this.channels[channelIndex].endDate == null) { this.channels.splice(channelIndex, 1) }
             }
-            if (newRouteGameID != null && newRouteGameID != oldRouteGameID) {
+            if (newRouteGameID != null && newRouteGameID !== oldRouteGameID) {
                 this.addChannel(`g-${newRouteGameID}`)
             }
 
-            this.channels = this.channels.filter((c) => c.id.substring(0, 2) != 'g-' || c.endDate == null || c.endDate > new Date().getTime())
+            this.channels = this.channels.filter((c) => c.id.substring(0, 2) !== 'g-' || c.endDate == null || c.endDate > new Date().getTime())
         },
         removeWaitingRoomChannels() {
             if (this.channels.find((c) => c.id.substring(0, 2) === 'w-') != null) {
-                this.channels = this.channels.filter((c) => c.id.substring(0, 2) != 'w-')
+                this.channels = this.channels.filter((c) => c.id.substring(0, 2) !== 'w-')
             }
             if (this.selectedChat.type === 'channel' && this.selectedChat.id.substring(0, 2) === 'w-') {
                 this.selectChat(true, 'general')

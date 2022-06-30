@@ -35,13 +35,13 @@ export function userFriends(socket: GeneralSocketC): friendsState {
     const friendsState: friendsState = reactive<friendsStateNonReactive>({
         friends: [],
         resetFriends: () => { friendsState.friends = [] },
-        setFriends: (friends) => { friendsState.friends = friends.sort((a) => { if (a.status != 'done') { return -1 } return 1 }) },
+        setFriends: (friends) => { friendsState.friends = friends.sort((a) => { if (a.status !== 'done') { return -1 } return 1 }) },
         friendshipStatus: (username) => {
             const friendship = friendsState.friends.find((f) => f.username === username)
             if (friendship === undefined) { return 'none' }
             else { return friendship.status }
         },
-        numberOpenRequests: computed(() => { return friendsState.friends.filter((f) => f.status != 'done' && f.status != 'to').length }),
+        numberOpenRequests: computed(() => { return friendsState.friends.filter((f) => f.status !== 'done' && f.status !== 'to').length }),
         request: async (username) => {
             const data = await socket.emitWithAck(1000, 'friends:request', username)
             if (data.status === 200) {

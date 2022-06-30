@@ -68,7 +68,7 @@ export class TournamentsController extends Controller {
         if (userIDToReplace === undefined || userIDOfReplacement === undefined) { return usernamesNotFound(400, 'Usernames not found') }
 
         const updateRes = await request.app.locals.sqlClient.query('UPDATE users_to_tournaments SET userid = $2 WHERE userid = $1 AND tournamentid = $3;', [userIDToReplace, userIDOfReplacement, requestBody.tournamentID])
-        if (updateRes.rowCount != 1) { return usernamesNotFound(400, 'Invalid input combination') }
+        if (updateRes.rowCount !== 1) { return usernamesNotFound(400, 'Invalid input combination') }
     }
 
     /**
@@ -82,7 +82,7 @@ export class TournamentsController extends Controller {
         @Res() usernamesNotFound: TsoaResponse<400, string>,
         @Res() serverError: TsoaResponse<500, { message: string, details?: any }>
     ): Promise<void> {
-        if ((Math.log(requestBody.nTeams) / Math.log(2)) % 1 != 0) { return usernamesNotFound(400, 'nTeams not power of two') }
+        if ((Math.log(requestBody.nTeams) / Math.log(2)) % 1 !== 0) { return usernamesNotFound(400, 'nTeams not power of two') }
 
         const tournament = await getPublicTournamentByID(request.app.locals.sqlClient, requestBody.tournamentID);
         if (tournament.isErr()) { return serverError(500, { message: tournament.error }) }
@@ -90,6 +90,6 @@ export class TournamentsController extends Controller {
         await endSignupIfComplete(request.app.locals.sqlClient, tournament.value)
 
         const updateRes = await request.app.locals.sqlClient.query('UPDATE tournaments SET n_teams = $1 WHERE (status = \'signUp\' OR  status = \'signUpWaiting\') AND id = $2;', [requestBody.nTeams, requestBody.tournamentID])
-        if (updateRes.rowCount != 1) { return usernamesNotFound(400, 'Could not Update Database') }
+        if (updateRes.rowCount !== 1) { return usernamesNotFound(400, 'Could not Update Database') }
     }
 }

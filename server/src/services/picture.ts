@@ -20,7 +20,7 @@ type queryProfilePictureErrors = 'NO_USER_FOR_PROFILEPICTURE_FOUND';
 export async function queryProfilePicture(sqlClient: pg.Pool, identifier: userIdentifier): Promise<Result<string, queryProfilePictureErrors>> {
     const userIdentifier = resolveUserIdentifier(identifier)
     const res = await sqlClient.query(`SELECT profilepic FROM users WHERE ${userIdentifier.key} = $1;`, [userIdentifier.value])
-    if (res.rowCount != 1) { return err('NO_USER_FOR_PROFILEPICTURE_FOUND') }
+    if (res.rowCount !== 1) { return err('NO_USER_FOR_PROFILEPICTURE_FOUND') }
     return ok(res.rows[0].profilepic.toString('base64'))
 }
 

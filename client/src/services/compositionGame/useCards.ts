@@ -98,7 +98,7 @@ export function useCards(ballsState: ballsStateType, miscState: miscStateType): 
             if (cardsState.selectedCard === -1) { return [] }
             const textAction = cardsState.cards[cardsState.selectedCard].textAction
             if (textAction === null || textAction === undefined || textAction === '') { return [] }
-            return textAction.split('+').filter(element => element != '')
+            return textAction.split('+').filter(element => element !== '')
         },
         getPossiblePositions: () => {
             if (cardsState.selectedCard === -1 || ballsState.selectedBall === -1) { return [] }
@@ -170,7 +170,7 @@ export function useCards(ballsState: ballsStateType, miscState: miscStateType): 
                         cardsState.cards.push({ title: '', possible: false, ballActions: {}, textAction: '', key: '-1', style: '' })
                     }
 
-                    if (cards[i].title != cardsState.cards[i].title) {
+                    if (cards[i].title !== cardsState.cards[i].title) {
                         if (!miscState.teufelFlag || !miscState.players[miscState.gamePlayer].active) {
                             cardsState.cards[i].key = cardKeyNumber.toString()
                             cardKeyNumber++
@@ -191,11 +191,11 @@ export function useCards(ballsState: ballsStateType, miscState: miscStateType): 
 
             // Handle preselected Card - Either as 7 is not finished or if already selected or if only one possible
             const possibleCardIndex = cardsState.cards.findIndex((c) => c.possible)
-            if (possibleCardIndex != -1 && cardsState.cards.filter((c) => c.possible).length === 1 && cardsState.selectedCard === -1) {
+            if (possibleCardIndex !== -1 && cardsState.cards.filter((c) => c.possible).length === 1 && cardsState.selectedCard === -1) {
                 cardsState.selectedCard = possibleCardIndex
             }
 
-            if (cardsState.selectedCard != -1) {
+            if (cardsState.selectedCard !== -1) {
                 if (cardsState.selectedCard < cardsState.cards.length && cardsState.selectedCard >= 0) {
                     ballsState.setPlayableBalls(cardsState.cards[cardsState.selectedCard].ballActions)
                 } else {

@@ -38,7 +38,7 @@ export function createCardWithMove(cardTitle: tCard.cardType, balls: tBall.balls
     }
 
     if (card.title === 'narr') {
-        if (cards.players.filter((_, i) => i != activePlayer).some((cards) => cards.length > 0)) {
+        if (cards.players.filter((_, i) => i !== activePlayer).some((cards) => cards.length > 0)) {
             card.textAction = 'narr'
             card.possible = true
         }
@@ -65,15 +65,15 @@ export function getPlayablePlayers(balls: tBall.ballsType, player: number, teams
     teams.forEach(team => {
         if (team.includes(player)) {
             playablePlayers = team
-                .filter(teamPlayer => teamPlayer != player)
-                .filter((player) => balls.filter((_, nBall) => ballPlayer(nBall) === player).some((ball) => ball.state != 'locked'))
+                .filter(teamPlayer => teamPlayer !== player)
+                .filter((player) => balls.filter((_, nBall) => ballPlayer(nBall) === player).some((ball) => ball.state !== 'locked'))
         }
     })
 
     if (coop === true &&
         balls.filter((_, index) => playablePlayers.includes(ballPlayer(index)))
             .every(ball => ball.state === 'locked')) {
-        playablePlayers = [...new Set(balls.filter((ball) => ball.state != 'locked').map((ball) => ball.player))]
+        playablePlayers = [...new Set(balls.filter((ball) => ball.state !== 'locked').map((ball) => ball.player))]
     }
 
     if (sevenChosenPlayer != null && playablePlayers.includes(sevenChosenPlayer)) {
@@ -174,29 +174,29 @@ export function getSevenPositions(balls: tBall.ballsType, nBall: number, remaini
         endNodes = endNodes.filter(position => (position < ballGoal(0, balls)) || (!(balls.some(ball => ball.position === position))))
 
         // Remove starting position of ball
-        endNodes = endNodes.filter(position => position != balls[nBall].position)
+        endNodes = endNodes.filter(position => position !== balls[nBall].position)
 
         // Remove first goal position if 7 is not done and no other balls movable
-        if (move + 1 != remainingMoves // Not last move
+        if (move + 1 !== remainingMoves // Not last move
             // Last ball of a certain player
-            && balls.filter((_, ballIndex) => { return (ballPlayer(ballIndex) === ballPlayer(nBall) && ballIndex != nBall) }).every((ball) => { return ballInLastGoalPosition(balls, balls.findIndex((b) => b.position === ball.position), ball.position) })
+            && balls.filter((_, ballIndex) => { return (ballPlayer(ballIndex) === ballPlayer(nBall) && ballIndex !== nBall) }).every((ball) => { return ballInLastGoalPosition(balls, balls.findIndex((b) => b.position === ball.position), ball.position) })
             && endNodes.some(position => position === ballGoal(nBall, balls))) { // last Goal Position is contained in endNodes
             const pathToGoal = sevenReconstructPath(balls, nBall, ballGoal(nBall, balls))
 
             const aux = teams.find(team => team.includes(balls[nBall].player))
             if (aux === undefined) { throw new Error('Could not find Team') }
             const ownTeam = aux
-            let otherTeamBalls = balls.filter((ball, ballIterator) => { return (ballPlayer(nBall) != ballPlayer(ballIterator) && ownTeam.includes(ball.player)) })
+            let otherTeamBalls = balls.filter((ball, ballIterator) => { return (ballPlayer(nBall) !== ballPlayer(ballIterator) && ownTeam.includes(ball.player)) })
 
             if (coop === true && otherTeamBalls.every((ball) => (ball.state === 'locked' || ball.state === 'goal'))) {
-                otherTeamBalls = balls.filter((_, ballIterator) => (ballPlayer(nBall) != ballPlayer(ballIterator) && !ownTeam.includes(ballPlayer(ballIterator))))
+                otherTeamBalls = balls.filter((_, ballIterator) => (ballPlayer(nBall) !== ballPlayer(ballIterator) && !ownTeam.includes(ballPlayer(ballIterator))))
             }
 
             // remove all other balls of the team that would be remove during the move
             otherTeamBalls = otherTeamBalls.filter((ball) => !pathToGoal.includes(ball.position))
 
             if (otherTeamBalls.every((ball) => { return (ball.state === 'locked' || ball.state === 'house') })) {
-                endNodes = endNodes.filter(position => position != ballGoal(nBall, balls))
+                endNodes = endNodes.filter(position => position !== ballGoal(nBall, balls))
             }
         }
 

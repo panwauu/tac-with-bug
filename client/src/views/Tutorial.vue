@@ -164,10 +164,13 @@ function checkDone() {
   }
 
   if (goal?.selectedCard != null && cardsState.selectedCard !== goal?.selectedCard) {
+    console.log(typeof goal?.selectedCard)
+    console.log(typeof cardsState.selectedCard)
+    console.log("Should not be")
     return false;
   }
 
-  if (goal?.balls !== null && !matchAnyArrayOfObject(ballsState.balls, goal.balls)) {
+  if (goal?.balls != null && !matchAnyArrayOfObject(ballsState.balls, goal.balls)) {
     return false;
   }
 

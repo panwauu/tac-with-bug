@@ -83,10 +83,10 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
                 const dataForClient = { registerTeam: registerTeam, tournamentTitle: tournament.title, player: user.value.username }
                 if (registerTeam.activated.every((a) => a === true)) {
                     socket.emit('tournament:toast:you-joined-team-complete', dataForClient)
-                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id != socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-joined-team-complete', dataForClient))
+                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id !== socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-joined-team-complete', dataForClient))
                 } else {
                     socket.emit('tournament:toast:you-joined-team-incomplete', dataForClient)
-                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id != socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-joined-team-incomplete', dataForClient))
+                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id !== socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-joined-team-incomplete', dataForClient))
                 }
             }
 
@@ -120,10 +120,10 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
                 const dataForClient = { registerTeam: registerTeam, tournamentTitle: tournament.title, player: user.value.username }
                 if (registerTeam.activated.every((a) => a === true)) {
                     socket.emit('tournament:toast:you-activated-complete', dataForClient)
-                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id != socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-activated-team-complete', dataForClient))
+                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id !== socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-activated-team-complete', dataForClient))
                 } else {
                     socket.emit('tournament:toast:you-activated-incomplete', dataForClient)
-                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id != socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-activated-team-incomplete', dataForClient))
+                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id !== socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-activated-team-incomplete', dataForClient))
                 }
             }
 
@@ -192,7 +192,7 @@ function getSocketsOfPlayerIDs(nsp: GeneralNamespace, userIDs: number[]) {
 }
 
 async function sendMailToUnactivatedPlayer(sqlClient: pg.Pool, players: string[], teamName: string, username: string) {
-    const playersForMail = players.filter((p) => p != username)
+    const playersForMail = players.filter((p) => p !== username)
 
     playersForMail.forEach(async (player) => {
         const user = await getUser(sqlClient, { username: player })

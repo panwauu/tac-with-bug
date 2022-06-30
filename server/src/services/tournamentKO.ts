@@ -54,7 +54,7 @@ function addScoreAndReturnChangedFlag(game: gameForPlay, tournament: publicTourn
         score[tournamentTI] += count;
     })
 
-    if (score.some((s, i) => s != tournament.data.brackets[pos[0]][pos[1]].score[i])) {
+    if (score.some((s, i) => s !== tournament.data.brackets[pos[0]][pos[1]].score[i])) {
         tournament.data.brackets[pos[0]][pos[1]].score = score
         return true;
     }
@@ -134,10 +134,10 @@ export function evaluateGameWinnerAndReturnEndedFlag(game: gameForPlay, tourname
     }
 
     if (pos.value[0] === tournament.data.brackets.length - 2) {
-        const looser = tournament.data.brackets[pos.value[0]][pos.value[1]].teams.find((t) => t != winner.value)
+        const looser = tournament.data.brackets[pos.value[0]][pos.value[1]].teams.find((t) => t !== winner.value)
         if (looser === undefined) { return err('LOOSER_COULD_NOT_BE_FOUND') }
         tournament.data.brackets[pos.value[0] + 1][Math.floor(pos.value[1] / 2) + 1].teams[pos.value[1] % 2] = looser
     }
 
-    return ok(tournament.data.brackets[tournament.data.brackets.length - 1].every((m) => m.winner != -1))
+    return ok(tournament.data.brackets[tournament.data.brackets.length - 1].every((m) => m.winner !== -1))
 }

@@ -24,7 +24,7 @@ export function generateIcal(tournament: publicTournament) {
 }
 
 function postgresIntervalToMilliseconds(interval: string) {
-    if (typeof interval != 'string' || interval.length != 5 || interval.slice(2, 3) != ':') { throw new Error('Cannot parse Postgres Interval') }
+    if (typeof interval !== 'string' || interval.length !== 5 || interval.slice(2, 3) !== ':') { throw new Error('Cannot parse Postgres Interval') }
 
     const hours = parseInt(interval.slice(0, 2))
     const minutes = parseInt(interval.slice(3, 5))

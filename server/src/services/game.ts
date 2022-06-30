@@ -57,7 +57,7 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
 
 export async function getGame(sqlClient: pg.Pool, gameID: number) {
     const gameArray = await queryGamesByID(sqlClient, [gameID])
-    if (gameArray.length != 1) { throw new Error('GameID does not exist'); }
+    if (gameArray.length !== 1) { throw new Error('GameID does not exist'); }
     return gameArray[0]
 }
 
@@ -94,7 +94,7 @@ export async function createGame(sqlClient: pg.Pool, teamsParam: number, playerI
     const values = [playerIDs.length, teams, newGame.getJSON(), publicTournamentId, JSON.stringify(colors.slice(0, playerIDs.length)), privateTournamentId]
     const query = 'INSERT INTO games (status, n_players, n_teams, game, public_tournament_id, colors, private_tournament_id) VALUES (\'running\', $1, $2, $3, $4, $5, $6) RETURNING id;'
     const createGameRes = await sqlClient.query(query, values).then((res) => { captureMove(sqlClient, res.rows[0].id, ['init', playerIDs.length, teams, meisterVersion, coop], newGame); return res })
-    if (createGameRes.rowCount != 1) { throw new Error('Could not create Game') }
+    if (createGameRes.rowCount !== 1) { throw new Error('Could not create Game') }
 
     const userToGameQuery = `
         INSERT INTO users_to_games (userid, gameid, player_index) VALUES 
@@ -234,7 +234,7 @@ function gamesSort(sortField: string, sortOrder: number) {
 
 export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: moveType, gamePlayer: number, gameID: number) {
     const game = await getGame(sqlClient, gameID)
-    if (!game.game.checkMove(postMove) || (postMove != 'dealCards' && postMove[0] != gamePlayer)) {
+    if (!game.game.checkMove(postMove) || (postMove !== 'dealCards' && postMove[0] !== gamePlayer)) {
         throw new Error('Player not allowed to play')
     }
     if (game.status !== 'running') {

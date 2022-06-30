@@ -18,7 +18,7 @@ export async function getUser(sqlClient: pg.Pool, identifier: userIdentifier): P
     const queryIdent = resolveUserIdentifier(identifier, 1)
 
     const res = await sqlClient.query(`SELECT id, email, username, password, token, activated, locale, color_blindness_flag, lastlogin, registered, user_description, game_default_position FROM users WHERE ${queryIdent.sql};`, [queryIdent.value])
-    if (res.rowCount != 1) { return err('USER_NOT_FOUND_IN_DB') }
+    if (res.rowCount !== 1) { return err('USER_NOT_FOUND_IN_DB') }
     return ok({
         id: res.rows[0].id,
         email: res.rows[0].email,

@@ -1,7 +1,7 @@
 <template>
   <h2>Tutorials</h2>
   <div v-for="(data, index) in progressInEachTutorial" :key="`TutorialWidget-${index}`">
-    <Divider v-if="index != 0" />
+    <Divider v-if="index !== 0" />
     <div style="display: flex; justify-content: space-between;">
       <div>{{ $t(`Tutorial.${index}.title`) }}</div>
       <div>{{ data[0] }}/{{ data[1] }}</div>
