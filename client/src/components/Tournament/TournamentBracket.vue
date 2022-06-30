@@ -41,8 +41,8 @@
             >
               <div
                 v-if="
-                  listIndex != 0 &&
-                    listIndex != tournament.data.brackets.length - 1
+                  listIndex !== 0 &&
+                    listIndex !== tournament.data.brackets.length - 1
                 "
                 class="bracket-connector-outer"
               >
@@ -53,7 +53,7 @@
               </div>
               <div class="bracket-match">
                 <Button
-                  v-if="match.gameID != -1 && match.winner === -1"
+                  v-if="match.gameID !== -1 && match.winner === -1"
                   icon="pi pi-eye"
                   :label="$t('Game.toViewerButton')"
                   @click="
@@ -86,16 +86,16 @@
                   class="bracket-match-team"
                 >
                   <div
-                    v-if="teamIndex != -1"
+                    v-if="teamIndex !== -1"
                     class="bracket-match-team-tag"
                   >{{ tournament.teams[teamIndex]?.name ?? 'Missing' }}</div>
                   <div
                     :class="[
                       'bracket-match-team-body',
-                      match.winner === teamIndex && match.winner != -1
+                      match.winner === teamIndex && match.winner !== -1
                         ? 'bracket-match-team-body-won'
                         : '',
-                      match.winner != teamIndex && match.winner != -1
+                      match.winner !== teamIndex && match.winner !== -1
                         ? 'bracket-match-team-body-lost'
                         : '',
                       match.winner === -1 && !match.teams.every((t) => t === -1)
@@ -103,7 +103,7 @@
                         : '',
                     ]"
                   >
-                    <div v-if="teamIndex != -1" class="bracket-match-team-players">
+                    <div v-if="teamIndex !== -1" class="bracket-match-team-players">
                       <PlayerWithPicture
                         v-if="tournament.teams[teamIndex]?.players[0] != null"
                         :nameFirst="false"
@@ -116,7 +116,7 @@
                       />
                     </div>
                     <div
-                      v-if="teamIndex != -1 && match.gameID != -1"
+                      v-if="teamIndex !== -1 && match.gameID !== -1"
                       class="bracket-match-team-score"
                     >{{ match.score[bracketTeamIndex] }}</div>
                     <div

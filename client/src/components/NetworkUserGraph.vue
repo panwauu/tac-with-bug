@@ -231,7 +231,7 @@ const enrichDataModel = () => {
         ...e,
         group: 'nodes',
         selected: false,
-        selectable: e.data.name != props.username,
+        selectable: e.data.name !== props.username,
         locked: false,
         grabbed: false,
         grabbable: true,

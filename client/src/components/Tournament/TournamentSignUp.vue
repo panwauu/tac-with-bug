@@ -110,7 +110,7 @@ function signUpTeam() {
     socket.emit('tournament:public:registerTeam', {
       name: signUpTeamName.value,
       players:
-        signUpPartner.value != ''
+        signUpPartner.value !== ''
           ? [username.value, signUpPartner.value]
           : [username.value],
       tournamentID: props.tournament.id,

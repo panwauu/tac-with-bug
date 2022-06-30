@@ -92,7 +92,7 @@ const initializeUpdateNumbers = () => {
   parsedEndDate.value = getParsedEndDate()
   updateNumbers();
 
-  if (props.mode != 'static') { startUpdateNumbers() }
+  if (props.mode !== 'static') { startUpdateNumbers() }
 }
 initializeUpdateNumbers()
 

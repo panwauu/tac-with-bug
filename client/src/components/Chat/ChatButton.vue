@@ -11,13 +11,13 @@
   >
     <i class="pi pi-comments" style="font-size: 2rem" />
     <Badge
-      v-if="messagesStore.notificationsChat != 0"
+      v-if="messagesStore.notificationsChat !== 0"
       :value="messagesStore.notificationsChat.toString()"
       severity="danger"
       class="notiBadge badgeGame"
     />
     <Badge
-      v-if="messagesStore.notificationsChannels != 0"
+      v-if="messagesStore.notificationsChannels !== 0"
       :value="messagesStore.notificationsChannels.toString()"
       severity="warning"
       class="notiBadge badgeGeneral"

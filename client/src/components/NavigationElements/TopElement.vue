@@ -12,7 +12,7 @@
       <template v-if="username != null">
         <PlayerWithPicture :username="username" />
         <i
-          v-if="friendsState.numberOpenRequests != 0"
+          v-if="friendsState.numberOpenRequests !== 0"
           v-badge.danger="friendsState.numberOpenRequests"
           class="pi pi-user"
           style="font-size: 1.4rem; margin-right: 5px; cursor: pointer;"

@@ -107,13 +107,13 @@
       </template>
 
       <TradeArrow
-        v-if="miscState.tradeDirection != 0"
+        v-if="miscState.tradeDirection !== 0"
         :class="`gameElement tauschDirectionArrow${positionStyles.turned ? '_turned' : ''
         } tauschDirectionArrow${miscState.tradeDirection}`"
       />
 
       <div
-        v-if="miscState.coopCounter != -1"
+        v-if="miscState.coopCounter !== -1"
         class="gameElement cardCounterElement p-card"
         :style="positionStyles.stylePositionCoop"
       >

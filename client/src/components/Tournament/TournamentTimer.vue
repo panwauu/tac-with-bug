@@ -29,11 +29,11 @@ function addInterval(date: Date, interval: string): Date {
 }
 
 const counterKey = computed(() => {
-  if (props.tournament.status != 'running') {
+  if (props.tournament.status !== 'running') {
     return props.tournament.status;
   }
 
-  if (props.tournament.data.brackets[props.tournament.creationPhase - 2].every((m) => m.winner != -1)) {
+  if (props.tournament.data.brackets[props.tournament.creationPhase - 2].every((m) => m.winner !== -1)) {
     return 'nextGame';
   } else {
     return 'gameEnd';
@@ -56,7 +56,7 @@ const deadlineForCounter = computed(() => {
     case 'signUpEnded':
       return props.tournament.creationDates[0];
     case 'running':
-      if (props.tournament.data.brackets[props.tournament.creationPhase - 2].every((m) => m.winner != -1)) {
+      if (props.tournament.data.brackets[props.tournament.creationPhase - 2].every((m) => m.winner !== -1)) {
         return props.tournament.creationDates[props.tournament.creationPhase - 1];
       } else {
         return gameEndDate.toISOString();
