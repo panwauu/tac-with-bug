@@ -9,6 +9,7 @@
       accept="image/*"
       :auto="true"
       :customUpload="true"
+      :maxFileSize="8000000"
       @uploader="startCropper($event)"
     />
     <Button
