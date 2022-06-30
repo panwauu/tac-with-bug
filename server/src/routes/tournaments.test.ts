@@ -2,7 +2,7 @@ import { TacServer } from '../server';
 import supertest from 'supertest';
 import { registerUserAndReturnCredentials, unregisterUser, userWithCredentials } from '../helpers/userHelper';
 
-describe('Tournament API', () => {
+describe.skip('Tournament API', () => {
     let userWithCredentials: userWithCredentials, agent: supertest.SuperAgentTest, server: TacServer;
 
     beforeAll(async () => {

@@ -4,7 +4,7 @@ import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredenti
 import { AckData } from '../../../shared/types/GeneralNamespaceDefinition';
 import { friend } from '../../../shared/types/typesFriends';
 
-describe('Test Suite via Socket.io', () => {
+describe('Friends test suite via socket.io', () => {
     let usersWithSockets: userWithCredentialsAndSocket[], agent: supertest.SuperAgentTest, server: TacServer;
 
     beforeAll(async () => {

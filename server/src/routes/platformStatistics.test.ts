@@ -4,7 +4,7 @@ import { locales } from '../../../shared/shared/locales';
 import { getPassedRatio, getPlatformStatistic } from '../services/platformStatistic';
 import { dayDataset, hourDataset } from '../../../shared/types/typesPlatformStatistic';
 
-describe('Platform Statistic Test Suite', () => {
+describe.skip('Platform Statistic Test Suite', () => {
     let agent: supertest.SuperAgentTest, server: TacServer;
 
     beforeAll(async () => {
