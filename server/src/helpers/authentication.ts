@@ -35,11 +35,11 @@ export async function expressAuthentication(
     securityName: string,
     scopes?: string[]
 ): Promise<any> {
-    if (securityName != 'jwt') { return Promise.reject({ msg: 'Request does not contain JWT!' }) }
+    if (securityName !== 'jwt') { return Promise.reject({ msg: 'Request does not contain JWT!' }) }
     if (!request.headers.authorization) { return Promise.reject({ msg: 'Request does not contain JWT!' }) }
 
     const authSplit = request.headers.authorization.split(' ');
-    if (authSplit.length != 2 || authSplit[0] != 'Bearer') { return Promise.reject({ msg: 'Request does not contain JWT!' }) }
+    if (authSplit.length !== 2 || authSplit[0] !== 'Bearer') { return Promise.reject({ msg: 'Request does not contain JWT!' }) }
     const token = authSplit[1];
 
     const decoded = verifyJWT(token)

@@ -63,14 +63,14 @@ async function getPaypalSubscriptionDetails(subscriptionID: string): Promise<Res
         try {
             res = await axios.get(`https://api-m.${process.env.NODE_ENV === 'production' ? '' : 'sandbox.'}paypal.com/v1/billing/subscriptions/${subscriptionID}`, config)
 
-            if (res.status != 401) { break }
+            if (res.status !== 401) { break }
             else { requestTokenFromPaypal() }
         } catch (err) {
             requestTokenFromPaypal()
         }
     }
 
-    return res?.status != 200 ? err('COULD_NOT_GET_PAYPAL_SUBSCRIPTION_DETAILS') : ok(res.data)
+    return res?.status !== 200 ? err('COULD_NOT_GET_PAYPAL_SUBSCRIPTION_DETAILS') : ok(res.data)
 }
 
 type cancelPaypalSubscriptionError = 'PAYPAL_CANCELLATION_FAILED'
@@ -88,7 +88,7 @@ async function cancelPaypalSubscription(subscriptionID: string): Promise<Result<
 
     const res = await axios.post(`https://api-m.${process.env.NODE_ENV === 'production' ? '' : 'sandbox.'}paypal.com/v1/billing/subscriptions/${subscriptionID}/cancel`, { 'reason': 'User cancelled Subscription - User hat Abonnement gekündigt' }, config)
 
-    return res.status != 204 ? err('PAYPAL_CANCELLATION_FAILED') : ok(null)
+    return res.status !== 204 ? err('PAYPAL_CANCELLATION_FAILED') : ok(null)
 }
 
 export type isSubscribedError = getSubscriptionError
@@ -121,7 +121,7 @@ export async function getSubscription(sqlClient: pg.Pool, usernameORuserID: numb
     }
 
     const dbRes = await sqlClient.query('UPDATE subscriptions SET status=$2, validuntil=$3 WHERE id=$1;', [subscription.id, subscription.status, subscription.validuntil])
-    if (dbRes.rowCount != 1) { return err('COULD_NOT_UPDATE_SUBSCRIPTION') }
+    if (dbRes.rowCount !== 1) { return err('COULD_NOT_UPDATE_SUBSCRIPTION') }
 
     return ok(subscription)
 }
@@ -147,7 +147,7 @@ export async function newSubscription(sqlClient: pg.Pool, userID: number, subscr
     const paypalRes = await getPaypalSubscriptionDetails(subscriptionID)
     if (paypalRes.isErr()) { return err(paypalRes.error) }
 
-    if (paypalRes.value.status != 'ACTIVE') { return err('NEW_SUBSCRIPTION_NOT_ACTIVE_IN_PAYPAL') }
+    if (paypalRes.value.status !== 'ACTIVE') { return err('NEW_SUBSCRIPTION_NOT_ACTIVE_IN_PAYPAL') }
 
     const planIDs = [process.env['PAYPAL_PLAN_ID_MONTHLY'],
     process.env['PAYPAL_PLAN_ID_QUATERLY'],

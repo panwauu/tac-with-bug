@@ -39,10 +39,10 @@ function correctTauschen(game: capturedType[], checkOnlyLastLine?: boolean): boo
     let linesToRemove: number[] = []
     const iStart = checkOnlyLastLine ? Math.max(1, game.length - 10) : 0
     for (let i = iStart; i < game.length; i++) {
-        if (game[i].action?.[2] === 'tauschen' && game[i - 1].action?.[2] != 'tauschen') {
+        if (game[i].action?.[2] === 'tauschen' && game[i - 1].action?.[2] !== 'tauschen') {
             const tauschenPlayers: number[][] = [[], [], [], [], [], []]
             for (let iInner = i; iInner < game.length; iInner++) {
-                if (game[iInner].action?.[2] != 'tauschen') { break }
+                if (game[iInner].action?.[2] !== 'tauschen') { break }
                 tauschenPlayers[game[iInner].action[0] as number].push(iInner)
             }
 
@@ -60,13 +60,13 @@ function correctNarr(game: capturedType[], checkOnlyLastLine?: boolean): boolean
 
     const iStart = checkOnlyLastLine ? Math.max(1, game.length - 10) : 0
     for (let i = iStart; i < game.length; i++) {
-        if (game[i].action?.[2] != 'narr' || game[i - 1].action?.[2] === 'narr') { continue }
+        if (game[i].action?.[2] !== 'narr' || game[i - 1].action?.[2] === 'narr') { continue }
 
         const firstNarrLine = i;
         let lastNarrLine = i;
         const narrPlayers: number[][] = [[], [], [], [], [], []]
         for (let iInner = firstNarrLine; iInner < game.length; iInner++) {
-            if (game[iInner].action?.[2] != 'narr') { break }
+            if (game[iInner].action?.[2] !== 'narr') { break }
             lastNarrLine = iInner
             narrPlayers[game[iInner].action[0] as number].push(iInner)
         }
@@ -96,7 +96,7 @@ function correctDealCards(game: capturedType[], checkOnlyLastLine?: boolean): bo
     let swappedLines = false
     const iStart = checkOnlyLastLine ? Math.max(0, game.length - 2) : 0
     for (let i = iStart; i < game.length - 1; i++) {
-        if (game[i].action === 'dealCards' && game[i + 1].action?.[2] != 'tauschen') {
+        if (game[i].action === 'dealCards' && game[i + 1].action?.[2] !== 'tauschen') {
             [game[i], game[i + 1]] = [game[i + 1], game[i]]
             swappedLines = true
         }

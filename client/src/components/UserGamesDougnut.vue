@@ -1,9 +1,6 @@
 <template>
-  <div class="radarContainer">
+  <div>
     <Chart ref="userGamesDoughnutChart" type="doughnut" :data="chartData" :options="chartOptions" />
-    <div v-if="showSponsorOverlay" class="chartSponsorOverlay">
-      <SubscriptionTag />
-    </div>
   </div>
 </template>
 
@@ -11,11 +8,10 @@
 import type { gamesDistributionData } from '@/../../shared/types/typesPlayerStatistic';
 import { ref, onMounted, watch } from 'vue';
 import Chart from 'primevue/chart';
-import SubscriptionTag from '@/components/SubscriptionTag.vue';
 import { i18n } from '@/services/i18n';
 
-const props = defineProps<{ data: gamesDistributionData, username: string, showSponsorOverlay: boolean }>();
-let userGamesDoughnutChart = ref<null | Chart>();
+const props = defineProps<{ data: gamesDistributionData, username: string }>();
+const userGamesDoughnutChart = ref<null | Chart>();
 
 const chartData = ref({
   labels: [
@@ -114,10 +110,6 @@ const chartOptions = {
 }
 
 function resetGraph(data: gamesDistributionData) {
-  if (props.showSponsorOverlay) {
-    chartData.value.datasets[0].data = [];
-    chartData.value.datasets[1].data = [];
-  } else {
     chartData.value.datasets[0].data = [
       data.won4 + data.lost4,
       data.won6 + data.lost6,
@@ -134,7 +126,6 @@ function resetGraph(data: gamesDistributionData) {
       data.teamAborted,
       data.aborted + data.running,
     ];
-  }
   userGamesDoughnutChart.value?.refresh();
 }
 
@@ -146,33 +137,7 @@ watch(
   () => { resetGraph(props.data) },
   { deep: true }
 )
-
-watch(
-  () => props.showSponsorOverlay,
-  () => { resetGraph(props.data) }
-)
 </script>
 
 <style scoped>
-.chartSponsorOverlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.chartSponsorOverlay::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: var(--surface-a);
-  opacity: 0.6;
-}
 </style>

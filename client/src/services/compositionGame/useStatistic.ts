@@ -31,7 +31,7 @@ export function useStatistic(): statisticStateType {
         cardsTable: computed(() => {
             const result: { 0: number, 1: number, 2: number, 3: number, 4?: number, 5?: number, card: string }[] = [];
             (Object.keys(statisticState.statistic[0].cards) as Array<keyof gameStatisticCardsType>).forEach((key) => {
-                if (key != 'total') {
+                if (key !== 'total') {
                     result.push({
                         card: key,
                         0: statisticState.statistic[0].cards[key][0],
@@ -51,7 +51,7 @@ export function useStatistic(): statisticStateType {
         setStatistic: (statistic, players, coopCounter, hexColors) => {
             statisticState.statistic = statistic
 
-            if (statistic.length != 0) {
+            if (statistic.length !== 0) {
                 const data = {
                     labelKeys: ['1o13cardsLayed', 'actionCardsTotal', 'actionCardsPlayed'],
                     labels: ['', '', ''],
@@ -61,7 +61,7 @@ export function useStatistic(): statisticStateType {
                     data.datasets.push({
                         label: players[i].name,
                         backgroundColor: hexColors[i],
-                        stack: coopCounter != -1 ? 0 : players[i].team,
+                        stack: coopCounter !== -1 ? 0 : players[i].team,
                         data: [
                             statistic[i].cards['1'][0] + statistic[i].cards['13'][0],
                             countSpecialCards(statistic[i].cards)[0],
@@ -85,7 +85,7 @@ export function useStatistic(): statisticStateType {
                 statisticState.cardStatistic = data
             }
 
-            if (statistic.length != 0) {
+            if (statistic.length !== 0) {
                 const data = {
                     labelKeys: ['kickedBalls', 'numberSkipped', 'timePerPlay'],
                     labels: ['', '', ''],
@@ -95,7 +95,7 @@ export function useStatistic(): statisticStateType {
                     data.datasets.push({
                         label: players[i].name,
                         backgroundColor: hexColors[i],
-                        stack: coopCounter != -1 ? 0 : players[i].team,
+                        stack: coopCounter !== -1 ? 0 : players[i].team,
                         data: [
                             statistic[i].actions.nBallsKickedEnemy + statistic[i].actions.nBallsKickedOwnTeam + statistic[i].actions.nBallsKickedSelf,
                             statistic[i].actions.nAussetzen,
@@ -127,7 +127,7 @@ export function useStatistic(): statisticStateType {
 function countSpecialCards(cards: any): number[] {
     const arr = [0, 0, 0]
     Object.keys(cards).forEach((key) => {
-        if (key != 'total') {
+        if (key !== 'total') {
             [0, 1, 2].forEach((i) => { arr[i] += cards[key][i] })
         }
     })

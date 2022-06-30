@@ -60,7 +60,7 @@ function clickCard(event: Event) {
       props.own
     )
   ) {
-    let id = parseInt((event.target as HTMLElement).id);
+    const id = parseInt((event.target as HTMLElement).id);
     props.cardsState.setSelectedCard(id);
   }
 }
@@ -104,7 +104,6 @@ const cardNames = computed(() => {
 }
 
 .card {
-  margin: 0;
   border-radius: 9%/5.42%;
   width: 40%;
   margin: 18% 0 0 0; /* 18% also in JS!! */

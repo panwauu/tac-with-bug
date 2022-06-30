@@ -11,7 +11,7 @@ export async function createTournament(sqlClient: pg.Pool, title: string, begin:
     if (tournamentType === 'KO') {
         const dataRes = createTournamentDataKO(nTeams, teamsPerMatch);
         if (dataRes.isErr()) { return err(dataRes.error) }
-        if (creationDates.length != dataRes.value.brackets.length) { return err('ONLY_KO_TOURNAMENT_IMPLEMENTED') }
+        if (creationDates.length !== dataRes.value.brackets.length) { return err('ONLY_KO_TOURNAMENT_IMPLEMENTED') }
         data = dataRes.value
     } else {
         return err('KO_ROUNDS_AND_CREATIONDATES_NOT_SAME_LENGTH')

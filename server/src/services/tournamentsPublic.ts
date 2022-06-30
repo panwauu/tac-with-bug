@@ -116,7 +116,7 @@ export async function getPublicTournament(sqlClient: pg.Pool, condition?: getTou
 export type getTournamentByIDError = 'TOURNAMENT_ID_NOT_FOUND'
 export async function getPublicTournamentByID(sqlClient: pg.Pool, id: number): Promise<Result<tTournament.publicTournament, getTournamentByIDError>> {
     const tournaments = await getPublicTournament(sqlClient, { id: id })
-    return tournaments.length != 1 ? err('TOURNAMENT_ID_NOT_FOUND') : ok(tournaments[0])
+    return tournaments.length !== 1 ? err('TOURNAMENT_ID_NOT_FOUND') : ok(tournaments[0])
 }
 
 export async function startTournament(sqlClient: pg.Pool) {
@@ -139,7 +139,7 @@ export async function startTournament(sqlClient: pg.Pool) {
 
 export type createGamesTournamentError = 'GAMES_ALREADY_CREATED_OR_NOT_ALL_ENDED'
 async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament.publicTournament): Promise<Result<tTournament.publicTournament, createGamesTournamentError>> {
-    if (tournament.data.brackets[tournament.creationPhase - 1].some((b) => { return b.teams.some((t) => t === -1) || b.gameID != -1 })) {
+    if (tournament.data.brackets[tournament.creationPhase - 1].some((b) => { return b.teams.some((t) => t === -1) || b.gameID !== -1 })) {
         return err('GAMES_ALREADY_CREATED_OR_NOT_ALL_ENDED')
     }
 
@@ -197,7 +197,7 @@ export async function checkForceGameEnd(sqlClient: pg.Pool) {
     for (let i = 0; i < tournaments.length; i++) {
         const tournament = tournaments[i]
 
-        if (tournament.data.brackets[tournament.creationPhase - 2].every((m) => m.winner != -1)) { continue; }
+        if (tournament.data.brackets[tournament.creationPhase - 2].every((m) => m.winner !== -1)) { continue; }
 
         logger.info('force game end')
         for (const match of tournament.data.brackets[tournament.creationPhase - 2]) {
@@ -235,7 +235,7 @@ export async function updateTournamentFromGame(pgPool: pg.Pool, game: dbGame.gam
             updateTournamentWinners(pgPool)
             const winnerTeam = tournament.teams[tournament.data.brackets[tournament.data.brackets.length - 1][0].winner]
             tournamentBus.emit('ended', { tournamentTitle: tournament.title, winner: winnerTeam })
-        } else if (tournament.data.brackets[tournament.creationPhase - 2].every((m) => m.winner != -1)) {
+        } else if (tournament.data.brackets[tournament.creationPhase - 2].every((m) => m.winner !== -1)) {
             tournamentBus.emit('round-ended', { tournamentTitle: tournament.title, roundsToFinal: tournament.data.brackets.length + 1 - tournament.creationPhase })
         }
     }

@@ -31,6 +31,6 @@ const audioIcon = computed(() => {
 })
 
 function audioButtonClick() {
-  sound.$volume(sound.volume != 0 ? 0 : 100)
+  sound.$volume(sound.volume !== 0 ? 0 : 100)
 }
 </script>

@@ -84,7 +84,7 @@ export async function getPrivateTournament(sqlClient: pg.Pool, condition?: getPr
 export type getTournamentByIDError = 'TOURNAMENT_ID_NOT_FOUND'
 export async function getPrivateTournamentByID(sqlClient: pg.Pool, id: number): Promise<Result<tTournament.privateTournament, getTournamentByIDError>> {
     const tournaments = await getPrivateTournament(sqlClient, { id: id })
-    return tournaments.length != 1 ? err('TOURNAMENT_ID_NOT_FOUND') : ok(tournaments[0])
+    return tournaments.length !== 1 ? err('TOURNAMENT_ID_NOT_FOUND') : ok(tournaments[0])
 }
 
 export type createTournamentError = 'ONLY_KO_TOURNAMENT_IMPLEMENTED' | getTournamentByIDError | createTournamentDataKOError
@@ -101,7 +101,7 @@ export async function createPrivateTournament(pgPool: pg.Pool, title: string, ad
     const dbRes = await pgPool.query('INSERT INTO private_tournaments (title, admin_player, n_teams, tournament_type, data, teams_per_match, players_per_team) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;',
         [title, adminPlayerId, nTeams, tournamentType, data, teamsPerMatch, playersPerTeam])
     const tournaments = await getPrivateTournament(pgPool, { id: dbRes.rows[0].id })
-    if (tournaments.length != 1) { return err('TOURNAMENT_ID_NOT_FOUND') }
+    if (tournaments.length !== 1) { return err('TOURNAMENT_ID_NOT_FOUND') }
     return ok(tournaments[0])
 }
 
@@ -119,7 +119,7 @@ export async function addPlayer(pgPool: pg.Pool, tournament: tTournament.private
     await pgPool.query('INSERT INTO private_tournaments_register (tournamentid, team_name, userid, activated) VALUES ($1, $2, $3, $4);', values)
 
     const tournamentsAfter = await getPrivateTournament(pgPool, { id: tournament.id })
-    if (tournamentsAfter.length != 1) { return err('TOURNAMENT_NOT_FOUND') }
+    if (tournamentsAfter.length !== 1) { return err('TOURNAMENT_NOT_FOUND') }
 
     return ok(tournamentsAfter[0])
 }
@@ -130,7 +130,7 @@ export async function removePlayer(pgPool: pg.Pool, tournament: tTournament.priv
     await pgPool.query('DELETE FROM private_tournaments_register WHERE tournamentid=$1 AND userid=$2;', values)
 
     const tournamentsAfter = await getPrivateTournament(pgPool, { id: tournament.id })
-    if (tournamentsAfter.length != 1) { return err('TOURNAMENT_NOT_FOUND') }
+    if (tournamentsAfter.length !== 1) { return err('TOURNAMENT_NOT_FOUND') }
 
     return ok(tournamentsAfter[0])
 }
@@ -141,17 +141,17 @@ export async function activatePlayer(pgPool: pg.Pool, tournament: tTournament.pr
     if (registerTeam == null) { return err('NOT_PART_OF_TOURNAMENT') }
 
     const res = await pgPool.query('UPDATE private_tournaments_register SET activated=TRUE WHERE tournamentid=$1 AND userid=$2;', [tournament.id, userID])
-    if (res.rowCount != 1) { return err('COULD_NOT_ACTIVATE_USER') }
+    if (res.rowCount !== 1) { return err('COULD_NOT_ACTIVATE_USER') }
 
     const tournamentsAfter = await getPrivateTournament(pgPool, { id: tournament.id })
-    if (tournamentsAfter.length != 1) { return err('TOURNAMENT_NOT_FOUND') }
+    if (tournamentsAfter.length !== 1) { return err('TOURNAMENT_NOT_FOUND') }
 
     return ok(tournamentsAfter[0])
 }
 
 export type startPrivateTournamentError = 'TOURNAMENT_NOT_FOUND' | 'CANNOT_START_TOURNAMENT' | 'ONLY_PLANNED_TOURNAMENTS_CAN_BE_STARTED'
 export async function startPrivateTournament(pgPool: pg.Pool, tournament: tTournament.privateTournament): Promise<Result<tTournament.privateTournament, startPrivateTournamentError>> {
-    if (tournament.status != 'planned') { return err('ONLY_PLANNED_TOURNAMENTS_CAN_BE_STARTED') }
+    if (tournament.status !== 'planned') { return err('ONLY_PLANNED_TOURNAMENTS_CAN_BE_STARTED') }
 
     if (tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length === tournament.playersPerTeam).length < tournament.nTeams) {
         return err('CANNOT_START_TOURNAMENT')
@@ -159,7 +159,7 @@ export async function startPrivateTournament(pgPool: pg.Pool, tournament: tTourn
 
     tournament.teams = tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length === tournament.playersPerTeam)
         .map((r) => { return { name: r.name, players: r.players, playerids: r.playerids } })
-    tournament.registerTeams = tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length != tournament.playersPerTeam)
+    tournament.registerTeams = tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length !== tournament.playersPerTeam)
 
     const dataForUsersToTournaments: { userid: number, tournamentid: number, team_name: string, team_number: number }[] = []
     tournament.teams.forEach((r, i) => {
@@ -171,7 +171,7 @@ export async function startPrivateTournament(pgPool: pg.Pool, tournament: tTourn
     await pgPool.query('DELETE FROM private_tournaments_register WHERE tournamentid=$1;', [tournament.id])
 
     const tournamentsAfter = await getPrivateTournament(pgPool, { id: tournament.id })
-    if (tournamentsAfter.length != 1) { return err('TOURNAMENT_NOT_FOUND') }
+    if (tournamentsAfter.length !== 1) { return err('TOURNAMENT_NOT_FOUND') }
 
     return ok(tournamentsAfter[0])
 }
@@ -179,7 +179,6 @@ export async function startPrivateTournament(pgPool: pg.Pool, tournament: tTourn
 export type startTournamentGameError = 'TOURNAMENT_NOT_FOUND' | 'COULD_NOT_FIND_GAME'
 export async function startTournamentGame(pgPool: pg.Pool, tournament: tTournament.privateTournament, tournamentRound: number, roundGame: number): Promise<Result<tTournament.privateTournament, startTournamentGameError>> {
     if (tournament.data.brackets?.[tournamentRound]?.[roundGame] == null) { return err('COULD_NOT_FIND_GAME') }
-    tournament.data.brackets[tournamentRound][roundGame]
 
     let playerids: number[] = []
     tournament.data.brackets[tournamentRound][roundGame].teams.forEach((t) => { playerids = playerids.concat(tournament.teams[t].playerids) })
@@ -201,7 +200,7 @@ export async function startTournamentGame(pgPool: pg.Pool, tournament: tTourname
     await pgPool.query('UPDATE private_tournaments SET data=$1 WHERE id=$2;', [tournament.data, tournament.id])
 
     const tournamentsAfter = await getPrivateTournament(pgPool, { id: tournament.id })
-    if (tournamentsAfter.length != 1) { return err('TOURNAMENT_NOT_FOUND') }
+    if (tournamentsAfter.length !== 1) { return err('TOURNAMENT_NOT_FOUND') }
 
     createdGame.playerIDs.forEach((id) => {
         const socket = getSocketByUserID(id)
@@ -219,7 +218,7 @@ export async function abortPrivateTournament(pgPool: pg.Pool, tournament: tTourn
 
     for (const round of tournament.data.brackets) {
         for (const game of round) {
-            if (game.gameID != -1 && game.winner === -1) {
+            if (game.gameID !== -1 && game.winner === -1) {
                 gameIDsToRemoveTournament.push(game.gameID)
                 game.gameID = -1
             }
@@ -231,7 +230,7 @@ export async function abortPrivateTournament(pgPool: pg.Pool, tournament: tTourn
     await pgPool.query('UPDATE private_tournaments SET status=\'aborted\', data=$1 WHERE id=$2;', [tournament.data, tournament.id])
 
     const tournamentsAfter = await getPrivateTournament(pgPool, { id: tournament.id })
-    if (tournamentsAfter.length != 1) { return err('TOURNAMENT_NOT_FOUND') }
+    if (tournamentsAfter.length !== 1) { return err('TOURNAMENT_NOT_FOUND') }
 
     return ok(tournamentsAfter[0])
 }
@@ -241,7 +240,7 @@ export async function updateTournamentFromGame(pgPool: pg.Pool, game: gameForPla
     if (game.privateTournamentId == null) { return err('GAME_IS_NOT_PART_OF_PRIVATE_TOURNAMENT') }
 
     const tournaments = await getPrivateTournament(pgPool, { id: game.privateTournamentId })
-    if (tournaments.length != 1) { return err('TOURNAMENT_NOT_FOUND') }
+    if (tournaments.length !== 1) { return err('TOURNAMENT_NOT_FOUND') }
     if (tournaments[0].status === 'aborted') { return err('TOURNAMENT_NOT_RUNNING') }
     const tournament = tournaments[0]
 

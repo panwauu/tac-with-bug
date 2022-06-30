@@ -13,9 +13,9 @@ export async function registerTeam(sqlClient: pg.Pool, tournamentid: number, pla
     const tournament = await getPublicTournamentByID(sqlClient, tournamentid)
     if (tournament.isErr()) { return err(tournament.error) }
 
-    if (tournament.value.status != 'signUp') { return err('TOURNAMENT_STATUS_IS_NOT_SIGNUP') }
+    if (tournament.value.status !== 'signUp') { return err('TOURNAMENT_STATUS_IS_NOT_SIGNUP') }
 
-    if (players.some((p) => { return players.filter((p1) => { return p1 === p }).length != 1 })) { return err('TEAM_PLAYERS_NOT_DIFFERENT') }
+    if (players.some((p) => { return players.filter((p1) => { return p1 === p }).length !== 1 })) { return err('TEAM_PLAYERS_NOT_DIFFERENT') }
 
     const userIDres = await sqlClient.query('SELECT username, id FROM users WHERE username = ANY($1::text[]);', [players])
     const playerids = players.map((username) => { return userIDres.rows.find((r) => r.username === username)?.id as number })
@@ -51,7 +51,7 @@ export async function joinTeam(sqlClient: pg.Pool, tournamentid: number, userID:
     const tournament = await getPublicTournamentByID(sqlClient, tournamentid)
     if (tournament.isErr()) { return err(tournament.error) }
 
-    if (tournament.value.status != 'signUp') { return err('TOURNAMENT_STATUS_IS_NOT_SIGNUP') }
+    if (tournament.value.status !== 'signUp') { return err('TOURNAMENT_STATUS_IS_NOT_SIGNUP') }
 
     if (alreadyRegistered(tournament.value, userID)) { return err('USER_ALREADY_IN_TOURNAMENT') }
 
@@ -74,7 +74,7 @@ export async function activateUser(sqlClient: pg.Pool, tournamentid: number, use
     const tournament = await getPublicTournamentByID(sqlClient, tournamentid)
     if (tournament.isErr()) { return err(tournament.error) }
 
-    if (tournament.value.status != 'signUp') { return err('TOURNAMENT_STATUS_IS_NOT_SIGNUP') }
+    if (tournament.value.status !== 'signUp') { return err('TOURNAMENT_STATUS_IS_NOT_SIGNUP') }
 
     const teamIndex = tournament.value.registerTeams.findIndex((r) => r.playerids.includes(userID))
     if (teamIndex === -1) { return err('USER_NOT_FOUND_IN_TOURNAMENT') }
@@ -93,7 +93,7 @@ export async function leaveTournament(sqlClient: pg.Pool, tournamentid: number, 
     const tournament = await getPublicTournamentByID(sqlClient, tournamentid)
     if (tournament.isErr()) { return err(tournament.error) }
 
-    if (tournament.value.status != 'signUp') { return err('TOURNAMENT_STATUS_IS_NOT_SIGNUP') }
+    if (tournament.value.status !== 'signUp') { return err('TOURNAMENT_STATUS_IS_NOT_SIGNUP') }
 
     const teamIndex = tournament.value.registerTeams.findIndex((r) => { return r.playerids.includes(userID) })
     if (teamIndex === -1) { return err('USER_NOT_FOUND_IN_TOURNAMENT') }
@@ -126,7 +126,7 @@ export async function endSignupIfComplete(sqlClient: pg.Pool, tournament: tTourn
 
     tournament.teams = tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length === tournament.playersPerTeam)
         .map((r) => { return { name: r.name, players: r.players, playerids: r.playerids } })
-    tournament.registerTeams = tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length != tournament.playersPerTeam)
+    tournament.registerTeams = tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length !== tournament.playersPerTeam)
 
     tournament.status = 'signUpEnded'
     const dataForUsersToTournaments: { userid: number, tournamentid: number, team_name: string, team_number: number }[] = []

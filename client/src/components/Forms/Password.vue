@@ -39,7 +39,7 @@
       />
       <label for="SUpasswordRepeat">{{ $t("Login.passwordRepeat") }}</label>
       <small
-        v-if="!validPasswordRepeat && password != '' && password_repeat != ''"
+        v-if="!validPasswordRepeat && password !== '' && password_repeat !== ''"
         class="p-error"
       >{{ $t("Login.SignUp.passwordUnequal") }}</small>
     </span>
@@ -75,7 +75,7 @@ const validPassword = computed(() => !passwordTooLong.value && !passwordTooShort
 const passwordTooShort = computed(() => localPassword.value.length < 8)
 const passwordTooLong = computed(() => localPassword.value.length > 64)
 const validPasswordRepeat = computed(() => localPassword.value === password_repeat.value)
-const validCombination = computed(() => validPassword.value && validPasswordRepeat.value && localPassword.value != '' && password_repeat.value != '')
+const validCombination = computed(() => validPassword.value && validPasswordRepeat.value && localPassword.value !== '' && password_repeat.value !== '')
 
 watch(() => validCombination.value, () => { localValid.value = validCombination.value })
 </script>

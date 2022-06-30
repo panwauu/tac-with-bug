@@ -37,7 +37,7 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
     for (let i = 1; i < lines.length; i++) {
         //console.log("Line: " + (i + 1))
         const lineJSON = lines[i]
-        if (lineJSON.action != 'reset') {
+        if (lineJSON.action !== 'reset') {
             try {
                 let timeDummy = Math.random() * 2
                 if (i === 1) { timeDummy = Infinity }
@@ -76,7 +76,7 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
             return result
         }
 
-        if (gameInst.gameEnded === true && (i + 1) != lines.length) {
+        if (gameInst.gameEnded === true && (i + 1) !== lines.length) {
             console.log('Ended too early at line: ' + (i + 1))
             result.line = i
             return result
@@ -107,7 +107,7 @@ function compareGameWithCaptured(gameInst: game, capturedState: any) {
         console.table(dataForTable)
         return false
     }
-    if (gameInst.activePlayer != capturedState.activePlayer) {
+    if (gameInst.activePlayer !== capturedState.activePlayer) {
         console.log(`activePlayer unequal: Is ${gameInst.activePlayer} but should be ${capturedState.activePlayer}`)
         return false
     }
@@ -115,7 +115,7 @@ function compareGameWithCaptured(gameInst: game, capturedState: any) {
 }
 
 function compareBalls(balls1: any, balls2: any) {
-    if (balls1.length != balls2.length) { throw new Error(`Balls of different length - sim: ${balls1.length}; cap: ${balls2.length}`) }
+    if (balls1.length !== balls2.length) { throw new Error(`Balls of different length - sim: ${balls1.length}; cap: ${balls2.length}`) }
 
     for (let i = 0; i < balls1.length; i++) {
         if (balls1[i].state !== balls2[i].state &&
@@ -124,7 +124,7 @@ function compareBalls(balls1: any, balls2: any) {
             return false
         }
 
-        if (balls1[i].position != balls2[i].position) {
+        if (balls1[i].position !== balls2[i].position) {
             return false
         }
     }
@@ -133,7 +133,7 @@ function compareBalls(balls1: any, balls2: any) {
 
 function compareCards(simCards: any, capCards: any) {
     for (const key of Object.keys(capCards)) {
-        if (JSON.stringify(capCards[key]) != JSON.stringify(simCards[key])) {
+        if (JSON.stringify(capCards[key]) !== JSON.stringify(simCards[key])) {
             console.log(`Cards unequal at Key: ${key}`)
             return false
         }

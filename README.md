@@ -1,4 +1,10 @@
-# Local Development Setup
+[![TWB Logo](client/src/assets/TwbLogo.png)](https://tac-with-bug.herokuapp.com/)
+
+[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is a online Multiplayer for the boardgame [TAC](https://shop.spiel-tac.de/Home). The game is a Vue webapp with a Node backend. Contributions are welcome.
+
+# Getting Started Guide
+
+Two step guide to get started with the [Tac-With-Bug](https://tac-with-bug.herokuapp.com/) development.
 
 ## Database Setup
 
@@ -37,63 +43,39 @@ Flags:
         Password of this user will be applied to all users so that you can login into all of them
 ```
 
-The dump is downloaded using the [heroku CLI](https://devcenter.heroku.com/categories/command-line). Oskar can provide you with the dump.
+## Package Setup
 
-## Shared modules
+[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is divided into three main parts:
 
-There is a module called `shared` where mainly the shared types for socket.io between server and client are defined. Before you can use server or socket you need to install all the dependencies in the shared folder:
+| Folder             | Description                           |
+| ------------------ | ------------------------------------- |
+| [client](./client) | Vue source code for the web interface |
+| [server](./server) | Node server code                      |
+| [shared](./shared) | Shared interfaces and data            |
 
-```
+First all packages have to be installed and built.
+
+```shell
+cd shared
+npm install
+
+cd client
+npm install
+
 cd server
 npm install
+npm run building
+npm run tsc
 ```
 
-## Server-Side Setup
+Afterwards you can start the server and client.
 
-First install the server node modules:
-
-```
-cd server
-npm install
-```
-
-To start the OpenAPI generator and ts-compiler use:
-
-```
-cd server
-npm run buildWatch
-```
-
-```
-cd server
-npm run tscWatch
-```
-
-To start the server:
-
-```
+```shell
 cd server
 npm run devStart
 ```
 
-## Client-Side Setup
-
-```
-cd client
-npm install
-```
-
-To start the vue server
-
-```
+```shell
 cd client
 npm run dev
-```
-
-# Access Heroku Error Logs
-
-```
-heroku pg:psql cobalt
-SET client_encoding TO 'UTF8';
-SELECT * FROM logs ORDER BY timestamp DESC;
 ```

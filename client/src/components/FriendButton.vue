@@ -1,26 +1,26 @@
 <template>
   <Button
-    v-if="username != loggedInUser && friendShipStatus === 'none'"
+    v-if="username !== loggedInUser && friendShipStatus === 'none'"
     class="p-button-sm p-button-outlined p-button-success"
     :label="$t('Friends.FriendButton.requestFriend')"
     icon="pi pi-user-plus"
     @click="friendsState.request(username)"
   />
   <Button
-    v-if="username != loggedInUser && friendShipStatus === 'done'"
+    v-if="username !== loggedInUser && friendShipStatus === 'done'"
     class="p-button-sm p-button-outlined p-button-danger"
     :label="$t('Friends.FriendButton.cancelFriendship')"
     icon="pi pi-user-minus"
     @click="friendsState.cancel(username)"
   />
   <Button
-    v-if="username != loggedInUser && friendShipStatus === 'to'"
+    v-if="username !== loggedInUser && friendShipStatus === 'to'"
     class="p-button-sm p-button-outlined p-button-danger"
     :label="$t('Friends.FriendButton.withdrawRequest')"
     icon="pi pi-user-minus"
     @click="friendsState.withdraw(username)"
   />
-  <span v-if="username != loggedInUser && friendShipStatus === 'from'" class="p-buttonset">
+  <span v-if="username !== loggedInUser && friendShipStatus === 'from'" class="p-buttonset">
     <Button
       :label="$t('Friends.FriendButton.acceptRequest')"
       icon="pi pi-user-plus"

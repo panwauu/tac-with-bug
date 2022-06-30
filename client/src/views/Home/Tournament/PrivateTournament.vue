@@ -42,7 +42,7 @@
       <PrivateTournamentEditor :tournament="tournament" />
     </div>
     <TournamentBracket
-      v-if="tournament.status != 'planned' && tournament.teams.length > 0"
+      v-if="tournament.status !== 'planned' && tournament.teams.length > 0"
       :tournament="tournament"
     />
     <div v-if="tournament.status === 'aborted' && tournament.teams.length === 0">

@@ -19,7 +19,7 @@
       :mode="miscState.gameRunning ? 'up' : 'static'"
       :displayDays="false"
     />
-    <div style="position: relative">
+    <div>
       <TabView>
         <TabPanel :header="$t('Game.Statistic.Cards.title')">
           <div class="chart-container">
@@ -51,9 +51,6 @@
           </div>
         </TabPanel>
       </TabView>
-      <div v-if="!isSub" class="subscriptionLimiter">
-        <SubscriptionTag :clickable="true" :sponsorsOnly="true" />
-      </div>
     </div>
   </div>
 </template>
@@ -64,17 +61,13 @@ import TabPanel from 'primevue/tabpanel';
 import Chart from 'primevue/chart';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import SubscriptionTag from '@/components/SubscriptionTag.vue';
 import CountdownTimer from '@/components/CountdownTimer.vue';
 import GameWatchingPlayers from './GameWatchingPlayers.vue';
 
 import type { miscStateType } from '@/services/compositionGame/useMisc'
 import type { statisticStateType } from '@/services/compositionGame/useStatistic'
 import { computed } from 'vue';
-import { i18n } from '@/services/i18n'
-import { injectStrict, SubscriptionStateKey } from '@/services/injections';
-
-const subscriptionState = injectStrict(SubscriptionStateKey);
+import { i18n } from '@/services/i18n';
 
 const props = defineProps<{
   miscState: miscStateType,
@@ -88,11 +81,6 @@ const cardStatistic = computed(() => {
 const actionStatistics = computed(() => {
   return props.statisticState.actionStatistic;
 })
-
-const isSub = computed(() => {
-  return subscriptionState.isSub();
-})
-
 
 function redText(title: string) {
   if (
@@ -159,27 +147,6 @@ const optionsActions = {
   color: var(--tac-red);
 }
 
-.subscriptionLimiter {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.subscriptionLimiter::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: var(--surface-a);
-  opacity: 0.6;
-}
 .watchingButton {
   margin: 0px 10px 10px 10px;
   display: flex;

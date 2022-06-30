@@ -12,7 +12,7 @@
     <div v-if="textVisible" class="usernameContainer">{{ username }}</div>
     <ProfilePicture
       v-if="pictureVisible === true"
-      :username="username != '' ? username : $t('Chat.deletedPlayer')"
+      :username="username !== '' ? username : $t('Chat.deletedPlayer')"
       :showCrown="showCrown"
       :online="online"
       class="autocompleteImage"
@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<{
   })
 
 const click = () => {
-  if (props.clickable && props.username != '') {
+  if (props.clickable && props.username !== '') {
     router.push({
       name: 'Profile',
       params: { username: props.username, locale: router.currentRoute.value.params.locale }

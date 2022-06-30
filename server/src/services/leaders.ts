@@ -30,15 +30,21 @@ export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, 
 
 export interface coopBoardType {
     nGames: number,
-    team: any[],
+    team: string[][],
     count: number[],
     lastplayed: number[],
 }
 export async function queryLeaderboardCoop(sqlClient: pg.Pool, limit: number, offset: number, nPlayers: number, startDate: Date, endDate: Date): Promise<coopBoardType> {
-    const subqueryStatistic = [...Array(nPlayers).keys()].map((i) => `CAST(game#>'{statistic,${i}}'->'cards'#>>'{total,0}' AS INTEGER)`).join(' + ')
     const query = `
     SELECT games.id, max(games.cards) as cards, array_agg(users.username) as team, max(games.lastplayed) as lastplayed, max(games.full_count) as full_count FROM (
-        SELECT id, lastplayed, count(*) OVER() AS full_count, (${subqueryStatistic}) AS cards FROM games 
+        SELECT 
+            id, 
+            lastplayed, 
+            count(*) OVER() AS full_count, 
+            CAST(
+                (SELECT SUM(cards) FROM (SELECT CAST(jsonb_extract_path(value, 'cards', 'total', '0') AS INTEGER) as cards FROM jsonb_array_elements(game->'statistic')) as tcards
+            ) as INTEGER) as cards 
+        FROM games 
         WHERE CAST(game->>'coop' AS BOOLEAN) = true AND status='won' AND n_players = $3 AND created >= $4 AND created <= $5
         ORDER BY cards LIMIT $1 OFFSET $2
     ) as games

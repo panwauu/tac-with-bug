@@ -1,9 +1,5 @@
 <template>
-  <div style="display: flex; flex-direction: column; align-items: center; position: relative">
-    <div v-if="!subscriptionState.isSub()" class="sponsorOverlay" style="position: absolute;">
-      <SubscriptionTag :clickable="true" :sponsorsOnly="true" />
-    </div>
-
+  <div style="display: flex; flex-direction: column; align-items: center;">
     <div class="tournamentCreationElement">
       <label>{{ $t('Tournament.CreatePrivate.tournamentName') }}</label>
       <InputText
@@ -63,7 +59,7 @@
 
     <Button
       label="Turnier erstellen"
-      :disabled="!titleValid || !subscriptionState.isSub()"
+      :disabled="!titleValid"
       @click="createPrivateTournament()"
     />
   </div>
@@ -76,15 +72,13 @@ import InputText from 'primevue/inputtext';
 import RadioButton from 'primevue/radiobutton';
 
 import { ref, computed } from 'vue';
-import { injectStrict, SocketKey, SubscriptionStateKey } from '@/services/injections';
-import SubscriptionTag from '../SubscriptionTag.vue';
+import { injectStrict, SocketKey } from '@/services/injections';
 import router from '@/router';
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n';
 const toast = useToast();
 
 const socket = injectStrict(SocketKey);
-const subscriptionState = injectStrict(SubscriptionStateKey)
 
 const title = ref('');
 const playersAndTeamsSettings = ref<'4p' | '6p2t' | '6p3t'>('4p');
@@ -129,25 +123,5 @@ async function createPrivateTournament() {
 }
 .radioButton {
   margin-right: 10px;
-}
-.sponsorOverlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.sponsorOverlay::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: var(--surface-a);
-  opacity: 0.9;
 }
 </style>

@@ -20,14 +20,14 @@ async function validateTutorialIDAndStep(tutorialID: number, tutorialStep: numbe
 
 export async function getDefaultTutorialProgress(pgPool: pg.Pool): Promise<boolean[][]> {
     const dbRes = await pgPool.query<{ tutorial: string }>('SELECT to_jsonb(column_default) as tutorial FROM information_schema.columns WHERE table_schema = \'public\' AND table_name = \'users\' AND column_name = \'tutorial\';')
-    if (dbRes.rowCount != 1) { throw new Error('Tutorial progress default value could not be queried') }
+    if (dbRes.rowCount !== 1) { throw new Error('Tutorial progress default value could not be queried') }
     return JSON.parse(dbRes.rows[0].tutorial.substring(1, dbRes.rows[0].tutorial.length - 8))
 }
 
 export async function getTutorialProgress(pgPool: pg.Pool, userID: number): Promise<Result<boolean[][], 'USER_NOT_FOUND'>> {
     const dbRes = await pgPool.query<{ tutorial: boolean[][] }>('SELECT tutorial FROM users WHERE id = $1;', [userID])
 
-    if (dbRes.rowCount != 1) { return err('USER_NOT_FOUND') }
+    if (dbRes.rowCount !== 1) { return err('USER_NOT_FOUND') }
     const tutorial = dbRes.rows[0].tutorial
 
     if (dbRes.rows[0].tutorial.flat().some((e) => typeof e !== 'boolean')) {

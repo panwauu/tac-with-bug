@@ -13,8 +13,8 @@ import ConnectionStatusOverlay from '@/components/ConnectionStatusOverlay.vue';
 
 import { watch, provide } from 'vue';
 import { registerSocketToastHandlers } from '@/services/socketToastTournament';
-import { useGameView } from '@/services/useGameView';
-import { GamesSummaryKey, SocketKey, SubscriptionStateKey, FriendsStateKey, injectStrict } from '@/services/injections';
+import { useGamesSummary } from '@/services/useGamesSummary';
+import { GamesSummaryKey, SocketKey, FriendsStateKey, injectStrict } from '@/services/injections';
 import { logout } from '@/services/useUser';
 import { userFriends } from '@/services/useFriends';
 import { Service } from './generatedClient';
@@ -25,11 +25,10 @@ import { initTournamentWinners } from './services/useTournamentWinners';
 const toast = useToast()
 
 const socket = injectStrict(SocketKey);
-let { gamesSummary, subscriptionState } = useGameView(socket);
-let friendsState = userFriends(socket);
+const gamesSummary = useGamesSummary(socket);
+const friendsState = userFriends(socket);
 
 provide(GamesSummaryKey, gamesSummary)
-provide(SubscriptionStateKey, subscriptionState)
 provide(FriendsStateKey, friendsState)
 
 socket.on('logged_out', () => {
