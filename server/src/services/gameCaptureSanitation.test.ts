@@ -16,7 +16,7 @@ interface testData {
     duplicateRows: testDataElement
 }
 
-describe('test suite for the capture sanitation', () => {
+describe.skip('test suite for the capture sanitation', () => {
     let server: TacServer
     const testData = rawTestData as testData
 

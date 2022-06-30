@@ -4,7 +4,7 @@ import { TacServer } from '../server';
 import supertest from 'supertest';
 import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket, registerGameSocket, unregisterGameSocket } from '../helpers/userHelper';
 
-describe('Game Test Suite via Socket.io', () => {
+describe.skip('Game test suite via socket.io', () => {
     let usersWithSockets: userWithCredentialsAndSocket[], agent: supertest.SuperAgentTest, server: TacServer, gameBefore: any;
     const gameID = 96;
     const gameOskar = { playerIndex: 2, userid: 4 }

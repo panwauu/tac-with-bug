@@ -6,7 +6,7 @@ import { io } from 'socket.io-client';
 import supertest from 'supertest';
 import { registerGameSocket, registerNUsersWithSockets, unregisterGameSocket, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 
-describe('Test Suite via Socket.io', () => {
+describe('Info sest suite via socket.io', () => {
     let usersWithSockets: userWithCredentialsAndSocket[], agent: supertest.SuperAgentTest, server: TacServer, socket: GeneralSocketC, gameSocket: GameSocketC;
     const tournamentGameID = 1647;
 
@@ -53,7 +53,7 @@ describe('Test Suite via Socket.io', () => {
         expect(updateUnauth.game).toBe(0)
     })
 
-    test('On new game connection the number of connections should be sent', async () => {
+    test.skip('On new game connection the number of connections should be sent', async () => {
         const updatePromise = new Promise<any>((resolve) => { usersWithSockets[1].socket.once('info:serverConnections', (data) => { resolve(data) }) })
         const unauthUpdatePromise = new Promise<any>((resolve) => { socket.once('info:serverConnections', (data) => { resolve(data) }) })
         gameSocket = await registerGameSocket(tournamentGameID, usersWithSockets[1].token)

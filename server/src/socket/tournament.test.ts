@@ -2,7 +2,7 @@ import { TacServer } from '../server';
 import supertest from 'supertest';
 import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 
-describe('Test Suite via Socket.io', () => {
+describe.skip('Tournament test suite via socket.io', () => {
     let agent: supertest.SuperAgentTest, server: TacServer, usersWithSockets: userWithCredentialsAndSocket[];
 
     beforeAll(async () => {

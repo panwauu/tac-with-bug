@@ -4,7 +4,7 @@ import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredenti
 import { AckData } from '../../../shared/types/GeneralNamespaceDefinition';
 import { gameForOverview } from '../../../shared/types/typesDBgame';
 
-describe('Test Suite via Socket.io', () => {
+describe('Games test suite via socket.io', () => {
     let userWithSocket: userWithCredentialsAndSocket, agent: supertest.SuperAgentTest, server: TacServer;
 
     beforeAll(async () => {
@@ -50,11 +50,11 @@ describe('Test Suite via Socket.io', () => {
             expect(response.data?.nEntries).toEqual(0)
         })
 
-        test('Table data should be possible for real user', async () => {
+        test.skip('Table data should be possible for real user', async () => {
             const response = await new Promise<AckData<{
                 games: gameForOverview[];
                 nEntries: number;
-            }>>((resolve) => userWithSocket.socket.emit('games:getTableData', { first: 0, limit: 10, sortField: 'created', sortOrder: 1, username: 'Oskar' }, (data) => { resolve(data) }))
+            }>>((resolve) => userWithSocket.socket.emit('games:getTableData', { first: 0, limit: 10, sortField: 'created', sortOrder: 1, username: 'UserA' }, (data) => { resolve(data) }))
             expect(response.status).toBe(200)
             expect(response.data?.games.length).toBe(10)
             expect(response.data?.nEntries).toBeGreaterThan(0)

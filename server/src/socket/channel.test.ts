@@ -4,7 +4,7 @@ import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredenti
 import io from 'socket.io-client'
 import { GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition';
 
-describe('Test Suite via Socket.io', () => {
+describe('Channel test suite via socket.io', () => {
     let usersWithSockets: userWithCredentialsAndSocket[], agent: supertest.SuperAgentTest, server: TacServer, socket: GeneralSocketC;
 
     beforeAll(async () => {

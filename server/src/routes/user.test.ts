@@ -9,15 +9,15 @@ describe('Sign-Up', () => {
     let server: TacServer, agent: supertest.SuperAgentTest;
 
     const validBody = {
-        'username': chance.string({ length: 12, pool: 'abcdABCD' }),
-        'email': `${chance.string({ length: 12, pool: 'abcdABCD' })}@asdfasgdsafd.com`,
-        'password': '12341234',
+        'username': chance.string({ length: 12, pool: 'abcd' }),
+        'email': `${chance.string({ length: 12, pool: 'abcd' })}@asdfasgdsafd.com`,
+        'password': chance.string({ length: 12, pool: '1234' }),
         'locale': 'de'
     }
     const anotherValidBody = {
-        'username': chance.string({ length: 12, pool: 'abcdABCD' }),
-        'email': `${chance.string({ length: 12, pool: 'abcdABCD' })}@asdfasgdsafd.com`,
-        'password': '12341234',
+        'username': chance.string({ length: 12, pool: 'efgh' }),
+        'email': `${chance.string({ length: 12, pool: 'efgh' })}@asdfasgdsafd.com`,
+        'password': chance.string({ length: 12, pool: '5678' }),
         'locale': 'de'
     }
 
@@ -28,7 +28,6 @@ describe('Sign-Up', () => {
         server = new TacServer()
         await server.listen(1234)
         agent = supertest.agent(server.httpServer)
-        await server.pgPool.query('DELETE FROM users WHERE username = $1;', [validBody.username])
     })
 
     afterEach(() => { jest.clearAllMocks() })
@@ -98,17 +97,17 @@ describe('Sign-Up', () => {
     test('Unavailable mail or username', async () => {
         const body = cloneDeep(validBody)
 
-        body.email = 'rakbau@gmail.com'
+        body.email = 'user.a@fake-mail.de'
         let response = await agent.post('/gameApi/sign-up').send(body)
         expect(response.statusCode).toBe(409)
         expect(response.body).toStrictEqual('EMAIL_NOT_AVAILABLE')
 
-        body.email = 'Rakbau@gmail.com'
+        body.email = 'User.a@fake-mail.de'
         response = await agent.post('/gameApi/sign-up').send(body)
         expect(response.statusCode).toBe(409)
         expect(response.body).toStrictEqual('EMAIL_NOT_AVAILABLE')
 
-        body.username = 'Oskar'
+        body.username = 'UserA'
         response = await agent.post('/gameApi/sign-up').send(body)
         expect(response.statusCode).toBe(409)
         expect(response.body).toStrictEqual('USERNAME_NOT_AVAILABLE')
@@ -301,7 +300,7 @@ describe('Sign-Up', () => {
         expect(response.statusCode).toBe(409)
         expect(response.body).toStrictEqual('USERNAME_INVALID_LETTERS')
 
-        response = await agent.post('/gameApi/changeUsername').send({ username: 'Oskar', password: '1' })
+        response = await agent.post('/gameApi/changeUsername').send({ username: 'UserA', password: '1' })
             .set({ Authorization: authHeader })
         expect(response.statusCode).toBe(409)
         expect(response.body).toStrictEqual('USERNAME_NOT_AVAILABLE')
@@ -471,7 +470,7 @@ describe('isUsernameFree', () => {
     test('With used username', async () => {
         const response = await agent
             .get('/gameApi/isUsernameFree')
-            .query({ username: 'Oskar' })
+            .query({ username: 'UserA' })
         expect(response.statusCode).toBe(200)
         expect(response.body).toBe(false)
     })
@@ -479,7 +478,7 @@ describe('isUsernameFree', () => {
     test('With used username and different Casing', async () => {
         const response = await agent
             .get('/gameApi/isUsernameFree')
-            .query({ username: 'OSKAR' })
+            .query({ username: 'USERA' })
         expect(response.statusCode).toBe(200)
         expect(response.body).toBe(false)
     })
@@ -517,7 +516,7 @@ describe('isEmailFree', () => {
     test('With used email', async () => {
         const response = await agent
             .get('/gameApi/isEmailFree')
-            .query({ email: 'rakbau@gmail.com' })
+            .query({ email: 'user.a@fake-mail.de' })
         expect(response.statusCode).toBe(200)
         expect(response.body).toBe(false)
     })
@@ -525,7 +524,7 @@ describe('isEmailFree', () => {
     test('With used email and different Casing', async () => {
         const response = await agent
             .get('/gameApi/isEmailFree')
-            .query({ email: 'RAKBAU@gmail.com' })
+            .query({ email: 'USER.a@fake-mail.de' })
         expect(response.statusCode).toBe(200)
         expect(response.body).toBe(false)
     })
