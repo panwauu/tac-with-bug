@@ -45,7 +45,7 @@ export async function registerSocketNspGeneral(nsp: GeneralNamespace, pgPool: pg
 
 export async function initializeSocket(pgPool: pg.Pool, socket: GeneralSocketS) {
     for (const [key, value] of nspGeneral.sockets.entries()) {
-        if (key != socket.id && socket.data.userID != null && value.data.userID === socket.data.userID) {
+        if (key !== socket.id && socket.data.userID != null && value.data.userID === socket.data.userID) {
             value.emit('logged_out')
             await logoutSocket(pgPool, value)
         }

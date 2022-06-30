@@ -57,7 +57,7 @@ function getPlayers(game: game, names: string[]) {
                     game.cards.players[i].includes('13') ||
                     game.tradeCards[i] === '1' ||
                     game.tradeCards[i] === '13'),
-                game.tradeCards[i] != '',
+                game.tradeCards[i] !== '',
             ];
         }
         players.push(player);

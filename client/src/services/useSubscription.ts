@@ -48,15 +48,15 @@ export function useSubscription(socket: GeneralSocketC): subscriptionState {
         },
         newSubscription: async (subscriptionID) => {
             const res = await socket.emitWithAck(10000, 'subscription:new', subscriptionID)
-            if (res.status != 200) { throw new Error('Server Error') }
+            if (res.status !== 200) { throw new Error('Server Error') }
         },
         cancelSubscription: async () => {
             const res = await socket.emitWithAck(10000, 'subscription:cancel')
-            if (res.status != 200) { throw new Error('Server Error') }
+            if (res.status !== 200) { throw new Error('Server Error') }
         },
         isSub: () => {
             if (subscriptionState.loading) { return false }
-            return (subscriptionState.freelicense || (subscriptionState.status != null && subscriptionState.status != 'cancelled'))
+            return (subscriptionState.freelicense || (subscriptionState.status != null && subscriptionState.status !== 'cancelled'))
         }
     })
 

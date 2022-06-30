@@ -26,7 +26,7 @@ function loadInitially() {
     if (storageString === null) { return setUser(defaultState) }
 
     const obj = JSON.parse(storageString)
-    if (typeof obj.username != 'string' || obj.username === '' || typeof obj.token != 'string' || obj.token === '') {
+    if (typeof obj.username !== 'string' || obj.username === '' || typeof obj.token !== 'string' || obj.token === '') {
         return setUser(defaultState)
     }
 
@@ -52,4 +52,4 @@ export const user = readonly(_user)
 export const username = computed(() => user.username)
 export const token = computed(() => user.token)
 
-export const isLoggedIn = computed(() => _user.username != '' && _user.username != null)
+export const isLoggedIn = computed(() => _user.username !== '' && _user.username != null)

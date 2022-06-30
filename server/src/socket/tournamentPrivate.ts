@@ -18,7 +18,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
 
         try {
             const tournaments = await getPrivateTournament(pgPool, { id: data.id })
-            if (tournaments.length != 1) { return cb({ status: 500, error: 'TOURNAMENT_ID_NOT_FOUND' }) }
+            if (tournaments.length !== 1) { return cb({ status: 500, error: 'TOURNAMENT_ID_NOT_FOUND' }) }
 
             return cb({ status: 200, data: tournaments[0] })
         } catch (err) {
@@ -74,10 +74,10 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             if (user.isErr()) { return cb({ status: 500, error: user.error }) }
 
             const tournaments = await getPrivateTournament(pgPool, { id: data.tournamentID })
-            if (tournaments.length != 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
+            if (tournaments.length !== 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
             const tournament = tournaments[0]
 
-            if (tournament.adminPlayerID != socket.data.userID) { return cb({ status: 500, error: 'ONLY_ADMIN_PLAYER_OF_TOURNAMENT' }) }
+            if (tournament.adminPlayerID !== socket.data.userID) { return cb({ status: 500, error: 'ONLY_ADMIN_PLAYER_OF_TOURNAMENT' }) }
 
             const newTournament = await addPlayer(pgPool, tournament, data.usernameToAdd, data.teamTitle, user.value.username === data.usernameToAdd)
             if (newTournament.isErr()) { return cb({ status: 500, error: newTournament.error }) }
@@ -112,10 +112,10 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             if (user.isErr()) { return cb({ status: 500, error: user.error }) }
 
             const tournaments = await getPrivateTournament(pgPool, { id: data.tournamentID })
-            if (tournaments.length != 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
+            if (tournaments.length !== 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
             const tournament = tournaments[0]
 
-            if (tournament.adminPlayerID != socket.data.userID) { return cb({ status: 500, error: 'ONLY_ADMIN_PLAYER_OF_TOURNAMENT' }) }
+            if (tournament.adminPlayerID !== socket.data.userID) { return cb({ status: 500, error: 'ONLY_ADMIN_PLAYER_OF_TOURNAMENT' }) }
 
             const userToRemove = await getUser(pgPool, { username: data.usernameToRemove })
             if (userToRemove.isErr()) { return cb({ status: 500, error: userToRemove.error }) }
@@ -146,7 +146,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             if (user.isErr()) { return cb({ status: 500, error: user.error }) }
 
             const tournaments = await getPrivateTournament(pgPool, { id: data.tournamentID })
-            if (tournaments.length != 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
+            if (tournaments.length !== 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
             const tournament = tournaments[0]
 
             const newTournament = await activatePlayer(pgPool, tournament, socket.data.userID)
@@ -175,7 +175,7 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             if (user.isErr()) { return cb({ status: 500, error: user.error }) }
 
             const tournaments = await getPrivateTournament(pgPool, { id: data.tournamentID })
-            if (tournaments.length != 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
+            if (tournaments.length !== 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
             const tournament = tournaments[0]
 
             const newTournament = await removePlayer(pgPool, tournament, socket.data.userID)
@@ -201,10 +201,10 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             }
 
             const tournaments = await getPrivateTournament(pgPool, { id: data.tournamentID })
-            if (tournaments.length != 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
+            if (tournaments.length !== 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
             const tournament = tournaments[0]
 
-            if (tournament.adminPlayerID != socket.data.userID) { return cb({ status: 500, error: 'ONLY_ADMIN_PLAYER_OF_TOURNAMENT' }) }
+            if (tournament.adminPlayerID !== socket.data.userID) { return cb({ status: 500, error: 'ONLY_ADMIN_PLAYER_OF_TOURNAMENT' }) }
 
             const newTournament = await startPrivateTournament(pgPool, tournament)
             if (newTournament.isErr()) { return cb({ status: 500, error: newTournament.error }) }
@@ -229,10 +229,10 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             }
 
             const tournaments = await getPrivateTournament(pgPool, { id: data.tournamentID })
-            if (tournaments.length != 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
+            if (tournaments.length !== 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
             const tournament = tournaments[0]
 
-            if (tournament.adminPlayerID != socket.data.userID) { return cb({ status: 500, error: 'ONLY_ADMIN_PLAYER_OF_TOURNAMENT' }) }
+            if (tournament.adminPlayerID !== socket.data.userID) { return cb({ status: 500, error: 'ONLY_ADMIN_PLAYER_OF_TOURNAMENT' }) }
 
             const newTournament = await abortPrivateTournament(pgPool, tournament)
             if (newTournament.isErr()) { return cb({ status: 500, error: newTournament.error }) }
@@ -264,12 +264,12 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
             if (user.isErr()) { return cb({ status: 500, error: user.error }) }
 
             const tournaments = await getPrivateTournament(pgPool, { id: data.tournamentID })
-            if (tournaments.length != 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
+            if (tournaments.length !== 1) { return cb({ status: 500, error: 'TOURNAMENT_NOT_FOUND' }) }
             const tournament = tournaments[0]
 
             const game = tournament.data.brackets?.[data.tournamentRound]?.[data.roundGame]
             if (game == null) { return cb({ status: 500, error: 'PRIVATE_TOURNAMENT_GAME_NOT_FOUND' }) }
-            if (game.gameID != -1) { return cb({ status: 500, error: 'PRIVATE_TOURNAMENT_GAME_ALREADY_RUNNING' }) }
+            if (game.gameID !== -1) { return cb({ status: 500, error: 'PRIVATE_TOURNAMENT_GAME_ALREADY_RUNNING' }) }
 
             const gamePlayers = tournament.teams.filter((_, i) => game.teams.includes(i)).map((t) => t.playerids).flat()
 

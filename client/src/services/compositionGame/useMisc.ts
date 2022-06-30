@@ -78,14 +78,14 @@ export function useMisc(nPlayers?: number): miscStateType {
         },
         setCoopCounter: (coopCounter) => { miscState.coopCounter = coopCounter },
         setGameRunning: (gameEnded, status, players, winningTeams, coopCounter, gamePlayer) => {
-            if (gameEnded === true || status != 'running') { miscState.gameRunning = false }
+            if (gameEnded === true || status !== 'running') { miscState.gameRunning = false }
             else { miscState.gameRunning = true }
 
             if (gameEnded === true) {
-                if (coopCounter != -1) {
+                if (coopCounter !== -1) {
                     miscState.gameEndedText = i18n.global.t('Game.EndedOverlay.wonInX', { X: coopCounter })
                 } else {
-                    const teamPlayers = players.filter((player) => (player.team === players[gamePlayer].team && player.name != players[gamePlayer].name)).map((player) => player.name)
+                    const teamPlayers = players.filter((player) => (player.team === players[gamePlayer].team && player.name !== players[gamePlayer].name)).map((player) => player.name)
                     miscState.gameEndedText = i18n.global.t(`Game.EndedOverlay.${winningTeams[players[gamePlayer].team] === true ? 'wonWith' : 'lostWith'}`, {
                         players: teamPlayers.join(` ${i18n.global.t('Game.EndedOverlay.playersConnector')} `),
                     })

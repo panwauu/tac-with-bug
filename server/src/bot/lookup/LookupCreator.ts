@@ -26,8 +26,8 @@ export function encodeActionForLookup(action: moveTextOrBall, cardsWithMoves: pl
 
     let nTextActions = 0
     cardsWithMoves.forEach((c, cardIndex) => {
-        if (c.possible && c.textAction != '') {
-            const textActions = c.textAction.split('+').filter((e) => e != '')
+        if (c.possible && c.textAction !== '') {
+            const textActions = c.textAction.split('+').filter((e) => e !== '')
             textActions.forEach((textAction) => {
                 if (action[1] === cardIndex && action.length === 3 && action[2] === textAction) { nAction = nTextActions }
                 nTextActions += 1
@@ -55,8 +55,8 @@ export function decodeActionForLookup(lookupValue: lookup, cardsWithMoves: playe
 
     let nActions = 0
     for (const [cardIndex, c] of cardsWithMoves.entries()) {
-        if (c.possible && c.textAction != '') {
-            const textActions = c.textAction.split('+').filter((e) => e != '')
+        if (c.possible && c.textAction !== '') {
+            const textActions = c.textAction.split('+').filter((e) => e !== '')
             for (const textAction of textActions) {
                 if (nActions === actionIndex) { return [0, cardIndex, textAction] }
                 nActions += 1
@@ -160,7 +160,7 @@ async function test() {
             const lines = res.rows[0].game
 
             const gameInst = new game(lines[0].action[1], lines[0].action[2], lines[0].action[3], lines[0].action[4])
-            if (gameInst.nPlayers != 4 || gameInst.coop) { continue }
+            if (gameInst.nPlayers !== 4 || gameInst.coop) { continue }
 
             gameInst.activePlayer = lines[0].activePlayer
             gameInst.cards = cloneDeep(lines[0].cards)
@@ -168,7 +168,7 @@ async function test() {
             gameInst.updateCardsWithMoves()
 
             for (let iLine = 1; iLine < lines.length; iLine++) {
-                if (lines[iLine].action != 'dealCards' && lines[iLine].action != 'reset' && !gameInst.teufelFlag && lines[iLine].action[2] != 'narr' && lines[iLine].action[2] != 'tauschen') {
+                if (lines[iLine].action !== 'dealCards' && lines[iLine].action !== 'reset' && !gameInst.teufelFlag && lines[iLine].action[2] !== 'narr' && lines[iLine].action[2] !== 'tauschen') {
                     const normGame = normalizeGame(gameInst, lines[iLine].action[0])
                     const normAction = normalizeAction(lines[iLine].action, normGame)
                     const lookupkey = createLookupKey(normGame.game)
@@ -178,7 +178,7 @@ async function test() {
                     if (lookup === null) { throw new Error('Lookup not existing') }
                 }
 
-                if (lines[iLine].action != 'reset') {
+                if (lines[iLine].action !== 'reset') {
                     gameInst.performAction(lines[iLine].action, Math.random() * 2)
                 } else {
                     gameInst.resetGame()

@@ -53,7 +53,7 @@ function addWLStatisticCoop(playerStatistic: tStatistic.playerStatistic, game: t
     }
 
     game.players.forEach((player, playerIndex) => {
-        if (playerIndex != nPlayer && player != null) {
+        if (playerIndex !== nPlayer && player != null) {
             if (!(player in playerStatistic.wl.people)) { playerStatistic.wl.people[player] = [0, 0, 0, 0, 0] }
             playerStatistic.wl.people[player][4] += 1
         }
@@ -86,7 +86,7 @@ function addWLStatisticWonLost(playerStatistic: tStatistic.playerStatistic, game
 function addToPlayers(playerStatistic: tStatistic.playerStatistic, game: tDBgame.gameForPlay, nPlayer: number, ownTeamIndex: number) {
     // bestFriend worstEnemy --- [togetherTotal, togetherWon, againstTotal, againstWon]
     game.players.forEach((player, playerIndex) => {
-        if (playerIndex != nPlayer && player != null) {
+        if (playerIndex !== nPlayer && player != null) {
             if (!(player in playerStatistic.wl.people)) { playerStatistic.wl.people[player] = [0, 0, 0, 0, 0] }
 
             playerStatistic.wl.people[player][4] += 1
@@ -191,7 +191,7 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
 function countTradedSpecialCards(stat: any) {
     let total = 0;
     Object.keys(stat).forEach((key) => {
-        if (key != 'total') { total += stat[key][2] }
+        if (key !== 'total') { total += stat[key][2] }
     })
     return total
 }
@@ -279,7 +279,7 @@ function getUserNetworkFromGamesEdges(games: tDBgame.gameForPlay[], nodes: tStat
 }
 
 function getUserNetworkFromGames(allGames: tDBgame.gameForPlay[], userID: number, username: string): tStatistic.userNetwork {
-    const games = allGames.filter((g) => g.status != 'aborted' && g.status != 'running')
+    const games = allGames.filter((g) => g.status !== 'aborted' && g.status !== 'running')
 
     const nodes = getUserNetworkFromGamesNodes(games)
 

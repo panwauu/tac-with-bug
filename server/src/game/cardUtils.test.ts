@@ -65,7 +65,7 @@ test('Deal Cards 4', () => {
     for (let i = 0; i < cards.players.length; i++) {
         expect(cards.players[i].length).toEqual(6)
     }
-    expect(cards.dealingPlayer != startPlayer).toEqual(true)
+    expect(cards.dealingPlayer !== startPlayer).toEqual(true)
     expect(cards.deck.length).toEqual(104)
 });
 
@@ -84,7 +84,7 @@ test('Deal Cards 4 - not meister', () => {
     for (let i = 0; i < cards.players.length; i++) {
         expect(cards.players[i].length).toEqual(5)
     }
-    expect(cards.dealingPlayer != startPlayer).toEqual(true)
+    expect(cards.dealingPlayer !== startPlayer).toEqual(true)
     expect(cards.deck.length).toEqual(100)
 });
 
@@ -103,7 +103,7 @@ test('Deal Cards 6', () => {
         expect(cards.players[i].length).toEqual(5)
     }
     expect(cards.deck.length).toEqual(102)
-    expect(cards.dealingPlayer != startPlayer).toEqual(true)
+    expect(cards.dealingPlayer !== startPlayer).toEqual(true)
 
     for (let j = 0; j < 3; j++) {
         dealCards(cards)
@@ -126,7 +126,7 @@ test('Deal Cards 6 - not Meisterversion', () => {
         expect(cards.players[i].length).toEqual(6)
     }
     expect(cards.deck.length).toEqual(96)
-    expect(cards.dealingPlayer != startPlayer).toEqual(true)
+    expect(cards.dealingPlayer !== startPlayer).toEqual(true)
 
     for (let j = 0; j < 3; j++) {
         dealCards(cards)

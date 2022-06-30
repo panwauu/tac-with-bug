@@ -54,9 +54,9 @@ export function statisticAnalyseAction(move: tBall.moveTextOrBall, ballsBefore: 
     // cards
     const cardTitle = cardsBefore.players[(move[0] + (teufelFlag ? 1 : 0)) % cardsBefore.players.length][move[1]]
     if (cardTitle.indexOf('-') === -1) {
-        if (move[2] != 'tauschen') {
+        if (move[2] !== 'tauschen') {
             statistic[nPlayer].cards['total'][0] += 1
-            if (move[2] != 'abwerfen') {
+            if (move[2] !== 'abwerfen') {
                 statistic[nPlayer].cards['total'][1] += 1
             }
         } else {
@@ -64,9 +64,9 @@ export function statisticAnalyseAction(move: tBall.moveTextOrBall, ballsBefore: 
         }
 
         if (isTrackedCard(cardTitle, statistic[nPlayer].cards)) {
-            if (move[2] != 'tauschen') {
+            if (move[2] !== 'tauschen') {
                 statistic[nPlayer].cards[cardTitle][0] += 1
-                if (move[2] != 'abwerfen') {
+                if (move[2] !== 'abwerfen') {
                     statistic[nPlayer].cards[cardTitle][1] += 1
                 }
             } else {
@@ -77,7 +77,7 @@ export function statisticAnalyseAction(move: tBall.moveTextOrBall, ballsBefore: 
 
     // balls lost/kicked
     ballsBefore.forEach((ball, ballIndex) => {
-        if (ball.state != 'house' && ballsAfter[ballIndex].state === 'house') {
+        if (ball.state !== 'house' && ballsAfter[ballIndex].state === 'house') {
             const nPlayerLost = ballPlayer(ballIndex)
             const ownTeamIndex = teams.findIndex((team) => team.includes(nPlayer))
             statistic[nPlayerLost].actions.nBallsLost += 1;
