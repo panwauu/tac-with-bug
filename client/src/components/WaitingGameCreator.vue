@@ -127,7 +127,7 @@ const validOptions = () => {
     return false;
   }
 
-  if (selectedTeams.value.value === 3 && selectedPlayers.value.value != 6) {
+  if (selectedTeams.value.value === 3 && selectedPlayers.value.value !== 6) {
     return false;
   }
 

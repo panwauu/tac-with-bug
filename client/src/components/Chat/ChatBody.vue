@@ -9,7 +9,7 @@
           @click="chatStore.toggleChatMenu"
         />
         <Badge
-          v-if="messagesStore.notificationsChat + messagesStore.notificationsChannels - messagesStore.getChatNotifications != 0 && !chatStore.displayChatMenu"
+          v-if="messagesStore.notificationsChat + messagesStore.notificationsChannels - messagesStore.getChatNotifications !== 0 && !chatStore.displayChatMenu"
           style="position: absolute; right: 0; top: 0;"
           :value="(messagesStore.notificationsChat + messagesStore.notificationsChannels - messagesStore.getChatNotifications).toString()"
           severity="danger"
@@ -20,7 +20,7 @@
         class="chatName"
       >{{ formatChannelName(messagesStore.getChatLabel, messagesStore.selectedChat.type === 'channel') }}</div>
       <Badge
-        v-if="messagesStore.getChatNotifications != 0"
+        v-if="messagesStore.getChatNotifications !== 0"
         style="margin-left: 10px;"
         :value="messagesStore.getChatNotifications.toString()"
         :severity="messagesStore.selectedChat.type === 'chat' ? 'danger' : 'warning'"
@@ -61,7 +61,7 @@
             >
               <div
                 class="p-card chatMessage"
-                :class="{ 'chatMessageOwn': message.sender === username && displaySenderAndTime(messageGroupIndex, messageIndex), 'chatMessageNotOwn': message.sender != username && displaySenderAndTime(messageGroupIndex, messageIndex) }"
+                :class="{ 'chatMessageOwn': message.sender === username && displaySenderAndTime(messageGroupIndex, messageIndex), 'chatMessageNotOwn': message.sender !== username && displaySenderAndTime(messageGroupIndex, messageIndex) }"
               >
                 <div
                   v-if="displaySenderAndTime(messageGroupIndex, messageIndex)"
@@ -158,7 +158,7 @@ const messagesStore = useMessagesStore()
 
 function displaySenderAndTime(groupIndex: number, messageIndex: number): boolean {
   return messageIndex === 0 ||
-    messagesStore.getDateGroupedChatMessages[groupIndex].messages[messageIndex].sender != messagesStore.getDateGroupedChatMessages[groupIndex].messages[messageIndex - 1].sender
+    messagesStore.getDateGroupedChatMessages[groupIndex].messages[messageIndex].sender !== messagesStore.getDateGroupedChatMessages[groupIndex].messages[messageIndex - 1].sender
 }
 
 function beautifyDate(timestamp: string): string {

@@ -81,7 +81,7 @@ const resetGraph = async (data: any) => {
     }
   }
 
-  if (loggedInUsername.value != props.username) {
+  if (loggedInUsername.value !== props.username) {
     newChartDataset.push({
       label: props.username,
       backgroundColor: '#c6373750',

@@ -70,7 +70,7 @@ async function getHistory(first: number) {
 
   try {
     const res = await socket.emitWithAck(2000, 'tournament:loadTable', { first, limit: rowsInTable, filter: null })
-    if (res.status != 200 || res.data === undefined) { return router.push({ name: 'Landing' }); }
+    if (res.status !== 200 || res.data === undefined) { return router.push({ name: 'Landing' }); }
 
     tournaments.value = res.data.tournaments;
     totalTournaments.value = res.data.total;
@@ -89,7 +89,7 @@ function createDateString(ts: number) {
 }
 
 function selectTournament() {
-  if (selectedTournament.value.length != 1) { return }
+  if (selectedTournament.value.length !== 1) { return }
 
   const tournament = selectedTournament.value[0]
   router.push({ name: tournament.type === 'public' ? 'PublicTournament' : 'PrivateTournament', params: { id: tournament.id } })

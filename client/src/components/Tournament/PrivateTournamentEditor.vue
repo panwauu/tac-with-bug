@@ -35,7 +35,7 @@
         @click="open(team.name)"
       />
       <div
-        v-if="team.players.length < tournament.playersPerTeam && tournament.adminPlayer != username"
+        v-if="team.players.length < tournament.playersPerTeam && tournament.adminPlayer !== username"
       >...</div>
     </div>
     <Button
@@ -46,7 +46,7 @@
       @click="open()"
     />
     <div
-      v-if="tournament.registerTeams.length < tournament.nTeams && tournament.adminPlayer != username"
+      v-if="tournament.registerTeams.length < tournament.nTeams && tournament.adminPlayer !== username"
     >...</div>
     <Message
       v-if="!readyToStart"
@@ -94,7 +94,7 @@ function open(teamName?: string) { diaglogTeamName.value = teamName ?? null; sho
 
 const readyToStart = computed(() => {
   return props.tournament.registerTeams.length === props.tournament.nTeams &&
-    !props.tournament.registerTeams.some((t) => t.players.length != props.tournament.playersPerTeam || t.activated.some((a) => !a))
+    !props.tournament.registerTeams.some((t) => t.players.length !== props.tournament.playersPerTeam || t.activated.some((a) => !a))
 })
 
 async function activatePlayer() {

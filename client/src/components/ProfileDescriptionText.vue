@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="username != loggedInUsername"
+    v-if="username !== loggedInUsername"
     class="userDescription"
   >{{ userDescription || $t('Profile.DescriptionEditor.placeholder') }}</div>
   <div v-else class="userDescription">
