@@ -7,8 +7,6 @@ import logger from '../helpers/logger';
 import { getPublicTournamentByID, getCurrentPublicTournament } from '../services/tournamentsPublic';
 import { tournamentBus } from '../services/tournaments';
 import { registerTeam, joinTeam, leaveTournament, activateUser } from '../services/tournamentsRegister';
-import { isASweetName } from '../services/SweetNameGenerator';
-import { isSubscribed } from '../paypal/paypal';
 import { generateIcal } from '../communicationUtils/icalGenerator';
 import { sendTournamentInvitation, sendTournamentReminder } from '../communicationUtils/email';
 import { getUser } from '../services/user';
@@ -39,7 +37,6 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
         });
         const { error } = schema.validate(data);
         if (error != null) { logger.error('JOI Error', error); return }
-        if (!(await isSubscribed(pgPool, socket.data.userID)) && !isASweetName(data.name)) { return }
 
         try {
             const user = await getUser(pgPool, { id: socket.data.userID })
@@ -58,7 +55,7 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
             socket.emit('tournament:toast:you-created-a-team', dataForClient)
             getSocketsOfPlayerIDs(nsp, teamToRegister.playerids.filter((_, i) => teamToRegister.activated[i] === false)).forEach((s) => s.emit('tournament:toast:invited-to-a-team', dataForClient))
         } catch (err) {
-            logger.error('Tournament Socket Error', err)
+            logger.error('Error in tournament:public:registerTeam', err)
         }
     });
 
@@ -86,10 +83,10 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
                 const dataForClient = { registerTeam: registerTeam, tournamentTitle: tournament.title, player: user.value.username }
                 if (registerTeam.activated.every((a) => a === true)) {
                     socket.emit('tournament:toast:you-joined-team-complete', dataForClient)
-                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id != socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-joined-team-complete', dataForClient))
+                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id !== socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-joined-team-complete', dataForClient))
                 } else {
                     socket.emit('tournament:toast:you-joined-team-incomplete', dataForClient)
-                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id != socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-joined-team-incomplete', dataForClient))
+                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id !== socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-joined-team-incomplete', dataForClient))
                 }
             }
 
@@ -99,7 +96,7 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
                 getSocketsOfPlayerIDs(nsp, tournament.registerTeams.map((t) => t.playerids).flat()).forEach((s) => s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: tournament.title }))
             }
         } catch (err) {
-            logger.error('Tournament Socket Error', err)
+            logger.error('Error in tournament:public:joinTeam', err)
         }
     });
 
@@ -123,10 +120,10 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
                 const dataForClient = { registerTeam: registerTeam, tournamentTitle: tournament.title, player: user.value.username }
                 if (registerTeam.activated.every((a) => a === true)) {
                     socket.emit('tournament:toast:you-activated-complete', dataForClient)
-                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id != socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-activated-team-complete', dataForClient))
+                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id !== socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-activated-team-complete', dataForClient))
                 } else {
                     socket.emit('tournament:toast:you-activated-incomplete', dataForClient)
-                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id != socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-activated-team-incomplete', dataForClient))
+                    getSocketsOfPlayerIDs(nsp, registerTeam.playerids.filter((id) => id !== socket.data.userID)).forEach((s) => s.emit('tournament:toast:player-activated-team-incomplete', dataForClient))
                 }
             }
 
@@ -136,7 +133,7 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
                 getSocketsOfPlayerIDs(nsp, tournament.registerTeams.map((t) => t.playerids).flat()).forEach((s) => s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: tournament.title }))
             }
         } catch (err) {
-            logger.error('Tournament Socket Error', err)
+            logger.error('Error in tournament:public:activateUser', err)
         }
     });
 
@@ -159,45 +156,34 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
             socket.emit('tournament:toast:you-left-tournament', dataForClient)
             getSocketsOfPlayerIDs(nsp, registerTeamForNotification.playerids).forEach((s) => s.emit('tournament:toast:partner-left-tournament', dataForClient))
         } catch (err) {
-            logger.error('Tournament Socket Error', err)
+            logger.error('Error in tournament:public:leaveTournament', err)
         }
     });
 }
 
 export function pushChangedPublicTournament(tournament: tTournament.publicTournament) { nsp.emit('tournament:public:update', tournament) }
 
-export async function registerTournamentBus(sqlClient: pg.Pool) {
-    sqlClient //TBD
+export async function registerTournamentBus() {
     tournamentBus.on('signUp-failed', async (data: { playerids: number[], tournamentTitle: string }) => {
         getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUp-failed', { tournamentTitle: data.tournamentTitle }))
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('signUpEnded-you-partizipate', async (data: { playerids: number[], tournamentTitle: string }) => {
         getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUpEnded-you-partizipate', { tournamentTitle: data.tournamentTitle }))
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('signUpEnded-you-wont-partizipate', async (data: { playerids: number[], tournamentTitle: string }) => {
         getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: data.tournamentTitle }))
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('started', async (data: { tournamentTitle: string }) => {
         nsp.emit('tournament:toast:started', { tournamentTitle: data.tournamentTitle })
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('round-started', async (data: { tournamentTitle: string, roundsToFinal: number }) => {
         nsp.emit('tournament:toast:round-started', { tournamentTitle: data.tournamentTitle, roundsToFinal: data.roundsToFinal })
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('round-ended', async (data: { tournamentTitle: string, roundsToFinal: number }) => {
         nsp.emit('tournament:toast:round-ended', { tournamentTitle: data.tournamentTitle, roundsToFinal: data.roundsToFinal })
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
     tournamentBus.on('ended', async (data: { tournamentTitle: string, winner: tTournament.team }) => {
         nsp.emit('tournament:toast:ended', { tournamentTitle: data.tournamentTitle, winner: data.winner })
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
-    })
-    tournamentBus.on('updateTournament', async () => {
-        //nsp.emit('tournament:get-current', await getCurrentTournament(sqlClient))
     })
 }
 
@@ -206,7 +192,7 @@ function getSocketsOfPlayerIDs(nsp: GeneralNamespace, userIDs: number[]) {
 }
 
 async function sendMailToUnactivatedPlayer(sqlClient: pg.Pool, players: string[], teamName: string, username: string) {
-    const playersForMail = players.filter((p) => p != username)
+    const playersForMail = players.filter((p) => p !== username)
 
     playersForMail.forEach(async (player) => {
         const user = await getUser(sqlClient, { username: player })

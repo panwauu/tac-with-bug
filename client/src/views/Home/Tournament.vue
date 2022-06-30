@@ -1,7 +1,7 @@
 <template>
   <div class="p-card tournamentPage">
     <Button
-      v-if="$route.name != 'TournamentOverview'"
+      v-if="$route.name !== 'TournamentOverview'"
       :label="$t('Tournament.backButton')"
       icon="pi pi-backward"
       class="p-button-rounded p-button-sm p-button-text p-button-secondary buttonBack"

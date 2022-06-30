@@ -52,7 +52,7 @@ export async function loadLocaleMessages(i18n: I18n, locale: string): Promise<an
 }
 
 export function redirectDepedingOnLoadedLocale(locale: string): void {
-    if ((router.currentRoute.value.params.locale === undefined && locale != fallbackLocale) || locale != router.currentRoute.value.params.locale) {
+    if ((router.currentRoute.value.params.locale === undefined && locale !== fallbackLocale) || locale !== router.currentRoute.value.params.locale) {
         router.push({
             name: router.currentRoute.value.name ? router.currentRoute.value.name : 'Landing',
             params: { ...router.currentRoute.value.params, ...{ locale: locale } },

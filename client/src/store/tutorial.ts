@@ -25,7 +25,7 @@ export const useTutorialStore = defineStore('tutorial', {
         async changeTutorialStepValue(socket: GeneralSocketC, tutorialID: number, tutorialStep: number, done: boolean): Promise<void> {
             if (isLoggedIn.value) {
                 const res = await socket.emitWithAck(5000, 'tutorial:changeTutorialStep', { tutorialID, tutorialStep, done })
-                if (res.status != 200 || res.data == null) {
+                if (res.status !== 200 || res.data == null) {
                     console.error(`tutorial:resetTutorial failed with error ${res.error}`)
                     router.push({ name: 'Landing' })
                     return
@@ -40,7 +40,7 @@ export const useTutorialStore = defineStore('tutorial', {
         async resetTutorialProgress(socket: GeneralSocketC, tutorialID: number): Promise<void> {
             if (isLoggedIn.value) {
                 const res = await socket.emitWithAck(5000, 'tutorial:resetTutorial', { tutorialID })
-                if (res.status != 200 || res.data == null) {
+                if (res.status !== 200 || res.data == null) {
                     console.error(`tutorial:resetTutorial failed with error ${res.error}`)
                     router.push({ name: 'Landing' })
                     return
@@ -55,13 +55,13 @@ export const useTutorialStore = defineStore('tutorial', {
         async loadProgress(socket: GeneralSocketC): Promise<void> {
             if (isLoggedIn.value) {
                 socket.emitWithAck(5000, 'tutorial:loadProgress').then((res) => {
-                    if (res.status != 200 || res.data == null) { router.push({ name: 'Landing' }); return }
+                    if (res.status !== 200 || res.data == null) { router.push({ name: 'Landing' }); return }
                     this.progress = res.data.progress
                     this.clearStorage()
                 })
             } else {
                 const res = await socket.emitWithAck(5000, 'tutorial:loadProgress')
-                if (res.status != 200 || res.data == null) { router.push({ name: 'Landing' }); return }
+                if (res.status !== 200 || res.data == null) { router.push({ name: 'Landing' }); return }
 
                 const storageElemente = localStorage.getItem(storageKey)
                 if (storageElemente == null) {
@@ -111,10 +111,10 @@ export const useTutorialStore = defineStore('tutorial', {
 
 function validateProgress(progressToValidate: any, referenceProgress: boolean[][]): void {
     if (!Array.isArray(progressToValidate)) { throw new Error('Progress could not be validated') }
-    if (progressToValidate.length != referenceProgress.length) { throw new Error('Progress could not be validated') }
+    if (progressToValidate.length !== referenceProgress.length) { throw new Error('Progress could not be validated') }
     for (let i = 0; i < referenceProgress.length; i++) {
         if (!Array.isArray(progressToValidate[i])) { throw new Error('Progress could not be validated') }
-        if (progressToValidate[i].length != referenceProgress[i].length) { throw new Error('Progress could not be validated') }
-        if (progressToValidate[i].some((e: any) => typeof e != 'boolean')) { throw new Error('Progress could not be validated') }
+        if (progressToValidate[i].length !== referenceProgress[i].length) { throw new Error('Progress could not be validated') }
+        if (progressToValidate[i].some((e: any) => typeof e !== 'boolean')) { throw new Error('Progress could not be validated') }
     }
 }

@@ -48,10 +48,10 @@ import { useResizeObserver } from '@vueuse/core';
 
 const props = defineProps<{ username: string }>();
 
-let userDescription = ref('')
-let isSubscribed = ref(false)
-let radarData = ref<number[]>([])
-let gamesDistributionData = ref<gamesDistributionDataType>({
+const userDescription = ref('')
+const isSubscribed = ref(false)
+const radarData = ref<number[]>([])
+const gamesDistributionData = ref<gamesDistributionDataType>({
   teamWon: 0,
   teamAborted: 0,
   won4: 0,
@@ -61,17 +61,17 @@ let gamesDistributionData = ref<gamesDistributionDataType>({
   aborted: 0,
   running: 0,
 })
-let hofReasons = ref<hofReason[]>([])
-let items = ref(createMenu(true))
-let profileContainer = ref<null | HTMLElement>(null)
-let registeredOn = ref<Date>(new Date(0))
+const hofReasons = ref<hofReason[]>([])
+const items = ref(createMenu(true))
+const profileContainer = ref<null | HTMLElement>(null)
+const registeredOn = ref<Date>(new Date(0))
 
 updateData()
 watch(() => props.username, () => updateData())
 
 async function updateData() {
   try {
-    let usernameStats = await Service.getPlayerStats(props.username);
+    const usernameStats = await Service.getPlayerStats(props.username);
     isSubscribed.value = usernameStats.subscriber;
     radarData.value = usernameStats.table;
     gamesDistributionData.value = usernameStats.gamesDistribution;
@@ -107,7 +107,6 @@ function updateMenu() {
   flex: 0 1 800px;
   max-width: 100%;
   margin-top: 70px;
-  max-width: 100%;
 }
 
 .profileInformation {

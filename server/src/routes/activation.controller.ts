@@ -21,7 +21,7 @@ export class ActivationController extends Controller {
         const user = await getUser(request.app.locals.sqlClient, { id: userID });
         if (user.isErr()) { return userNotFoundResponse(404, 'Validation failed: userID not found') }
 
-        if (user.value.token != token) { return tokenWrongResponse(403, 'Validation failed: wrong token') }
+        if (user.value.token !== token) { return tokenWrongResponse(403, 'Validation failed: wrong token') }
         await activateUser(request.app.locals.sqlClient, { id: userID })
         return 'Validation of user successfull'
     }

@@ -104,7 +104,7 @@ function groupAndSortData(data: Record<string, number>, threshold: number, group
     })
 
     resultingArray = resultingArray.sort((a, b) => b[1] - a[1])
-    if (othersElement[1] != 0) { resultingArray.push(othersElement) }
+    if (othersElement[1] !== 0) { resultingArray.push(othersElement) }
 
     return resultingArray.map((e) => { return [e[0], e[1] / overallDataPoints] })
 }

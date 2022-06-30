@@ -18,7 +18,7 @@ export function ballGoal(nBall: number, balls: tBall.ballsType): number {
 }
 
 export function getPositionsBetweenStarts(balls: tBall.ballsType): number {
-    if (balls.length != 16 && balls.length != 24) { throw new Error('Wrong balls length') }
+    if (balls.length !== 16 && balls.length !== 24) { throw new Error('Wrong balls length') }
 
     if (balls.length === 16) { return 16; }
     return 11;

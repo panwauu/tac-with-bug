@@ -217,7 +217,7 @@ let modalStateLocal = computed({
 })
 
 function openModal(str: string) {
-  if (router.currentRoute.value.name != 'Game' && str === 'statistic') { return }
+  if (router.currentRoute.value.name !== 'Game' && str === 'statistic') { return }
   modalStateLocal.value = str;
   modalVisibleLocal.value = true;
 }

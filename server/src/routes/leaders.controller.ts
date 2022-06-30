@@ -46,7 +46,7 @@ export class LeadersController extends Controller {
         const endDateNormalized = endDate === undefined ? new Date(Date.now()) : new Date(endDate)
         if (startDateNormalized >= endDateNormalized) { return validationError(409, 'startDate should be smaller than endDate') }
 
-        if (nPlayers != 4 && nPlayers != 6) { return validationError(409, 'startDate should be smaller than endDate') }
+        if (nPlayers !== 4 && nPlayers !== 6) { return validationError(409, 'startDate should be smaller than endDate') }
 
         return queryLeaderboardCoop(request.app.locals.sqlClient, limit, offset, nPlayers, startDateNormalized, endDateNormalized)
     }
@@ -60,7 +60,7 @@ router.get('/getCoopLeaderboard/', isLoggedIn, async (req: express.Request, res:
     const startDate = new Date(parseInt(req.query.startDate as string) || 0)
     const endDate = new Date(!isNaN(parseInt(req.query.endDate as string)) ? parseInt(req.query.endDate as string) : Date.now())
     if (isNaN(limit) || isNaN(offset)) { return res.status(400).send('limit and offset as integer required') }
-    if (nPlayers != 4 && nPlayers != 6) { return res.status(400).send('nPlayers needs to be 4 or 6') }
+    if (nPlayers !== 4 && nPlayers !== 6) { return res.status(400).send('nPlayers needs to be 4 or 6') }
     if (startDate >= endDate) { return res.status(400).send('startDate should be smaller than endDate') }
 
     const data = await queryLeaderboardCoop(req.app.locals.sqlClient, limit, offset, nPlayers, startDate, endDate)

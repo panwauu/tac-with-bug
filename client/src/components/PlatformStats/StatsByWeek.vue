@@ -66,13 +66,13 @@ function updateWeekChart() {
             borderDash: [8, 5],
             shouldBeVisible: (
                 !(dayIndexFromMonday === 6 && currentHour >= 23) &&
-                val != 0 &&
-                val != weekData[weekData.length - 1][i === 0 ? 1 : 2]
+                val !== 0 &&
+                val !== weekData[weekData.length - 1][i === 0 ? 1 : 2]
             ),
             hidden: !(
                 !(dayIndexFromMonday === 6 && currentHour >= 23) &&
-                val != 0 &&
-                val != weekData[weekData.length - 1][i === 0 ? 1 : 2]
+                val !== 0 &&
+                val !== weekData[weekData.length - 1][i === 0 ? 1 : 2]
             )
         });
     }

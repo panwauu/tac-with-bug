@@ -17,7 +17,7 @@ export class DevController extends Controller {
         const dbRes = await retrieveCapturedGame(request.app.locals.sqlClient, gameID)
         let resultingString = ''
         dbRes.rows[0].game.forEach((row: any, index: any) =>
-            resultingString += JSON.stringify(row) + (index != dbRes.rows[0].game.length - 1 ? '\r\n' : '')
+            resultingString += JSON.stringify(row) + (index !== dbRes.rows[0].game.length - 1 ? '\r\n' : '')
         )
         return resultingString
     }

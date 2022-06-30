@@ -48,7 +48,7 @@
           >
             {{ chat.label }}
             <Badge
-              v-if="chat.numberOfUnread != 0"
+              v-if="chat.numberOfUnread !== 0"
               :value="chat.numberOfUnread.toString()"
               :severity="'danger'"
             />
@@ -90,7 +90,7 @@
           >
             {{ formatChannelName(chat.label, menuItemIterator === 2) }}
             <Badge
-              v-if="chat.numberOfUnread != 0"
+              v-if="chat.numberOfUnread !== 0"
               :value="chat.numberOfUnread.toString()"
               :severity="menuItemIterator < 2 ? 'danger' : 'warning'"
             />

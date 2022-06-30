@@ -26,8 +26,8 @@ export const useWaitingStore = defineStore('waiting', {
             this.games = cloneDeep(data).sort((a, b) => a.id - b.id)
 
             const index = this.games.findIndex((g) => username.value != null && g.players.includes(username.value));
-            if (index != -1) {
-                if (this.ownGame != null && this.ownGame.id === this.games[index].id && this.ownGame.players.filter((p: string) => p != null).length != data[index].players.filter((p: string) => p != null).length && data[index].players.filter((p: string) => p != null).length === data[index].nPlayers) {
+            if (index !== -1) {
+                if (this.ownGame != null && this.ownGame.id === this.games[index].id && this.ownGame.players.filter((p: string) => p != null).length !== data[index].players.filter((p: string) => p != null).length && data[index].players.filter((p: string) => p != null).length === data[index].nPlayers) {
                     sound.$play('noti');
                 }
 

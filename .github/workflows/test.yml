@@ -91,6 +91,4 @@ jobs:
         cd server
         npm run test
       env:
-        PAYPAL_PLAN_ID_DEV_MONTHLY: ${{ secrets.PAYPAL_PLAN_ID_DEV_MONTHLY }}
-        PAYPAL_PLAN_ID_DEV_QUATERLY: ${{ secrets.PAYPAL_PLAN_ID_DEV_QUATERLY }}
-        PAYPAL_PLAN_ID_DEV_YEARLY: ${{ secrets.PAYPAL_PLAN_ID_DEV_YEARLY }}
+        paypal_Secret: ${{ secrets.PAYPAL_SECRET }}

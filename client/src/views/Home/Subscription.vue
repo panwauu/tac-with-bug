@@ -19,20 +19,6 @@
             </div>
           </div>
           <div class="FeatureElement">
-            <img class="FeatureIcon" src="@/assets/balls/blackWhite.png">
-            <div class="FeatureText">{{ $t("Subscription.featureBallsColor") }}</div>
-          </div>
-          <div class="FeatureElement">
-            <i class="pi pi-chart-bar FeatureIcon" style="font-size: 1.6rem" />
-            <div class="FeatureText">{{ $t("Subscription.featureStats") }}</div>
-          </div>
-          <div class="FeatureElement">
-            <div class="FeatureIcon" style="width: 30px">
-              <Crown :rank="2" />
-            </div>
-            <div class="FeatureText">{{ $t("Subscription.tournamentTeam") }}</div>
-          </div>
-          <div class="FeatureElement">
             <Luck class="FeatureIcon" />
             <div class="FeatureText">{{ $t("Subscription.featureLuck") }}</div>
           </div>
@@ -129,7 +115,6 @@ import CountdownTimer from '@/components/CountdownTimer.vue';
 import SubscriptionTag from '@/components/SubscriptionTag.vue';
 import YinYang from '@/components/icons/YinYang.vue';
 import Luck from '@/components/icons/LuckSymbol.vue';
-import Crown from '@/components/icons/CrownSymbol.vue';
 import SelectButton from 'primevue/selectbutton';
 import Message from 'primevue/message';
 
@@ -138,25 +123,25 @@ import { ref, onMounted, computed, onUnmounted, watch } from 'vue';
 import router from '@/router/index';
 import { i18n } from '@/services/i18n';
 import { useToast } from 'primevue/usetoast';
-const toast = useToast();
-import { injectStrict, SocketKey, SubscriptionStateKey } from '@/services/injections';
+import { useSubscription } from '@/services/useSubscription';
+import { injectStrict, SocketKey } from '@/services/injections';
 import { PayPalButtonsComponent } from '@paypal/paypal-js';
 import { isLoggedIn } from '@/services/useUser';
-
-const subscriptionState = injectStrict(SubscriptionStateKey)
+const toast = useToast();
 
 const socket = injectStrict(SocketKey);
+const subscriptionState = useSubscription(socket);
 
-let nSubscriptions = ref(0)
+const nSubscriptions = ref(0)
 const planModel = [
   { name: i18n.global.t('Subscription.buttonPlanMonthly'), value: 'MONTHLY' },
   { name: i18n.global.t('Subscription.buttonPlanQuaterly'), value: 'QUATERLY' },
   { name: i18n.global.t('Subscription.buttonPlanYearly'), value: 'YEARLY' },
 ]
-let selectedPlan = ref(planModel[2])
+const selectedPlan = ref(planModel[2])
 
-let button = ref<PayPalButtonsComponent | undefined>()
-let paypal = ref(loadScript({
+const button = ref<PayPalButtonsComponent | undefined>()
+const paypal = ref(loadScript({
   'client-id': import.meta.env.VITE_PAYPAL_CLIENT_ID as string,
   intent: 'subscription',
   vault: true,

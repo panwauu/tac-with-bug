@@ -64,7 +64,7 @@ const usernameTooLong = computed(() => localUsername.value.length > 12)
 const usernameWrongCharacters = computed(() => !localUsername.value.match(/^[A-Za-z\u00E4\u00F6\u00FC\u00C4\u00D6\u00DC\u00df]+$/))
 
 const usernameErrorLabel = computed(() => {
-    if (localUsername.value != '') {
+    if (localUsername.value !== '') {
         if (usernameWrongCharacters.value) {
             return i18n.global.t('Login.SignUp.usernameWrongChar');
         } else if (usernameTooShort.value) {

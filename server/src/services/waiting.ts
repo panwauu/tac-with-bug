@@ -49,7 +49,7 @@ export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number
 export type getWaitingGameError = 'WAITING_GAME_ID_IS_INVALID'
 export async function getWaitingGame(sqlClient: pg.Pool, waitingGameID: number): Promise<Result<waitingGame, getWaitingGameError>> {
     const games = await getWaitingGames(sqlClient, waitingGameID)
-    if (games.length != 1) { return err('WAITING_GAME_ID_IS_INVALID') }
+    if (games.length !== 1) { return err('WAITING_GAME_ID_IS_INVALID') }
     return ok(games[0])
 }
 
@@ -101,7 +101,7 @@ export async function movePlayer(sqlClient: pg.Pool, waitingGameID: number, user
     const playerIndex = game.value.players.indexOf(usernameToMove)
     if (playerIndex === -1) { return err('PLAYER_NOT_FOUND_IN_WAITING_GAME') }
 
-    if (game.value.adminID != userID && game.value.playerIDs[playerIndex] != userID) { return err('PLAYER_NOT_ALLOWED_TO_MOVE') }
+    if (game.value.adminID !== userID && game.value.playerIDs[playerIndex] !== userID) { return err('PLAYER_NOT_ALLOWED_TO_MOVE') }
 
     const secondIndex = playerIndex + (up ? 1 : -1)
     if (secondIndex < 0 || secondIndex >= game.value.nPlayers) { return err('PLAYER_CANNOT_BE_MOVED_IN_DIRECTION') }
@@ -129,7 +129,7 @@ export async function changeColor(sqlClient: pg.Pool, waitingGameID: number, use
     const playerIndex = game.value.players.indexOf(usernameToChange)
 
     if (playerIndex === -1) { return err('PLAYER_NOT_FOUND_IN_WAITING_GAME') }
-    if (userID != game.value.adminID && game.value.playerIDs[playerIndex] != userID) { return err('PLAYER_NOT_ALLOWED_TO_CHANGE_COLOR') }
+    if (userID !== game.value.adminID && game.value.playerIDs[playerIndex] !== userID) { return err('PLAYER_NOT_ALLOWED_TO_CHANGE_COLOR') }
 
     if (!colors.includes(color)) { return err('COLOR_DOES_NOT_EXIST') }
     if (game.value.balls.includes(color)) { return err('COLOR_ALREADY_IN_USE') }
@@ -151,13 +151,13 @@ export async function removePlayer(sqlClient: pg.Pool, usernameToRemove: string,
     for (const waitingGame of waitingGames) {
         if (!waitingGame.playerIDs.includes(userIDToRemove)) { continue; }
 
-        if (userIDToRemove != userIDRemoving && userIDRemoving != waitingGame.adminID) { return err('PLAYER_NOT_ALLOWED_TO_REMOVE') }
+        if (userIDToRemove !== userIDRemoving && userIDRemoving !== waitingGame.adminID) { return err('PLAYER_NOT_ALLOWED_TO_REMOVE') }
 
         if (waitingGame.gameid != null || waitingGame.playerIDs.filter((id) => id != null).length <= 1) {
             p.push(sqlClient.query('DELETE FROM waitinggames WHERE id=$1;', [waitingGame.id]))
         } else {
             const indexToRemove = waitingGame.playerIDs.findIndex((p) => p === userIDToRemove)
-            const newAdminIndex = waitingGame.playerIDs.findIndex((p) => p != userIDToRemove && p != null)
+            const newAdminIndex = waitingGame.playerIDs.findIndex((p) => p !== userIDToRemove && p != null)
 
             if (indexToRemove === -1 || newAdminIndex === -1) { throw new Error('Could not remove player as player is not in game or no new admin could be found') }
             p.push(sqlClient.query(`UPDATE waitinggames SET 
@@ -191,7 +191,7 @@ export async function setPlayerReady(sqlClient: pg.Pool, waitingGameID: number, 
     const game = await getWaitingGame(sqlClient, waitingGameID)
     if (game.isErr()) { return err(game.error) }
 
-    if (game.value.players.filter((p) => p != null).length != game.value.nPlayers) { return err('WAITING_GAME_IS_NOT_FULL') }
+    if (game.value.players.filter((p) => p != null).length !== game.value.nPlayers) { return err('WAITING_GAME_IS_NOT_FULL') }
 
     const playerIndex = game.value.playerIDs.findIndex((p) => p === userID)
     if (playerIndex === -1) { return err('PLAYER_NOT_FOUND_IN_WAITING_GAME') }

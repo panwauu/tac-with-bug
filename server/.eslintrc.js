@@ -22,6 +22,7 @@ module.exports = {
         "no-trailing-spaces": "error",
         "quotes": ["error", "single"],
         "no-throw-literal": "error",
+        'eol-last': ['error', 'always'],
 
         // Enable in the future?
         "no-param-reassign": ["off", { "props": true }],

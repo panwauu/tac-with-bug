@@ -84,6 +84,6 @@ export function registerJobsForOneTournament(sqlClient: pg.Pool, tournament: pub
 }
 
 function timePerGameToMS(timePerGame: string) {
-    if (timePerGame.length != 5 || timePerGame.substring(2, 3) != ':') { throw new Error('Invalid interval format') }
+    if (timePerGame.length !== 5 || timePerGame.substring(2, 3) !== ':') { throw new Error('Invalid interval format') }
     return (parseInt(timePerGame.substring(3, 5)) + parseInt(timePerGame.substring(0, 2)) * 60) * 60 * 1000
 }

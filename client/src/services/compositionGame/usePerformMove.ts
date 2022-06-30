@@ -15,7 +15,7 @@ export type performMoveType = (action: performMoveAction) => moveTextOrBall;
 
 export function usePerformMove(cardsState: cardsStateType, ballsState: ballsStateType, miscState: miscStateType, discardPileState: discardPileStateType): performMoveType {
     const performMove: performMoveType = (action) => {
-        if (cardsState.selectedCard != -1 && cardsState.cards[cardsState.selectedCard].title === 'tac' && action.textAction != 'abwerfen') {
+        if (cardsState.selectedCard !== -1 && cardsState.cards[cardsState.selectedCard].title === 'tac' && action.textAction !== 'abwerfen') {
             ballsState.switchBallsWithPrior()
         }
 
@@ -30,10 +30,10 @@ export function usePerformMove(cardsState: cardsStateType, ballsState: ballsStat
         } else if (action.textAction === 'Karten weitergeben') {
             console.log('Karten weitergeben')
             cardsState.removeAllCards()
-        } else if ((action.textAction === 'narr' && miscState.players[miscState.gamePlayer]?.narrFlag[0] === false) || action.textAction != '' || getRemainingMoves({ title: cardsState.cards[cardsState.selectedCard].title, possible: false, ballActions: [], textAction: '', key: '', style: '' }, ballsState.balls, action.ballAction[0], action.ballAction[1], discardPileState.discardPile) === 0) {
+        } else if ((action.textAction === 'narr' && miscState.players[miscState.gamePlayer]?.narrFlag[0] === false) || action.textAction !== '' || getRemainingMoves({ title: cardsState.cards[cardsState.selectedCard].title, possible: false, ballActions: [], textAction: '', key: '', style: '' }, ballsState.balls, action.ballAction[0], action.ballAction[1], discardPileState.discardPile) === 0) {
             console.log('Animation')
             const nDash = cardsState.cards[cardsState.selectedCard].title.indexOf('-')
-            if (nDash != -1) {
+            if (nDash !== -1) {
                 cardsState.cards[cardsState.selectedCard].title = cardsState.cards[cardsState.selectedCard].title.substring(0, nDash)
             }
 
