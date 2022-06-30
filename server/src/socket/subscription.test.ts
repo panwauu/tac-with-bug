@@ -1,9 +1,12 @@
 import { TacServer } from '../server';
 import supertest from 'supertest';
+import { describeIf } from '../helpers/jestHelpers';
 import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 import * as mail from '../communicationUtils/email';
 
-describe('Test Suite via Socket.io', () => {
+const skipTests = process.env.paypal_Secret == null || process.env.paypal_Client_ID == null
+
+describeIf(!skipTests, 'Test Suite via Socket.io', () => {
     let agent: supertest.SuperAgentTest, server: TacServer, userWithSocket: userWithCredentialsAndSocket;
     const subscriptionID = 'I-K2P36MWMH55P';
 
