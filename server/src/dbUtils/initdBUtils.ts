@@ -26,7 +26,7 @@ export function initdBUtils() {
         return new pg.Pool({
             user: 'postgres',
             host: 'localhost',
-            database: 'tac',
+            database: 'tac_test',
             password: 'postgres',
             port: 5432,
             max: 15,

@@ -2,7 +2,8 @@ import type { GameSocketC } from '../../../shared/types/GameNamespaceDefinition'
 
 import { TacServer } from '../server';
 import supertest from 'supertest';
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket, registerGameSocket, unregisterGameSocket } from '../helpers/userHelper';
+import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket, registerGameSocket, unregisterGameSocket, waitForGameSocketConnection, initiateGameSocket } from '../helpers/userHelper';
+import { cloneDeep } from 'lodash';
 
 describe.skip('Game test suite via socket.io', () => {
     let usersWithSockets: userWithCredentialsAndSocket[], agent: supertest.SuperAgentTest, server: TacServer, gameBefore: any;
@@ -62,7 +63,7 @@ describe.skip('Game test suite via socket.io', () => {
         })
     })
 
-    /*describe('Test dealCards', () => {
+    describe.skip('Test dealCards', () => {
         let gameSocket: GameSocketC, interval: any;
 
         beforeAll(async () => {
@@ -104,7 +105,7 @@ describe.skip('Game test suite via socket.io', () => {
         })
     })
 
-    describe('Test complete flow with all events', () => {
+    describe.skip('Test complete flow with all events', () => {
         let gameSocket0: GameSocketC, gameSocket1: GameSocketC;
 
         afterAll(async () => {
@@ -173,14 +174,14 @@ describe.skip('Game test suite via socket.io', () => {
         test('Unregister last player', async () => {
             gameSocket1.disconnect()
         })
-    })*/
+    })
 
     test.todo('Test watching mode - online Players')
 })
 
-/*function generateGameSnapshot(game: any) {
+function generateGameSnapshot(game: any) {
     game.lastPlayed = 0;
     game.players.forEach((_: any, i: number) => game.players[i].name = `username${i}`)
     game.statistic.forEach((_: any, i: number) => game.statistic[i].actions.timePlayed = 0)
     return JSON.stringify(game)
-}*/
+}
