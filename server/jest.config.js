@@ -3,5 +3,6 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   coveragePathIgnorePatterns: ["./src/test"],
-  modulePathIgnorePatterns: ["./dist"]
+  modulePathIgnorePatterns: ["./dist"],
+  setupFilesAfterEnv: ['./src/test/setupTestEnvironment.ts']
 };

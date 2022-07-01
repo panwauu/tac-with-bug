@@ -1,27 +1,21 @@
 import { GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition';
 import { GameSocketC } from '../../../shared/types/GameNamespaceDefinition';
 
-import { TacServer } from '../server';
 import { io } from 'socket.io-client';
-import supertest from 'supertest';
 import { registerGameSocket, registerNUsersWithSockets, unregisterGameSocket, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 
 describe('Info sest suite via socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[], agent: supertest.SuperAgentTest, server: TacServer, socket: GeneralSocketC, gameSocket: GameSocketC;
+    let usersWithSockets: userWithCredentialsAndSocket[], socket: GeneralSocketC, gameSocket: GameSocketC;
     const tournamentGameID = 1647;
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-        usersWithSockets = await registerNUsersWithSockets(server, agent, 2);
+        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 2);
     })
 
     afterAll(async () => {
         socket.disconnect()
         await unregisterGameSocket(gameSocket)
-        await unregisterUsersWithSockets(agent, usersWithSockets)
-        await server.destroy()
+        await unregisterUsersWithSockets(test_agent, usersWithSockets)
     })
 
     test('On disconnect the number of connections should be sent', async () => {

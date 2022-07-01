@@ -1,20 +1,14 @@
-import { TacServer } from '../server';
-import supertest from 'supertest';
 import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 
 describe.skip('Tournament test suite via socket.io', () => {
-    let agent: supertest.SuperAgentTest, server: TacServer, usersWithSockets: userWithCredentialsAndSocket[];
+    let usersWithSockets: userWithCredentialsAndSocket[];
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-        usersWithSockets = await registerNUsersWithSockets(server, agent, 1);
+        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 1);
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(agent, usersWithSockets)
-        await server.destroy()
+        await unregisterUsersWithSockets(test_agent, usersWithSockets)
     })
 
     test('Should return table of last tournaments', async () => {

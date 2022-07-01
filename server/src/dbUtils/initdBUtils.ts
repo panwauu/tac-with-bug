@@ -1,6 +1,6 @@
 import pg from 'pg'
 
-export function initdBUtils() {
+export function initdBUtils(): pg.Pool {
     if (process.env.NODE_ENV === 'production') {
         return new pg.Pool({
             connectionString: process.env.DATABASE_URL,

@@ -1,22 +1,16 @@
-import { TacServer } from '../server';
-import supertest from 'supertest';
 import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 import { AckData } from '../../../shared/types/GeneralNamespaceDefinition';
 import { friend } from '../../../shared/types/typesFriends';
 
 describe('Friends test suite via socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[], agent: supertest.SuperAgentTest, server: TacServer;
+    let usersWithSockets: userWithCredentialsAndSocket[];
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-        usersWithSockets = await registerNUsersWithSockets(server, agent, 3);
+        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 3);
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(agent, usersWithSockets)
-        await server.destroy()
+        await unregisterUsersWithSockets(test_agent, usersWithSockets)
     })
 
     test('Should fail for invalid username', async () => {

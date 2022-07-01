@@ -1,63 +1,56 @@
-import { TacServer } from '../server';
-import supertest from 'supertest';
 import { registerUserAndReturnCredentials, unregisterUser, userWithCredentials } from '../helpers/userHelper';
 
 describe('Leaders Test Suite', () => {
-    let userWithCredentials: userWithCredentials, agent: supertest.SuperAgentTest, server: TacServer;
+    let userWithCredentials: userWithCredentials;
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-
-        userWithCredentials = await registerUserAndReturnCredentials(server, agent)
+        userWithCredentials = await registerUserAndReturnCredentials(test_server, test_agent)
     })
 
     afterAll(async () => {
-        await unregisterUser(agent, userWithCredentials)
-        await server.destroy()
+        await unregisterUser(test_agent, userWithCredentials)
     })
 
     test('Test Winner Leaderboard Bad Inputs', async () => {
-        let response = await agent.get('/gameApi/getWinnerLeaderboard/')
+        let response = await test_agent.get('/gameApi/getWinnerLeaderboard/')
         expect(response.statusCode).toBe(422)
         expect(response.body.message).toStrictEqual('Validation Failed')
         expect(JSON.stringify(response.body.details)).toContain('\'limit\' is required')
         expect(JSON.stringify(response.body.details)).toContain('\'offset\' is required')
 
-        response = await agent.get('/gameApi/getWinnerLeaderboard/')
+        response = await test_agent.get('/gameApi/getWinnerLeaderboard/')
             .query({ limit: 10.5, offset: 0 })
         expect(response.statusCode).toBe(409)
         expect(response.body).toStrictEqual('limit and offset as integer required')
 
-        response = await agent.get('/gameApi/getWinnerLeaderboard/')
+        response = await test_agent.get('/gameApi/getWinnerLeaderboard/')
             .query({ offset: 10, limit: 10, startDate: 1, endDate: 0 })
         expect(response.statusCode).toBe(409)
     })
 
     test('Test Coop Leaderboard Bad Inputs', async () => {
-        let response = await agent.get('/gameApi/getCoopLeaderboard/')
+        let response = await test_agent.get('/gameApi/getCoopLeaderboard/')
         expect(response.statusCode).toBe(422)
         expect(response.body.message).toStrictEqual('Validation Failed')
         expect(JSON.stringify(response.body.details)).toContain('\'limit\' is required')
         expect(JSON.stringify(response.body.details)).toContain('\'offset\' is required')
         expect(JSON.stringify(response.body.details)).toContain('\'nPlayers\' is required')
 
-        response = await agent.get('/gameApi/getCoopLeaderboard/')
+        response = await test_agent.get('/gameApi/getCoopLeaderboard/')
             .query({ limit: 10, offset: 10.5, nPlayers: 4 })
         expect(response.statusCode).toBe(409)
 
-        response = await agent.get('/gameApi/getCoopLeaderboard/')
+        response = await test_agent.get('/gameApi/getCoopLeaderboard/')
             .query({ limit: 10, offset: 10, nPlayers: 5 })
         expect(response.statusCode).toBe(409)
 
-        response = await agent.get('/gameApi/getCoopLeaderboard/')
+        response = await test_agent.get('/gameApi/getCoopLeaderboard/')
             .query({ offset: 10, limit: 10, nPlayers: 4, startDate: 1, endDate: 0 })
         expect(response.statusCode).toBe(409)
     })
 
     test.skip('Test Winner Leaderboard', async () => {
-        const response = await agent.get('/gameApi/getWinnerLeaderboard/')
+        const response = await test_agent.get('/gameApi/getWinnerLeaderboard/')
             .query({
                 offset: 0,
                 limit: 100,
@@ -73,7 +66,7 @@ describe('Leaders Test Suite', () => {
     })
 
     test.skip('Test Coop-4 Leaderboard', async () => {
-        const response = await agent.get('/gameApi/getCoopLeaderboard/')
+        const response = await test_agent.get('/gameApi/getCoopLeaderboard/')
             .query({
                 offset: 0,
                 limit: 100,
@@ -91,7 +84,7 @@ describe('Leaders Test Suite', () => {
     })
 
     test.skip('Test Coop-6 Leaderboard', async () => {
-        const response = await agent.get('/gameApi/getCoopLeaderboard/')
+        const response = await test_agent.get('/gameApi/getCoopLeaderboard/')
             .query({
                 offset: 0,
                 limit: 100,
