@@ -2,7 +2,7 @@ import { TacServer } from '../server';
 import supertest from 'supertest';
 import { registerUserAndReturnCredentials, unregisterUser, userWithCredentials } from '../helpers/userHelper';
 
-describe.skip('Leaders Test Suite', () => {
+describe('Leaders Test Suite', () => {
     let userWithCredentials: userWithCredentials, agent: supertest.SuperAgentTest, server: TacServer;
 
     beforeAll(async () => {
@@ -56,7 +56,7 @@ describe.skip('Leaders Test Suite', () => {
         expect(response.statusCode).toBe(409)
     })
 
-    test('Test Winner Leaderboard', async () => {
+    test.skip('Test Winner Leaderboard', async () => {
         const response = await agent.get('/gameApi/getWinnerLeaderboard/')
             .query({
                 offset: 0,
@@ -72,7 +72,7 @@ describe.skip('Leaders Test Suite', () => {
         expect(response.body.winshare).toStrictEqual(['100.00', '50.00', '50.00', '0.00'])
     })
 
-    test('Test Coop-4 Leaderboard', async () => {
+    test.skip('Test Coop-4 Leaderboard', async () => {
         const response = await agent.get('/gameApi/getCoopLeaderboard/')
             .query({
                 offset: 0,
@@ -90,7 +90,7 @@ describe.skip('Leaders Test Suite', () => {
         expect(response.body.lastplayed).toStrictEqual([1612728913000])
     })
 
-    test('Test Coop-6 Leaderboard', async () => {
+    test.skip('Test Coop-6 Leaderboard', async () => {
         const response = await agent.get('/gameApi/getCoopLeaderboard/')
             .query({
                 offset: 0,
