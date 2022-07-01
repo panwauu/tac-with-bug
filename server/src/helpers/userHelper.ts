@@ -30,14 +30,14 @@ export async function registerUserAndReturnCredentials(server: TacServer, agent:
     await server.pgPool.query('DELETE FROM users WHERE username = $1;', [validBody.username])
 
     const signUpRes = await agent.post('/gameApi/sign-up').send(validBody)
-    if (signUpRes.status != 201) { throw new Error(`Sign-up failed: ${signUpRes.status}; ${signUpRes.text}`) }
+    if (signUpRes.status !== 201) { throw new Error(`Sign-up failed: ${signUpRes.status}; ${signUpRes.text}`) }
 
     const dbRes = await server.pgPool.query('SELECT * FROM users WHERE username = $1;', [validBody.username])
     const activationRes = await agent.get('/gameApi/activation').query({ userID: dbRes.rows[0].id, token: dbRes.rows[0].token })
-    if (activationRes.status != 200) { throw new Error(`Activation failed: ${activationRes.status}; ${activationRes.text}`) }
+    if (activationRes.status !== 200) { throw new Error(`Activation failed: ${activationRes.status}; ${activationRes.text}`) }
 
     const response = await agent.post('/gameApi/login').send({ username: validBody.username, password: validBody.password })
-    if (response.status != 200) { throw new Error(`Login failed: ${response.status}; ${response.text}`) }
+    if (response.status !== 200) { throw new Error(`Login failed: ${response.status}; ${response.text}`) }
 
     return {
         ...validBody,
@@ -51,7 +51,7 @@ export async function unregisterUser(agent: supertest.SuperAgentTest, userWithCr
     const res = await agent.delete('/gameApi/deleteUser')
         .set({ Authorization: userWithCredentials.authHeader })
         .send()
-    if (res.statusCode != 204) { throw new Error('Could not delete user') }
+    if (res.statusCode !== 204) { throw new Error('Could not delete user') }
 }
 
 export async function registerNUsersWithSockets(server: TacServer, agent: supertest.SuperAgentTest, n_connections: number): Promise<userWithCredentialsAndSocket[]> {

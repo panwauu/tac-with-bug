@@ -15,7 +15,7 @@ for (const locale of locales) {
 console.log('All files found')
 
 const defaultLocale = 'de'
-const otherLocales = locales.filter((l) => l != defaultLocale)
+const otherLocales = locales.filter((l) => l !== defaultLocale)
 
 if (!recursiveKeyCheck([])) { process.exit(1) }
 console.log('All keys are matching')
@@ -27,7 +27,7 @@ function recursiveKeyCheck(keyPath: string[]): boolean {
     for (const locale of otherLocales) {
         const localeObj = resolveLocalePath(locale, keyPath)
         const localeKeys = Object.keys(localeObj)
-        if (localeKeys.length != defaultKeys.length) {
+        if (localeKeys.length !== defaultKeys.length) {
             console.log(`Locale "${locale}" differs from "${defaultLocale}": has more keys`)
             return false
         }
@@ -41,7 +41,7 @@ function recursiveKeyCheck(keyPath: string[]): boolean {
     }
 
     for (const key of defaultKeys) {
-        if (typeof defaultObj[key] != 'string' && !recursiveKeyCheck([...keyPath, key])) {
+        if (typeof defaultObj[key] !== 'string' && !recursiveKeyCheck([...keyPath, key])) {
             return false
         }
     }

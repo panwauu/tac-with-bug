@@ -29,7 +29,7 @@ export function narrCardSwap(cards: tCard.cardsType): void {
 export function discardCard(cards: tCard.cardsType, cardIndex: number, activePlayer: number, teufelFlag: boolean): void {
     const nPlayer = teufelFlag ? (activePlayer + 1) % cards.players.length : activePlayer;
     addCardToDiscardPile(cards, cardIndex, activePlayer, teufelFlag)
-    cards.players[nPlayer].splice(cardIndex, 1)[0]
+    cards.players[nPlayer].splice(cardIndex, 1)
 }
 
 export function addCardToDiscardPile(cards: tCard.cardsType, cardIndex: number, activePlayer: number, teufelFlag: boolean) {

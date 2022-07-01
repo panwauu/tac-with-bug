@@ -62,7 +62,7 @@ async function checkEmail() {
 const validMail = computed(() => EmailValidator.validate(localEmail.value))
 
 const emailErrorLabel = computed(() => {
-    if (localEmail.value != '') {
+    if (localEmail.value !== '') {
         if (!validMail.value) {
             return i18n.global.t('Login.SignUp.emailInvalid');
         } else if (emailCheck.value === false) {

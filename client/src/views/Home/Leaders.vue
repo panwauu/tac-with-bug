@@ -49,7 +49,7 @@
             <template #body="slotProps">
               <div class="teamContainer">
                 <div
-                  v-for="teamIndex in Math.floor(
+                  v-for="teamIndex in Math.ceil(
                     slotProps.data.team.length / 2
                   )"
                   :key="`team4-${teamIndex}`"
@@ -60,6 +60,7 @@
                     :username="slotProps.data.team[2 * teamIndex - 2]"
                   />
                   <PlayerWithPicture
+                    v-if="slotProps.data.team[2 * teamIndex - 1] != null"
                     :nameFirst="false"
                     :username="slotProps.data.team[2 * teamIndex - 1]"
                   />
@@ -93,7 +94,7 @@
             <template #body="slotProps">
               <div class="teamContainer">
                 <div
-                  v-for="teamIndex in Math.floor(
+                  v-for="teamIndex in Math.ceil(
                     slotProps.data.team.length / 2
                   )"
                   :key="`team4-${teamIndex}`"
@@ -104,6 +105,7 @@
                     :username="slotProps.data.team[2 * teamIndex - 2]"
                   />
                   <PlayerWithPicture
+                    v-if="slotProps.data.team[2 * teamIndex - 1] != null"
                     :nameFirst="false"
                     :username="slotProps.data.team[2 * teamIndex - 1]"
                   />
@@ -135,34 +137,34 @@ import { ref } from 'vue';
 import { Service } from '@/generatedClient/index';
 import { i18n } from '@/services/i18n';
 
-let rows = ref(10)
-let totalNumber = ref(0)
-let first = ref(0)
-let data = ref([] as {
+const rows = ref(10)
+const totalNumber = ref(0)
+const first = ref(0)
+const data = ref([] as {
   username: string
   wins: number
   winshare: string
   index: number
 }[])
-let loading = ref(false)
-let totalNumberCoop4 = ref(0)
-let firstCoop4 = ref(0)
-let dataCoop4 = ref([] as {
-  team: any,
+const loading = ref(false)
+const totalNumberCoop4 = ref(0)
+const firstCoop4 = ref(0)
+const dataCoop4 = ref([] as {
+  team: string[],
   count: number
   index: number
   lastplayed: number
 }[])
-let loadingCoop4 = ref(false)
-let totalNumberCoop6 = ref(0)
-let firstCoop6 = ref(0)
-let dataCoop6 = ref([] as {
-  team: any,
+const loadingCoop4 = ref(false)
+const totalNumberCoop6 = ref(0)
+const firstCoop6 = ref(0)
+const dataCoop6 = ref([] as {
+  team: string[],
   count: number
   index: number
   lastplayed: number
 }[])
-let loadingCoop6 = ref(false)
+const loadingCoop6 = ref(false)
 
 const dateOptions = [
   { name: i18n.global.t('Leaders.Time.alltime'), startDate: 0, endDate: null },
@@ -187,7 +189,7 @@ const dateOptions = [
   },
 ]
 
-let selectedDate = ref(dateOptions[2])
+const selectedDate = ref(dateOptions[2])
 
 onPage();
 onPageCoop(4);
@@ -256,7 +258,7 @@ async function onPageCoop(nPlayers: number) {
         dataCoop4.value = [];
       }
       res.count.forEach((count: number, index: number) => {
-        let data = {
+        const data = {
           team: res.team[index],
           count: count,
           index: index + 1 + first,
@@ -279,7 +281,7 @@ async function onPageCoop(nPlayers: number) {
 }
 
 function createDateString(seconds: number) {
-  let d = new Date(seconds);
+  const d = new Date(seconds);
   return d.toLocaleDateString();
 }
 </script>

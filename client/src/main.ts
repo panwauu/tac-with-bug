@@ -16,7 +16,7 @@ if ('wakeLock' in navigator) {
     requestWakeLock();
 
     const handleVisibilityChange = async () => {
-        if (wakeLock !== null && document.visibilityState === 'visible') {
+        if (wakeLock != null && document.visibilityState === 'visible') {
             await requestWakeLock();
         }
     };

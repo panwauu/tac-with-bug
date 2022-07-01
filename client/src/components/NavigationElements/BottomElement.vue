@@ -29,17 +29,6 @@
   justify-content: center;
   flex-direction: row;
 }
-
-.bottomMenu {
-  width: 100%;
-  font-weight: lighter;
-  font-size: smaller;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-}
-
 .bottomMenuElement {
   margin: 0 10px;
 }

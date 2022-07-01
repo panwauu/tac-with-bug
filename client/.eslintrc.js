@@ -15,6 +15,7 @@ module.exports = {
     rules: {
         'no-trailing-spaces': 'error',
         'quotes': ['error', 'single'],
+        'eol-last': ['error', 'always'],
 
         /* Maybe remove in future */
         '@typescript-eslint/no-explicit-any': 0,

@@ -37,12 +37,18 @@ const funfacts = reactive({
   gamesAndUsers: {
     nGames4: 0,
     nGames6: 0,
+    nGamesTeam: 0,
     registeredUsers: 0,
   },
   gameDurations: {
     fastestGame: '0:00:00',
     longestGame: '0:00:00',
     averagePlayingTime: '0:00:00',
+  },
+  teamStats: {
+    bestTeamGame: 0,
+    worstTeamGame: 0,
+    averageTeamGame: 0,
   },
   colors: {
     mostLoved: 'red',
@@ -58,10 +64,14 @@ const funfacts = reactive({
 Service.getPlatformFunFacts().then((res) => {
   funfacts.gamesAndUsers.nGames4 = res.nGames4
   funfacts.gamesAndUsers.nGames6 = res.nGames6
+  funfacts.gamesAndUsers.nGamesTeam = res.nGamesTeam
   funfacts.gamesAndUsers.registeredUsers = res.registeredUsers
   funfacts.gameDurations.fastestGame = getIntervalString(res.fastestGame)
   funfacts.gameDurations.longestGame = getIntervalString(res.longestGame)
   funfacts.gameDurations.averagePlayingTime = getIntervalString(res.averagePlayingTime)
+  funfacts.teamStats.bestTeamGame = res.bestTeamGame
+  funfacts.teamStats.worstTeamGame = res.worstTeamGame
+  funfacts.teamStats.averageTeamGame = res.averageTeamGame
   funfacts.misc.nFriends = res.nFriends
   funfacts.misc.nTutorials = res.nTutorials
   funfacts.colors.mostLoved = res.colors[0]

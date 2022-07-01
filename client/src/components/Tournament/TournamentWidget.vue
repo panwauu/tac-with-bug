@@ -8,7 +8,7 @@
     <div class="TournamentHeading">{{ tournament.title }}:</div>
     <TournamentStatusBadge :status="tournament.status" />
     <TournamentTimer
-      v-if="tournament.status != 'signUpFailed'"
+      v-if="tournament.status !== 'signUpFailed'"
       :tournament="tournament"
       style="margin-top: 15px"
     />

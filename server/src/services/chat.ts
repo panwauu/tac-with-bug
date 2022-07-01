@@ -15,7 +15,7 @@ export async function getUsersInChat(pgPool: pg.Pool, chatid: number) {
 
 export type createChatError = 'NORMAL_CHAT_NEEDS_TWO_USERS' | 'CHAT_DOES_ALREADY_EXIST' | 'CHAT_COULD_NOT_BE_CREATED'
 export async function createChat(pgPool: pg.Pool, userids: number[], title: string | null): Promise<Result<number, createChatError>> {
-    if (title == null && userids.length != 2) { return err('NORMAL_CHAT_NEEDS_TWO_USERS') }
+    if (title == null && userids.length !== 2) { return err('NORMAL_CHAT_NEEDS_TWO_USERS') }
 
     if (title == null) {
         const res = await pgPool.query('SELECT chats.id FROM chats JOIN users_to_chats ON chats.id = users_to_chats.chatid WHERE chats.group_chat = False GROUP BY chats.id HAVING array_agg(users_to_chats.userid) <@ $1::INT[] AND array_agg(users_to_chats.userid) @> $1::INT[];', [userids])
@@ -36,14 +36,14 @@ export async function createChat(pgPool: pg.Pool, userids: number[], title: stri
 
 export async function changeGroupName(pgPool: pg.Pool, chatid: number, title: string): Promise<Result<null, 'GROUP_NAME_NOT_CHANGED'>> {
     const res = await pgPool.query('UPDATE chats SET group_name = $2 WHERE id = $1 RETURNING *;', [chatid, title])
-    if (res.rows.length != 1) { return err('GROUP_NAME_NOT_CHANGED') }
+    if (res.rows.length !== 1) { return err('GROUP_NAME_NOT_CHANGED') }
     return ok(null)
 }
 
 export type addUserToChatError = 'CHAT_NOT_FOUND' | 'USER_LIMIT_IS_ALREADY_REACHED' | 'CAN_ONLY_ADD_TO_GROUP_CHAT' | 'USER_COULD_NOT_BE_ADDED'
 export async function addUserToChat(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<number[], addUserToChatError>> {
     const res = await pgPool.query<{ group_chat: boolean, userids: number[] }>('SELECT chats.group_chat, array_agg(users_to_chats.userid) as userids FROM chats JOIN users_to_chats ON chats.id = users_to_chats.chatid WHERE chats.id = $1 GROUP BY chats.id;', [chatid])
-    if (res.rows.length != 1) { return err('CHAT_NOT_FOUND') }
+    if (res.rows.length !== 1) { return err('CHAT_NOT_FOUND') }
     if (!res.rows[0].group_chat) { return err('CAN_ONLY_ADD_TO_GROUP_CHAT') }
     if (res.rows[0].userids.length >= maxUsersInChat - 1) { return err('USER_LIMIT_IS_ALREADY_REACHED') }
 
@@ -55,14 +55,14 @@ export async function addUserToChat(pgPool: pg.Pool, userid: number, chatid: num
 export type leaveChatError = 'CHAT_COULD_NOT_BE_LEFT'
 export async function leaveChat(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<null, leaveChatError>> {
     const res = await pgPool.query('DELETE FROM users_to_chats WHERE userid = $1 AND chatid = $2 RETURNING *;', [userid, chatid])
-    if (res.rows.length != 1) { return err('CHAT_COULD_NOT_BE_LEFT') }
+    if (res.rows.length !== 1) { return err('CHAT_COULD_NOT_BE_LEFT') }
     return ok(null)
 }
 
 export type insertChatMessageError = 'SENDER_IS_NOT_PART_OF_CHAT'
 export async function insertChatMessage(pgPool: pg.Pool, sender_user_id: number, chatid: number, body: string): Promise<Result<number[], insertChatMessageError>> {
     const users_in_chat = await getUsersInChat(pgPool, chatid)
-    if (users_in_chat.every((userid) => userid != sender_user_id)) { return err('SENDER_IS_NOT_PART_OF_CHAT') }
+    if (users_in_chat.every((userid) => userid !== sender_user_id)) { return err('SENDER_IS_NOT_PART_OF_CHAT') }
 
     const res = await pgPool.query<{ userid: number }>(`
         WITH
@@ -76,7 +76,7 @@ export async function insertChatMessage(pgPool: pg.Pool, sender_user_id: number,
 }
 
 export async function markChatAsRead(pgPool: pg.Pool, userid: number, chatid: number): Promise<void> {
-    await pgPool.query('DELETE FROM chat_messages_unread USING users_to_chats WHERE users_to_chats.userid = $1 AND users_to_chats.chatid = $2;', [userid, chatid])
+    await pgPool.query('DELETE FROM chat_messages_unread USING users_to_chats WHERE chat_messages_unread.users_to_chats_id = users_to_chats.id AND users_to_chats.userid = $1 AND users_to_chats.chatid = $2;', [userid, chatid])
 }
 
 export type loadChatError = 'USER_NOT_PART_OF_CHAT'

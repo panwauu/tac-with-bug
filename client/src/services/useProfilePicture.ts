@@ -33,6 +33,6 @@ export async function requestProfilePic(username: string): Promise<void> {
     if (!(username in profileState.profilePics)) {
         setProfilePic(username, undefined)
         const picture = await Service.getProfilePicture(username)
-        if (picture != '') { setProfilePic(username, picture.substring(1, picture.length - 1)) }
+        if (picture !== '') { setProfilePic(username, picture.substring(1, picture.length - 1)) }
     }
 }

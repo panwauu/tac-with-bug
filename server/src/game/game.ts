@@ -60,10 +60,10 @@ export class game {
             this.statistic = gameLoad.statistic
             this.sevenChosenPlayer = gameLoad?.sevenChosenPlayer ?? null;
         } else {
-            if (nPlayers != 4 && nPlayers != 6) { throw new Error('Invalid Player Number -> only 4 or 6') }
-            if (nPlayers === 4 && nTeams != 2) { throw new Error('4 Players -> only 2 Teams') }
-            if (nPlayers === 6 && nTeams != 2 && nTeams != 3) { throw new Error('6 Players -> only 2 or 3 Teams') }
-            if (coop === true && nPlayers === 6 && nTeams != 3) { throw new Error('Coop Version with 6 Players only with 3 Teams') }
+            if (nPlayers !== 4 && nPlayers !== 6) { throw new Error('Invalid Player Number -> only 4 or 6') }
+            if (nPlayers === 4 && nTeams !== 2) { throw new Error('4 Players -> only 2 Teams') }
+            if (nPlayers === 6 && nTeams !== 2 && nTeams !== 3) { throw new Error('6 Players -> only 2 or 3 Teams') }
+            if (coop === true && nPlayers === 6 && nTeams !== 3) { throw new Error('Coop Version with 6 Players only with 3 Teams') }
 
             this.coop = coop;
 
@@ -196,7 +196,7 @@ export class game {
             })
         }
         else if (this.winningTeams.some(entry => entry === true)) { // If other team is winning am I have a Tac -> have to play Tac
-            if (cardsWithMoves.some(card => card.title === 'tac' && card.possible && card.textAction != 'abwerfen')) {
+            if (cardsWithMoves.some(card => card.title === 'tac' && card.possible && card.textAction !== 'abwerfen')) {
                 cardsWithMoves.forEach(card => {
                     if (card.title !== 'tac') {
                         card.possible = false
@@ -224,7 +224,7 @@ export class game {
 
         if (this.narrFlag.some((e) => e)) { return !this.narrFlag[move[0]] }
 
-        if (move[0] != this.activePlayer) { logger.info('Player is not active Player'); return false }
+        if (move[0] !== this.activePlayer) { logger.info('Player is not active Player'); return false }
 
         const card = this.cardsWithMoves?.[move[1]]
         if (card == null) { logger.info('Card number is not in correct Range'); return false }
@@ -322,7 +322,7 @@ export class game {
     determineGameEndedCoop() {
         if (this.coop === true
             && this.balls.every((ball) => ball.state === 'locked')
-            && !this.cardsWithMoves.some(card => card.title === 'tac' && card.possible && card.textAction != 'abwerfen')) {
+            && !this.cardsWithMoves.some(card => card.title === 'tac' && card.possible && card.textAction !== 'abwerfen')) {
             this.gameEnded = true
         }
     }
@@ -365,7 +365,7 @@ export class game {
             const auxBalls = cloneDeep(this.balls)
             this.balls = cloneDeep(this.priorBalls)
             this.priorBalls = cloneDeep(auxBalls)
-        } else if (cardTextAction != 'narr') {
+        } else if (cardTextAction !== 'narr') {
             this.priorBalls = cloneDeep(this.balls)
         }
 
@@ -389,10 +389,10 @@ export class game {
                 break;
         }
 
-        if (cardTextAction != 'narr' && cardTextAction != 'teufel') {
+        if (cardTextAction !== 'narr' && cardTextAction !== 'teufel') {
             this.nextPlayer()
         }
-        if (cardTextAction != 'teufel' && this.teufelFlag === true && cardTextAction != 'narr') {
+        if (cardTextAction !== 'teufel' && this.teufelFlag === true && cardTextAction !== 'narr') {
             this.teufelFlag = false
         }
     }

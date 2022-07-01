@@ -41,7 +41,7 @@ export function useBalls(): ballsStateType {
             ballsState.priorBalls = aux
         },
         getBalls: (cardsState) => {
-            if (cardsState.selectedCard != -1 && cardsState.cards[cardsState.selectedCard].title === 'tac' && cardsState.cards[cardsState.selectedCard].textAction != 'abwerfen' && cardsState.cards[cardsState.selectedCard].possible === true) {
+            if (cardsState.selectedCard !== -1 && cardsState.cards[cardsState.selectedCard].title === 'tac' && cardsState.cards[cardsState.selectedCard].textAction !== 'abwerfen' && cardsState.cards[cardsState.selectedCard].possible === true) {
                 return ballsState.priorBalls
             }
             return ballsState.balls

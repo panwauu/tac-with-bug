@@ -101,7 +101,7 @@ loadStep();
 async function loadStep() {
   loading.value = true;
   const res = await socket.emitWithAck(5000, 'tutorial:load', { tutorialID: tutorialID.value, tutorialStep: tutorialStep.value })
-  if (res.status != 200 || res.data == null) { router.push({ name: 'TutorialOverview' }); return }
+  if (res.status !== 200 || res.data == null) { router.push({ name: 'TutorialOverview' }); return }
 
   tutorialStepOutput.value = res.data;
 
@@ -136,7 +136,7 @@ async function performMoveAndEmit(performMoveAction: performMoveAction) {
 
   let move = performMove(performMoveAction);
   const res = await socket.emitWithAck(5000, 'tutorial:postMove', { game: tutorialStepOutput.value.game, move })
-  if (res.status != 200 || res.data == null) { router.push({ name: 'TutorialOverview' }); return }
+  if (res.status !== 200 || res.data == null) { router.push({ name: 'TutorialOverview' }); return }
   if (tutorialStepOutput.value != null) {
     tutorialStepOutput.value.game = res.data.game
     tutorialStepOutput.value.updateData = res.data.updateData
@@ -159,11 +159,11 @@ function watcherDone() {
 function checkDone() {
   let goal = tutorialStepOutput.value?.goal;
 
-  if (goal?.modalState != null && (modalVisible.value || goal?.modalState != modalState.value)) {
+  if (goal?.modalState != null && (modalVisible.value || goal?.modalState !== modalState.value)) {
     return false;
   }
 
-  if (goal?.selectedCard != null && cardsState.selectedCard != goal?.selectedCard) {
+  if (goal?.selectedCard != null && cardsState.selectedCard !== goal?.selectedCard) {
     return false;
   }
 
@@ -171,7 +171,7 @@ function checkDone() {
     return false;
   }
 
-  if (goal?.aussetzenFlag != null && goal?.aussetzenFlag != miscState.aussetzenFlag) {
+  if (goal?.aussetzenFlag != null && goal?.aussetzenFlag !== miscState.aussetzenFlag) {
     return false;
   }
 

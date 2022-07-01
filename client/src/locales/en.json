@@ -33,9 +33,6 @@
     "price": "€ 2 per month *",
     "featureKarma1": "Karma:",
     "featureKarma2": "You help me to cover my fixed costs and compensate me for all my programming hours!",
-    "featureBallsColor": "Choosing your ball color!",
-    "featureStats": "Full access to all statistics!",
-    "tournamentTeam": "Tournament registration with a permanent partner and team name!",
     "featureLuck": "Happiness guarantee**",
     "nSubscriptions": "Number of sponsors",
     "becomingSponsor": "Become a sponsor:",
@@ -129,7 +126,6 @@
     "SignUp": {
       "openModalButton": "Log In",
       "title": "Tournament registration",
-      "nonSponsorText": "The choice of the name of team is unfortunately reserved for sponsors. Become a sponsor now and support the development of this platform or hope that luck will bring you a better name next time.",
       "invalidTeamName": "Choose a team name that has 5 to 25 characters and of course is not in use yet. Letters, numbers or the special characters [._ <> -] are possible.",
       "teamNamePlaceholder": "Teamname",
       "selectButtonWithPartner": "Register with a permanent partner",
@@ -917,7 +913,11 @@
       "leastLoved": "Least used ball:",
       "mostLoved": "Most used ball:",
       "nColorBlinds": "Number of color blind players:",
-      "longestGame": "Longest game:"
+      "longestGame": "Longest game:",
+      "nGamesTeam": "Completed team-games:",
+      "bestTeamGame": "Best Team-Tac game:",
+      "worstTeamGame": "Longest Team-Tac game:",
+      "averageTeamGame": "Average of Team-Tac results:"
     },
     "description1": "Tac-With-Bug is an online multiplayer version of the popular board game",
     "description2": ". Compete against friends and strangers in games of four or six players. \nOr play Team Tac and try to set a new record."

@@ -21,7 +21,7 @@
     </AccordionTab>
     <AccordionTab :header="$t('Landing.Waiting.waitingRoomsHeader')">
       <Message
-        v-if="gamesSummary.runningGames.length != 0"
+        v-if="gamesSummary.runningGames.length !== 0"
         severity="error"
         :closable="false"
       >{{ $t('Landing.Waiting.openGamesWarning', { openGames: gamesSummary.runningGames.length }) }}</Message>
@@ -46,10 +46,10 @@ const gamesSummary = injectStrict(GamesSummaryKey)
 
 gamesSummary.getGames()
 
-let activeIndex = ref(gamesSummary.runningGames.length != 0 ? 0 : 1);
+let activeIndex = ref(gamesSummary.runningGames.length !== 0 ? 0 : 1);
 watch(
   () => gamesSummary.runningGames.length,
-  () => { if (gamesSummary.runningGames.length != 1) { activeIndex.value = 0 } }
+  () => { if (gamesSummary.runningGames.length !== 1) { activeIndex.value = 0 } }
 )
 
 function startGame(game: any) {

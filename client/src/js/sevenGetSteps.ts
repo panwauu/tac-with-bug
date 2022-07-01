@@ -21,7 +21,7 @@ export function getRemainingMoves(card: tCard.playerCard, balls: tBall.ballsType
 
 function getLastNonTacCard(discardPile: discardElement[]): discardElement | undefined {
     for (let i = discardPile.length - 1; i >= 0; i--) {
-        if (discardPile[i].cardTitle != 'tac' && discardPile[i].cardTitle != 'narr') {
+        if (discardPile[i].cardTitle !== 'tac' && discardPile[i].cardTitle !== 'narr') {
             return discardPile[i];
         }
     }
@@ -115,7 +115,7 @@ function ballGoal(nBall: number, balls: tBall.ballsType) {
     return balls.length + balls.length / 4 * getPositionsBetweenStarts(balls) + ballPlayer(nBall) * 4;
 }
 function getPositionsBetweenStarts(balls: tBall.ballsType) {
-    if (balls.length != 16 && balls.length != 24) {
+    if (balls.length !== 16 && balls.length !== 24) {
         throw 'Wrong balls length';
     }
     if (balls.length === 16) {

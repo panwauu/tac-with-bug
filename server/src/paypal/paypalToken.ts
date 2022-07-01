@@ -13,11 +13,16 @@ export async function getToken(): Promise<string> {
 
 // https://developer.paypal.com/docs/api/get-an-access-token-curl/
 // CHECK FOR 401 or expires in
-export async function requestTokenFromPaypal() {
+export async function requestTokenFromPaypal(): Promise<void> {
+    if (process.env.paypal_Client_ID == null || process.env.paypal_Secret == null) {
+        logger.error('Environment variables paypal_Client_ID and paypal_Secret required but missing')
+        token = null
+        return
+    }
+
     try {
         logger.info('Request new Token from PayPal')
         token = new Promise(resolve => {
-
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

@@ -62,7 +62,7 @@ function kickBalls(balls: tBall.ballsType, card: tCard.playerCard, newPosition: 
 
 export function ballInLastGoalPosition(balls: tBall.ballsType, nBall: number, newPosition: number): boolean {
     for (let pos = ballGoal(nBall, balls) + 3; pos > newPosition; pos = pos - 1) {
-        if (!balls.some((ball, ballIndex) => { return ball.position === pos && ballIndex != nBall })) { return false }
+        if (!balls.some((ball, ballIndex) => { return ball.position === pos && ballIndex !== nBall })) { return false }
     }
     return true
 }
@@ -101,7 +101,7 @@ function updateState(balls: tBall.ballsType, nBall: number, newPosition: number,
             if (newPosition === ballGoal(nBall, balls) && ballInLastGoalPosition(balls, nBall, newPosition)) {
                 balls[nBall].state = 'locked'
                 for (let i = 0; i < balls.length; i++) {
-                    if (balls[i].state != 'locked' && ballInLastGoalPosition(balls, i, balls[i].position) && i != nBall) { // is in last position -> locked
+                    if (balls[i].state !== 'locked' && ballInLastGoalPosition(balls, i, balls[i].position) && i !== nBall) { // is in last position -> locked
                         balls[i].state = 'locked'
                     }
                 }
@@ -117,7 +117,7 @@ function updateState(balls: tBall.ballsType, nBall: number, newPosition: number,
 function lockBallsInGoal(balls: tBall.ballsType, nBall: number, remainingMoves: number) {
     if (remainingMoves === 0) {
         for (let i = 0; i < balls.length; i++) {
-            if (balls[i].state != 'locked' && ballInLastGoalPosition(balls, i, balls[i].position) && i != nBall) { // is in last position -> locked
+            if (balls[i].state !== 'locked' && ballInLastGoalPosition(balls, i, balls[i].position) && i !== nBall) { // is in last position -> locked
                 balls[i].state = 'locked'
             }
         }
@@ -170,7 +170,7 @@ function updateCardAfter7(card: tCard.playerCard, cards: tCard.cardsType, teufel
 
 export function getLastNonTacCard(cards: tCard.cardsType): string | undefined {
     for (let i = cards.discardPile.length - 1; i >= 0; i--) {
-        if (cards.discardPile[i] != 'tac' && (cards.discardPile[i] != 'narr' || (cards.discardedFlag && i === cards.discardPile.length - 1))) {
+        if (cards.discardPile[i] !== 'tac' && (cards.discardPile[i] !== 'narr' || (cards.discardedFlag && i === cards.discardPile.length - 1))) {
             return cards.discardPile[i]
         }
     }
@@ -205,7 +205,7 @@ export function moveBallsBetweenPositionsToHouse(balls: tBall.ballsType, nBall: 
 
     finalPath.forEach((pos) => {
         const nBallToRemove = balls.findIndex(ball => (ball.position === pos))
-        if (nBallToRemove != -1) {
+        if (nBallToRemove !== -1) {
             moveBallToHouse(balls, nBallToRemove)
         }
     })
