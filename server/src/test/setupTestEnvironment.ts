@@ -51,7 +51,7 @@ export async function prepareTestDatabase() {
 }
 
 async function recreateTestDatabase(): Promise<void> {
-    let postgres_client = new pg.Client({
+    const postgres_client = new pg.Client({
         user: 'postgres',
         host: 'localhost',
         database: 'postgres',
@@ -70,7 +70,7 @@ async function recreateTestDatabase(): Promise<void> {
 }
 
 async function initAndPopulateTestDatabase(): Promise<void> {
-    let postgres_client = new pg.Client({
+    const postgres_client = new pg.Client({
         user: 'postgres',
         host: 'localhost',
         database: 'tac_test',
