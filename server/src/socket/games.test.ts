@@ -1,23 +1,17 @@
-import { TacServer } from '../server';
-import supertest from 'supertest';
 import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 import { AckData } from '../../../shared/types/GeneralNamespaceDefinition';
 import { gameForOverview } from '../../../shared/types/typesDBgame';
 
 describe('Games test suite via socket.io', () => {
-    let userWithSocket: userWithCredentialsAndSocket, agent: supertest.SuperAgentTest, server: TacServer;
+    let userWithSocket: userWithCredentialsAndSocket;
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-        userWithSocket = (await registerNUsersWithSockets(server, agent, 1))[0];
+        userWithSocket = (await registerNUsersWithSockets(test_server, test_agent, 1))[0];
         console.log(userWithSocket.token)
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(agent, [userWithSocket])
-        await server.destroy()
+        await unregisterUsersWithSockets(test_agent, [userWithSocket])
     })
 
     describe('Test games events', () => {

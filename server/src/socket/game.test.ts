@@ -1,33 +1,27 @@
 import type { GameSocketC } from '../../../shared/types/GameNamespaceDefinition';
 
-import { TacServer } from '../server';
-import supertest from 'supertest';
 import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket, registerGameSocket, unregisterGameSocket, waitForGameSocketConnection, initiateGameSocket } from '../helpers/userHelper';
 import { cloneDeep } from 'lodash';
 
 describe.skip('Game test suite via socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[], agent: supertest.SuperAgentTest, server: TacServer, gameBefore: any;
+    let usersWithSockets: userWithCredentialsAndSocket[], gameBefore: any;
     const gameID = 96;
     const gameOskar = { playerIndex: 2, userid: 4 }
     const gameSophia = { playerIndex: 3, userid: 7 }
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-        usersWithSockets = await registerNUsersWithSockets(server, agent, 3);
-        await server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[0].id, gameOskar.playerIndex, gameID])
-        await server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[1].id, gameSophia.playerIndex, gameID])
-        await server.pgPool.query('UPDATE games SET status=\'running\' WHERE id = $1;', [gameID])
-        gameBefore = await server.pgPool.query('SELECT game FROM games WHERE id = $1;', [gameID]).then((r) => r.rows[0].game)
+        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 3);
+        await test_server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[0].id, gameOskar.playerIndex, gameID])
+        await test_server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[1].id, gameSophia.playerIndex, gameID])
+        await test_server.pgPool.query('UPDATE games SET status=\'running\' WHERE id = $1;', [gameID])
+        gameBefore = await test_server.pgPool.query('SELECT game FROM games WHERE id = $1;', [gameID]).then((r: any) => r.rows[0].game)
     })
 
     afterAll(async () => {
-        await server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameOskar.userid, gameOskar.playerIndex, gameID])
-        await server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameSophia.userid, gameSophia.playerIndex, gameID])
-        await server.pgPool.query('UPDATE games SET status=\'aborted\', game=$2, rematch_open=false WHERE id = $1;', [gameID, JSON.stringify(gameBefore)])
-        await unregisterUsersWithSockets(agent, usersWithSockets)
-        await server.destroy()
+        await test_server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameOskar.userid, gameOskar.playerIndex, gameID])
+        await test_server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameSophia.userid, gameSophia.playerIndex, gameID])
+        await test_server.pgPool.query('UPDATE games SET status=\'aborted\', game=$2, rematch_open=false WHERE id = $1;', [gameID, JSON.stringify(gameBefore)])
+        await unregisterUsersWithSockets(test_agent, usersWithSockets)
     })
 
     describe('Test invalid connection', () => {
@@ -70,7 +64,7 @@ describe.skip('Game test suite via socket.io', () => {
             const gameCopy = cloneDeep(gameBefore)
             gameCopy.cardsWithMoves = []
             gameCopy.cards.players.forEach((_: any, i: number) => gameCopy.cards.players[i] = [])
-            await server.pgPool.query('UPDATE games SET game=$2 WHERE id = $1;', [gameID, JSON.stringify(gameCopy)])
+            await test_server.pgPool.query('UPDATE games SET game=$2 WHERE id = $1;', [gameID, JSON.stringify(gameCopy)])
             await new Promise((resolve) => setTimeout(() => resolve(null), 200)) // Needed to fix test
         })
 

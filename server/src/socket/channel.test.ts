@@ -1,25 +1,19 @@
-import { TacServer } from '../server';
-import supertest from 'supertest';
 import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 import io from 'socket.io-client'
 import { GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition';
 
 describe('Channel test suite via socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[], agent: supertest.SuperAgentTest, server: TacServer, socket: GeneralSocketC;
+    let usersWithSockets: userWithCredentialsAndSocket[], socket: GeneralSocketC;
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-        usersWithSockets = await registerNUsersWithSockets(server, agent, 2);
+        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 2);
         socket = io('http://localhost:1234');
         await new Promise((resolve) => { socket.on('connect', () => { resolve(null) }) })
     })
 
     afterAll(async () => {
         socket.close()
-        await unregisterUsersWithSockets(agent, usersWithSockets)
-        await server.destroy()
+        await unregisterUsersWithSockets(test_agent, usersWithSockets)
     })
 
     describe('Test channel communication', () => {

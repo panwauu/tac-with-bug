@@ -1,7 +1,7 @@
 import { repeatGame } from '../helpers/captureCompare';
 import { TacServer } from '../server';
 
-describe('Test that all tests saved in savegames are running', () => {
+describe.skip('Test that all tests saved in savegames are running', () => {
     let server: TacServer;
     const nGames = 100, ids: (number | null)[] = new Array(nGames).fill(null);
 

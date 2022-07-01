@@ -19,7 +19,7 @@ export interface userWithCredentialsAndSocket extends userWithCredentials {
     socket: GeneralSocketC;
 }
 
-export async function registerUserAndReturnCredentials(server: TacServer, agent: supertest.SuperAgentTest): Promise<userWithCredentials> {
+export async function registerUserAndReturnCredentials(test_server: TacServer, test_agent: supertest.SuperAgentTest): Promise<userWithCredentials> {
     const validBody = {
         'username': chance.string({ length: 12, pool: 'abcdABCD' }),
         'email': `${chance.string({ length: 12, pool: 'abcdABCD' })}@asdfasgdsafd.com`,
@@ -27,16 +27,16 @@ export async function registerUserAndReturnCredentials(server: TacServer, agent:
         'locale': 'de'
     }
 
-    await server.pgPool.query('DELETE FROM users WHERE username = $1;', [validBody.username])
+    await test_server.pgPool.query('DELETE FROM users WHERE username = $1;', [validBody.username])
 
-    const signUpRes = await agent.post('/gameApi/sign-up').send(validBody)
+    const signUpRes = await test_agent.post('/gameApi/sign-up').send(validBody)
     if (signUpRes.status !== 201) { throw new Error(`Sign-up failed: ${signUpRes.status}; ${signUpRes.text}`) }
 
-    const dbRes = await server.pgPool.query('SELECT * FROM users WHERE username = $1;', [validBody.username])
-    const activationRes = await agent.get('/gameApi/activation').query({ userID: dbRes.rows[0].id, token: dbRes.rows[0].token })
+    const dbRes = await test_server.pgPool.query('SELECT * FROM users WHERE username = $1;', [validBody.username])
+    const activationRes = await test_agent.get('/gameApi/activation').query({ userID: dbRes.rows[0].id, token: dbRes.rows[0].token })
     if (activationRes.status !== 200) { throw new Error(`Activation failed: ${activationRes.status}; ${activationRes.text}`) }
 
-    const response = await agent.post('/gameApi/login').send({ username: validBody.username, password: validBody.password })
+    const response = await test_agent.post('/gameApi/login').send({ username: validBody.username, password: validBody.password })
     if (response.status !== 200) { throw new Error(`Login failed: ${response.status}; ${response.text}`) }
 
     return {
@@ -47,20 +47,20 @@ export async function registerUserAndReturnCredentials(server: TacServer, agent:
     }
 }
 
-export async function unregisterUser(agent: supertest.SuperAgentTest, userWithCredentials: userWithCredentials) {
-    const res = await agent.delete('/gameApi/deleteUser')
+export async function unregisterUser(test_agent: supertest.SuperAgentTest, userWithCredentials: userWithCredentials) {
+    const res = await test_agent.delete('/gameApi/deleteUser')
         .set({ Authorization: userWithCredentials.authHeader })
         .send()
     if (res.statusCode !== 204) { throw new Error('Could not delete user') }
 }
 
-export async function registerNUsersWithSockets(server: TacServer, agent: supertest.SuperAgentTest, n_connections: number): Promise<userWithCredentialsAndSocket[]> {
+export async function registerNUsersWithSockets(test_server: TacServer, test_agent: supertest.SuperAgentTest, n_connections: number): Promise<userWithCredentialsAndSocket[]> {
     const promiseArray: Promise<userWithCredentialsAndSocket>[] = []
 
     for (let i = 0; i < n_connections; i++) {
         promiseArray.push(
             new Promise<userWithCredentialsAndSocket>((resolve) => {
-                registerUserAndReturnCredentials(server, agent).then((uWC: userWithCredentials) => {
+                registerUserAndReturnCredentials(test_server, test_agent).then((uWC: userWithCredentials) => {
                     const clientSocket = io('http://localhost:1234', { auth: { token: uWC.token } });
                     clientSocket.on('connect', () => {
                         const result: userWithCredentialsAndSocket = { ...uWC, socket: clientSocket }
@@ -76,13 +76,13 @@ export async function registerNUsersWithSockets(server: TacServer, agent: supert
     return users
 }
 
-export async function unregisterUsersWithSockets(agent: supertest.SuperAgentTest, userWithSocketArray: userWithCredentialsAndSocket[]) {
+export async function unregisterUsersWithSockets(test_agent: supertest.SuperAgentTest, userWithSocketArray: userWithCredentialsAndSocket[]) {
     for (let i = 0; i < userWithSocketArray.length; i++) {
         userWithSocketArray[i].socket?.close()
     }
 
     return Promise.all(userWithSocketArray.map((uWS) => {
-        return new Promise<void>((resolve) => { unregisterUser(agent, uWS).then(() => resolve()) })
+        return new Promise<void>((resolve) => { unregisterUser(test_agent, uWS).then(() => resolve()) })
     }))
 }
 

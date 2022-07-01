@@ -1,24 +1,18 @@
-import { TacServer } from '../server';
-import supertest from 'supertest';
 import { registerUserAndReturnCredentials, unregisterUser, userWithCredentials } from '../helpers/userHelper';
 
 describe('Platform PlayerStatistic Test Suite', () => {
-    let agent: supertest.SuperAgentTest, server: TacServer, userWithCredentials: userWithCredentials;
+    let userWithCredentials: userWithCredentials;
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-        userWithCredentials = await registerUserAndReturnCredentials(server, agent)
+        userWithCredentials = await registerUserAndReturnCredentials(test_server, test_agent)
     })
 
     afterAll(async () => {
-        await unregisterUser(agent, userWithCredentials)
-        await server.destroy()
+        await unregisterUser(test_agent, userWithCredentials)
     })
 
     test('Should return empty playerStats for new user', async () => {
-        const response = await agent.get('/gameApi/profile/getPlayerStats/')
+        const response = await test_agent.get('/gameApi/profile/getPlayerStats/')
             .query({ username: userWithCredentials.username })
         expect(response.status).toBe(200)
         expect(response.body.history).toEqual([])
@@ -43,7 +37,7 @@ describe('Platform PlayerStatistic Test Suite', () => {
     })
 
     test('Should return empty userGraph for new user', async () => {
-        const response = await agent.get('/gameApi/profile/userNetwork/')
+        const response = await test_agent.get('/gameApi/profile/userNetwork/')
             .query({ username: userWithCredentials.username })
         expect(response.status).toBe(200)
         expect(response.body.graph.nodes.length).toEqual(1)
@@ -53,26 +47,26 @@ describe('Platform PlayerStatistic Test Suite', () => {
     })
 
     test('Should return empty tournamentParticipations for new user', async () => {
-        const response = await agent.get('/gameApi/profile/userTournamentParticipations/')
+        const response = await test_agent.get('/gameApi/profile/userTournamentParticipations/')
             .query({ username: userWithCredentials.username })
         expect(response.status).toBe(200)
         expect(response.body).toEqual([])
     })
 
     test.skip('Should return playerStats of Oskar', async () => {
-        const response = await agent.get('/gameApi/profile/getPlayerStats/')
+        const response = await test_agent.get('/gameApi/profile/getPlayerStats/')
             .query({ username: 'Oskar' })
         expect(response.status).toBe(200)
     })
 
     test.skip('Should return userGraph of Oskar', async () => {
-        const response = await agent.get('/gameApi/profile/userNetwork/')
+        const response = await test_agent.get('/gameApi/profile/userNetwork/')
             .query({ username: 'Oskar' })
         expect(response.status).toBe(200)
     })
 
     test.skip('Should return tournamentParticipations of Oskar', async () => {
-        const response = await agent.get('/gameApi/profile/userTournamentParticipations/')
+        const response = await test_agent.get('/gameApi/profile/userTournamentParticipations/')
             .query({ username: 'Oskar' })
         expect(response.status).toBe(200)
         expect(response.body.length).toBeGreaterThan(0)
