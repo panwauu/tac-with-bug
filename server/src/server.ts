@@ -23,6 +23,7 @@ import { registerJobs } from './services/scheduledTasks';
 
 import { initdBUtils } from './dbUtils/initdBUtils'
 import { loadTutorialLevels } from './services/tutorial';
+import logger from './helpers/logger';
 
 export class TacServer {
     httpServer: http.Server;
@@ -76,15 +77,15 @@ export class TacServer {
     }
 
     async unlisten() {
-        const promiseIO = new Promise((resolve) => { this.io.close(() => { resolve(true) }) })
-        const promiseHTTP = new Promise((resolve) => { this.httpServer.listening ? this.httpServer.close(() => { resolve(true) }) : resolve(true) })
-        return Promise.all([promiseHTTP, promiseIO])
+        await new Promise((resolve) => { this.io.close(() => { resolve(true) }) })
+        await new Promise((resolve) => { this.httpServer.listening ? this.httpServer.close(() => { resolve(true) }) : resolve(true) })
     }
 
     async destroy() {
-        //unregisterJobs
+        logger.debug('Server destroying: start destroy by unlisten')
         await this.unlisten();
-        const promiseSQL = this.app.locals.sqlClient.end()
-        return Promise.all([promiseSQL, this.unlisten()])
+        logger.debug('Server destroying: unlisten ended, starting sql teardown')
+        await this.app.locals.sqlClient.end();
+        logger.debug('Server destroyed')
     }
 }
