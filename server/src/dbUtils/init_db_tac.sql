@@ -160,7 +160,6 @@ CREATE TABLE games (
     OR private_tournament_id IS NULL
   ),
   rematch_open BOOLEAN NOT NULL DEFAULT FALSE,
-  admin BOOLEAN NOT NULL DEFAULT FALSE,
   colors json
 );
 
