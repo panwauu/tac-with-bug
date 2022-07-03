@@ -1,27 +1,18 @@
 import type { GameSocketC } from '../../../shared/types/GameNamespaceDefinition';
 
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket, registerGameSocket, unregisterGameSocket, waitForGameSocketConnection, initiateGameSocket } from '../helpers/userHelper';
-import { cloneDeep } from 'lodash';
+import { userWithCredentialsAndSocket, getUsersWithSockets, closeSockets } from '../test/handleUserSockets';
+import { registerGameSocket, unregisterGameSocket, waitForGameSocketConnection, initiateGameSocket } from '../test/handleGameSocket';
 
-describe.skip('Game test suite via socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[], gameBefore: any;
-    const gameID = 96;
-    const gameOskar = { playerIndex: 2, userid: 4 }
-    const gameSophia = { playerIndex: 3, userid: 7 }
+describe('Game test suite via socket.io', () => {
+    let usersWithSockets: userWithCredentialsAndSocket[];
+    const gameID = 1;
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 3);
-        await testServer.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[0].id, gameOskar.playerIndex, gameID])
-        await testServer.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[1].id, gameSophia.playerIndex, gameID])
-        await testServer.pgPool.query('UPDATE games SET status=\'running\' WHERE id = $1;', [gameID])
-        gameBefore = await testServer.pgPool.query('SELECT game FROM games WHERE id = $1;', [gameID]).then((r: any) => r.rows[0].game)
+        usersWithSockets = await getUsersWithSockets([1, 2, 3, 4])
     })
 
     afterAll(async () => {
-        await testServer.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameOskar.userid, gameOskar.playerIndex, gameID])
-        await testServer.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameSophia.userid, gameSophia.playerIndex, gameID])
-        await testServer.pgPool.query('UPDATE games SET status=\'aborted\', game=$2, rematch_open=false WHERE id = $1;', [gameID, JSON.stringify(gameBefore)])
-        await unregisterUsersWithSockets(testAgent, usersWithSockets)
+        await closeSockets(usersWithSockets)
     })
 
     describe('Test invalid connection', () => {
@@ -32,7 +23,7 @@ describe.skip('Game test suite via socket.io', () => {
         })
 
         test('Test with invalid game', async () => {
-            await expect(registerGameSocket('test', usersWithSockets[0].token)).rejects.toBe(undefined)
+            await expect(registerGameSocket('test', usersWithSockets?.[0]?.token)).rejects.toBe(undefined)
         })
 
         test('Test with invalid token', async () => {
@@ -41,32 +32,23 @@ describe.skip('Game test suite via socket.io', () => {
     })
 
     describe('Test valid connection', () => {
-        let gameSocket: GameSocketC, anotherGameSocket: GameSocketC;
+        let gameSocket: GameSocketC;
 
         afterEach(async () => {
             await unregisterGameSocket(gameSocket)
-            await unregisterGameSocket(anotherGameSocket)
         })
 
         test('Test with own game', async () => {
             gameSocket = await registerGameSocket(gameID, usersWithSockets[0].token)
         })
 
-        test('Test with other tournament game', async () => {
+        test.skip('Test with other tournament game', async () => {
             gameSocket = await registerGameSocket(2660, usersWithSockets[0].token)
         })
     })
 
-    describe.skip('Test dealCards', () => {
-        let gameSocket: GameSocketC, interval: any;
-
-        beforeAll(async () => {
-            const gameCopy = cloneDeep(gameBefore)
-            gameCopy.cardsWithMoves = []
-            gameCopy.cards.players.forEach((_: any, i: number) => gameCopy.cards.players[i] = [])
-            await testServer.pgPool.query('UPDATE games SET game=$2 WHERE id = $1;', [gameID, JSON.stringify(gameCopy)])
-            await new Promise((resolve) => setTimeout(() => resolve(null), 200)) // Needed to fix test
-        })
+    describe('Test dealCards', () => {
+        let gameSocket: GameSocketC, interval: NodeJS.Timer, gameID = 2;
 
         afterAll(async () => {
             clearInterval(interval);
@@ -79,7 +61,6 @@ describe.skip('Game test suite via socket.io', () => {
             let updateData: any = null;
             gameSocket.on('update', (data) => { updateData = data; nUpdates += 1 })
 
-
             const promiseArray = [
                 new Promise<any>((resolve) => gameSocket.once('game:online-players', (data) => resolve(data))),
                 new Promise<any>((resolve) => interval = setInterval(() => {
@@ -91,7 +72,7 @@ describe.skip('Game test suite via socket.io', () => {
             ]
             await waitForGameSocketConnection(gameSocket)
             const result = await Promise.all(promiseArray)
-            expect(result[0].onlineGamePlayers).toEqual([gameOskar.playerIndex])
+            expect(result[0].onlineGamePlayers).toEqual([0])
             expect(result[0].nWatchingPlayers).toEqual(0)
             expect(result[0].watchingPlayerNames).toEqual([])
             expect(generateGameSnapshot(result[1])).toMatchSnapshot()
@@ -99,42 +80,42 @@ describe.skip('Game test suite via socket.io', () => {
         })
     })
 
-    describe.skip('Test complete flow with all events', () => {
-        let gameSocket0: GameSocketC, gameSocket1: GameSocketC;
+    describe('Test complete flow with all events', () => {
+        let gameSocketOfPlayer2: GameSocketC, gameSocketOfPlayer3: GameSocketC;
 
         afterAll(async () => {
-            await unregisterGameSocket(gameSocket0)
-            await unregisterGameSocket(gameSocket1)
+            await unregisterGameSocket(gameSocketOfPlayer2)
+            await unregisterGameSocket(gameSocketOfPlayer3)
         })
 
         test('Register first player', async () => {
             await new Promise<void>((resolve) => { setTimeout(() => { resolve() }, 500) })
-            gameSocket0 = initiateGameSocket(gameID, usersWithSockets[0].token)
+            gameSocketOfPlayer2 = initiateGameSocket(gameID, usersWithSockets[2].token)
             const promiseArray = [
-                new Promise<any>((resolve) => gameSocket0.once('game:online-players', (data) => resolve(data))),
-                new Promise<any>((resolve) => gameSocket0.once('update', (data) => resolve(data))),
+                new Promise<any>((resolve) => gameSocketOfPlayer2.once('game:online-players', (data) => resolve(data))),
+                new Promise<any>((resolve) => gameSocketOfPlayer2.once('update', (data) => resolve(data))),
             ]
-            await waitForGameSocketConnection(gameSocket0)
+            await waitForGameSocketConnection(gameSocketOfPlayer2)
             const result = await Promise.all(promiseArray)
-            expect(result[0].onlineGamePlayers).toEqual([gameOskar.playerIndex])
+            expect(result[0].onlineGamePlayers).toEqual([2])
             expect(result[0].nWatchingPlayers).toEqual(0)
             expect(result[0].watchingPlayerNames).toEqual([])
             expect(generateGameSnapshot(result[1])).toMatchSnapshot();
         })
 
         test('Register second player', async () => {
-            gameSocket1 = initiateGameSocket(gameID, usersWithSockets[1].token)
+            gameSocketOfPlayer3 = initiateGameSocket(gameID, usersWithSockets[3].token)
             const promiseArray = [
-                new Promise<any>((resolve) => gameSocket0.once('game:online-players', (data) => resolve(data))),
-                new Promise<any>((resolve) => gameSocket1.once('game:online-players', (data) => resolve(data))),
-                new Promise<any>((resolve) => gameSocket1.once('update', (data) => resolve(data))),
+                new Promise<any>((resolve) => gameSocketOfPlayer2.once('game:online-players', (data) => resolve(data))),
+                new Promise<any>((resolve) => gameSocketOfPlayer3.once('game:online-players', (data) => resolve(data))),
+                new Promise<any>((resolve) => gameSocketOfPlayer3.once('update', (data) => resolve(data))),
             ]
-            await waitForGameSocketConnection(gameSocket1)
+            await waitForGameSocketConnection(gameSocketOfPlayer3)
             const result = await Promise.all(promiseArray)
-            expect(result[0].onlineGamePlayers.sort()).toEqual([gameOskar.playerIndex, gameSophia.playerIndex].sort())
+            expect(result[0].onlineGamePlayers.sort()).toEqual([2, 3].sort())
             expect(result[0].nWatchingPlayers).toEqual(0)
             expect(result[0].watchingPlayerNames).toEqual([])
-            expect(result[1].onlineGamePlayers.sort()).toEqual([gameOskar.playerIndex, gameSophia.playerIndex].sort())
+            expect(result[1].onlineGamePlayers.sort()).toEqual([2, 3].sort())
             expect(result[1].nWatchingPlayers).toEqual(0)
             expect(result[1].watchingPlayerNames).toEqual([])
             expect(generateGameSnapshot(result[2])).toMatchSnapshot();
@@ -142,10 +123,10 @@ describe.skip('Game test suite via socket.io', () => {
 
         test('Post move', async () => {
             const promiseArray = [
-                new Promise<any>((resolve) => gameSocket0.once('update', (data) => resolve(data))),
-                new Promise<any>((resolve) => gameSocket1.once('update', (data) => resolve(data))),
+                new Promise<any>((resolve) => gameSocketOfPlayer2.once('update', (data) => resolve(data))),
+                new Promise<any>((resolve) => gameSocketOfPlayer3.once('update', (data) => resolve(data))),
             ]
-            gameSocket1.emit('postMove', [3, 0, 'beenden'])
+            gameSocketOfPlayer2.emit('postMove', [2, 0, 'beenden'])
             const result = await Promise.all(promiseArray)
             expect(generateGameSnapshot(result[0])).toMatchSnapshot();
             expect(generateGameSnapshot(result[1])).toMatchSnapshot();
@@ -156,21 +137,21 @@ describe.skip('Game test suite via socket.io', () => {
 
         test('Does emit onlinePlayers to gameSocket1 when gameSocket0 disconnects', async () => {
             const promiseArray = [
-                new Promise<any>((resolve) => gameSocket1.once('game:online-players', (data) => resolve(data))),
+                new Promise<any>((resolve) => gameSocketOfPlayer3.once('game:online-players', (data) => resolve(data))),
             ]
-            gameSocket0.disconnect()
+            gameSocketOfPlayer2.disconnect()
             const result = await Promise.all(promiseArray);
-            expect(result[0].onlineGamePlayers).toEqual([gameSophia.playerIndex])
+            expect(result[0].onlineGamePlayers).toEqual([3])
             expect(result[0].nWatchingPlayers).toEqual(0)
             expect(result[0].watchingPlayerNames).toEqual([])
         })
 
         test('Unregister last player', async () => {
-            gameSocket1.disconnect()
+            gameSocketOfPlayer3.disconnect()
         })
-    })
 
-    test.todo('Test watching mode - online Players')
+        test.todo('Test watching mode - online Players')
+    })
 })
 
 function generateGameSnapshot(game: any) {
