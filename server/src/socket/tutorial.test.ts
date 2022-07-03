@@ -9,13 +9,13 @@ describe('Tutorial Test Suite via Socket.io', () => {
         let userWithSocket: userWithCredentialsAndSocket, socket: GeneralSocketC;
 
         beforeAll(async () => {
-            userWithSocket = (await registerNUsersWithSockets(test_server, test_agent, 1))[0]
+            userWithSocket = (await registerNUsersWithSockets(testServer, testAgent, 1))[0]
             socket = io('http://localhost:1234')
             await new Promise((resolve) => { socket.on('connect', () => { resolve(null) }) })
         })
 
         afterAll(async () => {
-            await unregisterUsersWithSockets(test_agent, [userWithSocket])
+            await unregisterUsersWithSockets(testAgent, [userWithSocket])
             const promise = new Promise((resolve) => socket.once('disconnect', () => { resolve(null) }))
             socket.disconnect()
             await promise

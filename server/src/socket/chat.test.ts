@@ -4,11 +4,11 @@ describe('Test Suite via Socket.io', () => {
     let usersWithSockets: userWithCredentialsAndSocket[];
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 3);
+        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 3);
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(test_agent, usersWithSockets)
+        await unregisterUsersWithSockets(testAgent, usersWithSockets)
     })
 
     describe('Test peer to peer chat', () => {

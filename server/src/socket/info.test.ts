@@ -9,13 +9,13 @@ describe('Info sest suite via socket.io', () => {
     const tournamentGameID = 1647;
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 2);
+        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 2);
     })
 
     afterAll(async () => {
         socket.disconnect()
         await unregisterGameSocket(gameSocket)
-        await unregisterUsersWithSockets(test_agent, usersWithSockets)
+        await unregisterUsersWithSockets(testAgent, usersWithSockets)
     })
 
     test('On disconnect the number of connections should be sent', async () => {

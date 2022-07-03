@@ -6,10 +6,10 @@
 //import { getDifferentName } from '../services/SweetNameGenerator';
 //import { publicTournament } from '../../../shared/types/typesTournament';
 
-/*async function tournamentCleanUp(test_server: TacServer, tournamentID: number) {
-    await test_server.pgPool.query('DELETE FROM tournaments_register WHERE tournamentid = $1;', [tournamentID])
-    await test_server.pgPool.query('DELETE FROM users_to_tournaments WHERE tournamentid = $1;', [tournamentID])
-    await test_server.pgPool.query('DELETE FROM tournaments WHERE id = $1;', [tournamentID])
+/*async function tournamentCleanUp(testServer: TacServer, tournamentID: number) {
+    await testServer.pgPool.query('DELETE FROM tournaments_register WHERE tournamentid = $1;', [tournamentID])
+    await testServer.pgPool.query('DELETE FROM users_to_tournaments WHERE tournamentid = $1;', [tournamentID])
+    await testServer.pgPool.query('DELETE FROM tournaments WHERE id = $1;', [tournamentID])
 }*/
 
 describe('Test Suite via Socket.io', () => {
@@ -22,19 +22,19 @@ describe('Test Suite via Socket.io', () => {
         const spyInvitation = jest.spyOn(mail, 'sendTournamentInvitation');
 
         beforeAll(async () => {
-            usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 4);
-            await test_server.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [usersWithSockets[0].id])
+            usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 4);
+            await testServer.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [usersWithSockets[0].id])
         })
 
         afterEach(() => { jest.clearAllMocks() })
 
         afterAll(async () => {
-            await tournamentCleanUp(test_server, tournamentID)
-            await unregisterUsersWithSockets(test_agent, usersWithSockets)
+            await tournamentCleanUp(testServer, tournamentID)
+            await unregisterUsersWithSockets(testAgent, usersWithSockets)
         })
 
         test('Create Tournament', async () => {
-            const apiRes = await test_agent.post('/gameApi/createTournament')
+            const apiRes = await testAgent.post('/gameApi/createTournament')
                 .set({ Authorization: usersWithSockets[0].authHeader })
                 .send({
                     title: 'TestTournament',
@@ -50,8 +50,8 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test('Start Tournament', async () => {
-            await startSignUpOnCondition(test_server.pgPool)
-            const dbRes = await test_server.pgPool.query('SELECT status FROM tournaments WHERE id = $1;', [tournamentID])
+            await startSignUpOnCondition(testServer.pgPool)
+            const dbRes = await testServer.pgPool.query('SELECT status FROM tournaments WHERE id = $1;', [tournamentID])
             expect(dbRes.rows[0].status).toBe('signUp')
         })
 
@@ -236,17 +236,17 @@ describe('Test Suite via Socket.io', () => {
         let tournamentID: number, usersWithSockets: userWithCredentialsAndSocket[];
 
         beforeAll(async () => {
-            usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 1);
-            await test_server.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [usersWithSockets[0].id])
+            usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 1);
+            await testServer.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [usersWithSockets[0].id])
         })
 
         afterAll(async () => {
-            await tournamentCleanUp(test_server, tournamentID)
-            await unregisterUsersWithSockets(test_agent, usersWithSockets)
+            await tournamentCleanUp(testServer, tournamentID)
+            await unregisterUsersWithSockets(testAgent, usersWithSockets)
         })
 
         test('Create Tournament', async () => {
-            const apiRes = await test_agent.post('/gameApi/createTournament')
+            const apiRes = await testAgent.post('/gameApi/createTournament')
                 .set({ Authorization: usersWithSockets[0].authHeader })
                 .send({
                     title: 'TestTournament',
@@ -262,8 +262,8 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test('Start Tournament', async () => {
-            await startSignUpOnCondition(test_server.pgPool)
-            const res = await test_server.pgPool.query('SELECT status FROM tournaments WHERE id = $1;', [tournamentID])
+            await startSignUpOnCondition(testServer.pgPool)
+            const res = await testServer.pgPool.query('SELECT status FROM tournaments WHERE id = $1;', [tournamentID])
             expect(res.rows[0].status).toBe('signUp')
         })
 
@@ -284,11 +284,11 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test('Check if Signup fails', async () => {
-            await test_server.pgPool.query('UPDATE tournaments SET signup_deadline = current_timestamp - interval \'1 minute\' WHERE id = $1;', [tournamentID])
+            await testServer.pgPool.query('UPDATE tournaments SET signup_deadline = current_timestamp - interval \'1 minute\' WHERE id = $1;', [tournamentID])
 
-            await endSignUpOnCondition(test_server.pgPool)
+            await endSignUpOnCondition(testServer.pgPool)
 
-            const tournament = await getPublicTournamentByID(test_server.pgPool, tournamentID)
+            const tournament = await getPublicTournamentByID(testServer.pgPool, tournamentID)
             tournament.isOk() ? expect(tournament.value.status).toBe('signUpFailed') : expect(tournament.error).toBe(null)
         })
     })*/
@@ -298,22 +298,22 @@ describe('Test Suite via Socket.io', () => {
         const gameID = 32;
 
         beforeAll(async () => {
-            usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 8);
-            await test_server.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [usersWithSockets[0].id])
+            usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 8);
+            await testServer.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [usersWithSockets[0].id])
         })
 
         afterAll(async () => {
-            await test_server.pgPool.query('UPDATE games SET public_tournament_id = null WHERE id = $1;', [gameID])
-            await test_server.pgPool.query('DELETE FROM users_to_games USING games WHERE users_to_games.gameid = games.id AND games.public_tournament_id = $1;', [tournamentID])
-            await test_server.pgPool.query('DELETE FROM games WHERE public_tournament_id = $1;', [tournamentID])
-            await test_server.pgPool.query('DELETE FROM tournaments_register WHERE tournamentid = $1;', [tournamentID])
-            await test_server.pgPool.query('DELETE FROM users_to_tournaments WHERE tournamentid = $1;', [tournamentID])
-            await test_server.pgPool.query('DELETE FROM tournaments WHERE id = $1;', [tournamentID])
-            await unregisterUsersWithSockets(test_agent, usersWithSockets)
+            await testServer.pgPool.query('UPDATE games SET public_tournament_id = null WHERE id = $1;', [gameID])
+            await testServer.pgPool.query('DELETE FROM users_to_games USING games WHERE users_to_games.gameid = games.id AND games.public_tournament_id = $1;', [tournamentID])
+            await testServer.pgPool.query('DELETE FROM games WHERE public_tournament_id = $1;', [tournamentID])
+            await testServer.pgPool.query('DELETE FROM tournaments_register WHERE tournamentid = $1;', [tournamentID])
+            await testServer.pgPool.query('DELETE FROM users_to_tournaments WHERE tournamentid = $1;', [tournamentID])
+            await testServer.pgPool.query('DELETE FROM tournaments WHERE id = $1;', [tournamentID])
+            await unregisterUsersWithSockets(testAgent, usersWithSockets)
         })
 
         test('Create Tournament', async () => {
-            const apiRes = await test_agent.post('/gameApi/createTournament')
+            const apiRes = await testAgent.post('/gameApi/createTournament')
                 .set({ Authorization: usersWithSockets[0].authHeader })
                 .send({
                     title: 'TestTournament',
@@ -329,8 +329,8 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test('Start Tournament', async () => {
-            await startSignUpOnCondition(test_server.pgPool)
-            const result = await test_server.pgPool.query('SELECT status FROM tournaments WHERE id = $1;', [tournamentID])
+            await startSignUpOnCondition(testServer.pgPool)
+            const result = await testServer.pgPool.query('SELECT status FROM tournaments WHERE id = $1;', [tournamentID])
             expect(result.rows[0].status).toBe('signUp')
         })
 
@@ -384,7 +384,7 @@ describe('Test Suite via Socket.io', () => {
                 return new Promise((resolve) => { uWS.socket.once('tournament:toast:started', (data: any) => { return resolve(data) }) })
             })]
 
-            await startTournament(test_server.pgPool)
+            await startTournament(testServer.pgPool)
             await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
 
             expect(tournament.status).toBe('running')
@@ -405,9 +405,9 @@ describe('Test Suite via Socket.io', () => {
             })]
 
             // Test game end with time condition
-            await test_server.pgPool.query('UPDATE games SET game=(SELECT game FROM games WHERE id=1310) WHERE id=$1;', [tournament.data.brackets[0][0].gameID])
+            await testServer.pgPool.query('UPDATE games SET game=(SELECT game FROM games WHERE id=1310) WHERE id=$1;', [tournament.data.brackets[0][0].gameID])
 
-            await checkForceGameEnd(test_server.pgPool)
+            await checkForceGameEnd(testServer.pgPool)
             await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
 
             expect(tournament.status).toBe('running')
@@ -425,7 +425,7 @@ describe('Test Suite via Socket.io', () => {
                 return new Promise((resolve) => { uWS.socket.once('tournament:toast:round-started', (data: any) => { return resolve(data) }) })
             })]
 
-            await startTournamentRound(test_server.pgPool)
+            await startTournamentRound(testServer.pgPool)
             await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
 
             expect(tournament.status).toBe('running')
@@ -438,14 +438,14 @@ describe('Test Suite via Socket.io', () => {
                 return new Promise((resolve) => { uWS.socket.once('tournament:public:update', (data) => { return resolve(data) }) })
             })
 
-            await test_server.pgPool.query('UPDATE games SET public_tournament_id = $1 WHERE id = $2;', [tournamentID, gameID])
-            const dbRes = await test_server.pgPool.query('SELECT data FROM tournaments WHERE id = $1;', [tournamentID])
+            await testServer.pgPool.query('UPDATE games SET public_tournament_id = $1 WHERE id = $2;', [tournamentID, gameID])
+            const dbRes = await testServer.pgPool.query('SELECT data FROM tournaments WHERE id = $1;', [tournamentID])
             const data = dbRes.rows[0].data
             gameIDMiniFinal = data.brackets[1][1].gameID
             data.brackets[1][1].gameID = gameID
-            await test_server.pgPool.query('UPDATE tournaments SET data = $2 WHERE id = $1;', [tournamentID, data])
+            await testServer.pgPool.query('UPDATE tournaments SET data = $2 WHERE id = $1;', [tournamentID, data])
 
-            const game = await getGame(test_server.pgPool, gameID)
+            const game = await getGame(testServer.pgPool, gameID)
             game.game.gameEnded = false
             game.players = [
                 tournament.teams[tournament.data.brackets[1][1].teams[0]].players[0],
@@ -454,7 +454,7 @@ describe('Test Suite via Socket.io', () => {
                 tournament.teams[tournament.data.brackets[1][1].teams[1]].players[1]
             ]
 
-            await updateTournamentFromGame(test_server.pgPool, game)
+            await updateTournamentFromGame(testServer.pgPool, game)
             await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
 
             expect(tournament.data.brackets[1][1].score).toStrictEqual([8, 5])
@@ -466,7 +466,7 @@ describe('Test Suite via Socket.io', () => {
                 return new Promise((resolve) => { uWS.socket.once('tournament:public:update', (data) => { return resolve(data) }) })
             })
 
-            const game = await getGame(test_server.pgPool, gameID)
+            const game = await getGame(testServer.pgPool, gameID)
             game.players = [
                 tournament.teams[tournament.data.brackets[1][1].teams[0]].players[0],
                 tournament.teams[tournament.data.brackets[1][1].teams[1]].players[0],
@@ -474,7 +474,7 @@ describe('Test Suite via Socket.io', () => {
                 tournament.teams[tournament.data.brackets[1][1].teams[1]].players[1]
             ]
 
-            await updateTournamentFromGame(test_server.pgPool, game)
+            await updateTournamentFromGame(testServer.pgPool, game)
             await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
 
             expect(tournament.data.brackets[1][1].score).toStrictEqual([8, 5])
@@ -489,14 +489,14 @@ describe('Test Suite via Socket.io', () => {
                 return new Promise((resolve) => { uWS.socket.once('tournament:toast:ended', (data) => { return resolve(data) }) })
             })]
 
-            await test_server.pgPool.query('UPDATE games SET public_tournament_id = $1 WHERE id = $2;', [tournamentID, gameID])
-            const dbRes = await test_server.pgPool.query('SELECT data FROM tournaments WHERE id = $1;', [tournamentID])
+            await testServer.pgPool.query('UPDATE games SET public_tournament_id = $1 WHERE id = $2;', [tournamentID, gameID])
+            const dbRes = await testServer.pgPool.query('SELECT data FROM tournaments WHERE id = $1;', [tournamentID])
             const data = dbRes.rows[0].data
             data.brackets[1][0].gameID = gameIDMiniFinal
             data.brackets[1][0].gameID = gameID
-            await test_server.pgPool.query('UPDATE tournaments SET data = $2 WHERE id = $1;', [tournamentID, data])
+            await testServer.pgPool.query('UPDATE tournaments SET data = $2 WHERE id = $1;', [tournamentID, data])
 
-            const game = await getGame(test_server.pgPool, gameID)
+            const game = await getGame(testServer.pgPool, gameID)
             game.players = [
                 tournament.teams[tournament.data.brackets[1][0].teams[0]].players[0],
                 tournament.teams[tournament.data.brackets[1][0].teams[1]].players[0],
@@ -504,7 +504,7 @@ describe('Test Suite via Socket.io', () => {
                 tournament.teams[tournament.data.brackets[1][0].teams[1]].players[1]
             ]
 
-            await updateTournamentFromGame(test_server.pgPool, game)
+            await updateTournamentFromGame(testServer.pgPool, game)
             await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
 
             expect(tournament.status).toBe('ended')

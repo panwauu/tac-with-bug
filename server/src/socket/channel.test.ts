@@ -6,14 +6,14 @@ describe('Channel test suite via socket.io', () => {
     let usersWithSockets: userWithCredentialsAndSocket[], socket: GeneralSocketC;
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 2);
+        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 2);
         socket = io('http://localhost:1234');
         await new Promise((resolve) => { socket.on('connect', () => { resolve(null) }) })
     })
 
     afterAll(async () => {
         socket.close()
-        await unregisterUsersWithSockets(test_agent, usersWithSockets)
+        await unregisterUsersWithSockets(testAgent, usersWithSockets)
     })
 
     describe('Test channel communication', () => {

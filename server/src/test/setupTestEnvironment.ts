@@ -1,41 +1,22 @@
 import supertest from 'supertest';
-
-import pg from 'pg';
 import path from 'path';
 import fs from 'fs';
 import logger from '../helpers/logger';
 import intro from '../dbUtils/intro.json'
 import { TacServer } from '../server';
-
-const init_db_tac_sql = fs.readFileSync(path.join(getRoot(), 'server', 'src', 'dbUtils', 'init_db_tac.sql')).toString()
-const populate_test_sql = fs.readFileSync(path.join(getRoot(), 'server', 'src', 'dbUtils', 'populate_test.sql')).toString()
+import { initTestDatabaseClient } from '../dbUtils/initdBUtils';
 
 beforeAll(async () => {
     await prepareTestDatabase();
 
-    (global as any).test_server = new TacServer();
-    await (global as any).test_server.listen(1234);
-    (global as any).test_agent = supertest.agent(test_server.httpServer);
+    (global as any).testServer = new TacServer();
+    await (global as any).testServer.listen(1234);
+    (global as any).testAgent = supertest.agent(testServer.httpServer);
 })
 
 afterAll(async () => {
-    await (global as any).test_server?.destroy()
+    await (global as any).testServer?.destroy()
 })
-
-function getRoot(): string {
-    let remainingPath = __dirname
-
-    do {
-        const dircontent = fs.readdirSync(remainingPath)
-        if (['.github', 'server', 'client', 'shared'].every((f) => dircontent.includes(f))) {
-            return remainingPath
-        }
-
-        remainingPath = path.dirname(remainingPath)
-    } while (remainingPath.split(path.sep).filter((s) => s.length > 0).length > 1);
-
-    throw new Error('Could not find root')
-}
 
 export async function prepareTestDatabase() {
     try {
@@ -51,40 +32,44 @@ export async function prepareTestDatabase() {
 }
 
 async function recreateTestDatabase(): Promise<void> {
-    const postgres_client = new pg.Client({
-        user: 'postgres',
-        host: 'localhost',
-        database: 'postgres',
-        password: 'postgres',
-        port: 5432,
-        connectionTimeoutMillis: 2000,
-    });
-    await postgres_client.connect();
+    const pgClient = initTestDatabaseClient('postgres')
+    await pgClient.connect();
 
     try {
-        await postgres_client.query('DROP DATABASE IF EXISTS tac_test;');
-        await postgres_client.query('CREATE DATABASE tac_test;');
+        await pgClient.query('DROP DATABASE IF EXISTS tac_test;');
+        await pgClient.query('CREATE DATABASE tac_test;');
     } finally {
-        await postgres_client.end();
+        await pgClient.end();
     }
 }
 
 async function initAndPopulateTestDatabase(): Promise<void> {
-    const postgres_client = new pg.Client({
-        user: 'postgres',
-        host: 'localhost',
-        database: 'tac_test',
-        password: 'postgres',
-        port: 5432,
-        connectionTimeoutMillis: 2000,
-    });
-    await postgres_client.connect();
+    const pgClient = initTestDatabaseClient('tac_test')
+    await pgClient.connect();
 
     try {
-        await postgres_client.query(init_db_tac_sql);
-        await postgres_client.query(populate_test_sql);
-        await postgres_client.query('INSERT INTO tutorials (id, data) VALUES (0, $1);', [JSON.stringify(intro)]);
+        const initTacDatabaseSQL = fs.readFileSync(path.join(getRoot(), 'server', 'src', 'dbUtils', 'init_db_tac.sql')).toString()
+        const populateTestDatabaseSQL = fs.readFileSync(path.join(getRoot(), 'server', 'src', 'dbUtils', 'populate_test.sql')).toString()
+
+        await pgClient.query(initTacDatabaseSQL);
+        await pgClient.query(populateTestDatabaseSQL);
+        await pgClient.query('INSERT INTO tutorials (id, data) VALUES (0, $1);', [JSON.stringify(intro)]);
     } finally {
-        await postgres_client.end();
+        await pgClient.end();
     }
+}
+
+function getRoot(): string {
+    let remainingPath = __dirname
+
+    do {
+        const dircontent = fs.readdirSync(remainingPath)
+        if (['.github', 'server', 'client', 'shared'].every((f) => dircontent.includes(f))) {
+            return remainingPath
+        }
+
+        remainingPath = path.dirname(remainingPath)
+    } while (remainingPath.split(path.sep).filter((s) => s.length > 0).length > 1);
+
+    throw new Error('Could not find root')
 }

@@ -4,18 +4,18 @@ describe.skip('Tournament API', () => {
     let userWithCredentials: userWithCredentials;
 
     beforeAll(async () => {
-        userWithCredentials = await registerUserAndReturnCredentials(test_server, test_agent)
+        userWithCredentials = await registerUserAndReturnCredentials(testServer, testAgent)
     })
 
-    beforeEach(async () => { await test_server.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [userWithCredentials.id]) })
+    beforeEach(async () => { await testServer.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [userWithCredentials.id]) })
 
     afterAll(async () => {
-        await unregisterUser(test_agent, userWithCredentials)
+        await unregisterUser(testAgent, userWithCredentials)
     })
 
     test('Create Tournament - fail if not admin', async () => {
-        await test_server.pgPool.query('UPDATE users SET admin=false WHERE id=$1;', [userWithCredentials.id])
-        const apiRes = await test_agent.post('/gameApi/createTournament')
+        await testServer.pgPool.query('UPDATE users SET admin=false WHERE id=$1;', [userWithCredentials.id])
+        const apiRes = await testAgent.post('/gameApi/createTournament')
             .set({ Authorization: userWithCredentials.authHeader })
             .send({
                 title: 'TestTournament',
@@ -29,7 +29,7 @@ describe.skip('Tournament API', () => {
     })
 
     test('Create Tournament - 2 Teams', async () => {
-        const apiRes = await test_agent.post('/gameApi/createTournament')
+        const apiRes = await testAgent.post('/gameApi/createTournament')
             .set({ Authorization: userWithCredentials.authHeader })
             .send({
                 title: 'TestTournament',
@@ -44,12 +44,12 @@ describe.skip('Tournament API', () => {
         expect(apiRes.body.data.brackets.length).toBe(1);
         expect(apiRes.body.data.brackets[0].length).toBe(1);
 
-        const dbResBefore = await test_server.pgPool.query('DELETE FROM tournaments WHERE id = $1 RETURNING *;', [apiRes.body.id])
+        const dbResBefore = await testServer.pgPool.query('DELETE FROM tournaments WHERE id = $1 RETURNING *;', [apiRes.body.id])
         expect(apiRes.body.id).toBe(dbResBefore.rows[0].id);
     })
 
     test('Create Tournament - 8 Teams', async () => {
-        const apiRes = await test_agent.post('/gameApi/createTournament')
+        const apiRes = await testAgent.post('/gameApi/createTournament')
             .set({ Authorization: userWithCredentials.authHeader })
             .send({
                 title: 'TestTournament',
@@ -66,12 +66,12 @@ describe.skip('Tournament API', () => {
         expect(apiRes.body.data.brackets[1].length).toBe(2);
         expect(apiRes.body.data.brackets[2].length).toBe(2);
 
-        const dbResBefore = await test_server.pgPool.query('DELETE FROM tournaments WHERE id = $1 RETURNING *;', [apiRes.body.id])
+        const dbResBefore = await testServer.pgPool.query('DELETE FROM tournaments WHERE id = $1 RETURNING *;', [apiRes.body.id])
         expect(apiRes.body.id).toBe(dbResBefore.rows[0].id);
     })
 
     test('Generate Team Name', async () => {
-        const apiRes = await test_agent.get('/gameApi/generateTeamName')
+        const apiRes = await testAgent.get('/gameApi/generateTeamName')
             .query({ tournamentID: 1 })
             .set({ Authorization: userWithCredentials.authHeader })
         expect(apiRes.statusCode).toBe(200)

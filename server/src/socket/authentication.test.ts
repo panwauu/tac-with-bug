@@ -7,13 +7,13 @@ describe('Authentication Test Suite via Socket.io', () => {
     let socket: GeneralSocketC;
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 2);
+        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 2);
         socket = io('http://localhost:1234')
         await new Promise((resolve) => { socket.on('connect', () => { resolve(null) }) })
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(test_agent, usersWithSockets)
+        await unregisterUsersWithSockets(testAgent, usersWithSockets)
         socket.disconnect()
     })
 
