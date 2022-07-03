@@ -25,7 +25,7 @@ describe.skip('Platform Statistic Test Suite', () => {
     })
 
     test('Test week data extrapolation by begin of week', async () => {
-        const stats = await getPlatformStatistic(test_server.pgPool)
+        const stats = await getPlatformStatistic(testServer.pgPool)
         const ratio = getPassedRatio(0, 0, stats.dayDataset, stats.hourDataset)
         expect(ratio[0]).toBe(stats.hourDataset[0][0] * stats.dayDataset[0][0])
         expect(ratio[1]).toBe(stats.hourDataset[0][1] * stats.dayDataset[0][1])
@@ -33,7 +33,7 @@ describe.skip('Platform Statistic Test Suite', () => {
     })
 
     test('Test week data extrapolation by end of monday', async () => {
-        const stats = await getPlatformStatistic(test_server.pgPool)
+        const stats = await getPlatformStatistic(testServer.pgPool)
         const ratio = getPassedRatio(0, 23, stats.dayDataset, stats.hourDataset)
         expect(ratio[0]).toBeCloseTo(stats.dayDataset[0][0], 2)
         expect(ratio[1]).toBeCloseTo(stats.dayDataset[0][1], 2)
@@ -41,7 +41,7 @@ describe.skip('Platform Statistic Test Suite', () => {
     })
 
     test('Test week data extrapolation by start of tuesday', async () => {
-        const stats = await getPlatformStatistic(test_server.pgPool)
+        const stats = await getPlatformStatistic(testServer.pgPool)
         const ratio = getPassedRatio(1, 0, stats.dayDataset, stats.hourDataset)
         expect(ratio[0]).toBe(stats.dayDataset[0][0] + stats.hourDataset[0][0] * stats.dayDataset[1][0])
         expect(ratio[1]).toBe(stats.dayDataset[0][1] + stats.hourDataset[0][1] * stats.dayDataset[1][1])
@@ -49,7 +49,7 @@ describe.skip('Platform Statistic Test Suite', () => {
     })
 
     test('Test week data extrapolation by mid of week', async () => {
-        const stats = await getPlatformStatistic(test_server.pgPool)
+        const stats = await getPlatformStatistic(testServer.pgPool)
         const ratio = getPassedRatio(3, 2, stats.dayDataset, stats.hourDataset)
         expect(ratio[0]).toBeCloseTo((stats.dayDataset[0][0] + stats.dayDataset[1][0] + stats.dayDataset[2][0]) + (stats.hourDataset[0][0] + stats.hourDataset[1][0] + stats.hourDataset[2][0]) * stats.dayDataset[3][0], 5)
         expect(ratio[1]).toBeCloseTo((stats.dayDataset[0][1] + stats.dayDataset[1][1] + stats.dayDataset[2][1]) + (stats.hourDataset[0][1] + stats.hourDataset[1][1] + stats.hourDataset[2][1]) * stats.dayDataset[3][1], 5)
@@ -57,7 +57,7 @@ describe.skip('Platform Statistic Test Suite', () => {
     })
 
     test('Test week data extrapolation by end of week', async () => {
-        const stats = await getPlatformStatistic(test_server.pgPool)
+        const stats = await getPlatformStatistic(testServer.pgPool)
         const ratio = getPassedRatio(6, 23, stats.dayDataset, stats.hourDataset)
         expect(ratio[0]).toBeCloseTo(1, 1)
         expect(ratio[1]).toBeCloseTo(1, 1)
@@ -65,7 +65,7 @@ describe.skip('Platform Statistic Test Suite', () => {
     })
 
     test('Test consistency over days', async () => {
-        const stats = await getPlatformStatistic(test_server.pgPool)
+        const stats = await getPlatformStatistic(testServer.pgPool)
         const ratio1 = getPassedRatio(0, 23, stats.dayDataset, stats.hourDataset)
         const ratio2 = getPassedRatio(1, 23, stats.dayDataset, stats.hourDataset)
         expect(ratio2[0] - ratio1[0]).toBeCloseTo(stats.dayDataset[1][0], 2)
@@ -73,7 +73,7 @@ describe.skip('Platform Statistic Test Suite', () => {
     })
 
     test('Get Statistics', async () => {
-        const response = await test_agent.get('/gameApi/getPlatformStats/')
+        const response = await testAgent.get('/gameApi/getPlatformStats/')
         expect(response.statusCode).toBe(200)
 
         expect(response.body.localeDataset.map((e: any) => e.locale).sort()).toEqual(locales.sort())

@@ -4,15 +4,15 @@ describe('Platform PlayerStatistic Test Suite', () => {
     let userWithCredentials: userWithCredentials;
 
     beforeAll(async () => {
-        userWithCredentials = await registerUserAndReturnCredentials(test_server, test_agent)
+        userWithCredentials = await registerUserAndReturnCredentials(testServer, testAgent)
     })
 
     afterAll(async () => {
-        await unregisterUser(test_agent, userWithCredentials)
+        await unregisterUser(testAgent, userWithCredentials)
     })
 
     test('Should return empty playerStats for new user', async () => {
-        const response = await test_agent.get('/gameApi/profile/getPlayerStats/')
+        const response = await testAgent.get('/gameApi/profile/getPlayerStats/')
             .query({ username: userWithCredentials.username })
         expect(response.status).toBe(200)
         expect(response.body.history).toEqual([])
@@ -37,7 +37,7 @@ describe('Platform PlayerStatistic Test Suite', () => {
     })
 
     test('Should return empty userGraph for new user', async () => {
-        const response = await test_agent.get('/gameApi/profile/userNetwork/')
+        const response = await testAgent.get('/gameApi/profile/userNetwork/')
             .query({ username: userWithCredentials.username })
         expect(response.status).toBe(200)
         expect(response.body.graph.nodes.length).toEqual(1)
@@ -47,26 +47,26 @@ describe('Platform PlayerStatistic Test Suite', () => {
     })
 
     test('Should return empty tournamentParticipations for new user', async () => {
-        const response = await test_agent.get('/gameApi/profile/userTournamentParticipations/')
+        const response = await testAgent.get('/gameApi/profile/userTournamentParticipations/')
             .query({ username: userWithCredentials.username })
         expect(response.status).toBe(200)
         expect(response.body).toEqual([])
     })
 
     test.skip('Should return playerStats of Oskar', async () => {
-        const response = await test_agent.get('/gameApi/profile/getPlayerStats/')
+        const response = await testAgent.get('/gameApi/profile/getPlayerStats/')
             .query({ username: 'Oskar' })
         expect(response.status).toBe(200)
     })
 
     test.skip('Should return userGraph of Oskar', async () => {
-        const response = await test_agent.get('/gameApi/profile/userNetwork/')
+        const response = await testAgent.get('/gameApi/profile/userNetwork/')
             .query({ username: 'Oskar' })
         expect(response.status).toBe(200)
     })
 
     test.skip('Should return tournamentParticipations of Oskar', async () => {
-        const response = await test_agent.get('/gameApi/profile/userTournamentParticipations/')
+        const response = await testAgent.get('/gameApi/profile/userTournamentParticipations/')
             .query({ username: 'Oskar' })
         expect(response.status).toBe(200)
         expect(response.body.length).toBeGreaterThan(0)

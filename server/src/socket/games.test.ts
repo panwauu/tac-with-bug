@@ -6,12 +6,12 @@ describe('Games test suite via socket.io', () => {
     let userWithSocket: userWithCredentialsAndSocket;
 
     beforeAll(async () => {
-        userWithSocket = (await registerNUsersWithSockets(test_server, test_agent, 1))[0];
+        userWithSocket = (await registerNUsersWithSockets(testServer, testAgent, 1))[0];
         console.log(userWithSocket.token)
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(test_agent, [userWithSocket])
+        await unregisterUsersWithSockets(testAgent, [userWithSocket])
     })
 
     describe('Test games events', () => {

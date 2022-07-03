@@ -2,24 +2,24 @@ import { TacServer } from '../server';
 import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 import { privateTournament } from '../../../shared/types/typesTournament';
 
-async function tournamentCleanUp(test_server: TacServer, tournamentID: number | undefined) {
+async function tournamentCleanUp(testServer: TacServer, tournamentID: number | undefined) {
     if (tournamentID == null) { return }
-    await test_server.pgPool.query('UPDATE games SET private_tournament_id = NULL WHERE private_tournament_id = $1;', [tournamentID])
-    await test_server.pgPool.query('DELETE FROM private_tournaments_register WHERE tournamentid = $1;', [tournamentID])
-    await test_server.pgPool.query('DELETE FROM users_to_private_tournaments WHERE tournamentid = $1;', [tournamentID])
-    await test_server.pgPool.query('DELETE FROM private_tournaments WHERE id = $1;', [tournamentID])
+    await testServer.pgPool.query('UPDATE games SET private_tournament_id = NULL WHERE private_tournament_id = $1;', [tournamentID])
+    await testServer.pgPool.query('DELETE FROM private_tournaments_register WHERE tournamentid = $1;', [tournamentID])
+    await testServer.pgPool.query('DELETE FROM users_to_private_tournaments WHERE tournamentid = $1;', [tournamentID])
+    await testServer.pgPool.query('DELETE FROM private_tournaments WHERE id = $1;', [tournamentID])
 }
 
 describe('Test Suite via Socket.io', () => {
     let tournamentID: number, gameID: number, usersWithSockets: userWithCredentialsAndSocket[];
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 4);
+        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 4);
     })
 
     afterAll(async () => {
-        await tournamentCleanUp(test_server, tournamentID)
-        await unregisterUsersWithSockets(test_agent, usersWithSockets)
+        await tournamentCleanUp(testServer, tournamentID)
+        await unregisterUsersWithSockets(testAgent, usersWithSockets)
     })
 
     test('Should create Tournament', async () => {
@@ -277,7 +277,7 @@ describe('Test Suite via Socket.io', () => {
         expect(res?.data.brackets[0][0].gameID).toBe(-1)
         expect(res?.data.brackets[0][0].winner).toBe(-1)
 
-        const gameRes = await test_server.pgPool.query('SELECT * FROM games WHERE id=$1;', [gameID]);
+        const gameRes = await testServer.pgPool.query('SELECT * FROM games WHERE id=$1;', [gameID]);
         expect(gameRes.rows[0].private_tournament_id).toBeNull()
     })
 })

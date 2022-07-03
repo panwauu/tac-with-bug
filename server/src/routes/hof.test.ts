@@ -1,6 +1,6 @@
 describe('HOF Test Suite', () => {
     test('Get HOF data', async () => {
-        const response = await test_agent.get('/gameApi/getHofData/')
+        const response = await testAgent.get('/gameApi/getHofData/')
         expect(response.statusCode).toBe(200)
         expect(response.body.verlag).toContain('UserA')
         expect(response.body.spende).toContain('UserB')

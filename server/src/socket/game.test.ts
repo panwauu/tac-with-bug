@@ -10,18 +10,18 @@ describe.skip('Game test suite via socket.io', () => {
     const gameSophia = { playerIndex: 3, userid: 7 }
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 3);
-        await test_server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[0].id, gameOskar.playerIndex, gameID])
-        await test_server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[1].id, gameSophia.playerIndex, gameID])
-        await test_server.pgPool.query('UPDATE games SET status=\'running\' WHERE id = $1;', [gameID])
-        gameBefore = await test_server.pgPool.query('SELECT game FROM games WHERE id = $1;', [gameID]).then((r: any) => r.rows[0].game)
+        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 3);
+        await testServer.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[0].id, gameOskar.playerIndex, gameID])
+        await testServer.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[1].id, gameSophia.playerIndex, gameID])
+        await testServer.pgPool.query('UPDATE games SET status=\'running\' WHERE id = $1;', [gameID])
+        gameBefore = await testServer.pgPool.query('SELECT game FROM games WHERE id = $1;', [gameID]).then((r: any) => r.rows[0].game)
     })
 
     afterAll(async () => {
-        await test_server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameOskar.userid, gameOskar.playerIndex, gameID])
-        await test_server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameSophia.userid, gameSophia.playerIndex, gameID])
-        await test_server.pgPool.query('UPDATE games SET status=\'aborted\', game=$2, rematch_open=false WHERE id = $1;', [gameID, JSON.stringify(gameBefore)])
-        await unregisterUsersWithSockets(test_agent, usersWithSockets)
+        await testServer.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameOskar.userid, gameOskar.playerIndex, gameID])
+        await testServer.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameSophia.userid, gameSophia.playerIndex, gameID])
+        await testServer.pgPool.query('UPDATE games SET status=\'aborted\', game=$2, rematch_open=false WHERE id = $1;', [gameID, JSON.stringify(gameBefore)])
+        await unregisterUsersWithSockets(testAgent, usersWithSockets)
     })
 
     describe('Test invalid connection', () => {
@@ -64,7 +64,7 @@ describe.skip('Game test suite via socket.io', () => {
             const gameCopy = cloneDeep(gameBefore)
             gameCopy.cardsWithMoves = []
             gameCopy.cards.players.forEach((_: any, i: number) => gameCopy.cards.players[i] = [])
-            await test_server.pgPool.query('UPDATE games SET game=$2 WHERE id = $1;', [gameID, JSON.stringify(gameCopy)])
+            await testServer.pgPool.query('UPDATE games SET game=$2 WHERE id = $1;', [gameID, JSON.stringify(gameCopy)])
             await new Promise((resolve) => setTimeout(() => resolve(null), 200)) // Needed to fix test
         })
 

@@ -10,13 +10,13 @@ describe('Test Suite via Socket.io', () => {
         let waitingGameID: number, usersWithSockets: userWithCredentialsAndSocket[];
 
         beforeAll(async () => {
-            usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 1);
-            await test_server.pgPool.query('UPDATE users SET freelicense=true WHERE id = $1;', [usersWithSockets[0].id])
+            usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 1);
+            await testServer.pgPool.query('UPDATE users SET freelicense=true WHERE id = $1;', [usersWithSockets[0].id])
         })
 
         afterAll(async () => {
-            await test_server.pgPool.query('DELETE FROM waitinggames;')
-            await unregisterUsersWithSockets(test_agent, usersWithSockets)
+            await testServer.pgPool.query('DELETE FROM waitinggames;')
+            await unregisterUsersWithSockets(testAgent, usersWithSockets)
         })
 
         test('Test get games - should be Empty at beginning', (done) => {
@@ -110,12 +110,12 @@ describe('Test Suite via Socket.io', () => {
         let waitingGameID: number, usersWithSockets: any[], gameID: number;
 
         beforeAll(async () => {
-            usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 4);
+            usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 4);
         })
 
         afterAll(async () => {
-            await test_server.pgPool.query('DELETE FROM waitinggames;')
-            await unregisterUsersWithSockets(test_agent, usersWithSockets)
+            await testServer.pgPool.query('DELETE FROM waitinggames;')
+            await unregisterUsersWithSockets(testAgent, usersWithSockets)
         })
 
         test('Create Game', async () => {
@@ -229,7 +229,7 @@ describe('Test Suite via Socket.io', () => {
             expect(val[7].gamePlayer).toBe(3);
             expect(val[4].gameID).toBeGreaterThan(0);
 
-            const game = await getGame(test_server.pgPool, val[4].gameID)
+            const game = await getGame(testServer.pgPool, val[4].gameID)
             expect(game.players.sort()).toEqual(usersWithSockets.map((uws) => uws.username).sort())
             expect(game.playerIDs.sort()).toEqual(usersWithSockets.map((uws) => uws.id).sort())
             expect(game.status).toBe('running')
@@ -238,22 +238,22 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test('Abort of game should be auth secured', async () => {
-            await test_server.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = NULL WHERE id=$1;', [gameID])
-            const res = await test_agent.delete('/gameApi/abortGame/')
+            await testServer.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = NULL WHERE id=$1;', [gameID])
+            const res = await testAgent.delete('/gameApi/abortGame/')
             expect(res.status).toBe(401)
         })
 
         test.skip('Abort of game should not be possible for another game', async () => {
-            await test_server.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = NULL WHERE id=$1;', [gameID])
-            const res = await test_agent.delete('/gameApi/abortGame/')
+            await testServer.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = NULL WHERE id=$1;', [gameID])
+            const res = await testAgent.delete('/gameApi/abortGame/')
                 .set({ Authorization: usersWithSockets[0].authHeader })
                 .send({ gameID: 1000 })
             expect(res.status).toBe(403)
         })
 
         test.skip('Abort of game should not be possible for tournament game', async () => {
-            await test_server.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = 1 WHERE id=$1;', [gameID])
-            const res = await test_agent.delete('/gameApi/abortGame/')
+            await testServer.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = 1 WHERE id=$1;', [gameID])
+            const res = await testAgent.delete('/gameApi/abortGame/')
                 .set({ Authorization: usersWithSockets[0].authHeader })
                 .send({ gameID: gameID })
             expect(res.body).toContain('tournament')
@@ -261,21 +261,21 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test.skip('Abort of game should not be possible for game older 5 minutes', async () => {
-            await test_server.pgPool.query('UPDATE games SET created = current_timestamp - interval\'6 minutes\', public_tournament_id = NULL WHERE id=$1;', [gameID])
-            const res = await test_agent.delete('/gameApi/abortGame/')
+            await testServer.pgPool.query('UPDATE games SET created = current_timestamp - interval\'6 minutes\', public_tournament_id = NULL WHERE id=$1;', [gameID])
+            const res = await testAgent.delete('/gameApi/abortGame/')
                 .set({ Authorization: usersWithSockets[0].authHeader })
                 .send({ gameID: gameID })
             expect(res.status).toBe(403)
         })
 
         test.skip('Abort of game should be possible for own game', async () => {
-            await test_server.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = NULL WHERE id=$1;', [gameID])
-            const res = await test_agent.delete('/gameApi/abortGame/')
+            await testServer.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = NULL WHERE id=$1;', [gameID])
+            const res = await testAgent.delete('/gameApi/abortGame/')
                 .set({ Authorization: usersWithSockets[0].authHeader })
                 .send({ gameID: gameID })
             expect(res.status).toBe(204)
 
-            const gameStatus = await test_server.pgPool.query('SELECT status FROM games WHERE id=$1;', [gameID])
+            const gameStatus = await testServer.pgPool.query('SELECT status FROM games WHERE id=$1;', [gameID])
             expect(gameStatus.rows[0].status).toBe('aborted')
         })
     })
@@ -286,26 +286,26 @@ describe('Test Suite via Socket.io', () => {
         const gameUsers = [7, 4, 8, 15];
 
         beforeAll(async () => {
-            usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 4);
+            usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 4);
             for (let i = 0; i < gameUsers.length; i++) {
-                await test_server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[i].id, i, gameID])
+                await testServer.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [usersWithSockets[i].id, i, gameID])
             }
-            await test_server.pgPool.query('UPDATE games SET lastplayed=current_timestamp, rematch_open=true WHERE id = $1;', [gameID])
+            await testServer.pgPool.query('UPDATE games SET lastplayed=current_timestamp, rematch_open=true WHERE id = $1;', [gameID])
             gameSocket = await registerGameSocket(gameID, usersWithSockets[0].token)
         })
 
         afterAll(async () => {
             for (let i = 0; i < gameUsers.length; i++) {
-                await test_server.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameUsers[i], i, gameID])
+                await testServer.pgPool.query('UPDATE users_to_games SET userid = $1 WHERE player_index = $2 AND gameid = $3;', [gameUsers[i], i, gameID])
             }
-            await test_server.pgPool.query('UPDATE games SET lastplayed=\'2021-02-07 20:15:13.88577+00\', rematch_open = false WHERE id = $1;', [gameID])
-            await test_server.pgPool.query('DELETE FROM waitinggames;')
+            await testServer.pgPool.query('UPDATE games SET lastplayed=\'2021-02-07 20:15:13.88577+00\', rematch_open = false WHERE id = $1;', [gameID])
+            await testServer.pgPool.query('DELETE FROM waitinggames;')
             await unregisterGameSocket(gameSocket)
-            await unregisterUsersWithSockets(test_agent, usersWithSockets)
+            await unregisterUsersWithSockets(testAgent, usersWithSockets)
         })
 
         test('Unable to rematch if one player is already in a waiting room', async () => {
-            await test_server.pgPool.query('UPDATE games SET rematch_open=true WHERE id = $1;', [gameID])
+            await testServer.pgPool.query('UPDATE games SET rematch_open=true WHERE id = $1;', [gameID])
 
             const waitForUserInGame = usersWithSockets.map((uWS) => {
                 return new Promise<any>((resolve) => { uWS.socket.once('waiting:getGames', (data) => { return resolve(data) }) })
@@ -330,7 +330,7 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test('Unable to rematch if one player is not online', async () => {
-            await test_server.pgPool.query('UPDATE games SET rematch_open=true WHERE id = $1;', [gameID])
+            await testServer.pgPool.query('UPDATE games SET rematch_open=true WHERE id = $1;', [gameID])
 
             const waitForGameUpdate = new Promise<any>((resolve) => { gameSocket.once('update', (data) => { resolve(data) }) })
             const disconnectPromise = new Promise<null>((resolve) => { usersWithSockets[1].socket.once('disconnect', () => { resolve(null) }) })
@@ -349,7 +349,7 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test('Rematch should be created', async () => {
-            await test_server.pgPool.query('UPDATE games SET rematch_open=true WHERE id = $1;', [gameID])
+            await testServer.pgPool.query('UPDATE games SET rematch_open=true WHERE id = $1;', [gameID])
 
             const promises = usersWithSockets.map((uWS) => {
                 return new Promise<any>((resolve) => { uWS.socket.once('waiting:getGames', (data: any) => { return resolve(data) }) })
@@ -365,7 +365,7 @@ describe('Test Suite via Socket.io', () => {
             expect(res[0][0].players).toContain(usersWithSockets[0].username)
             expect(res[0][0].players).toContain(usersWithSockets[1].username)
 
-            const dbRes = await test_server.pgPool.query('SELECT rematch_open FROM games WHERE id=$1;', [gameID])
+            const dbRes = await testServer.pgPool.query('SELECT rematch_open FROM games WHERE id=$1;', [gameID])
             expect(dbRes.rows[0].rematch_open).toBe(false)
         })
 
@@ -384,13 +384,13 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test('Should not end rematch if game is new', async () => {
-            await test_server.pgPool.query('UPDATE games SET lastplayed=current_timestamp, rematch_open=true WHERE id=$1;', [gameID])
-            const ids = await disableRematchOfOldGames(test_server.pgPool)
+            await testServer.pgPool.query('UPDATE games SET lastplayed=current_timestamp, rematch_open=true WHERE id=$1;', [gameID])
+            const ids = await disableRematchOfOldGames(testServer.pgPool)
             expect(ids).not.toContain(gameID)
         })
         test('Should end rematch if game is new', async () => {
-            await test_server.pgPool.query('UPDATE games SET lastplayed=current_timestamp - interval \'5 minutes\', rematch_open=true WHERE id=$1;', [gameID])
-            const ids = await disableRematchOfOldGames(test_server.pgPool)
+            await testServer.pgPool.query('UPDATE games SET lastplayed=current_timestamp - interval \'5 minutes\', rematch_open=true WHERE id=$1;', [gameID])
+            const ids = await disableRematchOfOldGames(testServer.pgPool)
             expect(ids).toContain(gameID)
         })
     })

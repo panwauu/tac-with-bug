@@ -4,11 +4,11 @@ describe.skip('Tournament test suite via socket.io', () => {
     let usersWithSockets: userWithCredentialsAndSocket[];
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 1);
+        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 1);
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(test_agent, usersWithSockets)
+        await unregisterUsersWithSockets(testAgent, usersWithSockets)
     })
 
     test('Should return table of last tournaments', async () => {

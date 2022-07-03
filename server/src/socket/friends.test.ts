@@ -6,11 +6,11 @@ describe('Friends test suite via socket.io', () => {
     let usersWithSockets: userWithCredentialsAndSocket[];
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(test_server, test_agent, 3);
+        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 3);
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(test_agent, usersWithSockets)
+        await unregisterUsersWithSockets(testAgent, usersWithSockets)
     })
 
     test('Should fail for invalid username', async () => {

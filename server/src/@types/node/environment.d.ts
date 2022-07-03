@@ -13,6 +13,6 @@ declare global {
 }
 
 declare global {
-  let test_server: TacServer;
-  let test_agent: SuperAgentTest;
+  let testServer: TacServer;
+  let testAgent: SuperAgentTest;
 }
