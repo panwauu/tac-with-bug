@@ -78,6 +78,6 @@ jobs:
     - name: Run server test
       run: |
         cd server
-        npm run test
+        npm run test -- --coverage=false
       env:
         paypal_Secret: ${{ secrets.PAYPAL_SECRET }}
