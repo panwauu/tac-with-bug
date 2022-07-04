@@ -40,7 +40,7 @@ export class GameController extends Controller {
         }
 
         if (Date.now() - game.created >= 1000 * 60 * 5) {
-            return authorizationError(403, 'You cannot a tournament game older than 5 minutes');
+            return authorizationError(403, 'You cannot abort a game older than 5 minutes');
         }
 
         await abortGame(request.app.locals.sqlClient, requestBody.gameID)

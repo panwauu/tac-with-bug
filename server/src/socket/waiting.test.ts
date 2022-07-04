@@ -1,5 +1,6 @@
 import type { GameSocketC } from '../../../shared/types/GameNamespaceDefinition';
-import { registerGameSocket, registerNUsersWithSockets, unregisterGameSocket, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
+import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
+import { registerGameSocket, unregisterGameSocket } from '../test/handleGameSocket'
 import Chance from 'chance';
 import { Result } from '../../../shared/types/GeneralNamespaceDefinition';
 import { disableRematchOfOldGames, getGame } from '../services/game';
@@ -238,20 +239,19 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test('Abort of game should be auth secured', async () => {
-            await testServer.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = NULL WHERE id=$1;', [gameID])
             const res = await testAgent.delete('/gameApi/abortGame/')
             expect(res.status).toBe(401)
         })
 
-        test.skip('Abort of game should not be possible for another game', async () => {
-            await testServer.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = NULL WHERE id=$1;', [gameID])
+        test('Abort of game should not be possible for another game', async () => {
             const res = await testAgent.delete('/gameApi/abortGame/')
                 .set({ Authorization: usersWithSockets[0].authHeader })
-                .send({ gameID: 1000 })
+                .send({ gameID: 1 })
             expect(res.status).toBe(403)
         })
 
         test.skip('Abort of game should not be possible for tournament game', async () => {
+            await testServer.pgPool.query('SELECT id FROM games;').then((res: any) => { console.log(res.rows) })
             await testServer.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = 1 WHERE id=$1;', [gameID])
             const res = await testAgent.delete('/gameApi/abortGame/')
                 .set({ Authorization: usersWithSockets[0].authHeader })
@@ -260,7 +260,7 @@ describe('Test Suite via Socket.io', () => {
             expect(res.status).toBe(403)
         })
 
-        test.skip('Abort of game should not be possible for game older 5 minutes', async () => {
+        test('Abort of game should not be possible for game older 5 minutes', async () => {
             await testServer.pgPool.query('UPDATE games SET created = current_timestamp - interval\'6 minutes\', public_tournament_id = NULL WHERE id=$1;', [gameID])
             const res = await testAgent.delete('/gameApi/abortGame/')
                 .set({ Authorization: usersWithSockets[0].authHeader })
