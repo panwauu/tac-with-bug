@@ -52,8 +52,7 @@ export async function getUsersWithSockets(ids: number[]): Promise<userWithCreden
         promiseArray.push(getUserWithSocket(ids[i]))
     }
 
-    const users = await Promise.all(promiseArray)
-    return users
+    return await Promise.all(promiseArray)
 }
 
 export async function closeSockets(userWithSocketArray: userWithCredentialsAndSocket[]) {

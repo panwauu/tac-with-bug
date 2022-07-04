@@ -2,7 +2,8 @@ import { GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition
 import { GameSocketC } from '../../../shared/types/GameNamespaceDefinition';
 
 import { io } from 'socket.io-client';
-import { registerGameSocket, registerNUsersWithSockets, unregisterGameSocket, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
+import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
+import { registerGameSocket, unregisterGameSocket } from '../test/handleGameSocket'
 
 describe('Info sest suite via socket.io', () => {
     let usersWithSockets: userWithCredentialsAndSocket[], socket: GeneralSocketC, gameSocket: GameSocketC;
