@@ -1,14 +1,15 @@
 import type { GameSocketC } from '../../../shared/types/GameNamespaceDefinition';
 
-import { UserWithSocket, getUsersWithSockets, closeSockets } from '../test/handleUserSockets';
-import { registerGameSocket, unregisterGameSocket, waitForGameSocketConnection, initiateGameSocket } from '../test/handleGameSocket';
+import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets';
+import { registerGameSocket, initiateGameSocket } from '../test/handleGameSocket';
+import { closeSockets, connectSocket } from '../test/handleSocket';
 
 describe('Game test suite via socket.io', () => {
     let usersWithSockets: UserWithSocket[];
     const gameID = 1;
 
     beforeAll(async () => {
-        usersWithSockets = await getUsersWithSockets([1, 2, 3, 4])
+        usersWithSockets = await getUsersWithSockets({ ids: [1, 2, 3, 4] })
     })
 
     afterAll(async () => {
@@ -16,12 +17,6 @@ describe('Game test suite via socket.io', () => {
     })
 
     describe('Test invalid connection', () => {
-        let gameSocket: GameSocketC;
-
-        afterEach(async () => {
-            await unregisterGameSocket(gameSocket)
-        })
-
         test('Test with invalid game', async () => {
             await expect(registerGameSocket('test', usersWithSockets?.[0]?.token)).rejects.toBe(undefined)
         })
@@ -35,7 +30,7 @@ describe('Game test suite via socket.io', () => {
         let gameSocket: GameSocketC;
 
         afterEach(async () => {
-            await unregisterGameSocket(gameSocket)
+            await closeSockets([gameSocket])
         })
 
         test('Test with own game', async () => {
@@ -53,7 +48,7 @@ describe('Game test suite via socket.io', () => {
 
         afterAll(async () => {
             clearInterval(interval);
-            await unregisterGameSocket(gameSocket);
+            await closeSockets([gameSocket]);
         })
 
         test('Register player and expect dealCards', async () => {
@@ -71,7 +66,7 @@ describe('Game test suite via socket.io', () => {
                     }
                 }, 20)),
             ]
-            await waitForGameSocketConnection(gameSocket)
+            await connectSocket(gameSocket)
             const result = await Promise.all(promiseArray)
             expect(result[0].onlineGamePlayers).toEqual([0])
             expect(result[0].nWatchingPlayers).toEqual(0)
@@ -85,8 +80,7 @@ describe('Game test suite via socket.io', () => {
         let gameSocketOfPlayer2: GameSocketC, gameSocketOfPlayer3: GameSocketC;
 
         afterAll(async () => {
-            await unregisterGameSocket(gameSocketOfPlayer2)
-            await unregisterGameSocket(gameSocketOfPlayer3)
+            await closeSockets([gameSocketOfPlayer2, gameSocketOfPlayer3])
         })
 
         test('Register first player', async () => {
@@ -96,7 +90,7 @@ describe('Game test suite via socket.io', () => {
                 new Promise<any>((resolve) => gameSocketOfPlayer2.once('game:online-players', (data) => resolve(data))),
                 new Promise<any>((resolve) => gameSocketOfPlayer2.once('update', (data) => resolve(data))),
             ]
-            await waitForGameSocketConnection(gameSocketOfPlayer2)
+            await connectSocket(gameSocketOfPlayer2)
             const result = await Promise.all(promiseArray)
             expect(result[0].onlineGamePlayers).toEqual([2])
             expect(result[0].nWatchingPlayers).toEqual(0)
@@ -111,7 +105,7 @@ describe('Game test suite via socket.io', () => {
                 new Promise<any>((resolve) => gameSocketOfPlayer3.once('game:online-players', (data) => resolve(data))),
                 new Promise<any>((resolve) => gameSocketOfPlayer3.once('update', (data) => resolve(data))),
             ]
-            await waitForGameSocketConnection(gameSocketOfPlayer3)
+            await connectSocket(gameSocketOfPlayer3)
             const result = await Promise.all(promiseArray)
             expect(result[0].onlineGamePlayers.sort()).toEqual([2, 3].sort())
             expect(result[0].nWatchingPlayers).toEqual(0)

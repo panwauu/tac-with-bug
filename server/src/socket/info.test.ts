@@ -2,21 +2,20 @@ import { GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition
 import { GameSocketC } from '../../../shared/types/GameNamespaceDefinition';
 
 import { io } from 'socket.io-client';
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
-import { registerGameSocket, unregisterGameSocket } from '../test/handleGameSocket'
+import { registerGameSocket } from '../test/handleGameSocket'
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 
 describe('Info sest suite via socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[], socket: GeneralSocketC, gameSocket: GameSocketC;
-    const tournamentGameID = 1647;
+    let usersWithSockets: UserWithSocket[], socket: GeneralSocketC, gameSocket: GameSocketC;
+    const gameID = 1;
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 2);
+        usersWithSockets = await getUsersWithSockets({ ids: [1, 2] });
     })
 
     afterAll(async () => {
-        socket.disconnect()
-        await unregisterGameSocket(gameSocket)
-        await unregisterUsersWithSockets(testAgent, usersWithSockets)
+        await closeSockets([gameSocket, ...usersWithSockets, socket])
     })
 
     test('On disconnect the number of connections should be sent', async () => {
@@ -48,10 +47,10 @@ describe('Info sest suite via socket.io', () => {
         expect(updateUnauth.game).toBe(0)
     })
 
-    test.skip('On new game connection the number of connections should be sent', async () => {
+    test('On new game connection the number of connections should be sent', async () => {
         const updatePromise = new Promise<any>((resolve) => { usersWithSockets[1].socket.once('info:serverConnections', (data) => { resolve(data) }) })
         const unauthUpdatePromise = new Promise<any>((resolve) => { socket.once('info:serverConnections', (data) => { resolve(data) }) })
-        gameSocket = await registerGameSocket(tournamentGameID, usersWithSockets[1].token)
+        gameSocket = await registerGameSocket(gameID, usersWithSockets[1].token)
 
         const update = await updatePromise
         const updateUnauth = await unauthUpdatePromise

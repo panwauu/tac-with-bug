@@ -1,5 +1,5 @@
 //import * as mail from '../communicationUtils/email';
-//import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../test/userHelper';
+//import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets';
 //import { getGame } from '../services/game';
 //import { getPublicTournamentByID, startTournament, startTournamentRound, checkForceGameEnd, updateTournamentFromGame } from '../services/tournamentsPublic';
 //import { startSignUpOnCondition, endSignUpOnCondition } from '../services/tournamentsRegister';

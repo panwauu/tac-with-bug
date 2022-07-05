@@ -1,16 +1,16 @@
-import { registerUserAndReturnCredentials, unregisterUser, userWithCredentials } from '../helpers/userHelper';
+import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets';
 
 describe.skip('Tournament API', () => {
-    let userWithCredentials: userWithCredentials;
+    let userWithCredentials: User;
 
     beforeAll(async () => {
-        userWithCredentials = await registerUserAndReturnCredentials(testServer, testAgent)
+        userWithCredentials = await registerUserAndReturnCredentials()
     })
 
     beforeEach(async () => { await testServer.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [userWithCredentials.id]) })
 
     afterAll(async () => {
-        await unregisterUser(testAgent, userWithCredentials)
+        await unregisterUser(userWithCredentials)
     })
 
     test('Create Tournament - fail if not admin', async () => {

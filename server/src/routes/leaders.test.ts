@@ -1,14 +1,14 @@
-import { registerUserAndReturnCredentials, unregisterUser, userWithCredentials } from '../helpers/userHelper';
+import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets';
 
 describe('Leaders Test Suite', () => {
-    let userWithCredentials: userWithCredentials;
+    let userWithCredentials: User;
 
     beforeAll(async () => {
-        userWithCredentials = await registerUserAndReturnCredentials(testServer, testAgent)
+        userWithCredentials = await registerUserAndReturnCredentials()
     })
 
     afterAll(async () => {
-        await unregisterUser(testAgent, userWithCredentials)
+        await unregisterUser(userWithCredentials)
     })
 
     test('Test Winner Leaderboard Bad Inputs', async () => {

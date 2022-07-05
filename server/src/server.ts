@@ -77,8 +77,12 @@ export class TacServer {
     }
 
     async unlisten() {
-        await new Promise((resolve) => { this.io.close(() => { resolve(true) }) })
-        await new Promise((resolve) => { this.httpServer.listening ? this.httpServer.close(() => { resolve(true) }) : resolve(true) })
+        await new Promise((resolve) => {
+            this.io.close(() => { resolve(true) })
+        })
+        await new Promise((resolve) => {
+            this.httpServer.listening ? this.httpServer.close(() => { resolve(true) }) : resolve(true)
+        })
     }
 
     async destroy() {

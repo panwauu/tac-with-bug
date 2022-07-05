@@ -1,14 +1,15 @@
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 
 describe.skip('Tournament test suite via socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[];
+    let usersWithSockets: UserWithSocket[];
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 1);
+        usersWithSockets = await getUsersWithSockets({ n: 1 });
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(testAgent, usersWithSockets)
+        await closeSockets(usersWithSockets)
     })
 
     test('Should return table of last tournaments', async () => {

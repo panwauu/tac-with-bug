@@ -1,24 +1,22 @@
 import type { AckData, GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition';
 import { io, Socket } from 'socket.io-client';
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 import { TutorialStepOutput } from '../../../shared/types/typesTutorial';
 import { gameForPlay, updateDataType } from '../../../shared/types/typesDBgame';
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 
 describe('Tutorial Test Suite via Socket.io', () => {
     describe('Test Tutorials', () => {
-        let userWithSocket: userWithCredentialsAndSocket, socket: GeneralSocketC;
+        let userWithSocket: UserWithSocket, socket: GeneralSocketC;
 
         beforeAll(async () => {
-            userWithSocket = (await registerNUsersWithSockets(testServer, testAgent, 1))[0]
+            userWithSocket = (await getUsersWithSockets({ n: 1 }))[0]
             socket = io('http://localhost:1234')
             await new Promise((resolve) => { socket.on('connect', () => { resolve(null) }) })
         })
 
         afterAll(async () => {
-            await unregisterUsersWithSockets(testAgent, [userWithSocket])
-            const promise = new Promise((resolve) => socket.once('disconnect', () => { resolve(null) }))
-            socket.disconnect()
-            await promise
+            await closeSockets([userWithSocket, socket])
         })
 
         test('On connection the tutorial progress should be sent to unauthenticated client', async () => {

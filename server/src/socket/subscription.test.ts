@@ -1,27 +1,25 @@
-import { describeIf } from '../helpers/jestHelpers';
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
+import { describeIf } from '../test/conditionalTests'
 import * as mail from '../communicationUtils/email';
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 
 const skipTests = process.env.paypal_Secret == null || process.env.paypal_Client_ID == null
 
 describeIf(!skipTests, 'Test Suite via Socket.io', () => {
-    let userWithSocket: userWithCredentialsAndSocket;
+    let userWithSocket: UserWithSocket;
     const subscriptionID = 'I-K2P36MWMH55P';
 
     const spyNewSubscription = jest.spyOn(mail, 'sendNewSubscription')
     const spySubscriptionError = jest.spyOn(mail, 'sendSubscriptionError')
 
     beforeAll(async () => {
-        const usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 1);
-        userWithSocket = usersWithSockets[0]
+        userWithSocket = (await getUsersWithSockets({ n: 1 }))[0];
     })
 
     afterEach(() => { jest.clearAllMocks() })
 
     afterAll(async () => {
-        await testServer.pgPool.query('UPDATE users SET currentsubscription=NULL;')
-        await testServer.pgPool.query('DELETE FROM subscriptions;')
-        await unregisterUsersWithSockets(testAgent, [userWithSocket])
+        await closeSockets([userWithSocket])
     })
 
     describe('Test all chat', () => {
