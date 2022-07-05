@@ -139,11 +139,11 @@ export async function getPlayerStats(sqlClient: pg.Pool, userID: number) {
     const games = await getGames(sqlClient, userID);
     games.sort((a, b) => (a.lastPlayed > b.lastPlayed) ? 1 : -1)
     const sum = intializePlayerStatistic()
-    for (let i = 0; i < games.length; i++) {
-        const player_index = games[i].playerIDs.findIndex((id) => id === userID);
-        addActionStatistic(sum, games[i].game.statistic[player_index])
-        addCardsStatistic(sum, games[i].game.statistic[player_index])
-        addWLStatistic(sum, games[i], player_index);
+    for (const game of games) {
+        const player_index = game.playerIDs.findIndex((id) => id === userID);
+        addActionStatistic(sum, game.game.statistic[player_index])
+        addCardsStatistic(sum, game.game.statistic[player_index])
+        addWLStatistic(sum, game, player_index);
     }
     return sum
 }
@@ -227,17 +227,17 @@ function getUserNetworkFromGamesNodes(games: tDBgame.gameForPlay[]): tStatistic.
     const nodesLimit = 30;
     const nodes: tStatistic.userNetworkNode[] = []
 
-    for (let gamesInd = 0; gamesInd < games.length; gamesInd++) {
-        for (let playerInd = 0; playerInd < games[gamesInd].players.length; playerInd++) {
-            if (games[gamesInd].players[playerInd] === '' || games[gamesInd].players[playerInd] == null) { continue }
+    for (const game of games) {
+        for (let playerInd = 0; playerInd < game.players.length; playerInd++) {
+            if (game.players[playerInd] === '' || game.players[playerInd] == null) { continue }
 
-            const playerIndexInNodes = nodes.findIndex((n) => n.data.idInt === games[gamesInd].playerIDs[playerInd])
+            const playerIndexInNodes = nodes.findIndex((n) => n.data.idInt === game.playerIDs[playerInd])
             if (playerIndexInNodes === -1) {
                 nodes.push({
                     'data': {
-                        'id': games[gamesInd].playerIDs[playerInd].toString(),
-                        'idInt': games[gamesInd].playerIDs[playerInd],
-                        'name': games[gamesInd].players[playerInd],
+                        'id': game.playerIDs[playerInd].toString(),
+                        'idInt': game.playerIDs[playerInd],
+                        'name': game.players[playerInd],
                         'score': 1
                     },
                 })
