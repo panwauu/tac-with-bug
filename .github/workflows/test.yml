@@ -41,7 +41,7 @@ jobs:
         npm ci
     - name: Linting shared
       run: |
-        cd server
+        cd shared
         npm run lint
     - name: Install server modules
       run: |
