@@ -196,7 +196,7 @@ export async function startTournamentRound(sqlClient: pg.Pool) {
 export async function checkForceGameEnd(sqlClient: pg.Pool) {
     const tournaments = await getPublicTournament(sqlClient, { status: 'running', 'creation_dates[cp-1]+tpg': '<' })
 
-    for (let tournament of tournaments) {
+    for (const tournament of tournaments) {
         if (tournament.data.brackets[tournament.creationPhase - 2].every((m) => m.winner !== -1)) { continue; }
 
         logger.info('force game end')
