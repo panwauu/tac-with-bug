@@ -20,6 +20,7 @@ CREATE TABLE users (
   settings JSON,
   locale VARCHAR(2) NOT NULL DEFAULT 'de',
   color_blindness_flag BOOLEAN NOT NULL DEFAULT false,
+  admin BOOLEAN NOT NULL DEFAULT FALSE,
   game_default_position INTEGER [2] NOT NULL DEFAULT '{1, 0}',
   user_description VARCHAR(200) NOT NULL DEFAULT ''
 );

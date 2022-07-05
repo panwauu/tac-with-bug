@@ -251,8 +251,7 @@ describe('Test Suite via Socket.io', () => {
             expect(res.status).toBe(403)
         })
 
-        test.skip('Abort of game should not be possible for tournament game', async () => {
-            await testServer.pgPool.query('SELECT id FROM games;').then((res: any) => { console.log(res.rows) })
+        test('Abort of game should not be possible for tournament game', async () => {
             await testServer.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = 1 WHERE id=$1;', [gameID])
             const res = await testAgent.delete('/gameApi/abortGame/')
                 .set({ Authorization: usersWithSockets[0].authHeader })
@@ -269,7 +268,7 @@ describe('Test Suite via Socket.io', () => {
             expect(res.status).toBe(403)
         })
 
-        test.skip('Abort of game should be possible for own game', async () => {
+        test('Abort of game should be possible for own game', async () => {
             await testServer.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = NULL WHERE id=$1;', [gameID])
             const res = await testAgent.delete('/gameApi/abortGame/')
                 .set({ Authorization: usersWithSockets[0].authHeader })

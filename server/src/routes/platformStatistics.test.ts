@@ -2,7 +2,7 @@ import { locales } from '../../../shared/shared/locales';
 import { getPassedRatio, getPlatformStatistic } from '../services/platformStatistic';
 import { dayDataset, hourDataset } from '../../../shared/types/typesPlatformStatistic';
 
-describe.skip('Platform Statistic Test Suite', () => {
+describe('Platform Statistic Test Suite', () => {
     test('Test week data extrapolation with synthetic data', async () => {
         const dayDataset: dayDataset = Array.from(Array(7).keys()).map(() => [1 / 7, 1 / 7, 1 / 7])
         const hourDataset: hourDataset = Array.from(Array(24).keys()).map(() => [1 / 24, 1 / 24, 1 / 24])

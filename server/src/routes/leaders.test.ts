@@ -49,20 +49,20 @@ describe('Leaders Test Suite', () => {
         expect(response.statusCode).toBe(409)
     })
 
-    test.skip('Test Winner Leaderboard', async () => {
+    test('Test Winner Leaderboard', async () => {
         const response = await testAgent.get('/gameApi/getWinnerLeaderboard/')
             .query({
                 offset: 0,
                 limit: 100,
                 startDate: 0,
-                endDate: Date.parse('2021-01-22 22:00:00.000000+01')
+                endDate: Date.parse('2020-01-01 22:00:00.000000+01')
             })
             .set({ Authorization: userWithCredentials.authHeader })
         expect(response.statusCode).toBe(200)
         expect(response.body.nPlayers).toBe('4')
-        expect(response.body.username).toStrictEqual(['Sophia', 'Oskar', 'Bernhard', 'Moritz'])
-        expect(response.body.wins).toStrictEqual(['2', '1', '1', '0'])
-        expect(response.body.winshare).toStrictEqual(['100.00', '50.00', '50.00', '0.00'])
+        expect(response.body.username).toStrictEqual(['UserA', 'UserC', 'UserB', 'UserD'])
+        expect(response.body.wins).toStrictEqual(['1', '1', '0', '0'])
+        expect(response.body.winshare).toStrictEqual(['100.00', '100.00', '0.00', '0.00'])
     })
 
     test.skip('Test Coop-4 Leaderboard', async () => {

@@ -1,6 +1,6 @@
 import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets';
 
-describe.skip('Tournament API', () => {
+describe('Tournament API', () => {
     let userWithCredentials: User;
 
     beforeAll(async () => {
