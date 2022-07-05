@@ -1,10 +1,10 @@
 import type { GameSocketC } from '../../../shared/types/GameNamespaceDefinition';
 
-import { userWithCredentialsAndSocket, getUsersWithSockets, closeSockets } from '../test/handleUserSockets';
+import { UserWithSocket, getUsersWithSockets, closeSockets } from '../test/handleUserSockets';
 import { registerGameSocket, unregisterGameSocket, waitForGameSocketConnection, initiateGameSocket } from '../test/handleGameSocket';
 
 describe('Game test suite via socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[];
+    let usersWithSockets: UserWithSocket[];
     const gameID = 1;
 
     beforeAll(async () => {
