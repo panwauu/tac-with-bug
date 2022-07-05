@@ -1,15 +1,13 @@
 import { Socket } from 'socket.io-client';
-import type { GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition';
 
-type SocketType = Socket | GeneralSocketC
-type SomeKindOfSocket = { socket: SocketType } | SocketType;
+type SomeKindOfSocket = { socket: Socket } | Socket;
 
-export async function connectSocket(socket: SocketType): Promise<void> {
+export async function connectSocket(socket: Socket): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-        (socket as any).connect();
-        (socket as any).once('connect', () => { resolve() });
-        (socket as any).once('connect_error', () => {
-            socket?.disconnect();
+        socket.connect();
+        socket.once('connect', () => { resolve() });
+        socket.once('connect_error', () => {
+            socket.disconnect();
             reject()
         })
     });
@@ -33,11 +31,11 @@ export async function closeSockets(userWithSocketArray: SomeKindOfSocket[]): Pro
 }
 
 async function closeSocket(someSocket: SomeKindOfSocket): Promise<void> {
-    const socket: SocketType = 'socket' in someSocket ? someSocket.socket : someSocket
-    if (socket.disconnected) return
+    const socket: Socket = 'socket' in someSocket ? someSocket.socket : someSocket
+    if (socket.disconnected) { return; }
     await new Promise((resolve) => {
-        (socket as any).once('disconnect', () => {
-            (socket as any).removeAllListeners();
+        socket.once('disconnect', () => {
+            socket.removeAllListeners();
             resolve(null);
         });
         socket.disconnect();
