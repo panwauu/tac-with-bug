@@ -3,12 +3,12 @@ import { registerGameSocket, unregisterGameSocket } from '../test/handleGameSock
 import Chance from 'chance';
 import { Result } from '../../../shared/types/GeneralNamespaceDefinition';
 import { disableRematchOfOldGames, getGame } from '../services/game';
-import { closeSockets, getUsersWithSockets, userWithCredentialsAndSocket } from '../test/handleUserSockets';
+import { closeSockets, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
 const chance = new Chance();
 
 describe('Test Suite via Socket.io', () => {
     describe('Test with one users', () => {
-        let waitingGameID: number, usersWithSockets: userWithCredentialsAndSocket[];
+        let waitingGameID: number, usersWithSockets: UserWithSocket[];
 
         beforeAll(async () => {
             usersWithSockets = await getUsersWithSockets([1]);
@@ -281,7 +281,7 @@ describe('Test Suite via Socket.io', () => {
     })
 
     describe('Test Rematch mode', () => {
-        let usersWithSockets: userWithCredentialsAndSocket[], gameSocket: GameSocketC;
+        let usersWithSockets: UserWithSocket[], gameSocket: GameSocketC;
         const gameID = 1;
 
         beforeAll(async () => {
