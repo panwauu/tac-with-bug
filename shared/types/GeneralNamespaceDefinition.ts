@@ -29,7 +29,10 @@ export interface ClientToServerEvents extends Record<string, any> {
     'tutorial:postMove': (data: { game: gameForPlay, move: moveTextOrBall }, cb: callbackFunction<{ game: gameForPlay, updateData: updateDataType }>) => void,
 
     //games
-    'games:getTableData': (data: { first: number, limit: number, sortField?: string, sortOrder?: number, username?: string }, cb: callbackFunction<{ games: gameForOverview[], nEntries: number }>) => void,
+    'games:getTableData': (
+        data: { first: number, limit: number, sortField?: string, sortOrder?: number, username?: string },
+        cb: callbackFunction<{ games: gameForOverview[], nEntries: number }>
+    ) => void,
     'games:getGames': () => void,
     'games:getRunningGames': (cb: callbackFunction<getRunningGamesType[]>) => void,
 
@@ -68,7 +71,10 @@ export interface ClientToServerEvents extends Record<string, any> {
     'tournament:public:leaveTournament': (data: { tournamentID: number }) => void,
 
     'tournament:private:get': (data: { id: number }, cb: callbackFunction<privateTournament>) => void,
-    'tournament:private:create': (data: { title: string, nTeams: number, playersPerTeam: 2 | 3, teamsPerMatch: 2 | 3, tournamentType: 'KO' }, cb: callbackFunction<privateTournament>) => void,
+    'tournament:private:create': (
+        data: { title: string, nTeams: number, playersPerTeam: 2 | 3, teamsPerMatch: 2 | 3, tournamentType: 'KO' },
+        cb: callbackFunction<privateTournament>
+    ) => void,
     'tournament:private:planAddPlayer': (data: { tournamentID: number, usernameToAdd: string, teamTitle: string }, cb: callbackFunction<privateTournament>) => void,
     'tournament:private:planRemovePlayer': (data: { tournamentID: number, usernameToRemove: string }, cb: callbackFunction<privateTournament>) => void,
     'tournament:private:acceptParticipation': (data: { tournamentID: number }, cb: callbackFunction<privateTournament>) => void,
