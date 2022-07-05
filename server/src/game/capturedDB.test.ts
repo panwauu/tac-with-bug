@@ -1,26 +1,18 @@
 import { repeatGame } from '../test/captureCompare';
-import { TacServer } from '../server';
 
-describe.skip('Test that all tests saved in savegames are running', () => {
-    let server: TacServer;
+describe('Test that all tests saved in savegames are running', () => {
     const nGames = 100, ids: (number | null)[] = new Array(nGames).fill(null);
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        const res = await server.pgPool.query('SELECT id FROM savegames ORDER BY RANDOM() LIMIT $1;', [nGames])
-        res.rows.forEach((r, i) => { ids[i] = r.id })
-    })
-
-    afterAll(async () => {
-        await server.destroy()
+        const res = await testServer.pgPool.query('SELECT id FROM savegames ORDER BY RANDOM() LIMIT $1;', [nGames])
+        res.rows.forEach((r: any, i: any) => { ids[i] = r.id })
     })
 
     test.each(Array.from(Array(nGames).keys()))(`Reconstruct random saved game %i/${nGames - 1}`, async (i) => {
         const id = ids[i]
         if (id === null) { return }
 
-        const res = await server.pgPool.query('SELECT * FROM savegames WHERE id=$1;', [id])
+        const res = await testServer.pgPool.query('SELECT * FROM savegames WHERE id=$1;', [id])
         try {
             const result = repeatGame(res.rows[0].game)
             if (!result.equal) { throw new Error(`Test failded at gameID ${res.rows[0].id}`) }

@@ -53,32 +53,27 @@ describe('Platform PlayerStatistic Test Suite', () => {
         expect(response.body).toEqual([])
     })
 
-    test.skip('Should return playerStats of Oskar', async () => {
+    test('Should return playerStats of existing player', async () => {
         const response = await testAgent.get('/gameApi/profile/getPlayerStats/')
-            .query({ username: 'Oskar' })
+            .query({ username: 'UserA' })
         expect(response.status).toBe(200)
+        expect(response.body).toMatchSnapshot()
     })
 
-    test.skip('Should return userGraph of Oskar', async () => {
+    test('Should return userGraph of existing player', async () => {
         const response = await testAgent.get('/gameApi/profile/userNetwork/')
-            .query({ username: 'Oskar' })
+            .query({ username: 'UserA' })
         expect(response.status).toBe(200)
+        expect(Object.keys(response.body.people).length).toBeGreaterThan(0)
+        expect(response.body).toMatchSnapshot()
     })
 
-    test.skip('Should return tournamentParticipations of Oskar', async () => {
+    test('Should return tournamentParticipations of existing player', async () => {
         const response = await testAgent.get('/gameApi/profile/userTournamentParticipations/')
-            .query({ username: 'Oskar' })
+            .query({ username: 'UserA' })
         expect(response.status).toBe(200)
         expect(response.body.length).toBeGreaterThan(0)
-        expect(response.body[0].id).toBe(1)
-        expect(response.body[0].title).toBe('March Madness Tournament')
-        expect(response.body[0].date).toBe('2021-03-13T17:00:00.000Z')
-        expect(response.body[0].team.name).toBe('Team Affenhaus')
-        expect(response.body[0].team.players.sort()).toEqual(['Oskar', 'Sophia'])
-        expect(response.body[0].team.playerids.sort()).toEqual([4, 7])
-        expect(response.body[0].exitRound).toBe(4)
-        expect(response.body[0].totalRounds).toBe(4)
-        expect(response.body[0].placement).toBe(4)
+        expect(response.body).toMatchSnapshot()
     })
 
     test.todo('Test something more specific for Oskar stats')

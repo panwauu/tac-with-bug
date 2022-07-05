@@ -37,8 +37,8 @@ describe('Game test suite via socket.io', () => {
             gameSocket = await registerGameSocket(gameID, usersWithSockets[0].token)
         })
 
-        test.skip('Test with other tournament game', async () => {
-            gameSocket = await registerGameSocket(2660, usersWithSockets[0].token)
+        test('Test with other tournament game', async () => {
+            gameSocket = await registerGameSocket(3, usersWithSockets[0].token)
         })
     })
 

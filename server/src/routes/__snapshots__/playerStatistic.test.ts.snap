@@ -1,0 +1,210 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Platform PlayerStatistic Test Suite Should return playerStats of existing player 1`] = `
+Object {
+  "gamesDistribution": Object {
+    "aborted": 2,
+    "lost4": 0,
+    "lost6": 0,
+    "running": 2,
+    "teamAborted": 0,
+    "teamWon": 0,
+    "won4": 1,
+    "won6": 0,
+  },
+  "history": Array [
+    "won",
+    "running",
+    "running",
+    "aborted",
+    "aborted",
+  ],
+  "hof": Array [
+    "verlag",
+  ],
+  "people": Object {
+    "UserB": Array [
+      0,
+      0,
+      1,
+      1,
+      1,
+    ],
+    "UserC": Array [
+      1,
+      1,
+      0,
+      0,
+      1,
+    ],
+    "UserD": Array [
+      0,
+      0,
+      1,
+      1,
+      1,
+    ],
+  },
+  "players": Object {
+    "bestPartner": "UserC",
+    "mostFrequent": "UserB",
+    "worstEnemy": "UserB",
+  },
+  "registered": "2022-07-05T11:32:37.001Z",
+  "subscriber": false,
+  "table": Array [
+    100,
+    41,
+    100,
+    81,
+    80,
+    90,
+    33,
+  ],
+  "userDescription": "",
+}
+`;
+
+exports[`Platform PlayerStatistic Test Suite Should return tournamentParticipations of existing player 1`] = `
+Array [
+  Object {
+    "date": "2022-01-01T00:10:00.000Z",
+    "exitRound": 2,
+    "id": 1,
+    "placement": 2,
+    "team": Object {
+      "name": "TeamA",
+      "playerids": Array [
+        1,
+        2,
+      ],
+      "players": Array [
+        "UserA",
+        "UserB",
+      ],
+    },
+    "title": "TournamentA",
+    "totalRounds": 2,
+  },
+]
+`;
+
+exports[`Platform PlayerStatistic Test Suite Should return userGraph of existing player 1`] = `
+Object {
+  "graph": Object {
+    "edges": Array [
+      Object {
+        "data": Object {
+          "id": "e0",
+          "source": "1",
+          "target": "2",
+          "together": false,
+          "weight": 1,
+        },
+      },
+      Object {
+        "data": Object {
+          "id": "e1",
+          "source": "1",
+          "target": "3",
+          "together": true,
+          "weight": 1,
+        },
+      },
+      Object {
+        "data": Object {
+          "id": "e2",
+          "source": "1",
+          "target": "4",
+          "together": false,
+          "weight": 1,
+        },
+      },
+      Object {
+        "data": Object {
+          "id": "e3",
+          "source": "2",
+          "target": "3",
+          "together": false,
+          "weight": 1,
+        },
+      },
+      Object {
+        "data": Object {
+          "id": "e4",
+          "source": "2",
+          "target": "4",
+          "together": true,
+          "weight": 1,
+        },
+      },
+      Object {
+        "data": Object {
+          "id": "e5",
+          "source": "3",
+          "target": "4",
+          "together": false,
+          "weight": 1,
+        },
+      },
+    ],
+    "nodes": Array [
+      Object {
+        "data": Object {
+          "id": "1",
+          "idInt": 1,
+          "name": "UserA",
+          "score": 1,
+        },
+      },
+      Object {
+        "data": Object {
+          "id": "2",
+          "idInt": 2,
+          "name": "UserB",
+          "score": 1,
+        },
+      },
+      Object {
+        "data": Object {
+          "id": "3",
+          "idInt": 3,
+          "name": "UserC",
+          "score": 1,
+        },
+      },
+      Object {
+        "data": Object {
+          "id": "4",
+          "idInt": 4,
+          "name": "UserD",
+          "score": 1,
+        },
+      },
+    ],
+  },
+  "people": Object {
+    "UserB": Array [
+      0,
+      0,
+      1,
+      1,
+      1,
+    ],
+    "UserC": Array [
+      1,
+      1,
+      0,
+      0,
+      1,
+    ],
+    "UserD": Array [
+      0,
+      0,
+      1,
+      1,
+      1,
+    ],
+  },
+}
+`;

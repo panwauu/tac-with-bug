@@ -1,7 +1,7 @@
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
 import { closeSockets } from '../test/handleSocket';
 
-describe.skip('Tournament test suite via socket.io', () => {
+describe('Tournament test suite via socket.io', () => {
     let usersWithSockets: UserWithSocket[];
 
     beforeAll(async () => {
@@ -14,12 +14,12 @@ describe.skip('Tournament test suite via socket.io', () => {
 
     test('Should return table of last tournaments', async () => {
         const table = await new Promise<any>((resolve) => {
-            usersWithSockets[0].socket.emit('tournament:loadTable', { filter: null, first: 1, limit: 5 }, (data) => {
+            usersWithSockets[0].socket.emit('tournament:loadTable', { filter: null, first: 0, limit: 1 }, (data) => {
                 resolve(data.data)
             })
         })
-        expect(table.total).toBeGreaterThan(5)
-        expect(table.tournaments.length).toBe(5)
+        expect(table.total).toBeGreaterThan(0)
+        expect(table.tournaments.length).toBe(1)
     })
 
     test('Should return the last Tournament Winners', async () => {
