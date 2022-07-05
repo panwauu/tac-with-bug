@@ -414,7 +414,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
 
             expect(tournament.status).toBe('running')
             expect(tournament.data.brackets[0].every((m: any) => m.winner !== -1))
-            expect(tournament.data.brackets[0][0].winner).toBe(tournament.data.brackets[0][0].teams[0])
+            expect(tournament.data.brackets[0][0].winner).toBe(tournament.data.brackets[0][0].teams[1])
             expect(tournament.data.brackets[1][0].teams.every((t: any) => [0, 1, 2, 3].includes(t))).toBe(true)
             expect(tournament.creationPhase).toBe(2)
         })

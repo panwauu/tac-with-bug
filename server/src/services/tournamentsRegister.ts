@@ -148,9 +148,7 @@ export async function startSignUpOnCondition(sqlClient: pg.Pool) {
 export async function endSignUpOnCondition(sqlClient: pg.Pool) {
     const tournaments = await getPublicTournament(sqlClient, { status: 'signUp', signup_deadline: '<' })
 
-    for (let i = 0; i < tournaments.length; i++) {
-        let tournament = tournaments[i]
-
+    for (let tournament of tournaments) {
         tournament = await endSignupIfComplete(sqlClient, tournament)
         if (tournament.status === 'signUpEnded') {
             tournamentBus.emit('signUpEnded-you-partizipate', {
@@ -165,10 +163,10 @@ export async function endSignUpOnCondition(sqlClient: pg.Pool) {
             tournament.status = 'signUpFailed';
 
             const playerids: number[] = [];
-            for (let teamIndex = 0; teamIndex < tournament.registerTeams.length; teamIndex++) {
-                for (let playerIndex = 0; playerIndex < tournament.registerTeams[teamIndex].activated.length; playerIndex++) {
-                    if (tournament.registerTeams[teamIndex].activated[playerIndex]) {
-                        playerids.push(tournament.registerTeams[teamIndex].playerids[playerIndex])
+            for (const registerTeam of tournament.registerTeams) {
+                for (let playerIndex = 0; playerIndex < registerTeam.activated.length; playerIndex++) {
+                    if (registerTeam.activated[playerIndex]) {
+                        playerids.push(registerTeam.playerids[playerIndex])
                     }
                 }
             }

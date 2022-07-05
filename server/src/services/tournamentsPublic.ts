@@ -120,9 +120,7 @@ export async function getPublicTournamentByID(sqlClient: pg.Pool, id: number): P
 export async function startTournament(sqlClient: pg.Pool) {
     const tournaments = await getPublicTournament(sqlClient, { status: 'signUpEnded', 'creation_dates[cp]': '<' })
 
-    for (let i = 0; i < tournaments.length; i++) {
-        let tournament = tournaments[i]
-
+    for (let tournament of tournaments) {
         logger.info(`Starte Tournament: ${tournament.title}`)
 
         const createGamesResult = await createGamesTournament(sqlClient, tournament)
@@ -180,9 +178,7 @@ async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament
 export async function startTournamentRound(sqlClient: pg.Pool) {
     const tournaments = await getPublicTournament(sqlClient, { status: 'running', 'creation_dates[cp]': '<' })
 
-    for (let i = 0; i < tournaments.length; i++) {
-        let tournament = tournaments[i]
-
+    for (let tournament of tournaments) {
         logger.info(`Starte Runde ${tournament.creationPhase} Tournament ${tournament.title}`)
         const createGamesResult = await createGamesTournament(sqlClient, tournament)
         if (createGamesResult.isErr()) { logger.error(createGamesResult.error); return }
@@ -200,9 +196,7 @@ export async function startTournamentRound(sqlClient: pg.Pool) {
 export async function checkForceGameEnd(sqlClient: pg.Pool) {
     const tournaments = await getPublicTournament(sqlClient, { status: 'running', 'creation_dates[cp-1]+tpg': '<' })
 
-    for (let i = 0; i < tournaments.length; i++) {
-        const tournament = tournaments[i]
-
+    for (let tournament of tournaments) {
         if (tournament.data.brackets[tournament.creationPhase - 2].every((m) => m.winner !== -1)) { continue; }
 
         logger.info('force game end')
