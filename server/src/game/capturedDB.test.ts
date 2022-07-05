@@ -1,4 +1,4 @@
-import { repeatGame } from '../helpers/captureCompare';
+import { repeatGame } from '../test/captureCompare';
 import { TacServer } from '../server';
 
 describe.skip('Test that all tests saved in savegames are running', () => {

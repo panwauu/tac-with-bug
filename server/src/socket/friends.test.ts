@@ -1,16 +1,17 @@
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 import { AckData } from '../../../shared/types/GeneralNamespaceDefinition';
 import { friend } from '../../../shared/types/typesFriends';
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 
 describe('Friends test suite via socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[];
+    let usersWithSockets: UserWithSocket[];
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 3);
+        usersWithSockets = await getUsersWithSockets({ n: 3 });
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(testAgent, usersWithSockets)
+        await closeSockets(usersWithSockets)
     })
 
     test('Should fail for invalid username', async () => {

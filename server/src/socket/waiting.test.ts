@@ -1,9 +1,10 @@
 import type { GameSocketC } from '../../../shared/types/GameNamespaceDefinition';
-import { registerGameSocket, unregisterGameSocket } from '../test/handleGameSocket'
+import { registerGameSocket } from '../test/handleGameSocket'
 import Chance from 'chance';
 import { Result } from '../../../shared/types/GeneralNamespaceDefinition';
 import { disableRematchOfOldGames, getGame } from '../services/game';
-import { closeSockets, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 const chance = new Chance();
 
 describe('Test Suite via Socket.io', () => {
@@ -11,7 +12,7 @@ describe('Test Suite via Socket.io', () => {
         let waitingGameID: number, usersWithSockets: UserWithSocket[];
 
         beforeAll(async () => {
-            usersWithSockets = await getUsersWithSockets([1]);
+            usersWithSockets = await getUsersWithSockets({ n: 1 });
             await testServer.pgPool.query('UPDATE users SET freelicense=true WHERE id = $1;', [usersWithSockets[0].id])
         })
 
@@ -111,7 +112,7 @@ describe('Test Suite via Socket.io', () => {
         let waitingGameID: number, usersWithSockets: any[], gameID: number;
 
         beforeAll(async () => {
-            usersWithSockets = await getUsersWithSockets([1, 2, 3, 4]);
+            usersWithSockets = await getUsersWithSockets({ ids: [1, 2, 3, 4] });
         })
 
         afterAll(async () => {
@@ -285,15 +286,14 @@ describe('Test Suite via Socket.io', () => {
         const gameID = 1;
 
         beforeAll(async () => {
-            usersWithSockets = await getUsersWithSockets([1, 2, 3, 4]);
+            usersWithSockets = await getUsersWithSockets({ ids: [1, 2, 3, 4] });
             await testServer.pgPool.query('UPDATE games SET lastplayed=current_timestamp, rematch_open=true WHERE id = $1;', [gameID])
             gameSocket = await registerGameSocket(gameID, usersWithSockets[0].token)
         })
 
         afterAll(async () => {
             await testServer.pgPool.query('DELETE FROM waitinggames;')
-            await unregisterGameSocket(gameSocket)
-            await closeSockets(usersWithSockets)
+            await closeSockets([gameSocket, ...usersWithSockets])
         })
 
         test('Unable to rematch if one player is already in a waiting room', async () => {

@@ -1,4 +1,4 @@
-import { testCapturedMoves } from '../helpers/captureCompare'
+import { testCapturedMoves } from '../test/captureCompare'
 
 describe.skip('Test suite with recorded games', () => {
     test('Placeholder', () => { expect(true).toBe(true) })

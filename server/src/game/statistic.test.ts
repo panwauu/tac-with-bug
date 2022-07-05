@@ -1,4 +1,4 @@
-import { testCapturedMoves } from '../helpers/captureCompare'
+import { testCapturedMoves } from '../test/captureCompare'
 import { gameStatisticCardsType } from '../../../shared/types/typesStatistic';
 
 test('Test with captured  - test kicked balls WITHOUT TAC', () => {

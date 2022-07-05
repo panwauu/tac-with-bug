@@ -1,14 +1,15 @@
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 
 describe('Test Suite via Socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[];
+    let usersWithSockets: UserWithSocket[];
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 3);
+        usersWithSockets = await getUsersWithSockets({ n: 3 });
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(testAgent, usersWithSockets)
+        await closeSockets(usersWithSockets)
     })
 
     describe('Test peer to peer chat', () => {

@@ -1,19 +1,19 @@
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 import io from 'socket.io-client'
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 import { GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition';
 
 describe('Channel test suite via socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[], socket: GeneralSocketC;
+    let usersWithSockets: UserWithSocket[], socket: GeneralSocketC;
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 2);
+        usersWithSockets = await getUsersWithSockets({ n: 2 });
         socket = io('http://localhost:1234');
         await new Promise((resolve) => { socket.on('connect', () => { resolve(null) }) })
     })
 
     afterAll(async () => {
-        socket.close()
-        await unregisterUsersWithSockets(testAgent, usersWithSockets)
+        await closeSockets([...usersWithSockets, socket])
     })
 
     describe('Test channel communication', () => {

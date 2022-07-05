@@ -1,6 +1,7 @@
 import { TacServer } from '../server';
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 import { privateTournament } from '../../../shared/types/typesTournament';
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 
 async function tournamentCleanUp(testServer: TacServer, tournamentID: number | undefined) {
     if (tournamentID == null) { return }
@@ -11,15 +12,15 @@ async function tournamentCleanUp(testServer: TacServer, tournamentID: number | u
 }
 
 describe('Test Suite via Socket.io', () => {
-    let tournamentID: number, gameID: number, usersWithSockets: userWithCredentialsAndSocket[];
+    let tournamentID: number, gameID: number, usersWithSockets: UserWithSocket[];
 
     beforeAll(async () => {
-        usersWithSockets = await registerNUsersWithSockets(testServer, testAgent, 4);
+        usersWithSockets = await getUsersWithSockets({ n: 4 });
     })
 
     afterAll(async () => {
         await tournamentCleanUp(testServer, tournamentID)
-        await unregisterUsersWithSockets(testAgent, usersWithSockets)
+        await closeSockets(usersWithSockets)
     })
 
     test('Should create Tournament', async () => {

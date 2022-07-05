@@ -1,14 +1,14 @@
-import { registerUserAndReturnCredentials, unregisterUser, userWithCredentials } from '../helpers/userHelper';
+import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets';
 
 describe('Platform PlayerStatistic Test Suite', () => {
-    let userWithCredentials: userWithCredentials;
+    let userWithCredentials: User;
 
     beforeAll(async () => {
-        userWithCredentials = await registerUserAndReturnCredentials(testServer, testAgent)
+        userWithCredentials = await registerUserAndReturnCredentials()
     })
 
     afterAll(async () => {
-        await unregisterUser(testAgent, userWithCredentials)
+        await unregisterUser(userWithCredentials)
     })
 
     test('Should return empty playerStats for new user', async () => {

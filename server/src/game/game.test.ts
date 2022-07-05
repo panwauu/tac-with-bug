@@ -1,5 +1,5 @@
 import { game } from '../game/game'
-import { testCapturedMoves } from '../helpers/captureCompare'
+import { testCapturedMoves } from '../test/captureCompare'
 
 test('Test constructor throws - 4', () => {
     expect(() => { new game(4, 2, true, true) }).not.toThrow()
