@@ -65,40 +65,37 @@ describe('Leaders Test Suite', () => {
         expect(response.body.winshare).toStrictEqual(['100.00', '100.00', '0.00', '0.00'])
     })
 
-    test.skip('Test Coop-4 Leaderboard', async () => {
+    test('Test Coop-4 Leaderboard', async () => {
         const response = await testAgent.get('/gameApi/getCoopLeaderboard/')
             .query({
                 offset: 0,
                 limit: 100,
                 nPlayers: 4,
                 startDate: 0,
-                endDate: Date.parse('2021-02-07 21:00:00.000000+01')
+                endDate: Date.parse('2020-01-01 22:00:00.000000+01')
             })
             .set({ Authorization: userWithCredentials.authHeader })
         expect(response.statusCode).toBe(200)
         expect(response.body.nGames).toBe('1')
         expect(response.body.team.length).toBe(1)
-        expect(response.body.team[0].sort()).toStrictEqual(['Sophia', 'Schorsch', 'Oskar', 'Meike'].sort())
-        expect(response.body.count).toStrictEqual([169])
-        expect(response.body.lastplayed).toStrictEqual([1612728913000])
+        expect(response.body.team[0].sort()).toStrictEqual(['UserA', 'UserB', 'UserC', 'UserD'].sort())
+        expect(response.body.count).toStrictEqual([130])
     })
 
-    test.skip('Test Coop-6 Leaderboard', async () => {
+    test('Test Coop-6 Leaderboard', async () => {
         const response = await testAgent.get('/gameApi/getCoopLeaderboard/')
             .query({
                 offset: 0,
                 limit: 100,
                 nPlayers: 6,
                 startDate: 0,
-                endDate: Date.parse('2021-02-11 23:59:00.000000+01')
+                endDate: Date.parse('2020-01-01 22:00:00.000000+01')
             })
             .set({ Authorization: userWithCredentials.authHeader })
         expect(response.statusCode).toBe(200)
-        expect(response.body.nGames).toBe('2')
-        expect(response.body.team.length).toBe(2)
-        expect(response.body.team[0].sort()).toStrictEqual(['Oskar', 'Bernhard', 'GeBa', 'Annette', 'Sophia', 'Moritz'].sort())
-        expect(response.body.team[1].sort()).toStrictEqual(['Sophia', 'Schmutzi', 'Oskar', 'Marshmallow', 'BloodyMary', 'Liv'].sort())
-        expect(response.body.count).toStrictEqual([245, 283])
-        expect(response.body.lastplayed).toStrictEqual([1612643283000, 1613082956000])
+        expect(response.body.nGames).toBe('1')
+        expect(response.body.team.length).toBe(1)
+        expect(response.body.team[0].sort()).toStrictEqual(['UserA', 'UserB', 'UserC', 'UserD', 'UserE', 'UserF'].sort())
+        expect(response.body.count).toStrictEqual([192])
     })
 })

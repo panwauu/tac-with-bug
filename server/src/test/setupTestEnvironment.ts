@@ -18,7 +18,7 @@ afterAll(async () => {
     await (global as any).testServer?.destroy()
 })
 
-export async function prepareTestDatabase() {
+async function prepareTestDatabase() {
     try {
         logger.info('Drop and create test database')
         await recreateTestDatabase()

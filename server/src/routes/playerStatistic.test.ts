@@ -57,6 +57,7 @@ describe('Platform PlayerStatistic Test Suite', () => {
         const response = await testAgent.get('/gameApi/profile/getPlayerStats/')
             .query({ username: 'UserA' })
         expect(response.status).toBe(200)
+        delete response.body.registered
         expect(response.body).toMatchSnapshot()
     })
 
