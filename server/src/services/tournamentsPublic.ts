@@ -131,6 +131,10 @@ export async function startTournament(sqlClient: pg.Pool) {
 
         await sqlClient.query('UPDATE tournaments SET status=$1, creation_phase=$2, data=$3 WHERE id=$4;', ['running', tournament.creationPhase + 1, tournament.data, tournament.id])
         tournamentBus.emit('started', { tournamentTitle: tournament.title })
+
+        const changedTournament = await getPublicTournamentByID(sqlClient, tournament.id)
+        if (changedTournament.isErr()) { throw new Error('Tournament not found') }
+        pushChangedPublicTournament(changedTournament.value);
     }
 }
 
@@ -186,6 +190,10 @@ export async function startTournamentRound(sqlClient: pg.Pool) {
 
         await sqlClient.query('UPDATE tournaments SET creation_phase=$1, data=$2 WHERE id=$3;', [tournament.creationPhase + 1, tournament.data, tournament.id])
         tournamentBus.emit('round-started', { tournamentTitle: tournament.title, roundsToFinal: tournament.data.brackets.length + 1 - tournament.creationPhase })
+
+        const changedTournament = await getPublicTournamentByID(sqlClient, tournament.id)
+        if (changedTournament.isErr()) { throw new Error('Tournament not found') }
+        pushChangedPublicTournament(changedTournament.value);
     }
 }
 

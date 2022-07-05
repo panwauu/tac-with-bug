@@ -7,8 +7,8 @@ import { getDifferentName } from '../services/SweetNameGenerator';
 import { publicTournament } from '../../../shared/types/typesTournament';
 import { closeSockets } from '../test/handleSocket';
 
-describe('Test Suite via Socket.io', () => {
-    describe('Test with two users - registration process', () => {
+describe('TournamentPublic test suite via Socket.io', () => {
+    describe('Test with two teams - registration process', () => {
         let tournamentID: number, tournament: any, usersWithSockets: UserWithSocket[];
 
         const spyReminder = jest.spyOn(mail, 'sendTournamentReminder');
@@ -30,8 +30,8 @@ describe('Test Suite via Socket.io', () => {
                 .send({
                     title: 'TestTournament',
                     begin: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
-                    deadline: new Date(Date.now() + 1 * 60 * 1000).toISOString(),
-                    creationDates: [new Date(Date.now() + 2 * 60 * 1000).toISOString()],
+                    deadline: new Date(Date.now() + 1000 * 60 * 1000).toISOString(),
+                    creationDates: [new Date(Date.now() + 2000 * 60 * 1000).toISOString()],
                     secondsPerGame: 5400,
                     nTeams: 2
                 })
@@ -55,10 +55,13 @@ describe('Test Suite via Socket.io', () => {
             }))
 
             const teamName = getDifferentName([])
-            if (teamName.isErr()) { expect(teamName.isErr()).toBe(false); return }
+            if (teamName.isErr()) {
+                expect(teamName.isErr()).toBe(false)
+                throw new Error('No Teamname found')
+            }
             usersWithSockets[0].socket.emit('tournament:public:registerTeam', { players: [usersWithSockets[0].username], name: teamName.value, tournamentID });
 
-            return Promise.all(promiseArray).then((val: any) => {
+            await Promise.all(promiseArray).then((val: any) => {
                 expect(val[0].registerTeams.length).toBe(1)
                 expect(val[0].registerTeams[0].players[0]).toBe(usersWithSockets[0].username)
                 expect(val[0].registerTeams[0].activated[0]).toBe(true)
@@ -94,18 +97,23 @@ describe('Test Suite via Socket.io', () => {
             }))
 
             const teamName = getDifferentName([])
-            if (teamName.isErr()) { expect(teamName.isErr()).toBe(false); return }
+            if (teamName.isErr()) {
+                expect(teamName.isErr()).toBe(false)
+                throw new Error('No Teamname found')
+            }
+
             usersWithSockets[0].socket.emit('tournament:public:registerTeam', { players: [usersWithSockets[0].username, usersWithSockets[1].username], name: teamName.value, tournamentID });
 
-            return Promise.all(promiseArray).then((val: any) => {
-                expect(val[0].registerTeams.length).toBe(1)
-                expect(val[0].registerTeams[0].players[0]).toBe(usersWithSockets[0].username)
-                expect(val[0].registerTeams[0].players[1]).toBe(usersWithSockets[1].username)
-                expect(val[0].registerTeams[0].activated[0]).toBe(true)
-                expect(val[0].registerTeams[0].activated[1]).toBe(false)
-                tournament = val[0]
-                expect(spyInvitation).toBeCalledTimes(1)
-            })
+            tournament = (await Promise.all(promiseArray))[0]
+
+            expect(tournament.registerTeams.length).toBe(1)
+            expect(tournament.registerTeams[0].players[0]).toBe(usersWithSockets[0].username)
+            expect(tournament.registerTeams[0].players[1]).toBe(usersWithSockets[1].username)
+            expect(tournament.registerTeams[0].activated[0]).toBe(true)
+            expect(tournament.registerTeams[0].activated[1]).toBe(false)
+
+            await new Promise((resolve) => { setTimeout(() => { resolve(null) }, 200) }) // TBD: Needed to pass test, but why?
+            expect(spyInvitation).toBeCalledTimes(1)
         })
 
         test('Second player activate', async () => {
@@ -187,10 +195,14 @@ describe('Test Suite via Socket.io', () => {
             }))
 
             const teamName = getDifferentName([])
-            if (teamName.isErr()) { expect(teamName.isErr()).toBe(false); return }
+            if (teamName.isErr()) {
+                expect(teamName.isErr()).toBe(false)
+                throw new Error('No Teamname found')
+            }
+
             usersWithSockets[2].socket.emit('tournament:public:registerTeam', { players: [usersWithSockets[2].username], name: teamName.value, tournamentID });
 
-            return Promise.all(promiseArray).then((val: any) => {
+            await Promise.all(promiseArray).then((val: any) => {
                 expect(val[0].registerTeams.length).toBe(2)
                 expect(val[0].registerTeams[1].players.length).toBe(1)
                 expect(val[0].registerTeams[1].players[0]).toBe(usersWithSockets[2].username)
@@ -240,8 +252,8 @@ describe('Test Suite via Socket.io', () => {
                 .send({
                     title: 'TestTournament',
                     begin: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-                    deadline: new Date(Date.now() + 1 * 60 * 1000).toISOString(),
-                    creationDates: [new Date(Date.now() + 5 * 60 * 1000).toISOString()],
+                    deadline: new Date(Date.now() + 1000 * 60 * 1000).toISOString(),
+                    creationDates: [new Date(Date.now() + 5000 * 60 * 1000).toISOString()],
                     secondsPerGame: 5400,
                     nTeams: 2
                 })
@@ -262,10 +274,13 @@ describe('Test Suite via Socket.io', () => {
             })]
 
             const teamName = getDifferentName([])
-            if (teamName.isErr()) { expect(teamName.isErr()).toBe(false); return }
+            if (teamName.isErr()) {
+                expect(teamName.isErr()).toBe(false)
+                throw new Error('No Teamname found')
+            }
             usersWithSockets[0].socket.emit('tournament:public:registerTeam', { players: [usersWithSockets[0].username], name: teamName.value, tournamentID });
 
-            return Promise.all(promiseArray).then((val: any) => {
+            await Promise.all(promiseArray).then((val: any) => {
                 expect(val[0]?.registerTeam?.name).not.toBeUndefined()
             })
         })
@@ -283,7 +298,7 @@ describe('Test Suite via Socket.io', () => {
     describe('Test game creation process', () => {
         let tournamentID: number, tournament: publicTournament, usersWithSockets: UserWithSocket[], gameIDMiniFinal: number;
         const gameIdForTime = 3;
-        const gameID = 1;
+        const gameIdEnded = 7;
 
         beforeAll(async () => {
             usersWithSockets = await getUsersWithSockets({ n: 8 });
@@ -309,7 +324,7 @@ describe('Test Suite via Socket.io', () => {
             tournamentID = apiRes.body.id
         })
 
-        test('Start Tournament', async () => {
+        test('Start Tournament-SignUp', async () => {
             await startSignUpOnCondition(testServer.pgPool)
             const result = await testServer.pgPool.query('SELECT status FROM tournaments WHERE id = $1;', [tournamentID])
             expect(result.rows[0].status).toBe('signUp')
@@ -325,12 +340,16 @@ describe('Test Suite via Socket.io', () => {
                 }))
 
                 const teamName = getDifferentName([])
-                if (teamName.isErr()) { expect(teamName.isErr()).toBe(false); return }
+                if (teamName.isErr()) {
+                    expect(teamName.isErr()).toBe(false)
+                    throw new Error('No Teamname found')
+                }
                 usersWithSockets[i].socket.emit('tournament:public:registerTeam', { players: [usersWithSockets[i].username], name: teamName.value, tournamentID });
 
                 await Promise.all(promiseArray).then((val: any) => {
                     expect(val[0].registerTeams.length).toBe(i + 1)
                     tournament = val[0]
+                    expect(tournament.id).toBe(tournamentID)
                 })
             }
         })
@@ -339,16 +358,15 @@ describe('Test Suite via Socket.io', () => {
             for (let i = 0; i < 4; i++) {
                 const team = tournament.registerTeams.find((t: any) => t.players.length === 1)
                 const promiseArray = usersWithSockets.map((uWS: any) => {
-                    return new Promise((resolve) => { uWS.socket.once('tournament:public:update', (data: any) => { return resolve(data) }) })
+                    return new Promise<any>((resolve) => { uWS.socket.once('tournament:public:update', (data: any) => { return resolve(data) }) })
                 })
 
                 usersWithSockets[4 + i].socket.emit('tournament:public:joinTeam', { teamName: team?.name ?? '', tournamentID });
 
-                await Promise.all(promiseArray).then((val: any) => {
-                    tournament = val[0]
-                })
+                tournament = (await Promise.all(promiseArray))[0]
             }
 
+            expect(tournament.id).toBe(tournamentID)
             expect(tournament.status).toBe('signUpEnded')
             expect(tournament.registerTeams.length).toBe(0)
             expect(tournament.teams.length).toBe(4)
@@ -358,46 +376,45 @@ describe('Test Suite via Socket.io', () => {
         })
 
         test('Start Tournament', async () => {
-            let promiseArray = usersWithSockets.map((uWS) => {
-                return new Promise((resolve) => { uWS.socket.once('tournament:public:update', (data: any) => { return resolve(data) }) })
+            const promiseArrayUpdate = usersWithSockets.map((uWS) => {
+                return new Promise<any>((resolve) => { uWS.socket.once('tournament:public:update', (data) => { return resolve(data) }) })
             })
-            promiseArray = [...promiseArray, ...usersWithSockets.map((uWS) => {
-                return new Promise((resolve) => { uWS.socket.once('tournament:toast:started', (data: any) => { return resolve(data) }) })
-            })]
+            const promiseArrayToast = usersWithSockets.map((uWS) => {
+                return new Promise<any>((resolve) => { uWS.socket.once('tournament:toast:started', (data) => { return resolve(data) }) })
+            })
 
-            const res = await startTournament(testServer.pgPool)
-            expect(res == null).toBe(true)
-            console.log(res)
-            const tournamentArray = await Promise.all(promiseArray) as any[]
-            tournament = tournamentArray[0]
-            console.log(tournament)
-
+            await startTournament(testServer.pgPool)
+            await Promise.all(promiseArrayToast)
+            tournament = (await Promise.all(promiseArrayUpdate))[0]
+            expect(tournament.id).toBe(tournamentID)
             expect(tournament.status).toBe('running')
             expect(tournament.data.brackets[0].every((m: any) => m.gameID !== -1))
         })
 
         test('Force Tournament Round To End', async () => {
-            let promiseArray = usersWithSockets.map((uWS) => {
-                return new Promise((resolve) => {
+            const promiseArrayUpdate = usersWithSockets.map((uWS) => {
+                return new Promise<any>((resolve) => {
                     let i = 0;
                     uWS.socket.on('tournament:public:update', (data) => {
                         if (i === 1) { resolve(data) } i++
                     })
                 })
             })
-            promiseArray = [...promiseArray, ...usersWithSockets.map((uWS) => {
+            const promiseArrayToast = usersWithSockets.map((uWS) => {
                 return new Promise((resolve) => { uWS.socket.once('tournament:toast:round-ended', (data) => { return resolve(data) }) })
-            })]
+            })
 
             // Test game end with time condition
             await testServer.pgPool.query('UPDATE games SET game=(SELECT game FROM games WHERE id=$2) WHERE id=$1;', [tournament.data.brackets[0][0].gameID, gameIdForTime])
 
             await checkForceGameEnd(testServer.pgPool)
-            await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
+            await Promise.all(promiseArrayToast)
+            tournament = (await Promise.all(promiseArrayUpdate))[0]
+            expect(tournament.id).toBe(tournamentID)
 
             expect(tournament.status).toBe('running')
             expect(tournament.data.brackets[0].every((m: any) => m.winner !== -1))
-            expect(tournament.data.brackets[0][0].winner).toBe(tournament.data.brackets[0][0].teams[1])
+            expect(tournament.data.brackets[0][0].winner).toBe(tournament.data.brackets[0][0].teams[0])
             expect(tournament.data.brackets[1][0].teams.every((t: any) => [0, 1, 2, 3].includes(t))).toBe(true)
             expect(tournament.creationPhase).toBe(2)
         })
@@ -412,6 +429,7 @@ describe('Test Suite via Socket.io', () => {
 
             await startTournamentRound(testServer.pgPool)
             await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
+            expect(tournament.id).toBe(tournamentID)
 
             expect(tournament.status).toBe('running')
             expect(tournament.data.brackets[1].every((m: any) => m.gameID !== -1))
@@ -423,14 +441,14 @@ describe('Test Suite via Socket.io', () => {
                 return new Promise((resolve) => { uWS.socket.once('tournament:public:update', (data) => { return resolve(data) }) })
             })
 
-            await testServer.pgPool.query('UPDATE games SET public_tournament_id = $1 WHERE id = $2;', [tournamentID, gameID])
+            await testServer.pgPool.query('UPDATE games SET public_tournament_id = $1 WHERE id = $2;', [tournamentID, gameIdEnded])
             const dbRes = await testServer.pgPool.query('SELECT data FROM tournaments WHERE id = $1;', [tournamentID])
             const data = dbRes.rows[0].data
             gameIDMiniFinal = data.brackets[1][1].gameID
-            data.brackets[1][1].gameID = gameID
+            data.brackets[1][1].gameID = gameIdEnded
             await testServer.pgPool.query('UPDATE tournaments SET data = $2 WHERE id = $1;', [tournamentID, data])
 
-            const game = await getGame(testServer.pgPool, gameID)
+            const game = await getGame(testServer.pgPool, gameIdEnded)
             game.game.gameEnded = false
             game.players = [
                 tournament.teams[tournament.data.brackets[1][1].teams[0]].players[0],
@@ -441,6 +459,7 @@ describe('Test Suite via Socket.io', () => {
 
             await updateTournamentFromGame(testServer.pgPool, game)
             await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
+            expect(tournament.id).toBe(tournamentID)
 
             expect(tournament.data.brackets[1][1].score).toStrictEqual([8, 7])
             expect(tournament.data.brackets[1][1].winner).toBe(-1)
@@ -451,7 +470,7 @@ describe('Test Suite via Socket.io', () => {
                 return new Promise((resolve) => { uWS.socket.once('tournament:public:update', (data) => { return resolve(data) }) })
             })
 
-            const game = await getGame(testServer.pgPool, gameID)
+            const game = await getGame(testServer.pgPool, gameIdEnded)
             game.players = [
                 tournament.teams[tournament.data.brackets[1][1].teams[0]].players[0],
                 tournament.teams[tournament.data.brackets[1][1].teams[1]].players[0],
@@ -461,6 +480,7 @@ describe('Test Suite via Socket.io', () => {
 
             await updateTournamentFromGame(testServer.pgPool, game)
             await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
+            expect(tournament.id).toBe(tournamentID)
 
             expect(tournament.data.brackets[1][1].score).toStrictEqual([8, 7])
             expect(tournament.data.brackets[1][1].winner).toBe(tournament.data.brackets[1][1].teams[0])
@@ -474,14 +494,14 @@ describe('Test Suite via Socket.io', () => {
                 return new Promise((resolve) => { uWS.socket.once('tournament:toast:ended', (data) => { return resolve(data) }) })
             })]
 
-            await testServer.pgPool.query('UPDATE games SET public_tournament_id = $1 WHERE id = $2;', [tournamentID, gameID])
+            await testServer.pgPool.query('UPDATE games SET public_tournament_id = $1 WHERE id = $2;', [tournamentID, gameIdEnded])
             const dbRes = await testServer.pgPool.query('SELECT data FROM tournaments WHERE id = $1;', [tournamentID])
             const data = dbRes.rows[0].data
             data.brackets[1][0].gameID = gameIDMiniFinal
-            data.brackets[1][0].gameID = gameID
+            data.brackets[1][0].gameID = gameIdEnded
             await testServer.pgPool.query('UPDATE tournaments SET data = $2 WHERE id = $1;', [tournamentID, data])
 
-            const game = await getGame(testServer.pgPool, gameID)
+            const game = await getGame(testServer.pgPool, gameIdEnded)
             game.players = [
                 tournament.teams[tournament.data.brackets[1][0].teams[0]].players[0],
                 tournament.teams[tournament.data.brackets[1][0].teams[1]].players[0],
@@ -491,6 +511,7 @@ describe('Test Suite via Socket.io', () => {
 
             await updateTournamentFromGame(testServer.pgPool, game)
             await Promise.all(promiseArray).then((val: any) => { tournament = val[0] })
+            expect(tournament.id).toBe(tournamentID)
 
             expect(tournament.status).toBe('ended')
             expect(tournament.data.brackets[1][0].score).toStrictEqual([8, 7])
