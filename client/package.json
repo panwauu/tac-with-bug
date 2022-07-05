@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build --emptyOutDir",
     "preview": "vite preview",
-    "lint": "eslint --ext .ts,.vue --max-warnings 0 .",
+    "lint": "eslint --ext .ts,.vue .",
     "tsc": "vue-tsc --noEmit"
   },
   "dependencies": {
