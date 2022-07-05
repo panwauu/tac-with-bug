@@ -1,6 +1,5 @@
 import logger from '../helpers/logger';
 import pg from 'pg';
-import events from 'events'
 import * as tTournament from '../../../shared/types/typesTournament';
 import * as dbGame from '../../../shared/types/typesDBgame';
 
@@ -13,8 +12,7 @@ import { pushChangedPublicTournament } from '../socket/tournamentPublic';
 import { updateTournamentWinners } from '../socket/tournament';
 import { getSocketByUserID } from '../socket/general';
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games';
-
-export const tournamentBus = new events.EventEmitter();
+import { tournamentBus } from './tournaments';
 
 interface getTournamentCondition {
     id?: number,
