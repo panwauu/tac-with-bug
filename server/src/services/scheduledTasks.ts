@@ -56,6 +56,8 @@ async function registerTournamentJobs(sqlClient: pg.Pool) {
 const tournamentTimeOffset = 100;
 
 export function registerJobsForOneTournament(sqlClient: pg.Pool, tournament: publicTournament) {
+    if (process.env.NODE_ENV === 'test') { return; }
+
     jobs.push(schedule.scheduleJob(new Date(new Date(tournament.signupBegin).getTime() + tournamentTimeOffset), async () => {
         await startSignUpOnCondition(sqlClient)
     }))

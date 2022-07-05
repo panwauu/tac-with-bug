@@ -2,7 +2,8 @@ import { err, ok, Result } from 'neverthrow';
 import pg from 'pg';
 import * as tTournament from '../../../shared/types/typesTournament';
 
-import { getPublicTournamentByID, tournamentBus, getPublicTournament, getTournamentByIDError } from './tournamentsPublic';
+import { tournamentBus } from './tournaments';
+import { getPublicTournamentByID, getPublicTournament, getTournamentByIDError } from './tournamentsPublic';
 
 function alreadyRegistered(tournament: tTournament.publicTournament, userID: number) {
     return (tournament.teams.some((t) => t.playerids.includes(userID)) || tournament.registerTeams.some((t) => t.playerids.includes(userID)));
