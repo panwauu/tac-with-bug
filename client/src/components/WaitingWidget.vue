@@ -25,7 +25,7 @@
         severity="error"
         :closable="false"
       >{{ $t('Landing.Waiting.openGamesWarning', { openGames: gamesSummary.runningGames.length }) }}</Message>
-      <Waiting />
+      <WaitingOverview />
     </AccordionTab>
   </Accordion>
 </template>
@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
-import Waiting from '@/components/Waiting.vue';
+import WaitingOverview from '@/components/WaitingOverview.vue';
 import GamesTable from '@/components/GamesTable.vue';
 import Message from 'primevue/message';
 

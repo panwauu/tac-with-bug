@@ -13,7 +13,7 @@
       </span>
     </div>
 
-    <Password v-model:password="newPassword" v-model:valid="validNewPassword" style="width: 100%" />
+    <PasswordForm v-model:password="newPassword" v-model:valid="validNewPassword" style="width: 100%" />
 
     <Button
       type="submit"
@@ -29,7 +29,7 @@
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 
-import Password from '../Forms/Password.vue';
+import PasswordForm from '../Forms/PasswordForm.vue';
 import { Service } from '@/generatedClient/index';
 import { ref } from 'vue';
 import { i18n } from '@/services/i18n';

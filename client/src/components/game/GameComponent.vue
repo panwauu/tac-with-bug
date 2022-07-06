@@ -94,7 +94,7 @@
           :toggleable="true"
           :collapsed="false"
         >
-          <Rematch :miscState="miscState" :positionStyles="positionStyles" />
+          <RematchForm :miscState="miscState" :positionStyles="positionStyles" />
         </Fieldset>
       </div>
     </div>
@@ -132,7 +132,7 @@ import GameModalSettings from '@/components/gameModal/GameModalSettings.vue';
 import GameModalAssistance from '@/components/gameModal/GameModalAssistance.vue';
 import GameStatistic from '@/components/game/GameStatistic.vue';
 import Fieldset from 'primevue/fieldset';
-import Rematch from './Rematch.vue';
+import RematchForm from './RematchForm.vue';
 import TwbSymbol from '@/components/icons/TwbSymbol.vue';
 import TwbLogo from '@/components/icons/TwbLogo.vue';
 import GameWatchingPlayers from './GameWatchingPlayers.vue';
