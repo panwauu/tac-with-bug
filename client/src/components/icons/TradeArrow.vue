@@ -1,6 +1,10 @@
 <template>
   <div>
-    <svg height="100%" viewBox="0 0 662 634" preserveAspectRatio="xMaxYMax">
+    <svg
+      height="100%"
+      viewBox="0 0 662 634"
+      preserveAspectRatio="xMaxYMax"
+    >
       <g
         transform="translate(0.000000,634.000000) scale(0.100000,-0.100000)"
         fill="#000000"

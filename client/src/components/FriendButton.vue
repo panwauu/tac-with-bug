@@ -20,7 +20,10 @@
     icon="pi pi-user-minus"
     @click="friendsState.withdraw(username)"
   />
-  <span v-if="username !== loggedInUser && friendShipStatus === 'from'" class="p-buttonset">
+  <span
+    v-if="username !== loggedInUser && friendShipStatus === 'from'"
+    class="p-buttonset"
+  >
     <Button
       :label="$t('Friends.FriendButton.acceptRequest')"
       icon="pi pi-user-plus"
@@ -36,17 +39,18 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
+import Button from 'primevue/button'
 
-import { computed } from 'vue';
-import { FriendsStateKey, injectStrict } from '@/services/injections';
-import { username as loggedInUser } from '@/services/useUser';
+import { computed } from 'vue'
+import { FriendsStateKey, injectStrict } from '@/services/injections'
+import { username as loggedInUser } from '@/services/useUser'
 
-const props = defineProps<{ username: string }>();
-const friendsState = injectStrict(FriendsStateKey);
+const props = defineProps<{ username: string }>()
+const friendsState = injectStrict(FriendsStateKey)
 
-const friendShipStatus = computed(() => { return friendsState.friendshipStatus(props.username) })
+const friendShipStatus = computed(() => {
+  return friendsState.friendshipStatus(props.username)
+})
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

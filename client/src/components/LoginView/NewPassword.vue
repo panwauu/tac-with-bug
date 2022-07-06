@@ -9,7 +9,7 @@
           name="username"
           class="inputElement"
         />
-        <label for="NPusername">{{ $t("Login.emailOrUsername") }}</label>
+        <label for="NPusername">{{ $t('Login.emailOrUsername') }}</label>
       </span>
       <Button
         type="submit"
@@ -23,14 +23,14 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
 
-import { ref } from 'vue';
-import * as EmailValidator from 'email-validator';
-import { DefaultService as Service } from '@/generatedClient/index';
-import { i18n } from '@/services/i18n';
-import { useToast } from 'primevue/usetoast';
+import { ref } from 'vue'
+import * as EmailValidator from 'email-validator'
+import { DefaultService as Service } from '@/generatedClient/index'
+import { i18n } from '@/services/i18n'
+import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
 const usernameOrEmail = ref('')
@@ -39,11 +39,11 @@ const loading = ref(false)
 const emit = defineEmits<{ (eventName: 'done'): void }>()
 
 async function executeNewPassword() {
-  loading.value = true;
+  loading.value = true
 
-  let data: { username: string } | { email: string } = { username: usernameOrEmail.value };
+  let data: { username: string } | { email: string } = { username: usernameOrEmail.value }
   if (EmailValidator.validate(usernameOrEmail.value)) {
-    data = { email: usernameOrEmail.value };
+    data = { email: usernameOrEmail.value }
   }
 
   try {
@@ -54,8 +54,8 @@ async function executeNewPassword() {
       summary: i18n.global.t('Login.RequestNewPassword.successMsg'),
       life: 5000,
     })
-    usernameOrEmail.value = '';
-    loading.value = false;
+    usernameOrEmail.value = ''
+    loading.value = false
     emit('done')
   } catch (err) {
     toast.add({
@@ -64,7 +64,7 @@ async function executeNewPassword() {
       life: 5000,
     })
   }
-  loading.value = false;
+  loading.value = false
 }
 </script>
 

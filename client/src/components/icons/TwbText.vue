@@ -6,8 +6,15 @@
       preserveAspectRatio="xMinYMid meet"
       class="tacfont"
     >
-      <text x="0" y="30" font-size="42" fill="var(--tac-text-color)" class="twbText">
-        <tspan>T</tspan>WB
+      <text
+        x="0"
+        y="30"
+        font-size="42"
+        fill="var(--tac-text-color)"
+        class="twbText"
+      >
+        <tspan>T</tspan>
+        WB
       </text>
     </svg>
   </div>
@@ -15,8 +22,9 @@
 
 <style scoped>
 .tacfont {
-  font-family: "tacfontregular", Monospace;
+  font-family: 'tacfontregular', Monospace;
 }
+
 .twbText {
   letter-spacing: -6px;
 }

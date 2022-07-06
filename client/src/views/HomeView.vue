@@ -13,14 +13,16 @@
 </template>
 
 <script setup lang="ts">
-import TopElement from '@/components/NavigationElements/TopElement.vue';
-import BottomElement from '@/components/NavigationElements/BottomElement.vue';
+import TopElement from '@/components/NavigationElements/TopElement.vue'
+import BottomElement from '@/components/NavigationElements/BottomElement.vue'
 
-import { injectStrict, SocketKey } from '@/services/injections';
-import { logout as logoutUser, isLoggedIn } from '@/services/useUser';
+import { injectStrict, SocketKey } from '@/services/injections'
+import { logout as logoutUser, isLoggedIn } from '@/services/useUser'
 const socket = injectStrict(SocketKey)
 
-if (!isLoggedIn.value) { logout() }
+if (!isLoggedIn.value) {
+  logout()
+}
 
 async function logout() {
   await logoutUser(socket)

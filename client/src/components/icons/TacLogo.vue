@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import TacSymbol from './TacSymbol.vue';
-import TacText from './TacText.vue';
+import TacSymbol from './TacSymbol.vue'
+import TacText from './TacText.vue'
 </script>
 
 <style scoped>

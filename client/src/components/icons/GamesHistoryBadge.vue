@@ -1,22 +1,21 @@
 <template>
   <div :class="[win, 'gamesHistoryBadge']">
     {{
-      win === "lost"
-        ? $t("Profile.lIconSymbol")
-        : win === "won"
-          ? $t("Profile.wIconSymbol")
-          : win === "coop"
-            ? $t("Profile.tIconSymbol")
-            : win === "aborted"
-              ? $t("Profile.aIconSymbol")
-              : $t("Profile.rIconSymbol")
+      win === 'lost'
+        ? $t('Profile.lIconSymbol')
+        : win === 'won'
+        ? $t('Profile.wIconSymbol')
+        : win === 'coop'
+        ? $t('Profile.tIconSymbol')
+        : win === 'aborted'
+        ? $t('Profile.aIconSymbol')
+        : $t('Profile.rIconSymbol')
     }}
   </div>
 </template>
 
 <script setup lang="ts">
-
-defineProps<{ win: string }>();
+defineProps<{ win: string }>()
 </script>
 
 <style scoped>

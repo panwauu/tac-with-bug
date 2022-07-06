@@ -1,18 +1,30 @@
 <template>
-  <Chart ref="dayChart" type="radar" :data="dayChartData" :height="400" :options="dayChartOptions" />
+  <Chart
+    ref="dayChart"
+    type="radar"
+    :data="dayChartData"
+    :height="400"
+    :options="dayChartOptions"
+  />
 </template>
 
 <script setup lang="ts">
-import type { dayDataset } from '@/../../shared/types/typesPlatformStatistic';
+import type { dayDataset } from '@/../../shared/types/typesPlatformStatistic'
 
-import { ref, watch } from 'vue';
-import Chart from 'primevue/chart';
-import { i18n } from '@/services/i18n';
-import { getGraphColors } from '@/services/graphColors';
+import { ref, watch } from 'vue'
+import Chart from 'primevue/chart'
+import { i18n } from '@/services/i18n'
+import { getGraphColors } from '@/services/graphColors'
 
-const dayChart = ref<any | null>(null);
+const dayChart = ref<any | null>(null)
 const props = defineProps<{ data?: dayDataset }>()
-watch(() => props.data, () => { updateDayChart() }, { deep: true })
+watch(
+  () => props.data,
+  () => {
+    updateDayChart()
+  },
+  { deep: true }
+)
 
 const dayChartOptions = {
   responsive: true,
@@ -25,25 +37,19 @@ const dayChartOptions = {
   scales: {
     r: {
       angleLines: {
-        color: getComputedStyle(document.body).getPropertyValue(
-          '--surface-d'
-        ),
-        zeroLineColor: getComputedStyle(document.body).getPropertyValue(
-          '--surface-d'
-        ),
+        color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
+        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--surface-d'),
         display: true,
       },
       beginAtZero: true,
       ticks: {
         callback: function (value: any) {
-          return value + '%';
+          return value + '%'
         },
         showLabelBackdrop: false,
       },
       grid: {
-        color: getComputedStyle(document.body).getPropertyValue(
-          '--surface-d'
-        ),
+        color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
       },
     },
   },
@@ -84,12 +90,13 @@ const dayChartData = ref({
 })
 
 function updateDayChart() {
-  if (props.data === undefined) { return }
-  dayChartData.value.datasets[0].data = props.data.map((d: any) => d[0] * 100);
-  dayChartData.value.datasets[1].data = props.data.map((d: any) => d[1] * 100);
-  dayChart.value?.refresh();
+  if (props.data === undefined) {
+    return
+  }
+  dayChartData.value.datasets[0].data = props.data.map((d: any) => d[0] * 100)
+  dayChartData.value.datasets[1].data = props.data.map((d: any) => d[1] * 100)
+  dayChart.value?.refresh()
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

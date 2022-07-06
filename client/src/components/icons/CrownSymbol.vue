@@ -1,5 +1,8 @@
 <template>
-  <div ref="crownRef" class="crownOuter">
+  <div
+    ref="crownRef"
+    class="crownOuter"
+  >
     <div class="left">
       <div class="leftrightinner">
         <div class="left-after" />
@@ -20,15 +23,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue'
 
 const props = defineProps<{ rank: number }>()
 
-const crownRef = ref<HTMLDivElement | null>(null);
+const crownRef = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
-  const color = props.rank === 1 ? '#c99336' : props.rank === 2 ? '#9c9b9e' : props.rank === 3 ? '#875e23' : '#1a1815';
-  crownRef.value?.style?.setProperty('--crown-color', color);
+  const color = props.rank === 1 ? '#c99336' : props.rank === 2 ? '#9c9b9e' : props.rank === 3 ? '#875e23' : '#1a1815'
+  crownRef.value?.style?.setProperty('--crown-color', color)
 })
 </script>
 
@@ -90,7 +93,7 @@ onMounted(() => {
 
 .left-after {
   position: absolute;
-  content: "";
+  content: '';
   top: -207%;
   left: -51%;
   border-radius: 16%;
@@ -99,6 +102,7 @@ onMounted(() => {
   box-shadow: 0px 0px 0px 2000px var(--crown-color);
   transform: rotate(60deg) skew(17deg);
 }
+
 .right {
   width: 45%;
   height: 59%;
@@ -108,9 +112,10 @@ onMounted(() => {
   bottom: 28%;
   right: 10%;
 }
+
 .right-after {
   position: absolute;
-  content: "";
+  content: '';
   top: -207%;
   right: -51%;
   border-radius: 16%;
@@ -119,21 +124,25 @@ onMounted(() => {
   box-shadow: 0px 0px 0px 2000px var(--crown-color);
   transform: rotate(-60deg) skew(-17deg);
 }
+
 .circle {
   border-radius: 50%;
   width: 12%;
   padding: 6% 0px;
   background-color: var(--crown-color);
 }
+
 .circle1 {
   top: 0%;
   right: 50%;
   transform: translate(50%, 0px);
 }
+
 .circle2 {
   right: 4.5%;
   top: 13%;
 }
+
 .circle3 {
   left: 4.5%;
   top: 13%;

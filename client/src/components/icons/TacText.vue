@@ -22,8 +22,9 @@
 
 <style scoped>
 .tacfont {
-  font-family: "tacfontregular", Monospace;
+  font-family: 'tacfontregular', Monospace;
 }
+
 svg text :first-child {
   letter-spacing: -17.5px;
 }

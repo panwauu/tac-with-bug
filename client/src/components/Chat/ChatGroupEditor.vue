@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-direction: column; align-items: center;">
+  <div style="display: flex; flex-direction: column; align-items: center">
     <div class="p-inputgroup">
       <InputText v-model="groupTitle" />
       <Button
@@ -16,10 +16,13 @@
       :username="username"
     />
     <Divider />
-    <PlayersAutoComplete v-model:username="userToAdd" v-model:userid="userIdToAdd" />
+    <PlayersAutoComplete
+      v-model:username="userToAdd"
+      v-model:userid="userIdToAdd"
+    />
     <Button
       :label="$t('Chat.GroupChatEditor.addPlayer')"
-      style="margin-top: 10px;"
+      style="margin-top: 10px"
       :disabled="userIdToAdd < 0 || userToAdd == ''"
       @click="addUser"
     />
@@ -33,15 +36,15 @@
 </template>
 
 <script setup lang="ts">
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Divider from 'primevue/divider';
-import PlayerWithPicture from '../PlayerWithPicture.vue';
-import PlayersAutoComplete from '../PlayersAutoComplete.vue';
+import InputText from 'primevue/inputtext'
+import Button from 'primevue/button'
+import Divider from 'primevue/divider'
+import PlayerWithPicture from '../PlayerWithPicture.vue'
+import PlayersAutoComplete from '../PlayersAutoComplete.vue'
 
-import { ref } from 'vue';
-import { useMessagesStore } from '@/store/messages';
-import { injectStrict, SocketKey } from '@/services/injections';
+import { ref } from 'vue'
+import { useMessagesStore } from '@/store/messages'
+import { injectStrict, SocketKey } from '@/services/injections'
 
 const emits = defineEmits(['close'])
 
@@ -51,27 +54,33 @@ const messagesStore = useMessagesStore()
 const groupTitle = ref(messagesStore.getCurrentChat?.groupTitle ?? '')
 
 async function changeTitle() {
-    if (messagesStore.getCurrentChat?.chatid == null) { return }
-    await socket.emitWithAck(5000, 'chat:changeTitle', { chatid: messagesStore.getCurrentChat?.chatid, title: groupTitle.value })
+  if (messagesStore.getCurrentChat?.chatid == null) {
+    return
+  }
+  await socket.emitWithAck(5000, 'chat:changeTitle', { chatid: messagesStore.getCurrentChat?.chatid, title: groupTitle.value })
 }
 
 const userToAdd = ref('')
 const userIdToAdd = ref(-1)
 
 async function addUser() {
-    if (messagesStore.getCurrentChat?.chatid == null) { return }
-    const data = await socket.emitWithAck(5000, 'chat:addUser', { userid: userIdToAdd.value, chatid: messagesStore.getCurrentChat?.chatid })
-    console.log(data)
-    userToAdd.value = ''
-    userIdToAdd.value = -1
+  if (messagesStore.getCurrentChat?.chatid == null) {
+    return
+  }
+  const data = await socket.emitWithAck(5000, 'chat:addUser', { userid: userIdToAdd.value, chatid: messagesStore.getCurrentChat?.chatid })
+  console.log(data)
+  userToAdd.value = ''
+  userIdToAdd.value = -1
 }
 
 async function leaveChat() {
-    if (messagesStore.getCurrentChat?.chatid == null) { return }
-    const data = await socket.emitWithAck(5000, 'chat:leaveChat', { chatid: messagesStore.getCurrentChat?.chatid })
-    console.log(data)
-    messagesStore.selectChat(true, 'general')
-    emits('close')
+  if (messagesStore.getCurrentChat?.chatid == null) {
+    return
+  }
+  const data = await socket.emitWithAck(5000, 'chat:leaveChat', { chatid: messagesStore.getCurrentChat?.chatid })
+  console.log(data)
+  messagesStore.selectChat(true, 'general')
+  emits('close')
 }
 </script>
 

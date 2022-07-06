@@ -1,8 +1,15 @@
 <template>
   <form @submit.prevent="requestMailUpdate()">
-    <EmailForm v-model:email="email" v-model:valid="validEmail" style="width: 100%" />
+    <EmailForm
+      v-model:email="email"
+      v-model:valid="validEmail"
+      style="width: 100%"
+    />
 
-    <span class="p-float-label" style="margin-top: 30px">
+    <span
+      class="p-float-label"
+      style="margin-top: 30px"
+    >
       <InputText
         id="SUpasswordMail"
         v-model="password"
@@ -10,7 +17,7 @@
         name="password"
         style="width: 100%"
       />
-      <label for="SUpasswordMail">{{ $t("Settings.ChangeMail.password") }}</label>
+      <label for="SUpasswordMail">{{ $t('Settings.ChangeMail.password') }}</label>
     </span>
     <Button
       type="submit"
@@ -23,15 +30,15 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
 
-import EmailForm from '../Forms/EmailForm.vue';
-import { DefaultService as Service } from '@/generatedClient/index';
-import { ref } from 'vue';
-import { i18n } from '@/services/i18n';
-import { useToast } from 'primevue/usetoast';
-const toast = useToast();
+import EmailForm from '../Forms/EmailForm.vue'
+import { DefaultService as Service } from '@/generatedClient/index'
+import { ref } from 'vue'
+import { i18n } from '@/services/i18n'
+import { useToast } from 'primevue/usetoast'
+const toast = useToast()
 
 const emit = defineEmits(['settingoperationdone'])
 
@@ -42,23 +49,23 @@ const password = ref('')
 const requestMailUpdate = async () => {
   try {
     await Service.changeMail({ password: password.value, email: email.value })
-    password.value = '';
-    email.value = '';
+    password.value = ''
+    email.value = ''
     toast.add({
       severity: 'success',
       summary: i18n.global.t('Settings.ChangeMail.toastSummarySuccess'),
       detail: i18n.global.t('Settings.ChangeMail.successMsg'),
       life: 2000,
-    });
-    emit('settingoperationdone');
+    })
+    emit('settingoperationdone')
   } catch (err: any) {
-    let errorText = '';
+    let errorText = ''
     if (err?.body?.message === 'Password is incorrect!') {
-      errorText = i18n.global.t('Settings.ChangeMail.errorMsgPwd');
+      errorText = i18n.global.t('Settings.ChangeMail.errorMsgPwd')
     } else if (err?.body?.message === 'Email not available') {
-      errorText = i18n.global.t('Settings.ChangeMail.errorMsgEmail');
+      errorText = i18n.global.t('Settings.ChangeMail.errorMsgEmail')
     } else {
-      errorText = i18n.global.t('Settings.ChangeMail.errorMsgGeneral');
+      errorText = i18n.global.t('Settings.ChangeMail.errorMsgGeneral')
     }
 
     toast.add({
@@ -66,10 +73,9 @@ const requestMailUpdate = async () => {
       summary: i18n.global.t('Settings.ChangeMail.toastSummaryFailure'),
       detail: errorText,
       life: 2000,
-    });
+    })
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

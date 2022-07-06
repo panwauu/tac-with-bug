@@ -1,11 +1,11 @@
-import type { GeneralSocketC } from '@/services/socket';
+import type { GeneralSocketC } from '@/services/socket'
 
-import { onBeforeUnmount } from 'vue';
-import { useToast } from 'primevue/usetoast';
-import { i18n } from '@/services/i18n';
+import { onBeforeUnmount } from 'vue'
+import { useToast } from 'primevue/usetoast'
+import { i18n } from '@/services/i18n'
 
 export function registerSocketToastHandlers(socket: GeneralSocketC): void {
-  const toast = useToast();
+  const toast = useToast()
 
   socket.on('tournament:toast:you-created-a-team', (data) => {
     toast.add({
@@ -16,8 +16,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         teamName: data.registerTeam.name,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:invited-to-a-team', (data) => {
     toast.add({
@@ -29,8 +29,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:you-joined-team-complete', (data) => {
     toast.add({
@@ -42,8 +42,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:you-joined-team-incomplete', (data) => {
     toast.add({
@@ -55,8 +55,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:player-joined-team-complete', (data) => {
     toast.add({
@@ -68,8 +68,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:player-joined-team-incomplete', (data) => {
     toast.add({
@@ -81,8 +81,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:you-activated-complete', (data) => {
     toast.add({
@@ -94,8 +94,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:you-activated-incomplete', (data) => {
     toast.add({
@@ -107,8 +107,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:player-activated-team-complete', (data) => {
     toast.add({
@@ -120,8 +120,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:player-activated-team-incomplete', (data) => {
     toast.add({
@@ -133,8 +133,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:you-left-tournament', (data) => {
     toast.add({
@@ -146,8 +146,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:partner-left-tournament', (data) => {
     toast.add({
@@ -159,8 +159,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         playerName: data.player,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:signUpEnded-you-partizipate', (data) => {
     toast.add({
@@ -170,8 +170,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         tournamentName: data.tournamentTitle,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:signUpEnded-you-wont-partizipate', (data) => {
     toast.add({
@@ -181,8 +181,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         tournamentName: data.tournamentTitle,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:signUp-failed', (data) => {
     toast.add({
@@ -192,8 +192,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         tournamentTitle: data.tournamentTitle,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:started', (data) => {
     toast.add({
@@ -203,8 +203,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         tournamentName: data.tournamentTitle,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:round-started', (data) => {
     toast.add({
@@ -216,8 +216,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         tournamentName: data.tournamentTitle,
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:round-ended', (data) => {
     toast.add({
@@ -230,8 +230,8 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         roundName: i18n.global.t(`Tournament.Brackets.bracketList${data.roundsToFinal}`),
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   socket.on('tournament:toast:ended', (data) => {
     toast.add({
@@ -244,28 +244,28 @@ export function registerSocketToastHandlers(socket: GeneralSocketC): void {
         players2: data.winner.players[data.winner.players.length - 1],
       }),
       life: 10000,
-    });
-  });
+    })
+  })
 
   onBeforeUnmount(() => {
-    socket.removeAllListeners('tournament:toast:you-created-a-team');
-    socket.removeAllListeners('tournament:toast:invited-to-a-team');
-    socket.removeAllListeners('tournament:toast:you-joined-team-complete');
-    socket.removeAllListeners('tournament:toast:you-joined-team-incomplete');
-    socket.removeAllListeners('tournament:toast:player-joined-team-complete');
-    socket.removeAllListeners('tournament:toast:player-joined-team-incomplete');
-    socket.removeAllListeners('tournament:toast:you-activated-complete');
-    socket.removeAllListeners('tournament:toast:you-activated-incomplete');
-    socket.removeAllListeners('tournament:toast:player-activated-team-complete');
-    socket.removeAllListeners('tournament:toast:player-activated-team-incomplete');
-    socket.removeAllListeners('tournament:toast:you-left-tournament');
-    socket.removeAllListeners('tournament:toast:partner-left-tournament');
-    socket.removeAllListeners('tournament:toast:signUpEnded-you-partizipate');
-    socket.removeAllListeners('tournament:toast:signUpEnded-you-wont-partizipate');
-    socket.removeAllListeners('tournament:toast:signUp-failed');
-    socket.removeAllListeners('tournament:toast:started');
-    socket.removeAllListeners('tournament:toast:round-started');
-    socket.removeAllListeners('tournament:toast:round-ended');
-    socket.removeAllListeners('tournament:toast:ended');
+    socket.removeAllListeners('tournament:toast:you-created-a-team')
+    socket.removeAllListeners('tournament:toast:invited-to-a-team')
+    socket.removeAllListeners('tournament:toast:you-joined-team-complete')
+    socket.removeAllListeners('tournament:toast:you-joined-team-incomplete')
+    socket.removeAllListeners('tournament:toast:player-joined-team-complete')
+    socket.removeAllListeners('tournament:toast:player-joined-team-incomplete')
+    socket.removeAllListeners('tournament:toast:you-activated-complete')
+    socket.removeAllListeners('tournament:toast:you-activated-incomplete')
+    socket.removeAllListeners('tournament:toast:player-activated-team-complete')
+    socket.removeAllListeners('tournament:toast:player-activated-team-incomplete')
+    socket.removeAllListeners('tournament:toast:you-left-tournament')
+    socket.removeAllListeners('tournament:toast:partner-left-tournament')
+    socket.removeAllListeners('tournament:toast:signUpEnded-you-partizipate')
+    socket.removeAllListeners('tournament:toast:signUpEnded-you-wont-partizipate')
+    socket.removeAllListeners('tournament:toast:signUp-failed')
+    socket.removeAllListeners('tournament:toast:started')
+    socket.removeAllListeners('tournament:toast:round-started')
+    socket.removeAllListeners('tournament:toast:round-ended')
+    socket.removeAllListeners('tournament:toast:ended')
   })
 }

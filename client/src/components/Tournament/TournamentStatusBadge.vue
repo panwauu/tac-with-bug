@@ -1,12 +1,15 @@
 <template>
-  <Tag :severity="statusSeverity" :value="$t(`Tournament.StatusBadge.${status}`)" />
+  <Tag
+    :severity="statusSeverity"
+    :value="$t(`Tournament.StatusBadge.${status}`)"
+  />
 </template>
 
 <script setup lang="ts">
-import Tag from 'primevue/tag';
+import Tag from 'primevue/tag'
 
-import { publicTournament, privateTournament } from '@/../../shared/types/typesTournament';
-import { computed } from 'vue';
+import { publicTournament, privateTournament } from '@/../../shared/types/typesTournament'
+import { computed } from 'vue'
 
 const props = defineProps<{ status: publicTournament['status'] | privateTournament['status'] }>()
 
@@ -30,5 +33,4 @@ const statusSeverity = computed(() => {
 })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -12,14 +12,21 @@
     <h3>{{ $t(`Game.GameModal.Settings.position`) }}</h3>
     <div class="positionContainer">
       <div class="p-field-radiobutton">
-        <RadioButton v-model="position" name="position_-1" :value="-1" class="positionCheckBox" />
+        <RadioButton
+          v-model="position"
+          name="position_-1"
+          :value="-1"
+          class="positionCheckBox"
+        />
         <label for="position_-1">
-          {{
-            $t(`Game.GameModal.Settings.checkBoxAbsolute`)
-          }}
+          {{ $t(`Game.GameModal.Settings.checkBoxAbsolute`) }}
         </label>
       </div>
-      <div v-for="index in nPlayers" :key="`radioButton-${index}`" class="p-field-radiobutton">
+      <div
+        v-for="index in nPlayers"
+        :key="`radioButton-${index}`"
+        class="p-field-radiobutton"
+      >
         <RadioButton
           v-model="position"
           :name="`position_${index}`"
@@ -27,9 +34,7 @@
           class="positionCheckBox"
         />
         <label :for="`position_${index}`">
-          {{
-            $t(`Game.GameModal.Settings.checkBox${nPlayers}_${index - 1}`)
-          }}
+          {{ $t(`Game.GameModal.Settings.checkBox${nPlayers}_${index - 1}`) }}
         </label>
       </div>
     </div>
@@ -37,25 +42,25 @@
 </template>
 
 <script setup lang="ts">
-import SelectButton from 'primevue/selectbutton';
-import RadioButton from 'primevue/radiobutton';
-import SettingsAudioVolume from '../SettingsView/SettingsAudioVolume.vue';
+import SelectButton from 'primevue/selectbutton'
+import RadioButton from 'primevue/radiobutton'
+import SettingsAudioVolume from '../SettingsView/SettingsAudioVolume.vue'
 
-import type { miscStateType } from '@/services/compositionGame/useMisc';
-import { computed } from 'vue';
-import { i18n } from '@/services/i18n';
+import type { miscStateType } from '@/services/compositionGame/useMisc'
+import { computed } from 'vue'
+import { i18n } from '@/services/i18n'
 
-import { useSettingsStore } from '@/store/settings';
+import { useSettingsStore } from '@/store/settings'
 const settingsStore = useSettingsStore()
 
-const props = defineProps<{ nPlayers: number, miscState: miscStateType }>();
+const props = defineProps<{ nPlayers: number; miscState: miscStateType }>()
 
 const position = computed<number>({
   get() {
-    return settingsStore.defaultPositions[props.nPlayers === 6 ? 1 : 0];
+    return settingsStore.defaultPositions[props.nPlayers === 6 ? 1 : 0]
   },
   set(value) {
-    settingsStore.setDefaultPosition(value, props.nPlayers, true);
+    settingsStore.setDefaultPosition(value, props.nPlayers, true)
   },
 })
 

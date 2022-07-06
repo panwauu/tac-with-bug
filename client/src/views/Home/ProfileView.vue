@@ -1,29 +1,39 @@
 <template>
-  <div ref="profileContainer" class="p-card profilePage">
+  <div
+    ref="profileContainer"
+    class="p-card profilePage"
+  >
     <ProfileExplanation />
     <div class="profileInformation">
       <div class="profilePictureContainer">
-        <ProfilePicture :username="username" class="profilePicture" />
+        <ProfilePicture
+          :username="username"
+          class="profilePicture"
+        />
         <Sponsor
           v-if="isSubscribed"
           :clickable="true"
           :sponsorsOnly="false"
           class="sponsorOverPicture"
         />
-        <HofBadge v-if="hofReasons.length > 0" class="hofOverPicture" />
+        <HofBadge
+          v-if="hofReasons.length > 0"
+          class="hofOverPicture"
+        />
       </div>
       <div class="userInfos">
         <h1>{{ username }}</h1>
-        <ProfileDescriptionText v-model="userDescription" :username="username" />
-        <p
-          class="registered"
-        >{{ $t('Profile.registeredOn') }} {{ registeredOn.toLocaleDateString() }}</p>
+        <ProfileDescriptionText
+          v-model="userDescription"
+          :username="username"
+        />
+        <p class="registered">{{ $t('Profile.registeredOn') }} {{ registeredOn.toLocaleDateString() }}</p>
         <FriendButton :username="username" />
       </div>
     </div>
     <TabMenu :model="items" />
     <router-view
-      style="padding-top: 15px;"
+      style="padding-top: 15px"
       :radarData="radarData"
       :gamesDistributionData="gamesDistributionData"
     />
@@ -31,22 +41,22 @@
 </template>
 
 <script setup lang="ts">
-import TabMenu from 'primevue/tabmenu';
-import FriendButton from '@/components/FriendButton.vue';
-import ProfilePicture from '@/components/ProfilePicture.vue';
-import Sponsor from '@/components/SubscriptionTag.vue';
-import ProfileExplanation from '@/components/ProfileExplanation.vue';
-import HofBadge from '@/components/icons/HofBadge.vue';
+import TabMenu from 'primevue/tabmenu'
+import FriendButton from '@/components/FriendButton.vue'
+import ProfilePicture from '@/components/ProfilePicture.vue'
+import Sponsor from '@/components/SubscriptionTag.vue'
+import ProfileExplanation from '@/components/ProfileExplanation.vue'
+import HofBadge from '@/components/icons/HofBadge.vue'
 
-import type { gamesDistributionData as gamesDistributionDataType } from '@/../../shared/types/typesPlayerStatistic';
-import { watch, ref } from 'vue';
-import { hofReason, DefaultService as Service } from '@/generatedClient/index';
-import router from '@/router/index';
-import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue';
-import { i18n } from '@/services/i18n';
-import { useResizeObserver } from '@vueuse/core';
+import type { gamesDistributionData as gamesDistributionDataType } from '@/../../shared/types/typesPlayerStatistic'
+import { watch, ref } from 'vue'
+import { hofReason, DefaultService as Service } from '@/generatedClient/index'
+import router from '@/router/index'
+import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue'
+import { i18n } from '@/services/i18n'
+import { useResizeObserver } from '@vueuse/core'
 
-const props = defineProps<{ username: string }>();
+const props = defineProps<{ username: string }>()
 
 const userDescription = ref('')
 const isSubscribed = ref(false)
@@ -67,34 +77,39 @@ const profileContainer = ref<null | HTMLElement>(null)
 const registeredOn = ref<Date>(new Date(0))
 
 updateData()
-watch(() => props.username, () => updateData())
+watch(
+  () => props.username,
+  () => updateData()
+)
 
 async function updateData() {
   try {
-    const usernameStats = await Service.getPlayerStats(props.username);
-    isSubscribed.value = usernameStats.subscriber;
-    radarData.value = usernameStats.table;
-    gamesDistributionData.value = usernameStats.gamesDistribution;
+    const usernameStats = await Service.getPlayerStats(props.username)
+    isSubscribed.value = usernameStats.subscriber
+    radarData.value = usernameStats.table
+    gamesDistributionData.value = usernameStats.gamesDistribution
     hofReasons.value = usernameStats.hof
     userDescription.value = usernameStats.userDescription
     registeredOn.value = new Date(usernameStats.registered)
   } catch (err) {
-    console.log(err);
-    router.push({ name: 'Landing' });
+    console.log(err)
+    router.push({ name: 'Landing' })
   }
 }
 
 function createMenu(displayText: boolean) {
   return [
-    { label: displayText ? i18n.global.t('Profile.menuOverview') : '', icon: 'pi pi-fw pi-home', to: { name: 'Profile' }, },
-    { label: displayText ? i18n.global.t('Profile.menuAchievements') : '', icon: 'pi pi-fw pi-flag', to: { name: 'Profile-Achievements' }, },
-    { label: displayText ? i18n.global.t('Profile.menuGames') : '', icon: 'pi pi-fw pi-table', to: { name: 'Profile-Games' }, },
-    { label: displayText ? i18n.global.t('Profile.menuFriends') : '', icon: 'pi pi-fw pi-users', to: { name: 'Profile-Friends' }, },
-    { label: displayText ? i18n.global.t('Profile.menuSocials') : '', icon: 'pi pi-fw pi-sitemap', to: { name: 'Profile-Socials' }, },
+    { label: displayText ? i18n.global.t('Profile.menuOverview') : '', icon: 'pi pi-fw pi-home', to: { name: 'Profile' } },
+    { label: displayText ? i18n.global.t('Profile.menuAchievements') : '', icon: 'pi pi-fw pi-flag', to: { name: 'Profile-Achievements' } },
+    { label: displayText ? i18n.global.t('Profile.menuGames') : '', icon: 'pi pi-fw pi-table', to: { name: 'Profile-Games' } },
+    { label: displayText ? i18n.global.t('Profile.menuFriends') : '', icon: 'pi pi-fw pi-users', to: { name: 'Profile-Friends' } },
+    { label: displayText ? i18n.global.t('Profile.menuSocials') : '', icon: 'pi pi-fw pi-sitemap', to: { name: 'Profile-Socials' } },
   ]
 }
 
-useResizeObserver(profileContainer, () => { updateMenu() })
+useResizeObserver(profileContainer, () => {
+  updateMenu()
+})
 function updateMenu() {
   items.value = createMenu(profileContainer.value?.getBoundingClientRect().width === undefined || profileContainer.value?.getBoundingClientRect().width > 550)
 }

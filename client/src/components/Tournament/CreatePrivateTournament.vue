@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-direction: column; align-items: center;">
+  <div style="display: flex; flex-direction: column; align-items: center">
     <div class="tournamentCreationElement">
       <label>{{ $t('Tournament.CreatePrivate.tournamentName') }}</label>
       <InputText
@@ -11,12 +11,14 @@
       <small
         v-if="!titleValid"
         class="p-error"
-      >{{ $t('Tournament.CreatePrivate.tournamentNameInvalid') }}</small>
+      >
+        {{ $t('Tournament.CreatePrivate.tournamentNameInvalid') }}
+      </small>
     </div>
 
     <div class="tournamentCreationElement">
-      <label style="margin-bottom: 10px;">{{ $t('Tournament.CreatePrivate.playersAndTeams') }}</label>
-      <div style="display: flex; flex-direction: column; align-items: flex-start;">
+      <label style="margin-bottom: 10px">{{ $t('Tournament.CreatePrivate.playersAndTeams') }}</label>
+      <div style="display: flex; flex-direction: column; align-items: flex-start">
         <div class="field-radiobutton">
           <RadioButton
             id="city1"
@@ -51,10 +53,13 @@
     </div>
 
     <div class="tournamentCreationElement">
-      <label
-        style="margin-bottom: 10px;"
-      >{{ $t('Tournament.CreatePrivate.nTeams') }} {{ Math.pow(playersAndTeamsSettings === '6p3t' ? 3 : 2, nRounds) }}</label>
-      <Slider v-model="nRounds" :min="2" :max="8" style="width: 200px;" />
+      <label style="margin-bottom: 10px">{{ $t('Tournament.CreatePrivate.nTeams') }} {{ Math.pow(playersAndTeamsSettings === '6p3t' ? 3 : 2, nRounds) }}</label>
+      <Slider
+        v-model="nRounds"
+        :min="2"
+        :max="8"
+        style="width: 200px"
+      />
     </div>
 
     <Button
@@ -66,23 +71,23 @@
 </template>
 
 <script setup lang="ts">
-import Slider from 'primevue/slider';
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import RadioButton from 'primevue/radiobutton';
+import Slider from 'primevue/slider'
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
+import RadioButton from 'primevue/radiobutton'
 
-import { ref, computed } from 'vue';
-import { injectStrict, SocketKey } from '@/services/injections';
-import router from '@/router';
+import { ref, computed } from 'vue'
+import { injectStrict, SocketKey } from '@/services/injections'
+import router from '@/router'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from '@/services/i18n';
-const toast = useToast();
+import { i18n } from '@/services/i18n'
+const toast = useToast()
 
-const socket = injectStrict(SocketKey);
+const socket = injectStrict(SocketKey)
 
-const title = ref('');
-const playersAndTeamsSettings = ref<'4p' | '6p2t' | '6p3t'>('4p');
-const nRounds = ref(2);
+const title = ref('')
+const playersAndTeamsSettings = ref<'4p' | '6p2t' | '6p3t'>('4p')
+const nRounds = ref(2)
 
 const titleValid = computed(() => title.value.length >= 8)
 
@@ -92,7 +97,7 @@ async function createPrivateTournament() {
     nTeams: Math.pow(playersAndTeamsSettings.value === '6p3t' ? 3 : 2, nRounds.value),
     playersPerTeam: playersAndTeamsSettings.value === '6p2t' ? 3 : 2,
     teamsPerMatch: playersAndTeamsSettings.value === '6p3t' ? 3 : 2,
-    tournamentType: 'KO'
+    tournamentType: 'KO',
   })
   if (res.data == null) {
     console.error('Tournament not created')
@@ -100,7 +105,7 @@ async function createPrivateTournament() {
       severity: 'success',
       summary: i18n.global.t('Toast.GenericError.summary'),
       detail: i18n.global.t('Toast.GenericError.detail'),
-      life: 5000
+      life: 5000,
     })
     return
   }
@@ -109,7 +114,7 @@ async function createPrivateTournament() {
     severity: 'success',
     summary: i18n.global.t('Tournament.CreatePrivate.createdSummary'),
     detail: i18n.global.t('Tournament.CreatePrivate.createdDetail'),
-    life: 5000
+    life: 5000,
   })
   return router.push({ name: 'PrivateTournament', params: { id: res.data.id } })
 }
@@ -121,6 +126,7 @@ async function createPrivateTournament() {
   flex-direction: column;
   margin: 15px;
 }
+
 .radioButton {
   margin-right: 10px;
 }
