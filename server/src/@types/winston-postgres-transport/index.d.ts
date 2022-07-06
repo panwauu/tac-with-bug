@@ -1,1 +1,1 @@
-declare module 'winston-postgres-transport';
+declare module 'winston-postgres-transport'

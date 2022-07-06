@@ -1,28 +1,23 @@
-import type express from 'express';
-import { Controller, Get, Query, Route, Request, Security } from 'tsoa';
+import type express from 'express'
+import { Controller, Get, Query, Route, Request, Security } from 'tsoa'
 
 import { retrieveCapturedGame } from '../services/capture'
 
 @Route('/')
 export class DevController extends Controller {
-    /**
-     * Get capture
-     */
-    @Security('jwt', ['admin'])
-    @Get('/retrieveCapture')
-    public async retrieveCapturedGame(
-        @Request() request: express.Request,
-        @Query() gameID: number,
-    ): Promise<string> {
-        const dbRes = await retrieveCapturedGame(request.app.locals.sqlClient, gameID)
-        let resultingString = ''
-        dbRes.rows[0].game.forEach((row: any, index: any) =>
-            resultingString += JSON.stringify(row) + (index !== dbRes.rows[0].game.length - 1 ? '\r\n' : '')
-        )
-        return resultingString
-    }
+  /**
+   * Get capture
+   */
+  @Security('jwt', ['admin'])
+  @Get('/retrieveCapture')
+  public async retrieveCapturedGame(@Request() request: express.Request, @Query() gameID: number): Promise<string> {
+    const dbRes = await retrieveCapturedGame(request.app.locals.sqlClient, gameID)
+    let resultingString = ''
+    dbRes.rows[0].game.forEach((row: any, index: any) => (resultingString += JSON.stringify(row) + (index !== dbRes.rows[0].game.length - 1 ? '\r\n' : '')))
+    return resultingString
+  }
 
-    /*
+  /*
     @Security('jwt', ['admin'])
     @Post('/insertCapture')
     public async insertCapture(
@@ -34,7 +29,7 @@ export class DevController extends Controller {
     }
     */
 
-    /*
+  /*
     @Security('jwt', ['admin'])
     @Get("/removeCaptures")
     public async removeCaptures(

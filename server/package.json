@@ -19,7 +19,8 @@
     "lint": "eslint -c .eslintrc.js ./src",
     "checkLocales": "node ./dist/server/src/entrypoints/checkLocales.js ../../../../email/locales && node ./dist/server/src/entrypoints/checkLocales.js ../../../../../client/src/locales",
     "sanitizeCaptures": "node ./dist/server/src/entrypoints/sanitizeCapture.js",
-    "testtest": "node ./dist/server/src/dbUtils/test.js"
+    "prettier-format": "prettier --config .prettierrc --write .",
+    "prettier-check": "prettier --config .prettierrc --check ."
   },
   "author": "",
   "license": "ISC",
@@ -86,10 +87,12 @@
     "chance": "^1.1.8",
     "cross-env": "^7.0.3",
     "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-sonarjs": "^0.13.0",
     "jest": "^28.1.2",
     "nodemon": "^2.0.13",
     "openapi-typescript-codegen": "^0.23.0",
+    "prettier": "^2.7.1",
     "socket.io-client": "^4.4.1",
     "supertest": "^6.2.2",
     "ts-jest": "^28.0.5",
