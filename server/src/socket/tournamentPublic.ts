@@ -91,7 +91,7 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
             pushChangedPublicTournament(tournament)
 
             const registerTeam = tournament.registerTeams.find((r) => r.playerids.includes(user.value.id))
-            if (registerTeam != undefined) {
+            if (registerTeam != null) {
                 const dataForClient = { registerTeam: registerTeam, tournamentTitle: tournament.title, player: user.value.username }
                 if (registerTeam.activated.every((a) => a === true)) {
                     socket.emit('tournament:toast:you-joined-team-complete', dataForClient)
@@ -128,7 +128,7 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
             pushChangedPublicTournament(tournament)
 
             const registerTeam = tournament.registerTeams.find((r) => r.playerids.includes(user.value.id))
-            if (registerTeam != undefined) {
+            if (registerTeam != null) {
                 const dataForClient = { registerTeam: registerTeam, tournamentTitle: tournament.title, player: user.value.username }
                 if (registerTeam.activated.every((a) => a === true)) {
                     socket.emit('tournament:toast:you-activated-complete', dataForClient)
@@ -200,7 +200,7 @@ export async function registerTournamentBus() {
 }
 
 function getSocketsOfPlayerIDs(nsp: GeneralNamespace, userIDs: number[]) {
-    return [...nsp.sockets.values()].filter((s) => s.data.userID != undefined && userIDs.includes(s.data.userID))
+    return [...nsp.sockets.values()].filter((s) => s.data.userID != null && userIDs.includes(s.data.userID))
 }
 
 async function sendMailToUnactivatedPlayer(sqlClient: pg.Pool, players: string[], teamName: string, username: string) {

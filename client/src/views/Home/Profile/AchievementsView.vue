@@ -4,7 +4,7 @@
       <Column field="title" :header="$t('Profile.TournamentParticipations.tournamentTitle')" />
       <Column :header="$t('Profile.TournamentParticipations.tournamentResult')">
         <template #body="slotProps">
-          <div v-if="slotProps.data.placement != undefined">
+          <div v-if="slotProps.data.placement != null">
             <div style="width: 35px;">
               <Crown :rank="slotProps.data.placement" />
             </div>

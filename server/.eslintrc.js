@@ -23,6 +23,7 @@ module.exports = {
         'quotes': ['error', 'single'],
         'no-throw-literal': 'error',
         'eol-last': ['error', 'always'],
+        'eqeqeq': ['error', 'always', { 'null': 'ignore' }],
 
         // Enable in the future?
         'no-param-reassign': ['off', { 'props': true }],
@@ -32,6 +33,5 @@ module.exports = {
         'sonarjs/no-duplicate-string': 0,
         'max-len': ['warn', { 'code': 180 }],
         'max-statements-per-line': ['warn', { 'max': 2 }],
-        'eqeqeq': ['warn', 'always', { 'null': 'ignore' }],
     }
 };

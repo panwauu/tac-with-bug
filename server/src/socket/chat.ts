@@ -7,7 +7,7 @@ import { addUserToChat, changeGroupName, createChat, getUsersInChat, insertChatM
 import Joi from 'joi';
 
 export function initializeChat(pgPool: pg.Pool, socket: GeneralSocketS) {
-    if (socket.data.userID != undefined) { updateOverviewForAll(pgPool, [socket.data.userID]) }
+    if (socket.data.userID != null) { updateOverviewForAll(pgPool, [socket.data.userID]) }
     else { socket.emit('chat:overview:update', []); }
 }
 

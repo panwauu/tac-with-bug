@@ -48,7 +48,7 @@ export function resetBalls(balls: tBall.ballsType): void {
     balls.forEach((ball, index) => {
         if (ball.position < ballStart(0, balls)) {
             ball.state = 'house'
-        } else if (ball.position == ballStart(0, balls)) {
+        } else if (ball.position === ballStart(0, balls)) {
             ball.state = 'invalid'
         } else if (ball.position < ballGoal(0, balls)) {
             ball.state = 'valid'

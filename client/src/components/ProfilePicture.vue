@@ -1,11 +1,11 @@
 <template>
   <div class="profilePictureContainer">
     <img alt="Profilbild" class="profilePicture" :src="srcImage">
-    <div v-if="showCrown && getCrown(username) != undefined" class="crown">
+    <div v-if="showCrown && getCrown(username) != null" class="crown">
       <Crown :rank="getCrown(username) ?? 1" />
     </div>
     <Badge
-      v-if="online != undefined"
+      v-if="online != null"
       class="onlineIndicator"
       :severity="online ? 'success' : 'danger'"
     />

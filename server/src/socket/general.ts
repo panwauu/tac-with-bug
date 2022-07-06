@@ -66,7 +66,7 @@ export async function terminateSocket(pgPool: pg.Pool, socket: GeneralSocketS) {
 }
 
 export function isUserOnline(userID: number) {
-    return [...nspGeneral.sockets.values()].find((s) => s.data.userID === userID) != undefined
+    return [...nspGeneral.sockets.values()].find((s) => s.data.userID === userID) != null
 }
 
 export function getSocketByUserID(userID: number): GeneralSocketS | undefined {

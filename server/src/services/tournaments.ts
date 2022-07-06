@@ -63,7 +63,7 @@ export async function getTournamentParticipations(sqlClient: pg.Pool, username: 
 }
 
 export async function lazyLoadTournamentsTable(pgPool: pg.Pool, userID: number | undefined, limit: number, offset: number, filter: 'private' | 'public' | null): Promise<tTournament.tournamentTableData> {
-    const typesToShow = ['private', 'public'].filter((e) => filter == null || e == filter)
+    const typesToShow = ['private', 'public'].filter((e) => filter == null || e === filter)
 
     const dbRes = await pgPool.query(`
     SELECT *, (count(*) OVER())::INT AS total_count FROM

@@ -69,7 +69,7 @@ function createCardsWithMovesForUnactivePlayer(playerCards: string[], textAction
     return playerCards.map((card) => {
         return {
             title: card,
-            possible: textAction != undefined,
+            possible: textAction != null,
             ballActions: {},
             textAction: textAction ?? '',
         }
