@@ -39,7 +39,7 @@ import type { platformStats } from '@/../../shared/types/typesPlatformStatistic'
 import { ref } from 'vue';
 import { Service } from '@/generatedClient/index';
 
-let data = ref<platformStats | null>(null)
+const data = ref<platformStats | null>(null)
 Service.getPlatformStats().then((res) => { data.value = res })
 </script>
 

@@ -83,14 +83,7 @@ const actionStatistics = computed(() => {
 })
 
 function redText(title: string) {
-  if (
-    ['narr', 'krieger', 'tac', 'engel', 'trickser', 'teufel'].includes(
-      title
-    )
-  ) {
-    return false;
-  }
-  return true;
+  return !['narr', 'krieger', 'tac', 'engel', 'trickser', 'teufel'].includes(title)
 }
 
 function cardName(title: string) {

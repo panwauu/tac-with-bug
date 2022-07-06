@@ -33,7 +33,7 @@ const props = defineProps<{
 
 const socket = injectStrict(SocketKey)
 
-let emojiMessages = ref<{ pos: string, text: string }[]>([])
+const emojiMessages = ref<{ pos: string, text: string }[]>([])
 
 function onNewMessage(data: { channel: string, messages: chatMessage[] }) {
     if (router.currentRoute.value.query.gameID == null || data.channel != `g-${router.currentRoute.value.query.gameID}`) { return }
@@ -42,20 +42,20 @@ function onNewMessage(data: { channel: string, messages: chatMessage[] }) {
     const body = data.messages[data.messages.length - 1].body
     const sender = data.messages[data.messages.length - 1].sender
 
-    let index = props.miscState.players.findIndex((p) => { return p.name === sender; });
+    const index = props.miscState.players.findIndex((p) => { return p.name === sender; });
     if (!(index >= 0 && index < props.miscState.nPlayers)) { return }
 
     if (props.positionStyles.stylePositionPictures === undefined) { return }
-    let styles = props.positionStyles.stylePositionPictures[rotateIndex(index)];
-    let left = styles.includes('left');
-    let side =
+    const styles = props.positionStyles.stylePositionPictures[rotateIndex(index)];
+    const left = styles.includes('left');
+    const side =
         parseFloat(
             styles.slice(
                 styles.indexOf(left ? 'left' : 'right') + 6,
                 styles.indexOf('%;', styles.indexOf(left ? 'left' : 'right'))
             )
         ) + 3;
-    let top =
+    const top =
         parseFloat(
             styles.slice(
                 styles.indexOf('top') + 5,

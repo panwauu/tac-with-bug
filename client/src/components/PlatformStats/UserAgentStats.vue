@@ -30,9 +30,9 @@ import Chart from 'primevue/chart';
 import { getGraphColors } from '@/services/graphColors'
 import { i18n } from '@/services/i18n';
 
-let userAgentChat = ref<any | null>(null);
-let userAgentDeviceChat = ref<any | null>(null);
-let userAgentOsChat = ref<any | null>(null);
+const userAgentChat = ref<any | null>(null);
+const userAgentDeviceChat = ref<any | null>(null);
+const userAgentOsChat = ref<any | null>(null);
 const props = defineProps<{ data?: userAgentAnalysisData }>()
 watch(() => props.data, () => { updateUserAgentChart() }, { deep: true })
 

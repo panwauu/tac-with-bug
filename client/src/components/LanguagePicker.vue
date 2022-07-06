@@ -39,7 +39,7 @@ const props = withDefaults(defineProps<{
     uploadFlag: false
   })
 
-let selectedLocale = ref<string | undefined>()
+const selectedLocale = ref<string | undefined>()
 
 
 selectedLocale.value = locales.find((l) => l === i18n.global.locale);
@@ -49,7 +49,7 @@ const setLocale = async () => {
   await setLocaleAndLoadMessages(i18n, selectedLocale.value)
   if (props.uploadFlag) { await Service.setSettingsLocale({ locale: selectedLocale.value }) }
 
-  router.push({ name: router.currentRoute.value.name != null ? router.currentRoute.value.name : 'Landing', params: { locale: selectedLocale.value } });
+  router.push({ name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing', params: { locale: selectedLocale.value } });
 }
 </script>
 

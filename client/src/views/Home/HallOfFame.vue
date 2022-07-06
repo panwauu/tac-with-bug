@@ -62,7 +62,7 @@ import { reactive } from 'vue';
 import { Service } from '@/generatedClient/index';
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
 
-let hofData = reactive({
+const hofData = reactive({
   verlag: [] as string[],
   spende: [] as string[],
   translation: [] as string[],

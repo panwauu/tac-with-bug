@@ -36,16 +36,17 @@ import { Service } from '@/generatedClient/index';
 import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { injectStrict, SocketKey } from '@/services/injections';
-const toast = useToast();
 import { i18n } from '@/services/i18n';
 import { logout as logoutUser } from '@/services/useUser';
+
+const toast = useToast();
 const socket = injectStrict(SocketKey)
 
 const emit = defineEmits(['settingoperationdone'])
 
-let username = ref('')
-let validUsername = ref(false)
-let password = ref('')
+const username = ref('')
+const validUsername = ref(false)
+const password = ref('')
 
 const requestUsernameUpdate = async () => {
   try {

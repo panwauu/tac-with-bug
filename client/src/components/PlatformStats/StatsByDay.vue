@@ -10,7 +10,7 @@ import Chart from 'primevue/chart';
 import { i18n } from '@/services/i18n';
 import { getGraphColors } from '@/services/graphColors';
 
-let dayChart = ref<any | null>(null);
+const dayChart = ref<any | null>(null);
 const props = defineProps<{ data?: dayDataset }>()
 watch(() => props.data, () => { updateDayChart() }, { deep: true })
 

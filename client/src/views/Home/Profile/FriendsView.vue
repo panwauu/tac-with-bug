@@ -34,8 +34,8 @@ const socket = injectStrict(SocketKey)
 const friendsState = injectStrict(FriendsStateKey)
 const props = defineProps<{ username: string }>();
 
-let loading = ref(false)
-let friends = ref<friend[]>([])
+const loading = ref(false)
+const friends = ref<friend[]>([])
 
 updateData()
 watch(() => props.username, () => updateData())

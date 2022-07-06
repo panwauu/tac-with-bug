@@ -46,7 +46,7 @@ const gamesSummary = injectStrict(GamesSummaryKey)
 
 gamesSummary.getGames()
 
-let activeIndex = ref(gamesSummary.runningGames.length !== 0 ? 0 : 1);
+const activeIndex = ref(gamesSummary.runningGames.length !== 0 ? 0 : 1);
 watch(
   () => gamesSummary.runningGames.length,
   () => { if (gamesSummary.runningGames.length !== 1) { activeIndex.value = 0 } }

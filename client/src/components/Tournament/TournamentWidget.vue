@@ -52,7 +52,7 @@ import { getWinners } from '@/services/useTournamentWinners';
 const socket = injectStrict(SocketKey)
 
 const winners = getWinners()
-let tournament = ref<publicTournament | null>(null)
+const tournament = ref<publicTournament | null>(null)
 
 queryTournament()
 async function queryTournament() {

@@ -41,7 +41,7 @@ import SettingsAudioVolume from '@/components/SettingsView/SettingsAudioVolume.v
 import { ref } from 'vue';
 import { isLoggedIn } from '@/services/useUser';
 
-let activeIndex = ref<number | undefined>();
+const activeIndex = ref<number | undefined>();
 </script>
 
 <style scoped>

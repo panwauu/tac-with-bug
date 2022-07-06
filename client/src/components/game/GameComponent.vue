@@ -198,7 +198,7 @@ async function updateHandler(): Promise<void> {
   props.cardsState.updateCards(props.updateData.cards, props.updateData.ownCards);
 }
 
-let modalVisibleLocal = computed({
+const modalVisibleLocal = computed({
   get() {
     return props.modalVisible;
   },
@@ -207,7 +207,7 @@ let modalVisibleLocal = computed({
   },
 })
 
-let modalStateLocal = computed({
+const modalStateLocal = computed({
   get() {
     return props.modalState;
   },
@@ -244,8 +244,8 @@ function getMenu(displayText: boolean) {
   ]
 }
 
-let gameBoardPortrait = ref(false)
-let gameViewRef = ref<HTMLElement | null>()
+const gameBoardPortrait = ref(false)
+const gameViewRef = ref<HTMLElement | null>()
 
 onMounted(() => {
   onResize()
@@ -256,11 +256,11 @@ useResizeObserver(gameViewRef, () => { onResize() });
 function onResize() {
   if (gameViewRef.value == null) { console.error('gameViewRef not populated'); return }
 
-  let gameViewBounding = gameViewRef.value.getBoundingClientRect();
+  const gameViewBounding = gameViewRef.value.getBoundingClientRect();
   portraitMenu.value = getMenu(gameViewBounding.width > 600)
   gameBoardPortrait.value = gameViewBounding.height + 80 > gameViewBounding.width;
 
-  let gameboard = document.getElementById('gameboard')
+  const gameboard = document.getElementById('gameboard')
   if (gameboard == null) { console.error('gameboard ref not populated'); return; }
   const gameBoardSize = Math.max(gameboard.getBoundingClientRect().height, gameboard.getBoundingClientRect().width)
   gameViewRef.value.style.setProperty('--board-size-in-px', gameBoardSize === 0 ? '100vmin' : `${gameBoardSize}px`);

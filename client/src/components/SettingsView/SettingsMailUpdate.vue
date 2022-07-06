@@ -35,9 +35,9 @@ const toast = useToast();
 
 const emit = defineEmits(['settingoperationdone'])
 
-let email = ref('')
-let validEmail = ref(false)
-let password = ref('')
+const email = ref('')
+const validEmail = ref(false)
+const password = ref('')
 
 const requestMailUpdate = async () => {
   try {

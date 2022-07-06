@@ -64,7 +64,7 @@ const props = defineProps<{ id: string, locale: string }>()
 
 const socket = injectStrict(SocketKey);
 const tournamentID = computed(() => parseInt(props.id))
-let tournament = ref<publicTournament | null>()
+const tournament = ref<publicTournament | null>()
 
 queryTournament()
 watch(() => props.id, () => queryTournament)
@@ -81,7 +81,7 @@ function updateTournament(newTournament: publicTournament) {
 socket.on('tournament:public:update', updateTournament)
 onUnmounted(() => { socket.off('tournament:public:update', updateTournament) })
 
-let displayExplanation = ref(false)
+const displayExplanation = ref(false)
 </script>
 
 <style scoped>

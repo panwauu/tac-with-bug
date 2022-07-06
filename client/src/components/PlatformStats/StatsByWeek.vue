@@ -16,15 +16,15 @@ import Chart from 'primevue/chart';
 import { i18n } from '@/services/i18n';
 import { getGraphColors } from '@/services/graphColors';
 
-let weekChart = ref<any | null>(null);
+const weekChart = ref<any | null>(null);
 const props = defineProps<{ data?: weekDataset }>()
 watch(() => props.data, () => { updateWeekChart() }, { deep: true })
 
 function updateWeekChart() {
     if (props.data === undefined) { return }
 
-    let dayIndexFromMonday = (new Date().getDay() + 6) % 7;
-    let currentHour = new Date().getUTCHours();
+    const dayIndexFromMonday = (new Date().getDay() + 6) % 7;
+    const currentHour = new Date().getUTCHours();
 
     const weekData = normalizeWeekData(props.data)
 
@@ -43,7 +43,7 @@ function updateWeekChart() {
             fill: true,
         });
 
-        let val = Math.round(
+        const val = Math.round(
             weekData[weekData.length - 1][i === 0 ? 1 : 2] /
             props.data.passedRatio[i]
         );
@@ -93,7 +93,7 @@ function updateWeekChart() {
 }
 
 function normalizeWeekData(d: weekDataset): Array<[string, number, number, number]> {
-    let weekData: Array<[string, number, number, number]> = [];
+    const weekData: Array<[string, number, number, number]> = [];
 
     for (const y in d.data) {
         for (const w in d.data[y]) {

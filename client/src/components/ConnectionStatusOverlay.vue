@@ -30,12 +30,12 @@ import { injectStrict, SocketKey } from '@/services/injections';
 
 const socket = injectStrict(SocketKey)
 
-let loading = ref(true)
-let connected = ref(false)
-let reconnecting = ref(false)
+const loading = ref(true)
+const connected = ref(false)
+const reconnecting = ref(false)
 
-let reconnectionAttemptNumber = ref(0)
-let reconnectionAttempts = computed(() => socket.io.opts.reconnectionAttempts ?? Infinity)
+const reconnectionAttemptNumber = ref(0)
+const reconnectionAttempts = computed(() => socket.io.opts.reconnectionAttempts ?? Infinity)
 
 socket.on('connect', connectHandler);
 socket.on('connect_error', connectErrorHandler);

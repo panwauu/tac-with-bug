@@ -132,8 +132,8 @@ const emit = defineEmits<{
 
 defineProps<{ username: string, games: gameForOverview[], nEntries: number, loading: boolean, paginator?: boolean }>();
 
-let selectedGame = ref<gameForOverview[]>([])
-let td = ref<any | null>(null)
+const selectedGame = ref<gameForOverview[]>([])
+const td = ref<any | null>(null)
 
 function rowSelect() {
   emit('rowSelect', selectedGame.value[0])
@@ -154,7 +154,7 @@ function abortButton(game: gameForOverview) {
 }
 
 function createDateString(seconds: number) {
-  let d = new Date(seconds);
+  const d = new Date(seconds);
   return d.toLocaleDateString();
 }
 

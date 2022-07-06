@@ -69,7 +69,7 @@ const localValid = computed({
   set: (val: boolean) => emit('update:valid', val)
 })
 
-let password_repeat = ref('')
+const password_repeat = ref('')
 
 const validPassword = computed(() => !passwordTooLong.value && !passwordTooShort.value)
 const passwordTooShort = computed(() => localPassword.value.length < 8)

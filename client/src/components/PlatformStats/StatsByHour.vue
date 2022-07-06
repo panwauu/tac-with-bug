@@ -16,7 +16,7 @@ import Chart from 'primevue/chart';
 import { i18n } from '@/services/i18n';
 import { getGraphColors } from '@/services/graphColors';
 
-let hourChart = ref<any | null>(null);
+const hourChart = ref<any | null>(null);
 const props = defineProps<{ data?: hourDataset }>()
 watch(() => props.data, () => { updateHourChart() }, { deep: true })
 
@@ -67,9 +67,9 @@ const hourChartData = ref({
 function updateHourChart() {
     if (props.data === undefined) { return }
 
-    let posTimeZoneOffset =
+    const posTimeZoneOffset =
         (Math.floor(new Date().getTimezoneOffset() / 60) + 24) % 24;
-    let hourDataOffseted = [
+    const hourDataOffseted = [
         ...props.data.slice(posTimeZoneOffset, 24),
         ...props.data.slice(0, posTimeZoneOffset),
     ];

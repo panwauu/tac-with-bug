@@ -23,8 +23,8 @@ import { Service } from '@/generatedClient/index';
 import { i18n } from '@/services/i18n';
 import * as EmailValidator from 'email-validator';
 
-let emailCheck = ref<boolean | null>(false)
-let emailCheckTimeout = ref(undefined as number | undefined)
+const emailCheck = ref<boolean | null>(false)
+const emailCheckTimeout = ref(undefined as number | undefined)
 
 const emit = defineEmits<{
     (eventName: 'update:email', email: string): void,

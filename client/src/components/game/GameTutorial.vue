@@ -140,8 +140,8 @@ const props = defineProps<{
   tutorialStep: number,
 }>();
 
-let quizSelected = ref(null)
-let quizError = ref(false)
+const quizSelected = ref(null)
+const quizError = ref(false)
 
 
 function abortTutorial() {

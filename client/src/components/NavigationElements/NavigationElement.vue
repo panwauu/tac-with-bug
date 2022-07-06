@@ -32,7 +32,7 @@ import { isLoggedIn } from '@/services/useUser';
 
 const emit = defineEmits(['logout'])
 
-let menuRef = ref<null | Menu>(null);
+const menuRef = ref<null | Menu>(null);
 
 function returnMenu() {
     const menu: any[] = [
@@ -96,7 +96,7 @@ function returnMenu() {
 }
 
 const userMenu = ref(returnMenu())
-let displayMenu = ref(false)
+const displayMenu = ref(false)
 
 const toggle = (event: Event) => { menuRef.value?.toggle(event) }
 

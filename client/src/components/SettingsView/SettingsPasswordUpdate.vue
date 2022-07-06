@@ -32,15 +32,15 @@ import InputText from 'primevue/inputtext';
 import Password from '../Forms/Password.vue';
 import { Service } from '@/generatedClient/index';
 import { ref } from 'vue';
+import { i18n } from '@/services/i18n';
 import { useToast } from 'primevue/usetoast';
 const toast = useToast()
-import { i18n } from '@/services/i18n';
 
 const emit = defineEmits(['settingoperationdone'])
 
-let password = ref('')
-let newPassword = ref('')
-let validNewPassword = ref(false)
+const password = ref('')
+const newPassword = ref('')
+const validNewPassword = ref(false)
 
 const requestPasswordUpdate = async () => {
   try {

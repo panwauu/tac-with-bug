@@ -57,8 +57,8 @@ const emits = defineEmits<{ (e: 'update:modelValue', modelValue: string): void }
 const props = defineProps<{ username: string, modelValue: string }>()
 
 const toast = useToast()
-let editing = ref(false)
-let userDescription = ref(props.modelValue)
+const editing = ref(false)
+const userDescription = ref(props.modelValue)
 
 watch(() => props.modelValue, () => { resetValueAndEndEditing() })
 watch(() => props.username, () => { clearValueAndEndEditing() })

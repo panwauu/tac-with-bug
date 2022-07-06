@@ -41,7 +41,7 @@
           ball6_turned:
             miscState.players.length === 6 && positionStyles.turned === true,
         }"
-        :style="positionStyles.stylePositionBalls?.[rotatePosition(position)]"
+        :style="(positionStyles.stylePositionBalls?.[rotatePosition(position)] as any)"
         droppable
         @click="dropSuccess(position)"
         @drop="dropSuccess(position)"
@@ -162,10 +162,7 @@ function rotateIndex(index: number) {
 }
 
 function tradePending(index: number): boolean {
-  if ('tradeInformation' in props.miscState.players[index] && props.miscState.players[index].tradeInformation?.[1] === false) {
-    return true;
-  }
-  return false;
+  return 'tradeInformation' in props.miscState.players[index] && props.miscState.players[index].tradeInformation?.[1] === false
 }
 
 function selectBall(index: number): void {
@@ -188,7 +185,7 @@ function dragStop(): void {
 }
 
 function dropSuccess(position: number): void {
-  let move: moveBall = [
+  const move: moveBall = [
     props.miscState.gamePlayer,
     props.cardsState.selectedCard,
     props.ballsState.selectedBall,
@@ -202,7 +199,7 @@ function dropSuccess(position: number): void {
 }
 
 function performTextAction(textAction: string): void {
-  let move: moveText = [
+  const move: moveText = [
     props.miscState.gamePlayer,
     textAction === 'beenden' ? 0 : props.cardsState.selectedCard,
     textAction === 'Karten weitergeben' ? 'narr' : textAction,

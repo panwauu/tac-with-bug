@@ -110,10 +110,7 @@ const props = defineProps<{
 }>();
 
 function hasOneOrThirteen(index: number): boolean {
-  if ('tradeInformation' in props.miscState.players[index] && props.miscState.players[index].tradeInformation?.[0] === true) {
-    return true;
-  }
-  return false;
+  return 'tradeInformation' in props.miscState.players[index] && props.miscState.players[index].tradeInformation?.[0] === true
 }
 
 function rotateIndex(index: number) {
