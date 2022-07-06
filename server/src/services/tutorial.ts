@@ -17,7 +17,7 @@ async function validateTutorialIDAndStep(tutorialID: number, tutorialStep: numbe
 }
 
 export async function getDefaultTutorialProgress(pgPool: pg.Pool): Promise<boolean[][]> {
-    const dbRes = await pgPool.query<{ tutorial: string }>(`SELECT to_jsonb(column_default) as tutorial FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'tutorial';`)
+    const dbRes = await pgPool.query<{ tutorial: string }>('SELECT to_jsonb(column_default) as tutorial FROM information_schema.columns WHERE table_schema = \'public\' AND table_name = \'users\' AND column_name = \'tutorial\';')
     if (dbRes.rowCount !== 1) { throw new Error('Tutorial progress default value could not be queried') }
     return JSON.parse(dbRes.rows[0].tutorial.substring(1, dbRes.rows[0].tutorial.length - 8))
 }
