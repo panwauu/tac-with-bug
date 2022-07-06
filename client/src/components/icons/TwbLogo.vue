@@ -1,15 +1,21 @@
 <template>
   <div class="logoWrapper">
-    <TwbSymbol class="symbol symbolLeft" side="left" />
+    <TwbSymbol
+      class="symbol symbolLeft"
+      side="left"
+    />
     <TwbText class="text" />
-    <TwbSymbol class="symbol symbolRight" side="right" />
+    <TwbSymbol
+      class="symbol symbolRight"
+      side="right"
+    />
     <div class="scaler" />
   </div>
 </template>
 
 <script setup lang="ts">
-import TwbSymbol from './TwbSymbol.vue';
-import TwbText from './TwbText.vue';
+import TwbSymbol from './TwbSymbol.vue'
+import TwbText from './TwbText.vue'
 </script>
 
 <style scoped>

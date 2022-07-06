@@ -16,16 +16,12 @@
         <template #footer>
           <Divider />
           <ul style="line-height: 1.5">
-            <li
-              :class="passwordTooShort ? 'p-error' : ''"
-            >{{ $t('Login.SignUp.passwordMinLetters') }}</li>
-            <li
-              :class="passwordTooLong ? 'p-error' : ''"
-            >{{ $t('Login.SignUp.passwordMaxLetters') }}</li>
+            <li :class="passwordTooShort ? 'p-error' : ''">{{ $t('Login.SignUp.passwordMinLetters') }}</li>
+            <li :class="passwordTooLong ? 'p-error' : ''">{{ $t('Login.SignUp.passwordMaxLetters') }}</li>
           </ul>
         </template>
       </PasswordPrimevue>
-      <label for="SUpassword">{{ $t("Login.password") }}</label>
+      <label for="SUpassword">{{ $t('Login.password') }}</label>
     </span>
 
     <span class="p-float-label floatingTextInput">
@@ -37,36 +33,38 @@
         style="width: 100%"
         :class="validPasswordRepeat || password === '' ? '' : 'p-invalid'"
       />
-      <label for="SUpasswordRepeat">{{ $t("Login.passwordRepeat") }}</label>
+      <label for="SUpasswordRepeat">{{ $t('Login.passwordRepeat') }}</label>
       <small
         v-if="!validPasswordRepeat && password !== '' && passwordRepeat !== ''"
         class="p-error"
-      >{{ $t("Login.SignUp.passwordUnequal") }}</small>
+      >
+        {{ $t('Login.SignUp.passwordUnequal') }}
+      </small>
     </span>
   </div>
 </template>
 
 <script setup lang="ts">
-import InputText from 'primevue/inputtext';
+import InputText from 'primevue/inputtext'
 
-import { computed, ref, watch } from 'vue';
-import PasswordPrimevue from 'primevue/password';
-import Divider from 'primevue/divider';
+import { computed, ref, watch } from 'vue'
+import PasswordPrimevue from 'primevue/password'
+import Divider from 'primevue/divider'
 
 const emit = defineEmits<{
-  (eventName: 'update:password', password: string): void,
+  (eventName: 'update:password', password: string): void
   (eventName: 'update:valid', valid: boolean): void
 }>()
-const props = defineProps<{ password: string, valid: boolean }>()
+const props = defineProps<{ password: string; valid: boolean }>()
 
 const localPassword = computed({
   get: () => props.password,
-  set: (val: string) => emit('update:password', val)
+  set: (val: string) => emit('update:password', val),
 })
 
 const localValid = computed({
   get: () => props.valid,
-  set: (val: boolean) => emit('update:valid', val)
+  set: (val: boolean) => emit('update:valid', val),
 })
 
 const passwordRepeat = ref('')
@@ -77,7 +75,12 @@ const passwordTooLong = computed(() => localPassword.value.length > 64)
 const validPasswordRepeat = computed(() => localPassword.value === passwordRepeat.value)
 const validCombination = computed(() => validPassword.value && validPasswordRepeat.value && localPassword.value !== '' && passwordRepeat.value !== '')
 
-watch(() => validCombination.value, () => { localValid.value = validCombination.value })
+watch(
+  () => validCombination.value,
+  () => {
+    localValid.value = validCombination.value
+  }
+)
 </script>
 
 <style scoped>

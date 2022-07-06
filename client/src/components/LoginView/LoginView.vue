@@ -1,12 +1,18 @@
 <template>
   <div>
-    <Message v-if="displayUnactivatedMessage" severity="error" :sticky="true">
+    <Message
+      v-if="displayUnactivatedMessage"
+      severity="error"
+      :sticky="true"
+    >
       <div>
         {{ $t(`Login.SignIn.errorMsgEmail`) }}
         <a
           href="#"
           @click="newActivationMessage()"
-        >{{ $t("Login.SignIn.errorMsgEmailLink") }}</a>
+        >
+          {{ $t('Login.SignIn.errorMsgEmailLink') }}
+        </a>
       </div>
     </Message>
     <form @submit.prevent="login">
@@ -18,7 +24,7 @@
           name="username"
           style="width: 100%"
         />
-        <label for="LIusername">{{ $t("Login.username") }}</label>
+        <label for="LIusername">{{ $t('Login.username') }}</label>
       </span>
       <span class="p-float-label floatingTextInput loginInputElement">
         <InputText
@@ -28,7 +34,7 @@
           name="password"
           style="width: 100%"
         />
-        <label for="LIpassword">{{ $t("Login.password") }}</label>
+        <label for="LIpassword">{{ $t('Login.password') }}</label>
       </span>
       <Button
         type="submit"
@@ -42,24 +48,24 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import Message from 'primevue/message';
-import InputText from 'primevue/inputtext';
+import Button from 'primevue/button'
+import Message from 'primevue/message'
+import InputText from 'primevue/inputtext'
 
-import { ref } from 'vue';
-import { DefaultService as Service } from '@/generatedClient/index';
-import { login as userLogin } from '@/services/useUser';
-import { useToast } from 'primevue/usetoast';
-import { i18n } from '@/services/i18n';
-import router from '@/router';
-import { injectStrict, SocketKey } from '@/services/injections';
+import { ref } from 'vue'
+import { DefaultService as Service } from '@/generatedClient/index'
+import { login as userLogin } from '@/services/useUser'
+import { useToast } from 'primevue/usetoast'
+import { i18n } from '@/services/i18n'
+import router from '@/router'
+import { injectStrict, SocketKey } from '@/services/injections'
 
-import { useSettingsStore } from '@/store/settings';
-import { deleteProfilePics } from '@/services/useProfilePicture';
+import { useSettingsStore } from '@/store/settings'
+import { deleteProfilePics } from '@/services/useProfilePicture'
 const settingsStore = useSettingsStore()
 
 const socket = injectStrict(SocketKey)
-const toast = useToast();
+const toast = useToast()
 
 const emit = defineEmits(['login'])
 
@@ -69,18 +75,20 @@ const loading = ref(false)
 const displayUnactivatedMessage = ref(false)
 
 async function login() {
-  loading.value = true;
+  loading.value = true
 
   try {
     const credentials = {
       username: username.value,
       password: password.value,
-    };
-    const response = await Service.loginUser(credentials);
-    const socketRes = await socket.emitWithAck(1000, 'login', { token: response.token });
-    if (socketRes.error != null) { throw new Error('Could not login Socket') }
+    }
+    const response = await Service.loginUser(credentials)
+    const socketRes = await socket.emitWithAck(1000, 'login', { token: response.token })
+    if (socketRes.error != null) {
+      throw new Error('Could not login Socket')
+    }
 
-    (socket.auth as any).token = response.token
+    ;(socket.auth as any).token = response.token
     userLogin({ token: response.token, username: response.username })
     deleteProfilePics()
     settingsStore.setColorblind(response.colorBlindnessFlag, false)
@@ -88,20 +96,20 @@ async function login() {
     router.push({
       name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing',
       query: router.currentRoute.value.query,
-      params: { ...router.currentRoute.value.params, locale: response.locale }
+      params: { ...router.currentRoute.value.params, locale: response.locale },
     })
     emit('login')
   } catch (error: any) {
     if (error?.body?.error === 'email') {
-      displayUnactivatedMessage.value = true;
+      displayUnactivatedMessage.value = true
       return
     }
 
-    let errorMsg = 'errorMsg';
+    let errorMsg = 'errorMsg'
     if (error?.body?.error === 'user') {
-      errorMsg += 'User';
+      errorMsg += 'User'
     } else if (error?.body?.error === 'password') {
-      errorMsg += 'Password';
+      errorMsg += 'Password'
     }
 
     toast.add({
@@ -109,9 +117,9 @@ async function login() {
       summary: i18n.global.t('Login.SignIn.errorHeader'),
       detail: i18n.global.t(`Login.SignIn.${errorMsg}`),
       life: 2500,
-    });
+    })
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 }
 
@@ -123,7 +131,7 @@ function newActivationMessage() {
     summary: i18n.global.t('Login.SignIn.newActivationSummary'),
     detail: i18n.global.t('Login.SignIn.newActivationDetail'),
     life: 5000,
-  });
+  })
 }
 </script>
 

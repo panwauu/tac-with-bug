@@ -1,7 +1,7 @@
 <template>
   <div class="p-card tutorialPage">
     <h2>{{ $t('Tutorial.tutorialHeader') }}</h2>
-    <div style="margin-bottom: 15px;">{{ $t('Tutorial.moreTutorialsInFuture') }}</div>
+    <div style="margin-bottom: 15px">{{ $t('Tutorial.moreTutorialsInFuture') }}</div>
     <Accordion>
       <AccordionTab
         v-for="(tutorialProgress, tutorialID) in tutorialStore.getProgress"
@@ -13,7 +13,10 @@
             <div class="rightHeader">
               <div>{{ tutorialProgress.filter((d) => d === true).length }}/{{ tutorialProgress.length }}</div>
               <div class="checkbox">
-                <div v-if="tutorialProgress.every((d) => d === true)" class="checkboxInner" />
+                <div
+                  v-if="tutorialProgress.every((d) => d === true)"
+                  class="checkboxInner"
+                />
               </div>
             </div>
           </div>
@@ -30,51 +33,62 @@
           :key="`Tutorial-${tutorialID}-key-${tutorialStep}`"
         >
           <Divider />
-          <div class="nameElement" @click="startTutorial(tutorialID, tutorialStep)">
+          <div
+            class="nameElement"
+            @click="startTutorial(tutorialID, tutorialStep)"
+          >
             <div>{{ tutorialStep + 1 }}.</div>
             <div>{{ $t(`Tutorial.${tutorialID}.${tutorialStep}.title`) }}</div>
             <div class="checkbox">
-              <div v-if="stepIsDone === true" class="checkboxInner" />
+              <div
+                v-if="stepIsDone === true"
+                class="checkboxInner"
+              />
             </div>
           </div>
         </template>
       </AccordionTab>
     </Accordion>
 
-    <h2 style="margin-top: 35px;">{{ $t('Tutorial.replayHeader') }}</h2>
-    <div style="margin-bottom: 15px;">{{ $t('Tutorial.replaysInFuture') }}</div>
+    <h2 style="margin-top: 35px">{{ $t('Tutorial.replayHeader') }}</h2>
+    <div style="margin-bottom: 15px">{{ $t('Tutorial.replaysInFuture') }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
-import Divider from 'primevue/divider';
+import Button from 'primevue/button'
+import Accordion from 'primevue/accordion'
+import AccordionTab from 'primevue/accordiontab'
+import Divider from 'primevue/divider'
 
-import router from '@/router/index';
-import { injectStrict, SocketKey } from '@/services/injections';
-import { useTutorialStore } from '@/store/tutorial';
+import router from '@/router/index'
+import { injectStrict, SocketKey } from '@/services/injections'
+import { useTutorialStore } from '@/store/tutorial'
 
 const socket = injectStrict(SocketKey)
 const tutorialStore = useTutorialStore()
 tutorialStore.loadProgress(socket)
 
 function startTutorial(tutorialID: number, tutorialStep: number) {
-  router.push({ name: 'Tutorial', query: { tutorialID, tutorialStep } });
+  router.push({ name: 'Tutorial', query: { tutorialID, tutorialStep } })
 }
 
 function getStartButton(tutorialProgress: boolean[]): string {
-  if (tutorialProgress.every((d: boolean) => d === false)) { return 'start' }
-  return tutorialProgress.every((d: boolean) => d === true) ? 'restart' : 'resume';
+  if (tutorialProgress.every((d: boolean) => d === false)) {
+    return 'start'
+  }
+  return tutorialProgress.every((d: boolean) => d === true) ? 'restart' : 'resume'
 }
 
 function clickStartButton(tutorialID: number, tutorialProgress: boolean[]) {
   if (tutorialProgress.every((d: boolean) => d === true)) {
     tutorialStore.resetTutorialProgress(socket, tutorialID)
-    startTutorial(tutorialID, 0);
+    startTutorial(tutorialID, 0)
   } else {
-    startTutorial(tutorialID, tutorialProgress.findIndex((d: boolean) => d === false));
+    startTutorial(
+      tutorialID,
+      tutorialProgress.findIndex((d: boolean) => d === false)
+    )
   }
 }
 </script>

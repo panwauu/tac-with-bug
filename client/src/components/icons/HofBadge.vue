@@ -1,11 +1,14 @@
 <template>
-  <div :class="['badge', clickable ? 'clickable' : '']" @click="toSubscription()">
+  <div
+    :class="['badge', clickable ? 'clickable' : '']"
+    @click="toSubscription()"
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="25"
       height="25"
       viewBox="0 0 20 20"
-      style="padding-right: 3px;"
+      style="padding-right: 3px"
     >
       <path
         xmlns="http://www.w3.org/2000/svg"
@@ -14,25 +17,22 @@
       />
     </svg>
     <div>
-      <div style="font-size: 0.7rem; margin-bottom: -0.4rem;">HALL OF</div>
+      <div style="font-size: 0.7rem; margin-bottom: -0.4rem">HALL OF</div>
       <div>FAME</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { withDefaults } from 'vue';
+import { withDefaults } from 'vue'
 import router from '@/router/index'
 
-const props = withDefaults(
-    defineProps<{ clickable?: boolean, sponsorsOnly?: boolean }>(),
-    { clickable: true, sponsorsOnly: true }
-)
+const props = withDefaults(defineProps<{ clickable?: boolean; sponsorsOnly?: boolean }>(), { clickable: true, sponsorsOnly: true })
 
 const toSubscription = () => {
-    if (props.clickable) {
-        router.push({ name: 'HOF' });
-    }
+  if (props.clickable) {
+    router.push({ name: 'HOF' })
+  }
 }
 </script>
 

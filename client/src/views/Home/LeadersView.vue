@@ -21,14 +21,29 @@
           :lazy="true"
           @page="onPage()"
         >
-          <Column field="index" :header="$t('Leaders.rank')" />
-          <Column field="username" :header="$t('Leaders.name')">
+          <Column
+            field="index"
+            :header="$t('Leaders.rank')"
+          />
+          <Column
+            field="username"
+            :header="$t('Leaders.name')"
+          >
             <template #body="slotProps">
-              <PlayerWithPicture :nameFirst="false" :username="slotProps.data.username" />
+              <PlayerWithPicture
+                :nameFirst="false"
+                :username="slotProps.data.username"
+              />
             </template>
           </Column>
-          <Column field="winshare" :header="$t('Leaders.winshare')" />
-          <Column field="wins" :header="$t('Leaders.wins')" />
+          <Column
+            field="winshare"
+            :header="$t('Leaders.winshare')"
+          />
+          <Column
+            field="wins"
+            :header="$t('Leaders.wins')"
+          />
         </DataTable>
       </TabPanel>
       <TabPanel header="4er Team-Tac">
@@ -44,14 +59,18 @@
           :lazy="true"
           @page="onPageCoop(4)"
         >
-          <Column field="index" :header="$t('Leaders.rank')" />
-          <Column field="team" :header="$t('Leaders.teams')">
+          <Column
+            field="index"
+            :header="$t('Leaders.rank')"
+          />
+          <Column
+            field="team"
+            :header="$t('Leaders.teams')"
+          >
             <template #body="slotProps">
               <div class="teamContainer">
                 <div
-                  v-for="teamIndex in Math.ceil(
-                    slotProps.data.team.length / 2
-                  )"
+                  v-for="teamIndex in Math.ceil(slotProps.data.team.length / 2)"
                   :key="`team4-${teamIndex}`"
                   class="team"
                 >
@@ -68,8 +87,14 @@
               </div>
             </template>
           </Column>
-          <Column field="count" :header="$t('Leaders.cards')" />
-          <Column field="lastplayed" :header="$t('Leaders.date')">
+          <Column
+            field="count"
+            :header="$t('Leaders.cards')"
+          />
+          <Column
+            field="lastplayed"
+            :header="$t('Leaders.date')"
+          >
             <template #body="slotProps">
               <div>{{ createDateString(slotProps.data.lastplayed) }}</div>
             </template>
@@ -89,14 +114,18 @@
           :lazy="true"
           @page="onPageCoop(6)"
         >
-          <Column field="index" :header="$t('Leaders.rank')" />
-          <Column field="team" :header="$t('Leaders.teams')">
+          <Column
+            field="index"
+            :header="$t('Leaders.rank')"
+          />
+          <Column
+            field="team"
+            :header="$t('Leaders.teams')"
+          >
             <template #body="slotProps">
               <div class="teamContainer">
                 <div
-                  v-for="teamIndex in Math.ceil(
-                    slotProps.data.team.length / 2
-                  )"
+                  v-for="teamIndex in Math.ceil(slotProps.data.team.length / 2)"
                   :key="`team4-${teamIndex}`"
                   class="team"
                 >
@@ -113,8 +142,14 @@
               </div>
             </template>
           </Column>
-          <Column field="count" :header="$t('Leaders.cards')" />
-          <Column field="lastplayed" :header="$t('Leaders.teams')">
+          <Column
+            field="count"
+            :header="$t('Leaders.cards')"
+          />
+          <Column
+            field="lastplayed"
+            :header="$t('Leaders.teams')"
+          >
             <template #body="slotProps">
               <div>{{ createDateString(slotProps.data.lastplayed) }}</div>
             </template>
@@ -126,44 +161,50 @@
 </template>
 
 <script setup lang="ts">
-import TabView from 'primevue/tabview';
-import TabPanel from 'primevue/tabpanel';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import SelectButton from 'primevue/selectbutton';
-import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
+import TabView from 'primevue/tabview'
+import TabPanel from 'primevue/tabpanel'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import SelectButton from 'primevue/selectbutton'
+import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
-import { ref } from 'vue';
-import { DefaultService as Service } from '@/generatedClient/index';
-import { i18n } from '@/services/i18n';
+import { ref } from 'vue'
+import { DefaultService as Service } from '@/generatedClient/index'
+import { i18n } from '@/services/i18n'
 
 const rows = ref(10)
 const totalNumber = ref(0)
 const first = ref(0)
-const data = ref([] as {
-  username: string
-  wins: number
-  winshare: string
-  index: number
-}[])
+const data = ref(
+  [] as {
+    username: string
+    wins: number
+    winshare: string
+    index: number
+  }[]
+)
 const loading = ref(false)
 const totalNumberCoop4 = ref(0)
 const firstCoop4 = ref(0)
-const dataCoop4 = ref([] as {
-  team: string[],
-  count: number
-  index: number
-  lastplayed: number
-}[])
+const dataCoop4 = ref(
+  [] as {
+    team: string[]
+    count: number
+    index: number
+    lastplayed: number
+  }[]
+)
 const loadingCoop4 = ref(false)
 const totalNumberCoop6 = ref(0)
 const firstCoop6 = ref(0)
-const dataCoop6 = ref([] as {
-  team: string[],
-  count: number
-  index: number
-  lastplayed: number
-}[])
+const dataCoop6 = ref(
+  [] as {
+    team: string[]
+    count: number
+    index: number
+    lastplayed: number
+  }[]
+)
 const loadingCoop6 = ref(false)
 
 const dateOptions = [
@@ -175,11 +216,7 @@ const dateOptions = [
   },
   {
     name: i18n.global.t('Leaders.Time.thisMonth'),
-    startDate: new Date(
-      new Date().getUTCFullYear(),
-      new Date().getUTCMonth(),
-      1
-    ).getTime(),
+    startDate: new Date(new Date().getUTCFullYear(), new Date().getUTCMonth(), 1).getTime(),
     endDate: null,
   },
   {
@@ -191,98 +228,84 @@ const dateOptions = [
 
 const selectedDate = ref(dateOptions[2])
 
-onPage();
-onPageCoop(4);
-onPageCoop(6);
-
+onPage()
+onPageCoop(4)
+onPageCoop(6)
 
 function getMonday() {
-  const date = new Date();
-  date.setUTCHours(0, 0, 0, 0);
-  const day = new Date().getUTCDay() || 7;
-  date.setUTCHours(-24 * (day - 1));
-  return date;
+  const date = new Date()
+  date.setUTCHours(0, 0, 0, 0)
+  const day = new Date().getUTCDay() || 7
+  date.setUTCHours(-24 * (day - 1))
+  return date
 }
 
 function changeTimeFrame() {
-  first.value = 0;
-  firstCoop4.value = 0;
-  firstCoop6.value = 0;
-  onPage();
-  onPageCoop(4);
-  onPageCoop(6);
+  first.value = 0
+  firstCoop4.value = 0
+  firstCoop6.value = 0
+  onPage()
+  onPageCoop(4)
+  onPageCoop(6)
 }
 
 async function onPage() {
-  loading.value = true;
-  Service.getWinnerLeaderboard(
-    rows.value,
-    first.value,
-    selectedDate.value.startDate,
-    selectedDate.value.endDate ?? undefined
-  )
-    .then((res) => {
-      data.value = [];
-      res.username.forEach((username: string, index: number) =>
-        data.value.push({
-          username: username,
-          wins: res.wins[index],
-          winshare: res.winshare[index] + ' %',
-          index: index + 1 + first.value,
-        })
-      );
-      totalNumber.value = typeof res.nPlayers === 'string' ? parseInt(res.nPlayers) : res.nPlayers;
-      loading.value = false;
-    });
+  loading.value = true
+  Service.getWinnerLeaderboard(rows.value, first.value, selectedDate.value.startDate, selectedDate.value.endDate ?? undefined).then((res) => {
+    data.value = []
+    res.username.forEach((username: string, index: number) =>
+      data.value.push({
+        username: username,
+        wins: res.wins[index],
+        winshare: res.winshare[index] + ' %',
+        index: index + 1 + first.value,
+      })
+    )
+    totalNumber.value = typeof res.nPlayers === 'string' ? parseInt(res.nPlayers) : res.nPlayers
+    loading.value = false
+  })
 }
 
 async function onPageCoop(nPlayers: number) {
-  const first = nPlayers === 4 ? firstCoop4.value : firstCoop6.value;
+  const first = nPlayers === 4 ? firstCoop4.value : firstCoop6.value
 
   if (nPlayers === 6) {
-    loadingCoop6.value = true;
+    loadingCoop6.value = true
   } else {
-    loadingCoop4.value = true;
+    loadingCoop4.value = true
   }
-  Service.getCoopLeaderboard(
-    rows.value,
-    first,
-    nPlayers,
-    selectedDate.value.startDate,
-    selectedDate.value.endDate ?? undefined
-  )
-    .then((res) => {
-      if (nPlayers === 6) {
-        dataCoop6.value = [];
-      } else {
-        dataCoop4.value = [];
+  Service.getCoopLeaderboard(rows.value, first, nPlayers, selectedDate.value.startDate, selectedDate.value.endDate ?? undefined).then((res) => {
+    if (nPlayers === 6) {
+      dataCoop6.value = []
+    } else {
+      dataCoop4.value = []
+    }
+    res.count.forEach((count: number, index: number) => {
+      const data = {
+        team: res.team[index],
+        count: count,
+        index: index + 1 + first,
+        lastplayed: res.lastplayed[index],
       }
-      res.count.forEach((count: number, index: number) => {
-        const data = {
-          team: res.team[index],
-          count: count,
-          index: index + 1 + first,
-          lastplayed: res.lastplayed[index],
-        };
-        if (nPlayers === 6) {
-          dataCoop6.value.push(data);
-        } else {
-          dataCoop4.value.push(data);
-        }
-      });
       if (nPlayers === 6) {
-        loadingCoop6.value = false;
-        totalNumberCoop6.value = typeof res.nGames === 'string' ? parseInt(res.nGames) : res.nGames;
+        dataCoop6.value.push(data)
       } else {
-        loadingCoop4.value = false;
-        totalNumberCoop4.value = typeof res.nGames === 'string' ? parseInt(res.nGames) : res.nGames;
+        dataCoop4.value.push(data)
       }
-    });
+    })
+    if (nPlayers === 6) {
+      loadingCoop6.value = false
+      totalNumberCoop6.value = typeof res.nGames === 'string' ? parseInt(res.nGames) : res.nGames
+    } else {
+      loadingCoop4.value = false
+      totalNumberCoop4.value = typeof res.nGames === 'string' ? parseInt(res.nGames) : res.nGames
+    }
+  })
 }
 
 function createDateString(seconds: number) {
-  const d = new Date(seconds);
-  return d.toLocaleDateString();
+  const d = new Date(seconds)
+  return d.toLocaleDateString()
 }
 </script>
 
@@ -292,6 +315,7 @@ function createDateString(seconds: number) {
   max-width: 100%;
   padding: 10px;
 }
+
 .team {
   display: flex;
   flex-direction: column;

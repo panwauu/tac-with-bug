@@ -35,13 +35,13 @@
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import PlayerWithPicture from './PlayerWithPicture.vue'
 
 import { ref } from 'vue'
-import { getRunningGamesType } from '../../../shared/types/typesDBgame';
+import { getRunningGamesType } from '../../../shared/types/typesDBgame'
 import router from '@/router'
 import { useServerInfoStore } from '@/store/serverInfo'
 
@@ -51,8 +51,8 @@ const infoStore = useServerInfoStore()
 
 function rowSelect() {
   if (selectedGame.value.length !== 1) {
-    console.log('Could not select game');
-    selectedGame.value = [];
+    console.log('Could not select game')
+    selectedGame.value = []
     return
   }
   router.push({
@@ -61,7 +61,7 @@ function rowSelect() {
       gameID: selectedGame.value[0].id,
       nPlayers: selectedGame.value[0].teams.flat().length,
     },
-  });
+  })
 }
 </script>
 
@@ -73,21 +73,25 @@ function rowSelect() {
   align-items: flex-start;
   justify-content: center;
 }
+
 .player {
   padding: 0;
   margin: 2px;
 }
+
 .refreshButton {
   position: absolute;
   right: 5px;
   top: 5px;
 }
+
 .gamesTableContainer {
   min-height: 250px;
   flex-grow: 1;
   width: 100%;
   position: relative;
 }
+
 .gamesTable {
   position: absolute;
   left: 0;

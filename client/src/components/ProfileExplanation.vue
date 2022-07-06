@@ -13,85 +13,100 @@
   >
     <table>
       <tr>
-        <td>{{ $t("Profile.mostFrequent") + ":" }}</td>
-        <td>{{ $t("Profile.mostFrequentExp") }}</td>
+        <td>{{ $t('Profile.mostFrequent') + ':' }}</td>
+        <td>{{ $t('Profile.mostFrequentExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t("Profile.bestPlayer") + ":" }}</td>
-        <td>{{ $t("Profile.bestPlayerExp") }}</td>
+        <td>{{ $t('Profile.bestPlayer') + ':' }}</td>
+        <td>{{ $t('Profile.bestPlayerExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t("Profile.worstPlayer") + ":" }}</td>
-        <td>{{ $t("Profile.worstPlayerExp") }}</td>
-      </tr>
-      <tr>
-        <td>
-          <GamesHistoryBadge :win="'won'" style="margin: 2px auto" />
-        </td>
-        <td>{{ $t("Profile.wIconExp") }}</td>
+        <td>{{ $t('Profile.worstPlayer') + ':' }}</td>
+        <td>{{ $t('Profile.worstPlayerExp') }}</td>
       </tr>
       <tr>
         <td>
-          <GamesHistoryBadge :win="'lost'" style="margin: 2px auto" />
+          <GamesHistoryBadge
+            :win="'won'"
+            style="margin: 2px auto"
+          />
         </td>
-        <td>{{ $t("Profile.lIconExp") }}</td>
+        <td>{{ $t('Profile.wIconExp') }}</td>
       </tr>
       <tr>
         <td>
-          <GamesHistoryBadge :win="'coop'" style="margin: 2px auto" />
+          <GamesHistoryBadge
+            :win="'lost'"
+            style="margin: 2px auto"
+          />
         </td>
-        <td>{{ $t("Profile.tIconExp") }}</td>
+        <td>{{ $t('Profile.lIconExp') }}</td>
       </tr>
       <tr>
         <td>
-          <GamesHistoryBadge :win="'aborted'" style="margin: 2px auto" />
+          <GamesHistoryBadge
+            :win="'coop'"
+            style="margin: 2px auto"
+          />
         </td>
-        <td>{{ $t("Profile.aIconExp") }}</td>
+        <td>{{ $t('Profile.tIconExp') }}</td>
       </tr>
       <tr>
         <td>
-          <GamesHistoryBadge :win="'running'" style="margin: 2px auto" />
+          <GamesHistoryBadge
+            :win="'aborted'"
+            style="margin: 2px auto"
+          />
         </td>
-        <td>{{ $t("Profile.rIconExp") }}</td>
+        <td>{{ $t('Profile.aIconExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t("Profile.success") + ":" }}</td>
-        <td>{{ $t("Profile.successExp") }}</td>
+        <td>
+          <GamesHistoryBadge
+            :win="'running'"
+            style="margin: 2px auto"
+          />
+        </td>
+        <td>{{ $t('Profile.rIconExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t("Profile.generosity") + ":" }}</td>
-        <td>{{ $t("Profile.generosityExp") }}</td>
+        <td>{{ $t('Profile.success') + ':' }}</td>
+        <td>{{ $t('Profile.successExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t("Profile.aggression") + ":" }}</td>
-        <td>{{ $t("Profile.aggressionExp") }}</td>
+        <td>{{ $t('Profile.generosity') + ':' }}</td>
+        <td>{{ $t('Profile.generosityExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t("Profile.decision") + ":" }}</td>
-        <td>{{ $t("Profile.decisionExp") }}</td>
+        <td>{{ $t('Profile.aggression') + ':' }}</td>
+        <td>{{ $t('Profile.aggressionExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t("Profile.resentment") + ":" }}</td>
-        <td>{{ $t("Profile.resentmentExp") }}</td>
+        <td>{{ $t('Profile.decision') + ':' }}</td>
+        <td>{{ $t('Profile.decisionExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t("Profile.usage") + ":" }}</td>
-        <td>{{ $t("Profile.usageExp") }}</td>
+        <td>{{ $t('Profile.resentment') + ':' }}</td>
+        <td>{{ $t('Profile.resentmentExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t("Profile.abortionrate") + ":" }}</td>
-        <td>{{ $t("Profile.abortionrateExp") }}</td>
+        <td>{{ $t('Profile.usage') + ':' }}</td>
+        <td>{{ $t('Profile.usageExp') }}</td>
+      </tr>
+      <tr>
+        <td>{{ $t('Profile.abortionrate') + ':' }}</td>
+        <td>{{ $t('Profile.abortionrateExp') }}</td>
       </tr>
     </table>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import GamesHistoryBadge from '@/components/icons/GamesHistoryBadge.vue';
+import Button from 'primevue/button'
+import Dialog from 'primevue/dialog'
+import GamesHistoryBadge from '@/components/icons/GamesHistoryBadge.vue'
 
-import { ref } from 'vue';
+import { ref } from 'vue'
 const displayExplanation = ref(false)
 </script>
 

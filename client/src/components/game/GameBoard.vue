@@ -1,5 +1,8 @@
 <template>
-  <div id="gameboard" class="gameboard">
+  <div
+    id="gameboard"
+    class="gameboard"
+  >
     <BoardImage
       class="imgGameBoard"
       :nPlayers="miscState.nPlayers"
@@ -15,14 +18,10 @@
         :class="{
           selectedBall: index === ballsState.selectedBall,
           ball4: miscState.players.length === 4,
-          ball6:
-            miscState.players.length === 6 && positionStyles.turned === false,
-          ball6_turned:
-            miscState.players.length === 6 && positionStyles.turned === true,
+          ball6: miscState.players.length === 6 && positionStyles.turned === false,
+          ball6_turned: miscState.players.length === 6 && positionStyles.turned === true,
         }"
-        :style="
-          positionStyles.stylePositionBalls?.[rotatePosition(ball.position)]
-        "
+        :style="positionStyles.stylePositionBalls?.[rotatePosition(ball.position)]"
         :color="props.positionStyles.ballsColors?.[ball.player] ?? ''"
         :draggable="index in ballsState.playableBalls"
         @click="selectBall(Number(index))"
@@ -36,10 +35,8 @@
         class="gameElement possiblePosition"
         :class="{
           ball4: miscState.players.length === 4,
-          ball6:
-            miscState.players.length === 6 && positionStyles.turned === false,
-          ball6_turned:
-            miscState.players.length === 6 && positionStyles.turned === true,
+          ball6: miscState.players.length === 6 && positionStyles.turned === false,
+          ball6_turned: miscState.players.length === 6 && positionStyles.turned === true,
         }"
         :style="(positionStyles.stylePositionBalls?.[rotatePosition(position)] as any)"
         droppable
@@ -56,7 +53,9 @@
           :key="`textAction-${String(index)}`"
           class="p-button-danger textActionButton"
           @click="performTextAction(textAction)"
-        >{{ $t(`Game.CardActionButton.${textAction}`) }}</Button>
+        >
+          {{ $t(`Game.CardActionButton.${textAction}`) }}
+        </Button>
       </div>
 
       <DiscardPile
@@ -64,20 +63,26 @@
         :positionStyles="positionStyles"
         :discardPileState="discardPileState"
       />
-      <PlayerInformation :miscState="miscState" :positionStyles="positionStyles" />
-      <CardDeck :miscState="miscState" :positionStyles="positionStyles" />
+      <PlayerInformation
+        :miscState="miscState"
+        :positionStyles="positionStyles"
+      />
+      <CardDeck
+        :miscState="miscState"
+        :positionStyles="positionStyles"
+      />
 
-      <EmojiIllustration :miscState="miscState" :positionStyles="positionStyles" />
+      <EmojiIllustration
+        :miscState="miscState"
+        :positionStyles="positionStyles"
+      />
 
       <div
         v-for="(player, index) in miscState.players"
         :key="`playerAnnotations-${String(index)}-${String(player)}`"
       >
         <div
-          :class="`gameElement circle circleHome${miscState.players.length}${positionStyles.turned && miscState.players.length === 6
-            ? '_turned'
-            : ''
-          }`"
+          :class="`gameElement circle circleHome${miscState.players.length}${positionStyles.turned && miscState.players.length === 6 ? '_turned' : ''}`"
           :style="positionStyles.stylePositionHouse?.[index]"
         />
         <div
@@ -93,23 +98,21 @@
       >
         <div
           v-if="tradePending(Number(index))"
-          :class="`gameElement cardFlyContainer cardFlyContainer${rotateIndex(
-            Number(index)
-          )}${miscState.players.length === 6
-            ? positionStyles.turned
-              ? '-6_turned'
-              : '-6'
-            : ''
+          :class="`gameElement cardFlyContainer cardFlyContainer${rotateIndex(Number(index))}${
+            miscState.players.length === 6 ? (positionStyles.turned ? '-6_turned' : '-6') : ''
           }`"
         >
-          <img alt="Tauschindikator" src="@/assets/cards/card.png" class="cardFly">
+          <img
+            alt="Tauschindikator"
+            src="@/assets/cards/card.png"
+            class="cardFly"
+          />
         </div>
       </template>
 
       <TradeArrow
         v-if="miscState.tradeDirection !== 0"
-        :class="`gameElement tauschDirectionArrow${positionStyles.turned ? '_turned' : ''
-        } tauschDirectionArrow${miscState.tradeDirection}`"
+        :class="`gameElement tauschDirectionArrow${positionStyles.turned ? '_turned' : ''} tauschDirectionArrow${miscState.tradeDirection}`"
       />
 
       <div
@@ -117,7 +120,10 @@
         class="gameElement cardCounterElement p-card"
         :style="positionStyles.stylePositionCoop"
       >
-        <Tag class="cardCounterTag" value="TEAM-TAC" />
+        <Tag
+          class="cardCounterTag"
+          value="TEAM-TAC"
+        />
         <div class="cardCounter">{{ miscState.coopCounter }}</div>
       </div>
     </template>
@@ -145,20 +151,20 @@ import { rotatePosition as rotatePositionImport } from '@/js/rotateBoard'
 import BallsImage from '../assets/BallsImage.vue'
 
 const props = defineProps<{
-  positionStyles: positionStylesState,
-  miscState: miscStateType,
-  ballsState: ballsStateType,
-  cardsState: cardsStateType,
-  discardPileState: discardPileStateType,
-  performMove: (data: performMoveAction) => void,
-}>();
+  positionStyles: positionStylesState
+  miscState: miscStateType
+  ballsState: ballsStateType
+  cardsState: cardsStateType
+  discardPileState: discardPileStateType
+  performMove: (data: performMoveAction) => void
+}>()
 
 function rotatePosition(position: number) {
-  return rotatePositionImport(position, props.positionStyles.nRotate, props.miscState.players.length);
+  return rotatePositionImport(position, props.positionStyles.nRotate, props.miscState.players.length)
 }
 
 function rotateIndex(index: number) {
-  return ((index + props.miscState.players.length - props.positionStyles.nRotate) % props.miscState.players.length);
+  return (index + props.miscState.players.length - props.positionStyles.nRotate) % props.miscState.players.length
 }
 
 function tradePending(index: number): boolean {
@@ -167,61 +173,54 @@ function tradePending(index: number): boolean {
 
 function selectBall(index: number): void {
   if (index in props.ballsState.playableBalls) {
-    props.ballsState.setSelectedBall(index);
+    props.ballsState.setSelectedBall(index)
   }
 }
 
 function dragStart(evt: DragEvent, index: number): void {
-  props.ballsState.resetSelectedBall();
-  props.ballsState.setSelectedBall(index);
-  if (evt.dataTransfer === null) { return }
-  evt.dataTransfer.dropEffect = 'move';
-  evt.dataTransfer.effectAllowed = 'move';
-  evt.dataTransfer.setData('itemID', index.toString());
+  props.ballsState.resetSelectedBall()
+  props.ballsState.setSelectedBall(index)
+  if (evt.dataTransfer === null) {
+    return
+  }
+  evt.dataTransfer.dropEffect = 'move'
+  evt.dataTransfer.effectAllowed = 'move'
+  evt.dataTransfer.setData('itemID', index.toString())
 }
 
 function dragStop(): void {
-  props.ballsState.resetSelectedBall();
+  props.ballsState.resetSelectedBall()
 }
 
 function dropSuccess(position: number): void {
-  const move: moveBall = [
-    props.miscState.gamePlayer,
-    props.cardsState.selectedCard,
-    props.ballsState.selectedBall,
-    position,
-  ];
+  const move: moveBall = [props.miscState.gamePlayer, props.cardsState.selectedCard, props.ballsState.selectedBall, position]
   props.performMove({
     ballAction: [props.ballsState.selectedBall, position],
     textAction: '',
     move: move,
-  });
+  })
 }
 
 function performTextAction(textAction: string): void {
-  const move: moveText = [
-    props.miscState.gamePlayer,
-    textAction === 'beenden' ? 0 : props.cardsState.selectedCard,
-    textAction === 'Karten weitergeben' ? 'narr' : textAction,
-  ];
+  const move: moveText = [props.miscState.gamePlayer, textAction === 'beenden' ? 0 : props.cardsState.selectedCard, textAction === 'Karten weitergeben' ? 'narr' : textAction]
   props.performMove({
     ballAction: [],
     textAction: textAction,
     move: move,
-  });
+  })
 }
 
 function brightnessValue() {
   if (!window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return '1';
+    return '1'
   }
-  return props.miscState.players.length === 4 ? '0.75' : '0.9';
+  return props.miscState.players.length === 4 ? '0.75' : '0.9'
 }
 </script>
 
 <style scoped lang="scss">
-@import "../../js/tradeCardsStyles.css";
-@import "../../js/narrCards.css";
+@import '../../js/tradeCardsStyles.css';
+@import '../../js/narrCards.css';
 
 .gameboard {
   display: flex;
@@ -251,7 +250,8 @@ function brightnessValue() {
 
 .ball {
   transform: translate(-50%, -50%);
-  transition: all 1.2s ease-in-out, opacity 0s; /* 1.2s are also in JS (1200) for Tac Animation */
+  transition: all 1.2s ease-in-out, opacity 0s;
+  /* 1.2s are also in JS (1200) for Tac Animation */
   transition-timing-function: ease-in-out;
   z-index: 110;
 }
@@ -332,9 +332,11 @@ function brightnessValue() {
   display: flex;
   flex-direction: column;
 }
+
 .cardCounterTag {
   font-size: calc(1 / 100 * var(--board-size-in-px));
 }
+
 .cardCounter {
   font-size: calc(3.5 / 100 * var(--board-size-in-px));
   font-weight: bold;

@@ -1,19 +1,19 @@
 <template>
-  <div v-for="(player, index) in miscState.players" :key="`playerNameCards-${String(index)}`">
+  <div
+    v-for="(player, index) in miscState.players"
+    :key="`playerNameCards-${String(index)}`"
+  >
     <h2
       :class="`posAbsolute playerName `"
       :style="positionStyles.stylePositionNames?.[rotateIndex(Number(index))]"
-    >{{ player.name }}</h2>
+    >
+      {{ player.name }}
+    </h2>
     <div
-      :class="`posAbsolute playerCards${player.narrFlag[0] === true && player.narrFlag[1] === false
-        ? ' narrAnimation' +
-          rotateIndex(Number(index)).toString() +
-          (miscState.players.length === 6
-            ? positionStyles.turned
-              ? '-6_turned'
-              : '-6'
-            : '')
-        : ''
+      :class="`posAbsolute playerCards${
+        player.narrFlag[0] === true && player.narrFlag[1] === false
+          ? ' narrAnimation' + rotateIndex(Number(index)).toString() + (miscState.players.length === 6 ? (positionStyles.turned ? '-6_turned' : '-6') : '')
+          : ''
       }`"
       :style="positionStyles.stylePositionCards?.[rotateIndex(Number(index))]"
     >
@@ -32,52 +32,26 @@
           :class="{
             posAbsolute: c > 1,
             remainingCards: true,
-            remainingCardsActiveLeft:
-              c === player.remainingCards &&
-              player.active === true &&
-              !(player.narrFlag[0] == true && player.narrFlag[1] === false),
+            remainingCardsActiveLeft: c === player.remainingCards && player.active === true && !(player.narrFlag[0] == true && player.narrFlag[1] === false),
             remainingCardsActiveRight:
-              positionStyles.stylePositionCards?.[rotateIndex(Number(index))].includes(
-                'right'
-              ) &&
+              positionStyles.stylePositionCards?.[rotateIndex(Number(index))].includes('right') &&
               c === player.remainingCards &&
               player.active === true &&
               !(player.narrFlag[0] == true && player.narrFlag[1] === false),
           }"
-          :style="
-            c > 1
-              ? `${positionStyles.stylePositionCards?.[
-                rotateIndex(Number(index))
-              ].includes('right')
-                ? 'right'
-                : 'left'
-              }: ${(c - 1) * 42}%;`
-              : ''
-          "
+          :style="c > 1 ? `${positionStyles.stylePositionCards?.[rotateIndex(Number(index))].includes('right') ? 'right' : 'left'}: ${(c - 1) * 42}%;` : ''"
         />
       </transition-group>
       <Aussetzen
         v-if="player.active && miscState.aussetzenFlag"
-        :style="`left: ${50 +
-          15 *
-          player.remainingCards *
-          (positionStyles.stylePositionCards?.[rotateIndex(Number(index))].includes(
-            'right'
-          )
-            ? -1
-            : 1)
-        }%`"
+        :style="`left: ${50 + 15 * player.remainingCards * (positionStyles.stylePositionCards?.[rotateIndex(Number(index))].includes('right') ? -1 : 1)}%`"
         class="aussetzenSign"
       />
     </div>
     <ProfilePicture
       :username="String(player.name)"
-      :class="`posAbsolute playerPicture ${miscState.players.length === 6
-        ? `playerPicture6${positionStyles.turned ? 'turned' : ''}`
-        : ''
-      } ${index === miscState.gamePlayer && !miscState.viewerMode && $route.name === 'Game'
-        ? 'clickable'
-        : ''
+      :class="`posAbsolute playerPicture ${miscState.players.length === 6 ? `playerPicture6${positionStyles.turned ? 'turned' : ''}` : ''} ${
+        index === miscState.gamePlayer && !miscState.viewerMode && $route.name === 'Game' ? 'clickable' : ''
       }`"
       :style="positionStyles.stylePositionPictures?.[rotateIndex(Number(index))]"
       :online="Boolean(miscState.onlineGamePlayers.includes(index))"
@@ -85,12 +59,18 @@
     />
   </div>
 
-  <OverlayPanel ref="opRef" style="max-width: 300px">
-    <EmojiSelector :miscState="miscState" @close="opRef?.hide()" />
+  <OverlayPanel
+    ref="opRef"
+    style="max-width: 300px"
+  >
+    <EmojiSelector
+      :miscState="miscState"
+      @close="opRef?.hide()"
+    />
   </OverlayPanel>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import ProfilePicture from '@/components/ProfilePicture.vue'
 import Aussetzen from '@/components/icons/AussetzenSymbol.vue'
 import CardImage from '@/components/assets/CardImage.vue'
@@ -105,30 +85,30 @@ import router from '@/router'
 const opRef = ref<undefined | OverlayPanel>()
 
 const props = defineProps<{
-  positionStyles: positionStylesState,
-  miscState: miscStateType,
-}>();
+  positionStyles: positionStylesState
+  miscState: miscStateType
+}>()
 
 function hasOneOrThirteen(index: number): boolean {
   return 'tradeInformation' in props.miscState.players[index] && props.miscState.players[index].tradeInformation?.[0] === true
 }
 
 function rotateIndex(index: number) {
-  return ((index + props.miscState.players.length - props.positionStyles.nRotate) % props.miscState.players.length);
+  return (index + props.miscState.players.length - props.positionStyles.nRotate) % props.miscState.players.length
 }
 
 function toggle(event: Event, index: number) {
   if (index === props.miscState.gamePlayer && !props.miscState.viewerMode && router.currentRoute.value.name === 'Game') {
-    opRef.value?.toggle(event);
+    opRef.value?.toggle(event)
   }
 }
-
 </script>
 
 <style scoped>
 .posAbsolute {
   position: absolute;
 }
+
 .playerName {
   margin: 0;
   font-size: calc(3.5 / 100 * var(--board-size-in-px));
@@ -182,6 +162,7 @@ function toggle(event: Event, index: number) {
   transform-origin: 100% 100%;
   transform: translate(-15%, 0) rotate(20deg);
 }
+
 .remainingCardsActiveRight {
   transform-origin: 0% 100%;
   transform: translate(13%, 0) rotate(-20deg);
@@ -191,22 +172,25 @@ function toggle(event: Event, index: number) {
   color: var(--tac-red);
   position: absolute;
   font-size: calc(0.015 * var(--board-size-in-px));
-  font-family: "tacfontregular", Monospace;
+  font-family: 'tacfontregular', Monospace;
 }
 
 .playerCardsRausTL {
   top: 2%;
   left: 2%;
 }
+
 .playerCardsRausTR {
   top: 2%;
   right: 2%;
 }
+
 .playerCardsRausBL {
   bottom: 2%;
   left: 12%;
   transform: rotate(180deg);
 }
+
 .playerCardsRausBR {
   bottom: 2%;
   right: 12%;
@@ -217,6 +201,7 @@ function toggle(event: Event, index: number) {
 .list-leave-active {
   transition: all 0.6s;
 }
+
 .list-enter-from,
 .list-leave-to {
   opacity: 0;

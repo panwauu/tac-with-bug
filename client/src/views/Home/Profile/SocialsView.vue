@@ -11,19 +11,22 @@
 </template>
 
 <script setup lang="ts">
-import NetworkUserGraph from '@/components/NetworkUserGraph.vue';
-import { ref, watch } from 'vue';
-import { DefaultService as Service } from '@/generatedClient';
-import router from '@/router/index';
+import NetworkUserGraph from '@/components/NetworkUserGraph.vue'
+import { ref, watch } from 'vue'
+import { DefaultService as Service } from '@/generatedClient'
+import router from '@/router/index'
 
-const props = defineProps<{ username: string }>();
+const props = defineProps<{ username: string }>()
 
 const loading = ref(true)
 const networkData = ref({ edges: [] as any[], nodes: [] as any[] })
 const peopleData = ref({})
 
 updateData()
-watch(() => props.username, () => updateData())
+watch(
+  () => props.username,
+  () => updateData()
+)
 
 async function updateData() {
   try {
@@ -33,11 +36,10 @@ async function updateData() {
     peopleData.value = data.people
     loading.value = false
   } catch (err) {
-    console.log(err);
-    router.push({ name: 'Landing' });
+    console.log(err)
+    router.push({ name: 'Landing' })
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

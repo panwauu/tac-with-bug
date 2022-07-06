@@ -30,24 +30,28 @@
   </OverlayPanel>
 </template>
 
-<script setup lang='ts'>
-import Button from 'primevue/button';
-import OverlayPanel from 'primevue/overlaypanel';
-import TabView from 'primevue/tabview';
-import TabPanel from 'primevue/tabpanel';
-import LoginView from '../LoginView/LoginView.vue';
-import SignUp from '../LoginView/SignUp.vue';
-import NewPassword from '../LoginView/NewPassword.vue';
+<script setup lang="ts">
+import Button from 'primevue/button'
+import OverlayPanel from 'primevue/overlaypanel'
+import TabView from 'primevue/tabview'
+import TabPanel from 'primevue/tabpanel'
+import LoginView from '../LoginView/LoginView.vue'
+import SignUp from '../LoginView/SignUp.vue'
+import NewPassword from '../LoginView/NewPassword.vue'
 
-import { ref } from 'vue';
-import { username } from '@/services/useUser';
+import { ref } from 'vue'
+import { username } from '@/services/useUser'
 
-const loginOverlayRef = ref<OverlayPanel | null>(null);
-function toggle(event: any) { loginOverlayRef.value?.toggle(event) }
+const loginOverlayRef = ref<OverlayPanel | null>(null)
+function toggle(event: any) {
+  loginOverlayRef.value?.toggle(event)
+}
 
 const activeIndex = ref(0)
 
-function login() { loginOverlayRef.value?.hide() }
+function login() {
+  loginOverlayRef.value?.hide()
+}
 </script>
 
 <style scoped></style>

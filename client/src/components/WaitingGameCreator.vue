@@ -1,8 +1,12 @@
 <template>
   <div>
-    <Dialog v-model:visible="localVisible" :modal="true" :dismissableMask="true">
+    <Dialog
+      v-model:visible="localVisible"
+      :modal="true"
+      :dismissableMask="true"
+    >
       <template #header>
-        <h3>{{ $t("Waiting.WaitingGameCreator.title") }}</h3>
+        <h3>{{ $t('Waiting.WaitingGameCreator.title') }}</h3>
       </template>
 
       <div class="filterButtons">
@@ -46,28 +50,27 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import SelectButton from 'primevue/selectbutton';
+import Button from 'primevue/button'
+import Dialog from 'primevue/dialog'
+import SelectButton from 'primevue/selectbutton'
 
-import { computed, ref } from 'vue';
+import { computed, ref } from 'vue'
 import { i18n } from '@/services/i18n'
-import { injectStrict, SocketKey } from '@/services/injections';
+import { injectStrict, SocketKey } from '@/services/injections'
 
 const props = defineProps<{ visible: boolean }>()
-const socket = injectStrict(SocketKey);
+const socket = injectStrict(SocketKey)
 
 const emit = defineEmits(['update:visible'])
 
 const localVisible = computed({
   get(): boolean {
-    return props.visible;
+    return props.visible
   },
   set(value: boolean): void {
-    return emit('update:visible', value);
-  }
+    return emit('update:visible', value)
+  },
 })
-
 
 const playersModel = [
   { name: i18n.global.t('Waiting.WaitingGameCreator.player4Name'), value: 4 },
@@ -106,23 +109,24 @@ const privateModel = [
 ]
 const selectedPrivate = ref(privateModel[1])
 
-
 const createGame = () => {
   socket.emit('waiting:createGame', {
     nPlayers: selectedPlayers.value.value,
     nTeams: selectedTeams.value.value,
     meister: selectedMeister.value.value,
     private: selectedPrivate.value.value,
-  });
-  localVisible.value = false;
+  })
+  localVisible.value = false
 }
 
 const validOptions = () => {
-  return selectedPlayers.value != null &&
+  return (
+    selectedPlayers.value != null &&
     selectedTeams.value != null &&
     selectedMeister.value != null &&
     selectedPrivate.value != null &&
     !(selectedTeams.value.value === 3 && selectedPlayers.value.value !== 6)
+  )
 }
 </script>
 

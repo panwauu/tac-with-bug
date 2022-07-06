@@ -1,11 +1,17 @@
 <template>
   <div>
-    <DataTable :value="tournamentParticipations" :loading="loading">
-      <Column field="title" :header="$t('Profile.TournamentParticipations.tournamentTitle')" />
+    <DataTable
+      :value="tournamentParticipations"
+      :loading="loading"
+    >
+      <Column
+        field="title"
+        :header="$t('Profile.TournamentParticipations.tournamentTitle')"
+      />
       <Column :header="$t('Profile.TournamentParticipations.tournamentResult')">
         <template #body="slotProps">
           <div v-if="slotProps.data.placement != null">
-            <div style="width: 35px;">
+            <div style="width: 35px">
               <Crown :rank="slotProps.data.placement" />
             </div>
           </div>
@@ -19,22 +25,25 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Crown from '@/components/icons/CrownSymbol.vue';
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import Crown from '@/components/icons/CrownSymbol.vue'
 
-import { watch, ref } from 'vue';
-import { DefaultService as Service } from '@/generatedClient';
-import { tournamentParticipation } from '@/../../shared/types/typesTournament';
-import router from '@/router';
+import { watch, ref } from 'vue'
+import { DefaultService as Service } from '@/generatedClient'
+import { tournamentParticipation } from '@/../../shared/types/typesTournament'
+import router from '@/router'
 
-const props = defineProps<{ username: string }>();
+const props = defineProps<{ username: string }>()
 
 const loading = ref(false)
 const tournamentParticipations = ref<tournamentParticipation[]>([])
 
 updateData()
-watch(() => props.username, () => updateData())
+watch(
+  () => props.username,
+  () => updateData()
+)
 
 async function updateData() {
   try {
@@ -42,8 +51,8 @@ async function updateData() {
     tournamentParticipations.value = await Service.getUserTournamentParticipations(props.username)
     loading.value = false
   } catch (err) {
-    console.log(err);
-    router.push({ name: 'Landing' });
+    console.log(err)
+    router.push({ name: 'Landing' })
   }
 }
 </script>

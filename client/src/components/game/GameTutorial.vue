@@ -6,7 +6,10 @@
     style="position: absolute; left: 5px; bottom: 5px"
     @click="$emit('openOverlay')"
   />
-  <div v-if="display" class="tutorialOverlay">
+  <div
+    v-if="display"
+    class="tutorialOverlay"
+  >
     <Button
       icon="pi pi-undo"
       :label="$t('Tutorial.stopTutorial')"
@@ -27,25 +30,42 @@
           style="margin: 15px; height: 0.5rem"
         />
 
-        <div v-if="loading" class="p-card-header">
+        <div
+          v-if="loading"
+          class="p-card-header"
+        >
           <Skeleton style="width: 50%; height: 2rem; margin: 0 auto" />
         </div>
-        <div v-if="loading" class="p-card-content">
+        <div
+          v-if="loading"
+          class="p-card-content"
+        >
           <Skeleton style="width: 100%; height: 10rem" />
         </div>
 
-        <div v-if="!loading" class="p-card-header" style="display: flex; align-items: center">
+        <div
+          v-if="!loading"
+          class="p-card-header"
+          style="display: flex; align-items: center"
+        >
           <h3
             v-if="!loading"
             style="flex: 1 1 auto; margin: 5px"
-          >{{ $t(`Tutorial.${tutorialID}.title`) }}</h3>
+          >
+            {{ $t(`Tutorial.${tutorialID}.title`) }}
+          </h3>
         </div>
-        <div v-if="!loading" class="p-card-content">
+        <div
+          v-if="!loading"
+          class="p-card-content"
+        >
           <Message
             v-if="quizError"
             severity="error"
             :closable="false"
-          >{{ $t('Tutorial.quizWrongAnswer') }}</Message>
+          >
+            {{ $t('Tutorial.quizWrongAnswer') }}
+          </Message>
           <Message
             v-if="done && tutorialStepOutput?.goal != null"
             severity="success"
@@ -56,7 +76,10 @@
           </Message>
           <template v-else>
             {{ $t(`Tutorial.${tutorialID}.${tutorialStep}.detail`) }}
-            <div v-if="tutorialStepOutput?.goal?.quiz != null" class="quizcontainer">
+            <div
+              v-if="tutorialStepOutput?.goal?.quiz != null"
+              class="quizcontainer"
+            >
               <div
                 v-for="i in [...Array(tutorialStepOutput?.goal?.quiz.nSolutions).keys()]"
                 :key="`Quizquestion-${String(i)}`"
@@ -69,18 +92,20 @@
                   name="quiz"
                   :value="tutorialStepOutput?.goal?.quiz?.order?.[i]"
                 />
-                <label :for="`radio-${String(i)}`" style="margin-left: 10px">
-                  {{
-                    $t(
-                      `Tutorial.${tutorialID}.${tutorialStep}.answer-${tutorialStepOutput?.goal?.quiz?.order?.[i]}`
-                    )
-                  }}
+                <label
+                  :for="`radio-${String(i)}`"
+                  style="margin-left: 10px"
+                >
+                  {{ $t(`Tutorial.${tutorialID}.${tutorialStep}.answer-${tutorialStepOutput?.goal?.quiz?.order?.[i]}`) }}
                 </label>
               </div>
             </div>
           </template>
         </div>
-        <div v-if="!loading" class="p-card-footer buttonContainer">
+        <div
+          v-if="!loading"
+          class="p-card-footer buttonContainer"
+        >
           <Button
             v-if="reset"
             icon="pi pi-undo"
@@ -117,79 +142,81 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import RadioButton from 'primevue/radiobutton';
-import Skeleton from 'primevue/skeleton';
-import Message from 'primevue/message';
-import ProgressBar from 'primevue/progressbar';
+import Button from 'primevue/button'
+import RadioButton from 'primevue/radiobutton'
+import Skeleton from 'primevue/skeleton'
+import Message from 'primevue/message'
+import ProgressBar from 'primevue/progressbar'
 
-import { ref, computed } from 'vue';
-import router from '@/router/index';
-import { TutorialStepOutput } from '@/../../shared/types/typesTutorial';
+import { ref, computed } from 'vue'
+import router from '@/router/index'
+import { TutorialStepOutput } from '@/../../shared/types/typesTutorial'
 
-import { useTutorialStore } from '@/store/tutorial';
+import { useTutorialStore } from '@/store/tutorial'
 const tutorialStore = useTutorialStore()
 
 const emit = defineEmits(['goForward', 'goBackward', 'closeOverlay', 'openOverlay', 'quizEnded', 'reset'])
 
 const props = defineProps<{
-  tutorialStepOutput: TutorialStepOutput | null,
-  loading: boolean,
-  display: boolean,
-  tutorialID: number,
-  tutorialStep: number,
-}>();
+  tutorialStepOutput: TutorialStepOutput | null
+  loading: boolean
+  display: boolean
+  tutorialID: number
+  tutorialStep: number
+}>()
 
 const quizSelected = ref(null)
 const quizError = ref(false)
 
-
 function abortTutorial() {
-  router.push({ name: 'TutorialOverview' });
+  router.push({ name: 'TutorialOverview' })
 }
 
 function answerQuiz() {
   if (quizSelected.value === 0) {
-    emit('quizEnded');
-    quizError.value = false;
-    quizSelected.value = null;
+    emit('quizEnded')
+    quizError.value = false
+    quizSelected.value = null
   } else {
-    quizError.value = true;
+    quizError.value = true
   }
 }
 
 function resetQuiz() {
-  quizError.value = false;
-  quizSelected.value = null;
+  quizError.value = false
+  quizSelected.value = null
 }
 
 function goForward() {
-  resetQuiz();
-  emit('goForward');
+  resetQuiz()
+  emit('goForward')
 }
 
 function goBackward() {
-  resetQuiz();
-  emit('goBackward');
+  resetQuiz()
+  emit('goBackward')
 }
 
-
-const toGame = computed(() => { return props.tutorialStepOutput?.goal === null ? false : true })
+const toGame = computed(() => {
+  return props.tutorialStepOutput?.goal === null ? false : true
+})
 
 const reset = computed(() => {
   return props.tutorialStepOutput?.goal?.balls != null ||
     //props.tutorialStepOutput?.goal?.cards != null ||
     props.tutorialStepOutput?.goal?.selectedCard != null //||
-    //props.tutorialStepOutput?.goal?.selectedBall != null
-    ? true
-    : false;
+    ? //props.tutorialStepOutput?.goal?.selectedBall != null
+      true
+    : false
 })
 
 const canGoBackward = computed(() => {
-  return parseInt(router.currentRoute.value.query?.step as string) !== 0;
+  return parseInt(router.currentRoute.value.query?.step as string) !== 0
 })
 
-const done = computed(() => { return tutorialStore.getProgress?.[props.tutorialID]?.[props.tutorialStep] ?? false })
+const done = computed(() => {
+  return tutorialStore.getProgress?.[props.tutorialID]?.[props.tutorialStep] ?? false
+})
 
 const progress = computed(() => {
   return Math.min(1, Math.max(0, props.tutorialStep / (tutorialStore.getProgress[props.tutorialID]?.length - 1 ?? Infinity)))

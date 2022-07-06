@@ -7,8 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import FunFactsCarousel from '@/components/FunFactsCarousel.vue';
-import PlatformStats from '@/components/PlatformStats/PlatformStats.vue';
+import FunFactsCarousel from '@/components/FunFactsCarousel.vue'
+import PlatformStats from '@/components/PlatformStats/PlatformStats.vue'
 </script>
 
 <style scoped>

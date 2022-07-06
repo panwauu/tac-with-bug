@@ -8,13 +8,9 @@
       :nWatching="miscState.watchingData.nWatchingPlayers"
       :watchingPlayers="miscState.watchingData.watchingPlayerNames"
     />
-    <div style="text-align: center;">{{ $t("Game.Statistic.time") }}</div>
+    <div style="text-align: center">{{ $t('Game.Statistic.time') }}</div>
     <CountdownTimer
-      :endDate="
-        miscState.gameRunning
-          ? new Date(miscState.created).toISOString()
-          : undefined
-      "
+      :endDate="miscState.gameRunning ? new Date(miscState.created).toISOString() : undefined"
       :initialMilliseconds="Number(miscState.created) - Number(miscState.lastPlayed)"
       :mode="miscState.gameRunning ? 'up' : 'static'"
       :displayDays="false"
@@ -23,22 +19,37 @@
       <TabView>
         <TabPanel :header="$t('Game.Statistic.Cards.title')">
           <div class="chart-container">
-            <Chart type="bar" :data="cardStatistic" :options="optionsCards" />
+            <Chart
+              type="bar"
+              :data="cardStatistic"
+              :options="optionsCards"
+            />
           </div>
         </TabPanel>
         <TabPanel :header="$t('Game.Statistic.Actions.title')">
           <div class="chart-container">
-            <Chart type="bar" :data="actionStatistics" :options="optionsActions" />
+            <Chart
+              type="bar"
+              :data="actionStatistics"
+              :options="optionsActions"
+            />
           </div>
         </TabPanel>
-        <TabPanel :header="$t('Game.Statistic.CardsTable.title')" :disabled="miscState.gameRunning">
-          <div class="chart-container" style="overflow-y: auto">
+        <TabPanel
+          :header="$t('Game.Statistic.CardsTable.title')"
+          :disabled="miscState.gameRunning"
+        >
+          <div
+            class="chart-container"
+            style="overflow-y: auto"
+          >
             <DataTable :value="statisticState.cardsTable">
-              <Column field="card" :header="$t('Game.Statistic.CardsTable.card')">
+              <Column
+                field="card"
+                :header="$t('Game.Statistic.CardsTable.card')"
+              >
                 <template #body="slotProps">
-                  <div
-                    :class="`tac ${redText(slotProps.data.card) ? 'red' : ''}`"
-                  >{{ cardName(slotProps.data.card) }}</div>
+                  <div :class="`tac ${redText(slotProps.data.card) ? 'red' : ''}`">{{ cardName(slotProps.data.card) }}</div>
                 </template>
               </Column>
               <Column
@@ -56,30 +67,30 @@
 </template>
 
 <script setup lang="ts">
-import TabView from 'primevue/tabview';
-import TabPanel from 'primevue/tabpanel';
-import Chart from 'primevue/chart';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import CountdownTimer from '@/components/CountdownTimer.vue';
-import GameWatchingPlayers from './GameWatchingPlayers.vue';
+import TabView from 'primevue/tabview'
+import TabPanel from 'primevue/tabpanel'
+import Chart from 'primevue/chart'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import CountdownTimer from '@/components/CountdownTimer.vue'
+import GameWatchingPlayers from './GameWatchingPlayers.vue'
 
 import type { miscStateType } from '@/services/compositionGame/useMisc'
 import type { statisticStateType } from '@/services/compositionGame/useStatistic'
-import { computed } from 'vue';
-import { i18n } from '@/services/i18n';
+import { computed } from 'vue'
+import { i18n } from '@/services/i18n'
 
 const props = defineProps<{
-  miscState: miscStateType,
+  miscState: miscStateType
   statisticState: statisticStateType
-}>();
+}>()
 
 const cardStatistic = computed(() => {
-  return props.statisticState.cardStatistic;
+  return props.statisticState.cardStatistic
 })
 
 const actionStatistics = computed(() => {
-  return props.statisticState.actionStatistic;
+  return props.statisticState.actionStatistic
 })
 
 function redText(title: string) {
@@ -87,14 +98,10 @@ function redText(title: string) {
 }
 
 function cardName(title: string) {
-  if (
-    ['narr', 'krieger', 'tac', 'engel', 'trickser', 'teufel'].includes(
-      title
-    )
-  ) {
-    return i18n.global.t(`Game.Statistic.CardsTable.${title}`);
+  if (['narr', 'krieger', 'tac', 'engel', 'trickser', 'teufel'].includes(title)) {
+    return i18n.global.t(`Game.Statistic.CardsTable.${title}`)
   }
-  return title;
+  return title
 }
 
 const optionsCards = {
@@ -133,7 +140,7 @@ const optionsActions = {
 }
 
 .tac {
-  font-family: "tacfontregular", Monospace;
+  font-family: 'tacfontregular', Monospace;
 }
 
 .red {

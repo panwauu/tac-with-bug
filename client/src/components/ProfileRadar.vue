@@ -1,20 +1,25 @@
 <template>
   <div>
-    <Chart ref="profileRadarChart" type="radar" :data="chartData" :options="chartOptions" />
+    <Chart
+      ref="profileRadarChart"
+      type="radar"
+      :data="chartData"
+      :options="chartOptions"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
-import Chart from 'primevue/chart';
-import { DefaultService as Service } from '@/generatedClient/index';
-import { i18n } from '@/services/i18n';
-import { username as loggedInUsername } from '@/services/useUser';
+import { ref, watch, onMounted } from 'vue'
+import Chart from 'primevue/chart'
+import { DefaultService as Service } from '@/generatedClient/index'
+import { i18n } from '@/services/i18n'
+import { username as loggedInUsername } from '@/services/useUser'
 
 const props = defineProps<{
-  data: number[],
-  username: string,
-}>();
+  data: number[]
+  username: string
+}>()
 
 const profileRadarChart = ref<any | null>(null)
 
@@ -36,9 +41,7 @@ const chartOptions = {
   scales: {
     r: {
       angleLines: {
-        color: getComputedStyle(document.body).getPropertyValue(
-          '--surface-d'
-        ),
+        color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
         display: true,
       },
       beginAtZero: true,
@@ -48,25 +51,25 @@ const chartOptions = {
         showLabelBackdrop: false,
       },
       grid: {
-        color: getComputedStyle(document.body).getPropertyValue(
-          '--surface-d'
-        ),
+        color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
       },
     },
   },
 }
 
 const resetGraph = async (data: any) => {
-  if (data === null || data.length === 0) { return }
+  if (data === null || data.length === 0) {
+    return
+  }
 
-  const newChartDataset: any[] = [];
+  const newChartDataset: any[] = []
 
   if (loggedInUsername.value != null) {
     const currentUserDataset = chartData.value.datasets.find((d) => d.order === 2)
     if (currentUserDataset != null) {
       newChartDataset.push(currentUserDataset)
     } else {
-      const stats = await Service.getPlayerStats(loggedInUsername.value);
+      const stats = await Service.getPlayerStats(loggedInUsername.value)
       newChartDataset.push({
         label: loggedInUsername.value ?? '',
         backgroundColor: '#25602950',
@@ -77,7 +80,7 @@ const resetGraph = async (data: any) => {
         pointHoverBorderColor: 'rgba(255,99,132,1)',
         data: stats.table,
         order: 2,
-      });
+      })
     }
   }
 
@@ -92,16 +95,23 @@ const resetGraph = async (data: any) => {
       pointHoverBorderColor: 'rgba(255,99,132,1)',
       data: data,
       order: 1,
-    });
+    })
   }
 
-  chartData.value.datasets = newChartDataset;
-  profileRadarChart.value?.refresh();
+  chartData.value.datasets = newChartDataset
+  profileRadarChart.value?.refresh()
 }
 
-onMounted(() => { resetGraph(props.data) })
-watch(() => props.data, () => { resetGraph(props.data) }, { deep: true })
+onMounted(() => {
+  resetGraph(props.data)
+})
+watch(
+  () => props.data,
+  () => {
+    resetGraph(props.data)
+  },
+  { deep: true }
+)
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

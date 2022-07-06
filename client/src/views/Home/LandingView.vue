@@ -19,10 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import TournamentWidget from '@/components/Tournament/TournamentWidget.vue';
-import RunningGamesWidget from '@/components/RunningGamesWidget.vue';
-import WaitingWidget from '@/components/WaitingWidget.vue';
-import TutorialWidget from '@/components/TutorialWidget.vue';
+import TournamentWidget from '@/components/Tournament/TournamentWidget.vue'
+import RunningGamesWidget from '@/components/RunningGamesWidget.vue'
+import WaitingWidget from '@/components/WaitingWidget.vue'
+import TutorialWidget from '@/components/TutorialWidget.vue'
 </script>
 
 <style scoped>
@@ -34,13 +34,13 @@ import TutorialWidget from '@/components/TutorialWidget.vue';
   grid-gap: 20px;
   grid-auto-columns: minmax(0, 1fr);
   grid-template-areas:
-    "waiting waiting waiting"
-    "tournament games tutorial";
+    'waiting waiting waiting'
+    'tournament games tutorial';
 }
 
 @media (max-width: 800px) {
   .landingPage {
-    grid-template-areas: "waiting" "games" "tournament" "tutorial";
+    grid-template-areas: 'waiting' 'games' 'tournament' 'tutorial';
   }
 }
 
@@ -54,12 +54,15 @@ import TutorialWidget from '@/components/TutorialWidget.vue';
 .waitingWidget {
   grid-area: waiting;
 }
+
 .tournamentWidget {
   grid-area: tournament;
 }
+
 .tutorialWidget {
   grid-area: tutorial;
 }
+
 .runningWidget {
   grid-area: games;
 }

@@ -15,12 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import ProfileRadar from '@/components/ProfileRadar.vue';
-import UserGamesDougnut from '@/components/UserGamesDougnut.vue';
+import ProfileRadar from '@/components/ProfileRadar.vue'
+import UserGamesDougnut from '@/components/UserGamesDougnut.vue'
 
-import type { gamesDistributionData } from '@/../../shared/types/typesPlayerStatistic';
+import type { gamesDistributionData } from '@/../../shared/types/typesPlayerStatistic'
 
-defineProps<{ username: string, radarData: number[], gamesDistributionData: gamesDistributionData }>();
+defineProps<{ username: string; radarData: number[]; gamesDistributionData: gamesDistributionData }>()
 </script>
 
 <style scoped>

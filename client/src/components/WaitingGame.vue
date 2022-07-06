@@ -1,46 +1,49 @@
 <template>
   <div class="waitingGame p-card">
     <div :class="`waitingGameHeader ${active ? '' : 'noWrapHeader'}`">
-      <Tag severity="success" class="status-badge">
-        {{
-          active
-            ? $t("Waiting.Icons.players", { X: game.nPlayers })
-            : game.nPlayers
-        }}
-        <PlayersTwo v-if="game.nPlayers === 4" class="Symbol SymbolMargin" />
-        <PlayersThree v-else class="Symbol SymbolMargin" />
+      <Tag
+        severity="success"
+        class="status-badge"
+      >
+        {{ active ? $t('Waiting.Icons.players', { X: game.nPlayers }) : game.nPlayers }}
+        <PlayersTwo
+          v-if="game.nPlayers === 4"
+          class="Symbol SymbolMargin"
+        />
+        <PlayersThree
+          v-else
+          class="Symbol SymbolMargin"
+        />
       </Tag>
-      <Tag severity="danger" class="status-badge">
-        {{
-          active
-            ? $tc("Waiting.Icons.teams", game.nTeams, { X: game.nTeams })
-            : game.nTeams
-        }}
-        <Teams :nTeams="game.nTeams" class="Symbol SymbolMargin" />
+      <Tag
+        severity="danger"
+        class="status-badge"
+      >
+        {{ active ? $tc('Waiting.Icons.teams', game.nTeams, { X: game.nTeams }) : game.nTeams }}
+        <Teams
+          :nTeams="game.nTeams"
+          class="Symbol SymbolMargin"
+        />
       </Tag>
-      <Tag severity="warning" class="status-badge">
-        {{
-          active
-            ? $t(`Waiting.Icons.${game.meister ? "meister" : "normal"}`)
-            : ""
-        }}
+      <Tag
+        severity="warning"
+        class="status-badge"
+      >
+        {{ active ? $t(`Waiting.Icons.${game.meister ? 'meister' : 'normal'}`) : '' }}
         <Brain
           v-if="game.meister"
           :color="'primary'"
           :class="`Symbol ${active ? 'SymbolMargin' : ''}`"
         />
-        <Heart v-else :color="'primary'" :class="`Symbol ${active ? 'SymbolMargin' : ''}`" />
+        <Heart
+          v-else
+          :color="'primary'"
+          :class="`Symbol ${active ? 'SymbolMargin' : ''}`"
+        />
       </Tag>
       <Tag class="status-badge">
-        {{
-          active
-            ? $t(`Waiting.Icons.${game.private ? "private" : "public"}`)
-            : ""
-        }}
-        <i
-          :class="`pi pi-lock${game.private ? '' : '-open'} Symbol ${active ? 'SymbolMargin' : ''
-          }`"
-        />
+        {{ active ? $t(`Waiting.Icons.${game.private ? 'private' : 'public'}`) : '' }}
+        <i :class="`pi pi-lock${game.private ? '' : '-open'} Symbol ${active ? 'SymbolMargin' : ''}`" />
       </Tag>
     </div>
     <div
@@ -76,12 +79,7 @@
             </div>
             <BallsImage
               v-if="activeAndNotNull(playerIndex(Number(teamIndex), index))"
-              :class="[
-                'playerBall',
-                game.players[playerIndex(Number(teamIndex), index)] === username
-                  ? 'clickable'
-                  : '',
-              ]"
+              :class="['playerBall', game.players[playerIndex(Number(teamIndex), index)] === username ? 'clickable' : '']"
               :color="game.balls[playerIndex(Number(teamIndex), index)]"
               @click="toggle($event, playerIndex(Number(teamIndex), index))"
             />
@@ -101,25 +99,13 @@
                 icon="pi pi-angle-up"
                 class="p-button-rounded p-button-secondary p-button-sm p-button-text buttonUpDown"
                 :disabled="playerIndex(Number(teamIndex), index) <= 0"
-                @click="
-                  movePlayer(
-                    game.id,
-                    game.players[playerIndex(Number(teamIndex), index)],
-                    -1
-                  )
-                "
+                @click="movePlayer(game.id, game.players[playerIndex(Number(teamIndex), index)], -1)"
               />
               <Button
                 icon="pi pi-angle-down"
                 class="p-button-rounded p-button-secondary p-button-sm p-button-text buttonUpDown"
                 :disabled="playerIndex(Number(teamIndex), index) >= game.nPlayers - 1"
-                @click="
-                  movePlayer(
-                    game.id,
-                    game.players[playerIndex(Number(teamIndex), index)],
-                    1
-                  )
-                "
+                @click="movePlayer(game.id, game.players[playerIndex(Number(teamIndex), index)], 1)"
               />
             </div>
             <Button
@@ -141,7 +127,10 @@
         @click="switchColor(color)"
       />
     </OverlayPanel>
-    <div v-if="active" class="footerWithButtons p-card-footer">
+    <div
+      v-if="active"
+      class="footerWithButtons p-card-footer"
+    >
       <Button
         label="Diesen Warteraum verlassen"
         icon="pi pi-sign-out"
@@ -152,10 +141,7 @@
         label="Bereit zum Starten?"
         icon="pi pi-caret-right"
         class="p-button-success"
-        :disabled="
-          game.players.slice(0, game.nPlayers).some((p) => p === null) ||
-            game.ready.find((_, index) => game.players[index] === username)
-        "
+        :disabled="game.players.slice(0, game.nPlayers).some((p) => p === null) || game.ready.find((_, index) => game.players[index] === username)"
         @click="setPlayerReady()"
       />
     </div>
@@ -163,72 +149,51 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import OverlayPanel from 'primevue/overlaypanel';
-import PlayerWithPicture from './PlayerWithPicture.vue';
-import Brain from '@/components/icons/BrainSymbol.vue';
-import Heart from '@/components/icons/HeartSymbol.vue';
-import PlayersTwo from '@/components/icons/PlayersTwo.vue';
-import PlayersThree from '@/components/icons/PlayersThree.vue';
-import Teams from '@/components/icons/TeamsSymbol.vue';
-import Tag from 'primevue/tag';
+import Button from 'primevue/button'
+import OverlayPanel from 'primevue/overlaypanel'
+import PlayerWithPicture from './PlayerWithPicture.vue'
+import Brain from '@/components/icons/BrainSymbol.vue'
+import Heart from '@/components/icons/HeartSymbol.vue'
+import PlayersTwo from '@/components/icons/PlayersTwo.vue'
+import PlayersThree from '@/components/icons/PlayersThree.vue'
+import Teams from '@/components/icons/TeamsSymbol.vue'
+import Tag from 'primevue/tag'
 
 import type { waitingGame } from '@/../../shared/types/typesWaiting'
-import { withDefaults, computed, ref } from 'vue';
-import { username } from '@/services/useUser';
+import { withDefaults, computed, ref } from 'vue'
+import { username } from '@/services/useUser'
 
-import BallsImage from './assets/BallsImage.vue';
+import BallsImage from './assets/BallsImage.vue'
 
-const props = withDefaults(defineProps<{ game: waitingGame, active?: boolean }>(), { active: false })
+const props = withDefaults(defineProps<{ game: waitingGame; active?: boolean }>(), { active: false })
 
 const emit = defineEmits<{
-  (eventName: 'move-player', data: { gameID: number, username: string, steps: number }): void
+  (eventName: 'move-player', data: { gameID: number; username: string; steps: number }): void
   (eventName: 'remove-player', username: string): void
   (eventName: 'ready-player', gameID: number): void
   (eventName: 'color-player', username: string, gameID: number, color: string): void
 }>()
 
-const opRef = ref<OverlayPanel | null>(null);
+const opRef = ref<OverlayPanel | null>(null)
 
 const colors = computed(() => {
-  return [
-    'black',
-    'blackWhite',
-    'blue',
-    'green',
-    'orange',
-    'red',
-    'melone',
-    'white',
-    'turquoise',
-    'pink',
-    'yellow',
-  ].filter((c) => !props.game.balls.some((b) => b === c));
+  return ['black', 'blackWhite', 'blue', 'green', 'orange', 'red', 'melone', 'white', 'turquoise', 'pink', 'yellow'].filter((c) => !props.game.balls.some((b) => b === c))
 })
 
 const playerIndex = (teamIndex: number, index: number) => {
-  return index + teamIndex * (props.game.nPlayers / props.game.nTeams);
+  return index + teamIndex * (props.game.nPlayers / props.game.nTeams)
 }
 
 const activeAndNotNull = (index: number) => {
-  return props.game.players[index] != null && props.active;
+  return props.game.players[index] != null && props.active
 }
 
 const activeAndSelf = (index: number) => {
-  return (
-    props.game.players[index] != null &&
-    props.active &&
-    props.game.players[index] === username.value
-  );
+  return props.game.players[index] != null && props.active && props.game.players[index] === username.value
 }
 
 const activeAndSelfOrAdmin = (index: number) => {
-  return (
-    props.game.players[index] != null &&
-    props.active &&
-    (props.game.players[index] === username.value ||
-      props.game.admin === username.value)
-  );
+  return props.game.players[index] != null && props.active && (props.game.players[index] === username.value || props.game.admin === username.value)
 }
 
 const movePlayer = (gameID: number, username: string, steps: number) => {
@@ -236,24 +201,26 @@ const movePlayer = (gameID: number, username: string, steps: number) => {
     gameID: gameID,
     username: username,
     steps: steps,
-  });
+  })
 }
 
 const removePlayer = (username: string) => {
-  emit('remove-player', username);
+  emit('remove-player', username)
 }
 
 const setPlayerReady = () => {
-  emit('ready-player', props.game.id);
+  emit('ready-player', props.game.id)
 }
 
 const toggle = (event: Event, index: number) => {
-  if (activeAndSelf(index)) { opRef.value?.toggle(event) }
+  if (activeAndSelf(index)) {
+    opRef.value?.toggle(event)
+  }
 }
 
 const switchColor = (color: string) => {
-  opRef.value?.hide();
-  emit('color-player', username.value ?? '', props.game.id, color);
+  opRef.value?.hide()
+  emit('color-player', username.value ?? '', props.game.id, color)
 }
 </script>
 

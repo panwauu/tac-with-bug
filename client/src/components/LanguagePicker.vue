@@ -1,16 +1,42 @@
 <template>
   <div>
-    <Dropdown v-model="selectedLocale" :options="locales" optionLabel="name" @change="setLocale">
+    <Dropdown
+      v-model="selectedLocale"
+      :options="locales"
+      optionLabel="name"
+      @change="setLocale"
+    >
       <template #value="slotProps">
-        <div v-if="slotProps.value" class="country-item">
-          <LocaleIcons v-if="displayFlag" :countryCode="slotProps.value" class="flag" />
-          <div v-if="displayText" class="text">{{ $t(`Settings.Language.${slotProps.value}`) }}</div>
+        <div
+          v-if="slotProps.value"
+          class="country-item"
+        >
+          <LocaleIcons
+            v-if="displayFlag"
+            :countryCode="slotProps.value"
+            class="flag"
+          />
+          <div
+            v-if="displayText"
+            class="text"
+          >
+            {{ $t(`Settings.Language.${slotProps.value}`) }}
+          </div>
         </div>
       </template>
       <template #option="slotProps">
         <div class="country-item">
-          <LocaleIcons v-if="displayFlag" :countryCode="slotProps.option" class="flag" />
-          <div v-if="displayText" class="text">{{ $t(`Settings.Language.${slotProps.option}`) }}</div>
+          <LocaleIcons
+            v-if="displayFlag"
+            :countryCode="slotProps.option"
+            class="flag"
+          />
+          <div
+            v-if="displayText"
+            class="text"
+          >
+            {{ $t(`Settings.Language.${slotProps.option}`) }}
+          </div>
         </div>
       </template>
     </Dropdown>
@@ -18,38 +44,42 @@
 </template>
 
 <script setup lang="ts">
-import Dropdown from 'primevue/dropdown';
+import Dropdown from 'primevue/dropdown'
 
-import { withDefaults, ref } from 'vue';
-import { locales } from '@/../../shared/shared/locales';
-import { i18n, setLocaleAndLoadMessages } from '../services/i18n';
-import { DefaultService as Service } from '@/generatedClient/index';
-import router from '@/router/index';
-import LocaleIcons from './assets/LocaleIcons.vue';
+import { withDefaults, ref } from 'vue'
+import { locales } from '@/../../shared/shared/locales'
+import { i18n, setLocaleAndLoadMessages } from '../services/i18n'
+import { DefaultService as Service } from '@/generatedClient/index'
+import router from '@/router/index'
+import LocaleIcons from './assets/LocaleIcons.vue'
 
-
-const props = withDefaults(defineProps<{
-  displayText?: boolean,
-  displayFlag?: boolean,
-  uploadFlag?: boolean
-}>(),
+const props = withDefaults(
+  defineProps<{
+    displayText?: boolean
+    displayFlag?: boolean
+    uploadFlag?: boolean
+  }>(),
   {
     displayText: true,
     displayFlag: true,
-    uploadFlag: false
-  })
+    uploadFlag: false,
+  }
+)
 
 const selectedLocale = ref<string | undefined>()
 
-
-selectedLocale.value = locales.find((l) => l === i18n.global.locale);
+selectedLocale.value = locales.find((l) => l === i18n.global.locale)
 
 const setLocale = async () => {
-  if (selectedLocale.value == null) { return }
+  if (selectedLocale.value == null) {
+    return
+  }
   await setLocaleAndLoadMessages(i18n, selectedLocale.value)
-  if (props.uploadFlag) { await Service.setSettingsLocale({ locale: selectedLocale.value }) }
+  if (props.uploadFlag) {
+    await Service.setSettingsLocale({ locale: selectedLocale.value })
+  }
 
-  router.push({ name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing', params: { locale: selectedLocale.value } });
+  router.push({ name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing', params: { locale: selectedLocale.value } })
 }
 </script>
 
