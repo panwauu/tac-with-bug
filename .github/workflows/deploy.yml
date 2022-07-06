@@ -53,10 +53,11 @@ jobs:
       run: |
         cd server
         npm ci
-    - name: Linting server
+    - name: Check linting and formatting of server
       run: |
         cd server
         npm run lint
+        npm run prettier-check
     - name: Build server documentation
       run: |
         cd server
