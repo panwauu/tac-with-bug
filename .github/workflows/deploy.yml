@@ -44,11 +44,15 @@ jobs:
       run: |
         cd shared
         npm ci
+    - name: Linting shared
+      run: |
+        cd shared
+        npm run lint
     - name: Install server modules
       run: |
         cd server
         npm ci
-    - name: Linting
+    - name: Linting server
       run: |
         cd server
         npm run lint
