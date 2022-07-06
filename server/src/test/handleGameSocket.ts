@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client'
-import { GameSocketC } from '../../../shared/types/GameNamespaceDefinition'
+import { GameSocketC } from '../sharedTypes/GameNamespaceDefinition'
 import { connectSocket } from './handleSocket'
 
 export function initiateGameSocket(gameID: number | string, token: string): GameSocketC {

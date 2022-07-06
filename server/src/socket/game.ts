@@ -1,6 +1,6 @@
 import type pg from 'pg'
-import type { gameForPlay } from '../../../shared/types/typesDBgame'
-import type { GameSocketS, GameNamespace } from '../../../shared/types/GameNamespaceDefinition'
+import type { gameForPlay } from '../sharedTypes/typesDBgame'
+import type { GameSocketS, GameNamespace } from '../sharedTypes/GameNamespaceDefinition'
 
 import logger from '../helpers/logger'
 import { getPlayerUpdateFromGame } from '../game/serverOutput'

@@ -1,9 +1,9 @@
 import logger from '../helpers/logger'
 import pg from 'pg'
-import * as tTournament from '../../../shared/types/typesTournament'
-import * as dbGame from '../../../shared/types/typesDBgame'
+import * as tTournament from '../sharedTypes/typesTournament'
+import * as dbGame from '../sharedTypes/typesDBgame'
 
-import { colors } from '../../../shared/shared/colors'
+import { colors } from '../sharedDefinitions/colors'
 import { shuffleArray } from '../game/cardUtils'
 import { abortGame, createGame } from './game'
 import { err, ok, Result } from 'neverthrow'

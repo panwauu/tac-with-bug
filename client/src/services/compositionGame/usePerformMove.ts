@@ -4,7 +4,7 @@ import { ballsStateType } from './useBalls'
 import { miscStateType } from './useMisc'
 import { discardPileStateType } from './useDiscardPile'
 import { cardsStateType } from './useCards'
-import { moveTextOrBall } from '@/../../shared/types/typesBall'
+import { moveTextOrBall } from '@/../../server/src/sharedTypes/typesBall'
 
 export type performMoveAction = {
   textAction: string

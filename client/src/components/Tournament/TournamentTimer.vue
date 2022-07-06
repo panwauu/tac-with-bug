@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import type { publicTournament } from '@/../../shared/types/typesTournament'
+import type { publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { computed } from 'vue'
 import CountdownTimer from '@/components/CountdownTimer.vue'
 

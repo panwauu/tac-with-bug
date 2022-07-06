@@ -1,4 +1,4 @@
-import type { AckData, GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition'
+import type { AckData, GeneralSocketC } from '../sharedTypes/GeneralNamespaceDefinition'
 import { io } from 'socket.io-client'
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'

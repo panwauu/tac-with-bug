@@ -1,9 +1,9 @@
 import type express from 'express'
-import type { tournamentParticipation } from '../../../shared/types/typesTournament'
-import type { playerFrontendStatistic } from '../../../shared/types/typesPlayerStatistic'
+import type { tournamentParticipation } from '../sharedTypes/typesTournament'
+import type { playerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
 import { Controller, Get, Query, Route, Request } from 'tsoa'
 
-import type { userNetworkApiResponse } from '../../../shared/types/typesStatistic'
+import type { userNetworkApiResponse } from '../sharedTypes/typesStatistic'
 import { getUserNetworkData } from '../services/playerStatistic'
 import { getDataForProfilePage } from '../services/playerStatistic'
 import { getTournamentParticipations } from '../services/tournaments'

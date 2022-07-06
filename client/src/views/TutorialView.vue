@@ -48,7 +48,7 @@ import { useInstructions } from '@/services/compositionGame/useInstructions'
 import router from '@/router/index'
 import { useTutorialStore } from '@/store/tutorial'
 import { injectStrict, SocketKey } from '@/services/injections'
-import { TutorialStepOutput } from '@/../../shared/types/typesTutorial'
+import { TutorialStepOutput } from '@/../../server/src/sharedTypes/typesTutorial'
 
 const tutorialStore = useTutorialStore()
 const socket = injectStrict(SocketKey)

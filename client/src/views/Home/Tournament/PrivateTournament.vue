@@ -88,7 +88,7 @@ import PrivateTournamentEditor from '@/components/Tournament/PrivateTournamentEd
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import TournamentStatusBadge from '@/components/Tournament/TournamentStatusBadge.vue'
 
-import type { privateTournament } from '@/../../../shared/types/typesTournament'
+import type { privateTournament } from '@/../../../server/src/sharedTypes/typesTournament'
 import { ref, computed, watch, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import router from '@/router'

@@ -37,7 +37,7 @@ class CustomSocket<L, E> extends Socket<L, E> {
 // @ts-ignore
 Socket.prototype.emitWithAck = CustomSocket.prototype.emitWithAck
 
-import type { ServerToClientEvents, ClientToServerEvents } from '@/../../shared/types/GeneralNamespaceDefinition'
+import type { ServerToClientEvents, ClientToServerEvents } from '@/../../server/src/sharedTypes/GeneralNamespaceDefinition'
 export type GeneralSocketC = CustomSocket<ServerToClientEvents, ClientToServerEvents>
-import type { ServerToClientEvents as StCEventsGame, ClientToServerEvents as CtSEventsGame } from '@/../../shared/types/GameNamespaceDefinition'
+import type { ServerToClientEvents as StCEventsGame, ClientToServerEvents as CtSEventsGame } from '@/../../server/src/sharedTypes/GameNamespaceDefinition'
 export type GameSocketC = CustomSocket<StCEventsGame, CtSEventsGame>

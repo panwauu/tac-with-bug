@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { i18n, setLocaleAndLoadMessages } from '@/services/i18n'
-import { locales, fallbackLocale } from '../../../shared/shared/locales'
+import { locales, fallbackLocale } from '../../../server/src/sharedDefinitions/locales'
 const Game = () => import('@/views/GameView.vue')
 const Home = () => import('@/views/HomeView.vue')
 const Settings = () => import('@/views/Home/SettingsView.vue')

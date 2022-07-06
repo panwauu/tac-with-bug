@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import GameComponent from '@/components/game/GameComponent.vue'
 
-import type { updateDataType } from '@/../../shared/types/typesDBgame'
+import type { updateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { registerGameSocket } from '@/services/registerSockets'
 import { usePositionStyles } from '@/services/compositionGame/usePositionStyles'

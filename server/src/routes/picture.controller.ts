@@ -3,7 +3,7 @@ import { Controller, Get, Delete, Query, Route, Request, Security, Post, Res, Ts
 
 import multer from 'multer'
 import { queryProfilePicture, loadProfilePictureToDB, selectRandomProfilePicture } from '../services/picture'
-import { userIdentifier } from '../../../shared/types/typesDBuser'
+import { userIdentifier } from '../sharedTypes/typesDBuser'
 
 @Route('/')
 export class PictureController extends Controller {

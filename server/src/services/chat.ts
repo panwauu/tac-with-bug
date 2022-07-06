@@ -1,8 +1,8 @@
 import type pg from 'pg'
-import type { chatElement, chatMessage } from '../../../shared/types/chat'
+import type { chatElement, chatMessage } from '../sharedTypes/chat'
 
 import { err, ok, Result } from 'neverthrow'
-import { maxUsersInChat } from '../../../shared/shared/chat'
+import { maxUsersInChat } from '../sharedDefinitions/chat'
 
 export async function sanitizeChatDatabase(pgPool: pg.Pool) {
   pgPool.query("DELETE FROM chat_messages WHERE current_timestamp - created > interval '1 year';")

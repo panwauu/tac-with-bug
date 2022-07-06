@@ -1,5 +1,5 @@
 import type pg from 'pg'
-import type { GeneralSocketS } from '../../../shared/types/GeneralNamespaceDefinition'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import { verifyJWT } from '../helpers/jwtWrapper'
 import { initializeSocket, terminateSocket } from './general'
 

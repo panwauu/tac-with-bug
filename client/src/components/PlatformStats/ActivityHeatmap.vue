@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { activityHeatmap } from '@/../../shared/types/typesPlatformStatistic'
+import type { activityHeatmap } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 import VueApexCharts from 'vue3-apexcharts'
 import { ref, watch } from 'vue'
 import { i18n } from '@/services/i18n'

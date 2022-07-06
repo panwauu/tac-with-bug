@@ -1,7 +1,7 @@
 import pg from 'pg'
-import * as tStatistic from '../../../shared/types/typesStatistic'
-import * as tDBgame from '../../../shared/types/typesDBgame'
-import type { playerFrontendStatistic } from '../../../shared/types/typesPlayerStatistic'
+import * as tStatistic from '../sharedTypes/typesStatistic'
+import * as tDBgame from '../sharedTypes/typesDBgame'
+import type { playerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
 
 import { initalizeStatistic } from '../game/statistic'
 import { getGames } from './game'

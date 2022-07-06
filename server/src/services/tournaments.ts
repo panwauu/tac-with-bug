@@ -1,6 +1,6 @@
 import pg from 'pg'
 import events from 'events'
-import * as tTournament from '../../../shared/types/typesTournament'
+import * as tTournament from '../sharedTypes/typesTournament'
 
 import { getPublicTournament } from './tournamentsPublic'
 

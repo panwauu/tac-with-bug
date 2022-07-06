@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import type { chatElement, chatMessage } from '@/../../shared/types/chat'
+import type { chatElement, chatMessage } from '@/../../server/src/sharedTypes/chat'
 import { isLoggedIn, username } from '@/services/useUser'
 import { nextTick, watch } from 'vue'
 import router from '@/router'

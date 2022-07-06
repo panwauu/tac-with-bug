@@ -1,5 +1,5 @@
-import { AckData } from '../../../shared/types/GeneralNamespaceDefinition'
-import { friend } from '../../../shared/types/typesFriends'
+import { AckData } from '../sharedTypes/GeneralNamespaceDefinition'
+import { friend } from '../sharedTypes/typesFriends'
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
 

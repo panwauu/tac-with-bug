@@ -1,4 +1,4 @@
-import type { GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition'
+import type { GeneralSocketC } from '../sharedTypes/GeneralNamespaceDefinition'
 import { io } from 'socket.io-client'
 import { connectSocket } from './handleSocket'
 import Chance from 'chance'

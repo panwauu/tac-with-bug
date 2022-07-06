@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { gamesDistributionData } from '@/../../shared/types/typesPlayerStatistic'
+import type { gamesDistributionData } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
 import { ref, onMounted, watch } from 'vue'
 import Chart from 'primevue/chart'
 import { i18n } from '@/services/i18n'

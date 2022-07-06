@@ -1,4 +1,4 @@
-import * as tBall from '@/../../shared/types/typesBall'
+import * as tBall from '@/../../server/src/sharedTypes/typesBall'
 import * as tCard from '../@types/typesCard'
 import { discardElement } from '@/services/compositionGame/useDiscardPile'
 

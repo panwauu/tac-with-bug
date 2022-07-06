@@ -122,7 +122,7 @@ import Row from 'primevue/row'
 import Tag from 'primevue/tag'
 import Button from 'primevue/button'
 
-import type { gameForOverview } from '@/../../shared/types/typesDBgame'
+import type { gameForOverview } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref } from 'vue'
 import { username as loggedInUser } from '@/services/useUser'
 import { DefaultService as Service } from '@/generatedClient'

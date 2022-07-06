@@ -6,7 +6,7 @@ import { createAvatar } from '@dicebear/avatars'
 import * as style from '@dicebear/avatars-bottts-sprites'
 
 import { resolveUserIdentifier } from '../services/user'
-import { userIdentifier } from '../../../shared/types/typesDBuser'
+import { userIdentifier } from '../sharedTypes/typesDBuser'
 import { ok, err, Result } from 'neverthrow'
 
 const profilePictureSize = 160

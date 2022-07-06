@@ -146,7 +146,7 @@ import type { ballsStateType } from '@/services/compositionGame/useBalls'
 import type { cardsStateType } from '@/services/compositionGame/useCards'
 import type { discardPileStateType } from '@/services/compositionGame/useDiscardPile'
 import type { performMoveAction } from '@/services/compositionGame/usePerformMove'
-import type { moveBall, moveText } from '@/../../shared/types/typesBall'
+import type { moveBall, moveText } from '@/../../server/src/sharedTypes/typesBall'
 import { rotatePosition as rotatePositionImport } from '@/js/rotateBoard'
 import BallsImage from '../assets/BallsImage.vue'
 

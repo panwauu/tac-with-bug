@@ -9,7 +9,7 @@ import type {
   userAgentAnalysisData,
   weekDataset,
   weekDatasetData,
-} from '../../../shared/types/typesPlatformStatistic'
+} from '../sharedTypes/typesPlatformStatistic'
 
 const cacheDurationFunFactsInMS = 60 * 60e3 // Update once per hour
 let cachedPlatformFunFacts: Promise<{ data: platformFunFacts; date: number }> | null = null

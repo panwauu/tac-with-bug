@@ -159,7 +159,7 @@ import PlayersThree from '@/components/icons/PlayersThree.vue'
 import Teams from '@/components/icons/TeamsSymbol.vue'
 import Tag from 'primevue/tag'
 
-import type { waitingGame } from '@/../../shared/types/typesWaiting'
+import type { waitingGame } from '@/../../server/src/sharedTypes/typesWaiting'
 import { withDefaults, computed, ref } from 'vue'
 import { username } from '@/services/useUser'
 

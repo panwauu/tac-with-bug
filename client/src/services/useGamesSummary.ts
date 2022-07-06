@@ -1,5 +1,5 @@
 import type { GeneralSocketC } from '@/services/socket'
-import type { gameForOverview, getGamesType } from '@/../../shared/types/typesDBgame'
+import type { gameForOverview, getGamesType } from '@/../../server/src/sharedTypes/typesDBgame'
 
 import { reactive, onBeforeUnmount } from 'vue'
 

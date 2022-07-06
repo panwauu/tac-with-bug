@@ -1,4 +1,4 @@
-import { lastTournamentWinners } from '@/../../shared/types/typesTournament'
+import { lastTournamentWinners } from '@/../../server/src/sharedTypes/typesTournament'
 import { GeneralSocketC } from './socket'
 import { ref } from 'vue'
 

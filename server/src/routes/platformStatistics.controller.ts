@@ -1,5 +1,5 @@
 import type express from 'express'
-import type { platformFunFacts, platformStats } from '../../../shared/types/typesPlatformStatistic'
+import type { platformFunFacts, platformStats } from '../sharedTypes/typesPlatformStatistic'
 import { Controller, Get, Route, Request } from 'tsoa'
 import { getPlatformStatistic, getPlatformFunFacts } from '../services/platformStatistic'
 

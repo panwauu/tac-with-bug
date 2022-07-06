@@ -150,7 +150,7 @@ import Button from 'primevue/button'
 import Crown from '@/components/icons/CrownSymbol.vue'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
-import type { privateTournament, publicTournament } from '@/../../shared/types/typesTournament'
+import type { privateTournament, publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { username } from '@/services/useUser'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { useToast } from 'primevue/usetoast'

@@ -48,7 +48,7 @@ import Sponsor from '@/components/SubscriptionTag.vue'
 import ProfileExplanation from '@/components/ProfileExplanation.vue'
 import HofBadge from '@/components/icons/HofBadge.vue'
 
-import type { gamesDistributionData as gamesDistributionDataType } from '@/../../shared/types/typesPlayerStatistic'
+import type { gamesDistributionData as gamesDistributionDataType } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
 import { watch, ref } from 'vue'
 import { hofReason, DefaultService as Service } from '@/generatedClient/index'
 import router from '@/router/index'

@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import GamesTable from '@/components/GamesTable.vue'
 
-import type { gameForOverview } from '@/../../shared/types/typesDBgame'
+import type { gameForOverview } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref, onMounted } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey } from '@/services/injections'
