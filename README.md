@@ -60,14 +60,10 @@ Flags:
 | ------------------ | ------------------------------------- |
 | [client](./client) | Vue source code for the web interface |
 | [server](./server) | Node server code                      |
-| [shared](./shared) | Shared interfaces and data            |
 
 First all packages have to be installed and built.
 
 ```shell
-cd shared
-npm install
-
 cd client
 npm install
 
