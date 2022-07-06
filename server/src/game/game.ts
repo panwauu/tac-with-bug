@@ -10,7 +10,7 @@ import { performBallAction, getLastNonTacCard } from './performMoveUtils'
 import { initializeBalls, resetBalls, ballPlayer } from './ballUtils'
 import { initalizeStatistic, statisticAnalyseAction } from './statistic'
 
-export class game {
+export class Game {
   nPlayers: number
   coop: boolean
 
@@ -36,7 +36,7 @@ export class game {
 
   statistic: tStatistic.GameStatistic[]
 
-  constructor(nPlayers: number, nTeams: number, meisterVersion: boolean, coop: boolean, gameLoad?: game) {
+  constructor(nPlayers: number, nTeams: number, meisterVersion: boolean, coop: boolean, gameLoad?: Game) {
     if (gameLoad != null) {
       this.nPlayers = gameLoad.nPlayers
       this.coop = gameLoad.coop || false

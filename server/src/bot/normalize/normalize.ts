@@ -1,11 +1,11 @@
 import type { MoveTextOrBall } from '../../sharedTypes/typesBall'
 
 import { cloneDeep } from 'lodash'
-import { game } from '../../game/game'
+import { Game } from '../../game/game'
 import { ballGoal, ballStart, getPositionsBetweenStarts } from '../../game/ballUtils'
 import { modulo, moduloOffset, reorderArray, rightShiftArray } from './helpers'
 
-function changePosition(gameInst: game, position: number, playersShiftedBy: number) {
+function changePosition(gameInst: Game, position: number, playersShiftedBy: number) {
   const firstStartPosition = ballStart(0, gameInst.balls)
   const firstGoalPosition = ballGoal(0, gameInst.balls)
   if (position < firstStartPosition) {
@@ -17,7 +17,7 @@ function changePosition(gameInst: game, position: number, playersShiftedBy: numb
   }
 }
 
-export function rightShiftPlayers(gameInst: game, shiftBy: number) {
+export function rightShiftPlayers(gameInst: Game, shiftBy: number) {
   if (Math.abs(shiftBy) === 0) {
     return 0
   }
@@ -42,7 +42,7 @@ export function rightShiftPlayers(gameInst: game, shiftBy: number) {
   // statistic, teams, tradeCards -> Ignore always
 }
 
-export function reorderBalls(gameInst: game, playersShiftedBy: number) {
+export function reorderBalls(gameInst: Game, playersShiftedBy: number) {
   const localOrder = gameInst.balls.map((_, i) => i)
   for (let i = 0; i < gameInst.nPlayers; i++) {
     const subOrder = localOrder.splice(i * 4, 4).sort(function (left: number, right: number) {
@@ -63,7 +63,7 @@ export function reorderBalls(gameInst: game, playersShiftedBy: number) {
   )
 }
 
-export function reorderCards(gameInst: game) {
+export function reorderCards(gameInst: Game) {
   const cardsNewOrder = gameInst.cards.players[0]
     .map((_, i) => i)
     .sort(function (left: number, right: number) {
@@ -75,8 +75,8 @@ export function reorderCards(gameInst: game) {
   return cardsNewOrder
 }
 
-export function normalizeGame(gameInst: game, playerIndex: number): { game: game; playersShiftedBy: number; ballsNewOrder: number[]; cardsNewOrder: number[] } {
-  const newGame = new game(gameInst.nPlayers, gameInst.teams.length, gameInst.cards.meisterVersion, gameInst.coop, cloneDeep(gameInst))
+export function normalizeGame(gameInst: Game, playerIndex: number): { game: Game; playersShiftedBy: number; ballsNewOrder: number[]; cardsNewOrder: number[] } {
+  const newGame = new Game(gameInst.nPlayers, gameInst.teams.length, gameInst.cards.meisterVersion, gameInst.coop, cloneDeep(gameInst))
 
   const playersShiftedBy = rightShiftPlayers(newGame, -1 * playerIndex)
   const ballsNewOrder = reorderBalls(newGame, playersShiftedBy)
@@ -87,7 +87,7 @@ export function normalizeGame(gameInst: game, playerIndex: number): { game: game
   return { game: newGame, playersShiftedBy, ballsNewOrder, cardsNewOrder }
 }
 
-export function normalizeAction(action: MoveTextOrBall, norm: { game: game; cardsNewOrder: number[]; ballsNewOrder: number[]; playersShiftedBy: number }): MoveTextOrBall {
+export function normalizeAction(action: MoveTextOrBall, norm: { game: Game; cardsNewOrder: number[]; ballsNewOrder: number[]; playersShiftedBy: number }): MoveTextOrBall {
   const reorderedCardIndex = norm.cardsNewOrder.findIndex((i) => i === action[1])
   if (reorderedCardIndex === -1) {
     throw new Error('Could not norm Action')
@@ -102,7 +102,7 @@ export function normalizeAction(action: MoveTextOrBall, norm: { game: game; card
   return [0, cardIndexNormalized, ballIndex, changePosition(norm.game, action[3], norm.playersShiftedBy)]
 }
 
-export function unnormalizeAction(normAction: MoveTextOrBall, norm: { game: game; cardsNewOrder: number[]; ballsNewOrder: number[]; playersShiftedBy: number }): MoveTextOrBall {
+export function unnormalizeAction(normAction: MoveTextOrBall, norm: { game: Game; cardsNewOrder: number[]; ballsNewOrder: number[]; playersShiftedBy: number }): MoveTextOrBall {
   const playerIndex = norm.playersShiftedBy === 0 ? 0 : -1 * norm.playersShiftedBy
   const cardIndex = norm.cardsNewOrder[normAction[1]]
   if (normAction.length === 3) {

@@ -1,9 +1,9 @@
 import { cloneDeep } from 'lodash'
-import { game } from '../../game/game'
+import { Game } from '../../game/game'
 import { normalizeAction, normalizeGame, unnormalizeAction } from './normalize'
 
 describe('Test game normalization', () => {
-  const definedGame = new game(4, 2, true, false)
+  const definedGame = new Game(4, 2, true, false)
   definedGame.cards.players[0] = ['1', '1', '3', '4', '5']
   definedGame.cards.players[1] = ['1', '2', '3', '4', '5']
   definedGame.cards.players[2] = ['1', '2', '3', '4', '5']
@@ -14,7 +14,7 @@ describe('Test game normalization', () => {
   definedGame.updateCardsWithMoves()
 
   test('Should not change the already ordered game', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     const norm = normalizeGame(g, 0)
     expect(Math.abs(norm.playersShiftedBy)).toBe(0)
     expect(norm.cardsNewOrder).toEqual([0, 1, 2, 3, 4])
@@ -23,7 +23,7 @@ describe('Test game normalization', () => {
   })
 
   test('Should be able to reorder players', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     const norm = normalizeGame(g, 1)
     expect(Math.abs(norm.playersShiftedBy)).toBe(1)
     expect(norm.cardsNewOrder).toEqual([0, 1, 2, 3, 4])
@@ -32,7 +32,7 @@ describe('Test game normalization', () => {
   })
 
   test('Should be able to reorder cards', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     g.cards.players[0] = ['2', '1', 'tac', '4', '5']
     const norm = normalizeGame(g, 0)
     expect(Math.abs(norm.playersShiftedBy)).toBe(0)
@@ -41,7 +41,7 @@ describe('Test game normalization', () => {
   })
 
   test('Should be able to reorder balls to match definedGame', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     g.balls[0].position = 1
     g.balls[1].position = 0
     g.priorBalls[0].position = 1
@@ -54,7 +54,7 @@ describe('Test game normalization', () => {
   })
 
   test('Should be able to reorder balls', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     g.balls[0].position = 32
     g.balls[3].position = 0
     g.balls[4].position = 84
@@ -65,7 +65,7 @@ describe('Test game normalization', () => {
   })
 
   test('Should be able to shift player with changed balls without balls reorder', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     g.balls[0].position = 16
     g.balls[1].position = 17
     g.balls[2].position = 18
@@ -80,7 +80,7 @@ describe('Test game normalization', () => {
   })
 
   test('Should be able to shift player with changed balls with balls reorder', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     g.balls[0].position = 16
     g.balls[1].position = 17
     g.balls[2].position = 18
@@ -95,7 +95,7 @@ describe('Test game normalization', () => {
   })
 
   test('Should be able to shift player with changed balls with balls reorder', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     g.cards.players[0] = ['2', '1', '3', '4', '5']
     g.cards.players[1] = ['2', '1', '4', '3', '5']
     g.cards.players[2] = ['2', '1', '5', '4', '3']
@@ -110,7 +110,7 @@ describe('Test game normalization', () => {
 })
 
 describe('Test action normalization', () => {
-  const definedGame = new game(4, 2, true, false)
+  const definedGame = new Game(4, 2, true, false)
   definedGame.cards.players[0] = ['1', '2', '3', '4', '5']
   definedGame.cards.players[1] = ['1', '2', '3', '4', '5']
   definedGame.cards.players[2] = ['1', '2', '3', '4', '5']
@@ -134,14 +134,14 @@ describe('Test action normalization', () => {
   })
 
   test('Normalize should shift player without shifting cards', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     const norm = normalizeGame(g, 1)
     expect(normalizeAction([1, 0, 'abwerfen'], norm)).toEqual([0, 0, 'abwerfen'])
     expect(normalizeAction([1, 1, 'abwerfen'], norm)).toEqual([0, 1, 'abwerfen'])
   })
 
   test('Normalize should shift player with shifting cards', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     g.cards.players[2] = ['2', '1', '3', '4', '5']
     const norm = normalizeGame(g, 2)
     expect(norm.cardsNewOrder).toEqual([1, 0, 2, 3, 4])
@@ -151,7 +151,7 @@ describe('Test action normalization', () => {
   })
 
   test('Normalize should shift player with duplicate cards and correct positions', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     g.cards.players[3] = ['1', '1', '1', '4', '5']
     const norm = normalizeGame(g, 3)
     expect(norm.cardsNewOrder).toEqual([0, 1, 2, 3, 4])
@@ -161,7 +161,7 @@ describe('Test action normalization', () => {
   })
 
   test('Normalize should correct ballindex with shifting balls', () => {
-    const g = new game(4, 2, true, false, cloneDeep(definedGame))
+    const g = new Game(4, 2, true, false, cloneDeep(definedGame))
     g.balls[0].position = 64
     g.balls[1].position = 48
     g.balls[2].position = 32

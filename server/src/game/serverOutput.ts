@@ -1,7 +1,7 @@
 import * as dbGame from '../sharedTypes/typesDBgame'
 import * as tCard from '../sharedTypes/typesCard'
 import { Player } from '../sharedTypes/typesPlayers'
-import { game } from './game'
+import { Game } from './game'
 import type { UpdateDataType } from '../sharedTypes/typesDBgame'
 
 export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: number): UpdateDataType {
@@ -35,7 +35,7 @@ export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: nu
   }
 }
 
-function getPlayers(game: game, names: string[]) {
+function getPlayers(game: Game, names: string[]) {
   const players: Player[] = []
   for (let i = 0; i < game.cards.players.length; i++) {
     const player: Player = {
@@ -69,7 +69,7 @@ function createCardsWithMovesForUnactivePlayer(playerCards: string[], textAction
   })
 }
 
-function getCards(game: game, player: number): tCard.PlayerCard[] {
+function getCards(game: Game, player: number): tCard.PlayerCard[] {
   if (player < 0 || player >= game.nPlayers) {
     return []
   }

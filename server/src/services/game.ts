@@ -2,7 +2,7 @@ import logger from '../helpers/logger'
 import pg from 'pg'
 import * as tDBTypes from '../sharedTypes/typesDBgame'
 
-import { game } from '../game/game'
+import { Game } from '../game/game'
 import { captureMove } from './capture'
 import { getStatus } from '../game/serverOutput'
 import { updateTournamentFromGame as updatePrivateTournamentFromGame } from './tournamentsPrivate'
@@ -46,7 +46,7 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
       privateTournamentId: dbGame.private_tournament_id,
       players: [...Array(dbGame.n_players).keys()].map((i) => dbGame['player' + i.toString()]),
       playerIDs: [...Array(dbGame.n_players).keys()].map((i) => parseInt(dbGame['id' + i.toString()])),
-      game: new game(0, 0, false, false, dbGame.game),
+      game: new Game(0, 0, false, false, dbGame.game),
       colors: dbGame.colors,
       rematch_open: dbGame.rematch_open,
     })
@@ -114,7 +114,7 @@ export async function createGame(
     teams = 2
   }
 
-  const newGame = new game(playerIDs.length, teams, meisterVersion, coop)
+  const newGame = new Game(playerIDs.length, teams, meisterVersion, coop)
 
   const values = [playerIDs.length, teams, newGame.getJSON(), publicTournamentId, JSON.stringify(colors.slice(0, playerIDs.length)), privateTournamentId]
   const query = "INSERT INTO games (status, n_players, n_teams, game, public_tournament_id, colors, private_tournament_id) VALUES ('running', $1, $2, $3, $4, $5, $6) RETURNING id;"

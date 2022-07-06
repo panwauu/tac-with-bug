@@ -2,7 +2,7 @@ import type pg from 'pg'
 import type { TutorialStepDefinition } from '../sharedTypes/typesTutorial'
 import logger from '../helpers/logger'
 import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
-import { game } from '../game/game'
+import { Game } from '../game/game'
 import { getPlayerUpdateFromGame } from '../game/serverOutput'
 import { getDefaultTutorialProgress, getTutorialProgress, resetTutorialProgress, setTutorialProgress } from '../services/tutorial'
 import Joi from 'joi'
@@ -47,7 +47,7 @@ export async function registerTutorialHandler(pgPool: pg.Pool, socket: GeneralSo
   socket.on('tutorial:postMove', async (data, callback) => {
     try {
       const gameForPlay = data.game
-      gameForPlay.game = new game(data.game.nPlayers, data.game.nTeams, data.game.game.cards.meisterVersion, data.game.coop, data.game.game)
+      gameForPlay.game = new Game(data.game.nPlayers, data.game.nTeams, data.game.game.cards.meisterVersion, data.game.coop, data.game.game)
       const res = gameForPlay.game.checkMove(data.move)
       if (!res) {
         return callback({ status: 500, error: 'Move is not valid' })

@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
 import * as tCard from '../sharedTypes/typesCard'
-import { game } from './game'
+import { Game } from './game'
 
 export function initalizeCards(nPlayers: number, meisterVersion: boolean): tCard.CardsType {
   const cards: tCard.CardsType = {
@@ -90,7 +90,7 @@ export function dealCards(cards: tCard.CardsType): void {
   cards.discardedFlag = false
 }
 
-export function checkCardsAndDeal(game: game) {
+export function checkCardsAndDeal(game: Game) {
   if (game.cards.players.filter((playerCards) => playerCards.length > 0).length === 0) {
     game.narrFlag = game.nPlayers === 4 ? [false, false, false, false] : [false, false, false, false, false, false]
     game.tradeFlag = true
