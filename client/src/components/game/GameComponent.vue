@@ -12,7 +12,6 @@
           <div
             class="twbLetters"
             style="
-              font-family: 'tacfontregular';
               font-size: 38px;
               color: var(--tac-text-color);
             "

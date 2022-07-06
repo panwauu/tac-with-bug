@@ -4,7 +4,7 @@
       height="100%"
       viewBox="0 0 56 30"
       preserveAspectRatio="xMinYMid meet"
-      style="font-family: 'tacfontregular'"
+      class="tacfont"
     >
       <text
         x="0"
@@ -21,6 +21,9 @@
 </template>
 
 <style scoped>
+.tacfont {
+  font-family: "tacfontregular", Monospace;
+}
 svg text :first-child {
   letter-spacing: -17.5px;
 }

@@ -180,7 +180,7 @@ body {
 (prefers-color-scheme: dark);
 
 @font-face {
-  font-family: "tacfontregular";
+  font-family: "tacfontregular", Monospace;
   src: url("./assets/TacFont/tacfont_semibold_1-webfont.woff2") format("woff2"),
     url("./assets/TacFont/tacfont_semibold_1-webfont.woff") format("woff");
   font-weight: normal;
@@ -195,6 +195,7 @@ body {
 }
 
 .twbLetters {
+  font-family: "tacfontregular", Monospace;
   letter-spacing: -0.17em;
   padding-right: 0.17em;
   user-select: none;

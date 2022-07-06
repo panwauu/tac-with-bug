@@ -191,7 +191,7 @@ function toggle(event: Event, index: number) {
   color: var(--tac-red);
   position: absolute;
   font-size: calc(0.015 * var(--board-size-in-px));
-  font-family: "tacfontregular";
+  font-family: "tacfontregular", Monospace;
 }
 
 .playerCardsRausTL {
