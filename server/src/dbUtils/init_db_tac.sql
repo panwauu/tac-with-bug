@@ -17,7 +17,6 @@ CREATE TABLE users (
   ),
   currentsubscription int,
   freelicense boolean NOT NULL DEFAULT false,
-  settings JSON,
   locale VARCHAR(2) NOT NULL DEFAULT 'de',
   color_blindness_flag BOOLEAN NOT NULL DEFAULT false,
   admin BOOLEAN NOT NULL DEFAULT FALSE,
