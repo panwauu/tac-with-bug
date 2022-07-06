@@ -18,10 +18,10 @@ function getCircleHouse6(playerColors: string[], turned: boolean, nRotation: num
     turned = false
   }
   const aspectRatio = turned ? 0.8658 : 1.155
-  const R_house = turned ? 43.27 / aspectRatio : 43.27
+  const rLgHouse = turned ? 43.27 / aspectRatio : 43.27
   const result = []
   for (let i = 0; i < 6; i++) {
-    const position = calculatePositionPolar(50, 50, i * (Math.PI / 3) + (turned ? Math.PI / 6 : 0), R_house, aspectRatio)
+    const position = calculatePositionPolar(50, 50, i * (Math.PI / 3) + (turned ? Math.PI / 6 : 0), rLgHouse, aspectRatio)
     result.push(`border: solid ${playerColors[(i + nRotation) % 6]} calc(1.4 / 100 * var(--board-size-in-px)); left: ${position.left}; top: ${position.top};`)
   }
   return result

@@ -152,10 +152,10 @@ export async function getPlayerStats(sqlClient: pg.Pool, userID: number) {
   games.sort((a, b) => (a.lastPlayed > b.lastPlayed ? 1 : -1))
   const sum = intializePlayerStatistic()
   for (const game of games) {
-    const player_index = game.playerIDs.findIndex((id) => id === userID)
-    addActionStatistic(sum, game.game.statistic[player_index])
-    addCardsStatistic(sum, game.game.statistic[player_index])
-    addWLStatistic(sum, game, player_index)
+    const playerIndex = game.playerIDs.findIndex((id) => id === userID)
+    addActionStatistic(sum, game.game.statistic[playerIndex])
+    addCardsStatistic(sum, game.game.statistic[playerIndex])
+    addWLStatistic(sum, game, playerIndex)
   }
   return sum
 }

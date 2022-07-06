@@ -85,9 +85,9 @@ export async function leaveChat(pgPool: pg.Pool, userid: number, chatid: number)
 }
 
 export type InsertChatMessageError = 'SENDER_IS_NOT_PART_OF_CHAT'
-export async function insertChatMessage(pgPool: pg.Pool, sender_user_id: number, chatid: number, body: string): Promise<Result<number[], InsertChatMessageError>> {
-  const users_in_chat = await getUsersInChat(pgPool, chatid)
-  if (users_in_chat.every((userid) => userid !== sender_user_id)) {
+export async function insertChatMessage(pgPool: pg.Pool, senderUserId: number, chatid: number, body: string): Promise<Result<number[], InsertChatMessageError>> {
+  const usersInChat = await getUsersInChat(pgPool, chatid)
+  if (usersInChat.every((userid) => userid !== senderUserId)) {
     return err('SENDER_IS_NOT_PART_OF_CHAT')
   }
 
@@ -98,7 +98,7 @@ export async function insertChatMessage(pgPool: pg.Pool, sender_user_id: number,
       WHERE userid != $1 AND chatid = $2 RETURNING users_to_chats_id
     )
     SELECT userid FROM users_with_unread JOIN users_to_chats ON users_to_chats.id = users_with_unread.users_to_chats_id;`
-  const res = await pgPool.query<{ userid: number }>(query, [sender_user_id, chatid, body])
+  const res = await pgPool.query<{ userid: number }>(query, [senderUserId, chatid, body])
 
   return ok(res.rows.map((r) => r.userid))
 }
@@ -111,8 +111,8 @@ export async function markChatAsRead(pgPool: pg.Pool, userid: number, chatid: nu
 
 export type LoadChatError = 'USER_NOT_PART_OF_CHAT'
 export async function loadChat(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<ChatMessage[], LoadChatError>> {
-  const users_in_chat = await getUsersInChat(pgPool, chatid)
-  if (!users_in_chat.includes(userid)) {
+  const usersInChat = await getUsersInChat(pgPool, chatid)
+  if (!usersInChat.includes(userid)) {
     return err('USER_NOT_PART_OF_CHAT')
   }
 

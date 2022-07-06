@@ -3,10 +3,10 @@ export interface PositionStyle {
   left: string
 }
 
-export function calculatePositionPolar(left_center: number, top_center: number, angle: number, radius_height: number, aspectRatio: number): PositionStyle {
+export function calculatePositionPolar(leftCenter: number, topCenter: number, angle: number, radiusHeight: number, aspectRatio: number): PositionStyle {
   return {
-    top: `${top_center + Math.cos(angle) * radius_height}%`,
-    left: `${left_center + Math.sin(-angle) * radius_height * aspectRatio}%`,
+    top: `${topCenter + Math.cos(angle) * radiusHeight}%`,
+    left: `${leftCenter + Math.sin(-angle) * radiusHeight * aspectRatio}%`,
   }
 }
 
@@ -15,25 +15,25 @@ export function positionStyles6(turned: boolean | undefined): PositionStyle[] {
     turned = false
   }
   const aspectRatio = turned ? 0.8658 : 1.155
-  const R_house = turned ? 43.27 / aspectRatio : 43.27
-  const R_ring = turned ? 35.53 / aspectRatio : 35.53
-  const R_goal = turned ? 22.18 / aspectRatio : 22.18
-  const r_goal = turned ? 6.29 / aspectRatio : 6.29
-  const phi_goal = [94, 150, 360 - 150, 360 - 94]
-  const r_house = turned ? 2.4 / aspectRatio : 2.4
+  const rLgHouse = turned ? 43.27 / aspectRatio : 43.27
+  const rRing = turned ? 35.53 / aspectRatio : 35.53
+  const rLgGoal = turned ? 22.18 / aspectRatio : 22.18
+  const rSmGoal = turned ? 6.29 / aspectRatio : 6.29
+  const phiGoal = [94, 150, 360 - 150, 360 - 94]
+  const rSmHouse = turned ? 2.4 / aspectRatio : 2.4
   const nStepsBetweenStarts = 11
   const nPlayers = 6
 
   const result = []
   for (let i = 0; i < nPlayers; i++) {
-    const startCenter = calculatePositionPolar(50, 50, i * ((2 * Math.PI) / nPlayers) + (turned ? Math.PI / 6 : 0), R_house, aspectRatio)
+    const startCenter = calculatePositionPolar(50, 50, i * ((2 * Math.PI) / nPlayers) + (turned ? Math.PI / 6 : 0), rLgHouse, aspectRatio)
     for (let j = 0; j < 4; j++) {
       result.push(
         calculatePositionPolar(
           parseFloat(startCenter.left.substring(0, startCenter.left.length - 1)),
           parseFloat(startCenter.top.substring(0, startCenter.top.length - 1)),
           (1 / 4 + j / 2) * Math.PI,
-          turned ? r_house / aspectRatio : r_house,
+          turned ? rSmHouse / aspectRatio : rSmHouse,
           aspectRatio
         )
       )
@@ -41,18 +41,18 @@ export function positionStyles6(turned: boolean | undefined): PositionStyle[] {
   }
 
   for (let i = 0; i < nPlayers * nStepsBetweenStarts; i++) {
-    result.push(calculatePositionPolar(50, 50, 2 * Math.PI * (i / (nPlayers * nStepsBetweenStarts)) + (turned ? Math.PI / 6 : 0), R_ring, aspectRatio))
+    result.push(calculatePositionPolar(50, 50, 2 * Math.PI * (i / (nPlayers * nStepsBetweenStarts)) + (turned ? Math.PI / 6 : 0), rRing, aspectRatio))
   }
 
   for (let i = 0; i < nPlayers; i++) {
-    const goalCenter = calculatePositionPolar(50, 50, i * ((2 * Math.PI) / nPlayers) + (turned ? Math.PI / 6 : 0), R_goal, aspectRatio)
+    const goalCenter = calculatePositionPolar(50, 50, i * ((2 * Math.PI) / nPlayers) + (turned ? Math.PI / 6 : 0), rLgGoal, aspectRatio)
     for (let j = 0; j < 4; j++) {
       result.push(
         calculatePositionPolar(
           parseFloat(goalCenter.left.substring(0, goalCenter.left.length - 1)),
           parseFloat(goalCenter.top.substring(0, goalCenter.top.length - 1)),
-          (phi_goal[j] / 180) * Math.PI + i * ((2 * Math.PI) / nPlayers) + (turned ? Math.PI / 6 : 0),
-          r_goal,
+          (phiGoal[j] / 180) * Math.PI + i * ((2 * Math.PI) / nPlayers) + (turned ? Math.PI / 6 : 0),
+          rSmGoal,
           aspectRatio
         )
       )
