@@ -38,7 +38,7 @@ import StatsByHour from './StatsByHour.vue'
 import StatsByDay from './StatsByDay.vue'
 import UserAgentStats from './UserAgentStats.vue'
 
-import type { platformStats } from '@/../../shared/types/typesPlatformStatistic'
+import type { platformStats } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 import { ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index'
 

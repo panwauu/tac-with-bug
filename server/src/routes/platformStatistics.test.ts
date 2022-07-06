@@ -1,6 +1,6 @@
-import { locales } from '../../../shared/shared/locales'
+import { locales } from '../sharedDefinitions/locales'
 import { getPassedRatio, getPlatformStatistic } from '../services/platformStatistic'
-import { dayDataset, hourDataset } from '../../../shared/types/typesPlatformStatistic'
+import { dayDataset, hourDataset } from '../sharedTypes/typesPlatformStatistic'
 
 describe('Platform Statistic Test Suite', () => {
   test('Test week data extrapolation with synthetic data', async () => {

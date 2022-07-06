@@ -1,4 +1,4 @@
-import type { moveTextOrBall } from '../../../../shared/types/typesBall'
+import type { moveTextOrBall } from '../../sharedTypes/typesBall'
 
 import { cloneDeep } from 'lodash'
 import { game } from '../../game/game'

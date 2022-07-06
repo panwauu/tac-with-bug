@@ -2,8 +2,8 @@ import { reactive } from 'vue'
 import { cardPictureDict } from './useCards'
 
 import * as tCard from '@/@types/typesCard'
-import { playerCard as ServerPlayerCard } from '@/../../shared/types/typesCard'
-import * as tPlayers from '@/../../shared/types/typesPlayers'
+import { playerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
+import * as tPlayers from '@/../../server/src/sharedTypes/typesPlayers'
 import { positionStylesState } from './usePositionStyles'
 
 export interface discardElement {

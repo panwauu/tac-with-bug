@@ -1,6 +1,6 @@
-import * as tCard from '../../../shared/types/typesCard'
-import * as tBall from '../../../shared/types/typesBall'
-import * as tStatistic from '../../../shared/types/typesStatistic'
+import * as tCard from '../sharedTypes/typesCard'
+import * as tBall from '../sharedTypes/typesBall'
+import * as tStatistic from '../sharedTypes/typesStatistic'
 
 import { cloneDeep } from 'lodash'
 import logger from '../helpers/logger'

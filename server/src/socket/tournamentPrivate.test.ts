@@ -1,5 +1,5 @@
 import { TacServer } from '../server'
-import { privateTournament } from '../../../shared/types/typesTournament'
+import { privateTournament } from '../sharedTypes/typesTournament'
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
 

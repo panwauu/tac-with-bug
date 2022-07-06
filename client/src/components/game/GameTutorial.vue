@@ -150,7 +150,7 @@ import ProgressBar from 'primevue/progressbar'
 
 import { ref, computed } from 'vue'
 import router from '@/router/index'
-import { TutorialStepOutput } from '@/../../shared/types/typesTutorial'
+import { TutorialStepOutput } from '@/../../server/src/sharedTypes/typesTutorial'
 
 import { useTutorialStore } from '@/store/tutorial'
 const tutorialStore = useTutorialStore()

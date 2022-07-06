@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io-client'
-import { GameSocketC, GameSocketS } from '../../../shared/types/GameNamespaceDefinition'
+import { GameSocketC, GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 
 type SupportedSockets = Socket | GameSocketC | GameSocketS
 type SomeKindOfSocket = { socket: SupportedSockets } | SupportedSockets

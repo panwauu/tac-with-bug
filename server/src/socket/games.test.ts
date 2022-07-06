@@ -1,6 +1,6 @@
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
-import { AckData } from '../../../shared/types/GeneralNamespaceDefinition'
-import { gameForOverview } from '../../../shared/types/typesDBgame'
+import { AckData } from '../sharedTypes/GeneralNamespaceDefinition'
+import { gameForOverview } from '../sharedTypes/typesDBgame'
 import { closeSockets } from '../test/handleSocket'
 
 describe('Games test suite via socket.io', () => {

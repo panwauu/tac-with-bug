@@ -54,7 +54,7 @@ import TournamentTeamsList from '@/components/Tournament/TournamentTeamsList.vue
 import TournamentSignUp from '@/components/Tournament/TournamentSignUp.vue'
 import TournamentBracket from '@/components/Tournament/TournamentBracket.vue'
 
-import type { publicTournament } from '@/../../../shared/types/typesTournament'
+import type { publicTournament } from '@/../../../server/src/sharedTypes/typesTournament'
 import { ref, computed, watch, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import router from '@/router'

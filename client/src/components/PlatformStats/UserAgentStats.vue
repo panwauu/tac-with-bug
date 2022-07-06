@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import type { userAgentAnalysisData } from '@/../../shared/types/typesPlatformStatistic'
+import type { userAgentAnalysisData } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'

@@ -1,7 +1,7 @@
 import { sound } from '@/plugins/sound'
 import { cardsStateType } from './useCards'
 import { miscStateType } from './useMisc'
-import { updateDataType } from '@/../../shared/types/typesDBgame'
+import { updateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 
 export function audioHandler(newData: updateDataType, cardsState: cardsStateType, miscState: miscStateType): void {
   if (newData.gamePlayer === -1) {

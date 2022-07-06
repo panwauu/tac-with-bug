@@ -4,7 +4,7 @@ import { getGame } from '../services/game'
 import { getPublicTournamentByID, startTournament, startTournamentRound, checkForceGameEnd, updateTournamentFromGame } from '../services/tournamentsPublic'
 import { startSignUpOnCondition, endSignUpOnCondition } from '../services/tournamentsRegister'
 import { getDifferentName } from '../services/SweetNameGenerator'
-import { publicTournament } from '../../../shared/types/typesTournament'
+import { publicTournament } from '../sharedTypes/typesTournament'
 import { closeSockets } from '../test/handleSocket'
 
 describe('TournamentPublic test suite via Socket.io', () => {

@@ -1,4 +1,4 @@
-import type { waitingGame } from '@/../../shared/types/typesWaiting'
+import type { waitingGame } from '@/../../server/src/sharedTypes/typesWaiting'
 import { defineStore } from 'pinia'
 import { cloneDeep } from 'lodash'
 import { sound } from '../plugins/sound'

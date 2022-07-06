@@ -1,5 +1,5 @@
-import { GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition'
-import { GameSocketC } from '../../../shared/types/GameNamespaceDefinition'
+import { GeneralSocketC } from '../sharedTypes/GeneralNamespaceDefinition'
+import { GameSocketC } from '../sharedTypes/GameNamespaceDefinition'
 
 import { io } from 'socket.io-client'
 import { registerGameSocket } from '../test/handleGameSocket'

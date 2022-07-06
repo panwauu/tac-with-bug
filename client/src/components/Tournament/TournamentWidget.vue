@@ -50,7 +50,7 @@ import TournamentTimer from '@/components/Tournament/TournamentTimer.vue'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import Crown from '@/components/icons/CrownSymbol.vue'
 
-import type { publicTournament } from '@/../../shared/types/typesTournament'
+import type { publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { ref, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { getWinners } from '@/services/useTournamentWinners'

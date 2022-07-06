@@ -64,7 +64,7 @@ import TournamentStatusBadge from './TournamentStatusBadge.vue'
 import { ref, watch } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey } from '@/services/injections'
-import type { tournamentTableElement } from '../../../../shared/types/typesTournament'
+import type { tournamentTableElement } from '../../../../server/src/sharedTypes/typesTournament'
 import { isLoggedIn } from '@/services/useUser'
 
 const socket = injectStrict(SocketKey)

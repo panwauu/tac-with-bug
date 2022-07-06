@@ -1,5 +1,5 @@
-import type { ballsType, ballType, moveTextOrBall } from '../../../../shared/types/typesBall'
-import type { playerCard } from '../../../../shared/types/typesCard'
+import type { ballsType, ballType, moveTextOrBall } from '../../sharedTypes/typesBall'
+import type { playerCard } from '../../sharedTypes/typesCard'
 import type pg from 'pg'
 
 import { cloneDeep } from 'lodash'

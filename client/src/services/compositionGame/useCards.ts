@@ -2,7 +2,7 @@ import { reactive } from 'vue'
 import { cloneDeep } from 'lodash'
 
 import * as tCard from '@/@types/typesCard'
-import { playerCard as ServerPlayerCard } from '@/../../shared/types/typesCard'
+import { playerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
 import { ballsStateType } from './useBalls'
 import { miscStateType } from './useMisc'
 

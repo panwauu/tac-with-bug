@@ -28,7 +28,7 @@
 import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
 
-import type { publicTournament } from '@/../../shared/types/typesTournament'
+import type { publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 
 defineProps<{ tournament: publicTournament }>()
 

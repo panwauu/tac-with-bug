@@ -193,7 +193,7 @@ import type { discardPileStateType } from '@/services/compositionGame/useDiscard
 import type { instructionsStateType } from '@/services/compositionGame/useInstructions'
 import type { statisticStateType } from '@/services/compositionGame/useStatistic'
 import type { performMoveAction } from '@/services/compositionGame/usePerformMove'
-import type { updateDataType } from '@/../../shared/types/typesDBgame'
+import type { updateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { i18n } from '@/services/i18n'
 import router from '@/router'

@@ -1,5 +1,5 @@
 import type { GeneralSocketC } from '@/services/socket'
-import type { subscriptionExport } from '@/../../shared/types/typesSubscription'
+import type { subscriptionExport } from '@/../../server/src/sharedTypes/typesSubscription'
 
 import { reactive, onBeforeUnmount } from 'vue'
 

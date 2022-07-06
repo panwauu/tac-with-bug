@@ -1,9 +1,9 @@
-import type { waitingGame } from '../../../shared/types/typesWaiting'
-import type { gameForPlay } from '../../../shared/types/typesDBgame'
+import type { waitingGame } from '../sharedTypes/typesWaiting'
+import type { gameForPlay } from '../sharedTypes/typesDBgame'
 import type pg from 'pg'
 
 import { Result, ok, err } from 'neverthrow'
-import { colors } from '../../../shared/shared/colors'
+import { colors } from '../sharedDefinitions/colors'
 import { disableRematchOfGame } from './game'
 import { isUserOnline } from '../socket/general'
 import { expectOneChangeToDatabase, notOneDatabaseChangeError } from '../dbUtils/dbHelpers'

@@ -1,4 +1,4 @@
-import type { GeneralNamespace, GeneralSocketS } from '../../../shared/types/GeneralNamespaceDefinition'
+import type { GeneralNamespace, GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import type pg from 'pg'
 
 import { initializeWaiting, registerWaitingHandlers, terminateWaiting } from './waiting'

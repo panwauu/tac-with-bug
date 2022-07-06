@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
-import { GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition'
+import { GeneralSocketC } from '../sharedTypes/GeneralNamespaceDefinition'
 
 describe('Channel test suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[], socket: GeneralSocketC

@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash'
-import * as tCard from '../../../shared/types/typesCard'
+import * as tCard from '../sharedTypes/typesCard'
 import { game } from './game'
 
 export function initalizeCards(nPlayers: number, meisterVersion: boolean): tCard.cardsType {

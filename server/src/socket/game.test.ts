@@ -1,4 +1,4 @@
-import type { GameSocketC } from '../../../shared/types/GameNamespaceDefinition'
+import type { GameSocketC } from '../sharedTypes/GameNamespaceDefinition'
 
 import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets'
 import { registerGameSocket, initiateGameSocket } from '../test/handleGameSocket'

@@ -2,7 +2,7 @@ import { computed, nextTick } from 'vue'
 import { createI18n, I18n } from 'vue-i18n'
 import router from '../router/index'
 import de from '../locales/de.json'
-import { locales, fallbackLocale } from '@/../../shared/shared/locales'
+import { locales, fallbackLocale } from '@/../../server/src/sharedDefinitions/locales'
 
 export function getLocaleFromBrowser(): string {
   let browserLocales = navigator.languages === undefined ? [navigator.language] : navigator.languages

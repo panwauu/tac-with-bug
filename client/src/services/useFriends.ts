@@ -1,4 +1,4 @@
-import type { friend } from '@/../../shared/types/typesFriends'
+import type { friend } from '@/../../server/src/sharedTypes/typesFriends'
 import type { GeneralSocketC } from '@/services/socket'
 import type { UnwrapNestedRefs } from '@/../node_modules/@vue/reactivity/dist/reactivity'
 import { reactive, onBeforeUnmount, computed, ComputedRef } from 'vue'

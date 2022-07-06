@@ -1,5 +1,5 @@
 import ical from 'ical-generator'
-import { publicTournament } from '../../../shared/types/typesTournament'
+import { publicTournament } from '../sharedTypes/typesTournament'
 
 export function generateIcal(tournament: publicTournament) {
   const cal = ical()

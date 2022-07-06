@@ -1,5 +1,5 @@
-import * as tCard from '../../../shared/types/typesCard'
-import * as tBall from '../../../shared/types/typesBall'
+import * as tCard from '../sharedTypes/typesCard'
+import * as tBall from '../sharedTypes/typesBall'
 
 import { cloneDeep } from 'lodash'
 import { moveOneStep } from './generateMovesUtils'

@@ -6,7 +6,7 @@ import logger from '../helpers/logger'
 import { endNotProperlyEndedGames, abortNotEndedGames, disableRematchOfOldGames, getGame } from '../services/game'
 import { getPublicTournament, startTournament, startTournamentRound, checkForceGameEnd } from './tournamentsPublic'
 import { startSignUpOnCondition, endSignUpOnCondition } from './tournamentsRegister'
-import { publicTournament } from '../../../shared/types/typesTournament'
+import { publicTournament } from '../sharedTypes/typesTournament'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
 
 const jobs: schedule.Job[] = []

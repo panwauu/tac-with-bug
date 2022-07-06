@@ -1,7 +1,7 @@
-import type { AckData, GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition'
+import type { AckData, GeneralSocketC } from '../sharedTypes/GeneralNamespaceDefinition'
 import { io } from 'socket.io-client'
-import { TutorialStepOutput } from '../../../shared/types/typesTutorial'
-import { gameForPlay, updateDataType } from '../../../shared/types/typesDBgame'
+import { TutorialStepOutput } from '../sharedTypes/typesTutorial'
+import { gameForPlay, updateDataType } from '../sharedTypes/typesDBgame'
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
 

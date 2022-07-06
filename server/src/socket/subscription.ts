@@ -1,6 +1,6 @@
 import type pg from 'pg'
-import type { GeneralSocketS } from '../../../shared/types/GeneralNamespaceDefinition'
-import type { subscriptionExport } from '../../../shared/types/typesSubscription'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
+import type { subscriptionExport } from '../sharedTypes/typesSubscription'
 import logger from '../helpers/logger'
 import Joi from 'joi'
 

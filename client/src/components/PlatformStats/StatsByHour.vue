@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { hourDataset } from '@/../../shared/types/typesPlatformStatistic'
+import type { hourDataset } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'

@@ -25,7 +25,7 @@
 import { ref, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { isEmoji } from '@/store/messages'
-import type { chatMessage } from '@/../../shared/types/chat'
+import type { chatMessage } from '@/../../server/src/sharedTypes/chat'
 import type { positionStylesState } from '@/services/compositionGame/usePositionStyles'
 import type { miscStateType } from '@/services/compositionGame/useMisc'
 import router from '@/router'

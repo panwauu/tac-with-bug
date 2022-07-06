@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import TournamentTeam from '@/components/Tournament/TournamentTeam.vue'
 
-import { publicTournament } from '@/../../shared/types/typesTournament'
+import { publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { computed } from 'vue'
 import { username } from '@/services/useUser'
 

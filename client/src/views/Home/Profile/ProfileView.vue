@@ -18,7 +18,7 @@
 import ProfileRadar from '@/components/ProfileRadar.vue'
 import UserGamesDougnut from '@/components/UserGamesDougnut.vue'
 
-import type { gamesDistributionData } from '@/../../shared/types/typesPlayerStatistic'
+import type { gamesDistributionData } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
 
 defineProps<{ username: string; radarData: number[]; gamesDistributionData: gamesDistributionData }>()
 </script>
