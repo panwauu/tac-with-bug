@@ -57,7 +57,7 @@
       <Button icon="pi pi-window-minimize" label="Rescale" @click="resetGraphSize()" />
     </span>
     <div v-if="loading" class="chartSponsorOverlay">
-      <i class="pi pi-spin pi-spinner" style="font-size: 4rem" />
+      <i class="pi pi-spin pi-spinner" style="font-size: 4rem" aria-hidden="true" />
     </div>
   </div>
 </template>

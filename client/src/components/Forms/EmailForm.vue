@@ -1,7 +1,7 @@
 <template>
   <span :class="['p-float-label', 'floatingTextInput', iconClass]">
-    <i v-if="emailCheck === null" class="pi pi-spin pi-spinner" />
-    <i v-if="emailCheck === true" class="pi pi-check" />
+    <i v-if="emailCheck === null" class="pi pi-spin pi-spinner" aria-hidden="true" />
+    <i v-if="emailCheck === true" class="pi pi-check" aria-hidden="true" />
     <InputText
       id="SUemail"
       v-model="localEmail"

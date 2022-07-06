@@ -89,23 +89,23 @@
       >
         <template #value="slotProps">
           <div v-if="slotProps.value">
-            <i v-if="slotProps.value.value" :class="`pi pi-lock`" />
-            <i v-else :class="`pi pi-lock-open`" />
+            <i v-if="slotProps.value.value" :class="`pi pi-lock`" aria-hidden="true" />
+            <i v-else :class="`pi pi-lock-open`" aria-hidden="true" />
           </div>
           <span v-else>
             <div style="display: flex;">
-              <i :class="`pi pi-lock`" />
-              <i :class="`pi pi-lock-open`" />
+              <i :class="`pi pi-lock`" aria-hidden="true" />
+              <i :class="`pi pi-lock-open`" aria-hidden="true" />
             </div>
           </span>
         </template>
         <template #option="slotProps">
           <div v-if="slotProps.option.value" style="display: flex;">
-            <i :class="`pi pi-lock`" style="margin-right: 5px;" />
+            <i :class="`pi pi-lock`" style="margin-right: 5px;" aria-hidden="true" />
             <div>{{ $t('Waiting.WaitingGameCreator.privateTrueName') }}</div>
           </div>
           <div v-else style="display: flex;">
-            <i :class="`pi pi-lock-open`" style="margin-right: 5px;" />
+            <i :class="`pi pi-lock-open`" style="margin-right: 5px;" aria-hidden="true" />
             <div>{{ $t('Waiting.WaitingGameCreator.privateFalseName') }}</div>
           </div>
         </template>
@@ -221,9 +221,8 @@ function startGameHandler(data: startGameType) {
 function joinGame(game: waitingGame) {
   if (!isLoggedIn.value) { return }
 
-  if (waitingStore.ownGame === null && game.private === true && !confirm(i18n.global.t('Waiting.joinGamePrivate'))) {
-    return;
-  } else if (waitingStore.ownGame != null && game.private === false && !confirm(i18n.global.t('Waiting.switchGameConfirm'))) {
+  if ((waitingStore.ownGame === null && game.private === true && !confirm(i18n.global.t('Waiting.joinGamePrivate'))) ||
+    (waitingStore.ownGame != null && game.private === false && !confirm(i18n.global.t('Waiting.switchGameConfirm')))) {
     return;
   }
 

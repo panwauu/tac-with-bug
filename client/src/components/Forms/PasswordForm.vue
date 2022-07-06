@@ -31,7 +31,7 @@
     <span class="p-float-label floatingTextInput">
       <InputText
         id="SUpasswordRepeat"
-        v-model="password_repeat"
+        v-model="passwordRepeat"
         type="password"
         name="password"
         style="width: 100%"
@@ -39,7 +39,7 @@
       />
       <label for="SUpasswordRepeat">{{ $t("Login.passwordRepeat") }}</label>
       <small
-        v-if="!validPasswordRepeat && password !== '' && password_repeat !== ''"
+        v-if="!validPasswordRepeat && password !== '' && passwordRepeat !== ''"
         class="p-error"
       >{{ $t("Login.SignUp.passwordUnequal") }}</small>
     </span>
@@ -69,13 +69,13 @@ const localValid = computed({
   set: (val: boolean) => emit('update:valid', val)
 })
 
-const password_repeat = ref('')
+const passwordRepeat = ref('')
 
 const validPassword = computed(() => !passwordTooLong.value && !passwordTooShort.value)
 const passwordTooShort = computed(() => localPassword.value.length < 8)
 const passwordTooLong = computed(() => localPassword.value.length > 64)
-const validPasswordRepeat = computed(() => localPassword.value === password_repeat.value)
-const validCombination = computed(() => validPassword.value && validPasswordRepeat.value && localPassword.value !== '' && password_repeat.value !== '')
+const validPasswordRepeat = computed(() => localPassword.value === passwordRepeat.value)
+const validCombination = computed(() => validPassword.value && validPasswordRepeat.value && localPassword.value !== '' && passwordRepeat.value !== '')
 
 watch(() => validCombination.value, () => { localValid.value = validCombination.value })
 </script>

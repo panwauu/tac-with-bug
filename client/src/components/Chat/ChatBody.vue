@@ -15,7 +15,7 @@
           severity="danger"
         />
       </div>
-      <i style="font-size: 1fr;" :class="`pi pi-${messagesStore.getChatIcon}`" />
+      <i style="font-size: 1fr;" :class="`pi pi-${messagesStore.getChatIcon}`" aria-hidden="true" />
       <div
         class="chatName"
       >{{ formatChannelName(messagesStore.getChatLabel, messagesStore.selectedChat.type === 'channel') }}</div>
