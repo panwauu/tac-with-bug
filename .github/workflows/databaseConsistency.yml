@@ -1,0 +1,58 @@
+name: Check database consistency
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - name: Install pg-digg
+        run: |
+          npm install -g pg-diff-cli
+      - name: Deploy - Heroku login credentials
+        run: |
+          cat > ~/.netrc <<EOF
+            machine api.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+            machine git.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+          EOF
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+      - name: Run compare script
+        run: |
+          cd server
+          cd src
+          cd dbUtils
+          ./compareSchemata.sh &> /dev/null
