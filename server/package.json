@@ -17,8 +17,8 @@
     "building": "echo 'build started' && tsoa spec-and-routes && openapi --input ./src/swagger.json --output ../client/src/generatedClient --useUnionTypes && echo 'build ended'",
     "buildWatch": "onchange \"src/routes/*.controller.ts\" -e \"src/routes/routes.ts\" -i -k -- npm run building",
     "lint": "eslint -c .eslintrc.js ./src",
-    "checkLocales": "node ./dist/server/src/entrypoints/checkLocales.js ../../../../email/locales && node ./dist/server/src/entrypoints/checkLocales.js ../../../../../client/src/locales",
-    "sanitizeCaptures": "node ./dist/server/src/entrypoints/sanitizeCapture.js",
+    "checkLocales": "node ./dist/entrypoints/checkLocales.js ../../email/locales && node ./dist/entrypoints/checkLocales.js ../../../client/src/locales",
+    "sanitizeCaptures": "node ./dist/entrypoints/sanitizeCapture.js",
     "prettier-format": "prettier --config .prettierrc --write .",
     "prettier-check": "prettier --config .prettierrc --check ."
   },
