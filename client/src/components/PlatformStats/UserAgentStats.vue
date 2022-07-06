@@ -131,5 +131,3 @@ function groupAndSortData(data: Record<string, number>, threshold: number, group
   })
 }
 </script>
-
-<style scoped></style>

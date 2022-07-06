@@ -53,5 +53,3 @@ function login() {
   loginOverlayRef.value?.hide()
 }
 </script>
-
-<style scoped></style>

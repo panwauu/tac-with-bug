@@ -79,5 +79,3 @@ function performMoveAndEmit(data: PerformMoveAction) {
   gameSocket.emit('postMove', performMove(data))
 }
 </script>
-
-<style scoped></style>

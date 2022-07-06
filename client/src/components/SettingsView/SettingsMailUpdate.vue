@@ -77,5 +77,3 @@ const requestMailUpdate = async () => {
   }
 }
 </script>
-
-<style scoped></style>

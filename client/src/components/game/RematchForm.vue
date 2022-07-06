@@ -111,5 +111,3 @@ function setPlayerColor(username: string, gameID: number, color: string) {
   socket.emit('waiting:switchColor', { gameID: gameID, username: username, color: color })
 }
 </script>
-
-<style scoped></style>

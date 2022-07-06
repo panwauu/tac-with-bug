@@ -41,5 +41,3 @@ async function updateData() {
   }
 }
 </script>
-
-<style scoped></style>

@@ -85,5 +85,3 @@ const requestUsernameUpdate = async () => {
   }
 }
 </script>
-
-<style scoped></style>

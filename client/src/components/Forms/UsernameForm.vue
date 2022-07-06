@@ -92,5 +92,3 @@ const iconClass = computed(() => {
   return nameCheck.value === null || nameCheck.value === true ? 'p-input-icon-right' : ''
 })
 </script>
-
-<style scoped></style>

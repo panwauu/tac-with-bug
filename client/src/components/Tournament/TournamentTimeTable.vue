@@ -43,5 +43,3 @@ function getLongTimeString(ts: string) {
   })
 }
 </script>
-
-<style scoped></style>

@@ -54,5 +54,3 @@ function searchPlayers() {
   })
 }
 </script>
-
-<style scoped></style>

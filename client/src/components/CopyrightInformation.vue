@@ -15,5 +15,3 @@
     <p>All rights not expressly granted are reserved.</p>
   </div>
 </template>
-
-<style scoped></style>

@@ -56,5 +56,3 @@ const localeChartOptions = {
   maintainAspectRatio: false,
 }
 </script>
-
-<style scoped></style>

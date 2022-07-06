@@ -154,5 +154,3 @@ const toggleVisibility = (legendItem: any) => {
   weekChart.value?.refresh()
 }
 </script>
-
-<style scoped></style>

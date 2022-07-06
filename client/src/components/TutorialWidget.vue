@@ -33,5 +33,3 @@ const progressInEachTutorial = computed(() =>
   })
 )
 </script>
-
-<style scoped></style>

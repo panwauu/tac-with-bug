@@ -86,5 +86,3 @@ const iconClass = computed(() => {
   return emailCheck.value === null || emailCheck.value === true ? 'p-input-icon-right' : ''
 })
 </script>
-
-<style scoped></style>

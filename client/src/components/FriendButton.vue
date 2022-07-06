@@ -52,5 +52,3 @@ const friendShipStatus = computed(() => {
   return friendsState.friendshipStatus(props.username)
 })
 </script>
-
-<style scoped></style>

@@ -79,5 +79,3 @@ const requestPasswordUpdate = async () => {
   }
 }
 </script>
-
-<style scoped></style>
