@@ -1,20 +1,20 @@
 <template>
   <div class="p-card subscriptionPage">
     <div style="margin-bottom: 20px">
-      <img src="@/assets/Oskar.webp" style="width: 50%; border-radius: 5px">
+      <img src="@/assets/Oskar.webp" style="width: 50%; border-radius: 5px" alt="Foto von Oskar">
       <h2>{{ $t("Subscription.aboutMeHeader") }}</h2>
       <p>{{ $t("Subscription.aboutMe1") }}</p>
       <p>{{ $t("Subscription.aboutMe2") }}</p>
       <div class="FeaturesAndPrice">
         <div class="PriceTag">
-          <b>{{ $t("Subscription.price") }}</b>
+          <strong>{{ $t("Subscription.price") }}</strong>
         </div>
         <div class="Features">
           <SubscriptionTag :clickable="false" :sponsorsOnly="false" />
           <div class="FeatureElement">
             <YinYang class="FeatureIcon" />
             <div class="FeatureText">
-              <b>{{ $t("Subscription.featureKarma1") }}</b>
+              <strong>{{ $t("Subscription.featureKarma1") }}</strong>
               {{ $t("Subscription.featureKarma2") }}
             </div>
           </div>
@@ -92,7 +92,7 @@
       href="https://www.paypal.com/paypalme/TacWithBug"
     >
       {{ $t("Subscription.buttonAdditionalPay") }}
-      <i class="pi pi-paypal" style="margin-left: 5px" />
+      <i class="pi pi-paypal" style="margin-left: 5px" aria-hidden="true" />
     </a>
     <div style="margin-top: 10px">
       <div class="disclaimer">{{ $t("Subscription.disclaimer1") }}</div>

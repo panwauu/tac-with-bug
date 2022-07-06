@@ -1,7 +1,7 @@
 <template>
   <div class="chatMenu">
     <div class="chatMenuHeader">
-      <i style="font-size: 20px;" class="pi pi-comments" />
+      <i style="font-size: 20px;" class="pi pi-comments" aria-hidden="true" />
       <div class="positionsSettings">
         <ChatPositions
           :selected="chatStore.chatPosition === 'bottom'"

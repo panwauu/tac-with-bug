@@ -3,7 +3,7 @@
     <div v-if="!connected" class="connectionOverlay">
       <div class="overlayBackground" />
       <template v-if="loading">
-        <i class="pi pi-spin pi-spinner" style="font-size: 2rem" />
+        <i class="pi pi-spin pi-spinner" style="font-size: 2rem" aria-hidden="true" />
       </template>
       <template v-else-if="reconnecting">
         <h1 class="reconnectionText">{{ $t("GameView.socketReconnectingOverlay") }}</h1>

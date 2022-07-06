@@ -9,7 +9,7 @@
     ]"
     @click="openChat()"
   >
-    <i class="pi pi-comments" style="font-size: 2rem" />
+    <i class="pi pi-comments" style="font-size: 2rem" aria-hidden="true" />
     <Badge
       v-if="messagesStore.notificationsChat !== 0"
       :value="messagesStore.notificationsChat.toString()"

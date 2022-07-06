@@ -8,7 +8,7 @@
     >
       <template #option="slotProps">
         <div style="display: flex; align-items: center">
-          <i :class="slotProps.option.icon" style="margin-right: 5px;" />
+          <i :class="slotProps.option.icon" style="margin-right: 5px;" aria-hidden="true" />
           <div>{{ $t(`Chat.ChatCreator.${slotProps.option.value}`) }}</div>
         </div>
       </template>

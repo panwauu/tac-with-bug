@@ -1,19 +1,19 @@
 <template>
   <div class="bottomMenu">
     <div class="bottomMenuElement clickable" @click="$router.push({ name: 'Impressum' })">
-      <i class="pi pi-id-card icon" />
+      <i class="pi pi-id-card icon" aria-hidden="true" />
       {{ $t("Home.Impressum") }}
     </div>
     <div class="bottomMenuElement clickable" @click="$router.push({ name: 'Copyright' })">
-      <i class="pi pi-file icon" />
+      <i class="pi pi-file icon" aria-hidden="true" />
       {{ $t("Home.Copyright") }}
     </div>
     <div class="bottomMenuElement clickable" @click="$router.push({ name: 'Datenschutz' })">
-      <i class="pi pi-book icon" />
+      <i class="pi pi-book icon" aria-hidden="true" />
       {{ $t("Home.Datenschutz") }}
     </div>
     <div class="bottomMenuElement clickable" @click="$router.push({ name: 'FAQ' })">
-      <i class="pi pi-book icon" />
+      <i class="pi pi-book icon" aria-hidden="true" />
       {{ $t("Home.FAQ") }}
     </div>
   </div>

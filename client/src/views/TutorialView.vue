@@ -172,8 +172,8 @@ const computedForWatch = computed(() => {
 watch(computedForWatch, () => watcherDone(), { deep: true })
 
 function matchAnyArrayOfObject(curr: Array<any>, goal: any[][]) {
-  for (let g = 0; g < goal.length; g++) {
-    if (isEqual(curr, goal[g])) { return true }
+  for (const goalentry of goal) {
+    if (isEqual(curr, goalentry)) { return true }
   }
   return false
 }
