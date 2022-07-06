@@ -133,7 +133,7 @@ const optionsActions = {
 }
 
 .tac {
-  font-family: "tacfontregular";
+  font-family: "tacfontregular", Monospace;
 }
 
 .red {

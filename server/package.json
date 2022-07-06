@@ -86,7 +86,7 @@
     "chance": "^1.1.8",
     "cross-env": "^7.0.3",
     "eslint": "^8.7.0",
-    "eslint-plugin-sonarjs": "^0.11.0",
+    "eslint-plugin-sonarjs": "^0.13.0",
     "jest": "^28.1.2",
     "nodemon": "^2.0.13",
     "openapi-typescript-codegen": "^0.9.3",

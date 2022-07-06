@@ -61,7 +61,7 @@ function redirectToLanding() { router.push({ name: 'Landing' }) }
 }
 
 .logoLetters {
-  font-family: "tacfontregular";
+  font-family: "tacfontregular", Monospace;
   font-size: 38px;
   color: var(--tac-text-color);
   user-select: none;

@@ -86,7 +86,7 @@ useResizeObserver(advertPageRef, (entries) => {
 
 <style scoped>
 .tacLogo {
-  font-family: "tacfontregular";
+  font-family: "tacfontregular", Monospace;
 }
 .advertPage {
   width: 100%;

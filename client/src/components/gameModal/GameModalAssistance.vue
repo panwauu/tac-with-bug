@@ -94,7 +94,7 @@ import TacSymbol from '@/components/icons/TacSymbol.vue';
 .cardNumber {
   display: flex;
   align-items: center;
-  font-family: "tacfontregular";
+  font-family: "tacfontregular", Monospace;
   font-size: 1.7rem;
 }
 
