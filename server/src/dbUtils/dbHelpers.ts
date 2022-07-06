@@ -16,17 +16,17 @@ export function expectOneChangeInDatabase(res: pg.QueryResult<any>) {
   }
 }
 
-export type noDatabaseChangeError = 'NO_CHANGE_TO_DATABASE'
-export type notOneDatabaseChangeError = 'NONE_OR_MORE_THAN_ONE_CHANGES_TO_DATABASE'
+export type NoDatabaseChangeError = 'NO_CHANGE_TO_DATABASE'
+export type NotOneDatabaseChangeError = 'NONE_OR_MORE_THAN_ONE_CHANGES_TO_DATABASE'
 
-export function expectChangesToDatabase(res: pg.QueryResult<any>): Result<null, noDatabaseChangeError> {
+export function expectChangesToDatabase(res: pg.QueryResult<any>): Result<null, NoDatabaseChangeError> {
   if (res.rowCount === 0) {
     return err('NO_CHANGE_TO_DATABASE')
   }
   return ok(null)
 }
 
-export function expectOneChangeToDatabase(res: pg.QueryResult<any>): Result<null, notOneDatabaseChangeError> {
+export function expectOneChangeToDatabase(res: pg.QueryResult<any>): Result<null, NotOneDatabaseChangeError> {
   if (res.rowCount === 0 || res.rowCount > 1) {
     return err('NONE_OR_MORE_THAN_ONE_CHANGES_TO_DATABASE')
   }

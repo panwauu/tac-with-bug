@@ -21,7 +21,7 @@ export async function getLastTournamentWinners(sqlClient: pg.Pool) {
         ON users_to_tournaments.tournamentid=tournaments.id
     ) as t JOIN users ON users.id = t.userid WHERE t.placement > 0;`)
 
-  const res: tTournament.lastTournamentWinners = []
+  const res: tTournament.LastTournamentWinners = []
   dbResult.rows.forEach((r) => {
     const index = res.findIndex((resRow) => resRow.placement === r.placement)
     if (index === -1) {
@@ -34,8 +34,8 @@ export async function getLastTournamentWinners(sqlClient: pg.Pool) {
   return res.sort((a, b) => a.placement - b.placement)
 }
 
-export async function getTournamentParticipations(sqlClient: pg.Pool, username: string): Promise<tTournament.tournamentParticipation[]> {
-  const result: tTournament.tournamentParticipation[] = []
+export async function getTournamentParticipations(sqlClient: pg.Pool, username: string): Promise<tTournament.TournamentParticipation[]> {
+  const result: tTournament.TournamentParticipation[] = []
   const tournaments = await getPublicTournament(sqlClient, { status: 'ended' })
 
   for (const tournament of tournaments) {
@@ -79,7 +79,7 @@ export async function lazyLoadTournamentsTable(
   limit: number,
   offset: number,
   filter: 'private' | 'public' | null
-): Promise<tTournament.tournamentTableData> {
+): Promise<tTournament.TournamentTableData> {
   const typesToShow = ['private', 'public'].filter((e) => filter == null || e === filter)
 
   const dbRes = await pgPool.query(

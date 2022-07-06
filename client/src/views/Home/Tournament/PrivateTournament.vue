@@ -88,7 +88,7 @@ import PrivateTournamentEditor from '@/components/Tournament/PrivateTournamentEd
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import TournamentStatusBadge from '@/components/Tournament/TournamentStatusBadge.vue'
 
-import type { privateTournament } from '@/../../../server/src/sharedTypes/typesTournament'
+import type { PrivateTournament } from '@/../../../server/src/sharedTypes/typesTournament'
 import { ref, computed, watch, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import router from '@/router'
@@ -100,7 +100,7 @@ const props = defineProps<{ id: string; locale: string }>()
 
 const socket = injectStrict(SocketKey)
 const tournamentID = computed(() => parseInt(props.id))
-const tournament = ref<privateTournament | null>()
+const tournament = ref<PrivateTournament | null>()
 const toast = useToast()
 
 async function abortTournament() {
@@ -137,7 +137,7 @@ async function queryTournament() {
   tournament.value = res.data
 }
 
-function updateTournament(newTournament: privateTournament) {
+function updateTournament(newTournament: PrivateTournament) {
   if (tournament.value?.id === newTournament.id) {
     tournament.value = newTournament
   }

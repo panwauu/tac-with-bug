@@ -5,16 +5,16 @@ import { ballStart, ballGoal, ballPlayer } from './ballUtils'
 import { ballInLastGoalPosition, sevenReconstructPath } from './performMoveUtils'
 
 export function createCardWithMove(
-  cardTitle: tCard.cardType,
-  balls: tBall.ballsType,
+  cardTitle: tCard.CardType,
+  balls: tBall.BallsType,
   player: number,
   activePlayer: number,
   teams: number[][],
-  cards: tCard.cardsType,
+  cards: tCard.CardsType,
   coop: boolean,
   sevenChosenPlayer: number | null
 ) {
-  const card: tCard.playerCard = { title: cardTitle, possible: false, ballActions: {}, textAction: '' }
+  const card: tCard.PlayerCard = { title: cardTitle, possible: false, ballActions: {}, textAction: '' }
   if (player !== activePlayer) {
     return card
   }
@@ -77,7 +77,7 @@ export function createCardWithMove(
   return card
 }
 
-export function getPlayablePlayers(balls: tBall.ballsType, player: number, teams: number[][], coop: boolean, sevenChosenPlayer: number | null): number[] {
+export function getPlayablePlayers(balls: tBall.BallsType, player: number, teams: number[][], coop: boolean, sevenChosenPlayer: number | null): number[] {
   if (balls.some((ball, index) => ballPlayer(index) === player && ball.state !== 'locked')) {
     return [player]
   }
@@ -122,7 +122,7 @@ export function initializeTeams(nPlayers: number, nTeams: number): number[][] {
   }
 }
 
-export function getMoves(balls: tBall.ballsType, nBall: number, cardTitle: string, teams: number[][], coop: boolean): number[] {
+export function getMoves(balls: tBall.BallsType, nBall: number, cardTitle: string, teams: number[][], coop: boolean): number[] {
   // Not called with tac card
 
   let movePositions = []
@@ -150,7 +150,7 @@ export function getMoves(balls: tBall.ballsType, nBall: number, cardTitle: strin
   return movePositions
 }
 
-export function getKriegerMove(balls: tBall.ballsType, nBall: number): number[] {
+export function getKriegerMove(balls: tBall.BallsType, nBall: number): number[] {
   if (balls[nBall].position >= ballGoal(0, balls) || balls[nBall].position < ballStart(0, balls)) {
     return []
   }
@@ -178,7 +178,7 @@ export function getKriegerMove(balls: tBall.ballsType, nBall: number): number[] 
   return [positions[0]]
 }
 
-export function getSwitchingMoves(balls: tBall.ballsType, nBall: number): number[] {
+export function getSwitchingMoves(balls: tBall.BallsType, nBall: number): number[] {
   if (balls[nBall].position >= ballGoal(0, balls) || balls[nBall].position < ballStart(0, balls)) {
     return []
   }
@@ -195,14 +195,14 @@ export function getSwitchingMoves(balls: tBall.ballsType, nBall: number): number
   return resultingPositions
 }
 
-export function getMovesLeavingHouse(balls: tBall.ballsType, nBall: number, cardTitle: tCard.cardType) {
+export function getMovesLeavingHouse(balls: tBall.BallsType, nBall: number, cardTitle: tCard.CardType) {
   if ((cardTitle === '1' || cardTitle === '13' || cardTitle === 'engel') && balls[nBall].state === 'house' && balls[nBall].position < ballStart(0, balls)) {
     return [ballStart(nBall, balls)]
   }
   return []
 }
 
-export function getSevenPositions(balls: tBall.ballsType, nBall: number, remainingMoves: number, teams: number[][], coop: boolean): number[] {
+export function getSevenPositions(balls: tBall.BallsType, nBall: number, remainingMoves: number, teams: number[][], coop: boolean): number[] {
   let startNodes = [balls[nBall].position]
   let endNodes: number[] = []
   let endAndInterimsNodes: number[] = []
@@ -271,7 +271,7 @@ export function getSevenPositions(balls: tBall.ballsType, nBall: number, remaini
   return [...new Set(endAndInterimsNodes)]
 }
 
-export function getMovingPositions(balls: tBall.ballsType, nBall: number, cardTitle: tCard.cardType): number[] {
+export function getMovingPositions(balls: tBall.BallsType, nBall: number, cardTitle: tCard.CardType): number[] {
   const cardTitleNumber = parseInt(cardTitle)
   const direction = cardTitle === '4' ? -1 : 1
 
@@ -294,7 +294,7 @@ export function getMovingPositions(balls: tBall.ballsType, nBall: number, cardTi
   return endNodes
 }
 
-export function moveOneStep(balls: tBall.ballsType, nBall: number, ballPosition: number, direction: number, cardNumber: number): number[] {
+export function moveOneStep(balls: tBall.BallsType, nBall: number, ballPosition: number, direction: number, cardNumber: number): number[] {
   if (ballPosition < ballStart(0, balls)) {
     return []
   }

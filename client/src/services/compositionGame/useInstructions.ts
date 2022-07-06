@@ -1,16 +1,16 @@
 import { reactive, watch } from 'vue'
 import { i18n } from '@/services/i18n'
 
-import { miscStateType } from './useMisc'
-import { cardsStateType } from './useCards'
-import { ballsStateType } from './useBalls'
+import { MiscStateType } from './useMisc'
+import { CardsStateType } from './useCards'
+import { BallsStateType } from './useBalls'
 
-export interface instructionsStateType {
+export interface InstructionsStateType {
   instructions: string[]
 }
 
-export function useInstructions(miscState: miscStateType, ballsState: ballsStateType, cardsState: cardsStateType): instructionsStateType {
-  const instructionsState: instructionsStateType = reactive({ instructions: [] })
+export function useInstructions(miscState: MiscStateType, ballsState: BallsStateType, cardsState: CardsStateType): InstructionsStateType {
+  const instructionsState: InstructionsStateType = reactive({ instructions: [] })
 
   watch([miscState, ballsState, cardsState], () => {
     if (!miscState.players || !(typeof miscState.players !== 'undefined' && miscState.players.length > 0) || miscState.gamePlayer === -1) {

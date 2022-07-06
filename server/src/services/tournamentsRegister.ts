@@ -3,27 +3,27 @@ import pg from 'pg'
 import * as tTournament from '../sharedTypes/typesTournament'
 
 import { tournamentBus } from './tournaments'
-import { getPublicTournamentByID, getPublicTournament, getTournamentByIDError } from './tournamentsPublic'
+import { getPublicTournamentByID, getPublicTournament, GetTournamentByIDError } from './tournamentsPublic'
 
-function alreadyRegistered(tournament: tTournament.publicTournament, userID: number) {
+function alreadyRegistered(tournament: tTournament.PublicTournament, userID: number) {
   return tournament.teams.some((t) => t.playerids.includes(userID)) || tournament.registerTeams.some((t) => t.playerids.includes(userID))
 }
 
-export type registerTeamError =
+export type RegisterTeamError =
   | 'TOURNAMENT_STATUS_IS_NOT_SIGNUP'
   | 'TEAM_PLAYERS_NOT_DIFFERENT'
   | 'NOT_ALL_USERS_VALID'
   | 'USER_NOT_PART_OF_TEAM'
   | 'USER_ALREADY_IN_TOURNAMENT'
   | 'TEAMNAME_ALREADY_TAKEN'
-  | getTournamentByIDError
+  | GetTournamentByIDError
 export async function registerTeam(
   sqlClient: pg.Pool,
   tournamentid: number,
   players: string[],
   teamTitle: string,
   userID: number
-): Promise<Result<tTournament.publicTournament, registerTeamError>> {
+): Promise<Result<tTournament.PublicTournament, RegisterTeamError>> {
   const tournament = await getPublicTournamentByID(sqlClient, tournamentid)
   if (tournament.isErr()) {
     return err(tournament.error)
@@ -67,7 +67,7 @@ export async function registerTeam(
     return err('TEAMNAME_ALREADY_TAKEN')
   }
 
-  const team: tTournament.registerTeam = {
+  const team: tTournament.RegisterTeam = {
     name: teamTitle,
     playerids: playerids,
     players: players,
@@ -89,14 +89,14 @@ export async function registerTeam(
   return ok(tournament.value)
 }
 
-export type joinTeamError = 'TOURNAMENT_STATUS_IS_NOT_SIGNUP' | 'USER_ALREADY_IN_TOURNAMENT' | 'TEAM_ALREADY_FULL' | 'WAITING_TEAM_NOT_FOUND' | getTournamentByIDError
+export type JoinTeamError = 'TOURNAMENT_STATUS_IS_NOT_SIGNUP' | 'USER_ALREADY_IN_TOURNAMENT' | 'TEAM_ALREADY_FULL' | 'WAITING_TEAM_NOT_FOUND' | GetTournamentByIDError
 export async function joinTeam(
   sqlClient: pg.Pool,
   tournamentid: number,
   userID: number,
   username: string,
   teamName: string
-): Promise<Result<tTournament.publicTournament, joinTeamError>> {
+): Promise<Result<tTournament.PublicTournament, JoinTeamError>> {
   const tournament = await getPublicTournamentByID(sqlClient, tournamentid)
   if (tournament.isErr()) {
     return err(tournament.error)
@@ -128,8 +128,8 @@ export async function joinTeam(
   return ok(result)
 }
 
-export type activateUserError = 'TOURNAMENT_STATUS_IS_NOT_SIGNUP' | 'USER_NOT_FOUND_IN_TOURNAMENT' | getTournamentByIDError
-export async function activateUser(sqlClient: pg.Pool, tournamentid: number, userID: number): Promise<Result<tTournament.publicTournament, activateUserError>> {
+export type ActivateUserError = 'TOURNAMENT_STATUS_IS_NOT_SIGNUP' | 'USER_NOT_FOUND_IN_TOURNAMENT' | GetTournamentByIDError
+export async function activateUser(sqlClient: pg.Pool, tournamentid: number, userID: number): Promise<Result<tTournament.PublicTournament, ActivateUserError>> {
   const tournament = await getPublicTournamentByID(sqlClient, tournamentid)
   if (tournament.isErr()) {
     return err(tournament.error)
@@ -155,12 +155,12 @@ export async function activateUser(sqlClient: pg.Pool, tournamentid: number, use
   return ok(result)
 }
 
-export type leaveTournamentError = 'TOURNAMENT_STATUS_IS_NOT_SIGNUP' | 'USER_NOT_FOUND_IN_TOURNAMENT' | getTournamentByIDError
+export type LeaveTournamentError = 'TOURNAMENT_STATUS_IS_NOT_SIGNUP' | 'USER_NOT_FOUND_IN_TOURNAMENT' | GetTournamentByIDError
 export async function leaveTournament(
   sqlClient: pg.Pool,
   tournamentid: number,
   userID: number
-): Promise<Result<{ tournament: tTournament.publicTournament; registerTeamForNotification: tTournament.registerTeam }, leaveTournamentError>> {
+): Promise<Result<{ tournament: tTournament.PublicTournament; registerTeamForNotification: tTournament.RegisterTeam }, LeaveTournamentError>> {
   const tournament = await getPublicTournamentByID(sqlClient, tournamentid)
   if (tournament.isErr()) {
     return err(tournament.error)
@@ -200,7 +200,7 @@ export async function leaveTournament(
   return ok({ tournament: tournament.value, registerTeamForNotification })
 }
 
-export async function endSignupIfComplete(sqlClient: pg.Pool, tournament: tTournament.publicTournament) {
+export async function endSignupIfComplete(sqlClient: pg.Pool, tournament: tTournament.PublicTournament) {
   if (tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length === tournament.playersPerTeam).length < tournament.nTeams) {
     return tournament
   }

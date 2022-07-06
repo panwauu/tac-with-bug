@@ -1,5 +1,5 @@
 import { TacServer } from '../server'
-import { privateTournament } from '../sharedTypes/typesTournament'
+import { PrivateTournament } from '../sharedTypes/typesTournament'
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
 
@@ -26,7 +26,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should create Tournament', async () => {
-    await new Promise<privateTournament>((resolve) => {
+    await new Promise<PrivateTournament>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:create', { title: 'TestTournament', nTeams: 2, playersPerTeam: 2, teamsPerMatch: 2, tournamentType: 'KO' }, (res) => {
         expect(res.data != null).toBe(true)
         if (res.data == null) {
@@ -39,7 +39,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should add player 0 to first tournament team', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:planAddPlayer', { tournamentID, usernameToAdd: usersWithSockets[0].username, teamTitle: 'TestTeam1' }, (res) => {
         resolve(res.data)
       })
@@ -65,7 +65,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should add player 0 to first tournament team', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:planAddPlayer', { tournamentID, usernameToAdd: usersWithSockets[1].username, teamTitle: 'TestTeam1' }, (socketRes) => {
         resolve(socketRes.data)
       })
@@ -91,7 +91,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should remove player 1 from first tournament team', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:planRemovePlayer', { tournamentID, usernameToRemove: usersWithSockets[1].username }, (res) => {
         resolve(res.data)
       })
@@ -107,7 +107,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should add player 1 to first tournament team', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:planAddPlayer', { tournamentID, usernameToAdd: usersWithSockets[1].username, teamTitle: 'TestTeam1' }, (result) => {
         resolve(result.data)
       })
@@ -123,7 +123,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should activate player 1', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[1].socket.emit('tournament:private:acceptParticipation', { tournamentID }, (res) => {
         resolve(res.data)
       })
@@ -139,7 +139,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should add player 2 to second tournament team', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:planAddPlayer', { tournamentID, usernameToAdd: usersWithSockets[2].username, teamTitle: 'TestTeam2' }, (res) => {
         resolve(res.data)
       })
@@ -170,7 +170,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should decline player 2', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[2].socket.emit('tournament:private:declineParticipation', { tournamentID }, (res) => {
         resolve(res.data)
       })
@@ -186,7 +186,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should add player 2 to second tournament team', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:planAddPlayer', { tournamentID, usernameToAdd: usersWithSockets[2].username, teamTitle: 'TestTeam2' }, (data) => {
         resolve(data.data)
       })
@@ -217,7 +217,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should add player 3 to second tournament team', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:planAddPlayer', { tournamentID, usernameToAdd: usersWithSockets[3].username, teamTitle: 'TestTeam2' }, (res) => {
         resolve(res.data)
       })
@@ -248,7 +248,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should activate player 2', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[2].socket.emit('tournament:private:acceptParticipation', { tournamentID }, (res) => {
         resolve(res.data)
       })
@@ -289,7 +289,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should activate player 3', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[3].socket.emit('tournament:private:acceptParticipation', { tournamentID }, (res) => {
         resolve(res.data)
       })
@@ -320,7 +320,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should be able to start tournament', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:start', { tournamentID }, (res) => {
         resolve(res.data)
       })
@@ -333,7 +333,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should be able to start game', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:startGame', { tournamentID, tournamentRound: 0, roundGame: 0 }, (res) => {
         resolve(res.data)
       })
@@ -346,7 +346,7 @@ describe('Test Suite via Socket.io', () => {
   })
 
   test('Should abort the tournament', async () => {
-    const res = await new Promise<privateTournament | undefined>((resolve) => {
+    const res = await new Promise<PrivateTournament | undefined>((resolve) => {
       usersWithSockets[0].socket.emit('tournament:private:abort', { tournamentID }, (res) => {
         resolve(res.data)
       })

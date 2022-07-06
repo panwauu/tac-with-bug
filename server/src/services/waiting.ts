@@ -1,12 +1,12 @@
-import type { waitingGame } from '../sharedTypes/typesWaiting'
-import type { gameForPlay } from '../sharedTypes/typesDBgame'
+import type { WaitingGame } from '../sharedTypes/typesWaiting'
+import type { GameForPlay } from '../sharedTypes/typesDBgame'
 import type pg from 'pg'
 
 import { Result, ok, err } from 'neverthrow'
 import { colors } from '../sharedDefinitions/colors'
 import { disableRematchOfGame } from './game'
 import { isUserOnline } from '../socket/general'
-import { expectOneChangeToDatabase, notOneDatabaseChangeError } from '../dbUtils/dbHelpers'
+import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils/dbHelpers'
 import { getUser } from './user'
 
 export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number) {
@@ -28,7 +28,7 @@ export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number
     ${waitingGameID != null ? 'WHERE waitinggames.id = $1' : ''};`,
     waitingGameID != null ? [waitingGameID] : []
   )
-  const data: waitingGame[] = []
+  const data: WaitingGame[] = []
   res.rows.forEach((row) => {
     const adminIndex = ['player0', 'player1', 'player2', 'player3', 'player4', 'player5'].map((e) => row[e]).indexOf(row.adminplayer)
     data.push({
@@ -49,8 +49,8 @@ export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number
   return data
 }
 
-export type getWaitingGameError = 'WAITING_GAME_ID_IS_INVALID'
-export async function getWaitingGame(sqlClient: pg.Pool, waitingGameID: number): Promise<Result<waitingGame, getWaitingGameError>> {
+export type GetWaitingGameError = 'WAITING_GAME_ID_IS_INVALID'
+export async function getWaitingGame(sqlClient: pg.Pool, waitingGameID: number): Promise<Result<WaitingGame, GetWaitingGameError>> {
   const games = await getWaitingGames(sqlClient, waitingGameID)
   if (games.length !== 1) {
     return err('WAITING_GAME_ID_IS_INVALID')
@@ -64,8 +64,8 @@ export async function createWaitingGame(sqlClient: pg.Pool, nPlayers: 4 | 6, nTe
   return sqlClient.query(query, values)
 }
 
-export type createRematchError = 'PLAYER_ALREADY_IN_WAITING_GAME' | 'PLAYER_NOT_ONLINE' | 'REMATCH_NOT_OPEN'
-export async function createRematchGame(pgPool: pg.Pool, game: gameForPlay, userID: number): Promise<Result<number, createRematchError>> {
+export type CreateRematchError = 'PLAYER_ALREADY_IN_WAITING_GAME' | 'PLAYER_NOT_ONLINE' | 'REMATCH_NOT_OPEN'
+export async function createRematchGame(pgPool: pg.Pool, game: GameForPlay, userID: number): Promise<Result<number, CreateRematchError>> {
   if (!game.rematch_open) {
     return err('REMATCH_NOT_OPEN')
   }
@@ -107,13 +107,13 @@ export async function createRematchGame(pgPool: pg.Pool, game: gameForPlay, user
   return ok(createRes.rows[0].id)
 }
 
-export type movePlayerError =
+export type MovePlayerError =
   | 'PLAYER_NOT_FOUND_IN_WAITING_GAME'
   | 'PLAYER_NOT_ALLOWED_TO_MOVE'
   | 'PLAYER_CANNOT_BE_MOVED_IN_DIRECTION'
-  | getWaitingGameError
-  | notOneDatabaseChangeError
-export async function movePlayer(sqlClient: pg.Pool, waitingGameID: number, usernameToMove: string, up: boolean, userID: number): Promise<Result<null, movePlayerError>> {
+  | GetWaitingGameError
+  | NotOneDatabaseChangeError
+export async function movePlayer(sqlClient: pg.Pool, waitingGameID: number, usernameToMove: string, up: boolean, userID: number): Promise<Result<null, MovePlayerError>> {
   const game = await getWaitingGame(sqlClient, waitingGameID)
   if (game.isErr()) {
     return err(game.error)
@@ -153,14 +153,14 @@ export async function movePlayer(sqlClient: pg.Pool, waitingGameID: number, user
   return ok(null)
 }
 
-export type changeColorError =
+export type ChangeColorError =
   | 'PLAYER_NOT_FOUND_IN_WAITING_GAME'
   | 'PLAYER_NOT_ALLOWED_TO_CHANGE_COLOR'
   | 'COLOR_DOES_NOT_EXIST'
   | 'COLOR_ALREADY_IN_USE'
-  | getWaitingGameError
-  | notOneDatabaseChangeError
-export async function changeColor(sqlClient: pg.Pool, waitingGameID: number, usernameToChange: string, color: string, userID: number): Promise<Result<null, changeColorError>> {
+  | GetWaitingGameError
+  | NotOneDatabaseChangeError
+export async function changeColor(sqlClient: pg.Pool, waitingGameID: number, usernameToChange: string, color: string, userID: number): Promise<Result<null, ChangeColorError>> {
   const game = await getWaitingGame(sqlClient, waitingGameID)
   if (game.isErr()) {
     return err(game.error)
@@ -189,8 +189,8 @@ export async function changeColor(sqlClient: pg.Pool, waitingGameID: number, use
   return ok(null)
 }
 
-export type removePlayerError = 'PLAYER_NOT_ALLOWED_TO_REMOVE' | 'USER_NOT_FOUND_IN_DB'
-export async function removePlayer(sqlClient: pg.Pool, usernameToRemove: string, userIDRemoving: number): Promise<Result<null, removePlayerError>> {
+export type RemovePlayerError = 'PLAYER_NOT_ALLOWED_TO_REMOVE' | 'USER_NOT_FOUND_IN_DB'
+export async function removePlayer(sqlClient: pg.Pool, usernameToRemove: string, userIDRemoving: number): Promise<Result<null, RemovePlayerError>> {
   const user = await getUser(sqlClient, { username: usernameToRemove })
   if (user.isErr()) {
     return err(user.error)
@@ -234,8 +234,8 @@ export async function removePlayer(sqlClient: pg.Pool, usernameToRemove: string,
   return ok(null)
 }
 
-export type addPlayerError = 'WAITING_GAME_IS_ALREADY_FULL' | 'COULD_NOT_FIND_COLOR_FOR_NEW_PLAYER' | getWaitingGameError
-export async function addPlayer(sqlClient: pg.Pool, waitingGameID: number, userID: number): Promise<Result<null, addPlayerError>> {
+export type AddPlayerError = 'WAITING_GAME_IS_ALREADY_FULL' | 'COULD_NOT_FIND_COLOR_FOR_NEW_PLAYER' | GetWaitingGameError
+export async function addPlayer(sqlClient: pg.Pool, waitingGameID: number, userID: number): Promise<Result<null, AddPlayerError>> {
   const game = await getWaitingGame(sqlClient, waitingGameID)
   if (game.isErr()) {
     return err(game.error)
@@ -255,8 +255,8 @@ export async function addPlayer(sqlClient: pg.Pool, waitingGameID: number, userI
   return ok(null)
 }
 
-export type setPlayerReadyError = 'WAITING_GAME_IS_NOT_FULL' | 'PLAYER_NOT_FOUND_IN_WAITING_GAME' | getWaitingGameError
-export async function setPlayerReady(sqlClient: pg.Pool, waitingGameID: number, userID: number): Promise<Result<waitingGame, setPlayerReadyError>> {
+export type SetPlayerReadyError = 'WAITING_GAME_IS_NOT_FULL' | 'PLAYER_NOT_FOUND_IN_WAITING_GAME' | GetWaitingGameError
+export async function setPlayerReady(sqlClient: pg.Pool, waitingGameID: number, userID: number): Promise<Result<WaitingGame, SetPlayerReadyError>> {
   const game = await getWaitingGame(sqlClient, waitingGameID)
   if (game.isErr()) {
     return err(game.error)

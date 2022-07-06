@@ -4,8 +4,8 @@ import * as tStatistic from '../sharedTypes/typesStatistic'
 
 import { ballPlayer } from './ballUtils'
 
-export function initalizeStatistic(nPlayers: number): tStatistic.gameStatistic[] {
-  const initStatistic: tStatistic.gameStatistic[] = []
+export function initalizeStatistic(nPlayers: number): tStatistic.GameStatistic[] {
+  const initStatistic: tStatistic.GameStatistic[] = []
   for (let i = 0; i < nPlayers; i++) {
     initStatistic.push({
       cards: {
@@ -37,19 +37,19 @@ export function initalizeStatistic(nPlayers: number): tStatistic.gameStatistic[]
   return initStatistic
 }
 
-function isTrackedCard(value: string, cards: tStatistic.gameStatisticCardsType): value is keyof tStatistic.gameStatisticCardsType {
+function isTrackedCard(value: string, cards: tStatistic.GameStatisticCardsType): value is keyof tStatistic.GameStatisticCardsType {
   return value in cards
 }
 
 export function statisticAnalyseAction(
-  move: tBall.moveTextOrBall,
-  ballsBefore: tBall.ballsType,
-  ballsAfter: tBall.ballsType,
+  move: tBall.MoveTextOrBall,
+  ballsBefore: tBall.BallsType,
+  ballsAfter: tBall.BallsType,
   aussetzenFlag: boolean,
   teams: number[][],
   deltaTime: number,
-  cardsBefore: tCard.cardsType,
-  statistic: tStatistic.gameStatistic[],
+  cardsBefore: tCard.CardsType,
+  statistic: tStatistic.GameStatistic[],
   narrFlagSave: boolean[],
   teufelFlag: boolean
 ) {

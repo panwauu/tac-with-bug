@@ -1,40 +1,40 @@
-export interface registerTeam {
+export interface RegisterTeam {
   name: string
   players: string[]
   playerids: number[]
   activated: boolean[]
 }
 
-export interface team {
+export interface Team {
   name: string
   players: string[]
   playerids: number[]
 }
 
-export interface tournamentDataKO {
-  brackets: Array<Array<koBracket>>
+export interface TournamentDataKO {
+  brackets: Array<Array<KoBracket>>
 }
 
-export interface koBracket {
+export interface KoBracket {
   teams: Array<number>
   score: Array<number>
   gameID: number
   winner: number
 }
 
-export interface tournamentPrototype {
+export interface TournamentPrototype {
   id: number
   title: string
   tournamentType: 'KO'
   nTeams: number
   playersPerTeam: 2 | 3
   teamsPerMatch: 2 | 3
-  teams: team[]
-  registerTeams: registerTeam[]
-  data: tournamentDataKO
+  teams: Team[]
+  registerTeams: RegisterTeam[]
+  data: TournamentDataKO
 }
 
-export interface publicTournament extends tournamentPrototype {
+export interface PublicTournament extends TournamentPrototype {
   status: 'signUpWaiting' | 'signUp' | 'signUpFailed' | 'signUpEnded' | 'ended' | 'running'
   signupBegin: string
   signupDeadline: string
@@ -43,38 +43,38 @@ export interface publicTournament extends tournamentPrototype {
   timePerGame: string
 }
 
-export interface privateTournament extends tournamentPrototype {
+export interface PrivateTournament extends TournamentPrototype {
   status: 'planned' | 'running' | 'ended' | 'aborted'
   adminPlayerID: number
   adminPlayer: string
 }
 
-export interface tournamentParticipation {
+export interface TournamentParticipation {
   id: number
   title: string
   date: string
-  team: team
+  team: Team
   placement?: number
   exitRound: number
   totalRounds: number
 }
 
-export interface tournamentTableElement {
+export interface TournamentTableElement {
   id: number
   type: 'public' | 'private'
   title: string
-  status: privateTournament['status'] | publicTournament['status']
+  status: PrivateTournament['status'] | PublicTournament['status']
   date: number
 }
 
-export interface tournamentTableData {
+export interface TournamentTableData {
   total: number
-  tournaments: tournamentTableElement[]
+  tournaments: TournamentTableElement[]
 }
 
-export interface tournamentWinner {
+export interface TournamentWinner {
   teamName: string
   players: string[]
   placement: number
 }
-export type lastTournamentWinners = tournamentWinner[]
+export type LastTournamentWinners = TournamentWinner[]

@@ -24,11 +24,11 @@
 <script setup lang="ts">
 import TournamentTeam from '@/components/Tournament/TournamentTeam.vue'
 
-import { publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { computed } from 'vue'
 import { username } from '@/services/useUser'
 
-const props = defineProps<{ tournament: publicTournament }>()
+const props = defineProps<{ tournament: PublicTournament }>()
 
 const ownTeam = computed(() => {
   return props.tournament.registerTeams.find((t) => username.value != null && t.players.includes(username.value))

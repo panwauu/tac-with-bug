@@ -1,25 +1,25 @@
 import type { Socket as ServerSocket, Namespace } from 'socket.io'
 import type { Socket as ClientSocket } from 'socket.io-client'
-import type { moveTextOrBall } from './typesBall'
-import type { updateDataType } from './typesDBgame'
+import type { MoveTextOrBall } from './typesBall'
+import type { UpdateDataType } from './typesDBgame'
 
 export interface ClientToServerEvents {
-  postMove: (move: moveTextOrBall) => void
+  postMove: (move: MoveTextOrBall) => void
 }
 
 export interface ServerToClientEvents {
   reconnect_failed: (data: any) => void // Bugfix
 
-  update: (data: updateDataType) => void
+  update: (data: UpdateDataType) => void
   'game:online-players': (data: { onlineGamePlayers: number[]; nWatchingPlayers: number; watchingPlayerNames: string[] }) => void
 }
 
-interface socketData {
+interface SocketData {
   userID: number
   gameID: number
   gamePlayer: number
 }
 
-export type GameSocketS = ServerSocket<ClientToServerEvents, ServerToClientEvents, any, socketData>
+export type GameSocketS = ServerSocket<ClientToServerEvents, ServerToClientEvents, any, SocketData>
 export type GameSocketC = ClientSocket<ServerToClientEvents, ClientToServerEvents>
-export type GameNamespace = Namespace<ClientToServerEvents, ServerToClientEvents, any, socketData>
+export type GameNamespace = Namespace<ClientToServerEvents, ServerToClientEvents, any, SocketData>

@@ -2,19 +2,19 @@ import logger from '../helpers/logger'
 import * as tBall from '../sharedTypes/typesBall'
 import pg from 'pg'
 import { game } from '../game/game'
-import { cardsType } from '../sharedTypes/typesCard'
+import { CardsType } from '../sharedTypes/typesCard'
 import { sanitizeGameCapture } from './gameCaptureSanitation'
 
-export interface capturedType {
-  action: tBall.moveType | ['init', number, number, boolean, boolean] | 'reset'
-  balls: tBall.ballsType
-  cards: cardsType
+export interface CapturedType {
+  action: tBall.MoveType | ['init', number, number, boolean, boolean] | 'reset'
+  balls: tBall.BallsType
+  cards: CardsType
   activePlayer: number
 }
 
-export async function captureMove(sqlClient: pg.Pool, gameID: number, action: tBall.moveType | ['init', number, number, boolean, boolean] | 'reset', game: game) {
+export async function captureMove(sqlClient: pg.Pool, gameID: number, action: tBall.MoveType | ['init', number, number, boolean, boolean] | 'reset', game: game) {
   logger.info('Capture')
-  const data: capturedType = {
+  const data: CapturedType = {
     action: action,
     balls: game.balls,
     cards: game.cards,
@@ -29,14 +29,14 @@ export async function captureMove(sqlClient: pg.Pool, gameID: number, action: tB
     .catch((err) => logger.error('Error while Capturing Move', err))
 }
 
-export async function DBcaptureGame(sqlClient: pg.Pool, gameID: number, data: capturedType) {
+export async function DBcaptureGame(sqlClient: pg.Pool, gameID: number, data: CapturedType) {
   const query = 'INSERT INTO savegames (id, gameid, game) VALUES ($1, $1, $2) ON CONFLICT (id) DO UPDATE SET game = savegames.game::jsonb || $3'
   const values = [gameID, JSON.stringify([data]), JSON.stringify(data)]
   return sqlClient.query(query, values)
 }
 
 export async function insertCompleteCapture(sqlClient: pg.Pool, gameID: number, game: string) {
-  const array: capturedType[] = JSON.parse(game)
+  const array: CapturedType[] = JSON.parse(game)
   if (array.length <= 0) {
     throw new Error('game is empty')
   }
@@ -49,7 +49,7 @@ export async function insertCompleteCapture(sqlClient: pg.Pool, gameID: number, 
 
 export async function retrieveCapturedGame(sqlClient: pg.Pool, gameID: number) {
   const query = 'SELECT game FROM savegames WHERE id = $1;'
-  return sqlClient.query<{ game: capturedType[] }>(query, [gameID])
+  return sqlClient.query<{ game: CapturedType[] }>(query, [gameID])
 }
 
 export async function removeCapturedGames(sqlClient: pg.Pool) {

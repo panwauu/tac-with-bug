@@ -38,14 +38,14 @@
 </template>
 
 <script setup lang="ts">
-import type { miscStateType } from '@/services/compositionGame/useMisc'
-import type { cardsStateType } from '@/services/compositionGame/useCards'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
+import type { CardsStateType } from '@/services/compositionGame/useCards'
 import { computed } from 'vue'
 import CardImage from '../assets/CardImage.vue'
 
 const props = defineProps<{
-  miscState: miscStateType
-  cardsState: cardsStateType
+  miscState: MiscStateType
+  cardsState: CardsStateType
   own: boolean
 }>()
 

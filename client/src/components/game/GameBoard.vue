@@ -140,23 +140,23 @@ import CardDeck from '@/components/game/CardDeck.vue'
 import DiscardPile from '@/components/game/DiscardPile.vue'
 import EmojiIllustration from './EmojiIllustration.vue'
 
-import type { positionStylesState } from '@/services/compositionGame/usePositionStyles'
-import type { miscStateType } from '@/services/compositionGame/useMisc'
-import type { ballsStateType } from '@/services/compositionGame/useBalls'
-import type { cardsStateType } from '@/services/compositionGame/useCards'
-import type { discardPileStateType } from '@/services/compositionGame/useDiscardPile'
-import type { performMoveAction } from '@/services/compositionGame/usePerformMove'
-import type { moveBall, moveText } from '@/../../server/src/sharedTypes/typesBall'
+import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
+import type { BallsStateType } from '@/services/compositionGame/useBalls'
+import type { CardsStateType } from '@/services/compositionGame/useCards'
+import type { DiscardPileStateType } from '@/services/compositionGame/useDiscardPile'
+import type { PerformMoveAction } from '@/services/compositionGame/usePerformMove'
+import type { MoveBall, MoveText } from '@/../../server/src/sharedTypes/typesBall'
 import { rotatePosition as rotatePositionImport } from '@/js/rotateBoard'
 import BallsImage from '../assets/BallsImage.vue'
 
 const props = defineProps<{
-  positionStyles: positionStylesState
-  miscState: miscStateType
-  ballsState: ballsStateType
-  cardsState: cardsStateType
-  discardPileState: discardPileStateType
-  performMove: (data: performMoveAction) => void
+  positionStyles: PositionStylesState
+  miscState: MiscStateType
+  ballsState: BallsStateType
+  cardsState: CardsStateType
+  discardPileState: DiscardPileStateType
+  performMove: (data: PerformMoveAction) => void
 }>()
 
 function rotatePosition(position: number) {
@@ -193,7 +193,7 @@ function dragStop(): void {
 }
 
 function dropSuccess(position: number): void {
-  const move: moveBall = [props.miscState.gamePlayer, props.cardsState.selectedCard, props.ballsState.selectedBall, position]
+  const move: MoveBall = [props.miscState.gamePlayer, props.cardsState.selectedCard, props.ballsState.selectedBall, position]
   props.performMove({
     ballAction: [props.ballsState.selectedBall, position],
     textAction: '',
@@ -202,7 +202,7 @@ function dropSuccess(position: number): void {
 }
 
 function performTextAction(textAction: string): void {
-  const move: moveText = [props.miscState.gamePlayer, textAction === 'beenden' ? 0 : props.cardsState.selectedCard, textAction === 'Karten weitergeben' ? 'narr' : textAction]
+  const move: MoveText = [props.miscState.gamePlayer, textAction === 'beenden' ? 0 : props.cardsState.selectedCard, textAction === 'Karten weitergeben' ? 'narr' : textAction]
   props.performMove({
     ballAction: [],
     textAction: textAction,

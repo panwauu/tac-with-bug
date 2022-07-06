@@ -10,12 +10,12 @@
 </template>
 
 <script setup lang="ts">
-import type { gamesDistributionData } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
+import type { GamesDistributionData } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
 import { ref, onMounted, watch } from 'vue'
 import Chart from 'primevue/chart'
 import { i18n } from '@/services/i18n'
 
-const props = defineProps<{ data: gamesDistributionData; username: string }>()
+const props = defineProps<{ data: GamesDistributionData; username: string }>()
 const userGamesDoughnutChart = ref<null | Chart>()
 
 const chartData = ref({
@@ -77,7 +77,7 @@ const chartOptions = {
   },
 }
 
-function resetGraph(data: gamesDistributionData) {
+function resetGraph(data: GamesDistributionData) {
   chartData.value.datasets[0].data = [data.won4 + data.lost4, data.won6 + data.lost6, data.teamWon + data.teamAborted, data.aborted, data.running]
   chartData.value.datasets[1].data = [data.won4, data.lost4, data.won6, data.lost6, data.teamWon, data.teamAborted, data.aborted + data.running]
   userGamesDoughnutChart.value?.refresh()

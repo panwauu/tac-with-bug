@@ -31,13 +31,13 @@ import Crown from '@/components/icons/CrownSymbol.vue'
 
 import { watch, ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient'
-import { tournamentParticipation } from '@/../../server/src/sharedTypes/typesTournament'
+import { TournamentParticipation } from '@/../../server/src/sharedTypes/typesTournament'
 import router from '@/router'
 
 const props = defineProps<{ username: string }>()
 
 const loading = ref(false)
-const tournamentParticipations = ref<tournamentParticipation[]>([])
+const tournamentParticipations = ref<TournamentParticipation[]>([])
 
 updateData()
 watch(

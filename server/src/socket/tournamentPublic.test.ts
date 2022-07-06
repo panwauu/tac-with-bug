@@ -4,7 +4,7 @@ import { getGame } from '../services/game'
 import { getPublicTournamentByID, startTournament, startTournamentRound, checkForceGameEnd, updateTournamentFromGame } from '../services/tournamentsPublic'
 import { startSignUpOnCondition, endSignUpOnCondition } from '../services/tournamentsRegister'
 import { getDifferentName } from '../services/SweetNameGenerator'
-import { publicTournament } from '../sharedTypes/typesTournament'
+import { PublicTournament } from '../sharedTypes/typesTournament'
 import { closeSockets } from '../test/handleSocket'
 
 describe('TournamentPublic test suite via Socket.io', () => {
@@ -394,7 +394,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
   })
 
   describe('Test game creation process', () => {
-    let tournamentID: number, tournament: publicTournament, usersWithSockets: UserWithSocket[], gameIDMiniFinal: number
+    let tournamentID: number, tournament: PublicTournament, usersWithSockets: UserWithSocket[], gameIDMiniFinal: number
     const gameIdForTime = 3
     const gameIdEnded = 7
 

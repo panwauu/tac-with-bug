@@ -1,13 +1,13 @@
 import pg from 'pg'
-import { friend } from '../sharedTypes/typesFriends'
+import { Friend } from '../sharedTypes/typesFriends'
 import { v4 as uuidv4 } from 'uuid'
-import { userIdentifier, user } from '../sharedTypes/typesDBuser'
-import { getSubscription, cancelSubscription, getSubscriptionError, cancelSubscriptionError } from '../paypal/paypal'
+import { UserIdentifier, User } from '../sharedTypes/typesDBuser'
+import { getSubscription, cancelSubscription, GetSubscriptionError, CancelSubscriptionError } from '../paypal/paypal'
 import { Result, err, ok } from 'neverthrow'
 import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
 import { deletePlayerFromTournament } from './tournamentsPrivate'
 
-export function resolveUserIdentifier(identifier: userIdentifier, insertionIndex?: number): { key: string; sql: string; value: number | string } {
+export function resolveUserIdentifier(identifier: UserIdentifier, insertionIndex?: number): { key: string; sql: string; value: number | string } {
   if (identifier.id != null) {
     return { key: 'id', value: identifier.id, sql: `id = $${insertionIndex}` }
   } else if (identifier.username != null) {
@@ -17,7 +17,7 @@ export function resolveUserIdentifier(identifier: userIdentifier, insertionIndex
 }
 
 export type GetUserErrors = 'USER_NOT_FOUND_IN_DB'
-export async function getUser(sqlClient: pg.Pool, identifier: userIdentifier): Promise<Result<user, GetUserErrors>> {
+export async function getUser(sqlClient: pg.Pool, identifier: UserIdentifier): Promise<Result<User, GetUserErrors>> {
   const queryIdent = resolveUserIdentifier(identifier, 1)
   const query = `SELECT id, email, username, password, token, activated, locale, color_blindness_flag, lastlogin, registered, user_description, game_default_position 
     FROM users WHERE ${queryIdent.sql};`
@@ -73,7 +73,7 @@ export async function updateUsersLastLogin(sqlClient: pg.Pool, username: string)
   expectOneChangeInDatabase(res)
 }
 
-export async function signUpUser(sqlClient: pg.Pool, username: string, email: string, password: string, locale: string): Promise<user> {
+export async function signUpUser(sqlClient: pg.Pool, username: string, email: string, password: string, locale: string): Promise<User> {
   const validationToken = uuidv4().toString()
   const query = 'INSERT INTO users (username, email, password, token, locale) VALUES ($1, $2, $3, $4, $5) RETURNING *'
   const values = [username, email, password, validationToken, locale]
@@ -95,7 +95,7 @@ export async function signUpUser(sqlClient: pg.Pool, username: string, email: st
   })
 }
 
-export async function getFriendships(sqlClient: pg.Pool, userID: number): Promise<friend[]> {
+export async function getFriendships(sqlClient: pg.Pool, userID: number): Promise<Friend[]> {
   return sqlClient
     .query<{ date: string; username: string; status: 'to' | 'from' | 'done' }>(
       `
@@ -135,8 +135,8 @@ export async function editUserDescription(sqlClient: pg.Pool, userID: number, te
   expectOneChangeInDatabase(res)
 }
 
-export type deleteUserError = getSubscriptionError | cancelSubscriptionError
-export async function deleteUser(sqlClient: pg.Pool, userID: number): Promise<Result<null, deleteUserError>> {
+export type DeleteUserError = GetSubscriptionError | CancelSubscriptionError
+export async function deleteUser(sqlClient: pg.Pool, userID: number): Promise<Result<null, DeleteUserError>> {
   const sub = await getSubscription(sqlClient, userID)
   if (sub.isErr()) {
     return err(sub.error)

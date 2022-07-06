@@ -64,15 +64,15 @@ import TournamentStatusBadge from './TournamentStatusBadge.vue'
 import { ref, watch } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey } from '@/services/injections'
-import type { tournamentTableElement } from '../../../../server/src/sharedTypes/typesTournament'
+import type { TournamentTableElement } from '../../../../server/src/sharedTypes/typesTournament'
 import { isLoggedIn } from '@/services/useUser'
 
 const socket = injectStrict(SocketKey)
 
 const rowsInTable = 10
-const selectedTournament = ref<tournamentTableElement[]>([])
+const selectedTournament = ref<TournamentTableElement[]>([])
 const loading = ref(false)
-const tournaments = ref<tournamentTableElement[]>([])
+const tournaments = ref<TournamentTableElement[]>([])
 const totalTournaments = ref(0)
 
 watch(isLoggedIn, () => getHistory(0))

@@ -2,11 +2,11 @@ import { reactive } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index'
 import { isLoggedIn } from './useUser'
 
-interface profileStateType {
+interface ProfileStateType {
   profilePics: { [key: string]: string | undefined }
 }
 
-const profileState = reactive<profileStateType>({
+const profileState = reactive<ProfileStateType>({
   profilePics: {},
 })
 

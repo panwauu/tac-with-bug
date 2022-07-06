@@ -1,11 +1,11 @@
 import { locales } from '../sharedDefinitions/locales'
 import { getPassedRatio, getPlatformStatistic } from '../services/platformStatistic'
-import { dayDataset, hourDataset } from '../sharedTypes/typesPlatformStatistic'
+import { DayDatasetType, HourDatasetType } from '../sharedTypes/typesPlatformStatistic'
 
 describe('Platform Statistic Test Suite', () => {
   test('Test week data extrapolation with synthetic data', async () => {
-    const dayDataset: dayDataset = Array.from(Array(7).keys()).map(() => [1 / 7, 1 / 7, 1 / 7])
-    const hourDataset: hourDataset = Array.from(Array(24).keys()).map(() => [1 / 24, 1 / 24, 1 / 24])
+    const dayDataset: DayDatasetType = Array.from(Array(7).keys()).map(() => [1 / 7, 1 / 7, 1 / 7])
+    const hourDataset: HourDatasetType = Array.from(Array(24).keys()).map(() => [1 / 24, 1 / 24, 1 / 24])
     const ratio1 = getPassedRatio(0, 0, dayDataset, hourDataset)
     expect(ratio1[0]).toBe(1 / 7 / 24)
     expect(ratio1[1]).toBe(1 / 7 / 24)

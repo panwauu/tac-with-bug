@@ -33,8 +33,8 @@ import Button from 'primevue/button'
 import WaitingGame from '@/components/WaitingGame.vue'
 import CountdownTimer from '../CountdownTimer.vue'
 
-import type { positionStylesState } from '@/services/compositionGame/usePositionStyles'
-import type { miscStateType } from '@/services/compositionGame/useMisc'
+import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { computed, onUnmounted } from 'vue'
 import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
@@ -49,8 +49,8 @@ defineEmits(['closeGame', 'update:modalVisible', 'update:modalState'])
 const socket = injectStrict(SocketKey)
 
 const props = defineProps<{
-  positionStyles: positionStylesState
-  miscState: miscStateType
+  positionStyles: PositionStylesState
+  miscState: MiscStateType
 }>()
 
 socket.on('waiting:startGame', (data) => {

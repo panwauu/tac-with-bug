@@ -5,19 +5,19 @@ import { ok, err, Result } from 'neverthrow'
 import { getUser, GetUserErrors } from './user'
 import { createGame } from './game'
 import { colors } from '../sharedDefinitions/colors'
-import { gameForPlay } from '../sharedTypes/typesDBgame'
-import { evaluateGameWinnerAndReturnEndedFlag, evaluateGameWinnerAndReturnEndedFlagError, updateScore, createTournamentDataKO, createTournamentDataKOError } from './tournamentKO'
+import { GameForPlay } from '../sharedTypes/typesDBgame'
+import { evaluateGameWinnerAndReturnEndedFlag, EvaluateGameWinnerAndReturnEndedFlagError, updateScore, createTournamentDataKO, CreateTournamentDataKOError } from './tournamentKO'
 import { pushChangedPrivateTournament } from '../socket/tournamentPrivate'
 import { getSocketByUserID } from '../socket/general'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
 
-interface getPrivateTournamentCondition {
+interface GetPrivateTournamentCondition {
   id?: number
   ids?: number[]
   status?: string
 }
 
-export async function getPrivateTournament(sqlClient: pg.Pool, condition?: getPrivateTournamentCondition): Promise<tTournament.privateTournament[]> {
+export async function getPrivateTournament(sqlClient: pg.Pool, condition?: GetPrivateTournamentCondition): Promise<tTournament.PrivateTournament[]> {
   // Build Where Clause
   let whereClause = ''
   const values: any[] = []
@@ -88,13 +88,13 @@ export async function getPrivateTournament(sqlClient: pg.Pool, condition?: getPr
   })
 }
 
-export type getTournamentByIDError = 'TOURNAMENT_ID_NOT_FOUND'
-export async function getPrivateTournamentByID(sqlClient: pg.Pool, id: number): Promise<Result<tTournament.privateTournament, getTournamentByIDError>> {
+export type GetTournamentByIDError = 'TOURNAMENT_ID_NOT_FOUND'
+export async function getPrivateTournamentByID(sqlClient: pg.Pool, id: number): Promise<Result<tTournament.PrivateTournament, GetTournamentByIDError>> {
   const tournaments = await getPrivateTournament(sqlClient, { id: id })
   return tournaments.length !== 1 ? err('TOURNAMENT_ID_NOT_FOUND') : ok(tournaments[0])
 }
 
-export type createTournamentError = 'ONLY_KO_TOURNAMENT_IMPLEMENTED' | getTournamentByIDError | createTournamentDataKOError
+export type CreateTournamentError = 'ONLY_KO_TOURNAMENT_IMPLEMENTED' | GetTournamentByIDError | CreateTournamentDataKOError
 export async function createPrivateTournament(
   pgPool: pg.Pool,
   title: string,
@@ -103,8 +103,8 @@ export async function createPrivateTournament(
   playersPerTeam: 2 | 3,
   teamsPerMatch: 2 | 3,
   tournamentType: 'KO'
-): Promise<Result<tTournament.privateTournament, createTournamentError>> {
-  let data: tTournament.tournamentDataKO
+): Promise<Result<tTournament.PrivateTournament, CreateTournamentError>> {
+  let data: tTournament.TournamentDataKO
   if (tournamentType === 'KO') {
     const dataRes = createTournamentDataKO(nTeams, teamsPerMatch)
     if (dataRes.isErr()) {
@@ -126,14 +126,14 @@ export async function createPrivateTournament(
   return ok(tournaments[0])
 }
 
-export type addPlayerError = GetUserErrors | 'TEAM_IS_ALREADY_FULL' | 'TOURNAMENT_NOT_FOUND'
+export type AddPlayerError = GetUserErrors | 'TEAM_IS_ALREADY_FULL' | 'TOURNAMENT_NOT_FOUND'
 export async function addPlayer(
   pgPool: pg.Pool,
-  tournament: tTournament.privateTournament,
+  tournament: tTournament.PrivateTournament,
   usernameToAdd: string,
   teamTitle: string,
   activated: boolean
-): Promise<Result<tTournament.privateTournament, addPlayerError>> {
+): Promise<Result<tTournament.PrivateTournament, AddPlayerError>> {
   const userToAdd = await getUser(pgPool, { username: usernameToAdd })
   if (userToAdd.isErr()) {
     return err(userToAdd.error)
@@ -155,12 +155,12 @@ export async function addPlayer(
   return ok(tournamentsAfter[0])
 }
 
-export type removePlayerError = GetUserErrors | 'TEAM_IS_ALREADY_FULL' | 'TOURNAMENT_NOT_FOUND'
+export type RemovePlayerError = GetUserErrors | 'TEAM_IS_ALREADY_FULL' | 'TOURNAMENT_NOT_FOUND'
 export async function removePlayer(
   pgPool: pg.Pool,
-  tournament: tTournament.privateTournament,
+  tournament: tTournament.PrivateTournament,
   userIdToRemove: number
-): Promise<Result<tTournament.privateTournament, removePlayerError>> {
+): Promise<Result<tTournament.PrivateTournament, RemovePlayerError>> {
   const values = [tournament.id, userIdToRemove]
   await pgPool.query('DELETE FROM private_tournaments_register WHERE tournamentid=$1 AND userid=$2;', values)
 
@@ -172,12 +172,12 @@ export async function removePlayer(
   return ok(tournamentsAfter[0])
 }
 
-export type activatePlayerError = 'NOT_PART_OF_TOURNAMENT' | 'TOURNAMENT_NOT_FOUND' | 'COULD_NOT_ACTIVATE_USER'
+export type ActivatePlayerError = 'NOT_PART_OF_TOURNAMENT' | 'TOURNAMENT_NOT_FOUND' | 'COULD_NOT_ACTIVATE_USER'
 export async function activatePlayer(
   pgPool: pg.Pool,
-  tournament: tTournament.privateTournament,
+  tournament: tTournament.PrivateTournament,
   userID: number
-): Promise<Result<tTournament.privateTournament, activatePlayerError>> {
+): Promise<Result<tTournament.PrivateTournament, ActivatePlayerError>> {
   const registerTeam = tournament.registerTeams.find((t) => t.playerids.includes(userID))
   if (registerTeam == null) {
     return err('NOT_PART_OF_TOURNAMENT')
@@ -196,11 +196,11 @@ export async function activatePlayer(
   return ok(tournamentsAfter[0])
 }
 
-export type startPrivateTournamentError = 'TOURNAMENT_NOT_FOUND' | 'CANNOT_START_TOURNAMENT' | 'ONLY_PLANNED_TOURNAMENTS_CAN_BE_STARTED'
+export type StartPrivateTournamentError = 'TOURNAMENT_NOT_FOUND' | 'CANNOT_START_TOURNAMENT' | 'ONLY_PLANNED_TOURNAMENTS_CAN_BE_STARTED'
 export async function startPrivateTournament(
   pgPool: pg.Pool,
-  tournament: tTournament.privateTournament
-): Promise<Result<tTournament.privateTournament, startPrivateTournamentError>> {
+  tournament: tTournament.PrivateTournament
+): Promise<Result<tTournament.PrivateTournament, StartPrivateTournamentError>> {
   if (tournament.status !== 'planned') {
     return err('ONLY_PLANNED_TOURNAMENTS_CAN_BE_STARTED')
   }
@@ -237,13 +237,13 @@ export async function startPrivateTournament(
   return ok(tournamentsAfter[0])
 }
 
-export type startTournamentGameError = 'TOURNAMENT_NOT_FOUND' | 'COULD_NOT_FIND_GAME'
+export type StartTournamentGameError = 'TOURNAMENT_NOT_FOUND' | 'COULD_NOT_FIND_GAME'
 export async function startTournamentGame(
   pgPool: pg.Pool,
-  tournament: tTournament.privateTournament,
+  tournament: tTournament.PrivateTournament,
   tournamentRound: number,
   roundGame: number
-): Promise<Result<tTournament.privateTournament, startTournamentGameError>> {
+): Promise<Result<tTournament.PrivateTournament, StartTournamentGameError>> {
   if (tournament.data.brackets?.[tournamentRound]?.[roundGame] == null) {
     return err('COULD_NOT_FIND_GAME')
   }
@@ -284,8 +284,8 @@ export async function startTournamentGame(
   return ok(tournamentsAfter[0])
 }
 
-export type abortTournamentGameError = 'TOURNAMENT_NOT_FOUND'
-export async function abortPrivateTournament(pgPool: pg.Pool, tournament: tTournament.privateTournament): Promise<Result<tTournament.privateTournament, abortTournamentGameError>> {
+export type AbortTournamentGameError = 'TOURNAMENT_NOT_FOUND'
+export async function abortPrivateTournament(pgPool: pg.Pool, tournament: tTournament.PrivateTournament): Promise<Result<tTournament.PrivateTournament, AbortTournamentGameError>> {
   const gameIDsToRemoveTournament: number[] = []
 
   for (const round of tournament.data.brackets) {
@@ -309,8 +309,8 @@ export async function abortPrivateTournament(pgPool: pg.Pool, tournament: tTourn
   return ok(tournamentsAfter[0])
 }
 
-export type updateTournamentFromGameError = 'GAME_IS_NOT_PART_OF_PRIVATE_TOURNAMENT' | 'TOURNAMENT_NOT_FOUND' | 'TOURNAMENT_NOT_RUNNING' | evaluateGameWinnerAndReturnEndedFlagError
-export async function updateTournamentFromGame(pgPool: pg.Pool, game: gameForPlay, forceGameEnd?: boolean): Promise<Result<null, updateTournamentFromGameError>> {
+export type UpdateTournamentFromGameError = 'GAME_IS_NOT_PART_OF_PRIVATE_TOURNAMENT' | 'TOURNAMENT_NOT_FOUND' | 'TOURNAMENT_NOT_RUNNING' | EvaluateGameWinnerAndReturnEndedFlagError
+export async function updateTournamentFromGame(pgPool: pg.Pool, game: GameForPlay, forceGameEnd?: boolean): Promise<Result<null, UpdateTournamentFromGameError>> {
   if (game.privateTournamentId == null) {
     return err('GAME_IS_NOT_PART_OF_PRIVATE_TOURNAMENT')
   }

@@ -1,5 +1,5 @@
 import { testCapturedMoves } from '../test/captureCompare'
-import { gameStatisticCardsType } from '../sharedTypes/typesStatistic'
+import { GameStatisticCardsType } from '../sharedTypes/typesStatistic'
 
 test('Test with captured  - test kicked balls WITHOUT TAC', () => {
   const result = testCapturedMoves('170', 4, 2, false)
@@ -38,7 +38,7 @@ test('Test with captured 214  - test cards during small game', () => {
   expect(countSpecialCards(result.game?.statistic[3].cards)).toEqual([1, 1, 2])
 })
 
-function countSpecialCards(cards: gameStatisticCardsType | undefined) {
+function countSpecialCards(cards: GameStatisticCardsType | undefined) {
   const arr = [0, 0, 0]
   if (cards === undefined) {
     return arr

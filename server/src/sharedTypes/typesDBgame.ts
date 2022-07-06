@@ -1,10 +1,10 @@
 import type { AbstractClassGame as game } from './game'
-import type { ballsType } from './typesBall'
-import type { playerCard } from './typesCard'
-import type { gameStatistic } from './typesStatistic'
-import type { player } from './typesPlayers'
+import type { BallsType } from './typesBall'
+import type { PlayerCard } from './typesCard'
+import type { GameStatistic } from './typesStatistic'
+import type { Player } from './typesPlayers'
 
-interface gameGeneral {
+interface GameGeneral {
   id: number
   status: string
   nPlayers: number
@@ -19,27 +19,27 @@ interface gameGeneral {
 }
 
 // Game from db
-export interface gameForOverview extends gameGeneral {
+export interface GameForOverview extends GameGeneral {
   coop: boolean
   teams: string[][]
   nPlayer: number
 }
 
-export interface gameForPlay extends gameGeneral {
+export interface GameForPlay extends GameGeneral {
   game: game
   colors: string[]
   rematch_open: boolean
 }
 
-export interface updateDataType {
+export interface UpdateDataType {
   gamePlayer: number
   tournamentID: number | null
   discardPile: string[]
-  balls: ballsType
-  priorBalls: ballsType
-  cards: playerCard[]
+  balls: BallsType
+  priorBalls: BallsType
+  cards: PlayerCard[]
   ownCards: string[]
-  players: player[]
+  players: Player[]
   gameEnded: boolean
   winningTeams: boolean[]
   aussetzenFlag: boolean
@@ -47,7 +47,7 @@ export interface updateDataType {
   discardedFlag: boolean
   status: string
   coopCounter: number
-  statistic: gameStatistic[]
+  statistic: GameStatistic[]
   tradeDirection: number
   deckInfo: number[]
   colors: string[]
@@ -56,17 +56,17 @@ export interface updateDataType {
   rematch_open: boolean
 }
 
-export type getGamesType = {
+export type GetGamesType = {
   open: number
   aborted: number
   won: number
   lost: number
   team: number
   history: (1 | 0 | 2)[]
-  runningGames: gameForOverview[]
+  runningGames: GameForOverview[]
 }
 
-export type getRunningGamesType = {
+export type GetRunningGamesType = {
   id: number
   teams: string[][]
   created: number

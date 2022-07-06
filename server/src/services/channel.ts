@@ -1,7 +1,7 @@
 import type pg from 'pg'
-import type { chatMessage } from '../sharedTypes/chat'
+import type { ChatMessage } from '../sharedTypes/chat'
 
-export async function getChannelMessages(pgPool: pg.Pool, channel: string): Promise<chatMessage[]> {
+export async function getChannelMessages(pgPool: pg.Pool, channel: string): Promise<ChatMessage[]> {
   const res = await pgPool.query<{ id: number; body: string; created: string; sender: string }>(
     `SELECT * FROM (
       SELECT channel_messages.id, users.username as sender, channel_messages.body, channel_messages.created FROM channel_messages 

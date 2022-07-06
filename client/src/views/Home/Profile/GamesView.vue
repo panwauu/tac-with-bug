@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import GamesTable from '@/components/GamesTable.vue'
 
-import type { gameForOverview } from '@/../../server/src/sharedTypes/typesDBgame'
+import type { GameForOverview } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref, onMounted } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey } from '@/services/injections'
@@ -26,7 +26,7 @@ const props = defineProps<{ username: string }>()
 
 const loading = ref(false)
 const nEntries = ref(0)
-const games = ref<gameForOverview[]>([])
+const games = ref<GameForOverview[]>([])
 
 onMounted(() => {
   loadGames(0, 10, 'created', -1)

@@ -1,10 +1,10 @@
-export interface playerStatistic {
-  cards: gameStatisticCardsType
-  actions: gameStatisticActionsType
-  wl: playerWLStatistic
+export interface PlayerStatistic {
+  cards: GameStatisticCardsType
+  actions: GameStatisticActionsType
+  wl: PlayerWLStatistic
 }
 
-export interface playerWLStatistic {
+export interface PlayerWLStatistic {
   nGamesWon4: number
   nGamesWon6: number
   nGamesLost4: number
@@ -16,22 +16,22 @@ export interface playerWLStatistic {
   ballsInOwnTeam: number
   ballsInEnemy: number
   lastGamesHistory: ('won' | 'lost' | 'coop' | 'aborted' | 'running')[]
-  people: peopleOjectType
+  people: PeopleOjectType
   coopBest4: number
   coopBest6: number
 }
 
-export interface peopleOjectType {
+export interface PeopleOjectType {
   // playedTogether - Won together - playedAgainst - won against
   [key: string]: number[] // removed because of tsoa [number, number, number, number, number]
 }
 
-export interface gameStatistic {
-  cards: gameStatisticCardsType
-  actions: gameStatisticActionsType
+export interface GameStatistic {
+  cards: GameStatisticCardsType
+  actions: GameStatisticActionsType
 }
 
-export interface gameStatisticCardsType {
+export interface GameStatisticCardsType {
   // Total played / actually used / traded to Partner
   total: [number, number, number]
   '7': [number, number, number]
@@ -47,7 +47,7 @@ export interface gameStatisticCardsType {
   '4': [number, number, number]
 }
 
-export interface gameStatisticActionsType {
+export interface GameStatisticActionsType {
   nBallsLost: number
   nBallsKickedEnemy: number
   nBallsKickedOwnTeam: number
@@ -58,7 +58,7 @@ export interface gameStatisticActionsType {
   nAussetzen: number
 }
 
-export interface userNetworkEdge {
+export interface UserNetworkEdge {
   data: {
     source: string
     target: string
@@ -68,7 +68,7 @@ export interface userNetworkEdge {
   }
 }
 
-export interface userNetworkNode {
+export interface UserNetworkNode {
   data: {
     id: string
     idInt: number
@@ -77,12 +77,12 @@ export interface userNetworkNode {
   }
 }
 
-export interface userNetwork {
-  edges: userNetworkEdge[]
-  nodes: userNetworkNode[]
+export interface UserNetwork {
+  edges: UserNetworkEdge[]
+  nodes: UserNetworkNode[]
 }
 
-export interface userNetworkApiResponse {
-  graph: userNetwork
-  people: peopleOjectType
+export interface UserNetworkApiResponse {
+  graph: UserNetwork
+  people: PeopleOjectType
 }

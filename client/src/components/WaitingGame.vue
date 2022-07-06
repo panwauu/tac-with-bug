@@ -159,13 +159,13 @@ import PlayersThree from '@/components/icons/PlayersThree.vue'
 import Teams from '@/components/icons/TeamsSymbol.vue'
 import Tag from 'primevue/tag'
 
-import type { waitingGame } from '@/../../server/src/sharedTypes/typesWaiting'
+import type { WaitingGame } from '@/../../server/src/sharedTypes/typesWaiting'
 import { withDefaults, computed, ref } from 'vue'
 import { username } from '@/services/useUser'
 
 import BallsImage from './assets/BallsImage.vue'
 
-const props = withDefaults(defineProps<{ game: waitingGame; active?: boolean }>(), { active: false })
+const props = withDefaults(defineProps<{ game: WaitingGame; active?: boolean }>(), { active: false })
 
 const emit = defineEmits<{
   (eventName: 'move-player', data: { gameID: number; username: string; steps: number }): void

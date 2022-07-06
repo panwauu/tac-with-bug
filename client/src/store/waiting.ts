@@ -1,4 +1,4 @@
-import type { waitingGame } from '@/../../server/src/sharedTypes/typesWaiting'
+import type { WaitingGame } from '@/../../server/src/sharedTypes/typesWaiting'
 import { defineStore } from 'pinia'
 import { cloneDeep } from 'lodash'
 import { sound } from '../plugins/sound'
@@ -12,8 +12,8 @@ nextTick(() => {
 
 export const useWaitingStore = defineStore('waiting', {
   state: () => ({
-    games: [] as waitingGame[],
-    ownGame: null as waitingGame | null,
+    games: [] as WaitingGame[],
+    ownGame: null as WaitingGame | null,
   }),
   getters: {
     rooms: (state) => {
@@ -24,7 +24,7 @@ export const useWaitingStore = defineStore('waiting', {
     initStore() {
       this.$state.socket.on('waiting:getGames', this.getGamesHandler)
     },
-    getGamesHandler(data: waitingGame[]) {
+    getGamesHandler(data: WaitingGame[]) {
       this.games = cloneDeep(data).sort((a, b) => a.id - b.id)
 
       const index = this.games.findIndex((g) => username.value != null && g.players.includes(username.value))

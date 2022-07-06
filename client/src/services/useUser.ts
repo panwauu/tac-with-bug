@@ -3,22 +3,22 @@ import { reactive, computed, readonly } from 'vue'
 import { OpenAPI } from '../generatedClient/index'
 import { GeneralSocketC } from './socket'
 
-interface user {
+interface User {
   username: string
   token: string
 }
 
-interface emptyUser {
+interface EmptyUser {
   username: null
   token: null
 }
 
-const defaultState: emptyUser = Object.freeze({
+const defaultState: EmptyUser = Object.freeze({
   username: null,
   token: null,
 })
 
-const _user = reactive<user | emptyUser>(Object.assign({}, defaultState))
+const _user = reactive<User | EmptyUser>(Object.assign({}, defaultState))
 loadInitially()
 
 function loadInitially() {
@@ -35,14 +35,14 @@ function loadInitially() {
   setUser({ username: obj.username, token: obj.token })
 }
 
-function setUser(user: user | emptyUser): void {
+function setUser(user: User | EmptyUser): void {
   _user.username = user.username
   _user.token = user.token
   OpenAPI.TOKEN = user.token ?? ''
   sessionStorage.setItem('TacUserStorage', JSON.stringify(user))
 }
 
-export function login(user: user): void {
+export function login(user: User): void {
   setUser(user)
 }
 export async function logout(socket: GeneralSocketC) {

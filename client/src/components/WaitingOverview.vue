@@ -198,7 +198,7 @@ import { ref, computed, onUnmounted } from 'vue'
 import { i18n } from '@/services/i18n'
 import router from '@/router/index'
 import { injectStrict, SocketKey } from '@/services/injections'
-import type { startGameType, waitingGame } from '@/../../server/src/sharedTypes/typesWaiting'
+import type { StartGameType, WaitingGame as WaitingGameType } from '@/../../server/src/sharedTypes/typesWaiting'
 import { isLoggedIn, username } from '@/services/useUser'
 import { useServerInfoStore } from '@/store/serverInfo'
 import { useWaitingStore } from '@/store/waiting'
@@ -252,11 +252,11 @@ onUnmounted(() => {
   socket.off('waiting:startGame', startGameHandler)
 })
 
-function startGameHandler(data: startGameType) {
+function startGameHandler(data: StartGameType) {
   router.push({ name: 'Game', query: data })
 }
 
-function joinGame(game: waitingGame) {
+function joinGame(game: WaitingGameType) {
   if (!isLoggedIn.value) {
     return
   }

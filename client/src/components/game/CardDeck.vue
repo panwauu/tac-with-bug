@@ -23,12 +23,12 @@
 </template>
 
 <script setup lang="ts">
-import type { positionStylesState } from '@/services/compositionGame/usePositionStyles'
-import type { miscStateType } from '@/services/compositionGame/useMisc'
+import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
 
 const props = defineProps<{
-  positionStyles: positionStylesState
-  miscState: miscStateType
+  positionStyles: PositionStylesState
+  miscState: MiscStateType
 }>()
 
 function rotateIndex(index: number) {

@@ -1,11 +1,11 @@
-export interface chatMessage {
+export interface ChatMessage {
   id: number
   body: string
   created: string
   sender: string | null
 }
 
-export interface chatElement {
+export interface ChatElement {
   chatid: number
   groupChat: boolean
   groupTitle: string

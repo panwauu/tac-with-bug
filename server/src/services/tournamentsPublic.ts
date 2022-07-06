@@ -7,14 +7,14 @@ import { colors } from '../sharedDefinitions/colors'
 import { shuffleArray } from '../game/cardUtils'
 import { abortGame, createGame } from './game'
 import { err, ok, Result } from 'neverthrow'
-import { evaluateGameWinnerAndReturnEndedFlag, evaluateGameWinnerAndReturnEndedFlagError, updateScore } from './tournamentKO'
+import { evaluateGameWinnerAndReturnEndedFlag, EvaluateGameWinnerAndReturnEndedFlagError, updateScore } from './tournamentKO'
 import { pushChangedPublicTournament } from '../socket/tournamentPublic'
 import { updateTournamentWinners } from '../socket/tournament'
 import { getSocketByUserID } from '../socket/general'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { tournamentBus } from './tournaments'
 
-interface getTournamentCondition {
+interface GetTournamentCondition {
   id?: number
   ids?: number[]
   status?: string
@@ -25,7 +25,7 @@ interface getTournamentCondition {
   current?: boolean
 }
 
-export async function getPublicTournament(sqlClient: pg.Pool, condition?: getTournamentCondition): Promise<tTournament.publicTournament[]> {
+export async function getPublicTournament(sqlClient: pg.Pool, condition?: GetTournamentCondition): Promise<tTournament.PublicTournament[]> {
   // Build Where Clause
   let whereClause = ''
   const values: any[] = []
@@ -128,8 +128,8 @@ export async function getPublicTournament(sqlClient: pg.Pool, condition?: getTou
   })
 }
 
-export type getTournamentByIDError = 'TOURNAMENT_ID_NOT_FOUND'
-export async function getPublicTournamentByID(sqlClient: pg.Pool, id: number): Promise<Result<tTournament.publicTournament, getTournamentByIDError>> {
+export type GetTournamentByIDError = 'TOURNAMENT_ID_NOT_FOUND'
+export async function getPublicTournamentByID(sqlClient: pg.Pool, id: number): Promise<Result<tTournament.PublicTournament, GetTournamentByIDError>> {
   const tournaments = await getPublicTournament(sqlClient, { id: id })
   return tournaments.length !== 1 ? err('TOURNAMENT_ID_NOT_FOUND') : ok(tournaments[0])
 }
@@ -158,8 +158,8 @@ export async function startTournament(sqlClient: pg.Pool) {
   }
 }
 
-export type createGamesTournamentError = 'GAMES_ALREADY_CREATED_OR_NOT_ALL_ENDED'
-async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament.publicTournament): Promise<Result<tTournament.publicTournament, createGamesTournamentError>> {
+export type CreateGamesTournamentError = 'GAMES_ALREADY_CREATED_OR_NOT_ALL_ENDED'
+async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament.PublicTournament): Promise<Result<tTournament.PublicTournament, CreateGamesTournamentError>> {
   if (
     tournament.data.brackets[tournament.creationPhase - 1].some((b) => {
       return b.teams.some((t) => t === -1) || b.gameID !== -1
@@ -242,8 +242,8 @@ export async function checkForceGameEnd(sqlClient: pg.Pool) {
   }
 }
 
-export type updateTournamentFromGameError = 'GAME_IS_NOT_PART_OF_PUBLIC_TOURNAMENT' | getTournamentByIDError | evaluateGameWinnerAndReturnEndedFlagError
-export async function updateTournamentFromGame(pgPool: pg.Pool, game: dbGame.gameForPlay, forceGameEnd?: boolean): Promise<Result<null, updateTournamentFromGameError>> {
+export type UpdateTournamentFromGameError = 'GAME_IS_NOT_PART_OF_PUBLIC_TOURNAMENT' | GetTournamentByIDError | EvaluateGameWinnerAndReturnEndedFlagError
+export async function updateTournamentFromGame(pgPool: pg.Pool, game: dbGame.GameForPlay, forceGameEnd?: boolean): Promise<Result<null, UpdateTournamentFromGameError>> {
   if (game.publicTournamentId == null) {
     return err('GAME_IS_NOT_PART_OF_PUBLIC_TOURNAMENT')
   }

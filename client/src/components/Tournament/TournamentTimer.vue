@@ -6,11 +6,11 @@
 </template>
 
 <script setup lang="ts">
-import type { publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import type { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { computed } from 'vue'
 import CountdownTimer from '@/components/CountdownTimer.vue'
 
-const props = defineProps<{ tournament: publicTournament }>()
+const props = defineProps<{ tournament: PublicTournament }>()
 
 function addInterval(date: Date, interval: string): Date {
   const m = parseInt(interval.slice(interval.length - 2, interval.length))

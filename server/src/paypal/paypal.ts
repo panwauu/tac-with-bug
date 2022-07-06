@@ -3,7 +3,7 @@ import { ok, err, Result } from 'neverthrow'
 import pg from 'pg'
 import { getToken, requestTokenFromPaypal } from './paypalToken'
 
-interface subscription {
+interface Subscription {
   id: number | null
   userid: number | null
   subscriptionid: string | null
@@ -15,11 +15,11 @@ function SQLusernameOrID(usernameORuserID: number | string) {
   return typeof usernameORuserID === 'string' ? 'username' : 'id'
 }
 
-export interface subscriptionDetails extends subscription {
+export interface SubscriptionDetails extends Subscription {
   freelicense: boolean
 }
 
-export function getInvalidSubscriptionDetails(): subscriptionDetails {
+export function getInvalidSubscriptionDetails(): SubscriptionDetails {
   return {
     id: null,
     userid: null,
@@ -36,7 +36,7 @@ export async function getNSubscriptions(sqlClient: pg.Pool) {
   })
 }
 
-async function getDBSubscription(sqlClient: pg.Pool, usernameORuserID: number | string): Promise<subscriptionDetails> {
+async function getDBSubscription(sqlClient: pg.Pool, usernameORuserID: number | string): Promise<SubscriptionDetails> {
   const query = `SELECT users.freelicense, subscriptions.id, subscriptions.userid, subscriptions.subscriptionid, subscriptions.status, subscriptions.validuntil FROM users
     LEFT JOIN subscriptions ON (users.currentsubscription = subscriptions.id) WHERE users.${SQLusernameOrID(usernameORuserID)} = $1
     UNION
@@ -48,8 +48,8 @@ async function getDBSubscription(sqlClient: pg.Pool, usernameORuserID: number | 
   })
 }
 
-type getPaypalSubscriptionDetailsError = 'COULD_NOT_GET_PAYPAL_SUBSCRIPTION_DETAILS'
-async function getPaypalSubscriptionDetails(subscriptionID: string): Promise<Result<any, getPaypalSubscriptionDetailsError>> {
+type GetPaypalSubscriptionDetailsError = 'COULD_NOT_GET_PAYPAL_SUBSCRIPTION_DETAILS'
+async function getPaypalSubscriptionDetails(subscriptionID: string): Promise<Result<any, GetPaypalSubscriptionDetailsError>> {
   const retryAttempts = 2
 
   let res
@@ -81,8 +81,8 @@ async function getPaypalSubscriptionDetails(subscriptionID: string): Promise<Res
   return res?.status !== 200 ? err('COULD_NOT_GET_PAYPAL_SUBSCRIPTION_DETAILS') : ok(res.data)
 }
 
-type cancelPaypalSubscriptionError = 'PAYPAL_CANCELLATION_FAILED'
-async function cancelPaypalSubscription(subscriptionID: string): Promise<Result<null, cancelPaypalSubscriptionError>> {
+type CancelPaypalSubscriptionError = 'PAYPAL_CANCELLATION_FAILED'
+async function cancelPaypalSubscription(subscriptionID: string): Promise<Result<null, CancelPaypalSubscriptionError>> {
   const token = await getToken()
 
   const config = {
@@ -103,8 +103,8 @@ async function cancelPaypalSubscription(subscriptionID: string): Promise<Result<
   return res.status !== 204 ? err('PAYPAL_CANCELLATION_FAILED') : ok(null)
 }
 
-export type isSubscribedError = getSubscriptionError
-export async function isSubscribed(sqlClient: pg.Pool, usernameORuserID: number | string, checkPaypalFlag = true): Promise<Result<boolean, isSubscribedError>> {
+export type IsSubscribedError = GetSubscriptionError
+export async function isSubscribed(sqlClient: pg.Pool, usernameORuserID: number | string, checkPaypalFlag = true): Promise<Result<boolean, IsSubscribedError>> {
   const subscription = await getSubscription(sqlClient, usernameORuserID, checkPaypalFlag)
   if (subscription.isErr()) {
     return err(subscription.error)
@@ -112,8 +112,8 @@ export async function isSubscribed(sqlClient: pg.Pool, usernameORuserID: number 
   return ok(subscription.value.freelicense || subscription.value.status === 'running' || subscription.value.status === 'expiring')
 }
 
-export type getSubscriptionError = 'COULD_NOT_UPDATE_SUBSCRIPTION' | getPaypalSubscriptionDetailsError
-export async function getSubscription(sqlClient: pg.Pool, usernameORuserID: number | string, checkPaypalFlag = true): Promise<Result<subscriptionDetails, getSubscriptionError>> {
+export type GetSubscriptionError = 'COULD_NOT_UPDATE_SUBSCRIPTION' | GetPaypalSubscriptionDetailsError
+export async function getSubscription(sqlClient: pg.Pool, usernameORuserID: number | string, checkPaypalFlag = true): Promise<Result<SubscriptionDetails, GetSubscriptionError>> {
   const subscription = await getDBSubscription(sqlClient, usernameORuserID)
   if (!checkPaypalFlag) {
     return ok(subscription)
@@ -148,8 +148,8 @@ export async function getSubscription(sqlClient: pg.Pool, usernameORuserID: numb
   return ok(subscription)
 }
 
-export type cancelSubscriptionError = 'SUBSCRIPTION_DOES_NOT_EXIST' | cancelPaypalSubscriptionError
-export async function cancelSubscription(sqlClient: pg.Pool, userID: number): Promise<Result<null, cancelSubscriptionError>> {
+export type CancelSubscriptionError = 'SUBSCRIPTION_DOES_NOT_EXIST' | CancelPaypalSubscriptionError
+export async function cancelSubscription(sqlClient: pg.Pool, userID: number): Promise<Result<null, CancelSubscriptionError>> {
   const subscription = await getDBSubscription(sqlClient, userID)
 
   if (subscription.subscriptionid === null) {
@@ -160,13 +160,13 @@ export async function cancelSubscription(sqlClient: pg.Pool, userID: number): Pr
   return cancelRes.isErr() ? err(cancelRes.error) : ok(null)
 }
 
-export type newSubscriptionError =
+export type NewSubscriptionError =
   | 'SUBSCRIPTION_ALREADY_IN_DB'
   | 'USER_ALREADY_HAS_SUBSCRIPTION'
   | 'NEW_SUBSCRIPTION_NOT_ACTIVE_IN_PAYPAL'
   | 'INVALID_PLAN_ID'
-  | getPaypalSubscriptionDetailsError
-export async function newSubscription(sqlClient: pg.Pool, userID: number, subscriptionID: string): Promise<Result<null, newSubscriptionError>> {
+  | GetPaypalSubscriptionDetailsError
+export async function newSubscription(sqlClient: pg.Pool, userID: number, subscriptionID: string): Promise<Result<null, NewSubscriptionError>> {
   const res = await sqlClient.query('SELECT * FROM subscriptions WHERE subscriptionid = $1;', [subscriptionID])
   if (res.rowCount > 0) {
     return err('SUBSCRIPTION_ALREADY_IN_DB')
@@ -191,7 +191,7 @@ export async function newSubscription(sqlClient: pg.Pool, userID: number, subscr
     return err('INVALID_PLAN_ID')
   }
 
-  const subscription: subscription = await sqlClient
+  const subscription: Subscription = await sqlClient
     .query("INSERT INTO subscriptions (userid, subscriptionid, status, validuntil) VALUES ($1, $2, 'running', $3) RETURNING *;", [
       userID,
       subscriptionID,

@@ -77,16 +77,16 @@ import CardImage from '@/components/assets/CardImage.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 import EmojiSelector from './EmojiSelector.vue'
 
-import type { positionStylesState } from '@/services/compositionGame/usePositionStyles'
-import type { miscStateType } from '@/services/compositionGame/useMisc'
+import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { ref } from 'vue'
 import router from '@/router'
 
 const opRef = ref<undefined | OverlayPanel>()
 
 const props = defineProps<{
-  positionStyles: positionStylesState
-  miscState: miscStateType
+  positionStyles: PositionStylesState
+  miscState: MiscStateType
 }>()
 
 function hasOneOrThirteen(index: number): boolean {

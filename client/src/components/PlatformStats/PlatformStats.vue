@@ -38,11 +38,11 @@ import StatsByHour from './StatsByHour.vue'
 import StatsByDay from './StatsByDay.vue'
 import UserAgentStats from './UserAgentStats.vue'
 
-import type { platformStats } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
+import type { PlatformStats } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 import { ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index'
 
-const data = ref<platformStats | null>(null)
+const data = ref<PlatformStats | null>(null)
 Service.getPlatformStats().then((res) => {
   data.value = res
 })

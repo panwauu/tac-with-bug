@@ -9,12 +9,12 @@
 </template>
 
 <script setup lang="ts">
-import type { activityHeatmap } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
+import type { ActivityHeatmap } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 import VueApexCharts from 'vue3-apexcharts'
 import { ref, watch } from 'vue'
 import { i18n } from '@/services/i18n'
 
-const props = defineProps<{ data?: activityHeatmap }>()
+const props = defineProps<{ data?: ActivityHeatmap }>()
 watch(
   () => props.data,
   () => {

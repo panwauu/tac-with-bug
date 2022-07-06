@@ -185,15 +185,15 @@ import TwbSymbol from '@/components/icons/TwbSymbol.vue'
 import TwbLogo from '@/components/icons/TwbLogo.vue'
 import GameWatchingPlayers from './GameWatchingPlayers.vue'
 
-import type { positionStylesState } from '@/services/compositionGame/usePositionStyles'
-import type { miscStateType } from '@/services/compositionGame/useMisc'
-import type { ballsStateType } from '@/services/compositionGame/useBalls'
-import type { cardsStateType } from '@/services/compositionGame/useCards'
-import type { discardPileStateType } from '@/services/compositionGame/useDiscardPile'
-import type { instructionsStateType } from '@/services/compositionGame/useInstructions'
-import type { statisticStateType } from '@/services/compositionGame/useStatistic'
-import type { performMoveAction } from '@/services/compositionGame/usePerformMove'
-import type { updateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
+import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
+import type { BallsStateType } from '@/services/compositionGame/useBalls'
+import type { CardsStateType } from '@/services/compositionGame/useCards'
+import type { DiscardPileStateType } from '@/services/compositionGame/useDiscardPile'
+import type { InstructionsStateType } from '@/services/compositionGame/useInstructions'
+import type { StatisticStateType } from '@/services/compositionGame/useStatistic'
+import type { PerformMoveAction } from '@/services/compositionGame/usePerformMove'
+import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { i18n } from '@/services/i18n'
 import router from '@/router'
@@ -202,17 +202,17 @@ import { useResizeObserver } from '@vueuse/core'
 const emit = defineEmits(['closeGame', 'update:modalVisible', 'update:modalState'])
 
 const props = defineProps<{
-  positionStyles: positionStylesState
-  miscState: miscStateType
-  statisticState: statisticStateType
-  ballsState: ballsStateType
-  cardsState: cardsStateType
-  discardPileState: discardPileStateType
-  performMove: (data: performMoveAction) => void
-  instructionsState: instructionsStateType
+  positionStyles: PositionStylesState
+  miscState: MiscStateType
+  statisticState: StatisticStateType
+  ballsState: BallsStateType
+  cardsState: CardsStateType
+  discardPileState: DiscardPileStateType
+  performMove: (data: PerformMoveAction) => void
+  instructionsState: InstructionsStateType
   modalVisible: boolean
   modalState: string
-  updateData: updateDataType | null
+  updateData: UpdateDataType | null
 }>()
 
 watch(() => props.updateData, updateHandler, { deep: true })

@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import type { userAgentAnalysisData } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
+import type { UserAgentAnalysisData } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'
@@ -33,7 +33,7 @@ import { i18n } from '@/services/i18n'
 const userAgentChat = ref<any | null>(null)
 const userAgentDeviceChat = ref<any | null>(null)
 const userAgentOsChat = ref<any | null>(null)
-const props = defineProps<{ data?: userAgentAnalysisData }>()
+const props = defineProps<{ data?: UserAgentAnalysisData }>()
 watch(
   () => props.data,
   () => {

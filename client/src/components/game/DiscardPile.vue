@@ -16,14 +16,14 @@
 <script setup lang="ts">
 import CardImage from '@/components/assets/CardImage.vue'
 
-import type { discardPileStateType } from '@/services/compositionGame/useDiscardPile'
-import type { positionStylesState } from '@/services/compositionGame/usePositionStyles'
-import type { miscStateType } from '@/services/compositionGame/useMisc'
+import type { DiscardPileStateType } from '@/services/compositionGame/useDiscardPile'
+import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
 
 defineProps<{
-  positionStyles: positionStylesState
-  miscState: miscStateType
-  discardPileState: discardPileStateType
+  positionStyles: PositionStylesState
+  miscState: MiscStateType
+  discardPileState: DiscardPileStateType
 }>()
 </script>
 

@@ -1,20 +1,20 @@
 import { getRemainingMoves } from '@/js/sevenGetSteps'
 
-import { ballsStateType } from './useBalls'
-import { miscStateType } from './useMisc'
-import { discardPileStateType } from './useDiscardPile'
-import { cardsStateType } from './useCards'
-import { moveTextOrBall } from '@/../../server/src/sharedTypes/typesBall'
+import { BallsStateType } from './useBalls'
+import { MiscStateType } from './useMisc'
+import { DiscardPileStateType } from './useDiscardPile'
+import { CardsStateType } from './useCards'
+import { MoveTextOrBall } from '@/../../server/src/sharedTypes/typesBall'
 
-export type performMoveAction = {
+export type PerformMoveAction = {
   textAction: string
   ballAction: number[]
-  move: moveTextOrBall
+  move: MoveTextOrBall
 }
-export type performMoveType = (action: performMoveAction) => moveTextOrBall
+export type PerformMoveType = (action: PerformMoveAction) => MoveTextOrBall
 
-export function usePerformMove(cardsState: cardsStateType, ballsState: ballsStateType, miscState: miscStateType, discardPileState: discardPileStateType): performMoveType {
-  const performMove: performMoveType = (action) => {
+export function usePerformMove(cardsState: CardsStateType, ballsState: BallsStateType, miscState: MiscStateType, discardPileState: DiscardPileStateType): PerformMoveType {
+  const performMove: PerformMoveType = (action) => {
     if (cardsState.selectedCard !== -1 && cardsState.cards[cardsState.selectedCard].title === 'tac' && action.textAction !== 'abwerfen') {
       ballsState.switchBallsWithPrior()
     }

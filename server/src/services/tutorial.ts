@@ -1,6 +1,6 @@
 import { ok, err, Result } from 'neverthrow'
 import type pg from 'pg'
-import { expectOneChangeToDatabase, notOneDatabaseChangeError } from '../dbUtils/dbHelpers'
+import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils/dbHelpers'
 
 let tutorialLevels: number[] = []
 
@@ -9,8 +9,8 @@ export async function loadTutorialLevels(pgPool: pg.Pool) {
   tutorialLevels = progess.map((e) => e.length)
 }
 
-type validateTutorialIDAndStepError = 'TUTORIAL_ID_NOT_VALID' | 'TUTORIAL_STEP_NOT_VALID'
-async function validateTutorialIDAndStep(tutorialID: number, tutorialStep: number): Promise<Result<null, validateTutorialIDAndStepError>> {
+type ValidateTutorialIDAndStepError = 'TUTORIAL_ID_NOT_VALID' | 'TUTORIAL_STEP_NOT_VALID'
+async function validateTutorialIDAndStep(tutorialID: number, tutorialStep: number): Promise<Result<null, ValidateTutorialIDAndStepError>> {
   if (!Number.isInteger(tutorialID) || tutorialID < 0 || tutorialID >= tutorialLevels.length) {
     return err('TUTORIAL_ID_NOT_VALID')
   }
@@ -71,14 +71,14 @@ export async function resetTutorialsCompletely(pgPool: pg.Pool, userID: number) 
   return expectOneChangeToDatabase(dbRes)
 }
 
-type setTutorialProgressError = validateTutorialIDAndStepError | notOneDatabaseChangeError
+type SetTutorialProgressError = ValidateTutorialIDAndStepError | NotOneDatabaseChangeError
 export async function setTutorialProgress(
   pgPool: pg.Pool,
   userID: number,
   tutorialID: number,
   tutorialStep: number,
   done: boolean
-): Promise<Result<boolean[][], setTutorialProgressError>> {
+): Promise<Result<boolean[][], SetTutorialProgressError>> {
   const validationRes = await validateTutorialIDAndStep(tutorialID, tutorialStep)
   if (validationRes.isErr()) {
     return err(validationRes.error)

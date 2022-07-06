@@ -6,14 +6,14 @@ import { moveOneStep } from './generateMovesUtils'
 import { ballHome, ballGoal } from './ballUtils'
 
 export function performBallAction(
-  card: tCard.playerCard,
+  card: tCard.PlayerCard,
   nBall: number,
   newPosition: number,
   cardIndex: number,
-  balls: tBall.ballsType,
+  balls: tBall.BallsType,
   activePlayer: number,
-  cards: tCard.cardsType,
-  priorBalls: tBall.ballsType,
+  cards: tCard.CardsType,
+  priorBalls: tBall.BallsType,
   teufelflag: boolean
 ): void {
   updatePriorBalls(card, balls, priorBalls)
@@ -38,7 +38,7 @@ export function performBallAction(
 }
 
 // This function updates the PriorBalls in order for Tac to work
-function updatePriorBalls(card: tCard.playerCard, balls: tBall.ballsType, priorBalls: tBall.ballsType): void {
+function updatePriorBalls(card: tCard.PlayerCard, balls: tBall.BallsType, priorBalls: tBall.BallsType): void {
   if (card.title === 'tac') {
     // If tac is player -> load priorballs
     const auxBalls = cloneDeep(balls)
@@ -56,7 +56,7 @@ function updatePriorBalls(card: tCard.playerCard, balls: tBall.ballsType, priorB
   }
 }
 
-function performTrickser(balls: tBall.ballsType, nBall: number, newPosition: number): void {
+function performTrickser(balls: tBall.BallsType, nBall: number, newPosition: number): void {
   const nBallInDestination = balls.findIndex((ball) => {
     return ball.position === newPosition
   })
@@ -66,7 +66,7 @@ function performTrickser(balls: tBall.ballsType, nBall: number, newPosition: num
   balls[nBall].state = 'valid'
 }
 
-function kickBalls(balls: tBall.ballsType, card: tCard.playerCard, newPosition: number, nBall: number, lastNonTacCard: tCard.cardType | undefined): void {
+function kickBalls(balls: tBall.BallsType, card: tCard.PlayerCard, newPosition: number, nBall: number, lastNonTacCard: tCard.CardType | undefined): void {
   const nBallInDestination = balls.findIndex((ball) => {
     return ball.position === newPosition
   })
@@ -81,7 +81,7 @@ function kickBalls(balls: tBall.ballsType, card: tCard.playerCard, newPosition: 
   }
 }
 
-export function ballInLastGoalPosition(balls: tBall.ballsType, nBall: number, newPosition: number): boolean {
+export function ballInLastGoalPosition(balls: tBall.BallsType, nBall: number, newPosition: number): boolean {
   for (let pos = ballGoal(nBall, balls) + 3; pos > newPosition; pos = pos - 1) {
     if (
       !balls.some((ball, ballIndex) => {
@@ -94,7 +94,7 @@ export function ballInLastGoalPosition(balls: tBall.ballsType, nBall: number, ne
   return true
 }
 
-export function moveBallToHouse(balls: tBall.ballsType, nBall: number): void {
+export function moveBallToHouse(balls: tBall.BallsType, nBall: number): void {
   let emptyHousePosition = -1
   for (let i = 0; i < 4; i++) {
     if (!balls.some((ball) => ball.position === ballHome(nBall) + i)) {
@@ -110,7 +110,7 @@ export function moveBallToHouse(balls: tBall.ballsType, nBall: number): void {
   balls[nBall].state = 'house'
 }
 
-function updateState(balls: tBall.ballsType, nBall: number, newPosition: number, remainingMoves: number): void {
+function updateState(balls: tBall.BallsType, nBall: number, newPosition: number, remainingMoves: number): void {
   if (balls[nBall].state === 'house') {
     // just left house -> not allowed to enter goal area
     balls[nBall].state = 'invalid'
@@ -147,7 +147,7 @@ function updateState(balls: tBall.ballsType, nBall: number, newPosition: number,
   lockBallsInGoal(balls, nBall, remainingMoves)
 }
 
-function lockBallsInGoal(balls: tBall.ballsType, nBall: number, remainingMoves: number) {
+function lockBallsInGoal(balls: tBall.BallsType, nBall: number, remainingMoves: number) {
   if (remainingMoves === 0) {
     for (let i = 0; i < balls.length; i++) {
       if (balls[i].state !== 'locked' && ballInLastGoalPosition(balls, i, balls[i].position) && i !== nBall) {
@@ -158,7 +158,7 @@ function lockBallsInGoal(balls: tBall.ballsType, nBall: number, remainingMoves: 
   }
 }
 
-function getRemainingMoves(card: tCard.playerCard, balls: tBall.ballsType, nBall: number, newPosition: number, lastNonTacCard: tCard.cardType | undefined): number {
+function getRemainingMoves(card: tCard.PlayerCard, balls: tBall.BallsType, nBall: number, newPosition: number, lastNonTacCard: tCard.CardType | undefined): number {
   let remainingMoves = 0
   if (card.title[0] === '7' || (card.title.substring(0, 3) === 'tac' && lastNonTacCard === '7')) {
     // reset all balls inbetween if "7"
@@ -175,13 +175,13 @@ function getRemainingMoves(card: tCard.playerCard, balls: tBall.ballsType, nBall
 }
 
 function updateCardAfter7(
-  card: tCard.playerCard,
-  cards: tCard.cardsType,
+  card: tCard.PlayerCard,
+  cards: tCard.CardsType,
   teufelflag: boolean,
   activePlayerParam: number,
   remainingMoves: number,
   cardIndex: number,
-  lastNonTacCard: tCard.cardType | undefined
+  lastNonTacCard: tCard.CardType | undefined
 ) {
   let activePlayer = activePlayerParam
 
@@ -214,7 +214,7 @@ function updateCardAfter7(
   }
 }
 
-export function getLastNonTacCard(cards: tCard.cardsType): string | undefined {
+export function getLastNonTacCard(cards: tCard.CardsType): string | undefined {
   for (let i = cards.discardPile.length - 1; i >= 0; i--) {
     if (cards.discardPile[i] !== 'tac' && (cards.discardPile[i] !== 'narr' || (cards.discardedFlag && i === cards.discardPile.length - 1))) {
       return cards.discardPile[i]
@@ -223,7 +223,7 @@ export function getLastNonTacCard(cards: tCard.cardsType): string | undefined {
   return undefined
 }
 
-export function sevenReconstructPath(balls: tBall.ballsType, nBall: number, goalPosition: number): number[] {
+export function sevenReconstructPath(balls: tBall.BallsType, nBall: number, goalPosition: number): number[] {
   // Returns the path a ball with 7 can have used with start and End -> returns undefined if not possible
   let startPaths = [[balls[nBall].position]]
   const endPaths: number[][] = []
@@ -248,7 +248,7 @@ export function sevenReconstructPath(balls: tBall.ballsType, nBall: number, goal
   return finalPath
 }
 
-export function moveBallsBetweenPositionsToHouse(balls: tBall.ballsType, nBall: number, goalPosition: number): void {
+export function moveBallsBetweenPositionsToHouse(balls: tBall.BallsType, nBall: number, goalPosition: number): void {
   // removes every ball between nBall.position and including goalPosition
   let finalPath = sevenReconstructPath(balls, nBall, goalPosition)
   finalPath = finalPath.slice(1, finalPath.length)

@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { weekDataset } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
+import type { WeekDatasetType } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'
@@ -17,7 +17,7 @@ import { i18n } from '@/services/i18n'
 import { getGraphColors } from '@/services/graphColors'
 
 const weekChart = ref<any | null>(null)
-const props = defineProps<{ data?: weekDataset }>()
+const props = defineProps<{ data?: WeekDatasetType }>()
 watch(
   () => props.data,
   () => {
@@ -88,7 +88,7 @@ function updateWeekChart() {
   weekChart.value?.refresh()
 }
 
-function normalizeWeekData(d: weekDataset): Array<[string, number, number, number]> {
+function normalizeWeekData(d: WeekDatasetType): Array<[string, number, number, number]> {
   const weekData: Array<[string, number, number, number]> = []
 
   for (const y in d.data) {

@@ -6,7 +6,7 @@ import logger from '../helpers/logger'
 import { endNotProperlyEndedGames, abortNotEndedGames, disableRematchOfOldGames, getGame } from '../services/game'
 import { getPublicTournament, startTournament, startTournamentRound, checkForceGameEnd } from './tournamentsPublic'
 import { startSignUpOnCondition, endSignUpOnCondition } from './tournamentsRegister'
-import { publicTournament } from '../sharedTypes/typesTournament'
+import { PublicTournament } from '../sharedTypes/typesTournament'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
 
 const jobs: schedule.Job[] = []
@@ -80,7 +80,7 @@ async function registerTournamentJobs(sqlClient: pg.Pool) {
 
 const tournamentTimeOffset = 100
 
-export function registerJobsForOneTournament(sqlClient: pg.Pool, tournament: publicTournament) {
+export function registerJobsForOneTournament(sqlClient: pg.Pool, tournament: PublicTournament) {
   if (process.env.NODE_ENV === 'test') {
     return
   }

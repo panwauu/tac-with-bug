@@ -122,7 +122,7 @@ import Row from 'primevue/row'
 import Tag from 'primevue/tag'
 import Button from 'primevue/button'
 
-import type { gameForOverview } from '@/../../server/src/sharedTypes/typesDBgame'
+import type { GameForOverview } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref } from 'vue'
 import { username as loggedInUser } from '@/services/useUser'
 import { DefaultService as Service } from '@/generatedClient'
@@ -130,13 +130,13 @@ import { DefaultService as Service } from '@/generatedClient'
 const emit = defineEmits<{
   (eventName: 'sort', events: any): void
   (eventName: 'page', events: any): void
-  (eventName: 'rowSelect', game: gameForOverview): void
+  (eventName: 'rowSelect', game: GameForOverview): void
   (eventName: 'reload', event: any): void
 }>()
 
-defineProps<{ username: string; games: gameForOverview[]; nEntries: number; loading: boolean; paginator?: boolean }>()
+defineProps<{ username: string; games: GameForOverview[]; nEntries: number; loading: boolean; paginator?: boolean }>()
 
-const selectedGame = ref<gameForOverview[]>([])
+const selectedGame = ref<GameForOverview[]>([])
 const td = ref<any | null>(null)
 
 function rowSelect() {
@@ -144,7 +144,7 @@ function rowSelect() {
   selectedGame.value = []
 }
 
-function abortButton(game: gameForOverview) {
+function abortButton(game: GameForOverview) {
   if (confirm('Möchtest du dieses Spiel beenden?')) {
     Service.abortGame({ gameID: game.id }).then(() => {
       emit('reload', {

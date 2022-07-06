@@ -1,7 +1,7 @@
 import ical from 'ical-generator'
-import { publicTournament } from '../sharedTypes/typesTournament'
+import { PublicTournament } from '../sharedTypes/typesTournament'
 
-export function generateIcal(tournament: publicTournament) {
+export function generateIcal(tournament: PublicTournament) {
   const cal = ical()
 
   const millisPerGame = postgresIntervalToMilliseconds(tournament.timePerGame)

@@ -1,6 +1,6 @@
-import { hofReason } from './typesHof'
+import { HofReason } from './typesHof'
 
-export interface playerFrontendStatistic {
+export interface PlayerFrontendStatistic {
   history: ('won' | 'lost' | 'coop' | 'aborted' | 'running')[]
   players: {
     mostFrequent: string
@@ -8,15 +8,15 @@ export interface playerFrontendStatistic {
     worstEnemy: string
   }
   table: number[]
-  gamesDistribution: gamesDistributionData
+  gamesDistribution: GamesDistributionData
   subscriber: boolean
   people: { [key: string]: number[] }
-  hof: hofReason[]
+  hof: HofReason[]
   userDescription: string
   registered: string
 }
 
-export interface gamesDistributionData {
+export interface GamesDistributionData {
   teamWon: number
   teamAborted: number
   won4: number

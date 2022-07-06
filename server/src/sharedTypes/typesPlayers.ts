@@ -1,4 +1,4 @@
-export interface player {
+export interface Player {
   name: string
   remainingCards: number
   active: boolean

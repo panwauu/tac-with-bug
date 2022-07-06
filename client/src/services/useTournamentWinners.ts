@@ -1,8 +1,8 @@
-import { lastTournamentWinners } from '@/../../server/src/sharedTypes/typesTournament'
+import { LastTournamentWinners } from '@/../../server/src/sharedTypes/typesTournament'
 import { GeneralSocketC } from './socket'
 import { ref } from 'vue'
 
-const tournamentWinners = ref<lastTournamentWinners>([])
+const tournamentWinners = ref<LastTournamentWinners>([])
 
 export async function initTournamentWinners(socket: GeneralSocketC) {
   const res = await socket.emitWithAck(20000, 'tournament:winners:get')

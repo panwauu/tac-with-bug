@@ -2,8 +2,8 @@ import { cloneDeep } from 'lodash'
 import * as tCard from '../sharedTypes/typesCard'
 import { game } from './game'
 
-export function initalizeCards(nPlayers: number, meisterVersion: boolean): tCard.cardsType {
-  const cards: tCard.cardsType = {
+export function initalizeCards(nPlayers: number, meisterVersion: boolean): tCard.CardsType {
+  const cards: tCard.CardsType = {
     dealingPlayer: Math.floor(Math.random() * nPlayers),
     discardPlayer: 0,
     discardedFlag: false,
@@ -20,7 +20,7 @@ export function initalizeCards(nPlayers: number, meisterVersion: boolean): tCard
   return cards
 }
 
-export function narrCardSwap(cards: tCard.cardsType): void {
+export function narrCardSwap(cards: tCard.CardsType): void {
   const firstPlayerCards = cards.players.shift()
   if (firstPlayerCards === undefined) {
     throw new Error('Card Swap Failed as cards.players is empty')
@@ -28,13 +28,13 @@ export function narrCardSwap(cards: tCard.cardsType): void {
   cards.players.push(firstPlayerCards)
 }
 
-export function discardCard(cards: tCard.cardsType, cardIndex: number, activePlayer: number, teufelFlag: boolean): void {
+export function discardCard(cards: tCard.CardsType, cardIndex: number, activePlayer: number, teufelFlag: boolean): void {
   const nPlayer = teufelFlag ? (activePlayer + 1) % cards.players.length : activePlayer
   addCardToDiscardPile(cards, cardIndex, activePlayer, teufelFlag)
   cards.players[nPlayer].splice(cardIndex, 1)
 }
 
-export function addCardToDiscardPile(cards: tCard.cardsType, cardIndex: number, activePlayer: number, teufelFlag: boolean) {
+export function addCardToDiscardPile(cards: tCard.CardsType, cardIndex: number, activePlayer: number, teufelFlag: boolean) {
   const nPlayer = teufelFlag ? (activePlayer + 1) % cards.players.length : activePlayer
   cards.discardPlayer = nPlayer
   cards.discardPile.push(cards.players[nPlayer][cardIndex])
@@ -46,11 +46,11 @@ export function addCardToDiscardPile(cards: tCard.cardsType, cardIndex: number, 
   }
 }
 
-export function removeCardFromPlayersHand(cards: tCard.cardsType, cardIndex: number, activePlayer: number) {
+export function removeCardFromPlayersHand(cards: tCard.CardsType, cardIndex: number, activePlayer: number) {
   cards.players[activePlayer].splice(cardIndex, 1)
 }
 
-export function dealCards(cards: tCard.cardsType): void {
+export function dealCards(cards: tCard.CardsType): void {
   const nPlayers = cards.players.length
 
   let nCardsPerPlayer
@@ -102,7 +102,7 @@ export function checkCardsAndDeal(game: game) {
   }
 }
 
-export function createCardDeck(nPlayers: number, meisterVersion: boolean): Array<tCard.cardType> {
+export function createCardDeck(nPlayers: number, meisterVersion: boolean): Array<tCard.CardType> {
   const cardCount = {
     '1': 9,
     '2': 7,

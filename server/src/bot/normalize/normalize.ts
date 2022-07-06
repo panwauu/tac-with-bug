@@ -1,4 +1,4 @@
-import type { moveTextOrBall } from '../../sharedTypes/typesBall'
+import type { MoveTextOrBall } from '../../sharedTypes/typesBall'
 
 import { cloneDeep } from 'lodash'
 import { game } from '../../game/game'
@@ -87,7 +87,7 @@ export function normalizeGame(gameInst: game, playerIndex: number): { game: game
   return { game: newGame, playersShiftedBy, ballsNewOrder, cardsNewOrder }
 }
 
-export function normalizeAction(action: moveTextOrBall, norm: { game: game; cardsNewOrder: number[]; ballsNewOrder: number[]; playersShiftedBy: number }): moveTextOrBall {
+export function normalizeAction(action: MoveTextOrBall, norm: { game: game; cardsNewOrder: number[]; ballsNewOrder: number[]; playersShiftedBy: number }): MoveTextOrBall {
   const reorderedCardIndex = norm.cardsNewOrder.findIndex((i) => i === action[1])
   if (reorderedCardIndex === -1) {
     throw new Error('Could not norm Action')
@@ -102,7 +102,7 @@ export function normalizeAction(action: moveTextOrBall, norm: { game: game; card
   return [0, cardIndexNormalized, ballIndex, changePosition(norm.game, action[3], norm.playersShiftedBy)]
 }
 
-export function unnormalizeAction(normAction: moveTextOrBall, norm: { game: game; cardsNewOrder: number[]; ballsNewOrder: number[]; playersShiftedBy: number }): moveTextOrBall {
+export function unnormalizeAction(normAction: MoveTextOrBall, norm: { game: game; cardsNewOrder: number[]; ballsNewOrder: number[]; playersShiftedBy: number }): MoveTextOrBall {
   const playerIndex = norm.playersShiftedBy === 0 ? 0 : -1 * norm.playersShiftedBy
   const cardIndex = norm.cardsNewOrder[normAction[1]]
   if (normAction.length === 3) {

@@ -2,9 +2,9 @@ import { reactive } from 'vue'
 import { cloneDeep } from 'lodash'
 
 import * as tCard from '@/@types/typesCard'
-import { playerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
-import { ballsStateType } from './useBalls'
-import { miscStateType } from './useMisc'
+import { PlayerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
+import { BallsStateType } from './useBalls'
+import { MiscStateType } from './useMisc'
 
 export const cardPictureDict: { [key: string]: string } = {
   '1': 'eins',
@@ -29,9 +29,9 @@ export const cardPictureDict: { [key: string]: string } = {
 
 let cardKeyNumber = 1
 
-export interface cardsStateType {
-  cards: tCard.playerCard[]
-  ownCards: tCard.playerCard[] | null
+export interface CardsStateType {
+  cards: tCard.PlayerCard[]
+  ownCards: tCard.PlayerCard[] | null
   selectedCard: number
   cardAnimation: boolean
   resetSelectedCard: () => void
@@ -40,13 +40,13 @@ export interface cardsStateType {
   setAnimationEnded: () => void
   getTextAction: () => string[]
   getPossiblePositions: () => number[]
-  getCardNames: (own: boolean) => tCard.playerCard[]
+  getCardNames: (own: boolean) => tCard.PlayerCard[]
   updateCards: (cards: ServerPlayerCard[], ownCards: string[]) => void
   removeAllCards: () => void
 }
 
-export function useCards(ballsState: ballsStateType, miscState: miscStateType): cardsStateType {
-  const cardsState: cardsStateType = reactive({
+export function useCards(ballsState: BallsStateType, miscState: MiscStateType): CardsStateType {
+  const cardsState: CardsStateType = reactive({
     cards: [],
     ownCards: null,
     teufelCards: [],

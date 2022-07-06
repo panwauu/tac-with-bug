@@ -1,9 +1,9 @@
 import type { GeneralSocketC } from '@/services/socket'
-import type { gameForOverview, getGamesType } from '@/../../server/src/sharedTypes/typesDBgame'
+import type { GameForOverview, GetGamesType } from '@/../../server/src/sharedTypes/typesDBgame'
 
 import { reactive, onBeforeUnmount } from 'vue'
 
-export type gamesSummary = {
+export type GamesSummary = {
   nGames: number
   open: number
   aborted: number
@@ -11,13 +11,13 @@ export type gamesSummary = {
   lost: number
   team: number
   history: number[]
-  runningGames: gameForOverview[]
+  runningGames: GameForOverview[]
   getGames: () => void
-  getGamesHandler: (data: getGamesType) => void
+  getGamesHandler: (data: GetGamesType) => void
 }
 
-export function useGamesSummary(socket: GeneralSocketC): gamesSummary {
-  const gamesSummary: gamesSummary = reactive({
+export function useGamesSummary(socket: GeneralSocketC): GamesSummary {
+  const gamesSummary: GamesSummary = reactive({
     nGames: 0,
     open: 0,
     aborted: 0,

@@ -234,7 +234,7 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
   })
 }
 
-export function pushChangedPublicTournament(tournament: tTournament.publicTournament) {
+export function pushChangedPublicTournament(tournament: tTournament.PublicTournament) {
   nsp.emit('tournament:public:update', tournament)
 }
 
@@ -257,7 +257,7 @@ export async function registerTournamentBus() {
   tournamentBus.on('round-ended', async (data: { tournamentTitle: string; roundsToFinal: number }) => {
     nsp.emit('tournament:toast:round-ended', { tournamentTitle: data.tournamentTitle, roundsToFinal: data.roundsToFinal })
   })
-  tournamentBus.on('ended', async (data: { tournamentTitle: string; winner: tTournament.team }) => {
+  tournamentBus.on('ended', async (data: { tournamentTitle: string; winner: tTournament.Team }) => {
     nsp.emit('tournament:toast:ended', { tournamentTitle: data.tournamentTitle, winner: data.winner })
   })
 }
@@ -279,7 +279,7 @@ async function sendMailToUnactivatedPlayer(sqlClient: pg.Pool, players: string[]
   })
 }
 
-export async function sendInvitationToAll(sqlClient: pg.Pool, tournament: tTournament.publicTournament) {
+export async function sendInvitationToAll(sqlClient: pg.Pool, tournament: tTournament.PublicTournament) {
   const ical = generateIcal(tournament)
 
   const playerIDs = tournament.teams.map((t) => t.playerids).flat()

@@ -1,23 +1,23 @@
 import type { GeneralSocketC } from '@/services/socket'
-import type { subscriptionExport } from '@/../../server/src/sharedTypes/typesSubscription'
+import type { SubscriptionExport } from '@/../../server/src/sharedTypes/typesSubscription'
 
 import { reactive, onBeforeUnmount } from 'vue'
 
-export type subscriptionState = {
+export type SubscriptionState = {
   status: string | null
   validuntil: string | null
   freelicense: boolean
   loading: boolean
   reset: () => void
-  update: (data: subscriptionExport) => void
+  update: (data: SubscriptionExport) => void
   getSubscription: () => void
   newSubscription: (subscriptionID: string) => Promise<any>
   cancelSubscription: () => Promise<any>
   isSub: () => boolean
 }
 
-export function useSubscription(socket: GeneralSocketC): subscriptionState {
-  const subscriptionState: subscriptionState = reactive({
+export function useSubscription(socket: GeneralSocketC): SubscriptionState {
+  const subscriptionState: SubscriptionState = reactive({
     status: null,
     validuntil: null,
     freelicense: false,

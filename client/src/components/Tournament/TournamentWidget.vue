@@ -50,7 +50,7 @@ import TournamentTimer from '@/components/Tournament/TournamentTimer.vue'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import Crown from '@/components/icons/CrownSymbol.vue'
 
-import type { publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import type { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { ref, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { getWinners } from '@/services/useTournamentWinners'
@@ -58,7 +58,7 @@ import { getWinners } from '@/services/useTournamentWinners'
 const socket = injectStrict(SocketKey)
 
 const winners = getWinners()
-const tournament = ref<publicTournament | null>(null)
+const tournament = ref<PublicTournament | null>(null)
 
 queryTournament()
 async function queryTournament() {
@@ -70,7 +70,7 @@ async function queryTournament() {
   tournament.value = res.data
 }
 
-function updateTournament(newTournament: publicTournament) {
+function updateTournament(newTournament: PublicTournament) {
   if (tournament.value?.id === newTournament.id) {
     tournament.value = newTournament
   }

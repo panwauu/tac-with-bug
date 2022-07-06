@@ -14,27 +14,27 @@ export class game {
   nPlayers: number
   coop: boolean
 
-  priorBalls: tBall.ballsType
+  priorBalls: tBall.BallsType
 
   aussetzenFlag: boolean
   teufelFlag: boolean
   tradeFlag: boolean
-  tradeCards: tCard.cardType[]
+  tradeCards: tCard.CardType[]
   tradeDirection: number
   narrFlag: boolean[]
 
-  balls: tBall.ballsType
-  cards: tCard.cardsType
+  balls: tBall.BallsType
+  cards: tCard.CardsType
   teams: number[][]
 
-  cardsWithMoves: tCard.playerCard[]
+  cardsWithMoves: tCard.PlayerCard[]
 
   activePlayer: number
   sevenChosenPlayer: number | null
   gameEnded: boolean
   winningTeams: boolean[]
 
-  statistic: tStatistic.gameStatistic[]
+  statistic: tStatistic.GameStatistic[]
 
   constructor(nPlayers: number, nTeams: number, meisterVersion: boolean, coop: boolean, gameLoad?: game) {
     if (gameLoad != null) {
@@ -138,7 +138,7 @@ export class game {
       activePlayer = (activePlayer + 1) % this.nPlayers
     }
 
-    const cardsWithMoves: tCard.playerCard[] = []
+    const cardsWithMoves: tCard.PlayerCard[] = []
     if (this.gameEnded) {
       this.cards.players[activePlayer].forEach((card) => {
         cardsWithMoves.push(createCardWithMove(card, this.balls, -1, activePlayer, this.teams, this.cards, this.coop, this.sevenChosenPlayer))
@@ -162,7 +162,7 @@ export class game {
           cardsWithMoves.push({ title: card, possible: true, ballActions: {}, textAction: 'tauschen' })
         } else if (card === 'tac') {
           const lastNonTacCard = getLastNonTacCard(this.cards)
-          let tacCard: tCard.playerCard
+          let tacCard: tCard.PlayerCard
           if (lastNonTacCard === undefined) {
             tacCard = createCardWithMove('1', this.balls, activePlayer, -1, this.teams, this.cards, this.coop, this.sevenChosenPlayer)
           } else {
@@ -231,7 +231,7 @@ export class game {
     this.cardsWithMoves = cloneDeep(cardsWithMoves)
   }
 
-  checkMove(move: tBall.moveType): boolean {
+  checkMove(move: tBall.MoveType): boolean {
     if (move === 'dealCards') {
       return this.cards.players.every((p) => p.length === 0)
     }
@@ -272,7 +272,7 @@ export class game {
     return true
   }
 
-  performAction(move: tBall.moveType | 'dealCards', deltaTime: number): void {
+  performAction(move: tBall.MoveType | 'dealCards', deltaTime: number): void {
     if (move === 'dealCards') {
       this.checkCards()
       this.updateCardsWithMoves()
@@ -287,7 +287,7 @@ export class game {
     statisticAnalyseAction(move, ballsSave, this.balls, this.aussetzenFlag, this.teams, deltaTime, cardsSave, this.statistic, narrFlagSave, teufelFlagSave)
   }
 
-  performActionAfterStatistics(move: tBall.moveTextOrBall): void {
+  performActionAfterStatistics(move: tBall.MoveTextOrBall): void {
     // Change move representation -> [PlayerNumber, CardNumber, (TextAction / BallNumber, newBallPosition)]
     if (move[2] === 'tauschen') {
       this.performTradeCards(move)
@@ -363,7 +363,7 @@ export class game {
     }
   }
 
-  performNarrAction(move: tBall.moveTextOrBall) {
+  performNarrAction(move: tBall.MoveTextOrBall) {
     this.narrFlag[move[0]] = true
     if (this.narrFlag.every((e) => e === true)) {
       this.narrFlag = this.narrFlag.map(() => false)
@@ -372,7 +372,7 @@ export class game {
     }
   }
 
-  performTradeCards(move: tBall.moveTextOrBall) {
+  performTradeCards(move: tBall.MoveTextOrBall) {
     this.tradeCards[move[0]] = this.cards.players[move[0]][move[1]]
     this.cards.players[move[0]].splice(move[1], 1)
     if (!this.tradeCards.some((card) => card === '')) {
@@ -388,7 +388,7 @@ export class game {
     }
   }
 
-  performTextAction(card: tCard.playerCard, move: tBall.moveText): void {
+  performTextAction(card: tCard.PlayerCard, move: tBall.MoveText): void {
     const cardTextAction = move[2]
 
     if (cardTextAction === 'beenden') {

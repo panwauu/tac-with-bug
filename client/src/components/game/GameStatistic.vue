@@ -75,14 +75,14 @@ import Column from 'primevue/column'
 import CountdownTimer from '@/components/CountdownTimer.vue'
 import GameWatchingPlayers from './GameWatchingPlayers.vue'
 
-import type { miscStateType } from '@/services/compositionGame/useMisc'
-import type { statisticStateType } from '@/services/compositionGame/useStatistic'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
+import type { StatisticStateType } from '@/services/compositionGame/useStatistic'
 import { computed } from 'vue'
 import { i18n } from '@/services/i18n'
 
 const props = defineProps<{
-  miscState: miscStateType
-  statisticState: statisticStateType
+  miscState: MiscStateType
+  statisticState: StatisticStateType
 }>()
 
 const cardStatistic = computed(() => {

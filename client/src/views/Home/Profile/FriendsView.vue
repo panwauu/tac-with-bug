@@ -39,7 +39,7 @@ import FriendButton from '@/components/FriendButton.vue'
 import { watch, ref, computed } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey, FriendsStateKey } from '@/services/injections'
-import { friend } from '@/../../server/src/sharedTypes/typesFriends'
+import { Friend } from '@/../../server/src/sharedTypes/typesFriends'
 import { username as loggedInUsername } from '@/services/useUser'
 
 const socket = injectStrict(SocketKey)
@@ -47,7 +47,7 @@ const friendsState = injectStrict(FriendsStateKey)
 const props = defineProps<{ username: string }>()
 
 const loading = ref(false)
-const friends = ref<friend[]>([])
+const friends = ref<Friend[]>([])
 
 updateData()
 watch(
@@ -58,7 +58,7 @@ watch(
 async function updateData() {
   try {
     loading.value = true
-    friends.value = await new Promise<friend[]>((resolve, reject) => {
+    friends.value = await new Promise<Friend[]>((resolve, reject) => {
       setTimeout(() => reject(new Error('Socket.io Acknowledgement timed out')), 20000)
 
       socket.emit('friends:ofUser', props.username, (res) => {

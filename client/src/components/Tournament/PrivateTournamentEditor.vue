@@ -79,13 +79,13 @@ import PrivateTournamentEditorDialog from './PrivateTournamentEditorDialog.vue'
 
 import { ref, computed } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
-import { privateTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import { PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { username } from '@/services/useUser'
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n'
 const toast = useToast()
 
-const props = defineProps<{ tournament: privateTournament }>()
+const props = defineProps<{ tournament: PrivateTournament }>()
 
 const socket = injectStrict(SocketKey)
 

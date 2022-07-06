@@ -1,19 +1,19 @@
-export interface ballType {
+export interface BallType {
   player: number
   position: number
   state: 'house' | 'valid' | 'invalid' | 'goal' | 'locked'
 }
 
-export type ballsType = Array<ballType>
+export type BallsType = Array<BallType>
 
-export type moveType = moveDeal | moveText | moveBall
-export type moveTextOrBall = moveText | moveBall
+export type MoveType = MoveDeal | MoveText | MoveBall
+export type MoveTextOrBall = MoveText | MoveBall
 
-export type moveDeal = 'dealCards'
-export type moveText = [number, number, string]
-export type moveBall = [number, number, number, number]
+export type MoveDeal = 'dealCards'
+export type MoveText = [number, number, string]
+export type MoveBall = [number, number, number, number]
 
 // Card in CardsWithMoves
-export interface ballActions {
+export interface BallActions {
   [key: number]: number[]
 }

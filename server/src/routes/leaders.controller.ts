@@ -1,7 +1,7 @@
 import type express from 'express'
 import { Controller, Get, Query, Route, Request, TsoaResponse, Res } from 'tsoa'
 
-import type { leaderBoardType, coopBoardType } from '../services/leaders'
+import type { LeaderBoardType, CoopBoardType } from '../services/leaders'
 import { queryLeaderboardByWins, queryLeaderboardCoop } from '../services/leaders'
 
 @Route('/')
@@ -17,7 +17,7 @@ export class LeadersController extends Controller {
     @Query() offset: number,
     @Query() startDate?: number,
     @Query() endDate?: number
-  ): Promise<leaderBoardType> {
+  ): Promise<LeaderBoardType> {
     if (!Number.isInteger(limit) || !Number.isInteger(offset)) {
       return validationError(409, 'limit and offset as integer required')
     }
@@ -43,7 +43,7 @@ export class LeadersController extends Controller {
     @Query() nPlayers: number,
     @Query() startDate?: number,
     @Query() endDate?: number
-  ): Promise<coopBoardType> {
+  ): Promise<CoopBoardType> {
     if (!Number.isInteger(limit) || !Number.isInteger(offset)) {
       return validationError(409, 'limit and offset as integer required')
     }

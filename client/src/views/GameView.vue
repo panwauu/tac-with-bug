@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import GameComponent from '@/components/game/GameComponent.vue'
 
-import type { updateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
+import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { registerGameSocket } from '@/services/registerSockets'
 import { usePositionStyles } from '@/services/compositionGame/usePositionStyles'
@@ -26,7 +26,7 @@ import { useMisc } from '@/services/compositionGame/useMisc'
 import { useStatistic } from '@/services/compositionGame/useStatistic'
 import { useBalls } from '@/services/compositionGame/useBalls'
 import { useDiscardPile } from '@/services/compositionGame/useDiscardPile'
-import { performMoveAction, usePerformMove } from '@/services/compositionGame/usePerformMove'
+import { PerformMoveAction, usePerformMove } from '@/services/compositionGame/usePerformMove'
 import { useCards } from '@/services/compositionGame/useCards'
 import { useInstructions } from '@/services/compositionGame/useInstructions'
 import { sound } from '@/plugins/sound'
@@ -42,7 +42,7 @@ const ballsState = useBalls()
 const cardsState = useCards(ballsState, miscState)
 const performMove = usePerformMove(cardsState, ballsState, miscState, discardPileState)
 const instructionsState = useInstructions(miscState, ballsState, cardsState)
-const updateData = ref<null | updateDataType>(null)
+const updateData = ref<null | UpdateDataType>(null)
 
 const modalVisible = ref(false)
 const modalState = ref('settings')
@@ -66,7 +66,7 @@ onUnmounted(() => {
   sound.$stop()
 })
 
-async function updateHandler(data: updateDataType): Promise<void> {
+async function updateHandler(data: UpdateDataType): Promise<void> {
   audioHandler(data, cardsState, miscState)
   updateData.value = data
 }
@@ -75,7 +75,7 @@ function closeGame() {
   router.push({ name: 'Landing' })
 }
 
-function performMoveAndEmit(data: performMoveAction) {
+function performMoveAndEmit(data: PerformMoveAction) {
   gameSocket.emit('postMove', performMove(data))
 }
 </script>

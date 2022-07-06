@@ -5,22 +5,22 @@ import type * as tStatistic from './typesStatistic'
 export interface GameData {
   nPlayers: number
   coop: boolean
-  priorBalls: tBall.ballsType
+  priorBalls: tBall.BallsType
   aussetzenFlag: boolean
   teufelFlag: boolean
   tradeFlag: boolean
-  tradeCards: tCard.cardType[]
+  tradeCards: tCard.CardType[]
   tradeDirection: number
   narrFlag: boolean[]
-  balls: tBall.ballsType
-  cards: tCard.cardsType
+  balls: tBall.BallsType
+  cards: tCard.CardsType
   teams: number[][]
-  cardsWithMoves: tCard.playerCard[]
+  cardsWithMoves: tCard.PlayerCard[]
   activePlayer: number
   sevenChosenPlayer: number | null
   gameEnded: boolean
   winningTeams: boolean[]
-  statistic: tStatistic.gameStatistic[]
+  statistic: tStatistic.GameStatistic[]
 }
 
 export interface AbstractClassGame extends GameData {
@@ -28,14 +28,14 @@ export interface AbstractClassGame extends GameData {
   resetGame(): void
   getJSON(): string
   updateCardsWithMoves(): void
-  checkMove(move: tBall.moveType): boolean
-  performAction(move: tBall.moveType | 'dealCards', deltaTime: number): void
-  performActionAfterStatistics(move: tBall.moveTextOrBall): void
+  checkMove(move: tBall.MoveType): boolean
+  performAction(move: tBall.MoveType | 'dealCards', deltaTime: number): void
+  performActionAfterStatistics(move: tBall.MoveTextOrBall): void
   determineGameEnded(): void
   determineGameEndedCoop(): void
-  performNarrAction(move: tBall.moveTextOrBall): void
-  performTradeCards(move: tBall.moveTextOrBall): void
-  performTextAction(card: tCard.playerCard, move: tBall.moveText): void
+  performNarrAction(move: tBall.MoveTextOrBall): void
+  performTradeCards(move: tBall.MoveTextOrBall): void
+  performTextAction(card: tCard.PlayerCard, move: tBall.MoveText): void
   nextPlayer(): void
   priorPlayer(): void
   checkCards(): void
