@@ -35,6 +35,7 @@ jobs:
         cache-dependency-path: |
           server/package-lock.json
           client/package-lock.json
+          shared/package-lock.json
     - name: Install shared modules
       run: |
         cd shared
