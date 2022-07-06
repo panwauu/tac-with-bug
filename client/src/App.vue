@@ -180,7 +180,7 @@ body {
 (prefers-color-scheme: dark);
 
 @font-face {
-  font-family: "tacfontregular", Monospace;
+  font-family: "tacfontregular";
   src: url("./assets/TacFont/tacfont_semibold_1-webfont.woff2") format("woff2"),
     url("./assets/TacFont/tacfont_semibold_1-webfont.woff") format("woff");
   font-weight: normal;
