@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div>
     <svg v-if="nTeams === 1" viewBox="0 0 497 396" preserveAspectRatio="xMaxYMax" height="100%">
       <path

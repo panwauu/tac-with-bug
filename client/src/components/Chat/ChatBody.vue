@@ -56,12 +56,15 @@
               :class="[
                 'chatMessageContainer',
                 message.sender === username ? 'chatMessageContOwn' : 'chatMessageContFor',
-                message.sender != null && messageIndex >= 1 && message.sender === messagesStore.getDateGroupedChatMessages[messageGroupIndex].messages[messageIndex - 1].sender ? 'chatMessageContainerNotNew' : '',
+                message.sender != null &&
+                  messageIndex >= 1 &&
+                  message.sender === messagesStore.getDateGroupedChatMessages[messageGroupIndex].messages[messageIndex - 1].sender ? 'chatMessageContainerNotNew' : '',
               ]"
             >
               <div
                 class="p-card chatMessage"
-                :class="{ 'chatMessageOwn': message.sender === username && displaySenderAndTime(messageGroupIndex, messageIndex), 'chatMessageNotOwn': message.sender !== username && displaySenderAndTime(messageGroupIndex, messageIndex) }"
+                :class="{ 'chatMessageOwn': message.sender === username && displaySenderAndTime(messageGroupIndex, messageIndex),
+                          'chatMessageNotOwn': message.sender !== username && displaySenderAndTime(messageGroupIndex, messageIndex) }"
               >
                 <div
                   v-if="displaySenderAndTime(messageGroupIndex, messageIndex)"

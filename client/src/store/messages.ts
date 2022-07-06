@@ -79,17 +79,17 @@ export const useMessagesStore = defineStore('messages', {
             return state.chats.find(c => c.chatid === parseInt(state.selectedChat.id))
         },
         getChatLabel: (state) => {
-            if (state.selectedChat.type == 'channel') { return state.selectedChat.id }
+            if (state.selectedChat.type === 'channel') { return state.selectedChat.id }
             const chat = state.chats.find(c => c.chatid === parseInt(state.selectedChat.id))
             if (chat?.groupChat) { return chat.groupTitle }
             return chat?.players?.find(p => p !== username.value) ?? i18n.global.t('Chat.deletedPlayer')
         },
         getChatIcon: (state) => {
-            if (state.selectedChat.type == 'channel') { return 'hashtag' }
+            if (state.selectedChat.type === 'channel') { return 'hashtag' }
             return state.chats.find(c => c.chatid === parseInt(state.selectedChat.id))?.groupChat ? 'comments' : 'comment'
         },
         getChatNotifications: (state) => {
-            if (state.selectedChat.type == 'channel') {
+            if (state.selectedChat.type === 'channel') {
                 return state.channels.find((c) => c.id === state.selectedChat.id)?.missedMessages ?? 0
             } else { return state.chats.find((c) => c.chatid.toString() === state.selectedChat.id)?.numberOfUnread ?? 0 }
         },
@@ -165,7 +165,8 @@ export const useMessagesStore = defineStore('messages', {
         handleChannelUpdate(channel: string, messages: chatMessage[], updateFromServer?: boolean) {
             const chatStore = useChatStore()
             const channelObj = this.channels.find((c) => c.id === channel)
-            const isEmojiInGame = messages.length > 0 && (isEmoji(messages[messages.length - 1].body) && router.currentRoute.value.query.gameID != null && channel === `g-${router.currentRoute.value.query.gameID}`)
+            const isEmojiInGame = messages.length > 0 &&
+                (isEmoji(messages[messages.length - 1].body) && router.currentRoute.value.query.gameID != null && channel === `g-${router.currentRoute.value.query.gameID}`)
             const toCurrentOpenChannel = this.selectedChat.type === 'channel' && channel === this.selectedChat.id && chatStore.displayChat
             if (channelObj != null && updateFromServer && messages[messages.length - 1].sender !== username.value && !isEmojiInGame && !toCurrentOpenChannel) {
                 channelObj.missedMessages += 1
@@ -220,11 +221,16 @@ export const useMessagesStore = defineStore('messages', {
             }
 
             const data = await this.$state.socket.emitWithAck(2000, 'chat:startChat', { userids: users.map((u) => u.id), title })
-            if (data.data == null) { console.error(data.error); return }
+            if (data.data == null) {
+                console.error(data.error);
+                return
+            }
             this.handleOverviewUpdate(data.data?.overview)
             this.selectChat(false, data.data.chatid.toString())
         },
-        addChannel(channel: string, endDate?: number) { if (this.channels.find((c) => c.id === channel) == null) { this.channels.push({ id: channel, missedMessages: 0, endDate: endDate ?? null }) } },
+        addChannel(channel: string, endDate?: number) {
+            if (this.channels.find((c) => c.id === channel) == null) { this.channels.push({ id: channel, missedMessages: 0, endDate: endDate ?? null }) }
+        },
         removeGameChannels() {
             if (this.channels.find((c) => c.id.substring(0, 2) === 'g-') != null) {
                 this.channels = this.channels.filter((c) => c.id.substring(0, 2) !== 'g-')
@@ -242,7 +248,9 @@ export const useMessagesStore = defineStore('messages', {
             newRunningGameIDs.forEach((id) => { this.addChannel(`g-${id}`) })
 
             const serverInfoStore = useServerInfoStore()
-            if (oldRouteGameID != null && oldRouteGameID !== newRouteGameID && !serverInfoStore.runningGames.filter((g) => g.teams.flat().includes(username.value ?? '-')).map((g) => g.id.toString()).includes(oldRouteGameID)) {
+            if (oldRouteGameID != null &&
+                oldRouteGameID !== newRouteGameID &&
+                !serverInfoStore.runningGames.filter((g) => g.teams.flat().includes(username.value ?? '-')).map((g) => g.id.toString()).includes(oldRouteGameID)) {
                 const channelIndex = this.channels.findIndex((c) => c.id === `g-${oldRouteGameID}`)
                 if (channelIndex !== -1 && this.channels[channelIndex].endDate == null) { this.channels.splice(channelIndex, 1) }
             }

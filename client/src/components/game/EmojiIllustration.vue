@@ -36,7 +36,7 @@ const socket = injectStrict(SocketKey)
 const emojiMessages = ref<{ pos: string, text: string }[]>([])
 
 function onNewMessage(data: { channel: string, messages: chatMessage[] }) {
-    if (router.currentRoute.value.query.gameID == null || data.channel != `g-${router.currentRoute.value.query.gameID}`) { return }
+    if (router.currentRoute.value.query.gameID == null || data.channel !== `g-${router.currentRoute.value.query.gameID}`) { return }
     if (!isEmoji(data.messages[data.messages.length - 1].body)) { return }
 
     const body = data.messages[data.messages.length - 1].body

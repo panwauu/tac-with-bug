@@ -209,7 +209,11 @@ const resetGraph = () => {
   }
 }
 
-const resetGraphSize = () => { if (cy.value != null) { cy.value?.fit() } }
+const resetGraphSize = () => {
+  if (cy.value != null) {
+    cy.value?.fit()
+  }
+}
 
 const enrichDataModel = () => {
   return {

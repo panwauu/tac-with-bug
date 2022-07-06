@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div>
     <svg
       viewBox="0 0 409 460"

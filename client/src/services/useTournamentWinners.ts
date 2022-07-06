@@ -6,7 +6,10 @@ const tournamentWinners = ref<lastTournamentWinners>([])
 
 export async function initTournamentWinners(socket: GeneralSocketC) {
     const res = await socket.emitWithAck(20000, 'tournament:winners:get')
-    if (res.data == null) { console.error(res.error); return }
+    if (res.data == null) {
+        console.error(res.error);
+        return
+    }
     tournamentWinners.value = res.data
 
     socket.on('tournament:winners:update', (winners) => {

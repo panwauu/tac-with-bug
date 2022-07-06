@@ -40,7 +40,7 @@ function sevenReconstructPath(balls: tBall.ballsType, nBall: number, goalPositio
             });
         }
         finalPath = endPaths.find(path => path[path.length - 1] === goalPosition);
-        if (finalPath != undefined) {
+        if (finalPath != null) {
             break;
         }
         startPaths = [...endPaths];

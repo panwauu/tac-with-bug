@@ -50,7 +50,10 @@ const chatOptions = ref([
 ]);
 
 function startChat() {
-    if (selectedPlayerUserid.value == null || selectedPlayerUserid.value < 0 || selectedPlayerUsername.value === '') { console.error('id or username not valid'); return; }
+    if (selectedPlayerUserid.value == null || selectedPlayerUserid.value < 0 || selectedPlayerUsername.value === '') {
+      console.error('id or username not valid')
+      return;
+    }
     messagesStore.startChat([{ id: selectedPlayerUserid.value, username: selectedPlayerUsername.value }], chatOptionSelected.value?.value === 'group' ? 'Neuer Chat' : null)
     chatOptionSelected.value = null
     selectedPlayerUsername.value = ''

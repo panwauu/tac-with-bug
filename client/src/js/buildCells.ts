@@ -26,7 +26,12 @@ export function positionStyles6(turned: boolean | undefined): positionStyle[] {
     for (let i = 0; i < nPlayers; i++) {
         const startCenter = calculatePositionPolar(50, 50, i * (2 * Math.PI / nPlayers) + (turned ? Math.PI / 6 : 0), R_house, aspectRatio)
         for (let j = 0; j < 4; j++) {
-            result.push(calculatePositionPolar(parseFloat(startCenter.left.substring(0, startCenter.left.length - 1)), parseFloat(startCenter.top.substring(0, startCenter.top.length - 1)), (1 / 4 + j / 2) * Math.PI, (turned ? r_house / aspectRatio : r_house), aspectRatio))
+            result.push(
+                calculatePositionPolar(
+                    parseFloat(startCenter.left.substring(0, startCenter.left.length - 1)),
+                    parseFloat(startCenter.top.substring(0, startCenter.top.length - 1)),
+                    (1 / 4 + j / 2) * Math.PI, (turned ? r_house / aspectRatio : r_house), aspectRatio
+                ))
         }
     }
 
@@ -37,7 +42,11 @@ export function positionStyles6(turned: boolean | undefined): positionStyle[] {
     for (let i = 0; i < nPlayers; i++) {
         const goalCenter = calculatePositionPolar(50, 50, i * (2 * Math.PI / nPlayers) + (turned ? Math.PI / 6 : 0), R_goal, aspectRatio)
         for (let j = 0; j < 4; j++) {
-            result.push(calculatePositionPolar(parseFloat(goalCenter.left.substring(0, goalCenter.left.length - 1)), parseFloat(goalCenter.top.substring(0, goalCenter.top.length - 1)), phi_goal[j] / 180 * Math.PI + i * (2 * Math.PI / nPlayers) + (turned ? Math.PI / 6 : 0), r_goal, aspectRatio))
+            result.push(calculatePositionPolar(
+                parseFloat(goalCenter.left.substring(0, goalCenter.left.length - 1)),
+                parseFloat(goalCenter.top.substring(0, goalCenter.top.length - 1)),
+                phi_goal[j] / 180 * Math.PI + i * (2 * Math.PI / nPlayers) + (turned ? Math.PI / 6 : 0), r_goal, aspectRatio
+            ))
         }
     }
 

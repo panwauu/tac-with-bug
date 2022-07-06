@@ -71,7 +71,10 @@ function resetOverlayPanel() {
 }
 
 async function submitNewTeam() {
-  if (playerName.value == null) { console.error('No Player Selected'); return }
+  if (playerName.value == null) {
+    console.error('No Player Selected');
+    return
+  }
   const res = await socket.emitWithAck(1000, 'tournament:private:planAddPlayer', { tournamentID: props.tournament.id, usernameToAdd: playerName.value, teamTitle: teamName.value })
   if (res.data == null) { console.error('Error in New Team Submission', res.error) }
   localVisible.value = false
@@ -80,8 +83,12 @@ async function submitNewTeam() {
 
 const playersAlreadyInTournament = computed(() => {
   const result: string[] = []
-  props.tournament.teams.forEach((t) => { t.players.forEach((p) => { result.push(p) }) })
-  props.tournament.registerTeams.forEach((t) => { t.players.forEach((p) => { result.push(p) }) })
+  props.tournament.teams.forEach((t) => {
+    t.players.forEach((p) => { result.push(p) })
+  })
+  props.tournament.registerTeams.forEach((t) => {
+    t.players.forEach((p) => { result.push(p) })
+  })
   return result
 })
 

@@ -42,9 +42,9 @@ const elements = props.displayDays ? ['days', 'hours', 'minutes', 'seconds'] : [
 const units = props.displayDays ? [60 * 60 * 24, 60 * 60, 60, 1] : [60 * 60, 60, 1]
 
 const getParsedEndDate = () => {
-  if (props.endDate != undefined) {
+  if (props.endDate != null) {
     return Date.parse(props.endDate);
-  } else if (props.initialMilliseconds != undefined) {
+  } else if (props.initialMilliseconds != null) {
     return Date.now() + props.initialMilliseconds;
   } else {
     return Date.now();

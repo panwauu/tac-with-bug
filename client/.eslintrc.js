@@ -16,6 +16,9 @@ module.exports = {
         'no-trailing-spaces': 'error',
         'quotes': ['error', 'single'],
         'eol-last': ['error', 'always'],
+        'max-len': ['error', { 'code': 180 }],
+        'max-statements-per-line': ['error', { 'max': 2 }],
+        'eqeqeq': ['error', 'always', { 'null': 'ignore' }],
 
         /* Maybe remove in future */
         '@typescript-eslint/no-explicit-any': 0,
@@ -30,9 +33,6 @@ module.exports = {
         'vue/singleline-html-element-content-newline': 0, // Conflict with prettier
         'vue/multiline-html-element-content-newline': 0, // Conflict with prettier
         'vue/no-v-html': 0,
-        'max-len': ['warn', { 'code': 180 }],
-        'max-statements-per-line': ['warn', { 'max': 2 }],
-        'eqeqeq': ['warn', 'always', { 'null': 'ignore' }],
     },
     globals: {
         defineProps: "readonly",

@@ -33,7 +33,10 @@ useResizeObserver(chatContainerRef, (targets) => {
   chatStore.setResponsiveMode(targets[0].contentRect.width < 500)
 })
 
-function closeMenuIfResponsive() { console.log('Click'); if (chatStore.responsiveMode && chatStore.displayChatMenu) { chatStore.closeChatMenu() } }
+function closeMenuIfResponsive() {
+  console.log('Click');
+  if (chatStore.responsiveMode && chatStore.displayChatMenu) { chatStore.closeChatMenu() }
+}
 </script>
 
 <style scoped>

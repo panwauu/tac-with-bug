@@ -57,7 +57,10 @@ const tournament = ref<publicTournament | null>(null)
 queryTournament()
 async function queryTournament() {
   const res = await socket.emitWithAck(5000, 'tournament:public:get-current')
-  if (res.data == null) { console.error('Could not query current Tournament'); return }
+  if (res.data == null) {
+    console.error('Could not query current Tournament');
+    return
+  }
   tournament.value = res.data
 }
 
