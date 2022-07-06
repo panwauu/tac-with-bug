@@ -50,7 +50,7 @@ jobs:
         run: |
           postgresConnectionString=$(heroku config:get DATABASE_URL -a tac-with-bug)
           postgresUser="$(echo $postgresConnectionString | sed -E 's+postgres://++g' | sed -E 's+:.*++g')"
-          heroku run -a tac-with-bug "pg_dump -s $postgresConnectionString" | sed -E "s/$postgresUser/postgres/g" > server_schema.sql &> /dev/null
+          heroku run -a tac-with-bug "pg_dump -s $postgresConnectionString" | sed -E "s/$postgresUser/postgres/g" > server_schema.sql
       - name: Run compare script
         run: |
           cd server
@@ -58,4 +58,4 @@ jobs:
           cd dbUtils
           chmod +x ./compareSchemata.sh
           sed -i -e 's/\r$//' ./compareSchemata.sh
-          ./compareSchemata.sh &> /dev/null
+          ./compareSchemata.sh
