@@ -249,7 +249,7 @@ function createHourDataset(userRegisterDates: { registered: string }[], gamesCre
 function createHeatmapDataset(gamesCreatedDates: { created: string }[]) {
   const activityHeatmap: activityHeatmap = []
   for (let i = 0; i < 7; i++) {
-    activityHeatmap.push(new Array(24).fill(0))
+    activityHeatmap.push(Array.from({ length: 24 }).fill(0) as number[])
   }
   gamesCreatedDates.forEach((r: any) => {
     const date = new Date(r.created)

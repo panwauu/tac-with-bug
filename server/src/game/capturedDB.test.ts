@@ -2,7 +2,7 @@ import { repeatGame } from '../test/captureCompare'
 
 describe('Test that all tests saved in savegames are running', () => {
   const nGames = 100,
-    ids: (number | null)[] = new Array(nGames).fill(null)
+    ids = Array.from({ length: nGames }).fill(null) as (number | null)[]
 
   beforeAll(async () => {
     const res = await testServer.pgPool.query('SELECT id FROM savegames ORDER BY RANDOM() LIMIT $1;', [nGames])
