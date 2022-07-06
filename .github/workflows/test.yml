@@ -1,4 +1,4 @@
-name: Test PR
+name: Run test suite
 
 on: pull_request
 
