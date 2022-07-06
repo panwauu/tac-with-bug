@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
 import fs from 'fs'
-import { game } from '../game/game'
+import { Game } from '../game/game'
 
 //From File
 export function testCapturedMoves(testFileName: string, nPlayers?: number, nTeams?: number, meisterVersion?: boolean, coop?: boolean) {
@@ -17,7 +17,7 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
   const result = {
     equal: false,
     ended: null as boolean | null,
-    game: null as game | null,
+    game: null as Game | null,
     line: null as number | null,
   }
 
@@ -27,7 +27,7 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
   const meisterVersion = meisterVersionParam ?? (lineInit.action[3] as boolean)
   const coop = coopParam ?? (lineInit.action[4] as boolean)
 
-  const gameInst = new game(nPlayers, nTeams, meisterVersion, coop)
+  const gameInst = new Game(nPlayers, nTeams, meisterVersion, coop)
   gameInst.activePlayer = lineInit.activePlayer
   gameInst.cards = cloneDeep(lineInit.cards)
   if (!compareGameWithCaptured(gameInst, lineInit)) {
@@ -94,7 +94,7 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
   return result
 }
 
-function compareGameWithCaptured(gameInst: game, capturedState: any) {
+function compareGameWithCaptured(gameInst: Game, capturedState: any) {
   if (compareBalls(gameInst.balls, capturedState.balls) === false) {
     console.log('balls unequal')
     const tableData: any[] = cloneDeep(gameInst.balls)

@@ -3,13 +3,13 @@ import type { PlayerCard } from '../../sharedTypes/typesCard'
 import type pg from 'pg'
 
 import { cloneDeep } from 'lodash'
-import { game } from '../../game/game'
+import { Game } from '../../game/game'
 import { TacServer } from '../../server'
 import { normalizeAction, normalizeGame } from '../normalize/normalize'
 
 test()
 
-export function createLookupKey(gameInst: game): string {
+export function createLookupKey(gameInst: Game): string {
   let key = ''
   key += gameInst.aussetzenFlag ? '1' : '0'
   key += gameInst.teufelFlag ? '1' : '0'
@@ -170,7 +170,7 @@ async function test() {
 
       const lines = res.rows[0].game
 
-      const gameInst = new game(lines[0].action[1], lines[0].action[2], lines[0].action[3], lines[0].action[4])
+      const gameInst = new Game(lines[0].action[1], lines[0].action[2], lines[0].action[3], lines[0].action[4])
       if (gameInst.nPlayers !== 4 || gameInst.coop) {
         continue
       }

@@ -1,7 +1,7 @@
 import logger from '../helpers/logger'
 import * as tBall from '../sharedTypes/typesBall'
 import pg from 'pg'
-import { game } from '../game/game'
+import { Game } from '../game/game'
 import { CardsType } from '../sharedTypes/typesCard'
 import { sanitizeGameCapture } from './gameCaptureSanitation'
 
@@ -12,7 +12,7 @@ export interface CapturedType {
   activePlayer: number
 }
 
-export async function captureMove(sqlClient: pg.Pool, gameID: number, action: tBall.MoveType | ['init', number, number, boolean, boolean] | 'reset', game: game) {
+export async function captureMove(sqlClient: pg.Pool, gameID: number, action: tBall.MoveType | ['init', number, number, boolean, boolean] | 'reset', game: Game) {
   logger.info('Capture')
   const data: CapturedType = {
     action: action,
