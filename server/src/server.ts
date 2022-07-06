@@ -51,8 +51,8 @@ export class TacServer {
         this.httpServer = new http.Server(this.app);
         this.io = new Server(this.httpServer);
 
-        registerSocketNspGame(this.io.of('/game'), this.pgPool)
-        registerSocketNspGeneral(this.io.of('/'), this.pgPool)
+        registerSocketNspGame(this.io.of('/game') as any, this.pgPool)
+        registerSocketNspGeneral(this.io.of('/') as any, this.pgPool)
 
         // Handle production
         if (process.env.NODE_ENV === 'production') {

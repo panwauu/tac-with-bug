@@ -1,11 +1,11 @@
 import type express from 'express';
-import type { Socket } from 'socket.io';
 import type pg from 'pg';
 import { verifyJWT } from './jwtWrapper';
 import { Result, ok, err } from 'neverthrow';
 import { GeneralSocketS } from '../../../shared/types/GeneralNamespaceDefinition';
+import { GameSocketS } from '../../../shared/types/GameNamespaceDefinition';
 
-export function gameSocketIOAuthentication(socket: Socket, next: any) {
+export function gameSocketIOAuthentication(socket: GameSocketS, next: any) {
     if (socket.handshake.auth.token == null || socket.handshake.auth.token === '') { return next() }
 
     const decoded = verifyJWT(socket.handshake.auth.token)
