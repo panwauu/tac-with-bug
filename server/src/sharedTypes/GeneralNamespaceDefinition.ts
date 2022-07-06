@@ -13,8 +13,8 @@ import { ChatElement, ChatMessage } from './chat'
 export type AckData<T> = { status: number; error?: any; data?: T }
 export type CallbackFunction<T> = (data: AckData<T>) => void
 
-export type Result<Data, Error> = { ok: true; value: Data } | { ok: false; error: Error }
-export type Cb<Data, Error> = (data: Result<Data, Error>) => void
+export type Result<Data, _Error> = { ok: true; value: Data } | { ok: false; error: _Error }
+export type Cb<Data, _Error> = (data: Result<Data, _Error>) => void
 
 export interface ClientToServerEvents extends Record<string, any> {
   //authentication

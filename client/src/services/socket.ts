@@ -5,7 +5,7 @@ type Head<T extends any[]> = T extends [...infer Head, any] ? Head : any[]
 type Last<T extends any[]> = T extends [...any, infer Last] ? Last : any
 type FirstParamType<T extends (...args: any[]) => void> = Parameters<T>[0]
 
-type EventParams<Map extends EventsMap, Ev extends keyof Map> = Parameters<Map[Ev]>
+type EventParams<_Map extends EventsMap, Ev extends keyof _Map> = Parameters<_Map[Ev]>
 
 type EventsWithCallback<T> = {
   [P in keyof T]: T[P] extends (...args: infer A) => void // Check if it is a function
