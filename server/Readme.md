@@ -13,4 +13,7 @@
 | &ensp;src/paypal             | Paypal scripts                                            |
 | &ensp;src/routes             | REST Endpoints to be used by tsoa to generate the OpenAPI |
 | &ensp;src/services           | Service Logic behind REST and WS Endpoints                |
+| &ensp;src/sharedDefinitions  | Definitions shared with front-end                         |
+| &ensp;src/sharedTypes        | Types shared with front-end                               |
 | &ensp;src/socket             | Logic for the Socket.io implementation                    |
+| &ensp;src/test               | Test utility functions                                    |
