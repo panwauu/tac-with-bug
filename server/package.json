@@ -89,7 +89,7 @@
     "eslint-plugin-sonarjs": "^0.13.0",
     "jest": "^28.1.2",
     "nodemon": "^2.0.13",
-    "openapi-typescript-codegen": "^0.9.3",
+    "openapi-typescript-codegen": "^0.23.0",
     "socket.io-client": "^4.4.1",
     "supertest": "^6.2.2",
     "ts-jest": "^28.0.5",

@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
 
 const hofData = reactive({

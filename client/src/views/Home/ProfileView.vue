@@ -40,7 +40,7 @@ import HofBadge from '@/components/icons/HofBadge.vue';
 
 import type { gamesDistributionData as gamesDistributionDataType } from '@/../../shared/types/typesPlayerStatistic';
 import { watch, ref } from 'vue';
-import { hofReason, Service } from '@/generatedClient/index';
+import { hofReason, DefaultService as Service } from '@/generatedClient/index';
 import router from '@/router/index';
 import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue';
 import { i18n } from '@/services/i18n';

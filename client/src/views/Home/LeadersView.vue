@@ -134,7 +134,7 @@ import SelectButton from 'primevue/selectbutton';
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
 
 import { ref } from 'vue';
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 import { i18n } from '@/services/i18n';
 
 const rows = ref(10)

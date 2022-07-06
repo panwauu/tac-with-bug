@@ -17,7 +17,7 @@ import { useGamesSummary } from '@/services/useGamesSummary';
 import { GamesSummaryKey, SocketKey, FriendsStateKey, injectStrict } from '@/services/injections';
 import { logout } from '@/services/useUser';
 import { userFriends } from '@/services/useFriends';
-import { Service } from './generatedClient';
+import { DefaultService as Service } from './generatedClient';
 import { useToast } from 'primevue/usetoast';
 import { i18n } from './services/i18n';
 import router from './router';

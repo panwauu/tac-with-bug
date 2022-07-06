@@ -25,7 +25,7 @@
 import Button from 'primevue/button';
 import AutoComplete from 'primevue/autocomplete';
 
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 import { ref } from 'vue';
 import router from '@/router/index'
 
