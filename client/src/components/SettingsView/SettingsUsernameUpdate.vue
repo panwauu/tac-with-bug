@@ -1,7 +1,7 @@
 <template>
   <p>{{ $t("Settings.ChangeUsername.disclaimerRememberUsername") }}</p>
   <form @submit.prevent="requestUsernameUpdate()">
-    <Username v-model:username="username" v-model:valid="validUsername" style="width: 100%" />
+    <UsernameForm v-model:username="username" v-model:valid="validUsername" style="width: 100%" />
 
     <span class="p-float-label" style="margin-top: 30px">
       <InputText
@@ -31,7 +31,7 @@
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 
-import Username from '../Forms/Username.vue';
+import UsernameForm from '../Forms/UsernameForm.vue';
 import { Service } from '@/generatedClient/index';
 import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';

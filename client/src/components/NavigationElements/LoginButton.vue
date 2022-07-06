@@ -18,7 +18,7 @@
   >
     <TabView v-model:activeIndex="activeIndex">
       <TabPanel :header="$t('Login.signIn')">
-        <Login @login="login" />
+        <LoginView @login="login" />
       </TabPanel>
       <TabPanel :header="$t('Login.signUp')">
         <SignUp />
@@ -35,7 +35,7 @@ import Button from 'primevue/button';
 import OverlayPanel from 'primevue/overlaypanel';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
-import Login from '../LoginView/Login.vue';
+import LoginView from '../LoginView/LoginView.vue';
 import SignUp from '../LoginView/SignUp.vue';
 import NewPassword from '../LoginView/NewPassword.vue';
 

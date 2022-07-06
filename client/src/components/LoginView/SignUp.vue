@@ -1,9 +1,9 @@
 <template>
   <div>
     <form @submit.prevent="signUp">
-      <Username v-model:username="username" v-model:valid="validUsername" class="inputField" />
-      <Email v-model:email="email" v-model:valid="validEmail" class="inputField" />
-      <Password v-model:password="password" v-model:valid="validPassword" class="inputField" />
+      <UsernameForm v-model:username="username" v-model:valid="validUsername" class="inputField" />
+      <EmailForm v-model:email="email" v-model:valid="validEmail" class="inputField" />
+      <PasswordForm v-model:password="password" v-model:valid="validPassword" class="inputField" />
 
       <Button
         type="submit"
@@ -23,9 +23,9 @@
 
 <script setup lang="ts">
 import Button from 'primevue/button';
-import Username from '../Forms/Username.vue';
-import Email from '../Forms/Email.vue';
-import Password from '../Forms/Password.vue';
+import UsernameForm from '../Forms/UsernameForm.vue';
+import EmailForm from '../Forms/EmailForm.vue';
+import PasswordForm from '../Forms/PasswordForm.vue';
 
 import { ref } from 'vue';
 import { Service } from '@/generatedClient/index';

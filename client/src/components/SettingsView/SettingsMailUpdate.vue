@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="requestMailUpdate()">
-    <Email v-model:email="email" v-model:valid="validEmail" style="width: 100%" />
+    <EmailForm v-model:email="email" v-model:valid="validEmail" style="width: 100%" />
 
     <span class="p-float-label" style="margin-top: 30px">
       <InputText
@@ -26,7 +26,7 @@
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 
-import Email from '../Forms/Email.vue';
+import EmailForm from '../Forms/EmailForm.vue';
 import { Service } from '@/generatedClient/index';
 import { ref } from 'vue';
 import { i18n } from '@/services/i18n';
