@@ -77,8 +77,8 @@ export async function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocke
       return cb({ status: 500, error: res.error })
     }
 
-    const users_in_chat = await getUsersInChat(pgPool, data.chatid)
-    await updateOverviewForAll(pgPool, users_in_chat)
+    const usersInChat = await getUsersInChat(pgPool, data.chatid)
+    await updateOverviewForAll(pgPool, usersInChat)
 
     return cb({ status: 200 })
   })
@@ -95,14 +95,14 @@ export async function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocke
       return cb({ status: 500, error: error })
     }
 
-    const users_in_chat = await getUsersInChat(pgPool, data.chatid)
+    const usersInChat = await getUsersInChat(pgPool, data.chatid)
 
     const res = await leaveChat(pgPool, socket.data.userID, data.chatid)
     if (res.isErr()) {
       return cb({ status: 500, error: res.error })
     }
 
-    await updateOverviewForAll(pgPool, users_in_chat)
+    await updateOverviewForAll(pgPool, usersInChat)
 
     return cb({ status: 200 })
   })

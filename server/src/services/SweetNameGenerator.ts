@@ -353,6 +353,6 @@ export function getDifferentName(names: string[]): Result<string, GetDifferentNa
 }
 
 export function isASweetName(name: string) {
-  const name_splitted = name.split(' ')
-  return name_splitted.length === 2 && attr.includes(name_splitted[0]) && nouns.includes(name_splitted[1])
+  const nameSplitted = name.split(' ')
+  return nameSplitted.length === 2 && attr.includes(nameSplitted[0]) && nouns.includes(nameSplitted[1])
 }
