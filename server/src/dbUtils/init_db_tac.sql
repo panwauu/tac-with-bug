@@ -107,7 +107,9 @@ CREATE TABLE private_tournaments (
   id SERIAL PRIMARY KEY,
   title varchar(50) NOT NULL,
   status varchar(25) NOT NULL CHECK(
-    status IN ('planned', 'running', 'ended', 'aborted')
+    (
+      status = ANY(ARRAY ['planned', 'running', 'ended', 'aborted'])
+    )
   ) DEFAULT 'planned',
   admin_player INTEGER NOT NULL REFERENCES users (id),
   n_teams INTEGER NOT NULL,
