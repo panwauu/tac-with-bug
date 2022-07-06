@@ -28,7 +28,7 @@
 <script setup lang='ts'>
 import Carousel from 'primevue/carousel';
 import { reactive, computed, withDefaults } from 'vue';
-import { Service } from '@/generatedClient';
+import { DefaultService as Service } from '@/generatedClient';
 import BallsImage from './assets/BallsImage.vue';
 
 withDefaults(defineProps<{ usePCardStyle?: boolean }>(), { usePCardStyle: true })

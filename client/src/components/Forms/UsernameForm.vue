@@ -19,7 +19,7 @@
 import InputText from 'primevue/inputtext';
 
 import { ref, computed, watch } from 'vue';
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 import { i18n } from '@/services/i18n';
 
 const nameCheck = ref<boolean | null>(false)

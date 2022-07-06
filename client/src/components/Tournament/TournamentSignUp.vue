@@ -73,7 +73,7 @@ import { publicTournament } from '@/../../shared/types/typesTournament';
 
 import { computed, ref } from 'vue';
 import { i18n } from '@/services/i18n';
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 import { injectStrict, SocketKey } from '@/services/injections';
 import { isLoggedIn, username } from '@/services/useUser';
 

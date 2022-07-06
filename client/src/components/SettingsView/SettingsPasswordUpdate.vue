@@ -30,7 +30,7 @@ import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 
 import PasswordForm from '../Forms/PasswordForm.vue';
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 import { ref } from 'vue';
 import { i18n } from '@/services/i18n';
 import { useToast } from 'primevue/usetoast';

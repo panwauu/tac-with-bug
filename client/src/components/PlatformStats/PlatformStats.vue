@@ -37,7 +37,7 @@ import UserAgentStats from './UserAgentStats.vue';
 
 import type { platformStats } from '@/../../shared/types/typesPlatformStatistic';
 import { ref } from 'vue';
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 
 const data = ref<platformStats | null>(null)
 Service.getPlatformStats().then((res) => { data.value = res })

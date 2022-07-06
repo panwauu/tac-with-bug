@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import NetworkUserGraph from '@/components/NetworkUserGraph.vue';
 import { ref, watch } from 'vue';
-import { Service } from '@/generatedClient';
+import { DefaultService as Service } from '@/generatedClient';
 import router from '@/router/index';
 
 const props = defineProps<{ username: string }>();

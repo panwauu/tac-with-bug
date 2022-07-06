@@ -66,7 +66,7 @@ import VueCropper, { VueCropperMethods } from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 import FileUpload from 'primevue/fileupload';
 import { deleteProfilePic, requestProfilePic } from '../../services/useProfilePicture';
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { i18n } from '@/services/i18n';

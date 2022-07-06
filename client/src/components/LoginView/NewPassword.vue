@@ -28,7 +28,7 @@ import InputText from 'primevue/inputtext';
 
 import { ref } from 'vue';
 import * as EmailValidator from 'email-validator';
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 import { i18n } from '@/services/i18n';
 import { useToast } from 'primevue/usetoast';
 

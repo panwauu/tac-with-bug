@@ -24,7 +24,7 @@ import Column from 'primevue/column';
 import Crown from '@/components/icons/CrownSymbol.vue';
 
 import { watch, ref } from 'vue';
-import { Service } from '@/generatedClient';
+import { DefaultService as Service } from '@/generatedClient';
 import { tournamentParticipation } from '@/../../shared/types/typesTournament';
 import router from '@/router';
 

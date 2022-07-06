@@ -49,7 +49,7 @@ import Textarea from 'primevue/textarea';
 
 import { ref, watch, computed } from 'vue';
 import { username as loggedInUsername } from '@/services/useUser';
-import { Service } from '@/generatedClient';
+import { DefaultService as Service } from '@/generatedClient';
 import { useToast } from 'primevue/usetoast';
 import { i18n } from '@/services/i18n';
 

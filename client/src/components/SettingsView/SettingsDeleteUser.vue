@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import Button from 'primevue/button';
 
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 
 import { i18n } from '@/services/i18n';
 import { useToast } from 'primevue/usetoast';

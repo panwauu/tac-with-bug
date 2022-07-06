@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core';
-import { Service } from '../generatedClient';
+import { DefaultService as Service } from '../generatedClient';
 
 import { isLoggedIn } from '../services/useUser';
 

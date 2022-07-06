@@ -23,7 +23,7 @@ import Dropdown from 'primevue/dropdown';
 import { withDefaults, ref } from 'vue';
 import { locales } from '@/../../shared/shared/locales';
 import { i18n, setLocaleAndLoadMessages } from '../services/i18n';
-import { Service } from '@/generatedClient/index';
+import { DefaultService as Service } from '@/generatedClient/index';
 import router from '@/router/index';
 import LocaleIcons from './assets/LocaleIcons.vue';
 
