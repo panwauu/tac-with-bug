@@ -50,8 +50,8 @@ describeIf(!skipTests, 'Test Suite via Socket.io', () => {
     })
 
     test('new subscription - wrong id type', async () => {
-      // @ts-ignore
       const data = await new Promise<any>((resolve) => {
+        // @ts-ignore
         userWithSocket.socket.emit('subscription:new', false, (response: any) => {
           resolve(response)
         })
