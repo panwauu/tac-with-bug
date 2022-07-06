@@ -10,7 +10,7 @@ import { initializeInfo } from './info';
 
 export let nsp: GameNamespace;
 
-export async function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
+export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
     nsp = nspGame;
 
     nspGame.use(gameSocketIOAuthentication)

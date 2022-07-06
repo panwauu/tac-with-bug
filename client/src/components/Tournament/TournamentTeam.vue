@@ -61,7 +61,7 @@ const alreadyRegistered = computed(() => {
 })
 
 function joinTeam(team: registerTeam, tournamentID: number) {
-  if (!(teamActivated(team) || alreadyRegistered) && confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
+  if (!(teamActivated(team) || alreadyRegistered.value) && confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
     socket.emit('tournament:public:joinTeam', {
       tournamentID: tournamentID,
       teamName: team.name,

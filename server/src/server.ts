@@ -19,7 +19,7 @@ import { validationErrorMiddleware } from './helpers/validationErrorMiddleware';
 import swaggerUI from 'swagger-ui-express';
 import swaggerDoc from './swagger.json';
 
-import { registerJobs } from './services/scheduledTasks';
+import { cancelAllJobs, registerJobs } from './services/scheduledTasks';
 
 import { initdBUtils } from './dbUtils/initdBUtils'
 import { loadTutorialLevels } from './services/tutorial';
@@ -33,8 +33,6 @@ export class TacServer {
 
     constructor() {
         this.pgPool = initdBUtils()
-
-        loadTutorialLevels(this.pgPool)
 
         this.app = express()
         this.app.locals.sqlClient = this.pgPool
@@ -56,8 +54,6 @@ export class TacServer {
         registerSocketNspGame(this.io.of('/game'), this.pgPool)
         registerSocketNspGeneral(this.io.of('/'), this.pgPool)
 
-        registerJobs(this.pgPool)
-
         // Handle production
         if (process.env.NODE_ENV === 'production') {
             this.app.use(express.static(path.join(__dirname, '../../../public'), {
@@ -71,12 +67,17 @@ export class TacServer {
     }
 
     async listen(port?: number) {
+        await registerJobs(this.pgPool)
+        await loadTutorialLevels(this.pgPool)
+
         const portToListen = port ?? (process.env.PORT != undefined ? parseInt(process.env.PORT) : 3000)
         this.httpServer.listen(portToListen)
         return portToListen
     }
 
     async unlisten() {
+        cancelAllJobs()
+
         await new Promise((resolve) => {
             this.io.close(() => { resolve(true) })
         })

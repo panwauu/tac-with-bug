@@ -1,6 +1,6 @@
 import { testCapturedMoves } from '../test/captureCompare'
 
-describe.skip('Test suite with recorded games', () => {
+describe('Test suite with recorded games', () => {
     test('Placeholder', () => { expect(true).toBe(true) })
 
     test('Test with captured Game 101 -> At the end Teufel with abwerfen chosen', () => {
@@ -79,7 +79,7 @@ describe.skip('Test suite with recorded games', () => {
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Game 383', () => {
+    test('Test with captured Game 383', () => {
         const result = testCapturedMoves('383')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(false)
@@ -152,26 +152,26 @@ describe.skip('Test suite with recorded games', () => {
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 31 - COOP', () => {
+    test('Test with captured Prod Game 31 - COOP', () => {
         const result = testCapturedMoves('31prodCoop', 4, 2, true, true)
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(false)
     })
 
-    test.skip('Test with captured Prod Game 38', () => {
+    test('Test with captured Prod Game 38', () => {
         const result = testCapturedMoves('38prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(false)
         expect(result.game?.cardsWithMoves[0].ballActions['2']).toEqual([78, 79, 16, 17, 18, 19, 20])
     })
 
-    test.skip('Test with captured Prod Game 216', () => {
+    test('Test with captured Prod Game 216', () => {
         const result = testCapturedMoves('216prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 282', () => {
+    test('Test with captured Prod Game 282', () => {
         const result = testCapturedMoves('282prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(false)
@@ -179,7 +179,7 @@ describe.skip('Test suite with recorded games', () => {
         expect(Object.keys(result.game?.cardsWithMoves[0].ballActions ?? {}).every((key) => Math.floor(parseInt(key) / 4) === 4)).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 308', () => {
+    test('Test with captured Prod Game 308', () => {
         const result = testCapturedMoves('308prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(false)
@@ -187,13 +187,13 @@ describe.skip('Test suite with recorded games', () => {
         expect(result.game?.cardsWithMoves[1].ballActions['6']).toEqual([35, 94, 36, 37, 38, 39, 40])
     })
 
-    test.skip('Test with captured Prod Game 338', () => {
+    test('Test with captured Prod Game 338', () => {
         const result = testCapturedMoves('338prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(false)
     })
 
-    test.skip('Test with captured Prod Game 607', () => {
+    test('Test with captured Prod Game 607', () => {
         const result = testCapturedMoves('607prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(false)
@@ -211,19 +211,19 @@ describe.skip('Test suite with recorded games', () => {
         })
     })
 
-    test.skip('Test with captured Prod Game 942', () => {
+    test('Test with captured Prod Game 942', () => {
         const result = testCapturedMoves('942prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(false)
     })
 
-    test.skip('Test with captured Prod Game 1644 - Narr as last card', () => {
+    test('Test with captured Prod Game 1644 - Narr as last card', () => {
         const result = testCapturedMoves('1644prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 2299 - Ended Coop', () => {
+    test('Test with captured Prod Game 2299 - Ended Coop', () => {
         const result = testCapturedMoves('2299prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
@@ -252,92 +252,92 @@ describe.skip('Test suite with recorded games', () => {
         expect(result.equal).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4276', () => {
+    test('Test with captured Prod Game 4276', () => {
         const result = testCapturedMoves('4276prod')
         expect(result.equal).toBe(true)
         expect(result.game?.cardsWithMoves[0].possible).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4380', () => {
+    test('Test with captured Prod Game 4380', () => {
         const result = testCapturedMoves('4380prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4381', () => {
+    test('Test with captured Prod Game 4381', () => {
         const result = testCapturedMoves('4381prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(false)
         expect(result.game?.cardsWithMoves[0].textAction).toBe('')
     })
 
-    test.skip('Test with captured Prod Game 4416', () => {
+    test('Test with captured Prod Game 4416', () => {
         const result = testCapturedMoves('4416prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4423', () => {
+    test('Test with captured Prod Game 4423', () => {
         const result = testCapturedMoves('4423prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('X Test with captured Prod Game 4429', () => {
+    test('X Test with captured Prod Game 4429', () => {
         const result = testCapturedMoves('4429prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4435', () => {
+    test('Test with captured Prod Game 4435', () => {
         const result = testCapturedMoves('4435prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4449', () => {
+    test('Test with captured Prod Game 4449', () => {
         const result = testCapturedMoves('4449prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4450', () => {
+    test('Test with captured Prod Game 4450', () => {
         const result = testCapturedMoves('4450prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4451', () => {
+    test('Test with captured Prod Game 4451', () => {
         const result = testCapturedMoves('4451prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4452', () => {
+    test('Test with captured Prod Game 4452', () => {
         const result = testCapturedMoves('4452prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4453', () => {
+    test('Test with captured Prod Game 4453', () => {
         const result = testCapturedMoves('4453prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4454', () => {
+    test('Test with captured Prod Game 4454', () => {
         const result = testCapturedMoves('4454prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('X Test with captured Prod Game 4455', () => {
+    test('X Test with captured Prod Game 4455', () => {
         const result = testCapturedMoves('4455prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('X Test with captured Prod Game 4456', () => {
+    test('X Test with captured Prod Game 4456', () => {
         const result = testCapturedMoves('4456prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
@@ -349,19 +349,19 @@ describe.skip('Test suite with recorded games', () => {
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4458', () => {
+    test('Test with captured Prod Game 4458', () => {
         const result = testCapturedMoves('4458prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4459', () => {
+    test('Test with captured Prod Game 4459', () => {
         const result = testCapturedMoves('4459prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('Test with captured Prod Game 4460', () => {
+    test('Test with captured Prod Game 4460', () => {
         const result = testCapturedMoves('4460prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
@@ -435,13 +435,13 @@ describe.skip('Test suite with recorded games', () => {
         expect(result.ended).toBe(true)
     })
 
-    test.skip('X Test with captured Prod Game 7652', () => {
+    test('X Test with captured Prod Game 7652', () => {
         const result = testCapturedMoves('7652prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
     })
 
-    test.skip('X Test with captured Prod Game 9791', () => {
+    test('X Test with captured Prod Game 9791', () => {
         const result = testCapturedMoves('9791prod')
         expect(result.equal).toBe(true)
         expect(result.ended).toBe(true)
