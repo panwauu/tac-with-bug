@@ -1,5 +1,10 @@
 import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets';
 
+async function getPicture(username: string) {
+    const dbResBefore = await testServer.pgPool.query('SELECT * FROM users WHERE username = $1;', [username])
+    return dbResBefore.rows[0].profilepic
+}
+
 describe('Profile Picture', () => {
     let userWithCredentials: User;
 
@@ -12,8 +17,7 @@ describe('Profile Picture', () => {
     })
 
     test('Change profile picture', async () => {
-        const dbResBefore = await testServer.pgPool.query('SELECT * FROM users WHERE username = $1;', [userWithCredentials.username])
-        const picBefore = dbResBefore.rows[0].profilepic
+        const picBefore = await getPicture(userWithCredentials.username)
 
         let response = await testAgent.delete('/gameApi/deleteProfilePicture')
         expect(response.statusCode).toBe(401)
@@ -22,14 +26,12 @@ describe('Profile Picture', () => {
             .set({ Authorization: userWithCredentials.authHeader })
         expect(response.statusCode).toBe(204)
 
-        const dbResAfter = await testServer.pgPool.query('SELECT * FROM users WHERE username = $1;', [userWithCredentials.username])
-        const picAfter = dbResAfter.rows[0].profilepic
+        const picAfter = await getPicture(userWithCredentials.username)
         expect(picBefore).not.toEqual(picAfter)
     })
 
     test('Upload profile picture', async () => {
-        const dbResBefore = await testServer.pgPool.query('SELECT * FROM users WHERE username = $1;', [userWithCredentials.username])
-        const picBefore = dbResBefore.rows[0].profilepic
+        const picBefore = await getPicture(userWithCredentials.username)
 
         let response = await testAgent.post('/gameApi/uploadProfilePicture')
             .attach('profilePic', './src/routes/picture.test.image.jpg')
@@ -40,8 +42,7 @@ describe('Profile Picture', () => {
             .attach('profilePic', './src/routes/picture.test.image.jpg')
         expect(response.statusCode).toBe(204)
 
-        const dbResAfter = await testServer.pgPool.query('SELECT * FROM users WHERE username = $1;', [userWithCredentials.username])
-        const picAfter = dbResAfter.rows[0].profilepic
+        const picAfter = await getPicture(userWithCredentials.username)
         expect(picBefore).not.toEqual(picAfter)
     })
 
