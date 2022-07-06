@@ -1,3 +1,3 @@
-export const maxGroupNameLength = 25;
+export const maxGroupNameLength = 25
 
-export const maxUsersInChat = 50;
+export const maxUsersInChat = 50
