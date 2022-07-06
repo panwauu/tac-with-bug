@@ -3,7 +3,7 @@
     "sourceClient": {
       "host": "localhost",
       "port": 5432,
-      "database": "tac_test",
+      "database": "tac_test_schema",
       "user": "postgres",
       "password": "postgres",
       "applicationName": "pg-diff-cli"
