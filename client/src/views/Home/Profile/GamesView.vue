@@ -73,5 +73,3 @@ async function loadGames(first: number, limit: number, sortField?: string, sortO
   }
 }
 </script>
-
-<style scoped></style>

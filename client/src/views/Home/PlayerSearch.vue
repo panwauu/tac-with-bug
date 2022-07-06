@@ -5,5 +5,3 @@
 <script setup lang="ts">
 import PlayerSearch from '@/components/PlayerSearch.vue'
 </script>
-
-<style scoped></style>

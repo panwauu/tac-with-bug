@@ -82,5 +82,3 @@ const friendsForTable = computed(() => {
   return friends.value
 })
 </script>
-
-<style scoped></style>

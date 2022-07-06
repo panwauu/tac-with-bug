@@ -32,5 +32,3 @@ const statusSeverity = computed(() => {
   }
 })
 </script>
-
-<style scoped></style>

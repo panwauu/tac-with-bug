@@ -52,5 +52,3 @@ const buttonLabel = computed(() => {
   return props.nWatching.toString()
 })
 </script>
-
-<style scoped></style>

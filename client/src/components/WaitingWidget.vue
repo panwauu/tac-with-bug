@@ -70,5 +70,3 @@ function startGame(game: any) {
   })
 }
 </script>
-
-<style scoped></style>

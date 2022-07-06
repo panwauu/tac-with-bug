@@ -54,5 +54,3 @@ const deadlineForCounter = computed(() => {
   }
 })
 </script>
-
-<style scoped></style>

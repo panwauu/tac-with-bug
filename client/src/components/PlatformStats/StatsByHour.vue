@@ -95,5 +95,3 @@ function updateHourChart() {
   hourChart.value?.refresh()
 }
 </script>
-
-<style scoped></style>

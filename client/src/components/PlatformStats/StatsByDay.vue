@@ -98,5 +98,3 @@ function updateDayChart() {
   dayChart.value?.refresh()
 }
 </script>
-
-<style scoped></style>

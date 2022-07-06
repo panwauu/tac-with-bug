@@ -16,5 +16,3 @@ import AccordionTab from 'primevue/accordiontab'
 import CreatePrivateTournament from '@/components/Tournament/CreatePrivateTournament.vue'
 import TournamentsTable from '@/components/Tournament/TournamentsTable.vue'
 </script>
-
-<style scoped></style>
