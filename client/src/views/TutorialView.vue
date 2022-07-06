@@ -47,30 +47,30 @@ import { useCards } from '@/services/compositionGame/useCards';
 import { useInstructions } from '@/services/compositionGame/useInstructions';
 import router from '@/router/index';
 import { useTutorialStore } from '@/store/tutorial';
-const tutorialStore = useTutorialStore()
-
 import { injectStrict, SocketKey } from '@/services/injections';
 import { TutorialStepOutput } from '@/../../shared/types/typesTutorial';
+
+const tutorialStore = useTutorialStore()
 const socket = injectStrict(SocketKey);
 
 const tutorialProgress = computed(() => { return tutorialStore.getProgress[tutorialID.value] })
 
-let miscState = useMisc(4);
-let positionStyles = usePositionStyles(miscState);
-let statisticState = useStatistic();
-let discardPileState = useDiscardPile(miscState.gamePlayer);
-let ballsState = useBalls();
-let cardsState = useCards(ballsState, miscState);
-let performMove = usePerformMove(cardsState, ballsState, miscState, discardPileState);
-let instructionsState = useInstructions(miscState, ballsState, cardsState);
+const miscState = useMisc(4);
+const positionStyles = usePositionStyles(miscState);
+const statisticState = useStatistic();
+const discardPileState = useDiscardPile(miscState.gamePlayer);
+const ballsState = useBalls();
+const cardsState = useCards(ballsState, miscState);
+const performMove = usePerformMove(cardsState, ballsState, miscState, discardPileState);
+const instructionsState = useInstructions(miscState, ballsState, cardsState);
 
-let modalVisible = ref(false)
-let modalState = ref('statistic')
-let loading = ref(true)
-let tutorialStepOutput = ref<null | TutorialStepOutput>(null)
-let displayTutorialOverlay = ref(true)
-let tutorialID = ref(0)
-let tutorialStep = ref(0)
+const modalVisible = ref(false)
+const modalState = ref('statistic')
+const loading = ref(true)
+const tutorialStepOutput = ref<null | TutorialStepOutput>(null)
+const displayTutorialOverlay = ref(true)
+const tutorialID = ref(0)
+const tutorialStep = ref(0)
 
 tutorialID.value = parseInt(router.currentRoute.value.query.tutorialID as string);
 tutorialStep.value = parseInt(router.currentRoute.value.query.tutorialStep as string);
@@ -134,7 +134,7 @@ async function loadStep() {
 async function performMoveAndEmit(performMoveAction: performMoveAction) {
   if (tutorialStepOutput.value == null) { return }
 
-  let move = performMove(performMoveAction);
+  const move = performMove(performMoveAction);
   const res = await socket.emitWithAck(5000, 'tutorial:postMove', { game: tutorialStepOutput.value.game, move })
   if (res.status !== 200 || res.data == null) { router.push({ name: 'TutorialOverview' }); return }
   if (tutorialStepOutput.value != null) {
@@ -151,35 +151,20 @@ function watcherDone() {
   ) {
     return;
   }
-  let done = checkDone();
+  const done = checkDone();
   displayTutorialOverlay.value = done ? true : false;
   tutorialStore.changeTutorialStepValue(socket, tutorialID.value, tutorialStep.value, done)
 }
 
 function checkDone() {
-  let goal = tutorialStepOutput.value?.goal;
+  const goal = tutorialStepOutput.value?.goal;
 
-  if (goal?.modalState != null && (modalVisible.value || goal?.modalState !== modalState.value)) {
-    return false;
-  }
-
-  if (goal?.selectedCard != null && cardsState.selectedCard !== goal?.selectedCard) {
-    return false;
-  }
-
-  if (goal?.balls != null && !matchAnyArrayOfObject(ballsState.balls, goal.balls)) {
-    return false;
-  }
-
-  if (goal?.aussetzenFlag != null && goal?.aussetzenFlag !== miscState.aussetzenFlag) {
-    return false;
-  }
-
-  if (goal?.quiz != null || goal?.closeButton != null) {
-    return false;
-  }
-
-  return true;
+  return !(goal?.modalState != null && (modalVisible.value || goal?.modalState !== modalState.value)) &&
+  !(goal?.selectedCard != null && cardsState.selectedCard !== goal?.selectedCard) &&
+  !(goal?.selectedCard != null && cardsState.selectedCard !== goal?.selectedCard) &&
+  !(goal?.balls != null && !matchAnyArrayOfObject(ballsState.balls, goal.balls)) &&
+  !(goal?.aussetzenFlag != null && goal?.aussetzenFlag !== miscState.aussetzenFlag) &&
+  !(goal?.quiz != null || goal?.closeButton != null)
 }
 
 async function resetStep() {

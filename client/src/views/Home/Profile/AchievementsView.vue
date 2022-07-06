@@ -30,8 +30,8 @@ import router from '@/router';
 
 const props = defineProps<{ username: string }>();
 
-let loading = ref(false)
-let tournamentParticipations = ref<tournamentParticipation[]>([])
+const loading = ref(false)
+const tournamentParticipations = ref<tournamentParticipation[]>([])
 
 updateData()
 watch(() => props.username, () => updateData())

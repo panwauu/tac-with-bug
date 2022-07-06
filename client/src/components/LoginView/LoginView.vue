@@ -63,10 +63,10 @@ const toast = useToast();
 
 const emit = defineEmits(['login'])
 
-let username = ref('')
-let password = ref('')
-let loading = ref(false)
-let displayUnactivatedMessage = ref(false)
+const username = ref('')
+const password = ref('')
+const loading = ref(false)
+const displayUnactivatedMessage = ref(false)
 
 async function login() {
   loading.value = true;
@@ -86,7 +86,7 @@ async function login() {
     settingsStore.setColorblind(response.colorBlindnessFlag, false)
     settingsStore.setDefaultPositions(response.gameDefaultPositions as [number, number], false)
     router.push({
-      name: router.currentRoute.value.name ?? 'Landing',
+      name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing',
       query: router.currentRoute.value.query,
       params: { ...router.currentRoute.value.params, locale: response.locale }
     })

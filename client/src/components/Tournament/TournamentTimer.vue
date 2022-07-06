@@ -20,9 +20,9 @@ import CountdownTimer from '@/components/CountdownTimer.vue';
 const props = defineProps<{ tournament: publicTournament }>()
 
 function addInterval(date: Date, interval: string): Date {
-  let m = parseInt(interval.slice(interval.length - 2, interval.length));
-  let h = parseInt(interval.slice(0, interval.length - 3));
-  let returnDate = date;
+  const m = parseInt(interval.slice(interval.length - 2, interval.length));
+  const h = parseInt(interval.slice(0, interval.length - 3));
+  const returnDate = date;
   returnDate.setMinutes(returnDate.getMinutes() + m);
   returnDate.setHours(returnDate.getHours() + h);
   return returnDate;
@@ -41,7 +41,7 @@ const counterKey = computed(() => {
 })
 
 const deadlineForCounter = computed(() => {
-  let gameEndDate = addInterval(
+  const gameEndDate = addInterval(
     new Date(
       props.tournament.creationDates[props.tournament.creationPhase - 2]
     ),

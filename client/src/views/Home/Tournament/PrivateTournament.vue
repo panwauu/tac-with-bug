@@ -94,7 +94,7 @@ const props = defineProps<{ id: string, locale: string }>()
 
 const socket = injectStrict(SocketKey);
 const tournamentID = computed(() => parseInt(props.id))
-let tournament = ref<privateTournament | null>()
+const tournament = ref<privateTournament | null>()
 const toast = useToast()
 
 async function abortTournament() {
@@ -129,7 +129,7 @@ function updateTournament(newTournament: privateTournament) {
 socket.on('tournament:private:update', updateTournament)
 onUnmounted(() => { socket.off('tournament:private:update', updateTournament) })
 
-let displayExplanation = ref(false)
+const displayExplanation = ref(false)
 </script>
 
 <style scoped>

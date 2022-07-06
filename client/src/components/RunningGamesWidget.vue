@@ -45,7 +45,7 @@ import { getRunningGamesType } from '../../../shared/types/typesDBgame';
 import router from '@/router'
 import { useServerInfoStore } from '@/store/serverInfo'
 
-let selectedGame = ref<getRunningGamesType[]>([])
+const selectedGame = ref<getRunningGamesType[]>([])
 
 const infoStore = useServerInfoStore()
 

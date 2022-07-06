@@ -29,10 +29,10 @@ import { Service } from '@/generatedClient/index';
 import { ref } from 'vue';
 import router from '@/router/index'
 
-let selectedPlayer = ref<string>('')
-let filteredPlayers = ref<string[]>([])
-let PlayerSearchButtonRef = ref<any | null>(null)
-let PlayerSearchInputRef = ref<any | null>(null)
+const selectedPlayer = ref<string>('')
+const filteredPlayers = ref<string[]>([])
+const PlayerSearchButtonRef = ref<any | null>(null)
+const PlayerSearchInputRef = ref<any | null>(null)
 
 const searchPlayers = () => { Service.searchPlayers(selectedPlayer.value, 4).then((d) => filteredPlayers.value = d.map((e) => e.username)) }
 

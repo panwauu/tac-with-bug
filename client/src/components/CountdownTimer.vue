@@ -51,10 +51,10 @@ const getParsedEndDate = () => {
   }
 }
 
-let numbers = ref([0, 0, 0, 0])
-let parsedEndDate = ref(getParsedEndDate())
-let interval = ref<number | undefined>()
-let detail = ref(true)
+const numbers = ref([0, 0, 0, 0])
+const parsedEndDate = ref(getParsedEndDate())
+const interval = ref<number | undefined>()
+const detail = ref(true)
 
 const timerContainerRef = ref<HTMLDivElement | null>(null);
 

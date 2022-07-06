@@ -54,11 +54,10 @@ import Divider from 'primevue/divider';
 
 import router from '@/router/index';
 import { injectStrict, SocketKey } from '@/services/injections';
-const socket = injectStrict(SocketKey)
-
 import { useTutorialStore } from '@/store/tutorial';
-const tutorialStore = useTutorialStore()
 
+const socket = injectStrict(SocketKey)
+const tutorialStore = useTutorialStore()
 tutorialStore.loadProgress(socket)
 
 function startTutorial(tutorialID: number, tutorialStep: number) {

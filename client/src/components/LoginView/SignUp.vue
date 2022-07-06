@@ -36,16 +36,16 @@ const emit = defineEmits<{ (eventName: 'done'): void }>()
 
 const toast = useToast();
 
-let username = ref('')
-let validUsername = ref(false)
+const username = ref('')
+const validUsername = ref(false)
 
-let email = ref('')
-let validEmail = ref(false)
+const email = ref('')
+const validEmail = ref(false)
 
-let password = ref('')
-let validPassword = ref(false)
+const password = ref('')
+const validPassword = ref(false)
 
-let loading = ref(false)
+const loading = ref(false)
 
 async function signUp() {
   loading.value = true;

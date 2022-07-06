@@ -92,7 +92,7 @@ import Dialog from 'primevue/dialog';
 import GamesHistoryBadge from '@/components/icons/GamesHistoryBadge.vue';
 
 import { ref } from 'vue';
-let displayExplanation = ref(false)
+const displayExplanation = ref(false)
 </script>
 
 <style scoped>

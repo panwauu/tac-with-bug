@@ -25,7 +25,7 @@ import { Service } from '@/generatedClient/index';
 const props = defineProps<{ username: string | null, userid: number | null, playersToAvoid?: string[] }>();
 const emit = defineEmits(['update:username', 'update:userid'])
 
-let filteredPlayers = ref<{ username: string, id: number }[]>([]);
+const filteredPlayers = ref<{ username: string, id: number }[]>([]);
 
 const localUsername = computed({
   get(): string {

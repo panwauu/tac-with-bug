@@ -45,7 +45,7 @@ import { username } from '@/services/useUser';
 const loginOverlayRef = ref<OverlayPanel | null>(null);
 function toggle(event: any) { loginOverlayRef.value?.toggle(event) }
 
-let activeIndex = ref(0)
+const activeIndex = ref(0)
 
 function login() { loginOverlayRef.value?.hide() }
 </script>

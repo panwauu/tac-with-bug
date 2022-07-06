@@ -33,8 +33,8 @@ import { i18n } from '@/services/i18n';
 import { useToast } from 'primevue/usetoast';
 
 const toast = useToast()
-let usernameOrEmail = ref('')
-let loading = ref(false)
+const usernameOrEmail = ref('')
+const loading = ref(false)
 
 const emit = defineEmits<{ (eventName: 'done'): void }>()
 

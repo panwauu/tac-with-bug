@@ -22,8 +22,8 @@ import { ref, computed, watch } from 'vue';
 import { Service } from '@/generatedClient/index';
 import { i18n } from '@/services/i18n';
 
-let nameCheck = ref<boolean | null>(false)
-let nameCheckTimeout = ref(undefined as number | undefined)
+const nameCheck = ref<boolean | null>(false)
+const nameCheckTimeout = ref(undefined as number | undefined)
 
 const emit = defineEmits<{
     (eventName: 'update:username', username: string): void,

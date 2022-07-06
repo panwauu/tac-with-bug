@@ -69,16 +69,16 @@ import { deleteProfilePic, requestProfilePic } from '../../services/useProfilePi
 import { Service } from '@/generatedClient/index';
 import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
-const toast = useToast();
 import { i18n } from '@/services/i18n';
 import { user } from '@/services/useUser';
 
+const toast = useToast();
 const emit = defineEmits(['settingoperationdone'])
 
-let cropperDialog = ref(false)
+const cropperDialog = ref(false)
 interface customFile extends File { objectURL?: string }
-let uploadFile = ref<customFile | null>(null)
-let cropperRef = ref<VueCropperMethods | null>(null);
+const uploadFile = ref<customFile | null>(null)
+const cropperRef = ref<VueCropperMethods | null>(null);
 
 const startCropper = (event: { file: File, files: File[] }) => {
   cropperDialog.value = true;
@@ -97,8 +97,8 @@ const rotate = (deg: number) => {
 const submit = async () => {
   cropperRef.value?.getCroppedCanvas().toBlob(
     async (blob) => {
-      let jwtToken = user.token
-      var myFormData = new FormData();
+      const jwtToken = user.token
+      const myFormData = new FormData();
       myFormData.append('profilePic', blob ?? '');
       try {
         await axios.post('/gameApi/uploadProfilePicture', myFormData, {

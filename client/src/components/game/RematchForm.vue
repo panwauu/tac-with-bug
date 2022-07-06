@@ -38,11 +38,11 @@ import type { miscStateType } from '@/services/compositionGame/useMisc'
 import { computed, onUnmounted } from 'vue';
 import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast';
-const toast = useToast();
 import router from '@/router/index'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { useWaitingStore } from '@/store/waiting'
 
+const toast = useToast();
 const waitingStore = useWaitingStore()
 
 defineEmits(['closeGame', 'update:modalVisible', 'update:modalState'])

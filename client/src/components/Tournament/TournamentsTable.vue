@@ -58,10 +58,10 @@ import { isLoggedIn } from '@/services/useUser';
 const socket = injectStrict(SocketKey)
 
 const rowsInTable = 10
-let selectedTournament = ref<tournamentTableElement[]>([]);
-let loading = ref(false);
-let tournaments = ref<tournamentTableElement[]>([]);
-let totalTournaments = ref(0);
+const selectedTournament = ref<tournamentTableElement[]>([]);
+const loading = ref(false);
+const tournaments = ref<tournamentTableElement[]>([]);
+const totalTournaments = ref(0);
 
 watch(isLoggedIn, () => getHistory(0))
 getHistory(0);

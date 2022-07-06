@@ -59,7 +59,7 @@ const socket = injectStrict(SocketKey);
 
 const emit = defineEmits(['update:visible'])
 
-let localVisible = computed({
+const localVisible = computed({
   get(): boolean {
     return props.visible;
   },
@@ -73,14 +73,14 @@ const playersModel = [
   { name: i18n.global.t('Waiting.WaitingGameCreator.player4Name'), value: 4 },
   { name: i18n.global.t('Waiting.WaitingGameCreator.player6Name'), value: 6 },
 ]
-let selectedPlayers = ref(playersModel[0])
+const selectedPlayers = ref(playersModel[0])
 
 const teamsModel = [
   { name: i18n.global.t('Waiting.WaitingGameCreator.teams1Name'), value: 1 },
   { name: i18n.global.t('Waiting.WaitingGameCreator.teams2Name'), value: 2 },
   { name: i18n.global.t('Waiting.WaitingGameCreator.teams3Name'), value: 3 },
 ]
-let selectedTeams = ref(teamsModel[1])
+const selectedTeams = ref(teamsModel[1])
 
 const meisterModel = [
   {
@@ -92,7 +92,7 @@ const meisterModel = [
     value: false,
   },
 ]
-let selectedMeister = ref(meisterModel[0])
+const selectedMeister = ref(meisterModel[0])
 
 const privateModel = [
   {
@@ -104,7 +104,7 @@ const privateModel = [
     value: false,
   },
 ]
-let selectedPrivate = ref(privateModel[1])
+const selectedPrivate = ref(privateModel[1])
 
 
 const createGame = () => {
@@ -118,20 +118,11 @@ const createGame = () => {
 }
 
 const validOptions = () => {
-  if (
-    selectedPlayers.value === null ||
-    selectedTeams.value === null ||
-    selectedMeister.value === null ||
-    selectedPrivate.value === null
-  ) {
-    return false;
-  }
-
-  if (selectedTeams.value.value === 3 && selectedPlayers.value.value !== 6) {
-    return false;
-  }
-
-  return true;
+  return selectedPlayers.value != null &&
+    selectedTeams.value != null &&
+    selectedMeister.value != null &&
+    selectedPrivate.value != null &&
+    !(selectedTeams.value.value === 3 && selectedPlayers.value.value !== 6)
 }
 </script>
 

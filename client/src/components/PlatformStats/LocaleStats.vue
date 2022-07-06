@@ -15,7 +15,7 @@ import { ref, watch } from 'vue';
 import Chart from 'primevue/chart';
 import { getGraphColors } from '@/services/graphColors'
 
-let localeChart = ref<any | null>(null);
+const localeChart = ref<any | null>(null);
 const props = defineProps<{ data?: localeDataset }>()
 watch(() => props.data, () => { updateLocaleChart() }, { deep: true })
 

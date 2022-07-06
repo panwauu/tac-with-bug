@@ -24,9 +24,9 @@ import { username as loggedInUser } from '@/services/useUser';
 const socket = injectStrict(SocketKey)
 const props = defineProps<{ username: string }>();
 
-let loading = ref(false)
-let nEntries = ref(0)
-let games = ref<gameForOverview[]>([])
+const loading = ref(false)
+const nEntries = ref(0)
+const games = ref<gameForOverview[]>([])
 
 onMounted(() => { loadGames(0, 10, 'created', -1); })
 

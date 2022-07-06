@@ -33,19 +33,19 @@ import { sound } from '@/plugins/sound';
 import { audioHandler } from '@/services/compositionGame/audioHandler';
 import router from '@/router/index';
 
-let gameSocket = registerGameSocket();
-let miscState = useMisc();
-let positionStyles = usePositionStyles(miscState);
-let statisticState = useStatistic();
-let discardPileState = useDiscardPile(miscState.gamePlayer);
-let ballsState = useBalls();
-let cardsState = useCards(ballsState, miscState);
-let performMove = usePerformMove(cardsState, ballsState, miscState, discardPileState);
-let instructionsState = useInstructions(miscState, ballsState, cardsState);
-let updateData = ref<null | updateDataType>(null)
+const gameSocket = registerGameSocket();
+const miscState = useMisc();
+const positionStyles = usePositionStyles(miscState);
+const statisticState = useStatistic();
+const discardPileState = useDiscardPile(miscState.gamePlayer);
+const ballsState = useBalls();
+const cardsState = useCards(ballsState, miscState);
+const performMove = usePerformMove(cardsState, ballsState, miscState, discardPileState);
+const instructionsState = useInstructions(miscState, ballsState, cardsState);
+const updateData = ref<null | updateDataType>(null)
 
-let modalVisible = ref(false)
-let modalState = ref('settings')
+const modalVisible = ref(false)
+const modalState = ref('settings')
 
 gameSocket.on('game:online-players', miscState.setOnlinePlayers);
 gameSocket.on('update', updateHandler);

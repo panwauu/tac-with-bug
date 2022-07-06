@@ -169,7 +169,7 @@ function beautifyDate(timestamp: string): string {
   return date.toLocaleDateString(currentLocale.value)
 }
 
-let inputMessage = ref('')
+const inputMessage = ref('')
 
 function submitChatInput() {
   if (inputMessage.value === '' || inputMessage.value.length > 500) { return }
