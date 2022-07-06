@@ -116,11 +116,6 @@ jobs:
         git push --force heroku master;
       env:
         HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-    - name: Sanity check of tac-with-bug
-      uses: fjogeleit/http-request-action@master
-      with:
-        url: 'https://tac-with-bug.herokuapp.com'
-        method: 'GET'
     - name: Advance deployed tag
       uses: actions/github-script@v5
       with:
@@ -141,3 +136,8 @@ jobs:
             sha: context.sha,
             ref: "refs/tags/deployed"
           })
+    - name: Sanity check of tac-with-bug
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: 'https://tac-with-bug.herokuapp.com'
+        method: 'GET'
