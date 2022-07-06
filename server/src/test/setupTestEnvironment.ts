@@ -63,7 +63,7 @@ function getRoot(): string {
 
   do {
     const dircontent = fs.readdirSync(remainingPath)
-    if (['.github', 'server', 'client', 'shared'].every((f) => dircontent.includes(f))) {
+    if (['.github', 'server', 'client'].every((f) => dircontent.includes(f))) {
       return remainingPath
     }
 
