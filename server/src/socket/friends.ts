@@ -33,7 +33,7 @@ export async function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSo
             updateFriendOfSocket(pgPool, socket, socket.data.userID)
 
             const otherUserSocket = getSocketByUserID(userToRequest.value.id)
-            if (otherUserSocket != undefined && otherUserSocket.data.userID != undefined) {
+            if (otherUserSocket != null && otherUserSocket.data.userID != null) {
                 updateFriendOfSocket(pgPool, otherUserSocket, otherUserSocket.data.userID)
                 otherUserSocket?.emit('friends:new-request', { username: userRequesting.value.username })
             }
@@ -62,7 +62,7 @@ export async function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSo
             updateFriendOfSocket(pgPool, socket, socket.data.userID)
 
             const otherUserSocket = getSocketByUserID(userRequesting.value.id)
-            if (otherUserSocket != undefined && otherUserSocket.data.userID != undefined) {
+            if (otherUserSocket != null && otherUserSocket.data.userID != null) {
                 updateFriendOfSocket(pgPool, otherUserSocket, otherUserSocket.data.userID)
                 otherUserSocket.emit('friends:friend-confirmed', { username: userToConfirm.value.username })
             }
@@ -90,7 +90,7 @@ export async function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSo
             updateFriendOfSocket(pgPool, socket, socket.data.userID)
 
             const otherUserSocket = getSocketByUserID(userToCancel.value.id)
-            if (otherUserSocket != undefined && otherUserSocket.data.userID != undefined) {
+            if (otherUserSocket != null && otherUserSocket.data.userID != null) {
                 updateFriendOfSocket(pgPool, otherUserSocket, otherUserSocket.data.userID)
                 if (pendingUser === null) { otherUserSocket?.emit('friends:friend-cancelled', { username: userCancelling.value.username }) }
                 else if (pendingUser === userToCancel.value.id) { otherUserSocket?.emit('friends:friend-withdrew', { username: userCancelling.value.username }) }

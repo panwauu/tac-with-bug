@@ -100,7 +100,7 @@ export function getPlayerIDsOfGame(gameID: number): number[] {
 }
 
 export function isPlayingInGame(userID: number, gameID: number) {
-    return [...nsp.sockets.values()].find((s) => s.data.userID === userID && s.data.gameID === gameID) != undefined
+    return [...nsp.sockets.values()].find((s) => s.data.userID === userID && s.data.gameID === gameID) != null
 }
 
 export function sendUpdatesOfGameToPlayers(game: gameForPlay) {

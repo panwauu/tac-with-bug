@@ -17,7 +17,7 @@ export async function initializeWaiting(pgPool: pg.Pool, socket: GeneralSocketS)
 }
 
 export async function terminateWaiting(pgPool: pg.Pool, socket: GeneralSocketS) {
-    if (socket.data.userID != undefined) {
+    if (socket.data.userID != null) {
         const user = await getUser(pgPool, { id: socket.data.userID })
         if (!user.isErr()) {
             await removePlayerWaiting(pgPool, user.value.username, socket.data.userID)
@@ -111,7 +111,7 @@ export async function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSo
             await transferLatestMessagesToOtherChannel(pgPool, `g-${createdGame.id}`, `w-${game.value.id}`)
             for (const [, value] of nspGeneral.sockets.entries()) {
                 const userID = value.data.userID
-                if (userID != undefined && createdGame.playerIDs.includes(userID)) {
+                if (userID != null && createdGame.playerIDs.includes(userID)) {
                     value.emit('waiting:startGame', {
                         gameID: createdGame.id,
                         nPlayers: createdGame.nPlayers,

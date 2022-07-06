@@ -190,7 +190,7 @@ export function sevenReconstructPath(balls: tBall.ballsType, nBall: number, goal
             })
         }
         finalPath = endPaths.find(path => path[path.length - 1] === goalPosition)
-        if (finalPath != undefined) { break; }
+        if (finalPath != null) { break; }
         startPaths = [...endPaths]
     }
 

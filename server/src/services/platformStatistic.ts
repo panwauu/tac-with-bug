@@ -200,7 +200,7 @@ function getYearAndNumberOfWeek(date: Date): [number, number] {
     const m = ISO8601_week_no(date);
     const d = new Date(date)
     const day = d.getDay();
-    return [new Date(d.setDate(d.getDate() - day + (day == 0 ? -6 : 1))).getFullYear(), m];
+    return [new Date(d.setDate(d.getDate() - day + (day === 0 ? -6 : 1))).getFullYear(), m];
 }
 
 function ISO8601_week_no(dt: Date) {
@@ -228,7 +228,7 @@ async function getUserAgentAnalysis(pgPool: pg.Pool): Promise<userAgentAnalysisD
         const deviceType = row.data.device.type ?? 'desktop'
         deviceTypes[deviceType] = deviceTypes[deviceType] + row.counter
 
-        if (row.data.os.name != undefined) {
+        if (row.data.os.name != null) {
             if (!(row.data.os.name in osNames)) { osNames[row.data.os.name] = 0 }
             osNames[row.data.os.name] += row.counter
         }

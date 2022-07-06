@@ -54,7 +54,7 @@ export async function registerGamesHandler(pgPool: pg.Pool, socket: GeneralSocke
 
         try {
             let userID = socket.data.userID;
-            if (data.username != undefined) {
+            if (data.username != null) {
                 const user = await getUser(pgPool, { username: data.username })
                 if (user.isErr()) { throw new Error(user.error) }
                 userID = user.value.id
