@@ -52,7 +52,8 @@ function onPageOrSort(event: any) {
 async function loadGames(first: number, limit: number, sortField?: string, sortOrder?: number) {
   try {
     loading.value = true;
-    const res = await socket.emitWithAck(5000, 'games:getTableData', { first, limit, sortField, sortOrder, username: props.username === loggedInUser.value ? undefined : props.username })
+    const res = await socket.emitWithAck(5000, 'games:getTableData',
+      { first, limit, sortField, sortOrder, username: props.username === loggedInUser.value ? undefined : props.username })
     if (res.data === undefined) { throw new Error('Server Side Error') }
     games.value = res.data.games;
     nEntries.value = res.data.nEntries;

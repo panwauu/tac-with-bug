@@ -92,7 +92,10 @@ async function login() {
     })
     emit('login')
   } catch (error: any) {
-    if (error?.body?.error === 'email') { displayUnactivatedMessage.value = true; return }
+    if (error?.body?.error === 'email') {
+      displayUnactivatedMessage.value = true;
+      return
+    }
 
     let errorMsg = 'errorMsg';
     if (error?.body?.error === 'user') {

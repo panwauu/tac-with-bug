@@ -12,7 +12,9 @@ export function audioHandler(newData: updateDataType, cardsState: cardsStateType
         } else {
             sound.$play('lost');
         }
-    } else if (newData.status === 'running' && newData.cards.some((card) => card.possible === true) && (cardsState.cards.every((card) => card.possible === false) || cardsState.cards.length === 0)) {
+    } else if (newData.status === 'running' &&
+        newData.cards.some((card) => card.possible === true) &&
+        (cardsState.cards.every((card) => card.possible === false) || cardsState.cards.length === 0)) {
         sound.$play('noti');
     } else if (
         (newData.players.length > 0 && newData.players[newData.gamePlayer].narrFlag[0] === true && newData.players[newData.gamePlayer].narrFlag[1] === false) &&

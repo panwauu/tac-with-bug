@@ -74,7 +74,8 @@ export function useMisc(nPlayers?: number): miscStateType {
         },
         setTimestamps: (created, lastPlayed) => { miscState.created = created, miscState.lastPlayed = lastPlayed },
         setDeckInfo: (deckInfoInput) => {
-            miscState.deckInfo = [deckInfoInput[0] || 0, deckInfoInput[1] > 95 || miscState.nPlayers === undefined ? 0 : Math.floor(deckInfoInput[1] / (5 * miscState.nPlayers)) || 0];
+            miscState.deckInfo = [deckInfoInput[0] ?? 0,
+            deckInfoInput[1] > 95 || miscState.nPlayers === undefined ? 0 : Math.floor(deckInfoInput[1] / (5 * miscState.nPlayers)) || 0];
         },
         setCoopCounter: (coopCounter) => { miscState.coopCounter = coopCounter },
         setGameRunning: (gameEnded, status, players, winningTeams, coopCounter, gamePlayer) => {
@@ -85,7 +86,9 @@ export function useMisc(nPlayers?: number): miscStateType {
                 if (coopCounter !== -1) {
                     miscState.gameEndedText = i18n.global.t('Game.EndedOverlay.wonInX', { X: coopCounter })
                 } else {
-                    const teamPlayers = players.filter((player) => (player.team === players[gamePlayer].team && player.name !== players[gamePlayer].name)).map((player) => player.name)
+                    const teamPlayers = players
+                        .filter((player) => (player.team === players[gamePlayer].team && player.name !== players[gamePlayer].name))
+                        .map((player) => player.name)
                     miscState.gameEndedText = i18n.global.t(`Game.EndedOverlay.${winningTeams[players[gamePlayer].team] === true ? 'wonWith' : 'lostWith'}`, {
                         players: teamPlayers.join(` ${i18n.global.t('Game.EndedOverlay.playersConnector')} `),
                     })
@@ -97,7 +100,8 @@ export function useMisc(nPlayers?: number): miscStateType {
             }
         },
         setTradeDirection: (players, tradeDirection) => {
-            miscState.tradeDirection = ((miscState.nPlayers === 6 && Math.max(...players.map((p) => p.team), 0) === 1 && players.some((p) => { return 'tradeInformation' in p })) ? tradeDirection : 0)
+            miscState.tradeDirection =
+                ((miscState.nPlayers === 6 && Math.max(...players.map((p) => p.team), 0) === 1 && players.some((p) => { return 'tradeInformation' in p })) ? tradeDirection : 0)
         },
         setPlayers: (players) => {
             miscState.players = players

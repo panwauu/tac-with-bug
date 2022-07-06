@@ -27,7 +27,10 @@ export const useWaitingStore = defineStore('waiting', {
 
             const index = this.games.findIndex((g) => username.value != null && g.players.includes(username.value));
             if (index !== -1) {
-                if (this.ownGame != null && this.ownGame.id === this.games[index].id && this.ownGame.players.filter((p: string) => p != null).length !== data[index].players.filter((p: string) => p != null).length && data[index].players.filter((p: string) => p != null).length === data[index].nPlayers) {
+                if (this.ownGame != null &&
+                    this.ownGame.id === this.games[index].id &&
+                    this.ownGame.players.filter((p: string) => p != null).length !== data[index].players.filter((p: string) => p != null).length &&
+                    data[index].players.filter((p: string) => p != null).length === data[index].nPlayers) {
                     sound.$play('noti');
                 }
 

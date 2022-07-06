@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div>
     <svg height="100%" viewBox="0 0 1200 1200" preserveAspectRatio="xMaxYMax">
       <g

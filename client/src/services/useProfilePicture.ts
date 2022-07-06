@@ -15,7 +15,10 @@ export function setProfilePic(username: string, profilePic: string | undefined):
 }
 
 export function getProfilePicSrc(username: string): string | undefined {
-    if (!isLoggedIn.value) { deleteProfilePics(); return undefined }
+    if (!isLoggedIn.value) {
+        deleteProfilePics();
+        return undefined
+    }
     return profileState.profilePics[username] ? profileState.profilePics[username] : undefined
 }
 
@@ -28,7 +31,10 @@ export function deleteProfilePics(): void {
 }
 
 export async function requestProfilePic(username: string): Promise<void> {
-    if (!isLoggedIn.value) { deleteProfilePics(); return }
+    if (!isLoggedIn.value) {
+        deleteProfilePics();
+        return
+    }
 
     if (!(username in profileState.profilePics)) {
         setProfilePic(username, undefined)

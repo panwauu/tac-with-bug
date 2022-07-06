@@ -55,13 +55,19 @@ export const useTutorialStore = defineStore('tutorial', {
         async loadProgress(socket: GeneralSocketC): Promise<void> {
             if (isLoggedIn.value) {
                 socket.emitWithAck(5000, 'tutorial:loadProgress').then((res) => {
-                    if (res.status !== 200 || res.data == null) { router.push({ name: 'Landing' }); return }
+                    if (res.status !== 200 || res.data == null) {
+                        router.push({ name: 'Landing' });
+                        return
+                    }
                     this.progress = res.data.progress
                     this.clearStorage()
                 })
             } else {
                 const res = await socket.emitWithAck(5000, 'tutorial:loadProgress')
-                if (res.status !== 200 || res.data == null) { router.push({ name: 'Landing' }); return }
+                if (res.status !== 200 || res.data == null) {
+                    router.push({ name: 'Landing' });
+                    return
+                }
 
                 const storageElemente = localStorage.getItem(storageKey)
                 if (storageElemente == null) {

@@ -50,7 +50,11 @@ const selectedGame = ref<getRunningGamesType[]>([])
 const infoStore = useServerInfoStore()
 
 function rowSelect() {
-  if (selectedGame.value.length !== 1) { console.log('Could not select game'); selectedGame.value = []; return }
+  if (selectedGame.value.length !== 1) {
+    console.log('Could not select game');
+    selectedGame.value = [];
+    return
+  }
   router.push({
     name: 'Game',
     query: {

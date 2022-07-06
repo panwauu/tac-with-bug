@@ -30,7 +30,10 @@ export function usePerformMove(cardsState: cardsStateType, ballsState: ballsStat
         } else if (action.textAction === 'Karten weitergeben') {
             console.log('Karten weitergeben')
             cardsState.removeAllCards()
-        } else if ((action.textAction === 'narr' && miscState.players[miscState.gamePlayer]?.narrFlag[0] === false) || action.textAction !== '' || getRemainingMoves({ title: cardsState.cards[cardsState.selectedCard].title, possible: false, ballActions: [], textAction: '', key: '', style: '' }, ballsState.balls, action.ballAction[0], action.ballAction[1], discardPileState.discardPile) === 0) {
+        } else if ((action.textAction === 'narr' && miscState.players[miscState.gamePlayer]?.narrFlag[0] === false) ||
+            action.textAction !== '' ||
+            getRemainingMoves({ title: cardsState.cards[cardsState.selectedCard].title, possible: false, ballActions: [], textAction: '', key: '', style: '' },
+                ballsState.balls, action.ballAction[0], action.ballAction[1], discardPileState.discardPile) === 0) {
             console.log('Animation')
             const nDash = cardsState.cards[cardsState.selectedCard].title.indexOf('-')
             if (nDash !== -1) {
@@ -46,9 +49,13 @@ export function usePerformMove(cardsState: cardsStateType, ballsState: ballsStat
 
             setTimeout(() => { discardPileState.performAnimation() }, 50)
         } else {
-            const remainingMoves = getRemainingMoves({ title: cardsState.cards[cardsState.selectedCard].title, possible: false, ballActions: [], textAction: '', key: '', style: '' }, ballsState.balls, action.ballAction[0], action.ballAction[1], discardPileState.discardPile)
+            const remainingMoves = getRemainingMoves(
+                { title: cardsState.cards[cardsState.selectedCard].title, possible: false, ballActions: [], textAction: '', key: '', style: '' },
+                ballsState.balls, action.ballAction[0], action.ballAction[1], discardPileState.discardPile)
             const nDash = cardsState.cards[cardsState.selectedCard].title.indexOf('-')
-            cardsState.cards[cardsState.selectedCard].title = (nDash === -1 ? cardsState.cards[cardsState.selectedCard].title : cardsState.cards[cardsState.selectedCard].title.substring(0, nDash)) + `-${remainingMoves}`
+            cardsState.cards[cardsState.selectedCard].title =
+                (nDash === -1 ? cardsState.cards[cardsState.selectedCard].title : cardsState.cards[cardsState.selectedCard].title.substring(0, nDash)) +
+                `-${remainingMoves}`
             //ballsState.resetPlayableBalls()
             if ((miscState.players.length === 4 && action.ballAction[1] < 80) || (miscState.players.length === 6 && action.ballAction[1] < 90)) {
                 ballsState.resetSelectedBall()

@@ -35,7 +35,9 @@ export function userFriends(socket: GeneralSocketC): friendsState {
     const friendsState: friendsState = reactive<friendsStateNonReactive>({
         friends: [],
         resetFriends: () => { friendsState.friends = [] },
-        setFriends: (friends) => { friendsState.friends = friends.sort((a) => { if (a.status !== 'done') { return -1 } return 1 }) },
+        setFriends: (friends) => {
+            friendsState.friends = friends.sort((a) => { return a.status !== 'done' ? -1 : 1 })
+        },
         friendshipStatus: (username) => {
             const friendship = friendsState.friends.find((f) => f.username === username)
             if (friendship === undefined) { return 'none' }

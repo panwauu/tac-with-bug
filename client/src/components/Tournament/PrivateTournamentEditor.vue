@@ -90,7 +90,10 @@ const socket = injectStrict(SocketKey);
 const showDialog = ref(false)
 const diaglogTeamName = ref<string | null>(null)
 
-function open(teamName?: string) { diaglogTeamName.value = teamName ?? null; showDialog.value = true }
+function open(teamName?: string) {
+  diaglogTeamName.value = teamName ?? null;
+  showDialog.value = true
+}
 
 const readyToStart = computed(() => {
   return props.tournament.registerTeams.length === props.tournament.nTeams &&

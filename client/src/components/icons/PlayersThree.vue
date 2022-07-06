@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div>
     <svg viewBox="0 0 470 343" preserveAspectRatio="xMaxYMax" height="100%" fill="none">
       <path

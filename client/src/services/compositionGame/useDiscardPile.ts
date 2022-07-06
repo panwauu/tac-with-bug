@@ -45,13 +45,17 @@ export function useDiscardPile(gamePlayer: number): discardPileStateType {
                     const gameBoardElement = document.getElementById('gameboard');
                     if (gameBoardElement === null) { break }
                     const gameboardBounding = gameBoardElement.getBoundingClientRect();
-                    const style = positionStyles.positionStyles?.[4 * ((players.findIndex((player) => player.discarded) + players.length - positionStyles.nRotate) % players.length)]
+                    const style = positionStyles.
+                        positionStyles?.[4 * ((players.findIndex((player) => player.discarded) + players.length - positionStyles.nRotate) % players.length)]
                     if (style === undefined) { break }
+
+                    const transformPx1 = parseFloat(style.left.slice(0, style.left.length - 1)) / 100 * gameboardBounding.height - gameboardBounding.height / 2
+                    const transformPx2 = parseFloat(style.top.slice(0, style.top.length - 1)) / 100 * gameboardBounding.height - gameboardBounding.height / 2
                     discardPileState.discardPile.push({
                         index: i,
                         cardTitle: cardPictureDict[discardPile[i]],
                         animationDone: false,
-                        style: `transform: translate(${parseFloat(style.left.slice(0, style.left.length - 1)) / 100 * gameboardBounding.height - gameboardBounding.height / 2}px, ${parseFloat(style.top.slice(0, style.top.length - 1)) / 100 * gameboardBounding.height - gameboardBounding.height / 2}px);`,
+                        style: `transform: translate(${transformPx1}px, ${transformPx2}px);`,
                         key: Math.floor(Math.random() * 1e-10).toString(),
                     })
                     setTimeout(() => {

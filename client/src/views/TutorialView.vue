@@ -1,31 +1,17 @@
 <template>
   <div style="width: 100%; height: 100%">
     <GameComponent
-      v-model:modalVisible="modalVisible"
-      v-model:modalState="modalState"
-      :positionStyles="positionStyles"
-      :miscState="miscState"
-      :statisticState="statisticState"
-      :discardPileState="discardPileState"
-      :ballsState="ballsState"
-      :performMove="performMoveAndEmit"
-      :cardsState="cardsState"
-      :instructionsState="instructionsState"
-      :updateData="tutorialStepOutput?.updateData ?? null"
+      v-model:modalVisible="modalVisible" v-model:modalState="modalState" :positionStyles="positionStyles"
+      :miscState="miscState" :statisticState="statisticState" :discardPileState="discardPileState"
+      :ballsState="ballsState" :performMove="performMoveAndEmit" :cardsState="cardsState"
+      :instructionsState="instructionsState" :updateData="tutorialStepOutput?.updateData ?? null"
       @closeGame="closeGame()"
     />
     <GameTutorial
-      :tutorialStepOutput="tutorialStepOutput"
-      :loading="loading"
-      :display="displayTutorialOverlay"
-      :tutorialID="tutorialID"
-      :tutorialStep="tutorialStep"
-      @goForward="moveStep(1)"
-      @goBackward="moveStep(-1)"
-      @closeOverlay="displayTutorialOverlay = false"
-      @openOverlay="displayTutorialOverlay = true"
-      @quizEnded="tutorialStore.changeTutorialStepValue(socket, tutorialID, tutorialStep, true)"
-      @reset="resetStep"
+      :tutorialStepOutput="tutorialStepOutput" :loading="loading" :display="displayTutorialOverlay"
+      :tutorialID="tutorialID" :tutorialStep="tutorialStep" @goForward="moveStep(1)" @goBackward="moveStep(-1)"
+      @closeOverlay="displayTutorialOverlay = false" @openOverlay="displayTutorialOverlay = true"
+      @quizEnded="tutorialStore.changeTutorialStepValue(socket, tutorialID, tutorialStep, true)" @reset="resetStep"
     />
   </div>
 </template>
@@ -101,7 +87,10 @@ loadStep();
 async function loadStep() {
   loading.value = true;
   const res = await socket.emitWithAck(5000, 'tutorial:load', { tutorialID: tutorialID.value, tutorialStep: tutorialStep.value })
-  if (res.status !== 200 || res.data == null) { router.push({ name: 'TutorialOverview' }); return }
+  if (res.status !== 200 || res.data == null) {
+    router.push({ name: 'TutorialOverview' });
+    return
+  }
 
   tutorialStepOutput.value = res.data;
 
@@ -136,7 +125,11 @@ async function performMoveAndEmit(performMoveAction: performMoveAction) {
 
   const move = performMove(performMoveAction);
   const res = await socket.emitWithAck(5000, 'tutorial:postMove', { game: tutorialStepOutput.value.game, move })
-  if (res.status !== 200 || res.data == null) { router.push({ name: 'TutorialOverview' }); return }
+  if (res.status !== 200 || res.data == null) {
+    router.push({ name: 'TutorialOverview' });
+    return
+  }
+
   if (tutorialStepOutput.value != null) {
     tutorialStepOutput.value.game = res.data.game
     tutorialStepOutput.value.updateData = res.data.updateData
@@ -160,11 +153,11 @@ function checkDone() {
   const goal = tutorialStepOutput.value?.goal;
 
   return !(goal?.modalState != null && (modalVisible.value || goal?.modalState !== modalState.value)) &&
-  !(goal?.selectedCard != null && cardsState.selectedCard !== goal?.selectedCard) &&
-  !(goal?.selectedCard != null && cardsState.selectedCard !== goal?.selectedCard) &&
-  !(goal?.balls != null && !matchAnyArrayOfObject(ballsState.balls, goal.balls)) &&
-  !(goal?.aussetzenFlag != null && goal?.aussetzenFlag !== miscState.aussetzenFlag) &&
-  !(goal?.quiz != null || goal?.closeButton != null)
+    !(goal?.selectedCard != null && cardsState.selectedCard !== goal?.selectedCard) &&
+    !(goal?.selectedCard != null && cardsState.selectedCard !== goal?.selectedCard) &&
+    !(goal?.balls != null && !matchAnyArrayOfObject(ballsState.balls, goal.balls)) &&
+    !(goal?.aussetzenFlag != null && goal?.aussetzenFlag !== miscState.aussetzenFlag) &&
+    !(goal?.quiz != null || goal?.closeButton != null)
 }
 
 async function resetStep() {

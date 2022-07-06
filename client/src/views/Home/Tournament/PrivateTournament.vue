@@ -118,7 +118,11 @@ queryTournament()
 watch(() => props.id, () => queryTournament)
 async function queryTournament() {
   const res = await socket.emitWithAck(5000, 'tournament:private:get', { id: tournamentID.value })
-  if (res.data == null) { console.error('Could not query Tournament'); router.push({ name: 'TournamentOverview' }); return }
+  if (res.data == null) {
+    console.error('Could not query Tournament');
+    router.push({ name: 'TournamentOverview' });
+    return
+  }
   tournament.value = res.data
 }
 

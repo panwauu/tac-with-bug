@@ -174,8 +174,9 @@ async function updateHandler(): Promise<void> {
 
   props.miscState.setGamePlayer(props.updateData.gamePlayer)
 
-  const tacFirstRevertState =
-    props.discardPileState.discardPile.length > 0 && props.discardPileState.discardPile.length + 1 === props.updateData.discardPile.length && props.updateData.discardPile[props.updateData.discardPile.length - 1].substring(0, 3) === 'tac'
+  const tacFirstRevertState = props.discardPileState.discardPile.length > 0
+    && props.discardPileState.discardPile.length + 1 === props.updateData.discardPile.length
+    && props.updateData.discardPile[props.updateData.discardPile.length - 1].substring(0, 3) === 'tac'
     && !props.updateData.discardedFlag
     && !props.miscState.players[props.miscState.gamePlayer].active
 
@@ -184,7 +185,8 @@ async function updateHandler(): Promise<void> {
   props.miscState.setCoopCounter(props.updateData.coopCounter);
   props.miscState.setTradeDirection(props.updateData.players, props.updateData.tradeDirection === 1 ? 1 : -1);
   props.miscState.setPlayers(props.updateData.players);
-  props.miscState.setGameRunning(props.updateData.gameEnded, props.updateData.status, props.updateData.players, props.updateData.winningTeams, props.updateData.coopCounter, props.miscState.gamePlayer);
+  props.miscState.setGameRunning(props.updateData.gameEnded, props.updateData.status, props.updateData.players, props.updateData.winningTeams,
+    props.updateData.coopCounter, props.miscState.gamePlayer);
   props.miscState.setTimestamps(props.updateData.created, props.updateData.lastPlayed);
   props.positionStyles.setBallsColors(props.updateData.colors);
   props.statisticState.setStatistic(props.updateData.statistic, props.updateData.players, props.updateData.coopCounter, props.positionStyles.getHexColors());
@@ -192,7 +194,9 @@ async function updateHandler(): Promise<void> {
 
   if (tacFirstRevertState) {
     props.ballsState.updateBallsState(props.ballsState.priorBalls, props.ballsState.priorBalls);
-    await new Promise((resolve) => { setTimeout(() => { resolve(null) }, 1200) }) // 1.2s are also in CSS for balls
+    await new Promise((resolve) => {
+      setTimeout(() => { resolve(null) }, 1200)
+    }) // 1.2s are also in CSS for balls
   }
   props.ballsState.updateBallsState(props.updateData.balls, props.updateData.priorBalls);
   props.cardsState.updateCards(props.updateData.cards, props.updateData.ownCards);
@@ -254,14 +258,20 @@ onMounted(() => {
 useResizeObserver(gameViewRef, () => { onResize() });
 
 function onResize() {
-  if (gameViewRef.value == null) { console.error('gameViewRef not populated'); return }
+  if (gameViewRef.value == null) {
+    console.error('gameViewRef not populated');
+    return
+  }
 
   const gameViewBounding = gameViewRef.value.getBoundingClientRect();
   portraitMenu.value = getMenu(gameViewBounding.width > 600)
   gameBoardPortrait.value = gameViewBounding.height + 80 > gameViewBounding.width;
 
   const gameboard = document.getElementById('gameboard')
-  if (gameboard == null) { console.error('gameboard ref not populated'); return; }
+  if (gameboard == null) {
+    console.error('gameboard ref not populated');
+    return;
+  }
   const gameBoardSize = Math.max(gameboard.getBoundingClientRect().height, gameboard.getBoundingClientRect().width)
   gameViewRef.value.style.setProperty('--board-size-in-px', gameBoardSize === 0 ? '100vmin' : `${gameBoardSize}px`);
 }

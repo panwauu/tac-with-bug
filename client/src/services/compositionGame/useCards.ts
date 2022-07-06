@@ -156,7 +156,9 @@ export function useCards(ballsState: ballsStateType, miscState: miscStateType): 
             }
 
             // Handle cards
-            if (miscState.teufelFlag && miscState.players[(miscState.gamePlayer - 1 + miscState.nPlayers) % miscState.nPlayers].active && !miscState.players[miscState.gamePlayer].narrFlag[0]) {
+            if (miscState.teufelFlag &&
+                miscState.players[(miscState.gamePlayer - 1 + miscState.nPlayers) % miscState.nPlayers].active &&
+                !miscState.players[miscState.gamePlayer].narrFlag[0]) {
                 cardsState.cards = []
             } else if (miscState.players[miscState.gamePlayer]?.narrFlag[1]) {
                 cardsState.cards = []

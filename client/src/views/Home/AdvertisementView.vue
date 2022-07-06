@@ -59,7 +59,10 @@ import FunFactsCarousel from '@/components/FunFactsCarousel.vue';
 async function clickNewAccount() {
   await new Promise((resolve) => setTimeout(() => resolve(null), 100))
   const element = document.getElementById('topElementLoginButton')
-  if (element == null) { console.error('Login Button not found'); return }
+  if (element == null) {
+    console.error('Login Button not found');
+    return
+  }
   element.click()
 }
 
@@ -69,8 +72,14 @@ useResizeObserver(advertPageRef, (entries) => {
   const boundingBox = entries[0].target.getClientRects()[0]
   const width = entries[0].contentRect.width
   const height = window.innerHeight - boundingBox.y
-  if (entries[0].contentRect.width < 800) { showPortrait.value = true; return }
-  if (width / height < 1.5) { showPortrait.value = true; return }
+  if (entries[0].contentRect.width < 800) {
+    showPortrait.value = true;
+    return
+  }
+  if (width / height < 1.5) {
+    showPortrait.value = true;
+    return
+  }
   showPortrait.value = false
 })
 </script>
