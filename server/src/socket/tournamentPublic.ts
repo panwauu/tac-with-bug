@@ -79,11 +79,11 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
             teamName: Joi.string().required(),
         });
         const { error } = schema.validate(data);
-        if (error != null) { return }
+        if (error != null) { logger.error('JOI Error', error); return }
 
         try {
             const user = await getUser(pgPool, { id: socket.data.userID })
-            if (user.isErr()) { return }
+            if (user.isErr()) { logger.error(user.error); return }
 
             const joinTeamResult = await joinTeam(pgPool, data.tournamentID, socket.data.userID, user.value.username, data.teamName)
             if (joinTeamResult.isErr()) { logger.error(joinTeamResult.error); return }

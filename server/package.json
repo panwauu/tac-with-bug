@@ -9,8 +9,8 @@
   "scripts": {
     "start": "node --es-module-specifier-resolution=node ./dist/server/src/index.js",
     "devStart": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node ./dist/server/src/index.js",
-    "test": "jest --coverage --detectOpenHandles",
-    "testWatch": "jest --watchAll --coverage --detectOpenHandles",
+    "test": "jest --runInBand",
+    "testWatch": "jest --watchAll --runInBand",
     "tsc": "tsc",
     "tscWatch": "tsc --watch",
     "client": "openapi --input ./src/swagger.json --output ../client/src/generatedClient --useUnionTypes",

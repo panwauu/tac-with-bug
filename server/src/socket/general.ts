@@ -17,7 +17,7 @@ import { registerChannelHandlers } from './channel';
 
 export let nspGeneral: GeneralNamespace;
 
-export async function registerSocketNspGeneral(nsp: GeneralNamespace, pgPool: pg.Pool) {
+export function registerSocketNspGeneral(nsp: GeneralNamespace, pgPool: pg.Pool) {
     nspGeneral = nsp
 
     nsp.use(generalSocketIOAuthentication)

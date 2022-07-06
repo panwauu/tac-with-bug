@@ -2,24 +2,22 @@ import { ok, err, Result } from 'neverthrow';
 import type pg from 'pg';
 import { expectOneChangeToDatabase, notOneDatabaseChangeError } from '../dbUtils/dbHelpers';
 
-let tutorialLevelsResolve: ((value: number[] | PromiseLike<number[]>) => void)
-const tutorialLevels: Promise<number[]> = new Promise((resolve) => tutorialLevelsResolve = resolve)
+let tutorialLevels: number[] = []
 
 export async function loadTutorialLevels(pgPool: pg.Pool) {
     const progess = await getDefaultTutorialProgress(pgPool)
-    const tutorialLevelsResult = progess.map((e) => e.length)
-    tutorialLevelsResolve(tutorialLevelsResult)
+    tutorialLevels = progess.map((e) => e.length)
 }
 
 type validateTutorialIDAndStepError = 'TUTORIAL_ID_NOT_VALID' | 'TUTORIAL_STEP_NOT_VALID'
 async function validateTutorialIDAndStep(tutorialID: number, tutorialStep: number): Promise<Result<null, validateTutorialIDAndStepError>> {
-    if (!Number.isInteger(tutorialID) || tutorialID < 0 || tutorialID >= (await tutorialLevels).length) { return err('TUTORIAL_ID_NOT_VALID') }
-    if (!Number.isInteger(tutorialStep) || tutorialStep < 0 || tutorialStep >= (await tutorialLevels)[tutorialID]) { return err('TUTORIAL_STEP_NOT_VALID') }
+    if (!Number.isInteger(tutorialID) || tutorialID < 0 || tutorialID >= tutorialLevels.length) { return err('TUTORIAL_ID_NOT_VALID') }
+    if (!Number.isInteger(tutorialStep) || tutorialStep < 0 || tutorialStep >= tutorialLevels[tutorialID]) { return err('TUTORIAL_STEP_NOT_VALID') }
     return ok(null)
 }
 
 export async function getDefaultTutorialProgress(pgPool: pg.Pool): Promise<boolean[][]> {
-    const dbRes = await pgPool.query<{ tutorial: string }>('SELECT to_jsonb(column_default) as tutorial FROM information_schema.columns WHERE table_schema = \'public\' AND table_name = \'users\' AND column_name = \'tutorial\';')
+    const dbRes = await pgPool.query<{ tutorial: string }>(`SELECT to_jsonb(column_default) as tutorial FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'tutorial';`)
     if (dbRes.rowCount !== 1) { throw new Error('Tutorial progress default value could not be queried') }
     return JSON.parse(dbRes.rows[0].tutorial.substring(1, dbRes.rows[0].tutorial.length - 8))
 }
