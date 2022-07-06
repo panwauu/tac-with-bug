@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
-      - name: Install pg-digg
+      - name: Install pg-diff
         run: |
           npm install -g pg-diff-cli
       - name: Deploy - Heroku login credentials
@@ -51,4 +51,6 @@ jobs:
           cd server
           cd src
           cd dbUtils
+          chmod +x ./compareSchemata.sh
+          sed -i -e 's/\r$//' ./compareSchemata.sh
           ./compareSchemata.sh &> /dev/null
