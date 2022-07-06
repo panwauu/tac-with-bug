@@ -1,3 +1,12 @@
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
+
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=coverage)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
+
 [![TWB Logo](client/src/assets/TwbLogo.png)](https://tac-with-bug.herokuapp.com/)
 
 [Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is a online Multiplayer for the boardgame [TAC](https://shop.spiel-tac.de/Home). The game is a Vue webapp with a Node backend. Contributions are welcome.
