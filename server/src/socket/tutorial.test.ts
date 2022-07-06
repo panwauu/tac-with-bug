@@ -1,5 +1,5 @@
 import type { AckData, GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition';
-import { io, Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { TutorialStepOutput } from '../../../shared/types/typesTutorial';
 import { gameForPlay, updateDataType } from '../../../shared/types/typesDBgame';
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
@@ -11,7 +11,7 @@ describe('Tutorial Test Suite via Socket.io', () => {
 
         beforeAll(async () => {
             userWithSocket = (await getUsersWithSockets({ n: 1 }))[0]
-            socket = io('http://localhost:1234')
+            socket = io('http://localhost:1234') as any
             await new Promise((resolve) => { socket.on('connect', () => { resolve(null) }) })
         })
 
@@ -64,15 +64,15 @@ describe('Tutorial Test Suite via Socket.io', () => {
         })
 
         test('Progress should not be saved with missing data', async () => {
-            const responseWithoutDone = await new Promise<AckData<any>>((resolve) => (userWithSocket.socket as Socket).emit('tutorial:changeTutorialStep', { tutorialID: 0, tutorialStep: 0 }, (data: any) => { resolve(data) }))
+            const responseWithoutDone = await new Promise<AckData<any>>((resolve) => (userWithSocket.socket as any).emit('tutorial:changeTutorialStep', { tutorialID: 0, tutorialStep: 0 }, (data: any) => { resolve(data) }))
             expect(responseWithoutDone.status).toBe(500)
             expect(responseWithoutDone.error.details[0].message).toContain('done')
 
-            const responseWithoutID = await new Promise<AckData<any>>((resolve) => (userWithSocket.socket as Socket).emit('tutorial:changeTutorialStep', { tutorialStep: 0, done: false }, (data: any) => { resolve(data) }))
+            const responseWithoutID = await new Promise<AckData<any>>((resolve) => (userWithSocket.socket as any).emit('tutorial:changeTutorialStep', { tutorialStep: 0, done: false }, (data: any) => { resolve(data) }))
             expect(responseWithoutID.status).toBe(500)
             expect(responseWithoutID.error.details[0].message).toContain('tutorialID')
 
-            const responseWithoutStep = await new Promise<AckData<any>>((resolve) => (userWithSocket.socket as Socket).emit('tutorial:changeTutorialStep', { tutorialID: 0, done: false }, (data: any) => { resolve(data) }))
+            const responseWithoutStep = await new Promise<AckData<any>>((resolve) => (userWithSocket.socket as any).emit('tutorial:changeTutorialStep', { tutorialID: 0, done: false }, (data: any) => { resolve(data) }))
             expect(responseWithoutStep.status).toBe(500)
             expect(responseWithoutStep.error.details[0].message).toContain('tutorialStep')
         })

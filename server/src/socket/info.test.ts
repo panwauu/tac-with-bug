@@ -32,7 +32,7 @@ describe('Info sest suite via socket.io', () => {
 
     test('On new connection the number of connections should be sent', async () => {
         const updatePromise = new Promise<any>((resolve) => { usersWithSockets[1].socket.once('info:serverConnections', (data) => { resolve(data) }) })
-        socket = io('http://localhost:1234')
+        socket = io('http://localhost:1234') as any
         const connectPromise = new Promise((resolve) => { socket.once('connect', () => { resolve(null) }) })
         const unauthUpdatePromise = new Promise<any>((resolve) => { socket.once('info:serverConnections', (data) => { resolve(data) }) })
 

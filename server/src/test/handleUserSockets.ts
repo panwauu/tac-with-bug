@@ -40,7 +40,7 @@ async function getUser(id: number): Promise<User> {
 async function getUserWithSocket(id: number): Promise<UserWithSocket> {
     const user = await getUser(id);
 
-    const clientSocket = io('http://localhost:1234', { auth: { token: user.token }, reconnection: false, forceNew: true, autoConnect: false });
+    const clientSocket = io('http://localhost:1234', { auth: { token: user.token }, reconnection: false, forceNew: true, autoConnect: false }) as any;
     await connectSocket(clientSocket)
     const result: UserWithSocket = { ...user, socket: clientSocket }
     return result

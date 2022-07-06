@@ -9,7 +9,7 @@ describe('Authentication Test Suite via Socket.io', () => {
 
     beforeAll(async () => {
         usersWithSockets = await getUsersWithSockets({ n: 2 });
-        socket = io('http://localhost:1234')
+        socket = io('http://localhost:1234') as any
         await new Promise((resolve) => { socket.on('connect', () => { resolve(null) }) })
     })
 
