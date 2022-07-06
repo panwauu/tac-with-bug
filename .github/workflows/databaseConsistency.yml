@@ -1,10 +1,6 @@
 name: Check database consistency
 
-on:
-  push:
-    branches:
-      - master
-      - main
+on: pull_request
 
 jobs:
   build:
