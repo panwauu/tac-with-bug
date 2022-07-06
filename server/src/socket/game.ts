@@ -1,5 +1,5 @@
 import type pg from 'pg'
-import type { gameForPlay } from '../sharedTypes/typesDBgame'
+import type { GameForPlay } from '../sharedTypes/typesDBgame'
 import type { GameSocketS, GameNamespace } from '../sharedTypes/GameNamespaceDefinition'
 
 import logger from '../helpers/logger'
@@ -90,7 +90,7 @@ async function emitOnlinePlayersEvents(pgPool: pg.Pool, nsp: GameNamespace, game
   initializeInfo()
 }
 
-async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePlayer: number, game: gameForPlay) {
+async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePlayer: number, game: GameForPlay) {
   if (game.status === 'running' && game.game.gameEnded === false && !game.game.cards.players.some((player) => player.length > 0)) {
     const timeSinceLastPlayed = new Date().getTime() - new Date(game.lastPlayed).getTime()
     const delay = Math.max(Math.min(2000 - timeSinceLastPlayed, 2000), 0)
@@ -118,7 +118,7 @@ export function isPlayingInGame(userID: number, gameID: number) {
   return [...nsp.sockets.values()].find((s) => s.data.userID === userID && s.data.gameID === gameID) != null
 }
 
-export function sendUpdatesOfGameToPlayers(game: gameForPlay) {
+export function sendUpdatesOfGameToPlayers(game: GameForPlay) {
   getSocketsInGame(nsp, game.id).forEach((socket) => {
     socket.emit('update', getPlayerUpdateFromGame(game, socket.data.gamePlayer ?? -1))
   })

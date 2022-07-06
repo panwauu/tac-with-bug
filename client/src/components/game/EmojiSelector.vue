@@ -63,12 +63,12 @@
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 
-import type { miscStateType } from '@/services/compositionGame/useMisc'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { computed, ref } from 'vue'
 import { isEmoji, useMessagesStore } from '@/store/messages'
 import { useStorage } from '@vueuse/core'
 
-const props = defineProps<{ miscState: miscStateType }>()
+const props = defineProps<{ miscState: MiscStateType }>()
 const emit = defineEmits(['close'])
 
 const messagesStore = useMessagesStore()

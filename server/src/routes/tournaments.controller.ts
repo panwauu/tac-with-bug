@@ -4,7 +4,7 @@ import { Controller, Get, Post, Body, Route, Request, Security, Query, TsoaRespo
 import { createTournament } from '../services/tournamentsManualEditing'
 import { endSignupIfComplete } from '../services/tournamentsRegister'
 import { getDifferentName } from '../services/SweetNameGenerator'
-import { publicTournament } from '../sharedTypes/typesTournament'
+import { PublicTournament } from '../sharedTypes/typesTournament'
 import { getPublicTournamentByID } from '../services/tournamentsPublic'
 import { registerJobsForOneTournament } from '../services/scheduledTasks'
 
@@ -36,7 +36,7 @@ export class TournamentsController extends Controller {
     @Request() request: express.Request,
     @Body() requestBody: { title: string; begin: string; deadline: string; creationDates: string[]; secondsPerGame: number; nTeams: number },
     @Res() serverError: TsoaResponse<500, { message: string; details?: any }>
-  ): Promise<publicTournament> {
+  ): Promise<PublicTournament> {
     const tournament = await createTournament(
       request.app.locals.sqlClient,
       requestBody.title,

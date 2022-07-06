@@ -150,13 +150,13 @@ import Button from 'primevue/button'
 import Crown from '@/components/icons/CrownSymbol.vue'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
-import type { privateTournament, publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import type { PrivateTournament, PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { username } from '@/services/useUser'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n'
 
-const props = defineProps<{ tournament: privateTournament | publicTournament }>()
+const props = defineProps<{ tournament: PrivateTournament | PublicTournament }>()
 const socket = injectStrict(SocketKey)
 const toast = useToast()
 

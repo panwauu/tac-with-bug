@@ -46,14 +46,14 @@ import SelectButton from 'primevue/selectbutton'
 import RadioButton from 'primevue/radiobutton'
 import SettingsAudioVolume from '../SettingsView/SettingsAudioVolume.vue'
 
-import type { miscStateType } from '@/services/compositionGame/useMisc'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { computed } from 'vue'
 import { i18n } from '@/services/i18n'
 
 import { useSettingsStore } from '@/store/settings'
 const settingsStore = useSettingsStore()
 
-const props = defineProps<{ nPlayers: number; miscState: miscStateType }>()
+const props = defineProps<{ nPlayers: number; miscState: MiscStateType }>()
 
 const position = computed<number>({
   get() {

@@ -1,13 +1,13 @@
-import type { ballsType } from './typesBall'
-import type { gameForPlay } from './typesDBgame'
-import { updateDataType } from './typesDBgame'
+import type { BallsType } from './typesBall'
+import type { GameForPlay } from './typesDBgame'
+import { UpdateDataType } from './typesDBgame'
 
 export interface TutorialStepOutput extends TutorialStepDefinition {
-  updateData: updateDataType
+  updateData: UpdateDataType
 }
 
 export interface TutorialStepDefinition {
-  game: gameForPlay
+  game: GameForPlay
   config: Config
   goal?: Goal | null
 }
@@ -19,7 +19,7 @@ interface Config {
 interface Goal {
   modalState?: string | null
   selectedCard?: number | string
-  balls?: ballsType[] | null
+  balls?: BallsType[] | null
   aussetzenFlag?: boolean | null
   quiz?: Quiz | null
   closeButton?: boolean | null

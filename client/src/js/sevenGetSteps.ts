@@ -1,8 +1,8 @@
 import * as tBall from '@/../../server/src/sharedTypes/typesBall'
 import * as tCard from '../@types/typesCard'
-import { discardElement } from '@/services/compositionGame/useDiscardPile'
+import { DiscardElement } from '@/services/compositionGame/useDiscardPile'
 
-export function getRemainingMoves(card: tCard.playerCard, balls: tBall.ballsType, nBall: number, newPosition: number, discardPile: discardElement[]): number {
+export function getRemainingMoves(card: tCard.PlayerCard, balls: tBall.BallsType, nBall: number, newPosition: number, discardPile: DiscardElement[]): number {
   const lastNonTacCard = getLastNonTacCard(discardPile)
 
   let remainingMoves = 0
@@ -20,7 +20,7 @@ export function getRemainingMoves(card: tCard.playerCard, balls: tBall.ballsType
   return remainingMoves
 }
 
-function getLastNonTacCard(discardPile: discardElement[]): discardElement | undefined {
+function getLastNonTacCard(discardPile: DiscardElement[]): DiscardElement | undefined {
   for (let i = discardPile.length - 1; i >= 0; i--) {
     if (discardPile[i].cardTitle !== 'tac' && discardPile[i].cardTitle !== 'narr') {
       return discardPile[i]
@@ -28,7 +28,7 @@ function getLastNonTacCard(discardPile: discardElement[]): discardElement | unde
   }
   return undefined
 }
-function sevenReconstructPath(balls: tBall.ballsType, nBall: number, goalPosition: number) {
+function sevenReconstructPath(balls: tBall.BallsType, nBall: number, goalPosition: number) {
   // Returns the path a ball with 7 can have used with start and End -> returns undefined if not possible
   let startPaths = [[balls[nBall].position]]
   const endPaths: number[][] = []
@@ -52,7 +52,7 @@ function sevenReconstructPath(balls: tBall.ballsType, nBall: number, goalPositio
   return finalPath
 }
 
-function moveOneStep(balls: tBall.ballsType, nBall: number, ballPosition: number, direction: number, cardNumber: number) {
+function moveOneStep(balls: tBall.BallsType, nBall: number, ballPosition: number, direction: number, cardNumber: number) {
   if (ballPosition < ballStart(0, balls)) {
     return []
   }
@@ -117,15 +117,15 @@ function moveOneStep(balls: tBall.ballsType, nBall: number, ballPosition: number
   return resultingPositions
 }
 
-function ballStart(nBall: number, balls: tBall.ballsType) {
+function ballStart(nBall: number, balls: tBall.BallsType) {
   //start: 4 * nPlayers + nPlayer * positionsBetweenStarts,
   return balls.length + ballPlayer(nBall) * getPositionsBetweenStarts(balls)
 }
-function ballGoal(nBall: number, balls: tBall.ballsType) {
+function ballGoal(nBall: number, balls: tBall.BallsType) {
   //goal: 4 * nPlayers + nPlayers * positionsBetweenStarts + nPlayer * 4,
   return balls.length + (balls.length / 4) * getPositionsBetweenStarts(balls) + ballPlayer(nBall) * 4
 }
-function getPositionsBetweenStarts(balls: tBall.ballsType) {
+function getPositionsBetweenStarts(balls: tBall.BallsType) {
   if (balls.length !== 16 && balls.length !== 24) {
     throw 'Wrong balls length'
   }

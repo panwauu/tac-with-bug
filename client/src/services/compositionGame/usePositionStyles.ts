@@ -3,20 +3,20 @@ import { reactive, watch, onBeforeUnmount } from 'vue'
 import { positionStyles6, buildStyles } from '@/js/buildCells'
 import { getCircleStart, getCircleHouse, getPlayerCards, getPlayerPicture, getPlayerName, getCoopCardCounter, getDeckPositions } from '@/js/getAnnotationStyles'
 import { getNRotation } from '@/js/rotateBoard'
-import { positionStyle } from '@/js/buildCells'
-import { miscStateType } from './useMisc'
+import { PositionStyle } from '@/js/buildCells'
+import { MiscStateType } from './useMisc'
 import { useSettingsStore } from '../../store/settings'
 
-export interface positionStylesState {
+export interface PositionStylesState {
   initialized: boolean
   turned?: boolean
   ballsColors?: string[]
   nRotate: number
-  positionStyles?: positionStyle[]
+  positionStyles?: PositionStyle[]
   stylePositionStart?: string[]
   stylePositionHouse?: string[]
   stylePositionCards?: string[]
-  stylePositionBalls?: positionStyle[]
+  stylePositionBalls?: PositionStyle[]
   stylePositionPictures?: string[]
   stylePositionNames?: string[]
   stylePositionCoop?: string
@@ -41,7 +41,7 @@ export const colorTranslator: { [key: string]: string } = {
   yellow: '#FFFF0080',
 }
 
-export function usePositionStyles(miscState: miscStateType): positionStylesState {
+export function usePositionStyles(miscState: MiscStateType): PositionStylesState {
   const onResize = () => {
     const gameViewBox = document.getElementById('gameView')?.getBoundingClientRect()
     const width = gameViewBox?.width ?? window.innerWidth
@@ -57,7 +57,7 @@ export function usePositionStyles(miscState: miscStateType): positionStylesState
 
   const settingsStore = useSettingsStore()
 
-  const positionStyles: positionStylesState = reactive({
+  const positionStyles: PositionStylesState = reactive({
     initialized: false,
     turned: undefined,
     nRotate: 0,

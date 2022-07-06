@@ -1,20 +1,20 @@
-import { ballActions } from './typesBall'
+import { BallActions } from './typesBall'
 
-export interface cardsType {
+export interface CardsType {
   dealingPlayer: number
   discardPlayer: number
   discardedFlag: boolean // Was the last card discarded?
-  deck: Array<cardType>
-  discardPile: Array<cardType>
-  players: Array<Array<cardType>>
+  deck: Array<CardType>
+  discardPile: Array<CardType>
+  players: Array<Array<CardType>>
   meisterVersion: boolean
 }
 
-export type cardType = string
+export type CardType = string
 
-export interface playerCard {
+export interface PlayerCard {
   possible: boolean
   textAction: string
-  ballActions: ballActions
-  title: cardType
+  ballActions: BallActions
+  title: CardType
 }

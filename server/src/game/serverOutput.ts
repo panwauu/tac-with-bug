@@ -1,10 +1,10 @@
 import * as dbGame from '../sharedTypes/typesDBgame'
 import * as tCard from '../sharedTypes/typesCard'
-import { player } from '../sharedTypes/typesPlayers'
+import { Player } from '../sharedTypes/typesPlayers'
 import { game } from './game'
-import type { updateDataType } from '../sharedTypes/typesDBgame'
+import type { UpdateDataType } from '../sharedTypes/typesDBgame'
 
-export function getPlayerUpdateFromGame(game: dbGame.gameForPlay, gamePlayer: number): updateDataType {
+export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: number): UpdateDataType {
   return {
     gamePlayer: gamePlayer,
     tournamentID: game.publicTournamentId,
@@ -36,9 +36,9 @@ export function getPlayerUpdateFromGame(game: dbGame.gameForPlay, gamePlayer: nu
 }
 
 function getPlayers(game: game, names: string[]) {
-  const players: player[] = []
+  const players: Player[] = []
   for (let i = 0; i < game.cards.players.length; i++) {
-    const player: player = {
+    const player: Player = {
       name: names ? names[i] : 'Player ' + i.toString(),
       remainingCards: game.cards.players[i].length,
       active: game.activePlayer === i,
@@ -58,7 +58,7 @@ function getPlayers(game: game, names: string[]) {
   return players
 }
 
-function createCardsWithMovesForUnactivePlayer(playerCards: string[], textAction?: 'tauschen' | 'narr'): tCard.playerCard[] {
+function createCardsWithMovesForUnactivePlayer(playerCards: string[], textAction?: 'tauschen' | 'narr'): tCard.PlayerCard[] {
   return playerCards.map((card) => {
     return {
       title: card,
@@ -69,7 +69,7 @@ function createCardsWithMovesForUnactivePlayer(playerCards: string[], textAction
   })
 }
 
-function getCards(game: game, player: number): tCard.playerCard[] {
+function getCards(game: game, player: number): tCard.PlayerCard[] {
   if (player < 0 || player >= game.nPlayers) {
     return []
   }
@@ -85,7 +85,7 @@ function getCards(game: game, player: number): tCard.playerCard[] {
   return createCardsWithMovesForUnactivePlayer(game.cards.players[player])
 }
 
-export function getStatus(game: dbGame.gameForPlay) {
+export function getStatus(game: dbGame.GameForPlay) {
   let status = 'running'
   if (game.game.gameEnded) {
     status = 'won'

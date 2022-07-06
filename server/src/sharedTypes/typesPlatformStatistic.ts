@@ -1,25 +1,25 @@
-export interface platformStats {
-  weekDataset: weekDataset
-  dayDataset: dayDataset
-  hourDataset: hourDataset
-  activityHeatmap: activityHeatmap
-  localeDataset: localeDataset
-  userAgentDataset: userAgentAnalysisData
+export interface PlatformStats {
+  weekDataset: WeekDatasetType
+  dayDataset: DayDatasetType
+  hourDataset: HourDatasetType
+  activityHeatmap: ActivityHeatmap
+  localeDataset: LocaleDataset
+  userAgentDataset: UserAgentAnalysisData
 }
 
-export type hourDataset = number[][]
-export type dayDataset = number[][]
-export interface weekDataset {
-  data: weekDatasetData
+export type HourDatasetType = number[][]
+export type DayDatasetType = number[][]
+export interface WeekDatasetType {
+  data: WeekDatasetDataType
   passedRatio: number[]
 }
-export interface weekDatasetData {
+export interface WeekDatasetDataType {
   [key: string]: { [key: string]: number[] }
 } // [users, games, active users]
-export type activityHeatmap = number[][]
-export type localeDataset = Array<{ locale: string; nUsers: number }>
+export type ActivityHeatmap = number[][]
+export type LocaleDataset = Array<{ locale: string; nUsers: number }>
 
-export interface platformFunFacts {
+export interface PlatformFunFacts {
   nGames4: number
   nGames6: number
   nGamesTeam: number
@@ -36,7 +36,7 @@ export interface platformFunFacts {
   nColorBlind: number
 }
 
-export interface userAgentAnalysisData {
+export interface UserAgentAnalysisData {
   deviceTypes: Record<string, number>
   browserNames: Record<string, number>
   osNames: Record<string, number>

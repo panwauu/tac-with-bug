@@ -1,5 +1,5 @@
 import type pg from 'pg'
-import type { chatElement, chatMessage } from '../sharedTypes/chat'
+import type { ChatElement, ChatMessage } from '../sharedTypes/chat'
 
 import { err, ok, Result } from 'neverthrow'
 import { maxUsersInChat } from '../sharedDefinitions/chat'
@@ -13,8 +13,8 @@ export async function getUsersInChat(pgPool: pg.Pool, chatid: number) {
   return userres.rows.map((r) => r.userid)
 }
 
-export type createChatError = 'NORMAL_CHAT_NEEDS_TWO_USERS' | 'CHAT_DOES_ALREADY_EXIST' | 'CHAT_COULD_NOT_BE_CREATED'
-export async function createChat(pgPool: pg.Pool, userids: number[], title: string | null): Promise<Result<number, createChatError>> {
+export type CreateChatError = 'NORMAL_CHAT_NEEDS_TWO_USERS' | 'CHAT_DOES_ALREADY_EXIST' | 'CHAT_COULD_NOT_BE_CREATED'
+export async function createChat(pgPool: pg.Pool, userids: number[], title: string | null): Promise<Result<number, CreateChatError>> {
   if (title == null && userids.length !== 2) {
     return err('NORMAL_CHAT_NEEDS_TWO_USERS')
   }
@@ -53,8 +53,8 @@ export async function changeGroupName(pgPool: pg.Pool, chatid: number, title: st
   return ok(null)
 }
 
-export type addUserToChatError = 'CHAT_NOT_FOUND' | 'USER_LIMIT_IS_ALREADY_REACHED' | 'CAN_ONLY_ADD_TO_GROUP_CHAT' | 'USER_COULD_NOT_BE_ADDED'
-export async function addUserToChat(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<number[], addUserToChatError>> {
+export type AddUserToChatError = 'CHAT_NOT_FOUND' | 'USER_LIMIT_IS_ALREADY_REACHED' | 'CAN_ONLY_ADD_TO_GROUP_CHAT' | 'USER_COULD_NOT_BE_ADDED'
+export async function addUserToChat(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<number[], AddUserToChatError>> {
   const query = `SELECT chats.group_chat, array_agg(users_to_chats.userid) as userids FROM chats 
     JOIN users_to_chats ON chats.id = users_to_chats.chatid WHERE chats.id = $1 GROUP BY chats.id;`
   const res = await pgPool.query<{ group_chat: boolean; userids: number[] }>(query, [chatid])
@@ -75,8 +75,8 @@ export async function addUserToChat(pgPool: pg.Pool, userid: number, chatid: num
   return ok(res.rows[0].userids.concat(userid))
 }
 
-export type leaveChatError = 'CHAT_COULD_NOT_BE_LEFT'
-export async function leaveChat(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<null, leaveChatError>> {
+export type LeaveChatError = 'CHAT_COULD_NOT_BE_LEFT'
+export async function leaveChat(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<null, LeaveChatError>> {
   const res = await pgPool.query('DELETE FROM users_to_chats WHERE userid = $1 AND chatid = $2 RETURNING *;', [userid, chatid])
   if (res.rows.length !== 1) {
     return err('CHAT_COULD_NOT_BE_LEFT')
@@ -84,8 +84,8 @@ export async function leaveChat(pgPool: pg.Pool, userid: number, chatid: number)
   return ok(null)
 }
 
-export type insertChatMessageError = 'SENDER_IS_NOT_PART_OF_CHAT'
-export async function insertChatMessage(pgPool: pg.Pool, sender_user_id: number, chatid: number, body: string): Promise<Result<number[], insertChatMessageError>> {
+export type InsertChatMessageError = 'SENDER_IS_NOT_PART_OF_CHAT'
+export async function insertChatMessage(pgPool: pg.Pool, sender_user_id: number, chatid: number, body: string): Promise<Result<number[], InsertChatMessageError>> {
   const users_in_chat = await getUsersInChat(pgPool, chatid)
   if (users_in_chat.every((userid) => userid !== sender_user_id)) {
     return err('SENDER_IS_NOT_PART_OF_CHAT')
@@ -109,8 +109,8 @@ export async function markChatAsRead(pgPool: pg.Pool, userid: number, chatid: nu
   await pgPool.query(query, [userid, chatid])
 }
 
-export type loadChatError = 'USER_NOT_PART_OF_CHAT'
-export async function loadChat(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<chatMessage[], loadChatError>> {
+export type LoadChatError = 'USER_NOT_PART_OF_CHAT'
+export async function loadChat(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<ChatMessage[], LoadChatError>> {
   const users_in_chat = await getUsersInChat(pgPool, chatid)
   if (!users_in_chat.includes(userid)) {
     return err('USER_NOT_PART_OF_CHAT')
@@ -130,7 +130,7 @@ export async function loadChat(pgPool: pg.Pool, userid: number, chatid: number):
   return ok(res.rows)
 }
 
-export async function loadChatOverview(pgPool: pg.Pool, userid: number): Promise<chatElement[]> {
+export async function loadChatOverview(pgPool: pg.Pool, userid: number): Promise<ChatElement[]> {
   const query = `WITH
       chatids (id) AS ( SELECT chatid FROM users_to_chats WHERE userid=$1 )
     SELECT 

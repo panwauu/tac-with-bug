@@ -1,5 +1,5 @@
-import type { ballsType, ballType, moveTextOrBall } from '../../sharedTypes/typesBall'
-import type { playerCard } from '../../sharedTypes/typesCard'
+import type { BallsType, BallType, MoveTextOrBall } from '../../sharedTypes/typesBall'
+import type { PlayerCard } from '../../sharedTypes/typesCard'
 import type pg from 'pg'
 
 import { cloneDeep } from 'lodash'
@@ -21,7 +21,7 @@ export function createLookupKey(gameInst: game): string {
   return key
 }
 
-export function encodeActionForLookup(action: moveTextOrBall, cardsWithMoves: playerCard[]) {
+export function encodeActionForLookup(action: MoveTextOrBall, cardsWithMoves: PlayerCard[]) {
   let nAction = -1
 
   let nTextActions = 0
@@ -54,7 +54,7 @@ export function encodeActionForLookup(action: moveTextOrBall, cardsWithMoves: pl
   return { nActions: nBallActions + nTextActions, nPerformed: 1, nAction: nAction }
 }
 
-export function decodeActionForLookup(lookupValue: lookup, cardsWithMoves: playerCard[]): moveTextOrBall {
+export function decodeActionForLookup(lookupValue: Lookup, cardsWithMoves: PlayerCard[]): MoveTextOrBall {
   const actionIndex = lookupValue.actions.indexOf(Math.max(...lookupValue.actions))
 
   let nActions = 0
@@ -90,7 +90,7 @@ export async function clearLookup(pgPool: pg.Pool) {
   await pgPool.query('DELETE FROM lookup;')
 }
 
-export async function saveToLookup(key: string, value: lookupValue, pgPool: pg.Pool) {
+export async function saveToLookup(key: string, value: LookupValue, pgPool: pg.Pool) {
   const actionsRes = await queryFromLookup(key, pgPool)
   let actions = actionsRes?.actions ?? null
 
@@ -109,21 +109,21 @@ export async function queryFromLookup(key: string, pgPool: pg.Pool) {
   return res.rowCount === 0 ? null : { actions: res.rows[0].actions }
 }
 
-function ballsToString(ballInst: ballsType) {
+function ballsToString(ballInst: BallsType) {
   return ballInst.map((b) => ballToString(b)).join(';')
 }
 
-function ballToString(ball: ballType) {
+function ballToString(ball: BallType) {
   return ball.player.toString() + ball.position.toString() + ball.state
 }
 
-interface lookupValue {
+interface LookupValue {
   nActions: number
   nPerformed: number
   nAction: number
 }
 
-interface lookup {
+interface Lookup {
   actions: number[]
 }
 
@@ -136,10 +136,10 @@ interface lookup {
     aussetzenFlag: boolean;
     teufelFlag: boolean;
 
-    balls: tBall.ballsType;
-    priorBalls: tBall.ballsType; -> ONLY WITH TAC
+    balls: tBall.BallsType;
+    priorBalls: tBall.BallsType; -> ONLY WITH TAC
 
-    cards: tCard.cardsType; -> ONLY OWN CARDS cards.players[0] after shift
+    cards: tCard.CardsType; -> ONLY OWN CARDS cards.players[0] after shift
 
     sevenChosenPlayer: number | null;
 
@@ -150,12 +150,12 @@ interface lookup {
     tradeDirection: number; -> ONLY IF nTeams = 3
 
     activePlayer: number; -> Needs to be converted
-    cardsWithMoves: tCard.playerCard[];
+    cardsWithMoves: tCard.PlayerCard[];
     // IRRELEVANT
     gameEnded: boolean;
-    statistic: tStatistic.gameStatistic[];
+    statistic: tStatistic.GameStatistic[];
     teams: number[][];
-    tradeCards: tCard.cardType[];
+    tradeCards: tCard.CardType[];
 */
 
 async function test() {

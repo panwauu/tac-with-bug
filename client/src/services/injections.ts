@@ -1,11 +1,11 @@
 import type { GeneralSocketC } from '@/services/socket'
-import type { gamesSummary } from './useGamesSummary'
+import type { GamesSummary } from './useGamesSummary'
 import { InjectionKey, inject } from 'vue'
-import { friendsState } from './useFriends'
+import { FriendsState } from './useFriends'
 
 export const SocketKey: InjectionKey<GeneralSocketC> = Symbol('socket')
-export const GamesSummaryKey: InjectionKey<gamesSummary> = Symbol('gamesSummary')
-export const FriendsStateKey: InjectionKey<friendsState> = Symbol('friendsState')
+export const GamesSummaryKey: InjectionKey<GamesSummary> = Symbol('gamesSummary')
+export const FriendsStateKey: InjectionKey<FriendsState> = Symbol('friendsState')
 
 export function injectStrict<T>(key: InjectionKey<T>, fallback?: T): T {
   const resolved = inject(key, fallback)

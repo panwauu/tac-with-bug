@@ -1,14 +1,14 @@
-import type { friend } from '@/../../server/src/sharedTypes/typesFriends'
+import type { Friend } from '@/../../server/src/sharedTypes/typesFriends'
 import type { GeneralSocketC } from '@/services/socket'
 import type { UnwrapNestedRefs } from '@/../node_modules/@vue/reactivity/dist/reactivity'
 import { reactive, onBeforeUnmount, computed, ComputedRef } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n'
 
-export interface friendsStateNonReactive {
-  friends: friend[]
+export interface FriendsStateNonReactive {
+  friends: Friend[]
   resetFriends: () => void
-  setFriends: (data: friend[]) => void
+  setFriends: (data: Friend[]) => void
   friendshipStatus: (username: string) => 'done' | 'to' | 'from' | 'none'
   request: (username: string) => void
   confirm: (username: string) => void
@@ -18,9 +18,9 @@ export interface friendsStateNonReactive {
   numberOpenRequests: ComputedRef<number>
 }
 
-export type friendsState = UnwrapNestedRefs<friendsStateNonReactive>
+export type FriendsState = UnwrapNestedRefs<FriendsStateNonReactive>
 
-export function userFriends(socket: GeneralSocketC): friendsState {
+export function userFriends(socket: GeneralSocketC): FriendsState {
   const toast = useToast()
 
   function errorToast() {
@@ -32,7 +32,7 @@ export function userFriends(socket: GeneralSocketC): friendsState {
     })
   }
 
-  const friendsState: friendsState = reactive<friendsStateNonReactive>({
+  const friendsState: FriendsState = reactive<FriendsStateNonReactive>({
     friends: [],
     resetFriends: () => {
       friendsState.friends = []

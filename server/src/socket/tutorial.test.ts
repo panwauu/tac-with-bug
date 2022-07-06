@@ -1,7 +1,7 @@
 import type { AckData, GeneralSocketC } from '../sharedTypes/GeneralNamespaceDefinition'
 import { io } from 'socket.io-client'
 import { TutorialStepOutput } from '../sharedTypes/typesTutorial'
-import { gameForPlay, updateDataType } from '../sharedTypes/typesDBgame'
+import { GameForPlay, UpdateDataType } from '../sharedTypes/typesDBgame'
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
 
@@ -236,14 +236,14 @@ describe('Tutorial Test Suite via Socket.io', () => {
         throw new Error('')
       }
 
-      const responseInvalid = await new Promise<AckData<{ game: gameForPlay; updateData: updateDataType }>>((resolve) =>
+      const responseInvalid = await new Promise<AckData<{ game: GameForPlay; updateData: UpdateDataType }>>((resolve) =>
         userWithSocket.socket.emit('tutorial:postMove', { game: data.game, move: [0, 1, 0, 60] }, (data) => {
           resolve(data)
         })
       )
       expect(responseInvalid.status).toBe(500)
 
-      const response = await new Promise<AckData<{ game: gameForPlay; updateData: updateDataType }>>((resolve) =>
+      const response = await new Promise<AckData<{ game: GameForPlay; updateData: UpdateDataType }>>((resolve) =>
         userWithSocket.socket.emit('tutorial:postMove', { game: data.game, move: [0, 1, 0, 16] }, (data) => {
           resolve(data)
         })

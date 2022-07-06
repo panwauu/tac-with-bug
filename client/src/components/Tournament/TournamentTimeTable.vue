@@ -28,9 +28,9 @@
 import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
 
-import type { publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import type { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 
-defineProps<{ tournament: publicTournament }>()
+defineProps<{ tournament: PublicTournament }>()
 
 function getLongTimeString(ts: string) {
   return new Date(ts).toLocaleString(undefined, {

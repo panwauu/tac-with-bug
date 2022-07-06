@@ -1,11 +1,11 @@
 import type pg from 'pg'
 import { cloneDeep } from 'lodash'
-import { capturedType } from './capture'
+import { CapturedType } from './capture'
 import logger from '../helpers/logger'
 import { repeatGame } from '../test/captureCompare'
 
 export async function sanitizeGameCapture(pgPool: pg.Pool, gameID: number, checkOnlyLastLine?: boolean) {
-  const res = await pgPool.query<{ id: number; game: capturedType[] }>('SELECT id, game FROM savegames WHERE id = $1;', [gameID])
+  const res = await pgPool.query<{ id: number; game: CapturedType[] }>('SELECT id, game FROM savegames WHERE id = $1;', [gameID])
   if (res.rows.length === 0) {
     return
   }
@@ -21,11 +21,11 @@ export async function sanitizeGameCapture(pgPool: pg.Pool, gameID: number, check
   return changed
 }
 
-function removeLinesFromGameCapture(game: capturedType[], linesToRemove: number[]) {
+function removeLinesFromGameCapture(game: CapturedType[], linesToRemove: number[]) {
   ;[...new Set(linesToRemove)].sort((a, b) => b - a).forEach((i) => game.splice(i, 1))
 }
 
-function removeDuplicateRows(game: capturedType[], checkOnlyLastLine?: boolean): boolean {
+function removeDuplicateRows(game: CapturedType[], checkOnlyLastLine?: boolean): boolean {
   const linesToRemove: number[] = []
   const iStart = checkOnlyLastLine ? Math.max(0, game.length - 2) : 0
   for (let i = iStart; i < game.length - 1; i++) {
@@ -39,7 +39,7 @@ function removeDuplicateRows(game: capturedType[], checkOnlyLastLine?: boolean):
   return linesToRemove.length > 0
 }
 
-function correctTauschen(game: capturedType[], checkOnlyLastLine?: boolean): boolean {
+function correctTauschen(game: CapturedType[], checkOnlyLastLine?: boolean): boolean {
   let linesToRemove: number[] = []
   const iStart = checkOnlyLastLine ? Math.max(1, game.length - 10) : 0
   for (let i = iStart; i < game.length; i++) {
@@ -70,7 +70,7 @@ function correctTauschen(game: capturedType[], checkOnlyLastLine?: boolean): boo
   return linesToRemove.length > 0
 }
 
-function correctNarr(game: capturedType[], checkOnlyLastLine?: boolean): boolean {
+function correctNarr(game: CapturedType[], checkOnlyLastLine?: boolean): boolean {
   let linesToRemove: number[] = []
 
   const iStart = checkOnlyLastLine ? Math.max(1, game.length - 10) : 0
@@ -113,7 +113,7 @@ function correctNarr(game: capturedType[], checkOnlyLastLine?: boolean): boolean
   return linesToRemove.length > 0
 }
 
-function correctDealCards(game: capturedType[], checkOnlyLastLine?: boolean): boolean {
+function correctDealCards(game: CapturedType[], checkOnlyLastLine?: boolean): boolean {
   let swappedLines = false
   const iStart = checkOnlyLastLine ? Math.max(0, game.length - 2) : 0
   for (let i = iStart; i < game.length - 1; i++) {
@@ -131,7 +131,7 @@ export async function removeInvalidCapturedMoves(pgPool: pg.Pool, gameID: number
     return
   }
 
-  const game: capturedType[] = res.rows[0].game
+  const game: CapturedType[] = res.rows[0].game
   const result = repeatGame(game)
 
   const lineToRemoveWithFollowing = result.equal ? null : result.line

@@ -1,19 +1,19 @@
 import { cloneDeep } from 'lodash'
 import { err, ok, Result } from 'neverthrow'
 import { ballPlayer } from '../game/ballUtils'
-import { gameForPlay } from '../sharedTypes/typesDBgame'
-import { koBracket, privateTournament, publicTournament, tournamentDataKO } from '../sharedTypes/typesTournament'
+import { GameForPlay } from '../sharedTypes/typesDBgame'
+import { KoBracket, PrivateTournament, PublicTournament, TournamentDataKO } from '../sharedTypes/typesTournament'
 import { shuffleArray } from '../game/cardUtils'
 
-export type createTournamentDataKOError = 'N_TEAMS_NOT_VALID_FOR_KO' | 'RANDOM_TEAM_CREATION_ERROR'
-export function createTournamentDataKO(nTeams: number, teamsPerMatch: 2 | 3): Result<tournamentDataKO, createTournamentDataKOError> {
+export type CreateTournamentDataKOError = 'N_TEAMS_NOT_VALID_FOR_KO' | 'RANDOM_TEAM_CREATION_ERROR'
+export function createTournamentDataKO(nTeams: number, teamsPerMatch: 2 | 3): Result<TournamentDataKO, CreateTournamentDataKOError> {
   let nRounds = Math.log(nTeams) / Math.log(teamsPerMatch)
   if (nRounds % 1 > 10e-10) {
     return err('N_TEAMS_NOT_VALID_FOR_KO')
   }
   nRounds = Math.round(nRounds)
 
-  const brackets: koBracket[][] = []
+  const brackets: KoBracket[][] = []
   for (let iRound = 0; iRound < nRounds; iRound++) {
     brackets.push([])
     for (let iBracket = 0; iBracket < Math.pow(teamsPerMatch, nRounds - 1 - iRound); iBracket++) {
@@ -40,8 +40,8 @@ export function createTournamentDataKO(nTeams: number, teamsPerMatch: 2 | 3): Re
   return ok({ brackets: brackets })
 }
 
-type findBracketError = 'GAME_NOT_IN_KO_BRACKETS'
-function findBracket(tournament: publicTournament | privateTournament, gameID: number): Result<[number, number], findBracketError> {
+type FindBracketError = 'GAME_NOT_IN_KO_BRACKETS'
+function findBracket(tournament: PublicTournament | PrivateTournament, gameID: number): Result<[number, number], FindBracketError> {
   const firstIndex = tournament.data.brackets.findIndex((round) => {
     return round.some((game) => game.gameID === gameID)
   })
@@ -55,7 +55,7 @@ function findBracket(tournament: publicTournament | privateTournament, gameID: n
   return ok([firstIndex, secondIndex])
 }
 
-function addScoreAndReturnChangedFlag(game: gameForPlay, tournament: publicTournament | privateTournament, pos: [number, number]): boolean {
+function addScoreAndReturnChangedFlag(game: GameForPlay, tournament: PublicTournament | PrivateTournament, pos: [number, number]): boolean {
   const score = tournament.data.brackets[pos[0]][pos[1]].score.map(() => 0)
 
   game.players.forEach((p, pI) => {
@@ -75,8 +75,8 @@ function addScoreAndReturnChangedFlag(game: gameForPlay, tournament: publicTourn
   return false
 }
 
-type updateScoreError = findBracketError
-export function updateScore(tournament: publicTournament | privateTournament, game: gameForPlay): Result<boolean, updateScoreError> {
+type UpdateScoreError = FindBracketError
+export function updateScore(tournament: PublicTournament | PrivateTournament, game: GameForPlay): Result<boolean, UpdateScoreError> {
   const pos = findBracket(tournament, game.id)
   if (pos.isErr()) {
     return err(pos.error)
@@ -85,8 +85,8 @@ export function updateScore(tournament: publicTournament | privateTournament, ga
   return ok(changed)
 }
 
-export type getWinnerOfTournamentGameError = 'WINNER_OF_TOURNAMENT_GAME_NOT_FOUND'
-function getWinnerOfTournamentGame(game: gameForPlay, bracket: koBracket, tournament: publicTournament | privateTournament): Result<number, getWinnerOfTournamentGameError> {
+export type GetWinnerOfTournamentGameError = 'WINNER_OF_TOURNAMENT_GAME_NOT_FOUND'
+function getWinnerOfTournamentGame(game: GameForPlay, bracket: KoBracket, tournament: PublicTournament | PrivateTournament): Result<number, GetWinnerOfTournamentGameError> {
   if (game.status.substring(0, 3) === 'won') {
     const gameWinningTeam = parseInt(game.status[4])
     const gameWinningPlayer = game.players[game.game.teams[gameWinningTeam][0]]
@@ -155,11 +155,11 @@ function getWinnerOfTournamentGame(game: gameForPlay, bracket: koBracket, tourna
   return ok(bracketWinningTeam)
 }
 
-export type evaluateGameWinnerAndReturnEndedFlagError = 'LOOSER_COULD_NOT_BE_FOUND' | getWinnerOfTournamentGameError | findBracketError
+export type EvaluateGameWinnerAndReturnEndedFlagError = 'LOOSER_COULD_NOT_BE_FOUND' | GetWinnerOfTournamentGameError | FindBracketError
 export function evaluateGameWinnerAndReturnEndedFlag(
-  game: gameForPlay,
-  tournament: publicTournament | privateTournament
-): Result<boolean, evaluateGameWinnerAndReturnEndedFlagError> {
+  game: GameForPlay,
+  tournament: PublicTournament | PrivateTournament
+): Result<boolean, EvaluateGameWinnerAndReturnEndedFlagError> {
   const pos = findBracket(tournament, game.id)
   if (pos.isErr()) {
     return err(pos.error)

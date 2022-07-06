@@ -1,6 +1,6 @@
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { AckData } from '../sharedTypes/GeneralNamespaceDefinition'
-import { gameForOverview } from '../sharedTypes/typesDBgame'
+import { GameForOverview } from '../sharedTypes/typesDBgame'
 import { closeSockets } from '../test/handleSocket'
 
 describe('Games test suite via socket.io', () => {
@@ -30,7 +30,7 @@ describe('Games test suite via socket.io', () => {
     })
 
     test('Table data should return error when username is invalid', async () => {
-      const response = await new Promise<AckData<{ games: gameForOverview[]; nEntries: number }>>((resolve) => {
+      const response = await new Promise<AckData<{ games: GameForOverview[]; nEntries: number }>>((resolve) => {
         userWithSocket.socket.emit('games:getTableData', { first: 0, limit: 10, sortField: 'created', sortOrder: 1, username: 'a' }, (data) => {
           resolve(data)
         })
@@ -41,7 +41,7 @@ describe('Games test suite via socket.io', () => {
     test('Table data should be possible for user himself', async () => {
       const response = await new Promise<
         AckData<{
-          games: gameForOverview[]
+          games: GameForOverview[]
           nEntries: number
         }>
       >((resolve) =>

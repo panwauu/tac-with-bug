@@ -3,7 +3,7 @@ import { Controller, Get, Delete, Query, Route, Request, Security, Post, Res, Ts
 
 import multer from 'multer'
 import { queryProfilePicture, loadProfilePictureToDB, selectRandomProfilePicture } from '../services/picture'
-import { userIdentifier } from '../sharedTypes/typesDBuser'
+import { UserIdentifier } from '../sharedTypes/typesDBuser'
 
 @Route('/')
 export class PictureController extends Controller {
@@ -20,7 +20,7 @@ export class PictureController extends Controller {
     this.setHeader('Cache-Control', 'no-cache')
     this.setHeader('Content-Type', 'image/jpeg; charset=UTF-8')
 
-    const identifier: userIdentifier = username ? { username } : { id: request.userData.userID }
+    const identifier: UserIdentifier = username ? { username } : { id: request.userData.userID }
     const pictureRes = await queryProfilePicture(request.app.locals.sqlClient, identifier)
     if (pictureRes.isErr()) {
       return invalidUsernameError(400, { message: pictureRes.error })

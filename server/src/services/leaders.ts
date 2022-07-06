@@ -1,12 +1,12 @@
 import pg from 'pg'
 
-export interface leaderBoardType {
+export interface LeaderBoardType {
   username: string[]
   wins: number[]
   winshare: string[]
   nPlayers: number
 }
-export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, offset: number, startDate: Date, endDate: Date): Promise<leaderBoardType> {
+export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, offset: number, startDate: Date, endDate: Date): Promise<LeaderBoardType> {
   const query = `
     SELECT users.username, t2.wins, t2.ngames, t2.full_count FROM (
         SELECT userid, SUM(t.win) as wins, SUM(t.ngames) as ngames, count(*) OVER() AS full_count FROM (
@@ -28,13 +28,13 @@ export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, 
   }
 }
 
-export interface coopBoardType {
+export interface CoopBoardType {
   nGames: number
   team: string[][]
   count: number[]
   lastplayed: number[]
 }
-export async function queryLeaderboardCoop(sqlClient: pg.Pool, limit: number, offset: number, nPlayers: number, startDate: Date, endDate: Date): Promise<coopBoardType> {
+export async function queryLeaderboardCoop(sqlClient: pg.Pool, limit: number, offset: number, nPlayers: number, startDate: Date, endDate: Date): Promise<CoopBoardType> {
   const query = `
     SELECT games.id, max(games.cards) as cards, array_agg(users.username) as team, max(games.lastplayed) as lastplayed, max(games.full_count) as full_count FROM (
         SELECT 

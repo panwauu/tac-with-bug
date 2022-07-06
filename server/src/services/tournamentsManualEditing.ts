@@ -1,11 +1,11 @@
 import { err, Result, ok } from 'neverthrow'
 import pg from 'pg'
 import * as tTournament from '../sharedTypes/typesTournament'
-import { createTournamentDataKO, createTournamentDataKOError } from './tournamentKO'
+import { createTournamentDataKO, CreateTournamentDataKOError } from './tournamentKO'
 
-import { getPublicTournamentByID, getTournamentByIDError } from './tournamentsPublic'
+import { getPublicTournamentByID, GetTournamentByIDError } from './tournamentsPublic'
 
-export type createTournamentError = 'ONLY_KO_TOURNAMENT_IMPLEMENTED' | 'KO_ROUNDS_AND_CREATIONDATES_NOT_SAME_LENGTH' | getTournamentByIDError | createTournamentDataKOError
+export type CreateTournamentError = 'ONLY_KO_TOURNAMENT_IMPLEMENTED' | 'KO_ROUNDS_AND_CREATIONDATES_NOT_SAME_LENGTH' | GetTournamentByIDError | CreateTournamentDataKOError
 export async function createTournament(
   sqlClient: pg.Pool,
   title: string,
@@ -17,8 +17,8 @@ export async function createTournament(
   playersPerTeam: 2 | 3,
   teamsPerMatch: 2 | 3,
   tournamentType: 'KO'
-): Promise<Result<tTournament.publicTournament, createTournamentError>> {
-  let data: tTournament.tournamentDataKO
+): Promise<Result<tTournament.PublicTournament, CreateTournamentError>> {
+  let data: tTournament.TournamentDataKO
   if (tournamentType === 'KO') {
     const dataRes = createTournamentDataKO(nTeams, teamsPerMatch)
     if (dataRes.isErr()) {

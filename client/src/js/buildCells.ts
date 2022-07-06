@@ -1,16 +1,16 @@
-export interface positionStyle {
+export interface PositionStyle {
   top: string
   left: string
 }
 
-export function calculatePositionPolar(left_center: number, top_center: number, angle: number, radius_height: number, aspectRatio: number): positionStyle {
+export function calculatePositionPolar(left_center: number, top_center: number, angle: number, radius_height: number, aspectRatio: number): PositionStyle {
   return {
     top: `${top_center + Math.cos(angle) * radius_height}%`,
     left: `${left_center + Math.sin(-angle) * radius_height * aspectRatio}%`,
   }
 }
 
-export function positionStyles6(turned: boolean | undefined): positionStyle[] {
+export function positionStyles6(turned: boolean | undefined): PositionStyle[] {
   if (turned === undefined) {
     turned = false
   }
@@ -62,11 +62,11 @@ export function positionStyles6(turned: boolean | undefined): positionStyle[] {
   return result
 }
 
-function calcWithAngle(angle: number, radius: number): positionStyle {
+function calcWithAngle(angle: number, radius: number): PositionStyle {
   return calculatePositionPolar(50, 50, angle, radius, 1)
 }
 
-function calcInStart(positionID: number): positionStyle {
+function calcInStart(positionID: number): PositionStyle {
   const topMiddle = positionID >= 8 ? 8 : 92
   const leftMiddle = positionID >= 4 && positionID < 12 ? 8 : 92
 
@@ -79,7 +79,7 @@ function calcInStart(positionID: number): positionStyle {
   }
 }
 
-function calcInEnd(positionID: number): positionStyle {
+function calcInEnd(positionID: number): PositionStyle {
   let top = 0
   let left = 0
   switch (positionID) {
@@ -155,7 +155,7 @@ function calcInEnd(positionID: number): positionStyle {
   }
 }
 
-export function buildStyles(radius: number): positionStyle[] {
+export function buildStyles(radius: number): PositionStyle[] {
   const cells = []
   for (let i = 0; i < 16; i++) {
     cells.push(calcInStart(i))

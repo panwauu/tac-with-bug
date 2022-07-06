@@ -1,20 +1,20 @@
 import pg from 'pg'
 import type {
-  activityHeatmap,
-  dayDataset,
-  hourDataset,
-  localeDataset,
-  platformFunFacts,
-  platformStats,
-  userAgentAnalysisData,
-  weekDataset,
-  weekDatasetData,
+  ActivityHeatmap,
+  DayDatasetType,
+  HourDatasetType,
+  LocaleDataset,
+  PlatformFunFacts,
+  PlatformStats,
+  UserAgentAnalysisData,
+  WeekDatasetType,
+  WeekDatasetDataType,
 } from '../sharedTypes/typesPlatformStatistic'
 
 const cacheDurationFunFactsInMS = 60 * 60e3 // Update once per hour
-let cachedPlatformFunFacts: Promise<{ data: platformFunFacts; date: number }> | null = null
+let cachedPlatformFunFacts: Promise<{ data: PlatformFunFacts; date: number }> | null = null
 
-export async function getPlatformFunFacts(pgPool: pg.Pool): Promise<platformFunFacts> {
+export async function getPlatformFunFacts(pgPool: pg.Pool): Promise<PlatformFunFacts> {
   if (cachedPlatformFunFacts == null) {
     cachedPlatformFunFacts = calculatePlatformFunFacts(pgPool).then((res) => {
       return { data: res, date: Date.now() }
@@ -101,12 +101,12 @@ function createWeekDataset(
   userRegisterDates: { registered: string }[],
   gamesCreatedDates: { created: string }[],
   activePlayerRes: { created: string; userid: number }[],
-  dayDataset: dayDataset,
-  hourDataset: hourDataset
+  dayDataset: DayDatasetType,
+  hourDataset: HourDatasetType
 ) {
   const dayIndexFromMonday = (new Date().getDay() + 6) % 7
   const currentHour = new Date().getUTCHours()
-  const weekDataset: weekDataset = {
+  const weekDataset: WeekDatasetType = {
     data: createWeekDatasetRegular(userRegisterDates, gamesCreatedDates, activePlayerRes),
     passedRatio: getPassedRatio(dayIndexFromMonday, currentHour, dayDataset, hourDataset),
   }
@@ -114,7 +114,7 @@ function createWeekDataset(
 }
 
 function createWeekDatasetRegular(userRegisterDates: { registered: string }[], gamesCreatedDates: { created: string }[], activePlayerRes: { created: string; userid: number }[]) {
-  const weekDataset: weekDatasetData = {}
+  const weekDataset: WeekDatasetDataType = {}
 
   userRegisterDates.forEach((r) => {
     const k = getYearAndNumberOfWeek(new Date(r.registered))
@@ -150,7 +150,7 @@ function createWeekDatasetRegular(userRegisterDates: { registered: string }[], g
   return weekDataset
 }
 
-function addPlayersPerWeek(activePlayerRes: { created: string; userid: number }[], weekDataset: weekDatasetData) {
+function addPlayersPerWeek(activePlayerRes: { created: string; userid: number }[], weekDataset: WeekDatasetDataType) {
   const playersPerWeek: { [key: string]: { [key: string]: number[] } } = {}
   activePlayerRes.forEach((r) => {
     const k = getYearAndNumberOfWeek(new Date(r.created))
@@ -177,7 +177,7 @@ function addPlayersPerWeek(activePlayerRes: { created: string; userid: number }[
   }
 }
 
-export function getPassedRatio(dayIndexFromMonday: number, currentHour: number, dayDataset: dayDataset, hourDataset: hourDataset) {
+export function getPassedRatio(dayIndexFromMonday: number, currentHour: number, dayDataset: DayDatasetType, hourDataset: HourDatasetType) {
   const passedDayData = [
     dayDataset
       .map((d: any) => d[0])
@@ -206,7 +206,7 @@ export function getPassedRatio(dayIndexFromMonday: number, currentHour: number, 
 }
 
 function createDayDataset(userRegisterDates: { registered: string }[], gamesCreatedDates: { created: string }[]) {
-  const dayDataset: dayDataset = [
+  const dayDataset: DayDatasetType = [
     [0, 0],
     [0, 0],
     [0, 0],
@@ -229,7 +229,7 @@ function createDayDataset(userRegisterDates: { registered: string }[], gamesCrea
 }
 
 function createHourDataset(userRegisterDates: { registered: string }[], gamesCreatedDates: { created: string }[]) {
-  const hourDataset: hourDataset = []
+  const hourDataset: HourDatasetType = []
   for (let i = 0; i < 24; i++) {
     hourDataset.push([0, 0])
   }
@@ -247,7 +247,7 @@ function createHourDataset(userRegisterDates: { registered: string }[], gamesCre
 }
 
 function createHeatmapDataset(gamesCreatedDates: { created: string }[]) {
-  const activityHeatmap: activityHeatmap = []
+  const activityHeatmap: ActivityHeatmap = []
   for (let i = 0; i < 7; i++) {
     activityHeatmap.push(Array.from({ length: 24 }).fill(0) as number[])
   }
@@ -262,14 +262,14 @@ function createHeatmapDataset(gamesCreatedDates: { created: string }[]) {
 
 async function createLocaleDataset(pgPool: pg.Pool) {
   const langRes = await pgPool.query('SELECT locale, COUNT(*) as n_users FROM users GROUP BY locale;')
-  const localeDataset: localeDataset = []
+  const localeDataset: LocaleDataset = []
   langRes.rows.forEach((r: any) => {
     localeDataset.push({ locale: r.locale, nUsers: r.n_users })
   })
   return localeDataset
 }
 
-export async function getPlatformStatistic(pgPool: pg.Pool): Promise<platformStats> {
+export async function getPlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
   const userRes = await pgPool.query<{ registered: string }>('SELECT registered FROM users WHERE activated=true;')
   const activePlayerRes = await pgPool.query<{ created: string; userid: number }>(
     'SELECT userid, games.created FROM users_to_games LEFT JOIN games ON users_to_games.gameid=games.id;'
@@ -305,7 +305,7 @@ function ISO8601_week_no(dt: Date) {
   return 1 + Math.ceil((firstThursday - tdt.valueOf()) / 604800000)
 }
 
-async function getUserAgentAnalysis(pgPool: pg.Pool): Promise<userAgentAnalysisData> {
+async function getUserAgentAnalysis(pgPool: pg.Pool): Promise<UserAgentAnalysisData> {
   const res = await pgPool.query<{ counter: number; data: any }>('SELECT data, counter FROM user_agent_data;')
 
   const deviceTypes: Record<string, number> = { console: 0, mobile: 0, tablet: 0, smarttv: 0, wearable: 0, embedded: 0, desktop: 0 }

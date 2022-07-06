@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 
-export interface sound {
+export interface Sound {
   audios: { [key: string]: HTMLAudioElement }
   volume: number
   $play: (sound: string) => void
@@ -15,7 +15,7 @@ import notiSound from '../assets/sounds/noti.mp3'
 import wonSound from '../assets/sounds/won.mp3'
 import lostSound from '../assets/sounds/lost.mp3'
 
-export const sound = reactive<sound>({
+export const sound = reactive<Sound>({
   audios: {
     noti: new Audio(notiSound),
     won: new Audio(wonSound),

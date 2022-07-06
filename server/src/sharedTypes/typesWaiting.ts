@@ -1,4 +1,4 @@
-export interface waitingGame {
+export interface WaitingGame {
   id: number
   gameid: number | null
   nPlayers: number
@@ -13,22 +13,22 @@ export interface waitingGame {
   ready: boolean[]
 }
 
-export type createGameType = {
+export type CreateGameType = {
   nPlayers: number
   nTeams: number
   meister: boolean
   private: boolean
 }
 
-export type movePlayerType = { gameID: number; username: string; steps: number }
+export type MovePlayerType = { gameID: number; username: string; steps: number }
 
-export type switchColorType = {
+export type SwitchColorType = {
   gameID: number
   username: string
   color: string
 }
 
-export type startGameType = {
+export type StartGameType = {
   gameID: number
   nPlayers: number
   gamePlayer: number

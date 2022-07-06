@@ -7,7 +7,7 @@ import { captureMove } from './capture'
 import { getStatus } from '../game/serverOutput'
 import { updateTournamentFromGame as updatePrivateTournamentFromGame } from './tournamentsPrivate'
 import { updateTournamentFromGame as updatePublicTournamentFromGame } from './tournamentsPublic'
-import { moveType } from '../sharedTypes/typesBall'
+import { MoveType } from '../sharedTypes/typesBall'
 import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
@@ -31,7 +31,7 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
         FROM games WHERE games.id = ANY($1::int[]) ORDER BY games.id;`
   const dbRes = await sqlClient.query(query, [gameIDs])
 
-  const games: tDBTypes.gameForPlay[] = []
+  const games: tDBTypes.GameForPlay[] = []
 
   dbRes.rows.forEach((dbGame) => {
     games.push({
@@ -76,7 +76,7 @@ export async function getGames(sqlClient: pg.Pool, userID: number) {
   )
 }
 
-export async function getRunningGames(pgPool: pg.Pool): Promise<tDBTypes.getRunningGamesType[]> {
+export async function getRunningGames(pgPool: pg.Pool): Promise<tDBTypes.GetRunningGamesType[]> {
   const dbRes = await pgPool.query("SELECT id FROM games WHERE status='running';")
   if (dbRes.rows.length === 0) {
     return []
@@ -159,7 +159,7 @@ export async function abortGame(pgPool: pg.Pool, gameID: number) {
   sendUpdatesOfGameToPlayers(game)
 }
 
-export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promise<tDBTypes.getGamesType> {
+export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promise<tDBTypes.GetGamesType> {
   const games = await getGames(sqlClient, userID)
 
   return {
@@ -219,7 +219,7 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
   }
 }
 
-function getTeamsFromGame(game: tDBTypes.gameForPlay) {
+function getTeamsFromGame(game: tDBTypes.GameForPlay) {
   const order = game.nPlayers === 4 ? [0, 2, 1, 3] : game.nTeams === 2 ? [0, 2, 4, 1, 3, 5] : [0, 3, 1, 4, 2, 5]
   const orderedPlayers = order.map((i) => game.players[i])
 
@@ -249,7 +249,7 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
   const idList = res.rows.map((r) => r.id as number)
   const gamesFromDB = await queryGamesByID(sqlClient, idList)
 
-  const games: tDBTypes.gameForOverview[] = gamesFromDB.map((game) => {
+  const games: tDBTypes.GameForOverview[] = gamesFromDB.map((game) => {
     const teams = getTeamsFromGame(game)
 
     const nPlayer = game.playerIDs.indexOf(userID)
@@ -285,7 +285,7 @@ function gamesSort(sortField: string, sortOrder: number) {
   }
 }
 
-export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: moveType, gamePlayer: number, gameID: number) {
+export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: MoveType, gamePlayer: number, gameID: number) {
   const game = await getGame(sqlClient, gameID)
   if (!game.game.checkMove(postMove) || (postMove !== 'dealCards' && postMove[0] !== gamePlayer)) {
     throw new Error('Player not allowed to play')

@@ -2,29 +2,29 @@ import { reactive } from 'vue'
 import { cloneDeep } from 'lodash'
 
 import * as tBall from '@/../../server/src/sharedTypes/typesBall'
-import { cardsStateType } from './useCards'
+import { CardsStateType } from './useCards'
 
-export interface ballsStateType {
-  balls: tBall.ballsType
-  priorBalls: tBall.ballsType
+export interface BallsStateType {
+  balls: tBall.BallsType
+  priorBalls: tBall.BallsType
   selectedBall: number
-  playableBalls: tBall.ballActions
-  updateBallsState: (balls: tBall.ballsType, priorBalls: tBall.ballsType) => void
-  setPlayableBalls: (playableBalls: tBall.ballActions) => void
+  playableBalls: tBall.BallActions
+  updateBallsState: (balls: tBall.BallsType, priorBalls: tBall.BallsType) => void
+  setPlayableBalls: (playableBalls: tBall.BallActions) => void
   resetPlayableBalls: () => void
   setSelectedBall: (selectedBall: number) => void
   resetSelectedBall: () => void
   switchBallsWithPrior: () => void
-  getBalls: (cardsState: cardsStateType) => tBall.ballsType
+  getBalls: (cardsState: CardsStateType) => tBall.BallsType
 }
 
-export function useBalls(): ballsStateType {
-  const ballsState: ballsStateType = reactive({
+export function useBalls(): BallsStateType {
+  const ballsState: BallsStateType = reactive({
     balls: [],
     priorBalls: [],
     selectedBall: -1,
     playableBalls: [],
-    updateBallsState: (balls: tBall.ballsType, priorBalls: tBall.ballsType) => {
+    updateBallsState: (balls: tBall.BallsType, priorBalls: tBall.BallsType) => {
       ballsState.balls = balls
       ballsState.priorBalls = priorBalls
     },

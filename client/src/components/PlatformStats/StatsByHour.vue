@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { hourDataset } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
+import type { HourDatasetType } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'
@@ -17,7 +17,7 @@ import { i18n } from '@/services/i18n'
 import { getGraphColors } from '@/services/graphColors'
 
 const hourChart = ref<any | null>(null)
-const props = defineProps<{ data?: hourDataset }>()
+const props = defineProps<{ data?: HourDatasetType }>()
 watch(
   () => props.data,
   () => {

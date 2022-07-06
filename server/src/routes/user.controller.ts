@@ -35,7 +35,7 @@ import { signJWT } from '../helpers/jwtWrapper'
 import logger from '../helpers/logger'
 import { analyseUserAgentHeader } from '../helpers/userAnalysis'
 
-interface userCreateRequest {
+interface UserCreateRequest {
   username: string
   email: string
   locale: string
@@ -51,7 +51,7 @@ export class UserController extends Controller {
   @Post('/sign-up')
   public async signUpUser(
     @Request() request: express.Request,
-    @Body() userToCreate: userCreateRequest,
+    @Body() userToCreate: UserCreateRequest,
     @Res() validationError: TsoaResponse<409, UsernameValidationErrors | EmailValidationErrors | PasswordValidationErrors | LocaleValidationErrors>
   ): Promise<string> {
     const usernameResult = await validateUsername(request.app.locals.sqlClient, userToCreate.username)

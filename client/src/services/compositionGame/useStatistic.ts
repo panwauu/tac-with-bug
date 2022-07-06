@@ -3,10 +3,10 @@ import { UnwrapNestedRefs } from '@/../node_modules/@vue/reactivity/dist/reactiv
 import { i18n } from '@/services/i18n'
 
 import * as tPlayers from '@/../../server/src/sharedTypes/typesPlayers'
-import { gameStatistic, gameStatisticCardsType } from '@/../../server/src/sharedTypes/typesStatistic'
+import { GameStatistic, GameStatisticCardsType } from '@/../../server/src/sharedTypes/typesStatistic'
 
-type statisticStateTypeNonReactive = {
-  statistic: gameStatistic[]
+type StatisticStateTypeNonReactive = {
+  statistic: GameStatistic[]
   cardsTable: ComputedRef<{ 0: number; 1: number; 2: number; 3: number; 4?: number; 5?: number; card: string }[]>
   cardStatistic: {
     labelKeys?: string[]
@@ -18,19 +18,19 @@ type statisticStateTypeNonReactive = {
     labels?: string[]
     datasets?: any[]
   }
-  setStatistic: (statistic: gameStatistic[], players: tPlayers.player[], coopCounter: number, hexColors: string[]) => void
+  setStatistic: (statistic: GameStatistic[], players: tPlayers.Player[], coopCounter: number, hexColors: string[]) => void
 }
 
-export type statisticStateType = UnwrapNestedRefs<statisticStateTypeNonReactive>
+export type StatisticStateType = UnwrapNestedRefs<StatisticStateTypeNonReactive>
 
-export function useStatistic(): statisticStateType {
-  const statisticState: statisticStateType = reactive<statisticStateTypeNonReactive>({
+export function useStatistic(): StatisticStateType {
+  const statisticState: StatisticStateType = reactive<StatisticStateTypeNonReactive>({
     statistic: [],
     cardStatistic: {},
     actionStatistic: {},
     cardsTable: computed(() => {
       const result: { 0: number; 1: number; 2: number; 3: number; 4?: number; 5?: number; card: string }[] = []
-      ;(Object.keys(statisticState.statistic[0].cards) as Array<keyof gameStatisticCardsType>).forEach((key) => {
+      ;(Object.keys(statisticState.statistic[0].cards) as Array<keyof GameStatisticCardsType>).forEach((key) => {
         if (key !== 'total') {
           result.push({
             card: key,

@@ -80,10 +80,10 @@ const toast = useToast()
 const emit = defineEmits(['settingoperationdone'])
 
 const cropperDialog = ref(false)
-interface customFile extends File {
+interface CustomFile extends File {
   objectURL?: string
 }
-const uploadFile = ref<customFile | null>(null)
+const uploadFile = ref<CustomFile | null>(null)
 const cropperRef = ref<VueCropperMethods | null>(null)
 
 const startCropper = (event: { file: File; files: File[] }) => {

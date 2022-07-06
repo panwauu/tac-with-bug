@@ -9,14 +9,14 @@
 </template>
 
 <script setup lang="ts">
-import type { localeDataset } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
+import type { LocaleDataset } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'
 import { getGraphColors } from '@/services/graphColors'
 
 const localeChart = ref<any | null>(null)
-const props = defineProps<{ data?: localeDataset }>()
+const props = defineProps<{ data?: LocaleDataset }>()
 watch(
   () => props.data,
   () => {

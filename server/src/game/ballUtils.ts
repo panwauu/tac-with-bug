@@ -7,17 +7,17 @@ export function ballHome(nBall: number): number {
   return ballPlayer(nBall) * 4
 }
 
-export function ballStart(nBall: number, balls: tBall.ballsType): number {
+export function ballStart(nBall: number, balls: tBall.BallsType): number {
   //start: 4 * nPlayers + nPlayer * positionsBetweenStarts,
   return balls.length + ballPlayer(nBall) * getPositionsBetweenStarts(balls)
 }
 
-export function ballGoal(nBall: number, balls: tBall.ballsType): number {
+export function ballGoal(nBall: number, balls: tBall.BallsType): number {
   //goal: 4 * nPlayers + nPlayers * positionsBetweenStarts + nPlayer * 4,
   return balls.length + (balls.length / 4) * getPositionsBetweenStarts(balls) + ballPlayer(nBall) * 4
 }
 
-export function getPositionsBetweenStarts(balls: tBall.ballsType): number {
+export function getPositionsBetweenStarts(balls: tBall.BallsType): number {
   if (balls.length !== 16 && balls.length !== 24) {
     throw new Error('Wrong balls length')
   }
@@ -33,7 +33,7 @@ export function ballPlayer(nBall: number): number {
 }
 
 export function initializeBalls(nPlayers: number) {
-  const balls: tBall.ballsType = []
+  const balls: tBall.BallsType = []
 
   for (let nPlayer = 0; nPlayer < nPlayers; nPlayer++) {
     for (let i = 0; i < 4; i++) {
@@ -48,7 +48,7 @@ export function initializeBalls(nPlayers: number) {
   return balls
 }
 
-export function resetBalls(balls: tBall.ballsType): void {
+export function resetBalls(balls: tBall.BallsType): void {
   balls.forEach((ball, index) => {
     if (ball.position < ballStart(0, balls)) {
       ball.state = 'house'

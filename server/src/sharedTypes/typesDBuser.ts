@@ -1,4 +1,4 @@
-export type userIdentifier =
+export type UserIdentifier =
   | {
       username?: string
       email?: string
@@ -15,7 +15,7 @@ export type userIdentifier =
       id?: number
     }
 
-export interface user {
+export interface User {
   id: number
   username: string
   email: string

@@ -48,9 +48,9 @@ import Sponsor from '@/components/SubscriptionTag.vue'
 import ProfileExplanation from '@/components/ProfileExplanation.vue'
 import HofBadge from '@/components/icons/HofBadge.vue'
 
-import type { gamesDistributionData as gamesDistributionDataType } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
+import type { GamesDistributionData as GamesDistributionDataType } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
 import { watch, ref } from 'vue'
-import { hofReason, DefaultService as Service } from '@/generatedClient/index'
+import { HofReason, DefaultService as Service } from '@/generatedClient/index'
 import router from '@/router/index'
 import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue'
 import { i18n } from '@/services/i18n'
@@ -61,7 +61,7 @@ const props = defineProps<{ username: string }>()
 const userDescription = ref('')
 const isSubscribed = ref(false)
 const radarData = ref<number[]>([])
-const gamesDistributionData = ref<gamesDistributionDataType>({
+const gamesDistributionData = ref<GamesDistributionDataType>({
   teamWon: 0,
   teamAborted: 0,
   won4: 0,
@@ -71,7 +71,7 @@ const gamesDistributionData = ref<gamesDistributionDataType>({
   aborted: 0,
   running: 0,
 })
-const hofReasons = ref<hofReason[]>([])
+const hofReasons = ref<HofReason[]>([])
 const items = ref(createMenu(true))
 const profileContainer = ref<null | HTMLElement>(null)
 const registeredOn = ref<Date>(new Date(0))

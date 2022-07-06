@@ -37,16 +37,16 @@
 import Button from 'primevue/button'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
-import { publicTournament, registerTeam } from '@/../../server/src/sharedTypes/typesTournament'
+import { PublicTournament, RegisterTeam } from '@/../../server/src/sharedTypes/typesTournament'
 import { computed } from 'vue'
 import { i18n } from '@/services/i18n'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { username } from '@/services/useUser'
 
 const socket = injectStrict(SocketKey)
-const props = defineProps<{ tournament: publicTournament; team: registerTeam }>()
+const props = defineProps<{ tournament: PublicTournament; team: RegisterTeam }>()
 
-function teamActivated(team: registerTeam) {
+function teamActivated(team: RegisterTeam) {
   return team.players.some((_, i) => team.activated[i] === false)
 }
 
@@ -57,7 +57,7 @@ const alreadyRegistered = computed(() => {
   )
 })
 
-function joinTeam(team: registerTeam, tournamentID: number) {
+function joinTeam(team: RegisterTeam, tournamentID: number) {
   if (!(teamActivated(team) || alreadyRegistered.value) && confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
     socket.emit('tournament:public:joinTeam', {
       tournamentID: tournamentID,

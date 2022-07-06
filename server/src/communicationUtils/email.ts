@@ -1,8 +1,8 @@
 import Email from 'email-templates'
 import path from 'path'
 import nodemailer from 'nodemailer'
-import { user } from '../sharedTypes/typesDBuser'
-import { publicTournament } from '../sharedTypes/typesTournament'
+import { User } from '../sharedTypes/typesDBuser'
+import { PublicTournament } from '../sharedTypes/typesTournament'
 import { ICalCalendar } from 'ical-generator'
 import { locales, fallbackLocale } from '../sharedDefinitions/locales'
 
@@ -48,7 +48,7 @@ export async function sendMail(receiverMail: string, subject: string, mailbody: 
   })
 }
 
-export async function sendActivation({ user, token }: { user: user; token: string }) {
+export async function sendActivation({ user, token }: { user: User; token: string }) {
   const activationLink = `${process.env.BASE_URL}/#/${user.locale}/?activationUserID=${user.id}&activationToken=${token}`
   return email.send({
     template: 'activation',
@@ -57,7 +57,7 @@ export async function sendActivation({ user, token }: { user: user; token: strin
   })
 }
 
-export async function sendNewPassword({ user, password }: { user: user; password: string }) {
+export async function sendNewPassword({ user, password }: { user: User; password: string }) {
   return email.send({
     template: 'newPassword',
     message: { to: user.email },
@@ -65,7 +65,7 @@ export async function sendNewPassword({ user, password }: { user: user; password
   })
 }
 
-export async function sendNewSubscription({ user }: { user: user }) {
+export async function sendNewSubscription({ user }: { user: User }) {
   return email.send({
     template: 'newSubscription',
     message: { to: user.email },
@@ -73,7 +73,7 @@ export async function sendNewSubscription({ user }: { user: user }) {
   })
 }
 
-export async function sendCancelSubscription({ user }: { user: user }) {
+export async function sendCancelSubscription({ user }: { user: User }) {
   return email.send({
     template: 'cancelSubscription',
     message: { to: user.email },
@@ -85,7 +85,7 @@ export async function sendSubscriptionError({ error }: { error: any }) {
   return email.send({ message: { to: process.env.mailAddress, text: `Subscription Error: ${JSON.stringify(error)}` } })
 }
 
-export async function sendTournamentReminder({ user, tournament, ical }: { user: user; tournament: publicTournament; ical: ICalCalendar }) {
+export async function sendTournamentReminder({ user, tournament, ical }: { user: User; tournament: PublicTournament; ical: ICalCalendar }) {
   return email.send({
     template: 'tournamentReminder',
     message: { to: user.email, icalEvent: ical.toString() },
@@ -99,7 +99,7 @@ export async function sendTournamentInvitation({
   invitingPlayer,
   teamName,
 }: {
-  user: user
+  user: User
   tournamentTitle: string
   invitingPlayer: string
   teamName: string
@@ -117,7 +117,7 @@ export async function sendPrivateTournamentInvitation({
   invitingPlayer,
   teamName,
 }: {
-  user: user
+  user: User
   tournamentTitle: string
   invitingPlayer: string
   teamName: string

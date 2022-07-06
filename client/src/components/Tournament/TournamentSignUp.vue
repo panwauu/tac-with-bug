@@ -68,7 +68,7 @@ import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import PlayersAutoComplete from '@/components/PlayersAutoComplete.vue'
 
-import { publicTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 
 import { computed, ref } from 'vue'
 import { i18n } from '@/services/i18n'
@@ -76,7 +76,7 @@ import { DefaultService as Service } from '@/generatedClient/index'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { isLoggedIn, username } from '@/services/useUser'
 
-const props = defineProps<{ tournament: publicTournament }>()
+const props = defineProps<{ tournament: PublicTournament }>()
 
 const socket = injectStrict(SocketKey)
 

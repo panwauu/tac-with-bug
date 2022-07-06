@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import type { chatElement, chatMessage } from '@/../../server/src/sharedTypes/chat'
+import type { ChatElement, ChatMessage } from '@/../../server/src/sharedTypes/chat'
 import { isLoggedIn, username } from '@/services/useUser'
 import { nextTick, watch } from 'vue'
 import router from '@/router'
@@ -13,14 +13,14 @@ const keepGameChannelAliveTime = 1000 * 60 * 15
 
 export const useMessagesStore = defineStore('messages', {
   state: () => ({
-    chats: [] as chatElement[],
+    chats: [] as ChatElement[],
     channels: [
       { id: 'general', missedMessages: 0, endDate: null as null | number },
       { id: 'news', missedMessages: 0, endDate: null },
     ],
     expandedChats: [false, false, true],
     selectedChat: { type: 'channel' as 'channel' | 'chat', id: 'general' },
-    chatMessages: [] as chatMessage[],
+    chatMessages: [] as ChatMessage[],
   }),
   getters: {
     getRecentChats: (state) => {
@@ -141,7 +141,7 @@ export const useMessagesStore = defineStore('messages', {
       return bannedPlayers.some((p) => chat.players.includes(p))
     },
     getDateGroupedChatMessages: (state) => {
-      const messages: { date: string; messages: chatMessage[] }[] = []
+      const messages: { date: string; messages: ChatMessage[] }[] = []
       state.chatMessages.forEach((m) => {
         if (messages.length === 0 || new Date(messages[messages.length - 1].date).toDateString() !== new Date(m.created).toDateString()) {
           messages.push({ date: m.created, messages: [m] })
@@ -192,7 +192,7 @@ export const useMessagesStore = defineStore('messages', {
         })
       }
     },
-    async handleOverviewUpdate(overview: chatElement[]) {
+    async handleOverviewUpdate(overview: ChatElement[]) {
       const chatStore = useChatStore()
       if (this.selectedChat.type === 'chat' && chatStore.displayChat) {
         const overviewElement = overview.find((e) => e.chatid.toString() === this.selectedChat.id)
@@ -204,12 +204,12 @@ export const useMessagesStore = defineStore('messages', {
 
       this.chats = overview
     },
-    handleSingleChatUpdate(chatid: number, messages: chatMessage[]) {
+    handleSingleChatUpdate(chatid: number, messages: ChatMessage[]) {
       if (this.selectedChat.type === 'chat' && chatid === parseInt(this.selectedChat.id)) {
         this.chatMessages = messages
       }
     },
-    handleChannelUpdate(channel: string, messages: chatMessage[], updateFromServer?: boolean) {
+    handleChannelUpdate(channel: string, messages: ChatMessage[], updateFromServer?: boolean) {
       const chatStore = useChatStore()
       const channelObj = this.channels.find((c) => c.id === channel)
       const isEmojiInGame =

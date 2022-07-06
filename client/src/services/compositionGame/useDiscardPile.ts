@@ -2,11 +2,11 @@ import { reactive } from 'vue'
 import { cardPictureDict } from './useCards'
 
 import * as tCard from '@/@types/typesCard'
-import { playerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
+import { PlayerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
 import * as tPlayers from '@/../../server/src/sharedTypes/typesPlayers'
-import { positionStylesState } from './usePositionStyles'
+import { PositionStylesState } from './usePositionStyles'
 
-export interface discardElement {
+export interface DiscardElement {
   index: number
   cardTitle: string
   animationDone: boolean
@@ -14,16 +14,16 @@ export interface discardElement {
   key: string
 }
 
-export interface discardPileStateType {
-  discardPile: discardElement[]
-  updateDiscardPile: (discardPile: string[], players: tPlayers.player[], cards: ServerPlayerCard[], positionStyles: positionStylesState) => void
-  addToDiscardPile: (card: tCard.playerCard) => void
+export interface DiscardPileStateType {
+  discardPile: DiscardElement[]
+  updateDiscardPile: (discardPile: string[], players: tPlayers.Player[], cards: ServerPlayerCard[], positionStyles: PositionStylesState) => void
+  addToDiscardPile: (card: tCard.PlayerCard) => void
   performAnimation: () => void
-  getDiscardPile: () => discardElement[]
+  getDiscardPile: () => DiscardElement[]
 }
 
-export function useDiscardPile(gamePlayer: number): discardPileStateType {
-  const discardPileState: discardPileStateType = reactive({
+export function useDiscardPile(gamePlayer: number): DiscardPileStateType {
+  const discardPileState: DiscardPileStateType = reactive({
     discardPile: [],
     updateDiscardPile: (discardPile, players, cards, positionStyles) => {
       if (discardPile.length < discardPileState.discardPile.length) {

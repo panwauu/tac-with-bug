@@ -1,7 +1,7 @@
 import pg from 'pg'
 import * as tStatistic from '../sharedTypes/typesStatistic'
 import * as tDBgame from '../sharedTypes/typesDBgame'
-import type { playerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
+import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
 
 import { initalizeStatistic } from '../game/statistic'
 import { getGames } from './game'
@@ -12,7 +12,7 @@ import { isHofMember } from './hof'
 
 const lastGamesHistoryLength = 10
 
-function intializePlayerStatistic(): tStatistic.playerStatistic {
+function intializePlayerStatistic(): tStatistic.PlayerStatistic {
   return {
     ...initalizeStatistic(1)[0],
     ...{
@@ -36,7 +36,7 @@ function intializePlayerStatistic(): tStatistic.playerStatistic {
   }
 }
 
-function addWLStatisticAborted(playerStatistic: tStatistic.playerStatistic, game: tDBgame.gameForPlay) {
+function addWLStatisticAborted(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay) {
   if (game.coop) {
     playerStatistic.wl.nGamesCoopAborted += 1
   } else {
@@ -45,7 +45,7 @@ function addWLStatisticAborted(playerStatistic: tStatistic.playerStatistic, game
   addToGamesHistory(playerStatistic, 'aborted')
 }
 
-function addWLStatisticCoop(playerStatistic: tStatistic.playerStatistic, game: tDBgame.gameForPlay, nPlayer: number) {
+function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay, nPlayer: number) {
   playerStatistic.wl.nGamesCoopWon += 1
   const nMovesToWin = game.game.statistic.reduce(function (accumulator, currentValue) {
     return accumulator + currentValue.cards.total[0]
@@ -68,7 +68,7 @@ function addWLStatisticCoop(playerStatistic: tStatistic.playerStatistic, game: t
   addToGamesHistory(playerStatistic, 'coop')
 }
 
-function addWLStatisticWonLost(playerStatistic: tStatistic.playerStatistic, game: tDBgame.gameForPlay, nPlayer: number) {
+function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay, nPlayer: number) {
   // Won - Lost
   const ownTeamIndex = game.game.teams.findIndex((team) => team.includes(nPlayer))
   if (game.nPlayers === 4) {
@@ -89,7 +89,7 @@ function addWLStatisticWonLost(playerStatistic: tStatistic.playerStatistic, game
   addToPlayers(playerStatistic, game, nPlayer, ownTeamIndex)
 }
 
-function addToPlayers(playerStatistic: tStatistic.playerStatistic, game: tDBgame.gameForPlay, nPlayer: number, ownTeamIndex: number) {
+function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay, nPlayer: number, ownTeamIndex: number) {
   // bestFriend worstEnemy --- [togetherTotal, togetherWon, againstTotal, againstWon]
   game.players.forEach((player, playerIndex) => {
     if (playerIndex !== nPlayer && player != null) {
@@ -109,7 +109,7 @@ function addToPlayers(playerStatistic: tStatistic.playerStatistic, game: tDBgame
   })
 }
 
-export function addWLStatistic(playerStatistic: tStatistic.playerStatistic, game: tDBgame.gameForPlay, nPlayer: number) {
+export function addWLStatistic(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay, nPlayer: number) {
   if (game.status === 'aborted') {
     return addWLStatisticAborted(playerStatistic, game)
   }
@@ -127,20 +127,20 @@ export function addWLStatistic(playerStatistic: tStatistic.playerStatistic, game
   addWLStatisticWonLost(playerStatistic, game, nPlayer)
 }
 
-function addToGamesHistory(playerStatistic: tStatistic.playerStatistic, status: 'won' | 'lost' | 'coop' | 'aborted' | 'running') {
+function addToGamesHistory(playerStatistic: tStatistic.PlayerStatistic, status: 'won' | 'lost' | 'coop' | 'aborted' | 'running') {
   playerStatistic.wl.lastGamesHistory = playerStatistic.wl.lastGamesHistory
     .slice(Math.max(0, playerStatistic.wl.lastGamesHistory.length + 1 - lastGamesHistoryLength))
     .concat([status])
 }
 
-function addActionStatistic(playerStatistic: tStatistic.playerStatistic, gameStatistic: tStatistic.gameStatistic) {
-  ;(Object.keys(playerStatistic.actions) as Array<keyof tStatistic.gameStatisticActionsType>).forEach((key) => {
+function addActionStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: tStatistic.GameStatistic) {
+  ;(Object.keys(playerStatistic.actions) as Array<keyof tStatistic.GameStatisticActionsType>).forEach((key) => {
     playerStatistic.actions[key] += gameStatistic.actions[key]
   })
 }
 
-function addCardsStatistic(playerStatistic: tStatistic.playerStatistic, gameStatistic: tStatistic.gameStatistic) {
-  ;(Object.keys(playerStatistic.cards) as Array<keyof tStatistic.gameStatisticCardsType>).forEach((key) => {
+function addCardsStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: tStatistic.GameStatistic) {
+  ;(Object.keys(playerStatistic.cards) as Array<keyof tStatistic.GameStatisticCardsType>).forEach((key) => {
     playerStatistic.cards[key][0] += gameStatistic.cards[key][0]
     playerStatistic.cards[key][1] += gameStatistic.cards[key][1]
     playerStatistic.cards[key][2] += gameStatistic.cards[key][2]
@@ -160,7 +160,7 @@ export async function getPlayerStats(sqlClient: pg.Pool, userID: number) {
   return sum
 }
 
-export async function getDataForProfilePage(sqlClient: pg.Pool, username: string): Promise<playerFrontendStatistic> {
+export async function getDataForProfilePage(sqlClient: pg.Pool, username: string): Promise<PlayerFrontendStatistic> {
   const user = await getUser(sqlClient, { username: username })
   if (user.isErr()) {
     throw new Error(user.error)
@@ -224,7 +224,7 @@ function countTradedSpecialCards(stat: any) {
   return total
 }
 
-function findPlayersFromStat(wl: tStatistic.playerWLStatistic) {
+function findPlayersFromStat(wl: tStatistic.PlayerWLStatistic) {
   const res = {
     mostFrequent: '',
     bestPartner: '',
@@ -259,9 +259,9 @@ function findPlayersFromStat(wl: tStatistic.playerWLStatistic) {
   return res
 }
 
-function getUserNetworkFromGamesNodes(games: tDBgame.gameForPlay[]): tStatistic.userNetworkNode[] {
+function getUserNetworkFromGamesNodes(games: tDBgame.GameForPlay[]): tStatistic.UserNetworkNode[] {
   const nodesLimit = 30
-  const nodes: tStatistic.userNetworkNode[] = []
+  const nodes: tStatistic.UserNetworkNode[] = []
 
   for (const game of games) {
     for (let playerInd = 0; playerInd < game.players.length; playerInd++) {
@@ -288,7 +288,7 @@ function getUserNetworkFromGamesNodes(games: tDBgame.gameForPlay[]): tStatistic.
   return nodes.sort((n) => n.data.score).slice(0, nodesLimit)
 }
 
-function getUserNetworkFromGamesEdges(games: tDBgame.gameForPlay[], nodes: tStatistic.userNetworkNode[], edges: tStatistic.userNetworkEdge[], playerInd: number, gamesInd: number) {
+function getUserNetworkFromGamesEdges(games: tDBgame.GameForPlay[], nodes: tStatistic.UserNetworkNode[], edges: tStatistic.UserNetworkEdge[], playerInd: number, gamesInd: number) {
   for (let playerEdgeInd = playerInd + 1; playerEdgeInd < games[gamesInd].players.length; playerEdgeInd++) {
     if (nodes.findIndex((n) => n.data.idInt === games[gamesInd].playerIDs[playerEdgeInd]) === -1) {
       continue
@@ -323,12 +323,12 @@ function getUserNetworkFromGamesEdges(games: tDBgame.gameForPlay[], nodes: tStat
   }
 }
 
-function getUserNetworkFromGames(allGames: tDBgame.gameForPlay[], userID: number, username: string): tStatistic.userNetwork {
+function getUserNetworkFromGames(allGames: tDBgame.GameForPlay[], userID: number, username: string): tStatistic.UserNetwork {
   const games = allGames.filter((g) => g.status !== 'aborted' && g.status !== 'running')
 
   const nodes = getUserNetworkFromGamesNodes(games)
 
-  const edges: tStatistic.userNetworkEdge[] = []
+  const edges: tStatistic.UserNetworkEdge[] = []
   for (let gamesInd = 0; gamesInd < games.length; gamesInd++) {
     for (let playerInd = 0; playerInd < games[gamesInd].players.length; playerInd++) {
       if (nodes.findIndex((n) => n.data.idInt === games[gamesInd].playerIDs[playerInd]) === -1) {
@@ -360,7 +360,7 @@ function getUserNetworkFromGames(allGames: tDBgame.gameForPlay[], userID: number
   return { nodes, edges }
 }
 
-export async function getUserNetworkData(sqlClient: pg.Pool, username: string): Promise<tStatistic.userNetworkApiResponse> {
+export async function getUserNetworkData(sqlClient: pg.Pool, username: string): Promise<tStatistic.UserNetworkApiResponse> {
   const user = await getUser(sqlClient, { username: username })
   if (user.isErr()) {
     throw new Error(user.error)

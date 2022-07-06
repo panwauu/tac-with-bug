@@ -3,9 +3,9 @@ import { useRoute } from 'vue-router'
 import { i18n } from '@/services/i18n'
 
 import * as tPlayers from '@/../../server/src/sharedTypes/typesPlayers'
-import { updateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
+import { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 
-export interface miscStateType {
+export interface MiscStateType {
   gameID: number
   nPlayers: number
   gamePlayer: number
@@ -16,7 +16,7 @@ export interface miscStateType {
   gameRunning: boolean
   gameEndedText: string
   tradeDirection: 1 | 0 | -1
-  players: tPlayers.player[]
+  players: tPlayers.Player[]
   aussetzenFlag: boolean
   teufelFlag: boolean
   onlineGamePlayers: number[]
@@ -30,18 +30,18 @@ export interface miscStateType {
   setGamePlayer: (gamePlayer: number) => void
   setDeckInfo: (deckInfoInput: number[]) => void
   setCoopCounter: (coopCounter: number) => void
-  setGameRunning: (gameEnded: boolean, status: string, players: tPlayers.player[], winningTeams: boolean[], coopCounter: number, gamePlayer: number) => void
-  setTradeDirection: (players: tPlayers.player[], tradeDirection: 1 | -1) => void
-  setPlayers: (players: tPlayers.player[]) => void
-  setFlags: (data: updateDataType) => void
+  setGameRunning: (gameEnded: boolean, status: string, players: tPlayers.Player[], winningTeams: boolean[], coopCounter: number, gamePlayer: number) => void
+  setTradeDirection: (players: tPlayers.Player[], tradeDirection: 1 | -1) => void
+  setPlayers: (players: tPlayers.Player[]) => void
+  setFlags: (data: UpdateDataType) => void
   setOnlinePlayers: (data: { onlineGamePlayers: number[]; nWatchingPlayers: number; watchingPlayerNames: string[] }) => void
   setTimestamps: (created: number, lastPlayed: number) => void
 }
 
-export function useMisc(nPlayers?: number): miscStateType {
+export function useMisc(nPlayers?: number): MiscStateType {
   const route = useRoute()
 
-  const miscState: miscStateType = reactive({
+  const miscState: MiscStateType = reactive({
     gameID: parseInt(route.query.gameID as string),
     nPlayers: nPlayers != null ? nPlayers : parseInt(route.query.nPlayers as string),
     gamePlayer: -1,

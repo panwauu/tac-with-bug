@@ -8,10 +8,10 @@
 <script setup lang="ts">
 import Tag from 'primevue/tag'
 
-import { publicTournament, privateTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import { PublicTournament, PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { computed } from 'vue'
 
-const props = defineProps<{ status: publicTournament['status'] | privateTournament['status'] }>()
+const props = defineProps<{ status: PublicTournament['status'] | PrivateTournament['status'] }>()
 
 const statusSeverity = computed(() => {
   switch (props.status) {

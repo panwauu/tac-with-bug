@@ -34,7 +34,7 @@
 import GameTutorial from '@/components/game/GameTutorial.vue'
 import GameComponent from '@/components/game/GameComponent.vue'
 
-import type { performMoveAction } from '@/services/compositionGame/usePerformMove'
+import type { PerformMoveAction } from '@/services/compositionGame/usePerformMove'
 import { ref, computed, watch } from 'vue'
 import { isEqual } from 'lodash'
 import { usePositionStyles } from '@/services/compositionGame/usePositionStyles'
@@ -135,7 +135,7 @@ async function loadStep() {
   loading.value = false
 }
 
-async function performMoveAndEmit(performMoveAction: performMoveAction) {
+async function performMoveAndEmit(performMoveAction: PerformMoveAction) {
   if (tutorialStepOutput.value == null) {
     return
   }

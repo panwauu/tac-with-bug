@@ -54,7 +54,7 @@ import TournamentTeamsList from '@/components/Tournament/TournamentTeamsList.vue
 import TournamentSignUp from '@/components/Tournament/TournamentSignUp.vue'
 import TournamentBracket from '@/components/Tournament/TournamentBracket.vue'
 
-import type { publicTournament } from '@/../../../server/src/sharedTypes/typesTournament'
+import type { PublicTournament } from '@/../../../server/src/sharedTypes/typesTournament'
 import { ref, computed, watch, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import router from '@/router'
@@ -63,7 +63,7 @@ const props = defineProps<{ id: string; locale: string }>()
 
 const socket = injectStrict(SocketKey)
 const tournamentID = computed(() => parseInt(props.id))
-const tournament = ref<publicTournament | null>()
+const tournament = ref<PublicTournament | null>()
 
 queryTournament()
 watch(
@@ -81,7 +81,7 @@ async function queryTournament() {
   tournament.value = res.data
 }
 
-function updateTournament(newTournament: publicTournament) {
+function updateTournament(newTournament: PublicTournament) {
   if (tournament.value?.id === newTournament.id) {
     tournament.value = newTournament
   }

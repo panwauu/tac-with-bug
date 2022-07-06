@@ -1,5 +1,5 @@
 import { AckData } from '../sharedTypes/GeneralNamespaceDefinition'
-import { friend } from '../sharedTypes/typesFriends'
+import { Friend } from '../sharedTypes/typesFriends'
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
 
@@ -15,7 +15,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('Should fail for invalid username', async () => {
-    const response = await new Promise<AckData<friend[]>>((resolve) =>
+    const response = await new Promise<AckData<Friend[]>>((resolve) =>
       usersWithSockets[0].socket.emit('friends:ofUser', 'a', (data) => {
         resolve(data)
       })
@@ -24,7 +24,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('Should have no friends', async () => {
-    const response = await new Promise<AckData<friend[]>>((resolve) =>
+    const response = await new Promise<AckData<Friend[]>>((resolve) =>
       usersWithSockets[0].socket.emit('friends:ofUser', usersWithSockets[0].username, (data) => {
         resolve(data)
       })
@@ -52,7 +52,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('Should be able to request friendship from other player and alert player', async () => {
-    const promises: [Promise<friend[]>, Promise<friend[]>, Promise<{ username: string }>] = [
+    const promises: [Promise<Friend[]>, Promise<Friend[]>, Promise<{ username: string }>] = [
       new Promise((resolve) =>
         usersWithSockets[0].socket.once('friends:update', (data) => {
           resolve(data)
@@ -86,7 +86,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('Uninvolved player should not see the requests of other players', async () => {
-    const response = await new Promise<AckData<friend[]>>((resolve) =>
+    const response = await new Promise<AckData<Friend[]>>((resolve) =>
       usersWithSockets[2].socket.emit('friends:ofUser', usersWithSockets[0].username, (data) => {
         resolve(data)
       })
@@ -96,7 +96,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('Involved player should also not see the requests of other players - to', async () => {
-    const response = await new Promise<AckData<friend[]>>((resolve) =>
+    const response = await new Promise<AckData<Friend[]>>((resolve) =>
       usersWithSockets[1].socket.emit('friends:ofUser', usersWithSockets[0].username, (data) => {
         resolve(data)
       })
@@ -106,7 +106,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('Involved player should see the requests of other players - from', async () => {
-    const response = await new Promise<AckData<friend[]>>((resolve) =>
+    const response = await new Promise<AckData<Friend[]>>((resolve) =>
       usersWithSockets[0].socket.emit('friends:ofUser', usersWithSockets[1].username, (data) => {
         resolve(data)
       })
@@ -134,7 +134,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('Should be able to confirm friendship', async () => {
-    const promises: [Promise<friend[]>, Promise<friend[]>, Promise<{ username: string }>] = [
+    const promises: [Promise<Friend[]>, Promise<Friend[]>, Promise<{ username: string }>] = [
       new Promise((resolve) =>
         usersWithSockets[0].socket.once('friends:update', (data) => {
           resolve(data)
@@ -168,7 +168,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('Uninvolved player should see consented friendhips of others', async () => {
-    const response = await new Promise<AckData<friend[]>>((resolve) =>
+    const response = await new Promise<AckData<Friend[]>>((resolve) =>
       usersWithSockets[2].socket.emit('friends:ofUser', usersWithSockets[0].username, (data) => {
         resolve(data)
       })
@@ -192,7 +192,7 @@ describe('Friends test suite via socket.io', () => {
   test('Should be able to cancel friendship', async () => {
     const playerToCancel = Math.random() > 0.5 ? 1 : 0
     const playerToBeCanceled = playerToCancel === 1 ? 0 : 1
-    const promises: [Promise<friend[]>, Promise<friend[]>, Promise<{ username: string }>] = [
+    const promises: [Promise<Friend[]>, Promise<Friend[]>, Promise<{ username: string }>] = [
       new Promise((resolve) =>
         usersWithSockets[0].socket.once('friends:update', (data) => {
           resolve(data)
@@ -222,7 +222,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('Friendship should not be visible anymore', async () => {
-    const response = await new Promise<AckData<friend[]>>((resolve) =>
+    const response = await new Promise<AckData<Friend[]>>((resolve) =>
       usersWithSockets[Math.floor(Math.random() * 3)].socket.emit('friends:ofUser', usersWithSockets[0].username, (data) => {
         resolve(data)
       })
@@ -232,7 +232,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('User should be able to withdraw request', async () => {
-    const promisesRequest: [Promise<friend[]>, Promise<friend[]>, Promise<{ username: string }>] = [
+    const promisesRequest: [Promise<Friend[]>, Promise<Friend[]>, Promise<{ username: string }>] = [
       new Promise((resolve) =>
         usersWithSockets[0].socket.once('friends:update', (data) => {
           resolve(data)
@@ -257,7 +257,7 @@ describe('Friends test suite via socket.io', () => {
     await Promise.all(promisesRequest)
     expect(responseRequest.status).toBe(200)
 
-    const promises: [Promise<friend[]>, Promise<friend[]>, Promise<{ username: string }>] = [
+    const promises: [Promise<Friend[]>, Promise<Friend[]>, Promise<{ username: string }>] = [
       new Promise((resolve) =>
         usersWithSockets[0].socket.once('friends:update', (data) => {
           resolve(data)
@@ -287,7 +287,7 @@ describe('Friends test suite via socket.io', () => {
   })
 
   test('User should be able to decline request', async () => {
-    const promisesRequest: [Promise<friend[]>, Promise<friend[]>, Promise<{ username: string }>] = [
+    const promisesRequest: [Promise<Friend[]>, Promise<Friend[]>, Promise<{ username: string }>] = [
       new Promise((resolve) =>
         usersWithSockets[0].socket.once('friends:update', (data) => {
           resolve(data)
@@ -312,7 +312,7 @@ describe('Friends test suite via socket.io', () => {
     await Promise.all(promisesRequest)
     expect(responseRequest.status).toBe(200)
 
-    const promises: [Promise<friend[]>, Promise<friend[]>, Promise<{ username: string }>] = [
+    const promises: [Promise<Friend[]>, Promise<Friend[]>, Promise<{ username: string }>] = [
       new Promise((resolve) =>
         usersWithSockets[0].socket.once('friends:update', (data) => {
           resolve(data)

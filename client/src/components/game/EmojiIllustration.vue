@@ -25,21 +25,21 @@
 import { ref, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { isEmoji } from '@/store/messages'
-import type { chatMessage } from '@/../../server/src/sharedTypes/chat'
-import type { positionStylesState } from '@/services/compositionGame/usePositionStyles'
-import type { miscStateType } from '@/services/compositionGame/useMisc'
+import type { ChatMessage } from '@/../../server/src/sharedTypes/chat'
+import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import router from '@/router'
 
 const props = defineProps<{
-  positionStyles: positionStylesState
-  miscState: miscStateType
+  positionStyles: PositionStylesState
+  miscState: MiscStateType
 }>()
 
 const socket = injectStrict(SocketKey)
 
 const emojiMessages = ref<{ pos: string; text: string }[]>([])
 
-function onNewMessage(data: { channel: string; messages: chatMessage[] }) {
+function onNewMessage(data: { channel: string; messages: ChatMessage[] }) {
   if (router.currentRoute.value.query.gameID == null || data.channel !== `g-${router.currentRoute.value.query.gameID}`) {
     return
   }

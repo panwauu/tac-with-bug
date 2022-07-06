@@ -6,7 +6,7 @@ import { createAvatar } from '@dicebear/avatars'
 import * as style from '@dicebear/avatars-bottts-sprites'
 
 import { resolveUserIdentifier } from '../services/user'
-import { userIdentifier } from '../sharedTypes/typesDBuser'
+import { UserIdentifier } from '../sharedTypes/typesDBuser'
 import { ok, err, Result } from 'neverthrow'
 
 const profilePictureSize = 160
@@ -16,8 +16,8 @@ async function saveProfilePicture(sqlClient: pg.Pool, profilePicAsByteA: any, us
   return sqlClient.query(text, [profilePicAsByteA, userID])
 }
 
-type queryProfilePictureErrors = 'NO_USER_FOR_PROFILEPICTURE_FOUND'
-export async function queryProfilePicture(sqlClient: pg.Pool, identifier: userIdentifier): Promise<Result<string, queryProfilePictureErrors>> {
+type QueryProfilePictureErrors = 'NO_USER_FOR_PROFILEPICTURE_FOUND'
+export async function queryProfilePicture(sqlClient: pg.Pool, identifier: UserIdentifier): Promise<Result<string, QueryProfilePictureErrors>> {
   const userIdentifier = resolveUserIdentifier(identifier)
   const res = await sqlClient.query(`SELECT profilepic FROM users WHERE ${userIdentifier.key} = $1;`, [userIdentifier.value])
   if (res.rowCount !== 1) {

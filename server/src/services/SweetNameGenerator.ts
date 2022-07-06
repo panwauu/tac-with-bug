@@ -340,8 +340,8 @@ function generateName() {
   return `${fittingAttr[fittingAttrIndex]} ${nouns[nounIndex]}`
 }
 
-export type getDifferentNameError = 'NEW_NAME_COULD_NOT_BE_FOUND'
-export function getDifferentName(names: string[]): Result<string, getDifferentNameError> {
+export type GetDifferentNameError = 'NEW_NAME_COULD_NOT_BE_FOUND'
+export function getDifferentName(names: string[]): Result<string, GetDifferentNameError> {
   let name: string = generateName()
   for (let i = 0; i < maxIterations; i++) {
     if (!names.includes(name)) {

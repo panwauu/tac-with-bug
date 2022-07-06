@@ -381,6 +381,6 @@ export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: 
   })
 }
 
-export function pushChangedPrivateTournament(tournament: tTournament.privateTournament) {
+export function pushChangedPrivateTournament(tournament: tTournament.PrivateTournament) {
   nspGeneral.emit('tournament:private:update', tournament)
 }
