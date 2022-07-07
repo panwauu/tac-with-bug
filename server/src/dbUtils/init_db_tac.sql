@@ -17,9 +17,9 @@ CREATE TABLE users (
   ),
   currentsubscription int,
   freelicense boolean NOT NULL DEFAULT false,
-  settings JSON,
   locale VARCHAR(2) NOT NULL DEFAULT 'de',
   color_blindness_flag BOOLEAN NOT NULL DEFAULT false,
+  admin BOOLEAN NOT NULL DEFAULT FALSE,
   game_default_position INTEGER [2] NOT NULL DEFAULT '{1, 0}',
   user_description VARCHAR(200) NOT NULL DEFAULT ''
 );
@@ -107,7 +107,9 @@ CREATE TABLE private_tournaments (
   id SERIAL PRIMARY KEY,
   title varchar(50) NOT NULL,
   status varchar(25) NOT NULL CHECK(
-    status IN ('planned', 'running', 'ended', 'aborted')
+    (
+      status = ANY(ARRAY ['planned', 'running', 'ended', 'aborted'])
+    )
   ) DEFAULT 'planned',
   admin_player INTEGER NOT NULL REFERENCES users (id),
   n_teams INTEGER NOT NULL,
@@ -155,39 +157,13 @@ CREATE TABLE games (
   game jsonb NOT NULL,
   public_tournament_id INT REFERENCES tournaments(id),
   private_tournament_id INT REFERENCES private_tournaments(id),
-  CHECK(
-    public_tournament_id IS NULL
-    OR private_tournament_id IS NULL
-  ) rematch_open BOOLEAN NOT NULL DEFAULT FALSE,
-  admin BOOLEAN NOT NULL DEFAULT FALSE,
-  colors json
-);
-
-ALTER TABLE
-  games
-ADD
-  COLUMN public_tournament_id INT REFERENCES tournaments(id);
-
-ALTER TABLE
-  games
-ADD
-  COLUMN private_tournament_id INT REFERENCES private_tournaments(id);
-
-ALTER TABLE
-  games
-ADD
   CONSTRAINT only_one_tournament CHECK(
     public_tournament_id IS NULL
     OR private_tournament_id IS NULL
-  );
-
-UPDATE
-  games
-SET
-  public_tournament_id = tournamentid;
-
-ALTER TABLE
-  games DROP COLUMN tournamentid;
+  ),
+  rematch_open BOOLEAN NOT NULL DEFAULT FALSE,
+  colors json
+);
 
 CREATE TABLE users_to_games (
   id SERIAL PRIMARY KEY,

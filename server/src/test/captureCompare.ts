@@ -5,7 +5,7 @@ import { game } from '../game/game'
 //From File
 export function testCapturedMoves(testFileName: string, nPlayers?: number, nTeams?: number, meisterVersion?: boolean, coop?: boolean) {
     // read contents of the file
-    const data = String(fs.readFileSync('./src/game/capturedGames/' + testFileName + '.txt'))
+    const data = String(fs.readFileSync(`./src/game/capturedGames/${testFileName}.txt`))
 
     // split the contents by new line
     const lines = data.split(/\r?\n/).map((line) => JSON.parse(line));
@@ -48,7 +48,7 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
                 }
                 gameInst.performAction(lineJSON.action, timeDummy)
             } catch (err) {
-                console.log('Error at Line: ' + (i + 1))
+                console.log(`Error at Line: ${i + 1}`)
                 console.log(err)
                 result.line = i
                 return result
@@ -71,13 +71,13 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
         }
 
         if (compareGameWithCaptured(gameInst, lineJSON) === false) {
-            console.log('Unequal at line: ' + (i + 1))
+            console.log(`Unequal at line: ${i + 1}`)
             result.line = i
             return result
         }
 
         if (gameInst.gameEnded === true && (i + 1) !== lines.length) {
-            console.log('Ended too early at line: ' + (i + 1))
+            console.log(`Ended too early at line: ${i + 1}`)
             result.line = i
             return result
         }

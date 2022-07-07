@@ -1,6 +1,5 @@
 import logger from '../helpers/logger';
 import pg from 'pg';
-import events from 'events'
 import * as tTournament from '../../../shared/types/typesTournament';
 import * as dbGame from '../../../shared/types/typesDBgame';
 
@@ -13,8 +12,7 @@ import { pushChangedPublicTournament } from '../socket/tournamentPublic';
 import { updateTournamentWinners } from '../socket/tournament';
 import { getSocketByUserID } from '../socket/general';
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games';
-
-export const tournamentBus = new events.EventEmitter();
+import { tournamentBus } from './tournaments';
 
 interface getTournamentCondition {
     id?: number,
@@ -122,9 +120,7 @@ export async function getPublicTournamentByID(sqlClient: pg.Pool, id: number): P
 export async function startTournament(sqlClient: pg.Pool) {
     const tournaments = await getPublicTournament(sqlClient, { status: 'signUpEnded', 'creation_dates[cp]': '<' })
 
-    for (let i = 0; i < tournaments.length; i++) {
-        let tournament = tournaments[i]
-
+    for (let tournament of tournaments) {
         logger.info(`Starte Tournament: ${tournament.title}`)
 
         const createGamesResult = await createGamesTournament(sqlClient, tournament)
@@ -133,6 +129,10 @@ export async function startTournament(sqlClient: pg.Pool) {
 
         await sqlClient.query('UPDATE tournaments SET status=$1, creation_phase=$2, data=$3 WHERE id=$4;', ['running', tournament.creationPhase + 1, tournament.data, tournament.id])
         tournamentBus.emit('started', { tournamentTitle: tournament.title })
+
+        const changedTournament = await getPublicTournamentByID(sqlClient, tournament.id)
+        if (changedTournament.isErr()) { throw new Error('Tournament not found') }
+        pushChangedPublicTournament(changedTournament.value);
     }
 }
 
@@ -178,9 +178,7 @@ async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament
 export async function startTournamentRound(sqlClient: pg.Pool) {
     const tournaments = await getPublicTournament(sqlClient, { status: 'running', 'creation_dates[cp]': '<' })
 
-    for (let i = 0; i < tournaments.length; i++) {
-        let tournament = tournaments[i]
-
+    for (let tournament of tournaments) {
         logger.info(`Starte Runde ${tournament.creationPhase} Tournament ${tournament.title}`)
         const createGamesResult = await createGamesTournament(sqlClient, tournament)
         if (createGamesResult.isErr()) { logger.error(createGamesResult.error); return }
@@ -188,15 +186,17 @@ export async function startTournamentRound(sqlClient: pg.Pool) {
 
         await sqlClient.query('UPDATE tournaments SET creation_phase=$1, data=$2 WHERE id=$3;', [tournament.creationPhase + 1, tournament.data, tournament.id])
         tournamentBus.emit('round-started', { tournamentTitle: tournament.title, roundsToFinal: tournament.data.brackets.length + 1 - tournament.creationPhase })
+
+        const changedTournament = await getPublicTournamentByID(sqlClient, tournament.id)
+        if (changedTournament.isErr()) { throw new Error('Tournament not found') }
+        pushChangedPublicTournament(changedTournament.value);
     }
 }
 
 export async function checkForceGameEnd(sqlClient: pg.Pool) {
     const tournaments = await getPublicTournament(sqlClient, { status: 'running', 'creation_dates[cp-1]+tpg': '<' })
 
-    for (let i = 0; i < tournaments.length; i++) {
-        const tournament = tournaments[i]
-
+    for (const tournament of tournaments) {
         if (tournament.data.brackets[tournament.creationPhase - 2].every((m) => m.winner !== -1)) { continue; }
 
         logger.info('force game end')

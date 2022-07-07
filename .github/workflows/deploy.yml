@@ -40,15 +40,20 @@ jobs:
         cache-dependency-path: |
           server/package-lock.json
           client/package-lock.json
+          shared/package-lock.json
     - name: Install shared modules
       run: |
         cd shared
         npm ci
+    - name: Linting shared
+      run: |
+        cd shared
+        npm run lint
     - name: Install server modules
       run: |
         cd server
         npm ci
-    - name: Linting
+    - name: Linting server
       run: |
         cd server
         npm run lint
@@ -80,17 +85,6 @@ jobs:
       run: |
         cd client
         npm run build
-    - name: Clone Heroku Database
-      run: |
-        # heroku pg:backups:capture --app=tac-with-bug
-        heroku pg:backups:download -o tac.dump --app=tac-with-bug
-        pg_restore --verbose --no-acl --no-owner -h localhost -U postgres -d tac -j 8 -p 5432 tac.dump
-        psql -h localhost -U postgres -d tac -c 'UPDATE users SET currentsubscription=Null;';
-        psql -h localhost -U postgres -d tac -c 'DELETE FROM subscriptions;';
-        psql -h localhost -U postgres -d tac -c 'DELETE FROM waitinggames;';
-      env: 
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        PGPASSWORD: postgres
     - name: Run server test
       run: |
         cd server
@@ -122,11 +116,6 @@ jobs:
         git push --force heroku master;
       env:
         HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-    - name: Sanity check of tac-with-bug
-      uses: fjogeleit/http-request-action@master
-      with:
-        url: 'https://tac-with-bug.herokuapp.com'
-        method: 'GET'
     - name: Advance deployed tag
       uses: actions/github-script@v5
       with:
@@ -147,3 +136,8 @@ jobs:
             sha: context.sha,
             ref: "refs/tags/deployed"
           })
+    - name: Sanity check of tac-with-bug
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: 'https://tac-with-bug.herokuapp.com'
+        method: 'GET'

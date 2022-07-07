@@ -1,30 +1,25 @@
-import { TacServer } from '../server';
-import supertest from 'supertest';
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 
-describe('Test Suite via Socket.io', () => {
-    let agent: supertest.SuperAgentTest, server: TacServer, usersWithSockets: userWithCredentialsAndSocket[];
+describe('Tournament test suite via socket.io', () => {
+    let usersWithSockets: UserWithSocket[];
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-        usersWithSockets = await registerNUsersWithSockets(server, agent, 1);
+        usersWithSockets = await getUsersWithSockets({ n: 1 });
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(agent, usersWithSockets)
-        await server.destroy()
+        await closeSockets(usersWithSockets)
     })
 
     test('Should return table of last tournaments', async () => {
         const table = await new Promise<any>((resolve) => {
-            usersWithSockets[0].socket.emit('tournament:loadTable', { filter: null, first: 1, limit: 5 }, (data) => {
+            usersWithSockets[0].socket.emit('tournament:loadTable', { filter: null, first: 0, limit: 1 }, (data) => {
                 resolve(data.data)
             })
         })
-        expect(table.total).toBeGreaterThan(5)
-        expect(table.tournaments.length).toBe(5)
+        expect(table.total).toBeGreaterThan(0)
+        expect(table.tournaments.length).toBe(1)
     })
 
     test('Should return the last Tournament Winners', async () => {

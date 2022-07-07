@@ -1,0 +1,36 @@
+{
+  "development": {
+    "sourceClient": {
+      "host": "localhost",
+      "port": 5432,
+      "database": "tac_test_schema",
+      "user": "postgres",
+      "password": "postgres",
+      "applicationName": "pg-diff-cli"
+    },
+    "targetClient": {
+      "host": "localhost",
+      "port": 5432,
+      "database": "tac_server_schema",
+      "user": "postgres",
+      "password": "postgres",
+      "applicationName": "pg-diff-cli"
+    },
+    "compareOptions": {
+      "author": "",
+      "outputDirectory": "sqlscripts",
+      "getAuthorFromGit": false,
+      "schemaCompare": {
+        "namespaces": ["public"],
+        "dropMissingTable": false,
+        "dropMissingView": false,
+        "dropMissingFunction": false,
+        "dropMissingAggregate": false,
+        "roles": []
+      },
+      "dataCompare": {
+        "enable": false
+      }
+    }
+  }
+}

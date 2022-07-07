@@ -1,30 +1,25 @@
-import { TacServer } from '../server';
-import supertest from 'supertest';
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
+import { describeIf } from '../test/conditionalTests'
 import * as mail from '../communicationUtils/email';
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 
-describe('Test Suite via Socket.io', () => {
-    let agent: supertest.SuperAgentTest, server: TacServer, userWithSocket: userWithCredentialsAndSocket;
+const skipTests = process.env.paypal_Secret == null || process.env.paypal_Client_ID == null
+
+describeIf(!skipTests, 'Test Suite via Socket.io', () => {
+    let userWithSocket: UserWithSocket;
     const subscriptionID = 'I-K2P36MWMH55P';
 
     const spyNewSubscription = jest.spyOn(mail, 'sendNewSubscription')
     const spySubscriptionError = jest.spyOn(mail, 'sendSubscriptionError')
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-        const usersWithSockets = await registerNUsersWithSockets(server, agent, 1);
-        userWithSocket = usersWithSockets[0]
+        userWithSocket = (await getUsersWithSockets({ n: 1 }))[0];
     })
 
     afterEach(() => { jest.clearAllMocks() })
 
     afterAll(async () => {
-        await server.pgPool.query('UPDATE users SET currentsubscription=NULL;')
-        await server.pgPool.query('DELETE FROM subscriptions;')
-        await unregisterUsersWithSockets(agent, [userWithSocket])
-        await server.destroy()
+        await closeSockets([userWithSocket])
     })
 
     describe('Test all chat', () => {

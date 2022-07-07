@@ -25,4 +25,4 @@ psql -h localhost -U postgres -d tac -c "UPDATE users SET email= id || 'test@tes
 psql -h localhost -U postgres -d tac -c 'DELETE FROM subscriptions;'
 psql -h localhost -U postgres -d tac -c 'DELETE FROM waitinggames;'
 
-psql -h localhost -U postgres -d tac -f './server/src/dbUtils/changes.sql'
+psql -h localhost -U postgres -d tac -f './changes.sql'
