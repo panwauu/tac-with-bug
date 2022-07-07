@@ -19,10 +19,11 @@ import { validationErrorMiddleware } from './helpers/validationErrorMiddleware';
 import swaggerUI from 'swagger-ui-express';
 import swaggerDoc from './swagger.json';
 
-import { registerJobs } from './services/scheduledTasks';
+import { cancelAllJobs, registerJobs } from './services/scheduledTasks';
 
 import { initdBUtils } from './dbUtils/initdBUtils'
 import { loadTutorialLevels } from './services/tutorial';
+import logger from './helpers/logger';
 
 export class TacServer {
     httpServer: http.Server;
@@ -32,8 +33,6 @@ export class TacServer {
 
     constructor() {
         this.pgPool = initdBUtils()
-
-        loadTutorialLevels(this.pgPool)
 
         this.app = express()
         this.app.locals.sqlClient = this.pgPool
@@ -55,8 +54,6 @@ export class TacServer {
         registerSocketNspGame(this.io.of('/game'), this.pgPool)
         registerSocketNspGeneral(this.io.of('/'), this.pgPool)
 
-        registerJobs(this.pgPool)
-
         // Handle production
         if (process.env.NODE_ENV === 'production') {
             this.app.use(express.static(path.join(__dirname, '../../../public'), {
@@ -70,21 +67,30 @@ export class TacServer {
     }
 
     async listen(port?: number) {
+        await registerJobs(this.pgPool)
+        await loadTutorialLevels(this.pgPool)
+
         const portToListen = port ?? (process.env.PORT != undefined ? parseInt(process.env.PORT) : 3000)
         this.httpServer.listen(portToListen)
         return portToListen
     }
 
     async unlisten() {
-        const promiseIO = new Promise((resolve) => { this.io.close(() => { resolve(true) }) })
-        const promiseHTTP = new Promise((resolve) => { this.httpServer.listening ? this.httpServer.close(() => { resolve(true) }) : resolve(true) })
-        return Promise.all([promiseHTTP, promiseIO])
+        cancelAllJobs()
+
+        await new Promise((resolve) => {
+            this.io.close(() => { resolve(true) })
+        })
+        await new Promise((resolve) => {
+            this.httpServer.listening ? this.httpServer.close(() => { resolve(true) }) : resolve(true)
+        })
     }
 
     async destroy() {
-        //unregisterJobs
+        logger.debug('Server destroying: start destroy by unlisten')
         await this.unlisten();
-        const promiseSQL = this.app.locals.sqlClient.end()
-        return Promise.all([promiseSQL, this.unlisten()])
+        logger.debug('Server destroying: unlisten ended, starting sql teardown')
+        await this.app.locals.sqlClient.end();
+        logger.debug('Server destroyed')
     }
 }

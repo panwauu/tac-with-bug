@@ -41,7 +41,7 @@ export class PictureController extends Controller {
     }
 
     private handleFile(request: express.Request): Promise<any> {
-        const multerSingle = multer().single('profilePic');
+        const multerSingle = multer({ limits: { fileSize: 8000000 } }).single('profilePic');
         return new Promise((resolve, reject) => {
             // undefined need to receive express.Response object
             multerSingle(request, undefined as any, async (error) => {

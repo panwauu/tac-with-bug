@@ -1,28 +1,21 @@
-import { TacServer } from '../server';
-import supertest from 'supertest';
-import { registerUserAndReturnCredentials, unregisterUser, userWithCredentials } from '../helpers/userHelper';
+import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets';
 
 describe('Tournament API', () => {
-    let userWithCredentials: userWithCredentials, agent: supertest.SuperAgentTest, server: TacServer;
+    let userWithCredentials: User;
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-
-        userWithCredentials = await registerUserAndReturnCredentials(server, agent)
+        userWithCredentials = await registerUserAndReturnCredentials()
     })
 
-    beforeEach(async () => { await server.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [userWithCredentials.id]) })
+    beforeEach(async () => { await testServer.pgPool.query('UPDATE users SET admin=true WHERE id=$1;', [userWithCredentials.id]) })
 
     afterAll(async () => {
-        await unregisterUser(agent, userWithCredentials)
-        await server.destroy()
+        await unregisterUser(userWithCredentials)
     })
 
     test('Create Tournament - fail if not admin', async () => {
-        await server.pgPool.query('UPDATE users SET admin=false WHERE id=$1;', [userWithCredentials.id])
-        const apiRes = await agent.post('/gameApi/createTournament')
+        await testServer.pgPool.query('UPDATE users SET admin=false WHERE id=$1;', [userWithCredentials.id])
+        const apiRes = await testAgent.post('/gameApi/createTournament')
             .set({ Authorization: userWithCredentials.authHeader })
             .send({
                 title: 'TestTournament',
@@ -36,7 +29,7 @@ describe('Tournament API', () => {
     })
 
     test('Create Tournament - 2 Teams', async () => {
-        const apiRes = await agent.post('/gameApi/createTournament')
+        const apiRes = await testAgent.post('/gameApi/createTournament')
             .set({ Authorization: userWithCredentials.authHeader })
             .send({
                 title: 'TestTournament',
@@ -51,12 +44,12 @@ describe('Tournament API', () => {
         expect(apiRes.body.data.brackets.length).toBe(1);
         expect(apiRes.body.data.brackets[0].length).toBe(1);
 
-        const dbResBefore = await server.pgPool.query('DELETE FROM tournaments WHERE id = $1 RETURNING *;', [apiRes.body.id])
+        const dbResBefore = await testServer.pgPool.query('DELETE FROM tournaments WHERE id = $1 RETURNING *;', [apiRes.body.id])
         expect(apiRes.body.id).toBe(dbResBefore.rows[0].id);
     })
 
     test('Create Tournament - 8 Teams', async () => {
-        const apiRes = await agent.post('/gameApi/createTournament')
+        const apiRes = await testAgent.post('/gameApi/createTournament')
             .set({ Authorization: userWithCredentials.authHeader })
             .send({
                 title: 'TestTournament',
@@ -73,12 +66,12 @@ describe('Tournament API', () => {
         expect(apiRes.body.data.brackets[1].length).toBe(2);
         expect(apiRes.body.data.brackets[2].length).toBe(2);
 
-        const dbResBefore = await server.pgPool.query('DELETE FROM tournaments WHERE id = $1 RETURNING *;', [apiRes.body.id])
+        const dbResBefore = await testServer.pgPool.query('DELETE FROM tournaments WHERE id = $1 RETURNING *;', [apiRes.body.id])
         expect(apiRes.body.id).toBe(dbResBefore.rows[0].id);
     })
 
     test('Generate Team Name', async () => {
-        const apiRes = await agent.get('/gameApi/generateTeamName')
+        const apiRes = await testAgent.get('/gameApi/generateTeamName')
             .query({ tournamentID: 1 })
             .set({ Authorization: userWithCredentials.authHeader })
         expect(apiRes.statusCode).toBe(200)

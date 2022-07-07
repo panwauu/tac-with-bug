@@ -2,19 +2,17 @@ import { ok, err, Result } from 'neverthrow';
 import type pg from 'pg';
 import { expectOneChangeToDatabase, notOneDatabaseChangeError } from '../dbUtils/dbHelpers';
 
-let tutorialLevelsResolve: ((value: number[] | PromiseLike<number[]>) => void)
-const tutorialLevels: Promise<number[]> = new Promise((resolve) => tutorialLevelsResolve = resolve)
+let tutorialLevels: number[] = []
 
 export async function loadTutorialLevels(pgPool: pg.Pool) {
     const progess = await getDefaultTutorialProgress(pgPool)
-    const tutorialLevelsResult = progess.map((e) => e.length)
-    tutorialLevelsResolve(tutorialLevelsResult)
+    tutorialLevels = progess.map((e) => e.length)
 }
 
 type validateTutorialIDAndStepError = 'TUTORIAL_ID_NOT_VALID' | 'TUTORIAL_STEP_NOT_VALID'
 async function validateTutorialIDAndStep(tutorialID: number, tutorialStep: number): Promise<Result<null, validateTutorialIDAndStepError>> {
-    if (!Number.isInteger(tutorialID) || tutorialID < 0 || tutorialID >= (await tutorialLevels).length) { return err('TUTORIAL_ID_NOT_VALID') }
-    if (!Number.isInteger(tutorialStep) || tutorialStep < 0 || tutorialStep >= (await tutorialLevels)[tutorialID]) { return err('TUTORIAL_STEP_NOT_VALID') }
+    if (!Number.isInteger(tutorialID) || tutorialID < 0 || tutorialID >= tutorialLevels.length) { return err('TUTORIAL_ID_NOT_VALID') }
+    if (!Number.isInteger(tutorialStep) || tutorialStep < 0 || tutorialStep >= tutorialLevels[tutorialID]) { return err('TUTORIAL_STEP_NOT_VALID') }
     return ok(null)
 }
 
@@ -42,7 +40,7 @@ export async function resetTutorialProgress(pgPool: pg.Pool, userID: number, tut
     const validationRes = await validateTutorialIDAndStep(tutorialID, 0)
     if (validationRes.isErr()) { return err(validationRes.error) }
 
-    const newProgressRow = JSON.stringify(Array((await tutorialLevels)[tutorialID]).fill(false))
+    const newProgressRow = JSON.stringify(Array(tutorialLevels[tutorialID]).fill(false))
     const dbRes = await pgPool.query<{ tutorial: boolean[][] }>('UPDATE users SET tutorial = jsonb_set(tutorial, ARRAY[$2::text], $3) WHERE id = $1 RETURNING *;', [userID, tutorialID, newProgressRow])
     const dbChange = expectOneChangeToDatabase(dbRes)
     if (dbChange.isErr()) { return err(dbChange.error) }

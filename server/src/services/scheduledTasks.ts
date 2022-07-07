@@ -33,6 +33,11 @@ export async function registerJobs(sqlClient: pg.Pool) {
     }
 }
 
+export function cancelAllJobs() {
+    for (const job of jobs) { job.cancel() }
+    removeDoneJobs()
+}
+
 function removeDoneJobs() {
     for (let i = jobs.length - 1; i >= 0; i--) { if (jobs[i] === null) { jobs.splice(i, 1) } }
 }
@@ -56,6 +61,8 @@ async function registerTournamentJobs(sqlClient: pg.Pool) {
 const tournamentTimeOffset = 100;
 
 export function registerJobsForOneTournament(sqlClient: pg.Pool, tournament: publicTournament) {
+    if (process.env.NODE_ENV === 'test') { return; }
+
     jobs.push(schedule.scheduleJob(new Date(new Date(tournament.signupBegin).getTime() + tournamentTimeOffset), async () => {
         await startSignUpOnCondition(sqlClient)
     }))

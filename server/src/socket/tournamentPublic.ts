@@ -28,7 +28,10 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
     })
 
     socket.on('tournament:public:registerTeam', async (data) => {
-        if (socket.data.userID === undefined) { logger.error('Event forbidden for unauthenticated user (tournament:registerTeam)', { stack: new Error().stack }); return }
+        if (socket.data.userID === undefined) {
+            logger.error('Event forbidden for unauthenticated user (tournament:registerTeam)', { stack: new Error().stack });
+            return
+        }
 
         const schema = Joi.object({
             tournamentID: Joi.number().required().integer().positive(),
@@ -36,21 +39,30 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
             players: Joi.array().items(Joi.string().required()),
         });
         const { error } = schema.validate(data);
-        if (error != null) { logger.error('JOI Error', error); return }
+        if (error != null) {
+            logger.error('JOI Error', error);
+            return
+        }
 
         try {
             const user = await getUser(pgPool, { id: socket.data.userID })
             if (user.isErr()) { return }
 
             const registerTeamResult = await registerTeam(pgPool, data.tournamentID, data.players, data.name, socket.data.userID)
-            if (registerTeamResult.isErr()) { logger.error(registerTeamResult.error); return }
+            if (registerTeamResult.isErr()) {
+                logger.error(registerTeamResult.error);
+                return
+            }
             const tournament = registerTeamResult.value
             pushChangedPublicTournament(tournament)
 
-            sendMailToUnactivatedPlayer(pgPool, data.players, data.name, user.value.username)
+            await sendMailToUnactivatedPlayer(pgPool, data.players, data.name, user.value.username)
 
             const teamToRegister = tournament.registerTeams.find((r) => r.playerids.includes(user.value.id))
-            if (teamToRegister === undefined) { logger.error('Cannot find registerTeam for event Handler'); return }
+            if (teamToRegister === undefined) {
+                logger.error('Cannot find registerTeam for event Handler');
+                return
+            }
             const dataForClient = { registerTeam: teamToRegister, tournamentTitle: tournament.title, player: user.value.username }
             socket.emit('tournament:toast:you-created-a-team', dataForClient)
             getSocketsOfPlayerIDs(nsp, teamToRegister.playerids.filter((_, i) => teamToRegister.activated[i] === false)).forEach((s) => s.emit('tournament:toast:invited-to-a-team', dataForClient))
@@ -67,11 +79,11 @@ export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: G
             teamName: Joi.string().required(),
         });
         const { error } = schema.validate(data);
-        if (error != null) { return }
+        if (error != null) { logger.error('JOI Error', error); return }
 
         try {
             const user = await getUser(pgPool, { id: socket.data.userID })
-            if (user.isErr()) { return }
+            if (user.isErr()) { logger.error(user.error); return }
 
             const joinTeamResult = await joinTeam(pgPool, data.tournamentID, socket.data.userID, user.value.username, data.teamName)
             if (joinTeamResult.isErr()) { logger.error(joinTeamResult.error); return }
@@ -198,7 +210,7 @@ async function sendMailToUnactivatedPlayer(sqlClient: pg.Pool, players: string[]
         const user = await getUser(sqlClient, { username: player })
         if (user.isErr()) { throw new Error(user.error) }
 
-        await sendTournamentInvitation({ user: user.value, invitingPlayer: username, tournamentTitle: '', teamName })
+        sendTournamentInvitation({ user: user.value, invitingPlayer: username, tournamentTitle: '', teamName })
     })
 }
 

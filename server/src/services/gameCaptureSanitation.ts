@@ -2,7 +2,7 @@ import type pg from 'pg';
 import { cloneDeep } from 'lodash';
 import { capturedType } from './capture';
 import logger from '../helpers/logger';
-import { repeatGame } from '../helpers/captureCompare';
+import { repeatGame } from '../test/captureCompare';
 
 export async function sanitizeGameCapture(pgPool: pg.Pool, gameID: number, checkOnlyLastLine?: boolean) {
     const res = await pgPool.query<{ id: number, game: capturedType[] }>('SELECT id, game FROM savegames WHERE id = $1;', [gameID])

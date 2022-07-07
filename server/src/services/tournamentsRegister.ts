@@ -2,7 +2,8 @@ import { err, ok, Result } from 'neverthrow';
 import pg from 'pg';
 import * as tTournament from '../../../shared/types/typesTournament';
 
-import { getPublicTournamentByID, tournamentBus, getPublicTournament, getTournamentByIDError } from './tournamentsPublic';
+import { tournamentBus } from './tournaments';
+import { getPublicTournamentByID, getPublicTournament, getTournamentByIDError } from './tournamentsPublic';
 
 function alreadyRegistered(tournament: tTournament.publicTournament, userID: number) {
     return (tournament.teams.some((t) => t.playerids.includes(userID)) || tournament.registerTeams.some((t) => t.playerids.includes(userID)));
@@ -147,9 +148,7 @@ export async function startSignUpOnCondition(sqlClient: pg.Pool) {
 export async function endSignUpOnCondition(sqlClient: pg.Pool) {
     const tournaments = await getPublicTournament(sqlClient, { status: 'signUp', signup_deadline: '<' })
 
-    for (let i = 0; i < tournaments.length; i++) {
-        let tournament = tournaments[i]
-
+    for (let tournament of tournaments) {
         tournament = await endSignupIfComplete(sqlClient, tournament)
         if (tournament.status === 'signUpEnded') {
             tournamentBus.emit('signUpEnded-you-partizipate', {
@@ -164,10 +163,10 @@ export async function endSignUpOnCondition(sqlClient: pg.Pool) {
             tournament.status = 'signUpFailed';
 
             const playerids: number[] = [];
-            for (let teamIndex = 0; teamIndex < tournament.registerTeams.length; teamIndex++) {
-                for (let playerIndex = 0; playerIndex < tournament.registerTeams[teamIndex].activated.length; playerIndex++) {
-                    if (tournament.registerTeams[teamIndex].activated[playerIndex]) {
-                        playerids.push(tournament.registerTeams[teamIndex].playerids[playerIndex])
+            for (const registerTeam of tournament.registerTeams) {
+                for (let playerIndex = 0; playerIndex < registerTeam.activated.length; playerIndex++) {
+                    if (registerTeam.activated[playerIndex]) {
+                        playerids.push(registerTeam.playerids[playerIndex])
                     }
                 }
             }

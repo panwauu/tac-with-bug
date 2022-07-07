@@ -35,8 +35,7 @@ export async function getTournamentParticipations(sqlClient: pg.Pool, username: 
     const result: tTournament.tournamentParticipation[] = []
     const tournaments = await getPublicTournament(sqlClient, { status: 'ended' })
 
-    for (let i = 0; i < tournaments.length; i++) {
-        const tournament = tournaments[i]
+    for (const tournament of tournaments) {
         const teamIndex = tournament.teams.findIndex((team) => team.players.includes(username))
         if (teamIndex === -1) { continue }
 

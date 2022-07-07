@@ -17,6 +17,7 @@
             class="tacLogo"
             href="https://shop.spiel-tac.de/"
             target="_blank"
+            rel="noopener noreferrer"
           >TAC</a>
           {{ $t(`Advertisement.description2`) }}
         </p>

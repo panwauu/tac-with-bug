@@ -9,8 +9,8 @@
   "scripts": {
     "start": "node --es-module-specifier-resolution=node ./dist/server/src/index.js",
     "devStart": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node ./dist/server/src/index.js",
-    "test": "jest --coverage --detectOpenHandles",
-    "testWatch": "jest --watchAll --coverage --detectOpenHandles",
+    "test": "jest --runInBand",
+    "testWatch": "jest --watchAll --runInBand",
     "tsc": "tsc",
     "tscWatch": "tsc --watch",
     "client": "openapi --input ./src/swagger.json --output ../client/src/generatedClient --useUnionTypes",
@@ -18,7 +18,8 @@
     "buildWatch": "onchange \"src/routes/*.controller.ts\" -e \"src/routes/routes.ts\" -i -k -- npm run building",
     "lint": "eslint -c .eslintrc.js ./src",
     "checkLocales": "node ./dist/server/src/entrypoints/checkLocales.js ../../../../email/locales && node ./dist/server/src/entrypoints/checkLocales.js ../../../../../client/src/locales",
-    "sanitizeCaptures": "node ./dist/server/src/entrypoints/sanitizeCapture.js"
+    "sanitizeCaptures": "node ./dist/server/src/entrypoints/sanitizeCapture.js",
+    "testtest": "node ./dist/server/src/dbUtils/test.js"
   },
   "author": "",
   "license": "ISC",
@@ -86,12 +87,12 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.7.0",
     "eslint-plugin-sonarjs": "^0.11.0",
-    "jest": "^27.4.7",
+    "jest": "^28.1.2",
     "nodemon": "^2.0.13",
     "openapi-typescript-codegen": "^0.9.3",
     "socket.io-client": "^4.4.1",
     "supertest": "^6.2.2",
-    "ts-jest": "^27.1.3",
+    "ts-jest": "^28.0.5",
     "typescript": "^4.5.4"
   },
   "nodemonConfig": {

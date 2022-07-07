@@ -1,3 +1,6 @@
+import { SuperAgentTest } from 'supertest';
+import { TacServer } from '../server';
+
 export { }
 
 declare global {
@@ -7,4 +10,9 @@ declare global {
       jwtSecret: string;
     }
   }
+}
+
+declare global {
+  let testServer: TacServer;
+  let testAgent: SuperAgentTest;
 }

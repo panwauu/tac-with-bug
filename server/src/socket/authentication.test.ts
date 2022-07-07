@@ -1,26 +1,20 @@
 import type { AckData, GeneralSocketC } from '../../../shared/types/GeneralNamespaceDefinition';
-import { TacServer } from '../server';
-import supertest from 'supertest';
-import { registerNUsersWithSockets, unregisterUsersWithSockets, userWithCredentialsAndSocket } from '../helpers/userHelper';
 import { io } from 'socket.io-client';
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets';
+import { closeSockets } from '../test/handleSocket';
 
 describe('Authentication Test Suite via Socket.io', () => {
-    let usersWithSockets: userWithCredentialsAndSocket[], agent: supertest.SuperAgentTest, server: TacServer;
+    let usersWithSockets: UserWithSocket[];
     let socket: GeneralSocketC;
 
     beforeAll(async () => {
-        server = new TacServer()
-        await server.listen(1234)
-        agent = supertest.agent(server.httpServer)
-        usersWithSockets = await registerNUsersWithSockets(server, agent, 2);
+        usersWithSockets = await getUsersWithSockets({ n: 2 });
         socket = io('http://localhost:1234')
         await new Promise((resolve) => { socket.on('connect', () => { resolve(null) }) })
     })
 
     afterAll(async () => {
-        await unregisterUsersWithSockets(agent, usersWithSockets)
-        socket.disconnect()
-        await server.destroy()
+        await closeSockets([...usersWithSockets, socket])
     })
 
     test('Should be able to logout without interfering with other sockets', async () => {
