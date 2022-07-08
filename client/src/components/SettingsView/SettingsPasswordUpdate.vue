@@ -1,7 +1,10 @@
 <template>
   <form @submit.prevent="requestPasswordUpdate()">
     <div>
-      <span class="p-float-label" style="margin-top: 30px">
+      <span
+        class="p-float-label"
+        style="margin-top: 30px"
+      >
         <InputText
           id="changePWpassword"
           v-model="password"
@@ -13,7 +16,11 @@
       </span>
     </div>
 
-    <Password v-model:password="newPassword" v-model:valid="validNewPassword" style="width: 100%" />
+    <PasswordForm
+      v-model:password="newPassword"
+      v-model:valid="validNewPassword"
+      style="width: 100%"
+    />
 
     <Button
       type="submit"
@@ -26,41 +33,41 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
 
-import Password from '../Forms/Password.vue';
-import { Service } from '@/generatedClient/index';
-import { ref } from 'vue';
-import { useToast } from 'primevue/usetoast';
+import PasswordForm from '../Forms/PasswordForm.vue'
+import { DefaultService as Service } from '@/generatedClient/index'
+import { ref } from 'vue'
+import { i18n } from '@/services/i18n'
+import { useToast } from 'primevue/usetoast'
 const toast = useToast()
-import { i18n } from '@/services/i18n';
 
 const emit = defineEmits(['settingoperationdone'])
 
-let password = ref('')
-let newPassword = ref('')
-let validNewPassword = ref(false)
+const password = ref('')
+const newPassword = ref('')
+const validNewPassword = ref(false)
 
 const requestPasswordUpdate = async () => {
   try {
     await Service.changePassword({ password: newPassword.value, password_old: password.value })
 
-    password.value = '';
-    newPassword.value = '';
+    password.value = ''
+    newPassword.value = ''
     toast.add({
       severity: 'success',
       summary: i18n.global.t('Settings.ChangePassword.toastSummarySuccess'),
       detail: i18n.global.t('Settings.ChangePassword.successMsg'),
       life: 2000,
-    });
-    emit('settingoperationdone');
+    })
+    emit('settingoperationdone')
   } catch (err: any) {
-    let errorText = '';
+    let errorText = ''
     if (!err?.body?.message) {
-      errorText = i18n.global.t('Settings.ChangePassword.errorMsgGeneral');
+      errorText = i18n.global.t('Settings.ChangePassword.errorMsgGeneral')
     } else {
-      errorText = i18n.global.t('Settings.ChangePassword.errorMsgPwd');
+      errorText = i18n.global.t('Settings.ChangePassword.errorMsgPwd')
     }
 
     toast.add({
@@ -68,10 +75,7 @@ const requestPasswordUpdate = async () => {
       summary: i18n.global.t('Settings.ChangePassword.toastSummaryFailure'),
       detail: errorText,
       life: 2000,
-    });
+    })
   }
 }
 </script>
-
-<style scoped>
-</style>

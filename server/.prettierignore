@@ -1,0 +1,12 @@
+# Ignore artifacts:
+coverage
+dist
+email
+node_modules
+public
+__snapshots__
+
+.env
+package.json
+package-lock.json
+*.json

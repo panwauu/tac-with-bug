@@ -1,6 +1,6 @@
-import { playerCard as ServerPlayerCard } from '@/../../shared/types/typesCard';
+import { PlayerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
 
-export interface playerCard extends ServerPlayerCard {
-    key: string,
-    style: string,
+export interface PlayerCard extends ServerPlayerCard {
+  key: string
+  style: string
 }

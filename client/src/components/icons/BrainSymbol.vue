@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div>
     <svg
       viewBox="0 0 409 460"
@@ -13,9 +14,9 @@
   </div>
 </template>
 
-<script setup lang='ts'>
-import { computed } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue'
 const props = defineProps<{ color?: 'primary' }>()
 
-const cssColor = computed(() => props.color === 'primary' ? '--primary-color-text' : '--text-color')
+const cssColor = computed(() => (props.color === 'primary' ? '--primary-color-text' : '--text-color'))
 </script>

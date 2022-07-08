@@ -16,8 +16,9 @@
   animation-duration: 1s;
   animation-timing-function: ease-in-out;
 }
+
 .aussetzenSquare::after {
-  content: "";
+  content: '';
   position: absolute;
   display: inline-block;
   top: 12%;
@@ -27,8 +28,9 @@
   border-radius: 50%;
   box-shadow: 0px 0px 0px 2000px red;
 }
+
 .aussetzenSquare::before {
-  content: "";
+  content: '';
   position: absolute;
   display: inline-block;
   top: 50%;
@@ -43,9 +45,11 @@
   0% {
     transform: scale(0.001);
   }
+
   70% {
     transform: scale(1.3);
   }
+
   100% {
     transform: scale(1);
   }

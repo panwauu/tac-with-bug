@@ -1,13 +1,13 @@
-import pg from 'pg';
+import pg from 'pg'
 
-export interface leaderBoardType {
-    username: string[];
-    wins: number[];
-    winshare: string[];
-    nPlayers: number;
+export interface LeaderBoardType {
+  username: string[]
+  wins: number[]
+  winshare: string[]
+  nPlayers: number
 }
-export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, offset: number, startDate: Date, endDate: Date): Promise<leaderBoardType> {
-    const query = `
+export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, offset: number, startDate: Date, endDate: Date): Promise<LeaderBoardType> {
+  const query = `
     SELECT users.username, t2.wins, t2.ngames, t2.full_count FROM (
         SELECT userid, SUM(t.win) as wins, SUM(t.ngames) as ngames, count(*) OVER() AS full_count FROM (
             SELECT 
@@ -18,24 +18,24 @@ export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, 
             WHERE (games.status='won-0' OR games.status='won-1' OR games.status='won-2') AND games.created >= $3 AND games.created <= $4
         ) as t GROUP BY userid ORDER BY wins DESC, userid LIMIT $1 OFFSET $2
     ) as t2 LEFT JOIN users ON users.id = t2.userid ORDER BY t2.wins DESC, t2.userid;`
-    const dbRes = await sqlClient.query(query, [limit, offset, startDate, endDate])
+  const dbRes = await sqlClient.query(query, [limit, offset, startDate, endDate])
 
-    return {
-        username: dbRes.rows.map((row: any) => row.username),
-        wins: dbRes.rows.map((row: any) => row.wins),
-        winshare: dbRes.rows.map((row: any) => (parseInt(row.wins) * 100 / (parseInt(row.ngames))).toFixed(2)),
-        nPlayers: dbRes.rowCount === 0 ? 0 : dbRes.rows?.[0].full_count
-    }
+  return {
+    username: dbRes.rows.map((row: any) => row.username),
+    wins: dbRes.rows.map((row: any) => row.wins),
+    winshare: dbRes.rows.map((row: any) => ((parseInt(row.wins) * 100) / parseInt(row.ngames)).toFixed(2)),
+    nPlayers: dbRes.rowCount === 0 ? 0 : dbRes.rows?.[0].full_count,
+  }
 }
 
-export interface coopBoardType {
-    nGames: number,
-    team: string[][],
-    count: number[],
-    lastplayed: number[],
+export interface CoopBoardType {
+  nGames: number
+  team: string[][]
+  count: number[]
+  lastplayed: number[]
 }
-export async function queryLeaderboardCoop(sqlClient: pg.Pool, limit: number, offset: number, nPlayers: number, startDate: Date, endDate: Date): Promise<coopBoardType> {
-    const query = `
+export async function queryLeaderboardCoop(sqlClient: pg.Pool, limit: number, offset: number, nPlayers: number, startDate: Date, endDate: Date): Promise<CoopBoardType> {
+  const query = `
     SELECT games.id, max(games.cards) as cards, array_agg(users.username) as team, max(games.lastplayed) as lastplayed, max(games.full_count) as full_count FROM (
         SELECT 
             id, 
@@ -51,12 +51,12 @@ export async function queryLeaderboardCoop(sqlClient: pg.Pool, limit: number, of
     LEFT JOIN users_to_games ON users_to_games.gameid = games.id
     LEFT JOIN users ON users_to_games.userid = users.id
     GROUP BY games.id ORDER BY cards, lastplayed;`
-    const dbRes = await sqlClient.query(query, [limit, offset, nPlayers, startDate, endDate])
+  const dbRes = await sqlClient.query(query, [limit, offset, nPlayers, startDate, endDate])
 
-    return {
-        nGames: dbRes.rowCount === 0 ? 0 : dbRes.rows?.[0].full_count,
-        team: dbRes.rows.map((row: any) => row.team),
-        count: dbRes.rows.map((row: any) => row.cards),
-        lastplayed: dbRes.rows.map((row: any) => Date.parse(row.lastplayed))
-    }
+  return {
+    nGames: dbRes.rowCount === 0 ? 0 : dbRes.rows?.[0].full_count,
+    team: dbRes.rows.map((row: any) => row.team),
+    count: dbRes.rows.map((row: any) => row.cards),
+    lastplayed: dbRes.rows.map((row: any) => Date.parse(row.lastplayed)),
+  }
 }

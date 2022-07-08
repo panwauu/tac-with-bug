@@ -1,18 +1,18 @@
-import { SuperAgentTest } from 'supertest';
-import { TacServer } from '../server';
+import { SuperAgentTest } from 'supertest'
+import { TacServer } from '../server'
 
-export { }
+export {}
 
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      NODE_ENV: 'development' | 'production' | 'test';
-      jwtSecret: string;
+      NODE_ENV: 'development' | 'production' | 'test'
+      jwtSecret: string
     }
   }
 }
 
 declare global {
-  let testServer: TacServer;
-  let testAgent: SuperAgentTest;
+  let testServer: TacServer
+  let testAgent: SuperAgentTest
 }

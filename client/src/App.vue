@@ -1,5 +1,8 @@
 <template>
-  <Toast style="max-width: 90vw" :baseZIndex="2500" />
+  <Toast
+    style="max-width: 90vw"
+    :baseZIndex="2500"
+  />
   <ChatWrapper>
     <router-view class="RouterView" />
   </ChatWrapper>
@@ -7,26 +10,26 @@
 </template>
 
 <script setup lang="ts">
-import Toast from 'primevue/toast';
-import ChatWrapper from '@/components/Chat/ChatWrapper.vue';
-import ConnectionStatusOverlay from '@/components/ConnectionStatusOverlay.vue';
+import Toast from 'primevue/toast'
+import ChatWrapper from '@/components/Chat/ChatWrapper.vue'
+import ConnectionStatusOverlay from '@/components/ConnectionStatusOverlay.vue'
 
-import { watch, provide } from 'vue';
-import { registerSocketToastHandlers } from '@/services/socketToastTournament';
-import { useGamesSummary } from '@/services/useGamesSummary';
-import { GamesSummaryKey, SocketKey, FriendsStateKey, injectStrict } from '@/services/injections';
-import { logout } from '@/services/useUser';
-import { userFriends } from '@/services/useFriends';
-import { Service } from './generatedClient';
-import { useToast } from 'primevue/usetoast';
-import { i18n } from './services/i18n';
-import router from './router';
-import { initTournamentWinners } from './services/useTournamentWinners';
+import { watch, provide } from 'vue'
+import { registerSocketToastHandlers } from '@/services/socketToastTournament'
+import { useGamesSummary } from '@/services/useGamesSummary'
+import { GamesSummaryKey, SocketKey, FriendsStateKey, injectStrict } from '@/services/injections'
+import { logout } from '@/services/useUser'
+import { userFriends } from '@/services/useFriends'
+import { DefaultService as Service } from './generatedClient'
+import { useToast } from 'primevue/usetoast'
+import { i18n } from './services/i18n'
+import router from './router'
+import { initTournamentWinners } from './services/useTournamentWinners'
 const toast = useToast()
 
-const socket = injectStrict(SocketKey);
-const gamesSummary = useGamesSummary(socket);
-const friendsState = userFriends(socket);
+const socket = injectStrict(SocketKey)
+const gamesSummary = useGamesSummary(socket)
+const friendsState = userFriends(socket)
 
 provide(GamesSummaryKey, gamesSummary)
 provide(FriendsStateKey, friendsState)
@@ -36,7 +39,7 @@ socket.on('logged_out', () => {
     severity: 'warn',
     life: 10000,
     summary: i18n.global.t('Connection.ServerSideLogoutSummary'),
-    detail: i18n.global.t('Connection.ServerSideLogoutDetail')
+    detail: i18n.global.t('Connection.ServerSideLogoutDetail'),
   })
   logout(socket)
 })
@@ -46,7 +49,9 @@ initTournamentWinners(socket)
 
 checkForEmailActivation()
 watch(
-  () => { return router.currentRoute.value.query },
+  () => {
+    return router.currentRoute.value.query
+  },
   checkForEmailActivation,
   { deep: true }
 )
@@ -69,16 +74,17 @@ function activateUser(userID: number, token: string) {
         detail: i18n.global.t('Login.SignIn.activationSuccessDetails'),
         life: 10000,
       })
-      router.push({ name: 'Landing' });
+      router.push({ name: 'Landing' })
     })
-    .catch(() => toast.add({
-      severity: 'error',
-      summary: i18n.global.t('Login.SignIn.activationErrorMsg'),
-      life: 10000,
-    }))
+    .catch(() =>
+      toast.add({
+        severity: 'error',
+        summary: i18n.global.t('Login.SignIn.activationErrorMsg'),
+        life: 10000,
+      })
+    )
 }
 </script>
-
 
 <style scoped>
 .RouterView {
@@ -90,17 +96,21 @@ function activateUser(userID: number, token: string) {
 .splitpanes.default-theme .splitpanes__pane {
   background: transparent;
 }
+
 .splitpanes__splitter {
   background: var(--surface-d) !important;
 }
+
 .default-theme.splitpanes--horizontal > .splitpanes__splitter,
 .default-theme .splitpanes--horizontal > .splitpanes__splitter {
   border-top: 1px solid var(--surface-d) !important;
 }
+
 .default-theme.splitpanes--vertical > .splitpanes__splitter,
 .default-theme .splitpanes--vertical > .splitpanes__splitter {
   border-left: 1px solid var(--surface-d) !important;
 }
+
 :not(.splitpanes--dragging) > .splitpanes__pane {
   transition: height 0.2s ease-out, width 0.2s ease-out !important;
 }
@@ -174,15 +184,12 @@ body {
   background-clip: padding-box;
 }
 
-@import url("../node_modules/primevue/resources/themes/saga-blue/theme.css")
-(prefers-color-scheme: light);
-@import url("../node_modules/primevue/resources/themes/arya-blue/theme.css")
-(prefers-color-scheme: dark);
+@import url('../node_modules/primevue/resources/themes/saga-blue/theme.css') (prefers-color-scheme: light);
+@import url('../node_modules/primevue/resources/themes/arya-blue/theme.css') (prefers-color-scheme: dark);
 
 @font-face {
-  font-family: "tacfontregular";
-  src: url("./assets/TacFont/tacfont_semibold_1-webfont.woff2") format("woff2"),
-    url("./assets/TacFont/tacfont_semibold_1-webfont.woff") format("woff");
+  font-family: 'tacfontregular';
+  src: url('./assets/TacFont/tacfont_semibold_1-webfont.woff2') format('woff2'), url('./assets/TacFont/tacfont_semibold_1-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -190,15 +197,18 @@ body {
 .tacLetters {
   user-select: none;
 }
+
 .tacLetters::first-letter {
   letter-spacing: -0.17em;
 }
 
 .twbLetters {
+  font-family: 'tacfontregular', Monospace;
   letter-spacing: -0.17em;
   padding-right: 0.17em;
   user-select: none;
 }
+
 .twbLetters::first-letter {
   letter-spacing: -0.16em;
 }

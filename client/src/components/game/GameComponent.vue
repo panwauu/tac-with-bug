@@ -5,19 +5,29 @@
     class="gameView"
     :class="[gameBoardPortrait ? 'sick-game-portrait-query' : '']"
   >
-    <Menubar class="portaitMenu" :model="portraitMenu">
+    <Menubar
+      class="portaitMenu"
+      :model="portraitMenu"
+    >
       <template #start>
-        <div class="navLogo clickable" @click="$emit('closeGame')">
-          <TwbSymbol style="height: 100%" side="left" />
+        <div
+          class="navLogo clickable"
+          @click="$emit('closeGame')"
+        >
+          <TwbSymbol
+            style="height: 100%"
+            side="left"
+          />
           <div
             class="twbLetters"
-            style="
-              font-family: 'tacfontregular';
-              font-size: 38px;
-              color: var(--tac-text-color);
-            "
-          >TWB</div>
-          <TwbSymbol style="height: 100%" side="right" />
+            style="font-size: 38px; color: var(--tac-text-color)"
+          >
+            TWB
+          </div>
+          <TwbSymbol
+            style="height: 100%"
+            side="right"
+          />
         </div>
       </template>
     </Menubar>
@@ -25,7 +35,11 @@
     <div class="game">
       <div class="gameAdditionalInfo">
         <div class="logoLandscape">
-          <TwbLogo style="width: 100%" class="clickable" @click="$emit('closeGame')" />
+          <TwbLogo
+            style="width: 100%"
+            class="clickable"
+            @click="$emit('closeGame')"
+          />
           <div class="landscapeMenuButtonContainer">
             <Button
               aria-label="Statistics"
@@ -53,19 +67,39 @@
             />
           </div>
         </div>
-        <div v-if="miscState.viewerMode" class="instructions p-card">
-          <Tag :value="$t('Game.viewerModeTag')" icon="pi pi-eye" style="margin: 20px" />
-          <div>{{ $t("Game.viewerModeText") }}</div>
+        <div
+          v-if="miscState.viewerMode"
+          class="instructions p-card"
+        >
+          <Tag
+            :value="$t('Game.viewerModeTag')"
+            icon="pi pi-eye"
+            style="margin: 20px"
+          />
+          <div>{{ $t('Game.viewerModeText') }}</div>
         </div>
         <div class="cardsContainer">
-          <OwnCards :cardsState="cardsState" :miscState="miscState" :own="true" />
-          <OwnCards :cardsState="cardsState" :miscState="miscState" :own="false" />
+          <OwnCards
+            :cardsState="cardsState"
+            :miscState="miscState"
+            :own="true"
+          />
+          <OwnCards
+            :cardsState="cardsState"
+            :miscState="miscState"
+            :own="false"
+          />
         </div>
-        <div v-if="!miscState.viewerMode" class="instructions p-card">
+        <div
+          v-if="!miscState.viewerMode"
+          class="instructions p-card"
+        >
           <div
             v-for="(line, index) in instructionsState.instructions"
             :key="`Instruction-${String(index)}`"
-          >{{ line }}</div>
+          >
+            {{ line }}
+          </div>
         </div>
       </div>
       <GameBoard
@@ -77,7 +111,10 @@
         :performMove="performMove"
       />
     </div>
-    <div v-if="!miscState.gameRunning && !miscState.viewerMode" class="endedOverlay">
+    <div
+      v-if="!miscState.gameRunning && !miscState.viewerMode"
+      class="endedOverlay"
+    >
       <div class="endedCard p-card">
         <div class="endedText">{{ miscState.gameEndedText }}</div>
         <Button
@@ -85,8 +122,16 @@
           :label="$t('Game.EndedOverlay.backButton')"
           @click="$router.push({ name: 'Landing' })"
         />
-        <Fieldset :legend="$t('Game.EndedOverlay.statistic')" :toggleable="true" :collapsed="true">
-          <GameStatistic class="statistic" :statisticState="statisticState" :miscState="miscState" />
+        <Fieldset
+          :legend="$t('Game.EndedOverlay.statistic')"
+          :toggleable="true"
+          :collapsed="true"
+        >
+          <GameStatistic
+            class="statistic"
+            :statisticState="statisticState"
+            :miscState="miscState"
+          />
         </Fieldset>
         <Fieldset
           v-if="miscState.tournamentID === null"
@@ -94,7 +139,10 @@
           :toggleable="true"
           :collapsed="false"
         >
-          <Rematch :miscState="miscState" :positionStyles="positionStyles" />
+          <RematchForm
+            :miscState="miscState"
+            :positionStyles="positionStyles"
+          />
         </Fieldset>
       </div>
     </div>
@@ -122,104 +170,121 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import Tag from 'primevue/tag';
-import Menubar from 'primevue/menubar';
-import Dialog from 'primevue/dialog';
-import GameBoard from '@/components/game/GameBoard.vue';
-import OwnCards from '@/components/game/OwnCards.vue';
-import GameModalSettings from '@/components/gameModal/GameModalSettings.vue';
-import GameModalAssistance from '@/components/gameModal/GameModalAssistance.vue';
-import GameStatistic from '@/components/game/GameStatistic.vue';
-import Fieldset from 'primevue/fieldset';
-import Rematch from './Rematch.vue';
-import TwbSymbol from '@/components/icons/TwbSymbol.vue';
-import TwbLogo from '@/components/icons/TwbLogo.vue';
-import GameWatchingPlayers from './GameWatchingPlayers.vue';
+import Button from 'primevue/button'
+import Tag from 'primevue/tag'
+import Menubar from 'primevue/menubar'
+import Dialog from 'primevue/dialog'
+import GameBoard from '@/components/game/GameBoard.vue'
+import OwnCards from '@/components/game/OwnCards.vue'
+import GameModalSettings from '@/components/gameModal/GameModalSettings.vue'
+import GameModalAssistance from '@/components/gameModal/GameModalAssistance.vue'
+import GameStatistic from '@/components/game/GameStatistic.vue'
+import Fieldset from 'primevue/fieldset'
+import RematchForm from './RematchForm.vue'
+import TwbSymbol from '@/components/icons/TwbSymbol.vue'
+import TwbLogo from '@/components/icons/TwbLogo.vue'
+import GameWatchingPlayers from './GameWatchingPlayers.vue'
 
-import type { positionStylesState } from '@/services/compositionGame/usePositionStyles'
-import type { miscStateType } from '@/services/compositionGame/useMisc'
-import type { ballsStateType } from '@/services/compositionGame/useBalls'
-import type { cardsStateType } from '@/services/compositionGame/useCards'
-import type { discardPileStateType } from '@/services/compositionGame/useDiscardPile'
-import type { instructionsStateType } from '@/services/compositionGame/useInstructions'
-import type { statisticStateType } from '@/services/compositionGame/useStatistic'
-import type { performMoveAction } from '@/services/compositionGame/usePerformMove';
-import type { updateDataType } from '@/../../shared/types/typesDBgame';
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
+import type { MiscStateType } from '@/services/compositionGame/useMisc'
+import type { BallsStateType } from '@/services/compositionGame/useBalls'
+import type { CardsStateType } from '@/services/compositionGame/useCards'
+import type { DiscardPileStateType } from '@/services/compositionGame/useDiscardPile'
+import type { InstructionsStateType } from '@/services/compositionGame/useInstructions'
+import type { StatisticStateType } from '@/services/compositionGame/useStatistic'
+import type { PerformMoveAction } from '@/services/compositionGame/usePerformMove'
+import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { i18n } from '@/services/i18n'
-import router from '@/router';
-import { useResizeObserver } from '@vueuse/core';
+import router from '@/router'
+import { useResizeObserver } from '@vueuse/core'
 
 const emit = defineEmits(['closeGame', 'update:modalVisible', 'update:modalState'])
 
 const props = defineProps<{
-  positionStyles: positionStylesState,
-  miscState: miscStateType,
-  statisticState: statisticStateType,
-  ballsState: ballsStateType,
-  cardsState: cardsStateType,
-  discardPileState: discardPileStateType,
-  performMove: (data: performMoveAction) => void,
-  instructionsState: instructionsStateType,
-  modalVisible: boolean,
-  modalState: string,
-  updateData: updateDataType | null,
-}>();
+  positionStyles: PositionStylesState
+  miscState: MiscStateType
+  statisticState: StatisticStateType
+  ballsState: BallsStateType
+  cardsState: CardsStateType
+  discardPileState: DiscardPileStateType
+  performMove: (data: PerformMoveAction) => void
+  instructionsState: InstructionsStateType
+  modalVisible: boolean
+  modalState: string
+  updateData: UpdateDataType | null
+}>()
 
-watch(() => props.updateData, updateHandler, { deep: true, })
+watch(() => props.updateData, updateHandler, { deep: true })
 
 async function updateHandler(): Promise<void> {
-  if (props.updateData == null) { return }
+  if (props.updateData == null) {
+    return
+  }
 
   props.miscState.setGamePlayer(props.updateData.gamePlayer)
 
   const tacFirstRevertState =
-    props.discardPileState.discardPile.length > 0 && props.discardPileState.discardPile.length + 1 === props.updateData.discardPile.length && props.updateData.discardPile[props.updateData.discardPile.length - 1].substring(0, 3) === 'tac'
-    && !props.updateData.discardedFlag
-    && !props.miscState.players[props.miscState.gamePlayer].active
+    props.discardPileState.discardPile.length > 0 &&
+    props.discardPileState.discardPile.length + 1 === props.updateData.discardPile.length &&
+    props.updateData.discardPile[props.updateData.discardPile.length - 1].substring(0, 3) === 'tac' &&
+    !props.updateData.discardedFlag &&
+    !props.miscState.players[props.miscState.gamePlayer].active
 
-  props.miscState.setFlags(props.updateData);
-  props.miscState.setDeckInfo(props.updateData.deckInfo);
-  props.miscState.setCoopCounter(props.updateData.coopCounter);
-  props.miscState.setTradeDirection(props.updateData.players, props.updateData.tradeDirection === 1 ? 1 : -1);
-  props.miscState.setPlayers(props.updateData.players);
-  props.miscState.setGameRunning(props.updateData.gameEnded, props.updateData.status, props.updateData.players, props.updateData.winningTeams, props.updateData.coopCounter, props.miscState.gamePlayer);
-  props.miscState.setTimestamps(props.updateData.created, props.updateData.lastPlayed);
-  props.positionStyles.setBallsColors(props.updateData.colors);
-  props.statisticState.setStatistic(props.updateData.statistic, props.updateData.players, props.updateData.coopCounter, props.positionStyles.getHexColors());
-  props.discardPileState.updateDiscardPile(props.updateData.discardPile, props.updateData.players, props.updateData.cards, props.positionStyles);
+  props.miscState.setFlags(props.updateData)
+  props.miscState.setDeckInfo(props.updateData.deckInfo)
+  props.miscState.setCoopCounter(props.updateData.coopCounter)
+  props.miscState.setTradeDirection(props.updateData.players, props.updateData.tradeDirection === 1 ? 1 : -1)
+  props.miscState.setPlayers(props.updateData.players)
+  props.miscState.setGameRunning(
+    props.updateData.gameEnded,
+    props.updateData.status,
+    props.updateData.players,
+    props.updateData.winningTeams,
+    props.updateData.coopCounter,
+    props.miscState.gamePlayer
+  )
+  props.miscState.setTimestamps(props.updateData.created, props.updateData.lastPlayed)
+  props.positionStyles.setBallsColors(props.updateData.colors)
+  props.statisticState.setStatistic(props.updateData.statistic, props.updateData.players, props.updateData.coopCounter, props.positionStyles.getHexColors())
+  props.discardPileState.updateDiscardPile(props.updateData.discardPile, props.updateData.players, props.updateData.cards, props.positionStyles)
 
   if (tacFirstRevertState) {
-    props.ballsState.updateBallsState(props.ballsState.priorBalls, props.ballsState.priorBalls);
-    await new Promise((resolve) => { setTimeout(() => { resolve(null) }, 1200) }) // 1.2s are also in CSS for balls
+    props.ballsState.updateBallsState(props.ballsState.priorBalls, props.ballsState.priorBalls)
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(null)
+      }, 1200)
+    }) // 1.2s are also in CSS for balls
   }
-  props.ballsState.updateBallsState(props.updateData.balls, props.updateData.priorBalls);
-  props.cardsState.updateCards(props.updateData.cards, props.updateData.ownCards);
+  props.ballsState.updateBallsState(props.updateData.balls, props.updateData.priorBalls)
+  props.cardsState.updateCards(props.updateData.cards, props.updateData.ownCards)
 }
 
-let modalVisibleLocal = computed({
+const modalVisibleLocal = computed({
   get() {
-    return props.modalVisible;
+    return props.modalVisible
   },
   set(value: boolean) {
-    emit('update:modalVisible', value);
+    emit('update:modalVisible', value)
   },
 })
 
-let modalStateLocal = computed({
+const modalStateLocal = computed({
   get() {
-    return props.modalState;
+    return props.modalState
   },
   set(value: string) {
-    emit('update:modalState', value);
+    emit('update:modalState', value)
   },
 })
 
 function openModal(str: string) {
-  if (router.currentRoute.value.name !== 'Game' && str === 'statistic') { return }
-  modalStateLocal.value = str;
-  modalVisibleLocal.value = true;
+  if (router.currentRoute.value.name !== 'Game' && str === 'statistic') {
+    return
+  }
+  modalStateLocal.value = str
+  modalVisibleLocal.value = true
 }
 
 const portraitMenu = ref(getMenu(true))
@@ -229,41 +294,55 @@ function getMenu(displayText: boolean) {
     {
       label: displayText ? i18n.global.t('Game.GameModal.title.statistic') : '',
       icon: 'pi pi-chart-bar',
-      command: () => { openModal('statistic') },
+      command: () => {
+        openModal('statistic')
+      },
     },
     {
       label: displayText ? i18n.global.t('Game.GameModal.title.settings') : '',
       icon: 'pi pi-cog',
-      command: () => { openModal('settings') },
+      command: () => {
+        openModal('settings')
+      },
     },
     {
       label: displayText ? i18n.global.t('Game.GameModal.title.assistance') : '',
       icon: 'pi pi-question',
-      command: () => { openModal('assistance') },
+      command: () => {
+        openModal('assistance')
+      },
     },
   ]
 }
 
-let gameBoardPortrait = ref(false)
-let gameViewRef = ref<HTMLElement | null>()
+const gameBoardPortrait = ref(false)
+const gameViewRef = ref<HTMLElement | null>()
 
 onMounted(() => {
   onResize()
   nextTick(() => onResize())
 })
-useResizeObserver(gameViewRef, () => { onResize() });
+useResizeObserver(gameViewRef, () => {
+  onResize()
+})
 
 function onResize() {
-  if (gameViewRef.value == null) { console.error('gameViewRef not populated'); return }
+  if (gameViewRef.value == null) {
+    console.error('gameViewRef not populated')
+    return
+  }
 
-  let gameViewBounding = gameViewRef.value.getBoundingClientRect();
+  const gameViewBounding = gameViewRef.value.getBoundingClientRect()
   portraitMenu.value = getMenu(gameViewBounding.width > 600)
-  gameBoardPortrait.value = gameViewBounding.height + 80 > gameViewBounding.width;
+  gameBoardPortrait.value = gameViewBounding.height + 80 > gameViewBounding.width
 
-  let gameboard = document.getElementById('gameboard')
-  if (gameboard == null) { console.error('gameboard ref not populated'); return; }
+  const gameboard = document.getElementById('gameboard')
+  if (gameboard == null) {
+    console.error('gameboard ref not populated')
+    return
+  }
   const gameBoardSize = Math.max(gameboard.getBoundingClientRect().height, gameboard.getBoundingClientRect().width)
-  gameViewRef.value.style.setProperty('--board-size-in-px', gameBoardSize === 0 ? '100vmin' : `${gameBoardSize}px`);
+  gameViewRef.value.style.setProperty('--board-size-in-px', gameBoardSize === 0 ? '100vmin' : `${gameBoardSize}px`)
 }
 </script>
 
@@ -315,6 +394,7 @@ function onResize() {
   max-width: 400px;
   padding: 20px;
 }
+
 .logo {
   max-width: 40vw;
 }
@@ -394,21 +474,26 @@ function onResize() {
   overflow-y: auto;
   flex-direction: column !important;
 }
+
 .sick-game-portrait-query .gameAdditionalInfo {
   order: 2 !important;
   max-width: 100% !important;
   width: 100% !important;
 }
+
 .sick-game-portrait-query .cardsContainer {
   max-width: 355px !important;
   overflow: visible;
 }
+
 .sick-game-portrait-query .logoLandscape {
   display: none !important;
 }
+
 .sick-game-portrait-query .portaitMenu {
   display: flex !important;
 }
+
 .sick-game-portrait-query .statistic {
   width: 70vw !important;
 }

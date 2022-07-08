@@ -1,11 +1,18 @@
 <template>
   <div class="profilePictureContainer">
-    <img alt="Profilbild" class="profilePicture" :src="srcImage">
-    <div v-if="showCrown && getCrown(username) != undefined" class="crown">
+    <img
+      alt="Profilbild"
+      class="profilePicture"
+      :src="srcImage"
+    />
+    <div
+      v-if="showCrown && getCrown(username) != null"
+      class="crown"
+    >
       <Crown :rank="getCrown(username) ?? 1" />
     </div>
     <Badge
-      v-if="online != undefined"
+      v-if="online != null"
       class="onlineIndicator"
       :severity="online ? 'success' : 'danger'"
     />
@@ -13,30 +20,45 @@
 </template>
 
 <script setup lang="ts">
-import AvatarDummy from '../assets/avatar-dummy.png';
+import AvatarDummy from '../assets/avatar-dummy.png'
 
-import Badge from 'primevue/badge';
-import Crown from '@/components/icons/CrownSymbol.vue';
+import Badge from 'primevue/badge'
+import Crown from '@/components/icons/CrownSymbol.vue'
 
-import { withDefaults, watch, computed } from 'vue';
-import { getProfilePicSrc, requestProfilePic } from '../services/useProfilePicture';
-import { getCrown } from '../services/useTournamentWinners';
-import { username as loggedInUsername } from '@/services/useUser';
+import { withDefaults, watch, computed } from 'vue'
+import { getProfilePicSrc, requestProfilePic } from '../services/useProfilePicture'
+import { getCrown } from '../services/useTournamentWinners'
+import { username as loggedInUsername } from '@/services/useUser'
 
-const props = withDefaults(defineProps<{
-  username: string,
-  showCrown?: boolean,
-  online?: boolean,
-}>(), {
-  showCrown: true,
-  online: undefined,
-});
+const props = withDefaults(
+  defineProps<{
+    username: string
+    showCrown?: boolean
+    online?: boolean
+  }>(),
+  {
+    showCrown: true,
+    online: undefined,
+  }
+)
 
-requestProfilePic(props.username);
-watch(() => props.username, () => { requestProfilePic(props.username) })
-watch(() => loggedInUsername.value, () => { requestProfilePic(props.username) })
+requestProfilePic(props.username)
+watch(
+  () => props.username,
+  () => {
+    requestProfilePic(props.username)
+  }
+)
+watch(
+  () => loggedInUsername.value,
+  () => {
+    requestProfilePic(props.username)
+  }
+)
 
-const srcImage = computed(() => { return getProfilePicSrc(props.username) || AvatarDummy })
+const srcImage = computed(() => {
+  return getProfilePicSrc(props.username) || AvatarDummy
+})
 </script>
 
 <style scoped>

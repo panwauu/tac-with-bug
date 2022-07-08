@@ -11,7 +11,7 @@
     :breakpoints="{ '640px': '100vw' }"
     :style="{ width: '450px' }"
   >
-    <div style="display: flex; flex-direction: column;">
+    <div style="display: flex; flex-direction: column">
       <TeamName
         v-model:teamname="teamName"
         v-model:valid="validTeamName"
@@ -36,27 +36,40 @@
   </Dialog>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import Button from 'primevue/button'
-import Dialog from 'primevue/dialog';
-import TeamName from '../Forms/TeamName.vue';
-import PlayersAutoComplete from '../PlayersAutoComplete.vue';
+import Dialog from 'primevue/dialog'
+import TeamName from '../Forms/TeamName.vue'
+import PlayersAutoComplete from '../PlayersAutoComplete.vue'
 
-import { ref, computed, watch } from 'vue';
-import { injectStrict, SocketKey } from '@/services/injections';
-import { privateTournament } from '@/../../shared/types/typesTournament';
+import { ref, computed, watch } from 'vue'
+import { injectStrict, SocketKey } from '@/services/injections'
+import { PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
 
-const props = defineProps<{ tournament: privateTournament, visible: boolean, propTeamName: string | null }>()
+const props = defineProps<{ tournament: PrivateTournament; visible: boolean; propTeamName: string | null }>()
 const emit = defineEmits<{ (eventName: 'update:visible', visible: boolean): void }>()
 
-watch(() => [props.visible, props.tournament], () => { resetOverlayPanel() }, { deep: true })
-watch(() => props.propTeamName, () => { teamName.value = props.propTeamName ?? '' })
+watch(
+  () => [props.visible, props.tournament],
+  () => {
+    resetOverlayPanel()
+  },
+  { deep: true }
+)
+watch(
+  () => props.propTeamName,
+  () => {
+    teamName.value = props.propTeamName ?? ''
+  }
+)
 
-const socket = injectStrict(SocketKey);
+const socket = injectStrict(SocketKey)
 
 const localVisible = computed({
-  set: (value: boolean) => { emit('update:visible', value) },
-  get: () => props.visible
+  set: (value: boolean) => {
+    emit('update:visible', value)
+  },
+  get: () => props.visible,
 })
 
 const adaptTeamDialog = ref<Dialog | null>()
@@ -71,25 +84,39 @@ function resetOverlayPanel() {
 }
 
 async function submitNewTeam() {
-  if (playerName.value == null) { console.error('No Player Selected'); return }
-  const res = await socket.emitWithAck(1000, 'tournament:private:planAddPlayer', { tournamentID: props.tournament.id, usernameToAdd: playerName.value, teamTitle: teamName.value })
-  if (res.data == null) { console.error('Error in New Team Submission', res.error) }
+  if (playerName.value == null) {
+    console.error('No Player Selected')
+    return
+  }
+  const res = await socket.emitWithAck(1000, 'tournament:private:planAddPlayer', {
+    tournamentID: props.tournament.id,
+    usernameToAdd: playerName.value,
+    teamTitle: teamName.value,
+  })
+  if (res.data == null) {
+    console.error('Error in New Team Submission', res.error)
+  }
   localVisible.value = false
   resetOverlayPanel()
 }
 
 const playersAlreadyInTournament = computed(() => {
   const result: string[] = []
-  props.tournament.teams.forEach((t) => { t.players.forEach((p) => { result.push(p) }) })
-  props.tournament.registerTeams.forEach((t) => { t.players.forEach((p) => { result.push(p) }) })
+  props.tournament.teams.forEach((t) => {
+    t.players.forEach((p) => {
+      result.push(p)
+    })
+  })
+  props.tournament.registerTeams.forEach((t) => {
+    t.players.forEach((p) => {
+      result.push(p)
+    })
+  })
   return result
 })
 
 const existingTeamNames = computed(() => {
-  return [
-    ...props.tournament.teams.map((t) => t.name),
-    ...props.tournament.registerTeams.map((r) => r.name)
-  ]
+  return [...props.tournament.teams.map((t) => t.name), ...props.tournament.registerTeams.map((r) => r.name)]
 })
 </script>
 
@@ -97,6 +124,7 @@ const existingTeamNames = computed(() => {
 .element {
   margin-top: 20px;
 }
+
 .inputElement {
   width: 100%;
 }

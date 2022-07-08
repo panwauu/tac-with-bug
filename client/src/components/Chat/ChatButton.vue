@@ -2,14 +2,14 @@
   <Button
     v-if="!chatStore.displayChat"
     aria-label="open chat"
-    :class="[
-      'chatButton',
-      'buttonPosition',
-      chatStore.collapseButton ? 'buttonPositionCollapsing' : '',
-    ]"
+    :class="['chatButton', 'buttonPosition', chatStore.collapseButton ? 'buttonPositionCollapsing' : '']"
     @click="openChat()"
   >
-    <i class="pi pi-comments" style="font-size: 2rem" />
+    <i
+      class="pi pi-comments"
+      style="font-size: 2rem"
+      aria-hidden="true"
+    />
     <Badge
       v-if="messagesStore.notificationsChat !== 0"
       :value="messagesStore.notificationsChat.toString()"
@@ -26,16 +26,18 @@
 </template>
 
 <script setup lang="ts">
-import { useChatStore } from '@/store/chat';
-import { useMessagesStore } from '@/store/messages';
+import { useChatStore } from '@/store/chat'
+import { useMessagesStore } from '@/store/messages'
 import Badge from 'primevue/badge'
-import Button from 'primevue/button';
+import Button from 'primevue/button'
 
 const chatStore = useChatStore()
 const messagesStore = useMessagesStore()
 const emit = defineEmits(['openChat'])
 
-const openChat = () => { emit('openChat') }
+const openChat = () => {
+  emit('openChat')
+}
 </script>
 
 <style lang="scss">
@@ -68,6 +70,7 @@ const openChat = () => { emit('openChat') }
   bottom: 10px;
   transform: translate(75%, 0);
 }
+
 .notiBadge {
   position: absolute;
   margin: 0 !important;
@@ -77,6 +80,7 @@ const openChat = () => { emit('openChat') }
 .badgeGame {
   top: 0;
 }
+
 .badgeGeneral {
   bottom: 0;
 }

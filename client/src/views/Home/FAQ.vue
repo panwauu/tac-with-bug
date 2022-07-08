@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import FAQ from '@/components/FAQ.vue';
+import FAQ from '@/components/FAQ.vue'
 </script>
 
 <style scoped>

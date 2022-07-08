@@ -7,6 +7,3 @@
     <p>Mail: oskar@spieltac.de</p>
   </div>
 </template>
-
-<style scoped>
-</style>

@@ -1,8 +1,9 @@
 <template>
-  <div ref="chatContainerRef" class="p-card chatContainer">
-    <div
-      :class="{ 'chatBody': true, 'withSidebar': chatStore.displayChatMenu && !chatStore.responsiveMode }"
-    >
+  <div
+    ref="chatContainerRef"
+    class="p-card chatContainer"
+  >
+    <div :class="{ chatBody: true, withSidebar: chatStore.displayChatMenu && !chatStore.responsiveMode }">
       <ChatBody />
       <Transition>
         <div
@@ -12,28 +13,33 @@
         />
       </Transition>
     </div>
-    <div :class="{ 'chatSidebar': true, 'chatSidebar-hidden': !chatStore.displayChatMenu }">
+    <div :class="{ chatSidebar: true, 'chatSidebar-hidden': !chatStore.displayChatMenu }">
       <ChatMenu />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import ChatMenu from './ChatMenu.vue';
-import ChatBody from './ChatBody.vue';
+import ChatMenu from './ChatMenu.vue'
+import ChatBody from './ChatBody.vue'
 
-import { ref } from 'vue';
-import { useResizeObserver } from '@vueuse/core';
-import { useChatStore } from '@/store/chat';
+import { ref } from 'vue'
+import { useResizeObserver } from '@vueuse/core'
+import { useChatStore } from '@/store/chat'
 
 const chatStore = useChatStore()
 
-const chatContainerRef = ref<null | HTMLElement>();
+const chatContainerRef = ref<null | HTMLElement>()
 useResizeObserver(chatContainerRef, (targets) => {
   chatStore.setResponsiveMode(targets[0].contentRect.width < 500)
 })
 
-function closeMenuIfResponsive() { console.log('Click'); if (chatStore.responsiveMode && chatStore.displayChatMenu) { chatStore.closeChatMenu() } }
+function closeMenuIfResponsive() {
+  console.log('Click')
+  if (chatStore.responsiveMode && chatStore.displayChatMenu) {
+    chatStore.closeChatMenu()
+  }
+}
 </script>
 
 <style scoped>
@@ -69,10 +75,12 @@ function closeMenuIfResponsive() { console.log('Click'); if (chatStore.responsiv
   position: relative;
   background: var(--surface-e);
 }
+
 .withSidebar {
   margin-left: 200px;
   width: calc(100% - 200px);
 }
+
 .clickOverlay {
   position: absolute;
   top: 0;

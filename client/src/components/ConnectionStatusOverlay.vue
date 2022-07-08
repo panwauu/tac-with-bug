@@ -1,16 +1,27 @@
 <template>
   <transition name="fade">
-    <div v-if="!connected" class="connectionOverlay">
+    <div
+      v-if="!connected"
+      class="connectionOverlay"
+    >
       <div class="overlayBackground" />
       <template v-if="loading">
-        <i class="pi pi-spin pi-spinner" style="font-size: 2rem" />
+        <i
+          class="pi pi-spin pi-spinner"
+          style="font-size: 2rem"
+          aria-hidden="true"
+        />
       </template>
       <template v-else-if="reconnecting">
-        <h1 class="reconnectionText">{{ $t("GameView.socketReconnectingOverlay") }}</h1>
-        <ProgressBar :value="reconnectionProgress" class="reconnectionProgress" :showValue="false" />
+        <h1 class="reconnectionText">{{ $t('GameView.socketReconnectingOverlay') }}</h1>
+        <ProgressBar
+          :value="reconnectionProgress"
+          class="reconnectionProgress"
+          :showValue="false"
+        />
       </template>
       <template v-else>
-        <h1 class="reconnectionText">{{ $t("GameView.socketDisconnectedOverlay") }}</h1>
+        <h1 class="reconnectionText">{{ $t('GameView.socketDisconnectedOverlay') }}</h1>
         <Button
           :label="$t('GameView.refreshPageButton')"
           class="refreshButton"
@@ -21,45 +32,45 @@
   </transition>
 </template>
 
-<script setup lang='ts'>
-import Button from 'primevue/button';
-import ProgressBar from 'primevue/progressbar';
+<script setup lang="ts">
+import Button from 'primevue/button'
+import ProgressBar from 'primevue/progressbar'
 
-import { ref, onUnmounted, computed } from 'vue';
-import { injectStrict, SocketKey } from '@/services/injections';
+import { ref, onUnmounted, computed } from 'vue'
+import { injectStrict, SocketKey } from '@/services/injections'
 
 const socket = injectStrict(SocketKey)
 
-let loading = ref(true)
-let connected = ref(false)
-let reconnecting = ref(false)
+const loading = ref(true)
+const connected = ref(false)
+const reconnecting = ref(false)
 
-let reconnectionAttemptNumber = ref(0)
-let reconnectionAttempts = computed(() => socket.io.opts.reconnectionAttempts ?? Infinity)
+const reconnectionAttemptNumber = ref(0)
+const reconnectionAttempts = computed(() => socket.io.opts.reconnectionAttempts ?? Infinity)
 
-socket.on('connect', connectHandler);
-socket.on('connect_error', connectErrorHandler);
-socket.on('disconnect', disconnectHandler);
-socket.io.on('reconnect_attempt', reconnectAttemptHandler);
-socket.io.on('reconnect_failed', reconnectFailedHandler);
+socket.on('connect', connectHandler)
+socket.on('connect_error', connectErrorHandler)
+socket.on('disconnect', disconnectHandler)
+socket.io.on('reconnect_attempt', reconnectAttemptHandler)
+socket.io.on('reconnect_failed', reconnectFailedHandler)
 
 onUnmounted(() => {
-  socket.off('connect', connectHandler);
-  socket.off('connect_error', connectErrorHandler);
-  socket.off('disconnect', disconnectHandler);
-  socket.io.off('reconnect_attempt', reconnectAttemptHandler);
-  socket.io.off('reconnect_failed', reconnectFailedHandler);
+  socket.off('connect', connectHandler)
+  socket.off('connect_error', connectErrorHandler)
+  socket.off('disconnect', disconnectHandler)
+  socket.io.off('reconnect_attempt', reconnectAttemptHandler)
+  socket.io.off('reconnect_failed', reconnectFailedHandler)
 })
 
 function connectHandler() {
-  console.log('Socket connected');
+  console.log('Socket connected')
   loading.value = false
   connected.value = true
   reconnecting.value = false
 }
 
 function connectErrorHandler(error: Error) {
-  console.log(`Socket connect error: ${error}`);
+  console.log(`Socket connect error: ${error}`)
   loading.value = false
 }
 
@@ -93,7 +104,7 @@ function reconnectFailedHandler() {
 }
 
 const reconnectionProgress = computed(() => {
-  return (reconnectionAttemptNumber.value / reconnectionAttempts.value) * 100;
+  return (reconnectionAttemptNumber.value / reconnectionAttempts.value) * 100
 })
 
 // TBD Visual Update

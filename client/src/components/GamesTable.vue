@@ -20,8 +20,8 @@
     @page="$emit('page', $event)"
     @sort="$emit('sort', $event)"
   >
-    <template #empty>{{ $t("Games.tableNoGames") }}</template>
-    <template #loading>{{ $t("Games.tableLoading") }}</template>
+    <template #empty>{{ $t('Games.tableNoGames') }}</template>
+    <template #loading>{{ $t('Games.tableLoading') }}</template>
     <ColumnGroup type="header">
       <Row>
         <Column
@@ -30,19 +30,32 @@
           :sortable="true"
           sortField="created"
         />
-        <Column :header="$t('Games.columnTitles.status')" :rowspan="1" sortField="status" />
+        <Column
+          :header="$t('Games.columnTitles.status')"
+          :rowspan="1"
+          sortField="status"
+        />
         <Column :colspan="3">
           <template #header>
-            <div class="teams-header">{{ $t("Games.columnTitles.teams") }}</div>
+            <div class="teams-header">{{ $t('Games.columnTitles.teams') }}</div>
           </template>
         </Column>
         <Column :rowspan="2" />
       </Row>
       <Row>
         <Column />
-        <Column :header="$t('Games.columnTitles.team') + ' 1'" field="nTeams" />
-        <Column :header="$t('Games.columnTitles.team') + ' 2'" field="nTeams" />
-        <Column :header="$t('Games.columnTitles.team') + ' 3'" field="nTeams" />
+        <Column
+          :header="$t('Games.columnTitles.team') + ' 1'"
+          field="nTeams"
+        />
+        <Column
+          :header="$t('Games.columnTitles.team') + ' 2'"
+          field="nTeams"
+        />
+        <Column
+          :header="$t('Games.columnTitles.team') + ' 3'"
+          field="nTeams"
+        />
       </Row>
     </ColumnGroup>
     <Column field="created">
@@ -50,22 +63,16 @@
         <div>{{ createDateString(slotProps.data.created) }}</div>
       </template>
     </Column>
-    <Column field="status" :sortable="true" filterMatchMode="in">
+    <Column
+      field="status"
+      :sortable="true"
+      filterMatchMode="in"
+    >
       <template #body="slotProps">
-        <div
-          style="
-              width: 100%;
-              height: 100%;
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
-            "
-        >
+        <div style="width: 100%; height: 100%; display: flex; justify-content: flex-start; align-items: center">
           <Tag
             :severity="statusToSeverity(slotProps.data.status)"
-            :value="
-              $t(`Games.stati.${slotProps.data.status}`).toUpperCase()
-            "
+            :value="$t(`Games.stati.${slotProps.data.status}`).toUpperCase()"
           />
         </div>
       </template>
@@ -95,10 +102,7 @@
       <template #body="slotProps">
         <Button
           v-if="
-            username === loggedInUser &&
-              slotProps.data.status === 'running' &&
-              slotProps.data.tournamentid === null &&
-              Date.now() - slotProps.data.created < 1000 * 60 * 5
+            username === loggedInUser && slotProps.data.status === 'running' && slotProps.data.tournamentid === null && Date.now() - slotProps.data.created < 1000 * 60 * 5
           "
           icon="pi pi-times"
           class="p-button-rounded p-button-danger p-button-text"
@@ -110,63 +114,63 @@
 </template>
 
 <script setup lang="ts">
-import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import ColumnGroup from 'primevue/columngroup';
-import Row from 'primevue/row';
-import Tag from 'primevue/tag';
-import Button from 'primevue/button';
+import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import ColumnGroup from 'primevue/columngroup'
+import Row from 'primevue/row'
+import Tag from 'primevue/tag'
+import Button from 'primevue/button'
 
-import type { gameForOverview } from '@/../../shared/types/typesDBgame';
-import { ref } from 'vue';
-import { username as loggedInUser } from '@/services/useUser';
-import { Service } from '@/generatedClient';
+import type { GameForOverview } from '@/../../server/src/sharedTypes/typesDBgame'
+import { ref } from 'vue'
+import { username as loggedInUser } from '@/services/useUser'
+import { DefaultService as Service } from '@/generatedClient'
 
 const emit = defineEmits<{
   (eventName: 'sort', events: any): void
   (eventName: 'page', events: any): void
-  (eventName: 'rowSelect', game: gameForOverview): void
+  (eventName: 'rowSelect', game: GameForOverview): void
   (eventName: 'reload', event: any): void
 }>()
 
-defineProps<{ username: string, games: gameForOverview[], nEntries: number, loading: boolean, paginator?: boolean }>();
+defineProps<{ username: string; games: GameForOverview[]; nEntries: number; loading: boolean; paginator?: boolean }>()
 
-let selectedGame = ref<gameForOverview[]>([])
-let td = ref<any | null>(null)
+const selectedGame = ref<GameForOverview[]>([])
+const td = ref<any | null>(null)
 
 function rowSelect() {
   emit('rowSelect', selectedGame.value[0])
   selectedGame.value = []
 }
 
-function abortButton(game: gameForOverview) {
+function abortButton(game: GameForOverview) {
   if (confirm('Möchtest du dieses Spiel beenden?')) {
     Service.abortGame({ gameID: game.id }).then(() => {
       emit('reload', {
         first: td.value.first,
         rows: td.value.rows,
         sortField: td.value.sortField,
-        sortOrder: td.value.sortOrder
+        sortOrder: td.value.sortOrder,
       })
-    });
+    })
   }
 }
 
 function createDateString(seconds: number) {
-  let d = new Date(seconds);
-  return d.toLocaleDateString();
+  const d = new Date(seconds)
+  return d.toLocaleDateString()
 }
 
 function statusToSeverity(status: string) {
   if (status === 'running') {
-    return 'info';
+    return 'info'
   } else if (status === 'aborted') {
-    return 'warning';
+    return 'warning'
   } else if (status === 'lost') {
-    return 'danger';
+    return 'danger'
   } else {
-    return 'success';
+    return 'success'
   }
 }
 </script>

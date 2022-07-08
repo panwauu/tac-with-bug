@@ -1,6 +1,12 @@
 <template>
+  <!-- eslint-disable -->
   <div>
-    <svg viewBox="0 0 118 102" preserveAspectRatio="xMaxYMax" height="100%" fill="none">
+    <svg
+      viewBox="0 0 118 102"
+      preserveAspectRatio="xMaxYMax"
+      height="100%"
+      fill="none"
+    >
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"

@@ -1,32 +1,32 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
-import { i18n, setLocaleAndLoadMessages } from '@/services/i18n';
-import { locales, fallbackLocale } from '../../../shared/shared/locales';
-const Game = () => import('@/views/Game.vue');
-const Home = () => import('@/views/Home.vue');
-const Settings = () => import('@/views/Home/Settings.vue');
-const Profile = () => import('@/views/Home/Profile.vue');
-const ProfileOverview = () => import('@/views/Home/Profile/Profile.vue');
-const ProfileGames = () => import('@/views/Home/Profile/Games.vue');
-const ProfileFriends = () => import('@/views/Home/Profile/Friends.vue');
-const ProfileAchievements = () => import('@/views/Home/Profile/Achievements.vue');
-const ProfileSocials = () => import('@/views/Home/Profile/Socials.vue');
-const Tournament = () => import('@/views/Home/Tournament.vue');
-const TournamentsOverview = () => import('@/views/Home/Tournament/TournamentsOverview.vue');
-const PublicTournament = () => import('@/views/Home/Tournament/PublicTournament.vue');
-const PrivateTournament = () => import('@/views/Home/Tournament/PrivateTournament.vue');
-const Tutorial = () => import('@/views/Tutorial.vue');
-const Impressum = () => import('@/components/ImpressumInformation.vue');
-const Copyright = () => import('@/components/CopyrightInformation.vue');
-const Datenschutz = () => import('@/components/DatenschutzInformation.vue');
-const Leaders = () => import('@/views/Home/Leaders.vue');
-const Landing = () => import('@/views/Home/Landing.vue');
-const Stats = () => import('@/views/Home/Stats.vue');
-const TutorialOverview = () => import('@/views/Home/TutorialOverview.vue');
-const Subscription = () => import('@/views/Home/Subscription.vue');
-const FAQ = () => import('@/views/Home/FAQ.vue');
-const HallOfFame = () => import('@/views/Home/HallOfFame.vue');
-const PlayerSearch = () => import('@/views/Home/PlayerSearch.vue');
-const Advertisement = () => import('@/views/Home/AdvertisementView.vue');
+import { createRouter, createWebHashHistory } from 'vue-router'
+import { i18n, setLocaleAndLoadMessages } from '@/services/i18n'
+import { locales, fallbackLocale } from '../../../server/src/sharedDefinitions/locales'
+const Game = () => import('@/views/GameView.vue')
+const Home = () => import('@/views/HomeView.vue')
+const Settings = () => import('@/views/Home/SettingsView.vue')
+const Profile = () => import('@/views/Home/ProfileView.vue')
+const ProfileOverview = () => import('@/views/Home/Profile/ProfileView.vue')
+const ProfileGames = () => import('@/views/Home/Profile/GamesView.vue')
+const ProfileFriends = () => import('@/views/Home/Profile/FriendsView.vue')
+const ProfileAchievements = () => import('@/views/Home/Profile/AchievementsView.vue')
+const ProfileSocials = () => import('@/views/Home/Profile/SocialsView.vue')
+const Tournament = () => import('@/views/Home/TournamentView.vue')
+const TournamentsOverview = () => import('@/views/Home/Tournament/TournamentsOverview.vue')
+const PublicTournament = () => import('@/views/Home/Tournament/PublicTournament.vue')
+const PrivateTournament = () => import('@/views/Home/Tournament/PrivateTournament.vue')
+const Tutorial = () => import('@/views/TutorialView.vue')
+const Impressum = () => import('@/components/ImpressumInformation.vue')
+const Copyright = () => import('@/components/CopyrightInformation.vue')
+const Datenschutz = () => import('@/components/DatenschutzInformation.vue')
+const Leaders = () => import('@/views/Home/LeadersView.vue')
+const Landing = () => import('@/views/Home/LandingView.vue')
+const Stats = () => import('@/views/Home/StatsView.vue')
+const TutorialOverview = () => import('@/views/Home/TutorialOverview.vue')
+const Subscription = () => import('@/views/Home/SubscriptionView.vue')
+const FAQ = () => import('@/views/Home/FAQ.vue')
+const HallOfFame = () => import('@/views/Home/HallOfFame.vue')
+const PlayerSearch = () => import('@/views/Home/PlayerSearch.vue')
+const Advertisement = () => import('@/views/Home/AdvertisementView.vue')
 
 const regexp = locales.join('|')
 const routes = [
@@ -47,7 +47,7 @@ const routes = [
       {
         path: 'settings',
         name: 'Settings',
-        component: Settings
+        component: Settings,
       },
       {
         path: 'impressum',
@@ -104,7 +104,7 @@ const routes = [
             props: true,
             component: ProfileSocials,
           },
-        ]
+        ],
       },
       {
         path: 'tournament',
@@ -128,7 +128,7 @@ const routes = [
             props: true,
             component: PublicTournament,
           },
-        ]
+        ],
       },
       {
         path: 'stats',
@@ -170,26 +170,28 @@ const routes = [
         name: 'Landing',
         component: Landing,
       },
-    ]
+    ],
   },
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
 })
 
 router.beforeEach(async (to, from, next) => {
   //Redirect unnamed Routes to Landing to avoid unmatched Routes
-  if (to.name == null) { return next({ name: 'Landing' }) }
+  if (to.name == null) {
+    return next({ name: 'Landing' })
+  }
 
   if (localStorage.getItem('alreadyVisited') == null) {
     localStorage.setItem('alreadyVisited', 'true')
     return next({ name: 'Advertisement' })
   }
 
-  let toLocale = to.params?.locale as string | undefined;
-  const fromLocale = from.params?.locale as string | undefined;
+  let toLocale = to.params?.locale as string | undefined
+  const fromLocale = from.params?.locale as string | undefined
 
   if (fromLocale != null && toLocale === undefined) {
     to.params.locale = fromLocale
