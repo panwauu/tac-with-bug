@@ -1,7 +1,11 @@
 <template>
   <h2>{{ $t('Tournament.EditPrivate.header') }}</h2>
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <div v-for="team in tournament.registerTeams" :key="`teams-${team.name}`" class="team">
+  <div style="display: flex; flex-direction: column; align-items: center">
+    <div
+      v-for="team in tournament.registerTeams"
+      :key="`teams-${team.name}`"
+      class="team"
+    >
       <div class="teamName">{{ team.name }}</div>
       <div
         v-for="(player, playerIndex) in team.players"
@@ -11,7 +15,7 @@
         <PlayerWithPicture
           :username="player"
           :nameFirst="false"
-          :class="{ 'unactivatedPlayer': !team.activated[playerIndex] }"
+          :class="{ unactivatedPlayer: !team.activated[playerIndex] }"
         />
         <div>
           <Button
@@ -34,9 +38,7 @@
         icon="pi pi-plus"
         @click="open(team.name)"
       />
-      <div
-        v-if="team.players.length < tournament.playersPerTeam && tournament.adminPlayer !== username"
-      >...</div>
+      <div v-if="team.players.length < tournament.playersPerTeam && tournament.adminPlayer !== username">...</div>
     </div>
     <Button
       v-if="tournament.registerTeams.length < tournament.nTeams && tournament.adminPlayer === username"
@@ -45,14 +47,14 @@
       :label="$t('Tournament.EditPrivate.addTeamButton')"
       @click="open()"
     />
-    <div
-      v-if="tournament.registerTeams.length < tournament.nTeams && tournament.adminPlayer !== username"
-    >...</div>
+    <div v-if="tournament.registerTeams.length < tournament.nTeams && tournament.adminPlayer !== username">...</div>
     <Message
       v-if="!readyToStart"
       :closable="false"
       severity="error"
-    >{{ $t('Tournament.EditPrivate.notCompleteMessage') }}</Message>
+    >
+      {{ $t('Tournament.EditPrivate.notCompleteMessage') }}
+    </Message>
     <Button
       v-if="tournament.adminPlayer === username"
       :disabled="!readyToStart"
@@ -69,32 +71,37 @@
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import Button from 'primevue/button'
 import Message from 'primevue/message'
-import PlayerWithPicture from '../PlayerWithPicture.vue';
+import PlayerWithPicture from '../PlayerWithPicture.vue'
 import PrivateTournamentEditorDialog from './PrivateTournamentEditorDialog.vue'
 
-import { ref, computed } from 'vue';
-import { injectStrict, SocketKey } from '@/services/injections';
-import { privateTournament } from '@/../../shared/types/typesTournament';
-import { username } from '@/services/useUser';
-import { useToast } from 'primevue/usetoast';
-import { i18n } from '@/services/i18n';
+import { ref, computed } from 'vue'
+import { injectStrict, SocketKey } from '@/services/injections'
+import { PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import { username } from '@/services/useUser'
+import { useToast } from 'primevue/usetoast'
+import { i18n } from '@/services/i18n'
 const toast = useToast()
 
-const props = defineProps<{ tournament: privateTournament }>()
+const props = defineProps<{ tournament: PrivateTournament }>()
 
-const socket = injectStrict(SocketKey);
+const socket = injectStrict(SocketKey)
 
 const showDialog = ref(false)
 const diaglogTeamName = ref<string | null>(null)
 
-function open(teamName?: string) { diaglogTeamName.value = teamName ?? null; showDialog.value = true }
+function open(teamName?: string) {
+  diaglogTeamName.value = teamName ?? null
+  showDialog.value = true
+}
 
 const readyToStart = computed(() => {
-  return props.tournament.registerTeams.length === props.tournament.nTeams &&
+  return (
+    props.tournament.registerTeams.length === props.tournament.nTeams &&
     !props.tournament.registerTeams.some((t) => t.players.length !== props.tournament.playersPerTeam || t.activated.some((a) => !a))
+  )
 })
 
 async function activatePlayer() {
@@ -105,7 +112,7 @@ async function activatePlayer() {
       severity: 'error',
       detail: i18n.global.t('Toast.GenericError.detail'),
       summary: i18n.global.t('Toast.GenericError.summary'),
-      life: 10000
+      life: 10000,
     })
   }
 }
@@ -119,7 +126,7 @@ async function removePlayer(usernameToRemove: string) {
         severity: 'error',
         detail: i18n.global.t('Toast.GenericError.detail'),
         summary: i18n.global.t('Toast.GenericError.summary'),
-        life: 10000
+        life: 10000,
       })
       return
     }
@@ -131,7 +138,7 @@ async function removePlayer(usernameToRemove: string) {
         severity: 'error',
         detail: i18n.global.t('Toast.GenericError.detail'),
         summary: i18n.global.t('Toast.GenericError.summary'),
-        life: 10000
+        life: 10000,
       })
       return
     }
@@ -146,7 +153,7 @@ async function startTournament() {
       severity: 'error',
       detail: i18n.global.t('Toast.GenericError.detail'),
       summary: i18n.global.t('Toast.GenericError.summary'),
-      life: 10000
+      life: 10000,
     })
   }
 }
@@ -160,6 +167,7 @@ async function startTournament() {
   position: relative;
   margin: 25px 10px 10px 10px;
 }
+
 .teamName {
   position: absolute;
   top: -15px;
@@ -167,10 +175,12 @@ async function startTournament() {
   font-size: small;
   font-weight: bold;
 }
+
 .player {
   display: flex;
   justify-content: space-between;
 }
+
 .unactivatedPlayer {
   color: #ffe082;
   text-decoration-line: underline;

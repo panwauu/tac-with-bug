@@ -35,23 +35,15 @@ jobs:
         cache-dependency-path: |
           server/package-lock.json
           client/package-lock.json
-          shared/package-lock.json
-    - name: Install shared modules
-      run: |
-        cd shared
-        npm ci
-    - name: Linting shared
-      run: |
-        cd shared
-        npm run lint
     - name: Install server modules
       run: |
         cd server
         npm ci
-    - name: Linting server
+    - name: Check linting and formatting of server
       run: |
         cd server
         npm run lint
+        npm run prettier-check
     - name: Build server documentation
       run: |
         cd server
@@ -68,10 +60,11 @@ jobs:
       run: |
         cd client
         npm ci
-    - name: Run client lint
+    - name: Check linting and formatting of client
       run: |
         cd client
         npm run lint
+        npm run prettier-check
     - name: Run client tsc
       run: |
         cd client

@@ -1,6 +1,12 @@
 <template>
+  <!-- eslint-disable -->
   <div>
-    <svg viewBox="0 0 470 343" preserveAspectRatio="xMaxYMax" height="100%" fill="none">
+    <svg
+      viewBox="0 0 470 343"
+      preserveAspectRatio="xMaxYMax"
+      height="100%"
+      fill="none"
+    >
       <path
         d="M224 115.5c0 37.654-31.161 68.5-70 68.5s-70-30.846-70-68.5C84 77.846 115.161 47 154 47s70 30.846 70 68.5z"
         stroke="#000"

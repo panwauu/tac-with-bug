@@ -1,7 +1,11 @@
 <template>
   <div class="chatMenu">
     <div class="chatMenuHeader">
-      <i style="font-size: 20px;" class="pi pi-comments" />
+      <i
+        style="font-size: 20px"
+        class="pi pi-comments"
+        aria-hidden="true"
+      />
       <div class="positionsSettings">
         <ChatPositions
           :selected="chatStore.chatPosition === 'bottom'"
@@ -31,10 +35,10 @@
       </div>
     </div>
     <div class="chatMenuBody">
-      <div style="width: 100%;">
+      <div style="width: 100%">
         <div class="chatMenuBodyCategory">
           <i
-            style="font-size: 20px; margin-left: 7px; margin-right: 5px;"
+            style="font-size: 20px; margin-left: 7px; margin-right: 5px"
             :class="messageStore.getRecentChats.icon"
           />
           <div>{{ $t(`Chat.MenuOptions.${messageStore.getRecentChats.label}`) }}</div>
@@ -59,23 +63,21 @@
         v-if="isLoggedIn"
         :label="$t('Chat.startNewChatButton')"
         icon="pi pi-plus"
-        style="margin: 15px auto;"
+        style="margin: 15px auto"
         @click="toggle"
       />
       <div
         v-for="(menuItem, menuItemIterator) in messageStore.getChatMenu"
         :key="`menu-${menuItemIterator}`"
-        style="width: 100%;"
+        style="width: 100%"
       >
         <div
           class="chatMenuBodyCategory clickable"
           @click="messageStore.expandChatGroup(menuItemIterator)"
         >
+          <i :class="`pi pi-angle-right expandedIcon ${menuItem.expanded ? 'rotate90' : ''}`" />
           <i
-            :class="`pi pi-angle-right expandedIcon ${menuItem.expanded ? 'rotate90' : ''}`"
-          />
-          <i
-            style="font-size: 20px; margin-left: 7px; margin-right: 5px;"
+            style="font-size: 20px; margin-left: 7px; margin-right: 5px"
             :class="menuItem.icon"
           />
           <div>{{ $t(`Chat.MenuOptions.${menuItem.label}`) }}</div>
@@ -85,7 +87,7 @@
             v-for="(chat, chatIterator) in menuItem.children"
             :key="`menu-${menuItemIterator}-${chatIterator}`"
             class="clickable chatItem"
-            :class="{ 'chatItemHidden': !menuItem.expanded }"
+            :class="{ chatItemHidden: !menuItem.expanded }"
             @click="messageStore.selectChat(menuItemIterator === 2, chat.id.toString())"
           >
             {{ formatChannelName(chat.label, menuItemIterator === 2) }}
@@ -112,90 +114,97 @@
 </template>
 
 <script setup lang="ts">
-import ChatPositions from '../icons/ChatPositions.vue';
-import Badge from 'primevue/badge';
-import Button from 'primevue/button';
-import OverlayPanel from 'primevue/overlaypanel';
-import ChatCreatorOverlay from './ChatCreatorOverlay.vue';
+import ChatPositions from '../icons/ChatPositions.vue'
+import Badge from 'primevue/badge'
+import Button from 'primevue/button'
+import OverlayPanel from 'primevue/overlaypanel'
+import ChatCreatorOverlay from './ChatCreatorOverlay.vue'
 
-import { useChatStore } from '@/store/chat';
-import { useMessagesStore, formatChannelName } from '@/store/messages';
-import { ref } from 'vue';
-import { isLoggedIn } from '@/services/useUser';
+import { useChatStore } from '@/store/chat'
+import { useMessagesStore, formatChannelName } from '@/store/messages'
+import { ref } from 'vue'
+import { isLoggedIn } from '@/services/useUser'
 
 const chatStore = useChatStore()
 const messageStore = useMessagesStore()
 
 const overlayPanelRef = ref<OverlayPanel | null>()
 function toggle(event: any) {
-    overlayPanelRef.value?.toggle(event);
+  overlayPanelRef.value?.toggle(event)
 }
 function closeOverlay() {
-    overlayPanelRef.value?.hide()
+  overlayPanelRef.value?.hide()
 }
 </script>
 
 <style scoped>
 .chatMenu {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
+
 .positionsSettings {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .positionsItem {
-    height: 20px;
-    padding: 2px;
+  height: 20px;
+  padding: 2px;
 }
+
 .chatMenuHeader {
-    flex: 0 0 48px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
-    align-items: center;
-    box-shadow: 0px 3px 3px -3px var(--gray-600);
+  flex: 0 0 48px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  align-items: center;
+  box-shadow: 0px 3px 3px -3px var(--gray-600);
 }
 
 .chatMenuBody {
-    width: 100%;
-    padding: 10px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  width: 100%;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
+
 .chatMenuBodyCategory {
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    margin: 5px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin: 5px;
 }
+
 .expandedIcon {
-    font-size: 20px;
-    transition: transform 0.5s ease-in-out;
+  font-size: 20px;
+  transition: transform 0.5s ease-in-out;
 }
+
 .rotate90 {
-    transform: rotate(90deg);
+  transform: rotate(90deg);
 }
+
 .chatMenuBodyElements {
-    width: 100%;
-    padding-left: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  width: 100%;
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .chatItem {
-    transition: max-height 0.3s ease-in-out;
-    max-height: 40px;
-    overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+  max-height: 40px;
+  overflow: hidden;
 }
+
 .chatItemHidden {
-    max-height: 0;
+  max-height: 0;
 }
 </style>

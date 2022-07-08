@@ -1,20 +1,44 @@
 <template>
   <div class="bottomMenu">
-    <div class="bottomMenuElement clickable" @click="$router.push({ name: 'Impressum' })">
-      <i class="pi pi-id-card icon" />
-      {{ $t("Home.Impressum") }}
+    <div
+      class="bottomMenuElement clickable"
+      @click="$router.push({ name: 'Impressum' })"
+    >
+      <i
+        class="pi pi-id-card icon"
+        aria-hidden="true"
+      />
+      {{ $t('Home.Impressum') }}
     </div>
-    <div class="bottomMenuElement clickable" @click="$router.push({ name: 'Copyright' })">
-      <i class="pi pi-file icon" />
-      {{ $t("Home.Copyright") }}
+    <div
+      class="bottomMenuElement clickable"
+      @click="$router.push({ name: 'Copyright' })"
+    >
+      <i
+        class="pi pi-file icon"
+        aria-hidden="true"
+      />
+      {{ $t('Home.Copyright') }}
     </div>
-    <div class="bottomMenuElement clickable" @click="$router.push({ name: 'Datenschutz' })">
-      <i class="pi pi-book icon" />
-      {{ $t("Home.Datenschutz") }}
+    <div
+      class="bottomMenuElement clickable"
+      @click="$router.push({ name: 'Datenschutz' })"
+    >
+      <i
+        class="pi pi-book icon"
+        aria-hidden="true"
+      />
+      {{ $t('Home.Datenschutz') }}
     </div>
-    <div class="bottomMenuElement clickable" @click="$router.push({ name: 'FAQ' })">
-      <i class="pi pi-book icon" />
-      {{ $t("Home.FAQ") }}
+    <div
+      class="bottomMenuElement clickable"
+      @click="$router.push({ name: 'FAQ' })"
+    >
+      <i
+        class="pi pi-book icon"
+        aria-hidden="true"
+      />
+      {{ $t('Home.FAQ') }}
     </div>
   </div>
 </template>
@@ -29,6 +53,7 @@
   justify-content: center;
   flex-direction: row;
 }
+
 .bottomMenuElement {
   margin: 0 10px;
 }

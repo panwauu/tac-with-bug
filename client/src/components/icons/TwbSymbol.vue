@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div>
     <svg
       v-if="side === 'right'"
@@ -8,12 +9,40 @@
       viewBox="0 0 322 280"
     >
       <g clip-path="url(#clip0)">
-        <path d="M151 148L151 179L115 223" stroke="#8BC63E" stroke-width="20" />
-        <circle cx="101" cy="236" r="25" stroke="#8BC63E" stroke-width="20" />
-        <path d="M151 132L151 101L115 57" stroke="#0095DA" stroke-width="20" />
-        <circle r="25" transform="matrix(1 0 0 -1 101 44)" stroke="#0095DA" stroke-width="20" />
-        <path d="M161 140L51 139" stroke="#E7E8EA" stroke-width="20" />
-        <circle r="25" transform="matrix(1 0 0 -1 35 139)" stroke="#E7E8EA" stroke-width="20" />
+        <path
+          d="M151 148L151 179L115 223"
+          stroke="#8BC63E"
+          stroke-width="20"
+        />
+        <circle
+          cx="101"
+          cy="236"
+          r="25"
+          stroke="#8BC63E"
+          stroke-width="20"
+        />
+        <path
+          d="M151 132L151 101L115 57"
+          stroke="#0095DA"
+          stroke-width="20"
+        />
+        <circle
+          r="25"
+          transform="matrix(1 0 0 -1 101 44)"
+          stroke="#0095DA"
+          stroke-width="20"
+        />
+        <path
+          d="M161 140L51 139"
+          stroke="#E7E8EA"
+          stroke-width="20"
+        />
+        <circle
+          r="25"
+          transform="matrix(1 0 0 -1 35 139)"
+          stroke="#E7E8EA"
+          stroke-width="20"
+        />
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
@@ -43,9 +72,22 @@
       viewBox="0 0 322 280"
     >
       <g clip-path="url(#clip0)">
-        <path d="M171 148L171 179L207 223" stroke="#002B54" stroke-width="20" />
-        <circle r="25" transform="matrix(-1 0 0 1 221 236)" stroke="#002B54" stroke-width="20" />
-        <path d="M171 132L171 101L207 57" stroke="#EF3F23" stroke-width="20" />
+        <path
+          d="M171 148L171 179L207 223"
+          stroke="#002B54"
+          stroke-width="20"
+        />
+        <circle
+          r="25"
+          transform="matrix(-1 0 0 1 221 236)"
+          stroke="#002B54"
+          stroke-width="20"
+        />
+        <path
+          d="M171 132L171 101L207 57"
+          stroke="#EF3F23"
+          stroke-width="20"
+        />
         <circle
           cx="221"
           cy="44"
@@ -54,7 +96,11 @@
           stroke="#EF3F23"
           stroke-width="20"
         />
-        <path d="M161 140L271 139" stroke="#E7E8EA" stroke-width="20" />
+        <path
+          d="M161 140L271 139"
+          stroke="#E7E8EA"
+          stroke-width="20"
+        />
         <circle
           cx="287"
           cy="139"
@@ -91,9 +137,23 @@
       fill="none"
       viewBox="0 0 321 266"
     >
-      <path d="M151 143L151 174L115 218" stroke="#8BC63E" stroke-width="20" />
-      <circle cx="101" cy="231" r="25" stroke="#8BC63E" stroke-width="20" />
-      <path d="M171 123L171 92L207 48" stroke="#EF3F23" stroke-width="20" />
+      <path
+        d="M151 143L151 174L115 218"
+        stroke="#8BC63E"
+        stroke-width="20"
+      />
+      <circle
+        cx="101"
+        cy="231"
+        r="25"
+        stroke="#8BC63E"
+        stroke-width="20"
+      />
+      <path
+        d="M171 123L171 92L207 48"
+        stroke="#EF3F23"
+        stroke-width="20"
+      />
       <circle
         cx="221"
         cy="35"
@@ -102,11 +162,33 @@
         stroke="#EF3F23"
         stroke-width="20"
       />
-      <path d="M151 123L151 92L115 48" stroke="#0095DA" stroke-width="20" />
-      <circle r="25" transform="matrix(1 0 0 -1 101 35)" stroke="#0095DA" stroke-width="20" />
-      <path d="M171 143L171 174L207 218" stroke="#002B54" stroke-width="20" />
-      <circle r="25" transform="matrix(-1 0 0 1 221 231)" stroke="#002B54" stroke-width="20" />
-      <path d="M161 133H271" stroke="#E7E8EA" stroke-width="20" />
+      <path
+        d="M151 123L151 92L115 48"
+        stroke="#0095DA"
+        stroke-width="20"
+      />
+      <circle
+        r="25"
+        transform="matrix(1 0 0 -1 101 35)"
+        stroke="#0095DA"
+        stroke-width="20"
+      />
+      <path
+        d="M171 143L171 174L207 218"
+        stroke="#002B54"
+        stroke-width="20"
+      />
+      <circle
+        r="25"
+        transform="matrix(-1 0 0 1 221 231)"
+        stroke="#002B54"
+        stroke-width="20"
+      />
+      <path
+        d="M161 133H271"
+        stroke="#E7E8EA"
+        stroke-width="20"
+      />
       <circle
         cx="286"
         cy="133"
@@ -115,16 +197,22 @@
         stroke="#E7E8EA"
         stroke-width="20"
       />
-      <path d="M161 133L51 132" stroke="#E7E8EA" stroke-width="20" />
-      <circle r="25" transform="matrix(1 0 0 -1 35 132)" stroke="#E7E8EA" stroke-width="20" />
+      <path
+        d="M161 133L51 132"
+        stroke="#E7E8EA"
+        stroke-width="20"
+      />
+      <circle
+        r="25"
+        transform="matrix(1 0 0 -1 35 132)"
+        stroke="#E7E8EA"
+        stroke-width="20"
+      />
     </svg>
   </div>
 </template>
 
 <script setup lang="ts">
-import {  withDefaults } from 'vue';
-withDefaults(
-  defineProps<{ side?: string }>(),
-  { side: 'both' }
-);
+import { withDefaults } from 'vue'
+withDefaults(defineProps<{ side?: string }>(), { side: 'both' })
 </script>

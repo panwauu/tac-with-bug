@@ -46,16 +46,16 @@
 </template>
 
 <script setup lang="ts">
-import ChatInterface from '@/components/Chat/ChatInterface.vue';
-import ChatButton from '@/components/Chat/ChatButton.vue';
-import { Splitpanes, Pane } from 'splitpanes';
-import 'splitpanes/dist/splitpanes.css';
-import { useChatStore } from '@/store/chat';
+import ChatInterface from '@/components/Chat/ChatInterface.vue'
+import ChatButton from '@/components/Chat/ChatButton.vue'
+import { Splitpanes, Pane } from 'splitpanes'
+import 'splitpanes/dist/splitpanes.css'
+import { useChatStore } from '@/store/chat'
 
 const chatStore = useChatStore()
 
-const resize = ($event: { min: number, max: number, size: number }[]) => {
-  chatStore.setChatSize($event[0].size);
+const resize = ($event: { min: number; max: number; size: number }[]) => {
+  chatStore.setChatSize($event[0].size)
 }
 </script>
 
@@ -65,6 +65,7 @@ const resize = ($event: { min: number, max: number, size: number }[]) => {
     opacity: 0;
     transform: scale(0.01);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -74,6 +75,7 @@ const resize = ($event: { min: number, max: number, size: number }[]) => {
 .chatOverlay-enter-active {
   animation: chatOverlay 0.5s;
 }
+
 .chatOverlay-leave-active {
   animation: chatOverlay 0.5s reverse;
 }
@@ -111,17 +113,21 @@ const resize = ($event: { min: number, max: number, size: number }[]) => {
 .splitpanes.default-theme .splitpanes__pane {
   background: transparent;
 }
+
 .splitpanes__splitter {
   background: var(--surface-d) !important;
 }
+
 .default-theme.splitpanes--horizontal > .splitpanes__splitter,
 .default-theme .splitpanes--horizontal > .splitpanes__splitter {
   border-top: 1px solid var(--surface-d) !important;
 }
+
 .default-theme.splitpanes--vertical > .splitpanes__splitter,
 .default-theme .splitpanes--vertical > .splitpanes__splitter {
   border-left: 1px solid var(--surface-d) !important;
 }
+
 :not(.splitpanes--dragging) > .splitpanes__pane {
   transition: height 0.2s ease-out, width 0.2s ease-out !important;
 }

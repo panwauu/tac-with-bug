@@ -2,21 +2,20 @@
   <div
     :class="['tag', clickable ? 'clickable' : '']"
     @click="toSubscription()"
-  >{{ sponsorsOnly ? $t("Subscription.Tag.sponsorsOnly") : $t("Subscription.Tag.sponsor") }}</div>
+  >
+    {{ sponsorsOnly ? $t('Subscription.Tag.sponsorsOnly') : $t('Subscription.Tag.sponsor') }}
+  </div>
 </template>
 
 <script setup lang="ts">
-import { withDefaults } from 'vue';
+import { withDefaults } from 'vue'
 import router from '@/router/index'
 
-const props = withDefaults(
-  defineProps<{ clickable?: boolean, sponsorsOnly?: boolean }>(),
-  { clickable: true, sponsorsOnly: true }
-)
+const props = withDefaults(defineProps<{ clickable?: boolean; sponsorsOnly?: boolean }>(), { clickable: true, sponsorsOnly: true })
 
 const toSubscription = () => {
   if (props.clickable) {
-    router.push({ name: 'Subscription' });
+    router.push({ name: 'Subscription' })
   }
 }
 </script>

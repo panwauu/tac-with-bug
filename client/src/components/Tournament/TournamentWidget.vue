@@ -1,9 +1,15 @@
 <template>
-  <h2>{{ $t("Landing.Tournament.title") }}</h2>
+  <h2>{{ $t('Landing.Tournament.title') }}</h2>
   <div
     v-if="tournament != null"
     class="clickable"
-    @click="() => { if (tournament?.id != null) { $router.push({ name: 'PublicTournament', params: { id: tournament.id } }) } }"
+    @click="
+      () => {
+        if (tournament?.id != null) {
+          $router.push({ name: 'PublicTournament', params: { id: tournament.id } })
+        }
+      }
+    "
   >
     <div class="TournamentHeading">{{ tournament.title }}:</div>
     <TournamentStatusBadge :status="tournament.status" />
@@ -13,8 +19,8 @@
       style="margin-top: 15px"
     />
   </div>
-  <div v-if="tournament == null">{{ $t("Landing.Tournament.noActiveTournament") }}</div>
-  <div class="LastWinnersHeading">{{ $t("Landing.Tournament.lastWinners") }}</div>
+  <div v-if="tournament == null">{{ $t('Landing.Tournament.noActiveTournament') }}</div>
+  <div class="LastWinnersHeading">{{ $t('Landing.Tournament.lastWinners') }}</div>
   <div
     v-for="team in winners"
     :key="`LandingWinnersTeam-${team.teamName}`"
@@ -39,34 +45,41 @@
 </template>
 
 <script setup lang="ts">
-import TournamentStatusBadge from '@/components/Tournament/TournamentStatusBadge.vue';
-import TournamentTimer from '@/components/Tournament/TournamentTimer.vue';
-import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
-import Crown from '@/components/icons/CrownSymbol.vue';
+import TournamentStatusBadge from '@/components/Tournament/TournamentStatusBadge.vue'
+import TournamentTimer from '@/components/Tournament/TournamentTimer.vue'
+import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
+import Crown from '@/components/icons/CrownSymbol.vue'
 
-import type { publicTournament } from '@/../../shared/types/typesTournament';
-import { ref, onUnmounted } from 'vue';
-import { injectStrict, SocketKey } from '@/services/injections';
-import { getWinners } from '@/services/useTournamentWinners';
+import type { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import { ref, onUnmounted } from 'vue'
+import { injectStrict, SocketKey } from '@/services/injections'
+import { getWinners } from '@/services/useTournamentWinners'
 
 const socket = injectStrict(SocketKey)
 
 const winners = getWinners()
-let tournament = ref<publicTournament | null>(null)
+const tournament = ref<PublicTournament | null>(null)
 
 queryTournament()
 async function queryTournament() {
   const res = await socket.emitWithAck(5000, 'tournament:public:get-current')
-  if (res.data == null) { console.error('Could not query current Tournament'); return }
+  if (res.data == null) {
+    console.error('Could not query current Tournament')
+    return
+  }
   tournament.value = res.data
 }
 
-function updateTournament(newTournament: publicTournament) {
-  if (tournament.value?.id === newTournament.id) { tournament.value = newTournament }
+function updateTournament(newTournament: PublicTournament) {
+  if (tournament.value?.id === newTournament.id) {
+    tournament.value = newTournament
+  }
 }
 
 socket.on('tournament:public:update', updateTournament)
-onUnmounted(() => { socket.off('tournament:public:update', updateTournament) })
+onUnmounted(() => {
+  socket.off('tournament:public:update', updateTournament)
+})
 </script>
 
 <style scoped>
@@ -96,10 +109,12 @@ onUnmounted(() => { socket.off('tournament:public:update', updateTournament) })
   justify-content: flex-start;
   align-items: flex-start;
 }
+
 .TournamentHeading {
   font-weight: bold;
   margin-bottom: 5px;
 }
+
 .LastWinnersHeading {
   margin-top: 10px;
   font-weight: bold;

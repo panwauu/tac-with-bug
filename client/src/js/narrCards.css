@@ -1,367 +1,415 @@
 @keyframes narrFly1 {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(calc(8 / 100 * var(--board-size-in-px)), 0);
-    }
-    70% {
-        opacity: 1;
-        transform: translate(calc(17 / 100 * var(--board-size-in-px)), 0);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(calc(25 / 100 * var(--board-size-in-px)), 0);
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(calc(8 / 100 * var(--board-size-in-px)), 0);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(calc(17 / 100 * var(--board-size-in-px)), 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(25 / 100 * var(--board-size-in-px)), 0);
+  }
 }
 
 @keyframes narrFly3 {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(calc(-8 / 100 * var(--board-size-in-px)), 0);
-    }
-    70% {
-        opacity: 1;
-        transform: translate(calc(-17 / 100 * var(--board-size-in-px)), 0);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(calc(-25 / 100 * var(--board-size-in-px)), 0);
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(calc(-8 / 100 * var(--board-size-in-px)), 0);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(calc(-17 / 100 * var(--board-size-in-px)), 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-25 / 100 * var(--board-size-in-px)), 0);
+  }
 }
 
 @keyframes narrFly0 {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(0, calc(-8 / 100 * var(--board-size-in-px)));
-    }
-    70% {
-        opacity: 1;
-        transform: translate(0, calc(-17 / 100 * var(--board-size-in-px)));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(0, calc( -25 / 100 * var(--board-size-in-px)));
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(0, calc(-8 / 100 * var(--board-size-in-px)));
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(0, calc(-17 / 100 * var(--board-size-in-px)));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, calc(-25 / 100 * var(--board-size-in-px)));
+  }
 }
 
 @keyframes narrFly2 {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(0, calc(8 / 100 * var(--board-size-in-px)));
-    }
-    70% {
-        opacity: 1;
-        transform: translate(0, calc(17 / 100 * var(--board-size-in-px)));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(0, calc(25 / 100 * var(--board-size-in-px)));
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(0, calc(8 / 100 * var(--board-size-in-px)));
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(0, calc(17 / 100 * var(--board-size-in-px)));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, calc(25 / 100 * var(--board-size-in-px)));
+  }
 }
 
 .narrAnimation0 {
-    animation: narrFly0 2.5s linear infinite;
+  animation: narrFly0 2.5s linear infinite;
 }
 
 .narrAnimation1 {
-    animation: narrFly1 2.5s linear infinite;
+  animation: narrFly1 2.5s linear infinite;
 }
 
 .narrAnimation2 {
-    animation: narrFly2 2.5s linear infinite;
+  animation: narrFly2 2.5s linear infinite;
 }
 
 .narrAnimation3 {
-    animation: narrFly3 2.5s linear infinite;
+  animation: narrFly3 2.5s linear infinite;
 }
 
 @keyframes narrFly0-6 {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(calc(3 / 100 * var(--board-size-in-px)), calc(-1 / 100 * var(--board-size-in-px)));
-    }
-    70% {
-        opacity: 1;
-        transform: translate(calc(12 / 100 * var(--board-size-in-px)), calc(-4 / 100 * var(--board-size-in-px)));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(calc(15 / 100 * var(--board-size-in-px)), calc(-5 / 100 * var(--board-size-in-px)));
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(calc(3 / 100 * var(--board-size-in-px)), calc(-1 / 100 * var(--board-size-in-px)));
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(calc(12 / 100 * var(--board-size-in-px)), calc(-4 / 100 * var(--board-size-in-px)));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(15 / 100 * var(--board-size-in-px)), calc(-5 / 100 * var(--board-size-in-px)));
+  }
 }
 
 @keyframes narrFly1-6 {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(calc(3 / 100 * var(--board-size-in-px)), calc(1 / 100 * var(--board-size-in-px)));
-    }
-    70% {
-        opacity: 1;
-        transform: translate(calc(12 / 100 * var(--board-size-in-px)), calc(4 / 100 * var(--board-size-in-px)));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(calc(15 / 100 * var(--board-size-in-px)), calc(5 / 100 * var(--board-size-in-px)));
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(calc(3 / 100 * var(--board-size-in-px)), calc(1 / 100 * var(--board-size-in-px)));
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(calc(12 / 100 * var(--board-size-in-px)), calc(4 / 100 * var(--board-size-in-px)));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(15 / 100 * var(--board-size-in-px)), calc(5 / 100 * var(--board-size-in-px)));
+  }
 }
 
 @keyframes narrFly2-6 {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(0, calc(16 / 100 * var(--board-size-in-px)));
-    }
-    70% {
-        opacity: 1;
-        transform: translate(0, calc(34 / 100 * var(--board-size-in-px)));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(0, calc(50 / 100 * var(--board-size-in-px)));
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(0, calc(16 / 100 * var(--board-size-in-px)));
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(0, calc(34 / 100 * var(--board-size-in-px)));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, calc(50 / 100 * var(--board-size-in-px)));
+  }
 }
 
 @keyframes narrFly3-6 {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(calc(-6 / 100 * var(--board-size-in-px)), calc(1 / 100 * var(--board-size-in-px)));
-    }
-    70% {
-        opacity: 1;
-        transform: translate(calc(-24 / 100 * var(--board-size-in-px)), calc(4 / 100 * var(--board-size-in-px)));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(calc(-30 / 100 * var(--board-size-in-px)), calc(5 / 100 * var(--board-size-in-px)));
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(calc(-6 / 100 * var(--board-size-in-px)), calc(1 / 100 * var(--board-size-in-px)));
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(calc(-24 / 100 * var(--board-size-in-px)), calc(4 / 100 * var(--board-size-in-px)));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-30 / 100 * var(--board-size-in-px)), calc(5 / 100 * var(--board-size-in-px)));
+  }
 }
 
 @keyframes narrFly4-6 {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(calc(-3 / 100 * var(--board-size-in-px)), calc(-1 / 100 * var(--board-size-in-px)));
-    }
-    70% {
-        opacity: 1;
-        transform: translate(calc(-12 / 100 * var(--board-size-in-px)), calc(-4 / 100 * var(--board-size-in-px)));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(calc(-15 / 100 * var(--board-size-in-px)), calc(-5 / 100 * var(--board-size-in-px)));
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(calc(-3 / 100 * var(--board-size-in-px)), calc(-1 / 100 * var(--board-size-in-px)));
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(calc(-12 / 100 * var(--board-size-in-px)), calc(-4 / 100 * var(--board-size-in-px)));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-15 / 100 * var(--board-size-in-px)), calc(-5 / 100 * var(--board-size-in-px)));
+  }
 }
 
 @keyframes narrFly5-6 {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(0, calc(-16 / 100 * var(--board-size-in-px)));
-    }
-    70% {
-        opacity: 1;
-        transform: translate(0, calc(-34 / 100 * var(--board-size-in-px)));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(0, calc(-50 / 100 * var(--board-size-in-px)));
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(0, calc(-16 / 100 * var(--board-size-in-px)));
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(0, calc(-34 / 100 * var(--board-size-in-px)));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, calc(-50 / 100 * var(--board-size-in-px)));
+  }
 }
 
 .narrAnimation0-6 {
-    animation: narrFly0-6 2.5s linear infinite;
+  animation: narrFly0-6 2.5s linear infinite;
 }
 
 .narrAnimation1-6 {
-    animation: narrFly1-6 2.5s linear infinite;
+  animation: narrFly1-6 2.5s linear infinite;
 }
 
 .narrAnimation2-6 {
-    animation: narrFly2-6 2.5s linear infinite;
+  animation: narrFly2-6 2.5s linear infinite;
 }
 
 .narrAnimation3-6 {
-    animation: narrFly3-6 2.5s linear infinite;
+  animation: narrFly3-6 2.5s linear infinite;
 }
 
 .narrAnimation4-6 {
-    animation: narrFly4-6 2.5s linear infinite;
+  animation: narrFly4-6 2.5s linear infinite;
 }
 
 .narrAnimation5-6 {
-    animation: narrFly5-6 2.5s linear infinite;
+  animation: narrFly5-6 2.5s linear infinite;
 }
 
 @keyframes narrFly0-6_turned {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(calc(12 / 100 * var(--board-size-in-px)), 0);
-    }
-    70% {
-        opacity: 1;
-        transform: translate(calc(48 / 100 * var(--board-size-in-px)), 0);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(calc(60 / 100 * var(--board-size-in-px)), 0);
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(calc(12 / 100 * var(--board-size-in-px)), 0);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(calc(48 / 100 * var(--board-size-in-px)), 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(60 / 100 * var(--board-size-in-px)), 0);
+  }
 }
 
 @keyframes narrFly1-6_turned {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0) rotate(60deg);
-    }
-    33% {
-        opacity: 1;
-        transform: translate(0, calc(7 / 100 * var(--board-size-in-px))) rotate(40deg);
-    }
-    66% {
-        opacity: 1;
-        transform: translate(0, calc(14 / 100 * var(--board-size-in-px))) rotate(20deg);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(0, calc(21 / 100 * var(--board-size-in-px))) rotate(0deg);
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(60deg);
+  }
+
+  33% {
+    opacity: 1;
+    transform: translate(0, calc(7 / 100 * var(--board-size-in-px))) rotate(40deg);
+  }
+
+  66% {
+    opacity: 1;
+    transform: translate(0, calc(14 / 100 * var(--board-size-in-px))) rotate(20deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, calc(21 / 100 * var(--board-size-in-px))) rotate(0deg);
+  }
 }
 
 @keyframes narrFly2-6_turned {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(0, calc(8 / 100 * var(--board-size-in-px)));
-    }
-    70% {
-        opacity: 1;
-        transform: translate(0, calc(22 / 100 * var(--board-size-in-px)));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(0, calc(30 / 100 * var(--board-size-in-px)));
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(0, calc(8 / 100 * var(--board-size-in-px)));
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(0, calc(22 / 100 * var(--board-size-in-px)));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, calc(30 / 100 * var(--board-size-in-px)));
+  }
 }
 
 @keyframes narrFly3-6_turned {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(calc(-12 / 100 * var(--board-size-in-px)), 0);
-    }
-    70% {
-        opacity: 1;
-        transform: translate(calc(-48 / 100 * var(--board-size-in-px)), 0);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(calc(-60 / 100 * var(--board-size-in-px)), 0);
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(calc(-12 / 100 * var(--board-size-in-px)), 0);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(calc(-48 / 100 * var(--board-size-in-px)), 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-60 / 100 * var(--board-size-in-px)), 0);
+  }
 }
 
 @keyframes narrFly4-6_turned {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0) rotate(-60deg);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(0, calc(-12 / 100 * var(--board-size-in-px))) rotate(-60deg);
-    }
-    70% {
-        opacity: 1;
-        transform: translate(0, calc(-38 / 100 * var(--board-size-in-px))) rotate(-60deg);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(0, calc(-50 / 100 * var(--board-size-in-px))) rotate(-60deg);
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-60deg);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(0, calc(-12 / 100 * var(--board-size-in-px))) rotate(-60deg);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(0, calc(-38 / 100 * var(--board-size-in-px))) rotate(-60deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, calc(-50 / 100 * var(--board-size-in-px))) rotate(-60deg);
+  }
 }
 
 @keyframes narrFly5-6_turned {
-    0% {
-        opacity: 0;
-        transform: translate(0, 0);
-    }
-    30% {
-        opacity: 1;
-        transform: translate(0, calc(-4 / 100 * var(--board-size-in-px)));
-    }
-    70% {
-        opacity: 1;
-        transform: translate(0, calc(-10 / 100 * var(--board-size-in-px)));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(0, calc(-14 / 100 * var(--board-size-in-px)));
-    }
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(0, calc(-4 / 100 * var(--board-size-in-px)));
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(0, calc(-10 / 100 * var(--board-size-in-px)));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, calc(-14 / 100 * var(--board-size-in-px)));
+  }
 }
 
 .narrAnimation0-6_turned {
-    animation: narrFly0-6_turned 2.5s linear infinite;
+  animation: narrFly0-6_turned 2.5s linear infinite;
 }
 
 .narrAnimation1-6_turned {
-    animation: narrFly1-6_turned 2.5s linear infinite;
+  animation: narrFly1-6_turned 2.5s linear infinite;
 }
 
 .narrAnimation2-6_turned {
-    animation: narrFly2-6_turned 2.5s linear infinite;
+  animation: narrFly2-6_turned 2.5s linear infinite;
 }
 
 .narrAnimation3-6_turned {
-    animation: narrFly3-6_turned 2.5s linear infinite;
+  animation: narrFly3-6_turned 2.5s linear infinite;
 }
 
 .narrAnimation4-6_turned {
-    animation: narrFly4-6_turned 2.5s linear infinite;
+  animation: narrFly4-6_turned 2.5s linear infinite;
 }
 
 .narrAnimation5-6_turned {
-    animation: narrFly5-6_turned 2.5s linear infinite;
+  animation: narrFly5-6_turned 2.5s linear infinite;
 }

@@ -6,10 +6,22 @@
       preserveAspectRatio="xMaxYMax"
       height="100%"
     >
-      <path :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'" d="M0 0h100v12H0z" />
-      <path :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'" d="M0 0h12v80H0z" />
-      <path :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'" d="M0 68h100v12H0z" />
-      <path :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'" d="M70 0h30v80H70z" />
+      <path
+        :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'"
+        d="M0 0h100v12H0z"
+      />
+      <path
+        :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'"
+        d="M0 0h12v80H0z"
+      />
+      <path
+        :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'"
+        d="M0 68h100v12H0z"
+      />
+      <path
+        :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'"
+        d="M70 0h30v80H70z"
+      />
     </svg>
     <svg
       v-if="position === 'bottom'"
@@ -17,10 +29,22 @@
       preserveAspectRatio="xMaxYMax"
       height="100%"
     >
-      <path :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'" d="M0 0h100v12H0z" />
-      <path :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'" d="M0 0h12v80H0z" />
-      <path :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'" d="M0 50h100v30H0z" />
-      <path :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'" d="M88 0h12v80H88z" />
+      <path
+        :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'"
+        d="M0 0h100v12H0z"
+      />
+      <path
+        :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'"
+        d="M0 0h12v80H0z"
+      />
+      <path
+        :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'"
+        d="M0 50h100v30H0z"
+      />
+      <path
+        :fill="selected ? 'var(--primary-color)' : 'var(--surface-800)'"
+        d="M88 0h12v80H88z"
+      />
     </svg>
     <svg
       v-if="position === 'overlay'"
@@ -45,6 +69,5 @@
 </template>
 
 <script setup lang="ts">
-
-defineProps<{ selected: boolean, position: string }>();
+defineProps<{ selected: boolean; position: string }>()
 </script>

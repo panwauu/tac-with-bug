@@ -1,10 +1,19 @@
 <template>
   <div class="p-menubar topMenu">
-    <div class="navLogo" @click="redirectToLanding()">
+    <div
+      class="navLogo"
+      @click="redirectToLanding()"
+    >
       <div class="tacLogoLarge">
-        <TwbSymbol style="height: 100%" side="left" />
+        <TwbSymbol
+          style="height: 100%"
+          side="left"
+        />
         <div class="twbLetters logoLetters">TWB</div>
-        <TwbSymbol style="height: 100%" side="right" />
+        <TwbSymbol
+          style="height: 100%"
+          side="right"
+        />
       </div>
     </div>
     <div style="display: flex; align-items: center; height: 30px">
@@ -15,7 +24,7 @@
           v-if="friendsState.numberOpenRequests !== 0"
           v-badge.danger="friendsState.numberOpenRequests"
           class="pi pi-user"
-          style="font-size: 1.4rem; margin-right: 5px; cursor: pointer;"
+          style="font-size: 1.4rem; margin-right: 5px; cursor: pointer"
           @click="$router.push({ name: 'Profile-Friends', params: { username: username, locale: $route.params.locale } })"
         />
       </template>
@@ -25,21 +34,22 @@
 </template>
 
 <script setup lang="ts">
-import TwbSymbol from '@/components/icons/TwbSymbol.vue';
-import LoginButton from './LoginButton.vue';
-import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
-import NavigationElement from './NavigationElement.vue';
+import TwbSymbol from '@/components/icons/TwbSymbol.vue'
+import LoginButton from './LoginButton.vue'
+import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
+import NavigationElement from './NavigationElement.vue'
 
-
-import router from '@/router/index';
-import { username } from '@/services/useUser';
-import { FriendsStateKey, injectStrict } from '@/services/injections';
+import router from '@/router/index'
+import { username } from '@/services/useUser'
+import { FriendsStateKey, injectStrict } from '@/services/injections'
 
 defineEmits(['logout'])
 
 const friendsState = injectStrict(FriendsStateKey)
 
-function redirectToLanding() { router.push({ name: 'Landing' }) }
+function redirectToLanding() {
+  router.push({ name: 'Landing' })
+}
 </script>
 
 <style scoped>
@@ -61,7 +71,7 @@ function redirectToLanding() { router.push({ name: 'Landing' }) }
 }
 
 .logoLetters {
-  font-family: "tacfontregular";
+  font-family: 'tacfontregular', Monospace;
   font-size: 38px;
   color: var(--tac-text-color);
   user-select: none;

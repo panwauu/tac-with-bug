@@ -1,8 +1,12 @@
 <template>
   <div>
-    <Dialog v-model:visible="localVisible" :modal="true" :dismissableMask="true">
+    <Dialog
+      v-model:visible="localVisible"
+      :modal="true"
+      :dismissableMask="true"
+    >
       <template #header>
-        <h3>{{ $t("Waiting.WaitingGameCreator.title") }}</h3>
+        <h3>{{ $t('Waiting.WaitingGameCreator.title') }}</h3>
       </template>
 
       <div class="filterButtons">
@@ -46,41 +50,40 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import SelectButton from 'primevue/selectbutton';
+import Button from 'primevue/button'
+import Dialog from 'primevue/dialog'
+import SelectButton from 'primevue/selectbutton'
 
-import { computed, ref } from 'vue';
+import { computed, ref } from 'vue'
 import { i18n } from '@/services/i18n'
-import { injectStrict, SocketKey } from '@/services/injections';
+import { injectStrict, SocketKey } from '@/services/injections'
 
 const props = defineProps<{ visible: boolean }>()
-const socket = injectStrict(SocketKey);
+const socket = injectStrict(SocketKey)
 
 const emit = defineEmits(['update:visible'])
 
-let localVisible = computed({
+const localVisible = computed({
   get(): boolean {
-    return props.visible;
+    return props.visible
   },
   set(value: boolean): void {
-    return emit('update:visible', value);
-  }
+    return emit('update:visible', value)
+  },
 })
-
 
 const playersModel = [
   { name: i18n.global.t('Waiting.WaitingGameCreator.player4Name'), value: 4 },
   { name: i18n.global.t('Waiting.WaitingGameCreator.player6Name'), value: 6 },
 ]
-let selectedPlayers = ref(playersModel[0])
+const selectedPlayers = ref(playersModel[0])
 
 const teamsModel = [
   { name: i18n.global.t('Waiting.WaitingGameCreator.teams1Name'), value: 1 },
   { name: i18n.global.t('Waiting.WaitingGameCreator.teams2Name'), value: 2 },
   { name: i18n.global.t('Waiting.WaitingGameCreator.teams3Name'), value: 3 },
 ]
-let selectedTeams = ref(teamsModel[1])
+const selectedTeams = ref(teamsModel[1])
 
 const meisterModel = [
   {
@@ -92,7 +95,7 @@ const meisterModel = [
     value: false,
   },
 ]
-let selectedMeister = ref(meisterModel[0])
+const selectedMeister = ref(meisterModel[0])
 
 const privateModel = [
   {
@@ -104,8 +107,7 @@ const privateModel = [
     value: false,
   },
 ]
-let selectedPrivate = ref(privateModel[1])
-
+const selectedPrivate = ref(privateModel[1])
 
 const createGame = () => {
   socket.emit('waiting:createGame', {
@@ -113,25 +115,18 @@ const createGame = () => {
     nTeams: selectedTeams.value.value,
     meister: selectedMeister.value.value,
     private: selectedPrivate.value.value,
-  });
-  localVisible.value = false;
+  })
+  localVisible.value = false
 }
 
 const validOptions = () => {
-  if (
-    selectedPlayers.value === null ||
-    selectedTeams.value === null ||
-    selectedMeister.value === null ||
-    selectedPrivate.value === null
-  ) {
-    return false;
-  }
-
-  if (selectedTeams.value.value === 3 && selectedPlayers.value.value !== 6) {
-    return false;
-  }
-
-  return true;
+  return (
+    selectedPlayers.value != null &&
+    selectedTeams.value != null &&
+    selectedMeister.value != null &&
+    selectedPrivate.value != null &&
+    !(selectedTeams.value.value === 3 && selectedPlayers.value.value !== 6)
+  )
 }
 </script>
 

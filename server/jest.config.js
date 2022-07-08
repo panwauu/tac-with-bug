@@ -2,7 +2,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  coveragePathIgnorePatterns: ["./src/test"],
-  modulePathIgnorePatterns: ["./dist"],
-  setupFilesAfterEnv: ['./src/test/setupTestEnvironment.ts']
-};
+  coveragePathIgnorePatterns: ['./src/test'],
+  modulePathIgnorePatterns: ['./dist'],
+  setupFilesAfterEnv: ['./src/test/setupTestEnvironment.ts'],
+}

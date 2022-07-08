@@ -1,6 +1,11 @@
 <template>
+  <!-- eslint-disable -->
   <div>
-    <svg height="100%" viewBox="0 0 1200 1200" preserveAspectRatio="xMaxYMax">
+    <svg
+      height="100%"
+      viewBox="0 0 1200 1200"
+      preserveAspectRatio="xMaxYMax"
+    >
       <g
         transform="translate(0.000000,1200.000000) scale(0.100000,-0.100000)"
         fill="var(--green-500)"

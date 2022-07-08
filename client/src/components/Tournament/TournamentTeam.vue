@@ -2,10 +2,7 @@
   <div class="team">
     <div class="teamTag">{{ team.name }}</div>
     <div
-      :class="[
-        'teamBody',
-        teamActivated(team) || alreadyRegistered ? '' : 'clickable',
-      ]"
+      :class="['teamBody', teamActivated(team) || alreadyRegistered ? '' : 'clickable']"
       @click="joinTeam(team, tournament.id)"
     >
       <div
@@ -37,20 +34,20 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
+import Button from 'primevue/button'
+import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
-import { publicTournament, registerTeam } from '@/../../shared/types/typesTournament';
-import { computed } from 'vue';
-import { i18n } from '@/services/i18n';
-import { injectStrict, SocketKey } from '@/services/injections';
-import { username } from '@/services/useUser';
+import { PublicTournament, RegisterTeam } from '@/../../server/src/sharedTypes/typesTournament'
+import { computed } from 'vue'
+import { i18n } from '@/services/i18n'
+import { injectStrict, SocketKey } from '@/services/injections'
+import { username } from '@/services/useUser'
 
 const socket = injectStrict(SocketKey)
-const props = defineProps<{ tournament: publicTournament, team: registerTeam }>()
+const props = defineProps<{ tournament: PublicTournament; team: RegisterTeam }>()
 
-function teamActivated(team: registerTeam) {
-  return team.players.some((_, i) => team.activated[i] === false);
+function teamActivated(team: RegisterTeam) {
+  return team.players.some((_, i) => team.activated[i] === false)
 }
 
 const alreadyRegistered = computed(() => {
@@ -60,22 +57,22 @@ const alreadyRegistered = computed(() => {
   )
 })
 
-function joinTeam(team: registerTeam, tournamentID: number) {
+function joinTeam(team: RegisterTeam, tournamentID: number) {
   if (!(teamActivated(team) || alreadyRegistered.value) && confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
     socket.emit('tournament:public:joinTeam', {
       tournamentID: tournamentID,
       teamName: team.name,
-    });
+    })
   }
 }
 
 function leaveTournament() {
-  socket.emit('tournament:public:leaveTournament', { tournamentID: props.tournament.id });
+  socket.emit('tournament:public:leaveTournament', { tournamentID: props.tournament.id })
 }
 
 function activateUser() {
   if (confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
-    socket.emit('tournament:public:activateUser', { tournamentID: props.tournament.id });
+    socket.emit('tournament:public:activateUser', { tournamentID: props.tournament.id })
   }
 }
 </script>

@@ -2,84 +2,102 @@
   <div class="networkGraphContainer">
     <div class="cyContainer">
       <div id="cy" />
-      <div v-if="selectedUser != null" class="playerCardNetwork">
-        <PlayerWithPicture :username="selectedUser.name" :nameFirst="false" />
+      <div
+        v-if="selectedUser != null"
+        class="playerCardNetwork"
+      >
+        <PlayerWithPicture
+          :username="selectedUser.name"
+          :nameFirst="false"
+        />
         <div class="playerCardElement">
           {{
-            $tc("Profile.NetworkGraph.togetherWith", selectedUser.data[0], {
+            $tc('Profile.NetworkGraph.togetherWith', selectedUser.data[0], {
               username: username,
               nGames: selectedUser.data[0],
             })
           }}
         </div>
-        <div class="playerCardElement" style="padding-left: 10px">
+        <div
+          class="playerCardElement"
+          style="padding-left: 10px"
+        >
           {{
-            $t("Profile.NetworkGraph.wonOf", {
+            $t('Profile.NetworkGraph.wonOf', {
               nGames: selectedUser.data[1],
             })
           }}
         </div>
         <div class="playerCardElement">
           {{
-            $tc("Profile.NetworkGraph.playedAgainst", selectedUser.data[2], {
+            $tc('Profile.NetworkGraph.playedAgainst', selectedUser.data[2], {
               username: username,
               nGames: selectedUser.data[2],
             })
           }}
         </div>
-        <div class="playerCardElement" style="padding-left: 10px">
+        <div
+          class="playerCardElement"
+          style="padding-left: 10px"
+        >
           {{
-            $t("Profile.NetworkGraph.wonOf", {
+            $t('Profile.NetworkGraph.wonOf', {
               nGames: selectedUser.data[2] - selectedUser.data[3],
             })
           }}
         </div>
         <div class="playerCardElement">
           {{
-            $tc(
-              "Profile.NetworkGraph.team",
-              selectedUser.data[4] -
-                selectedUser.data[2] -
-                selectedUser.data[0],
-              {
-                nGames:
-                  selectedUser.data[4] -
-                  selectedUser.data[2] -
-                  selectedUser.data[0],
-              }
-            )
+            $tc('Profile.NetworkGraph.team', selectedUser.data[4] - selectedUser.data[2] - selectedUser.data[0], {
+              nGames: selectedUser.data[4] - selectedUser.data[2] - selectedUser.data[0],
+            })
           }}
         </div>
       </div>
     </div>
     <span class="p-buttonset">
-      <Button icon="pi pi-refresh" label="Reset" @click="resetGraph()" />
-      <Button icon="pi pi-window-minimize" label="Rescale" @click="resetGraphSize()" />
+      <Button
+        icon="pi pi-refresh"
+        label="Reset"
+        @click="resetGraph()"
+      />
+      <Button
+        icon="pi pi-window-minimize"
+        label="Rescale"
+        @click="resetGraphSize()"
+      />
     </span>
-    <div v-if="loading" class="chartSponsorOverlay">
-      <i class="pi pi-spin pi-spinner" style="font-size: 4rem" />
+    <div
+      v-if="loading"
+      class="chartSponsorOverlay"
+    >
+      <i
+        class="pi pi-spin pi-spinner"
+        style="font-size: 4rem"
+        aria-hidden="true"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import PlayerWithPicture from '@/components/PlayerWithPicture.vue';
+import Button from 'primevue/button'
+import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
-import { onUnmounted, onMounted, watch, ref } from 'vue';
-import cytoscape from 'cytoscape';
+import { onUnmounted, onMounted, watch, ref } from 'vue'
+import cytoscape from 'cytoscape'
 
 const props = defineProps<{
-  networkData: any,
-  peopleData: any,
-  username: string,
-  loading: boolean,
+  networkData: any
+  peopleData: any
+  username: string
+  loading: boolean
 }>()
 
 const layout = {
   name: 'cose',
   idealEdgeLength: (edge: any) => {
-    return 1 / edge['_private'].data.weight;
+    return 1 / edge['_private'].data.weight
   },
   nodeOverlap: 20,
   refresh: 20,
@@ -87,10 +105,10 @@ const layout = {
   randomize: true,
   componentSpacing: 100,
   nodeRepulsion: () => {
-    return 1000000;
+    return 1000000
   },
   edgeElasticity: (edge: any) => {
-    return edge['_private'].data.weight * 300;
+    return edge['_private'].data.weight * 300
   },
   nestingFactor: 5,
   gravity: 80,
@@ -194,22 +212,28 @@ const selectedUser: null | any = ref(null)
 
 const resetGraph = () => {
   if (cy.value != null && props.networkData != null) {
-    selectedUser.value = null;
-    cy.value?.elements()?.remove();
-    cy.value?.add(enrichDataModel());
-    cy.value?.layout(layout)?.run();
+    selectedUser.value = null
+    cy.value?.elements()?.remove()
+    cy.value?.add(enrichDataModel())
+    cy.value?.layout(layout)?.run()
 
     cy.value?.nodes()?.on('select', (event: any) => {
       selectedUser.value = {
         name: event.target['_private'].data.name,
         data: props.peopleData[event.target['_private'].data.name],
-      };
-    });
-    cy.value?.on('unselect', () => { selectedUser.value = null });
+      }
+    })
+    cy.value?.on('unselect', () => {
+      selectedUser.value = null
+    })
   }
 }
 
-const resetGraphSize = () => { if (cy.value != null) { cy.value?.fit() } }
+const resetGraphSize = () => {
+  if (cy.value != null) {
+    cy.value?.fit()
+  }
+}
 
 const enrichDataModel = () => {
   return {
@@ -221,10 +245,8 @@ const enrichDataModel = () => {
         selectable: false,
         locked: false,
         grabbed: false,
-        classes: e.data.together
-          ? 'game_together_edge'
-          : 'game_against_edge',
-      };
+        classes: e.data.together ? 'game_together_edge' : 'game_against_edge',
+      }
     }),
     nodes: props.networkData.nodes.map((e: any) => {
       return {
@@ -235,11 +257,10 @@ const enrichDataModel = () => {
         locked: false,
         grabbed: false,
         grabbable: true,
-      };
+      }
     }),
-  };
+  }
 }
-
 
 onMounted(() => {
   cy.value = cytoscape({
@@ -247,17 +268,19 @@ onMounted(() => {
     elements: props.networkData,
     layout: layout as any,
     style: style as any,
-  });
+  })
 })
 
 onUnmounted(() => {
-  cy.value?.elements()?.removeAllListeners();
-  cy.value?.destroy();
+  cy.value?.elements()?.removeAllListeners()
+  cy.value?.destroy()
 })
 
 watch(
   () => props.networkData,
-  () => { resetGraph() },
+  () => {
+    resetGraph()
+  },
   { deep: true }
 )
 </script>
@@ -322,7 +345,7 @@ watch(
 }
 
 .chartSponsorOverlay::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 100%;
   height: 100%;

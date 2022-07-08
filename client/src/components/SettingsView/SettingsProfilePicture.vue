@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>{{ $t("Settings.UploadProfilePicture.privacyDisclaimer") }}</p>
+    <p>{{ $t('Settings.UploadProfilePicture.privacyDisclaimer') }}</p>
     <FileUpload
       class="SettingsButton"
       :chooseLabel="$t('Settings.UploadProfilePicture.ChooseFile')"
@@ -41,7 +41,11 @@
           class="p-button-secondary p-button-text"
           @click="reset"
         />
-        <Button icon="pi pi-undo" class="p-button-secondary p-button-text" @click="rotate(-90)" />
+        <Button
+          icon="pi pi-undo"
+          class="p-button-secondary p-button-text"
+          @click="rotate(-90)"
+        />
         <Button
           icon="pi pi-undo"
           class="flipped p-button-secondary p-button-text"
@@ -59,104 +63,102 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import axios from 'axios';
-import VueCropper, { VueCropperMethods } from 'vue-cropperjs';
-import 'cropperjs/dist/cropper.css';
-import FileUpload from 'primevue/fileupload';
-import { deleteProfilePic, requestProfilePic } from '../../services/useProfilePicture';
-import { Service } from '@/generatedClient/index';
-import { ref } from 'vue';
-import { useToast } from 'primevue/usetoast';
-const toast = useToast();
-import { i18n } from '@/services/i18n';
-import { user } from '@/services/useUser';
+import Button from 'primevue/button'
+import Dialog from 'primevue/dialog'
+import axios from 'axios'
+import VueCropper, { VueCropperMethods } from 'vue-cropperjs'
+import 'cropperjs/dist/cropper.css'
+import FileUpload from 'primevue/fileupload'
+import { deleteProfilePic, requestProfilePic } from '../../services/useProfilePicture'
+import { DefaultService as Service } from '@/generatedClient/index'
+import { ref } from 'vue'
+import { useToast } from 'primevue/usetoast'
+import { i18n } from '@/services/i18n'
+import { user } from '@/services/useUser'
 
+const toast = useToast()
 const emit = defineEmits(['settingoperationdone'])
 
-let cropperDialog = ref(false)
-interface customFile extends File { objectURL?: string }
-let uploadFile = ref<customFile | null>(null)
-let cropperRef = ref<VueCropperMethods | null>(null);
+const cropperDialog = ref(false)
+interface CustomFile extends File {
+  objectURL?: string
+}
+const uploadFile = ref<CustomFile | null>(null)
+const cropperRef = ref<VueCropperMethods | null>(null)
 
-const startCropper = (event: { file: File, files: File[] }) => {
-  cropperDialog.value = true;
-  uploadFile.value = event.files[0];
-  event.files.splice(0, event.files.length);
+const startCropper = (event: { file: File; files: File[] }) => {
+  cropperDialog.value = true
+  uploadFile.value = event.files[0]
+  event.files.splice(0, event.files.length)
 }
 
 const reset = () => {
-  cropperRef.value?.reset();
+  cropperRef.value?.reset()
 }
 
 const rotate = (deg: number) => {
-  cropperRef.value?.rotate(deg);
+  cropperRef.value?.rotate(deg)
 }
 
 const submit = async () => {
   cropperRef.value?.getCroppedCanvas().toBlob(
     async (blob) => {
-      let jwtToken = user.token
-      var myFormData = new FormData();
-      myFormData.append('profilePic', blob ?? '');
+      const jwtToken = user.token
+      const myFormData = new FormData()
+      myFormData.append('profilePic', blob ?? '')
       try {
         await axios.post('/gameApi/uploadProfilePicture', myFormData, {
           headers: {
             Authorization: 'Bearer ' + jwtToken,
             'Content-Type': 'multipart/form-data',
           },
-        });
-        deleteProfilePic(user.username ?? '');
-        requestProfilePic(user.username ?? '');
+        })
+        deleteProfilePic(user.username ?? '')
+        requestProfilePic(user.username ?? '')
         toast.add({
           severity: 'success',
-          summary: i18n.global.t(
-            'Settings.UploadProfilePicture.toastSummarySuccessUpload'
-          ),
+          summary: i18n.global.t('Settings.UploadProfilePicture.toastSummarySuccessUpload'),
           detail: i18n.global.t('Settings.UploadProfilePicture.successMsgUpload'),
           life: 2000,
-        });
-        emit('settingoperationdone');
+        })
+        emit('settingoperationdone')
       } catch (err) {
-        console.log(err);
+        console.log(err)
         toast.add({
           severity: 'error',
-          summary: i18n.global.t(
-            'Settings.UploadProfilePicture.toastSummaryFailureUpload'
-          ),
+          summary: i18n.global.t('Settings.UploadProfilePicture.toastSummaryFailureUpload'),
           detail: i18n.global.t('Settings.UploadProfilePicture.errorMsgUpload'),
           life: 2000,
-        });
+        })
       }
     },
     'image/jpeg',
     0.9
-  );
-  cropperDialog.value = false;
-  uploadFile.value = null;
+  )
+  cropperDialog.value = false
+  uploadFile.value = null
 }
 
 const deleteImage = async () => {
   try {
     await Service.deleteProfilePicture()
-    deleteProfilePic(user.username ?? '');
-    requestProfilePic(user.username ?? '');
+    deleteProfilePic(user.username ?? '')
+    requestProfilePic(user.username ?? '')
     toast.add({
       severity: 'success',
       summary: i18n.global.t('Settings.UploadProfilePicture.toastSummarySuccessDelete'),
       detail: i18n.global.t('Settings.UploadProfilePicture.successMsgDelete'),
       life: 2000,
-    });
-    emit('settingoperationdone');
+    })
+    emit('settingoperationdone')
   } catch (err) {
-    console.log(err);
+    console.log(err)
     toast.add({
       severity: 'error',
       summary: i18n.global.t('Settings.UploadProfilePicture.toastSummaryFailureDelete'),
       detail: i18n.global.t('Settings.UploadProfilePicture.errorMsgDelete'),
       life: 2000,
-    });
+    })
   }
 }
 </script>
