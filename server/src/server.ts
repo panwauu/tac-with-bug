@@ -57,7 +57,7 @@ export class TacServer {
     // Handle production
     if (process.env.NODE_ENV === 'production') {
       this.app.use(
-        express.static(path.join(__dirname, '../../../public'), {
+        express.static(path.join(__dirname, '../public'), {
           maxAge: 60 * 60 * 1000,
           cacheControl: true,
         })
