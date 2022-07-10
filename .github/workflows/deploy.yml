@@ -48,7 +48,7 @@ jobs:
       run: |
         cd server
         npm run lint
-        npm run prettier-check
+        npm run prettier:check
     - name: Build server
       run: |
         cd server
@@ -66,7 +66,7 @@ jobs:
       run: |
         cd client
         npm run lint
-        npm run prettier-check
+        npm run prettier:check
     - name: Run client tsc
       run: |
         cd client
