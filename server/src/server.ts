@@ -25,13 +25,17 @@ import { initdBUtils } from './dbUtils/initdBUtils'
 import { loadTutorialLevels } from './services/tutorial'
 import logger from './helpers/logger'
 
+export type ServerOptions = {
+  serveApp?: boolean
+}
+
 export class TacServer {
   httpServer: http.Server
   app: express.Express
   io: Server
   pgPool: pg.Pool
 
-  constructor() {
+  constructor(options?: ServerOptions) {
     this.pgPool = initdBUtils()
 
     this.app = express()
@@ -55,7 +59,7 @@ export class TacServer {
     registerSocketNspGeneral(this.io.of('/') as any, this.pgPool)
 
     // Handle production
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production' || options?.serveApp) {
       this.app.use(
         express.static(path.join(__dirname, '../public'), {
           maxAge: 60 * 60 * 1000,

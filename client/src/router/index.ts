@@ -180,14 +180,17 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+  // Redirect to Advert when first visited
+  if (localStorage.getItem('alreadyVisited') == null) {
+    localStorage.setItem('alreadyVisited', 'true')
+    if (to.name === 'Landing') {
+      return next({ name: 'Advertisement' })
+    }
+  }
+
   //Redirect unnamed Routes to Landing to avoid unmatched Routes
   if (to.name == null) {
     return next({ name: 'Landing' })
-  }
-
-  if (localStorage.getItem('alreadyVisited') == null) {
-    localStorage.setItem('alreadyVisited', 'true')
-    return next({ name: 'Advertisement' })
   }
 
   let toLocale = to.params?.locale as string | undefined
