@@ -25,7 +25,7 @@ const email =
         },
       }
     : new Email({
-        views: { root: path.join(__dirname, '..', '..', '..', '..', 'email') },
+        views: { root: path.join(__dirname, '..', '..', 'email') },
         transport: mailTransporter,
         message: {
           from: `"Oskar von Tac-With-Bug" ${process.env.mailAddress}`,
@@ -33,7 +33,7 @@ const email =
         i18n: {
           locales: locales,
           defaultLocale: fallbackLocale,
-          directory: path.join(__dirname, '..', '..', '..', '..', 'email', 'locales'),
+          directory: path.join(__dirname, '..', '..', 'email', 'locales'),
         },
         send: process.env.NODE_ENV === 'production',
       })
