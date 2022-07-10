@@ -1,4 +1,3 @@
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
