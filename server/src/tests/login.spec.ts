@@ -1,9 +1,8 @@
 import { test, expect } from '@playwright/test'
 
 test('Test login', async ({ page }) => {
-  await page.goto('http://localhost:8081/')
-  await page.goto('http://localhost:8081/#/')
-  await page.goto('http://localhost:8081/#/advert')
+  await page.goto('/')
+  await expect(page).toHaveURL(/.*\/#\/advert/)
 
   // Login
   await page.locator('button:has-text("Login")').click()
@@ -13,8 +12,9 @@ test('Test login', async ({ page }) => {
   await page.locator('text=BenutzernamePasswortAnmelden >> input[name="password"]').fill('password')
   await page.locator('button:has-text("Anmelden")').click()
 
-  await expect(page).toHaveURL('http://localhost:8081/#/de/advert')
+  await page.locator('button:has-text("Anmelden")').waitFor({ state: 'detached', timeout: 3000 })
 
-  // Click #home div:has-text("Oskar") >> nth=2
+  await expect(page).toHaveURL(/\/advert/)
+
   expect(page.locator('.userContainer')).toContainText('UserA')
 })
