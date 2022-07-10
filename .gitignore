@@ -11,6 +11,9 @@ client/src/locales/.git
 client/src/locales/README.md
 client/src/locales/docs
 client/src/generatedClient
+test-results
+playwright-report
+playwright/.cache/
 
 # local env files
 .env.local
