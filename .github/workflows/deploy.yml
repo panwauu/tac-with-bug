@@ -112,7 +112,7 @@ jobs:
     - name: Advance deployed tag
       uses: actions/github-script@v5
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}          
+        github-token: ${{secrets.TAG_GITHUB_TOKEN}}          
         script: |
           try {
             await github.rest.git.deleteRef({
