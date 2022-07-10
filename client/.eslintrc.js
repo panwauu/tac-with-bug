@@ -4,7 +4,11 @@ module.exports = {
     es2021: true,
   },
   plugins: ['sonarjs'],
-  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:sonarjs/recommended', '@vue/typescript/recommended'],
+  extends: ['eslint:recommended', 
+    'plugin:vue/vue3-recommended', 
+    'plugin:sonarjs/recommended', 
+    '@vue/typescript/recommended', 
+    'plugin:storybook/recommended'],
   rules: {
     'no-trailing-spaces': 'error',
     'max-len': ['error', { code: 180 }],

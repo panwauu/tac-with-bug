@@ -58,7 +58,7 @@ const detail = ref(true)
 const timerContainerRef = ref<HTMLDivElement | null>(null)
 
 const startUpdateNumbers = () => {
-  interval.value = window.setInterval(updateNumbers, 1000)
+  interval.value = window.setInterval(updateNumbers, 300)
 }
 const stopUpdateNumbers = () => {
   window.clearInterval(interval.value)

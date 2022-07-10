@@ -1,0 +1,110 @@
+@import url('../node_modules/primevue/resources/themes/saga-blue/theme.css') (prefers-color-scheme: light);
+@import url('../node_modules/primevue/resources/themes/arya-blue/theme.css') (prefers-color-scheme: dark);
+/*
+:root {
+  --tac-red: #ef3f23;
+  --tac-text-color: #002b54;
+}
+
+html {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--surface-b);
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .bodyNoscroll {
+    height: 100%;
+    overflow: hidden;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+  }
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+@font-face {
+  font-family: 'tacfontregular';
+  src: url('./assets/TacFont/tacfont_semibold_1-webfont.woff2') format('woff2'), url('./assets/TacFont/tacfont_semibold_1-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.tacLetters {
+  user-select: none;
+}
+
+.tacLetters::first-letter {
+  letter-spacing: -0.17em;
+}
+
+.twbLetters {
+  font-family: 'tacfontregular', Monospace;
+  letter-spacing: -0.17em;
+  padding-right: 0.17em;
+  user-select: none;
+}
+
+.twbLetters::first-letter {
+  letter-spacing: -0.16em;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active,
+input:-webkit-autofill:focus {
+  filter: none;
+  -webkit-text-fill-color: var(--text-color);
+  box-shadow: 0 0 0 1000px rgba(15, 63, 81, 0) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.floatingTextInput {
+  margin-top: 30px !important;
+}
+*/
