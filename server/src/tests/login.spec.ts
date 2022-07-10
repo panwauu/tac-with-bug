@@ -5,14 +5,14 @@ test('Test login', async ({ page }) => {
   await expect(page).toHaveURL(/.*\/#\/advert/)
 
   // Login
-  await page.locator('button:has-text("Login")').click()
-  await page.locator('text=BenutzernamePasswortAnmelden >> input[name="username"]').click()
-  await page.locator('text=BenutzernamePasswortAnmelden >> input[name="username"]').fill('UserA')
-  await page.locator('text=BenutzernamePasswortAnmelden >> input[name="username"]').press('Tab')
-  await page.locator('text=BenutzernamePasswortAnmelden >> input[name="password"]').fill('password')
-  await page.locator('button:has-text("Anmelden")').click()
+  await page.locator('#topElementLoginButton').click()
+  await page.locator('#LIusername').click()
+  await page.locator('#LIusername').fill('UserA')
+  await page.locator('#LIpassword').press('Tab')
+  await page.locator('#LIpassword').fill('password')
 
-  await page.locator('button:has-text("Anmelden")').waitFor({ state: 'detached', timeout: 3000 })
+  page.locator('.loginInputElement.loginButton').click()
+  await page.locator('.loginInputElement.loginButton').waitFor({ state: 'detached', timeout: 3000 })
 
   await expect(page).toHaveURL(/\/advert/)
 
