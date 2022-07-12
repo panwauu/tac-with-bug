@@ -17,12 +17,8 @@ import TopElement from '@/components/NavigationElements/TopElement.vue'
 import BottomElement from '@/components/NavigationElements/BottomElement.vue'
 
 import { injectStrict, SocketKey } from '@/services/injections'
-import { logout as logoutUser, isLoggedIn } from '@/services/useUser'
+import { logout as logoutUser } from '@/services/useUser'
 const socket = injectStrict(SocketKey)
-
-if (!isLoggedIn.value) {
-  logout()
-}
 
 async function logout() {
   await logoutUser(socket)
