@@ -8,8 +8,8 @@
     "preview": "vite preview",
     "lint": "eslint --ext .ts,.vue .",
     "tsc": "vue-tsc --noEmit",
-    "prettier-format": "prettier --config .prettierrc --write .",
-    "prettier-check": "prettier --config .prettierrc --check ."
+    "prettier:format": "prettier --config .prettierrc --write .",
+    "prettier:check": "prettier --config .prettierrc --check ."
   },
   "dependencies": {
     "@paypal/paypal-js": "^5.0.1",

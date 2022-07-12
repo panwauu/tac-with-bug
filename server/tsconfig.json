@@ -39,5 +39,5 @@
     "skipLibCheck": true
   },
   "lib": ["es2015"]
-  //"exclude": ["./src/**/*.test.ts", "./src/test"]
+  //"include": ["src/**/*"]
 }

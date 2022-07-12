@@ -43,19 +43,16 @@ jobs:
       run: |
         cd server
         npm run lint
-        npm run prettier-check
-    - name: Build server documentation
+        npm run prettier:check
+    - name: Build server
       run: |
         cd server
-        npm run building
-    - name: Run typescript build
-      run: |
-        cd server
+        npm run build-spec
         npm run tsc
     - name: Check Locale Files (All languages and identical keys)
       run: |
         cd server
-        npm run checkLocales
+        npm run check-locales
     - name: Install client modules
       run: |
         cd client
@@ -64,7 +61,7 @@ jobs:
       run: |
         cd client
         npm run lint
-        npm run prettier-check
+        npm run prettier:check
     - name: Run client tsc
       run: |
         cd client
@@ -79,3 +76,11 @@ jobs:
         npm run test -- --coverage=false
       env:
         paypal_Secret: ${{ secrets.PAYPAL_SECRET }}
+    - name: Install Playwright Browsers
+      run: |
+        cd server
+        npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: |
+        cd server
+        npm run test:e2e
