@@ -6,7 +6,7 @@ import Joi from 'joi'
 import { addChannelMessage, getChannelMessages } from '../services/channel'
 import { nspGeneral } from './general'
 
-export async function registerChannelHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerChannelHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('channel:sendMessage', async (data, cb) => {
     if (socket.data.userID === undefined) {
       logger.error('Event forbidden for unauthenticated user (channel:sendMessage)')

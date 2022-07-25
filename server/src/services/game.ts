@@ -135,7 +135,7 @@ export async function createGame(
   return await getGame(sqlClient, createGameRes.rows[0].id)
 }
 
-async function updateGame(sqlClient: pg.Pool, gameID: number, gameJSON: string, status: string, setTimeFlag: boolean, openRematchFlag: boolean) {
+export async function updateGame(sqlClient: pg.Pool, gameID: number, gameJSON: string, status: string, setTimeFlag: boolean, openRematchFlag: boolean) {
   const query = `UPDATE games SET game = $1, ${setTimeFlag ? 'lastPlayed = current_timestamp,' : ''} status = $3, rematch_open = $4 WHERE id = $2;`
   const values = [gameJSON, gameID, status, openRematchFlag]
   return sqlClient.query(query, values)

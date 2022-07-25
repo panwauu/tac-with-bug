@@ -20,7 +20,7 @@ export async function initializeTutorial(pgPool: pg.Pool, socket: GeneralSocketS
   socket.emit('tutorial:loadProgress', progess)
 }
 
-export async function registerTutorialHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerTutorialHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('tutorial:load', async (data, callback) => {
     const schema = Joi.object({
       tutorialID: Joi.number().required().integer().min(0),

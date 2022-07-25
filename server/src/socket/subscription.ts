@@ -35,7 +35,7 @@ async function onGet(pgPool: pg.Pool, socket: GeneralSocketS) {
   emitSubscription(socket, sub.value)
 }
 
-export async function registerSubscriptionHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerSubscriptionHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('subscription:get', () => {
     onGet(pgPool, socket)
   })

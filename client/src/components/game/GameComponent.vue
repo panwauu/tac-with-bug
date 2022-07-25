@@ -59,6 +59,12 @@
               class="p-button-rounded p-button-info landscapeMenuButton"
               @click="openModal('assistance')"
             />
+            <Button
+              aria-label="Replacement"
+              icon="pi pi-arrows-h"
+              class="p-button-rounded p-button-info landscapeMenuButton"
+              @click="openModal('replacement')"
+            />
             <GameWatchingPlayers
               aria-label="Watching Players"
               :displayText="false"
@@ -165,6 +171,10 @@
         :miscState="miscState"
       />
       <GameModalAssistance v-if="modalStateLocal === 'assistance'" />
+      <GameModelReplacement
+        v-if="modalStateLocal === 'replacement'"
+        :updateData="updateData"
+      />
     </Dialog>
   </div>
 </template>
@@ -178,6 +188,7 @@ import GameBoard from '@/components/game/GameBoard.vue'
 import OwnCards from '@/components/game/OwnCards.vue'
 import GameModalSettings from '@/components/gameModal/GameModalSettings.vue'
 import GameModalAssistance from '@/components/gameModal/GameModalAssistance.vue'
+import GameModelReplacement from '@/components/gameModal/GameModelReplacement.vue'
 import GameStatistic from '@/components/game/GameStatistic.vue'
 import Fieldset from 'primevue/fieldset'
 import RematchForm from './RematchForm.vue'

@@ -17,14 +17,12 @@ export async function connectSocket(socket: SupportedSockets): Promise<void> {
   })
 }
 
-export async function waitForGameSocketConnection(gameSocket: Socket) {
-  return new Promise<void>((resolve, reject) => {
-    gameSocket.on('connect', () => {
-      resolve()
-    })
-    gameSocket.on('connect_error', () => {
-      gameSocket?.close()
-      reject()
+export function waitForEventOnSockets(sockets: SupportedSockets[], event: string) {
+  return sockets.map((s) => {
+    return new Promise<any>((resolve) => {
+      ;(s as any).once(event as any, (data: any) => {
+        resolve(data)
+      })
     })
   })
 }
