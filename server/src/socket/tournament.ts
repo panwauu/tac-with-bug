@@ -6,7 +6,7 @@ import logger from '../helpers/logger'
 import { getLastTournamentWinners, lazyLoadTournamentsTable } from '../services/tournaments'
 import { nspGeneral } from './general'
 
-export async function registerTournamentHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerTournamentHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('tournament:loadTable', async (data, cb) => {
     const schema = Joi.object({
       first: Joi.number().required().integer().min(0),

@@ -19,7 +19,7 @@
 import GameComponent from '@/components/game/GameComponent.vue'
 
 import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, provide } from 'vue'
 import { registerGameSocket } from '@/services/registerSockets'
 import { usePositionStyles } from '@/services/compositionGame/usePositionStyles'
 import { useMisc } from '@/services/compositionGame/useMisc'
@@ -32,8 +32,10 @@ import { useInstructions } from '@/services/compositionGame/useInstructions'
 import { sound } from '@/plugins/sound'
 import { audioHandler } from '@/services/compositionGame/audioHandler'
 import router from '@/router/index'
+import { GameSocketKey } from '@/services/injections'
 
 const gameSocket = registerGameSocket()
+provide(GameSocketKey, gameSocket)
 const miscState = useMisc()
 const positionStyles = usePositionStyles(miscState)
 const statisticState = useStatistic()
@@ -50,6 +52,7 @@ const modalState = ref('settings')
 gameSocket.on('game:online-players', miscState.setOnlinePlayers)
 gameSocket.on('update', updateHandler)
 gameSocket.on('reconnect_failed', closeGame)
+gameSocket.on('disconnect', closeGame)
 
 onMounted(() => {
   positionStyles.onResize()
@@ -62,6 +65,7 @@ onUnmounted(() => {
   gameSocket.off('game:online-players', miscState.setOnlinePlayers)
   gameSocket.off('update', updateHandler)
   gameSocket.off('reconnect_failed', closeGame)
+  gameSocket.off('disconnect', closeGame)
   gameSocket.disconnect()
   sound.$stop()
 })

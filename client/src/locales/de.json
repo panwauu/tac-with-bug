@@ -347,7 +347,8 @@
         "settings": "Einstellungen",
         "assistance": "Regelhilfe",
         "errorreport": "Fehler melden",
-        "statistic": "Spielstatistik"
+        "statistic": "Spielstatistik",
+        "replacement": "Spielerwechsel"
       },
       "Settings": {
         "audioVolume": "Lautstärke:",

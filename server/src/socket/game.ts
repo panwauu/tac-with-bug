@@ -7,6 +7,7 @@ import { getPlayerUpdateFromGame } from '../game/serverOutput'
 import { performMoveAndReturnGame, getGame } from '../services/game'
 import { gameSocketIOAuthentication } from '../helpers/authentication'
 import { initializeInfo } from './info'
+import { registerReplacementHandlers } from './gameReplacement'
 
 export let nsp: GameNamespace
 
@@ -67,6 +68,8 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
       })
       dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
     })
+
+    registerReplacementHandlers(pgPool, socket)
   })
 }
 
@@ -106,6 +109,10 @@ async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePla
 
 function getSocketsInGame(nspGame: GameNamespace, gameID: number): GameSocketS[] {
   return [...nspGame.sockets.values()].filter((s) => s.data.gameID === gameID)
+}
+
+export function getSocketByUserID(userID: number): GameSocketS | undefined {
+  return [...nsp.sockets.values()].find((s) => s.data.userID === userID)
 }
 
 export function getPlayerIDsOfGame(gameID: number): number[] {

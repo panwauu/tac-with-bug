@@ -1,6 +1,7 @@
 import * as tCard from '../sharedTypes/typesCard'
 import * as tBall from '../sharedTypes/typesBall'
 import * as tStatistic from '../sharedTypes/typesStatistic'
+import { GameData, Replacement } from '../sharedTypes/game'
 
 import { cloneDeep } from 'lodash'
 import logger from '../helpers/logger'
@@ -10,7 +11,7 @@ import { performBallAction, getLastNonTacCard } from './performMoveUtils'
 import { initializeBalls, resetBalls, ballPlayer } from './ballUtils'
 import { initalizeStatistic, statisticAnalyseAction } from './statistic'
 
-export class Game {
+export class Game implements GameData {
   nPlayers: number
   coop: boolean
 
@@ -35,8 +36,10 @@ export class Game {
   winningTeams: boolean[]
 
   statistic: tStatistic.GameStatistic[]
+  replacement?: Replacement
+  replacedPlayerIndices: number[]
 
-  constructor(nPlayers: number, nTeams: number, meisterVersion: boolean, coop: boolean, gameLoad?: Game) {
+  constructor(nPlayers: number, nTeams: number, meisterVersion: boolean, coop: boolean, gameLoad?: GameData) {
     if (gameLoad != null) {
       this.nPlayers = gameLoad.nPlayers
       this.coop = gameLoad.coop || false
@@ -59,6 +62,8 @@ export class Game {
       this.winningTeams = gameLoad.winningTeams
       this.statistic = gameLoad.statistic
       this.sevenChosenPlayer = gameLoad?.sevenChosenPlayer ?? null
+      this.replacedPlayerIndices = gameLoad?.replacedPlayerIndices ?? []
+      this.replacement = gameLoad?.replacement ?? undefined
     } else {
       if (nPlayers !== 4 && nPlayers !== 6) {
         throw new Error('Invalid Player Number -> only 4 or 6')
@@ -95,6 +100,7 @@ export class Game {
 
       this.tradeCards = nPlayers === 4 ? ['', '', '', ''] : ['', '', '', '', '', '']
       this.narrFlag = nPlayers === 4 ? [false, false, false, false] : [false, false, false, false, false, false]
+      this.replacedPlayerIndices = []
     }
   }
 

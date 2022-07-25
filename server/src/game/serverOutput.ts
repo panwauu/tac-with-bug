@@ -32,6 +32,8 @@ export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: nu
     lastPlayed: game.lastPlayed,
     rematch_open: game.rematch_open,
     discardedFlag: game.game.cards.discardedFlag,
+    replacedPlayerIndices: game.game.replacedPlayerIndices,
+    replacement: game.game.replacement,
   }
 }
 

@@ -68,7 +68,7 @@ npm install
 
 cd server
 npm install
-npm run building
+npm run build-spec
 npm run tsc
 ```
 

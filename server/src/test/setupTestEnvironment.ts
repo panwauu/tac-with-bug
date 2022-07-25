@@ -5,6 +5,7 @@ import logger from '../helpers/logger'
 import intro from '../dbUtils/intro.json'
 import { TacServer } from '../server'
 import { initTestDatabaseClient } from '../dbUtils/initdBUtils'
+import './socket'
 
 beforeAll(async () => {
   await prepareTestDatabase()

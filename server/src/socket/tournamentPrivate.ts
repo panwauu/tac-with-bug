@@ -18,7 +18,7 @@ import {
 import { nspGeneral } from './general'
 import { sendPrivateTournamentInvitation } from '../communicationUtils/email'
 
-export async function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('tournament:private:get', async (data, cb) => {
     const schema = Joi.number().required().integer().positive()
     const { error } = schema.validate(data.id)

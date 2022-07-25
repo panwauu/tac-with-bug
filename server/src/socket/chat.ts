@@ -14,7 +14,7 @@ export function initializeChat(pgPool: pg.Pool, socket: GeneralSocketS) {
   }
 }
 
-export async function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('chat:startChat', async (data, cb) => {
     if (socket.data.userID === undefined) {
       logger.error('Event forbidden for unauthenticated user (chat:startChat)')

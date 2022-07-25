@@ -36,7 +36,7 @@ export async function terminateWaiting(pgPool: pg.Pool, socket: GeneralSocketS) 
   nspGeneral.emit('waiting:getGames', await getWaitingGames(pgPool))
 }
 
-export async function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   const emitGetGames = async () => {
     const waitingGames = await getWaitingGames(pgPool)
     nspGeneral.emit('waiting:getGames', waitingGames)
