@@ -1,4 +1,5 @@
 import { Socket } from 'socket.io-client'
+import { sleep } from '../helpers/sleep'
 import { GameSocketC, GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 
 type SupportedSockets = Socket | GameSocketC | GameSocketS
@@ -31,7 +32,7 @@ export async function closeSockets(userWithSocketArray: SomeKindOfSocket[]): Pro
   for (const userWithSocket of userWithSocketArray) {
     await closeSocket(userWithSocket)
   }
-  await new Promise((resolve) => setTimeout(() => resolve(null), 1000)) // TBD - Needed to add this to pass test consistently
+  await sleep(1000) // TBD - Needed to add this to pass test consistently
 }
 
 async function closeSocket(someSocket: SomeKindOfSocket): Promise<void> {
