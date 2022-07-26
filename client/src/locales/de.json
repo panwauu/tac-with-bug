@@ -908,7 +908,7 @@
       "nGames6": "Beendete Spiele zu 6.:",
       "registeredUsers": "Anzahl der Spieler:",
       "fastestGame": "Schnellstes Spiel:",
-      "averagePlayingTime": "Durschnittliche Spieldauer:",
+      "averagePlayingTime": "Durchschnittliche Spieldauer:",
       "nFriends": "Geschlossene Freundschaften:",
       "nTutorials": "Absolvierte Tutorialschritte:",
       "mostLoved": "Am meisten genutzte Kugel:",
@@ -920,8 +920,8 @@
       "worstTeamGame": "Längstes Team-Tac Spiel:",
       "averageTeamGame": "Durchschnitt der Team-Tac Ergebnisse:"
     },
-    "description1": "Tac-With-Bug ist eine online Mehrspieler Verison des beliebten Brettspiels",
-    "description2": ". Trete gegen Freunde und Fremde zu Viert oder zu Sechst an. Oder spiele Team-Tac und versuche einen neuen Rekord aufzustellen."
+    "description1": "Tac-With-Bug ist eine online Mehrspieler Version des beliebten Brettspiels",
+    "description2": ". Tritt gegen Freunde und Fremde zu viert oder zu sechst an. Oder spiele Team-Tac und versuche einen neuen Rekord aufzustellen."
   },
   "PlayersAutoComplete": {
     "placeholder": "Spieler"

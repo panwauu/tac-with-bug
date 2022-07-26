@@ -144,7 +144,7 @@ const faq = [
       {
         q: 'Contribute.localesQ',
         a: 'Contribute.localesA',
-        par: { link: 'https://github.com/panwauu/tac-locales' },
+        par: { link: 'https://github.com/panwauu/tac-with-bug' },
       },
       {
         q: 'Contribute.bugsQ',
