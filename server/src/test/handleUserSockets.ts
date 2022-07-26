@@ -2,6 +2,7 @@ import type { GeneralSocketC } from '../sharedTypes/GeneralNamespaceDefinition'
 import { io } from 'socket.io-client'
 import { connectSocket } from './handleSocket'
 import Chance from 'chance'
+import { sleep } from '../helpers/sleep'
 const chance = new Chance()
 
 export interface User {
@@ -69,7 +70,7 @@ export async function getUsersWithSockets(data: { ids: number[] } | { n: number 
   }
 
   const result = await Promise.all(promiseArray)
-  await new Promise((resolve) => setTimeout(() => resolve(null), 1000)) // TBD - Needed to add this to pass test consistently
+  await sleep(1000) // TBD - Needed to add this to pass test consistently
   return result
 }
 
