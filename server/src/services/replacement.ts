@@ -115,14 +115,14 @@ export async function acceptReplacement(pgPool: pg.Pool, game: GameForPlay, user
     ])
     // TBD -> Consequences?
 
-    getSocketByUserID(game.playerIDs[game.replacement.playerIndexToReplace])?.disconnect()
+    getSocketByUserID(game.playerIDs[game.replacement.playerIndexToReplace] ?? -1)?.disconnect()
     const newSocket = getSocketByUserID(game.replacement.replacementUserID)
     if (newSocket != null) {
       newSocket.data.gamePlayer = game.replacement.playerIndexToReplace
       newSocket.emit('replacement:changeGamePlayer', game.replacement.playerIndexToReplace)
     }
     getSocketsInGame(nsp, game.id).forEach((s) =>
-      s.emit('toast:replacement-done', game.replacement?.replacementUsername ?? '', game.players[game.replacement?.playerIndexToReplace ?? 0])
+      s.emit('toast:replacement-done', game.replacement?.replacementUsername ?? '', game.players[game.replacement?.playerIndexToReplace ?? 0] ?? '')
     )
     updateGame(pgPool, game.id, game.game.getJSON(), game.status, false, false)
 
@@ -160,5 +160,3 @@ export async function checkReplacementsForTime(pgPool: pg.Pool) {
     }
   }
 }
-
-// TBD: on unconnect end replacement

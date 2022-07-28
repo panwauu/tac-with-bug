@@ -265,7 +265,8 @@ function getUserNetworkFromGamesNodes(games: tDBgame.GameForPlay[]): tStatistic.
 
   for (const game of games) {
     for (let playerInd = 0; playerInd < game.players.length; playerInd++) {
-      if (game.players[playerInd] === '' || game.players[playerInd] == null) {
+      const playerID = game.playerIDs[playerInd]
+      if (playerID == null || game.players[playerInd] == null) {
         continue
       }
 
@@ -273,9 +274,9 @@ function getUserNetworkFromGamesNodes(games: tDBgame.GameForPlay[]): tStatistic.
       if (playerIndexInNodes === -1) {
         nodes.push({
           data: {
-            id: game.playerIDs[playerInd].toString(),
-            idInt: game.playerIDs[playerInd],
-            name: game.players[playerInd],
+            id: playerID.toString(),
+            idInt: playerID,
+            name: game.players[playerInd] ?? '',
             score: 1,
           },
         })
@@ -289,11 +290,16 @@ function getUserNetworkFromGamesNodes(games: tDBgame.GameForPlay[]): tStatistic.
 }
 
 function getUserNetworkFromGamesEdges(games: tDBgame.GameForPlay[], nodes: tStatistic.UserNetworkNode[], edges: tStatistic.UserNetworkEdge[], playerInd: number, gamesInd: number) {
+  const playerID = games[gamesInd].playerIDs[playerInd]
   for (let playerEdgeInd = playerInd + 1; playerEdgeInd < games[gamesInd].players.length; playerEdgeInd++) {
+    if (playerID == null) {
+      continue
+    }
+    const playerIDedgeInd = games[gamesInd].playerIDs[playerEdgeInd]
     if (nodes.findIndex((n) => n.data.idInt === games[gamesInd].playerIDs[playerEdgeInd]) === -1) {
       continue
     }
-    if (games[gamesInd].players[playerEdgeInd] === '' || games[gamesInd].players[playerEdgeInd] == null) {
+    if (playerIDedgeInd == null || games[gamesInd].players[playerEdgeInd] == null) {
       continue
     }
 
@@ -301,17 +307,15 @@ function getUserNetworkFromGamesEdges(games: tDBgame.GameForPlay[], nodes: tStat
 
     const edgeIndex = edges.findIndex((n) => {
       return (
-        (n.data.source === games[gamesInd].playerIDs[playerInd].toString() &&
-          n.data.target === games[gamesInd].playerIDs[playerEdgeInd].toString() &&
-          n.data.together === together) ||
-        (n.data.target === games[gamesInd].playerIDs[playerInd].toString() && n.data.source === games[gamesInd].playerIDs[playerEdgeInd].toString() && n.data.together === together)
+        (n.data.source === playerID.toString() && n.data.target === playerIDedgeInd.toString() && n.data.together === together) ||
+        (n.data.target === playerID.toString() && n.data.source === playerIDedgeInd.toString() && n.data.together === together)
       )
     })
     if (edgeIndex === -1) {
       edges.push({
         data: {
-          source: games[gamesInd].playerIDs[playerInd].toString(),
-          target: games[gamesInd].playerIDs[playerEdgeInd].toString(),
+          source: playerID.toString(),
+          target: playerIDedgeInd.toString(),
           weight: 1,
           together: together,
           id: `e${edges.length}`,

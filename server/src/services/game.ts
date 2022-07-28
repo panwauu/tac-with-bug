@@ -14,27 +14,31 @@ import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { getSocketByUserID } from '../socket/general'
 import { getReplacement } from './replacement'
 
+function mergeElementsWithIndices<T>(elements: T[], indices: number[], minLength: number): (T | null)[] {
+  return Array(Math.max(Math.max(...indices) + 1, minLength))
+    .fill(null)
+    .map((_, index) => {
+      return elements[indices.findIndex((i) => i === index)] ?? null
+    })
+}
+
 async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
   const query = `
-        SELECT *, 
-            (SELECT users.username as player0 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 0),
-            (SELECT users.username as player1 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 1),
-            (SELECT users.username as player2 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 2),
-            (SELECT users.username as player3 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 3),
-            (SELECT users.username as player4 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 4),
-            (SELECT users.username as player5 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 5),
-            (SELECT users.id as id0 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 0),
-            (SELECT users.id as id1 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 1),
-            (SELECT users.id as id2 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 2),
-            (SELECT users.id as id3 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 3),
-            (SELECT users.id as id4 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 4),
-            (SELECT users.id as id5 FROM users_to_games JOIN users ON users_to_games.userid=users.id AND gameid=games.id AND player_index = 5)
-        FROM games WHERE games.id = ANY($1::int[]) ORDER BY games.id;`
+  SELECT 
+    games.*, 
+    array_agg(users.username ORDER BY users_to_games.player_index) as players, 
+    array_agg(users.id ORDER BY users_to_games.player_index) as playerids, 
+    array_agg(users_to_games.player_index ORDER BY users_to_games.player_index) as player_indices
+  FROM games 
+    JOIN users_to_games ON games.id = users_to_games.gameid 
+    JOIN users ON users_to_games.userid = users.id 
+  WHERE games.id = ANY($1::int[]) GROUP BY games.id ORDER BY games.id;`
   const dbRes = await sqlClient.query(query, [gameIDs])
 
   const games: tDBTypes.GameForPlay[] = []
 
   dbRes.rows.forEach((dbGame) => {
+    dbGame.players
     games.push({
       id: dbGame.id,
       status: dbGame.status,
@@ -45,8 +49,8 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
       lastPlayed: Date.parse(dbGame.lastplayed),
       publicTournamentId: dbGame.public_tournament_id,
       privateTournamentId: dbGame.private_tournament_id,
-      players: [...Array(dbGame.n_players).keys()].map((i) => dbGame['player' + i.toString()]),
-      playerIDs: [...Array(dbGame.n_players).keys()].map((i) => parseInt(dbGame['id' + i.toString()])),
+      players: mergeElementsWithIndices(dbGame.players, dbGame.player_indices, dbGame.game.nPlayers),
+      playerIDs: mergeElementsWithIndices(dbGame.playerids, dbGame.player_indices, dbGame.game.nPlayers),
       game: new Game(0, 0, false, false, dbGame.game),
       colors: dbGame.colors,
       rematch_open: dbGame.rematch_open,
@@ -154,7 +158,7 @@ export async function abortGame(pgPool: pg.Pool, gameID: number) {
   await pgPool.query("UPDATE games SET status='aborted' WHERE id=$1;", [gameID])
 
   game.playerIDs.forEach((id) => {
-    const socket = getSocketByUserID(id)
+    const socket = getSocketByUserID(id ?? -1)
     socket != null && emitGamesUpdate(pgPool, socket)
   })
   emitRunningGamesUpdate(pgPool)
@@ -190,17 +194,7 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
     runningGames: games
       .filter((g) => g.status === 'running')
       .map((game) => {
-        const order = game.nPlayers === 4 ? [0, 2, 1, 3] : game.nTeams === 2 ? [0, 2, 4, 1, 3, 5] : [0, 3, 1, 4, 2, 5]
-        const orderedPlayers = order.map((i) => game.players[i])
-
-        const teams: string[][] = []
-        for (let team = 0; team < game.nTeams; team++) {
-          const arr: string[] = []
-          for (let iterator = 0; iterator < game.players.length / game.nTeams; iterator++) {
-            arr.push(orderedPlayers[(team * game.players.length) / game.nTeams + iterator])
-          }
-          teams.push(arr)
-        }
+        const teams = getTeamsFromGame(game)
 
         return {
           id: game.id,
@@ -228,8 +222,11 @@ function getTeamsFromGame(game: tDBTypes.GameForPlay) {
   const teams: string[][] = []
   for (let team = 0; team < game.nTeams; team++) {
     const arr: string[] = []
-    for (let iterator = 0; iterator < game.players.length / game.nTeams; iterator++) {
-      arr.push(orderedPlayers[(team * game.players.length) / game.nTeams + iterator])
+    for (let iterator = 0; iterator < orderedPlayers.length / game.nTeams; iterator++) {
+      const player = orderedPlayers[(team * orderedPlayers.length) / game.nTeams + iterator]
+      if (player != null) {
+        arr.push(player)
+      }
     }
     teams.push(arr)
   }
@@ -314,7 +311,7 @@ export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: Mov
 
   if (game.game.gameEnded) {
     game.playerIDs.forEach((id) => {
-      const socket = getSocketByUserID(id)
+      const socket = getSocketByUserID(id ?? -1)
       socket != null && emitGamesUpdate(sqlClient, socket)
     })
     emitRunningGamesUpdate(sqlClient)
@@ -350,7 +347,7 @@ export async function endNotProperlyEndedGames(sqlClient: pg.Pool) {
           updatePublicTournamentFromGame(sqlClient, game)
         }
         game.playerIDs.forEach((id) => {
-          const socket = getSocketByUserID(id)
+          const socket = getSocketByUserID(id ?? -1)
           socket != null && emitGamesUpdate(sqlClient, socket)
         })
         emitRunningGamesUpdate(sqlClient)

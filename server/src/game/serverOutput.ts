@@ -37,11 +37,11 @@ export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: nu
   }
 }
 
-function getPlayers(game: Game, names: string[]) {
+function getPlayers(game: Game, names: (string | null)[]) {
   const players: Player[] = []
   for (let i = 0; i < game.cards.players.length; i++) {
     const player: Player = {
-      name: names ? names[i] : 'Player ' + i.toString(),
+      name: names[i] ?? '',
       remainingCards: game.cards.players[i].length,
       active: game.activePlayer === i,
       playerNumber: i,

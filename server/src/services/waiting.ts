@@ -75,7 +75,7 @@ export async function createRematchGame(pgPool: pg.Pool, game: GameForPlay, user
   if (waitingGames.some((g) => g.players.some((waitingPlayer: string) => game.players.includes(waitingPlayer)))) {
     return err('PLAYER_ALREADY_IN_WAITING_GAME')
   }
-  if (game.playerIDs.some((id) => !isUserOnline(id))) {
+  if (game.playerIDs.some((id) => id != null && !isUserOnline(id))) {
     return err('PLAYER_NOT_ONLINE')
   }
 

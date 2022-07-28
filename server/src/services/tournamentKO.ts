@@ -62,7 +62,7 @@ function addScoreAndReturnChangedFlag(game: GameForPlay, tournament: PublicTourn
     const count = game.game.balls.filter((b, bI) => {
       return ballPlayer(bI) === pI && (b.state === 'locked' || b.state === 'goal')
     }).length
-    const tournamentT = tournament.teams.findIndex((t) => t.players.includes(p))
+    const tournamentT = tournament.teams.findIndex((t) => t.players.includes(p ?? ''))
     const tournamentTI = tournament.data.brackets[pos[0]][pos[1]].teams.findIndex((t) => t === tournamentT)
     score[tournamentTI] += count
   })
@@ -89,7 +89,7 @@ export type GetWinnerOfTournamentGameError = 'WINNER_OF_TOURNAMENT_GAME_NOT_FOUN
 function getWinnerOfTournamentGame(game: GameForPlay, bracket: KoBracket, tournament: PublicTournament | PrivateTournament): Result<number, GetWinnerOfTournamentGameError> {
   if (game.status.substring(0, 3) === 'won') {
     const gameWinningTeam = parseInt(game.status[4])
-    const gameWinningPlayer = game.players[game.game.teams[gameWinningTeam][0]]
+    const gameWinningPlayer = game.players[game.game.teams[gameWinningTeam][0]] ?? ''
     const bracketWinningTeam = bracket.teams.find((t) => {
       return tournament.teams[t].players.includes(gameWinningPlayer)
     })
@@ -145,7 +145,7 @@ function getWinnerOfTournamentGame(game: GameForPlay, bracket: KoBracket, tourna
 
   // Get tournament Team with the lowest Time
   const gameWinningTeam = timePerTeam.indexOf(Math.min(...timePerTeam))
-  const gameWinningPlayer = game.players[game.game.teams[gameWinningTeam][0]]
+  const gameWinningPlayer = game.players[game.game.teams[gameWinningTeam][0]] ?? ''
   const bracketWinningTeam = bracket.teams.find((t) => {
     return tournament.teams[t].players.includes(gameWinningPlayer)
   })

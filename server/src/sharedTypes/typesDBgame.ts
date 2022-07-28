@@ -15,8 +15,8 @@ interface GameGeneral {
   lastPlayed: number
   publicTournamentId: number | null
   privateTournamentId: number | null
-  players: string[]
-  playerIDs: number[]
+  players: (string | null)[]
+  playerIDs: (number | null)[]
 }
 
 // Game from db
