@@ -21,6 +21,23 @@ export function setReplacement(gameID: number, replacement: Replacement | null) 
   replacement != null ? currentReplacements.set(gameID, replacement) : currentReplacements.delete(gameID)
 }
 
+export function endReplacementIfRunning(game: GameForPlay) {
+  if (game.replacement != null) {
+    setReplacement(game.id, null)
+    game.replacement = null
+  }
+}
+
+export async function endReplacementsByUserID(pgPool: pg.Pool, userID: number) {
+  for (const [key, replacement] of currentReplacements) {
+    if (replacement.replacementUserID === userID) {
+      setReplacement(key, null)
+      const game = await getGame(pgPool, key)
+      sendUpdatesOfGameToPlayers(game)
+    }
+  }
+}
+
 export function checkReplacementConditions(game: GameForPlay, playerIndexToReplace: number, replacementPlayerID: number): boolean {
   return (
     game.status === 'running' &&
@@ -132,7 +149,7 @@ export async function rejectReplacement(game: GameForPlay, userID: number): Prom
 }
 
 export async function checkReplacementsForTime(pgPool: pg.Pool) {
-  for (let [key, replacement] of currentReplacements) {
+  for (const [key, replacement] of currentReplacements) {
     if (Date.now() - replacement.startDate > MAX_TIME_FOR_REPLACEMENT) {
       currentReplacements.delete(key)
       const game = await getGame(pgPool, key)
