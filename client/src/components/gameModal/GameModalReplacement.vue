@@ -84,7 +84,7 @@ import CountdownTimer from '../CountdownTimer.vue'
 
 import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 import { GameSocketKey } from '@/services/injections'
-import { computed, inject } from 'vue'
+import { inject, onBeforeUnmount, ref } from 'vue'
 import { username } from '@/services/useUser'
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n'
@@ -123,14 +123,23 @@ async function answerReplacement(accept: boolean) {
   }
 }
 
-const replacementPossible = computed(() => {
-  return (
+const replacementPossible = ref(false)
+function updateReplacementPossible() {
+  replacementPossible.value =
     props.updateData != null &&
     props.updateData.status === 'running' &&
     props.updateData.gamePlayer === -1 &&
     props.updateData.replacement == null &&
-    Date.now() - props.updateData.lastPlayed > 60 * 1000
-  )
+    Date.now() - 60 * 1000 > props.updateData.lastPlayed
+}
+updateReplacementPossible()
+
+const interval = window.setInterval(() => {
+  updateReplacementPossible()
+}, 500)
+
+onBeforeUnmount(() => {
+  window.clearInterval(interval)
 })
 </script>
 
