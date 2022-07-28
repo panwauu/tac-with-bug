@@ -138,6 +138,7 @@
             class="statistic"
             :statisticState="statisticState"
             :miscState="miscState"
+            :updateData="updateData"
           />
         </Fieldset>
         <Fieldset
@@ -165,6 +166,7 @@
         class="statistic"
         :statisticState="statisticState"
         :miscState="miscState"
+        :updateData="updateData"
       />
       <GameModalSettings
         v-if="modalStateLocal === 'settings'"
@@ -258,7 +260,7 @@ async function updateHandler(): Promise<void> {
   )
   props.miscState.setTimestamps(props.updateData.created, props.updateData.lastPlayed)
   props.positionStyles.setBallsColors(props.updateData.colors)
-  props.statisticState.setStatistic(props.updateData.statistic, props.updateData.players, props.updateData.coopCounter, props.positionStyles.getHexColors())
+  props.statisticState.setStatistic(props.updateData, props.positionStyles.getHexColors())
   props.discardPileState.updateDiscardPile(props.updateData.discardPile, props.updateData.players, props.updateData.cards, props.positionStyles)
 
   if (tacFirstRevertState) {
