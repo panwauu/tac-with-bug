@@ -62,7 +62,8 @@
             <Button
               aria-label="Replacement"
               icon="pi pi-arrows-h"
-              class="p-button-rounded p-button-info landscapeMenuButton"
+              class="p-button-rounded p-button-warning landscapeMenuButton"
+              :class="updateData?.replacement != null ? 'blink-animation' : ''"
               @click="openModal('replacement')"
             />
             <GameWatchingPlayers
@@ -323,6 +324,13 @@ function getMenu(displayText: boolean) {
         openModal('assistance')
       },
     },
+    {
+      label: displayText ? i18n.global.t('Game.GameModal.title.replacement') : '',
+      icon: 'pi pi-arrows-h',
+      command: () => {
+        openModal('replacement')
+      },
+    },
   ]
 }
 
@@ -507,5 +515,21 @@ function onResize() {
 
 .sick-game-portrait-query .statistic {
   width: 70vw !important;
+}
+
+@keyframes grow {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.3);
+  }
+}
+.blink-animation {
+  animation-name: grow;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-direction: alternate;
 }
 </style>
