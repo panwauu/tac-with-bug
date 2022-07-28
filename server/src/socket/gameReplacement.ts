@@ -4,7 +4,7 @@ import logger from '../helpers/logger'
 import { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 import Joi from 'joi'
 import { getGame } from '../services/game'
-import { acceptReplacement, checkReplacementConditions, endReplacementOnTime, rejectReplacement, startReplacement } from '../services/replacement'
+import { acceptReplacement, checkReplacementConditions, checkReplacementsForTime, rejectReplacement, startReplacement } from '../services/replacement'
 import { getSocketsInGame, nsp } from './game'
 
 export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS) {
@@ -14,14 +14,14 @@ export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS
       return cb({ status: 500 })
     }
 
+    await checkReplacementsForTime(pgPool)
     const game = await getGame(pgPool, socket.data.gameID)
-    await endReplacementOnTime(pgPool, game)
 
     if (checkReplacementConditions(game, game.game.activePlayer, socket.data.userID)) {
       await startReplacement(pgPool, game, socket.data.userID, game.game.activePlayer)
       getSocketsInGame(nsp, socket.data.gameID)
         .filter((s) => s.id != socket.id)
-        .forEach((s) => s.emit('toast:replacement-offer', game.game.replacement?.replacementUsername ?? ''))
+        .forEach((s) => s.emit('toast:replacement-offer', game.replacement?.replacementUsername ?? ''))
       return cb({ status: 200 })
     }
 
@@ -42,8 +42,8 @@ export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS
     }
 
     try {
+      await checkReplacementsForTime(pgPool)
       const game = await getGame(pgPool, socket.data.gameID)
-      await endReplacementOnTime(pgPool, game)
 
       if (data.accept) {
         if (socket.data.gamePlayer < 0 || socket.data.gamePlayer >= game.nPlayers) {
@@ -54,10 +54,10 @@ export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS
           return cb({ status: 500 })
         }
       } else {
-        if ((socket.data.gamePlayer < 0 || socket.data.gamePlayer >= game.nPlayers) && socket.data.userID !== game.game.replacement?.replacementUserID) {
+        if ((socket.data.gamePlayer < 0 || socket.data.gamePlayer >= game.nPlayers) && socket.data.userID !== game.replacement?.replacementUserID) {
           return cb({ status: 500 })
         }
-        const rejectRes = await rejectReplacement(pgPool, game, socket.data.userID)
+        const rejectRes = await rejectReplacement(game, socket.data.userID)
         if (rejectRes.isErr()) {
           return cb({ status: 500 })
         }

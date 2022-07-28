@@ -1,7 +1,7 @@
 import * as tCard from '../sharedTypes/typesCard'
 import * as tBall from '../sharedTypes/typesBall'
 import * as tStatistic from '../sharedTypes/typesStatistic'
-import { GameData, Replacement } from '../sharedTypes/game'
+import { GameData } from '../sharedTypes/game'
 
 import { cloneDeep } from 'lodash'
 import logger from '../helpers/logger'
@@ -36,7 +36,6 @@ export class Game implements GameData {
   winningTeams: boolean[]
 
   statistic: tStatistic.GameStatistic[]
-  replacement?: Replacement
   replacedPlayerIndices: number[]
 
   constructor(nPlayers: number, nTeams: number, meisterVersion: boolean, coop: boolean, gameLoad?: GameData) {
@@ -63,7 +62,6 @@ export class Game implements GameData {
       this.statistic = gameLoad.statistic
       this.sevenChosenPlayer = gameLoad?.sevenChosenPlayer ?? null
       this.replacedPlayerIndices = gameLoad?.replacedPlayerIndices ?? []
-      this.replacement = gameLoad?.replacement ?? undefined
     } else {
       if (nPlayers !== 4 && nPlayers !== 6) {
         throw new Error('Invalid Player Number -> only 4 or 6')
