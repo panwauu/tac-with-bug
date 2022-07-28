@@ -17,15 +17,15 @@ export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS
     await checkReplacementsForTime(pgPool)
     const game = await getGame(pgPool, socket.data.gameID)
 
-    if (checkReplacementConditions(game, game.game.activePlayer, socket.data.userID)) {
-      await startReplacement(pgPool, game, socket.data.userID, game.game.activePlayer)
-      getSocketsInGame(nsp, socket.data.gameID)
-        .filter((s) => s.id != socket.id)
-        .forEach((s) => s.emit('toast:replacement-offer', game.replacement?.replacementUsername ?? ''))
-      return cb({ status: 200 })
+    if (!checkReplacementConditions(game, game.game.activePlayer, socket.data.userID)) {
+      return cb({ status: 500 })
     }
 
-    return cb({ status: 500 })
+    await startReplacement(pgPool, game, socket.data.userID, game.game.activePlayer)
+    getSocketsInGame(nsp, socket.data.gameID)
+      .filter((s) => s.id !== socket.id)
+      .forEach((s) => s.emit('toast:replacement-offer', game.replacement?.replacementUsername ?? ''))
+    return cb({ status: 200 })
   })
 
   socket.on('replacement:answer', async (data, cb) => {
@@ -38,7 +38,7 @@ export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS
     const { error } = schema.validate(data)
     if (error != null) {
       logger.error('JOI Error', error)
-      return cb({ status: 500 })
+      return cb({ status: 500, error: error })
     }
 
     try {
@@ -46,23 +46,17 @@ export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS
       const game = await getGame(pgPool, socket.data.gameID)
 
       if (data.accept) {
-        if (socket.data.gamePlayer < 0 || socket.data.gamePlayer >= game.nPlayers) {
-          return cb({ status: 500 })
-        }
         const acceptRes = await acceptReplacement(pgPool, game, socket.data.userID)
         if (acceptRes.isErr()) {
-          return cb({ status: 500 })
+          return cb({ status: 500, error: acceptRes.error })
         }
       } else {
-        if ((socket.data.gamePlayer < 0 || socket.data.gamePlayer >= game.nPlayers) && socket.data.userID !== game.replacement?.replacementUserID) {
-          return cb({ status: 500 })
-        }
         const rejectRes = await rejectReplacement(game, socket.data.userID)
         if (rejectRes.isErr()) {
           return cb({ status: 500 })
         }
         getSocketsInGame(nsp, socket.data.gameID)
-          .filter((s) => s.id != socket.id)
+          .filter((s) => s.id !== socket.id)
           .forEach((s) => s.emit('toast:replacement-stopped'))
       }
 

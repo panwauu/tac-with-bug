@@ -29,6 +29,5 @@ export type Replacement = {
   replacementUsername: string
   playerIndexToReplace: number
   acceptedByIndex: number[]
-  rejectedByIndex: number[]
   startDate: number
 }

@@ -6,7 +6,7 @@ import { getGame, updateGame } from './game'
 import { initalizeStatistic } from '../game/statistic'
 import { addJob } from './scheduledTasks'
 import { scheduleJob } from 'node-schedule'
-import { getUser } from './user'
+import { getUser, GetUserErrors } from './user'
 import { Replacement } from '../sharedTypes/game'
 
 const MAX_TIME_FOR_REPLACEMENT = 60 * 1000
@@ -50,10 +50,10 @@ export function checkReplacementConditions(game: GameForPlay, playerIndexToRepla
   )
 }
 
-export async function startReplacement(pgPool: pg.Pool, game: GameForPlay, replacementPlayerID: number, playerIndexToReplace: number) {
+export async function startReplacement(pgPool: pg.Pool, game: GameForPlay, replacementPlayerID: number, playerIndexToReplace: number): Promise<Result<null, GetUserErrors>> {
   const user = await getUser(pgPool, { id: replacementPlayerID })
   if (user.isErr()) {
-    throw ''
+    return err(user.error)
   }
 
   game.replacement = {
@@ -61,7 +61,6 @@ export async function startReplacement(pgPool: pg.Pool, game: GameForPlay, repla
     replacementUsername: user.value.username,
     playerIndexToReplace: playerIndexToReplace,
     acceptedByIndex: [],
-    rejectedByIndex: [],
     startDate: Date.now(),
   }
   setReplacement(game.id, game.replacement)
@@ -72,15 +71,20 @@ export async function startReplacement(pgPool: pg.Pool, game: GameForPlay, repla
       checkReplacementsForTime(pgPool)
     })
   )
+  return ok(null)
 }
 
-export type AcceptReplacementError = 'NO_ACTIVE_REPLACEMENT' | 'REPLACEMENT_ALREADY_ACCEPTED' | 'CANNOT_ACCEPT_OWN_REPLACEMENT'
+export type AcceptReplacementError = 'NO_ACTIVE_REPLACEMENT' | 'REPLACEMENT_ALREADY_ACCEPTED' | 'CANNOT_ACCEPT_OWN_REPLACEMENT' | 'PLAYER_NOT_IN_GAME'
 export async function acceptReplacement(pgPool: pg.Pool, game: GameForPlay, userID: number): Promise<Result<null, AcceptReplacementError>> {
   if (game.replacement == null) {
     return err('NO_ACTIVE_REPLACEMENT')
   }
 
-  const playerIndex = game.playerIDs.findIndex((id) => id == userID)
+  const playerIndex = game.playerIDs.findIndex((id) => id === userID)
+  if (playerIndex < 0 || playerIndex >= game.nPlayers) {
+    return err('PLAYER_NOT_IN_GAME')
+  }
+
   if (game.replacement.acceptedByIndex.includes(playerIndex)) {
     return err('REPLACEMENT_ALREADY_ACCEPTED')
   }
@@ -115,7 +119,6 @@ export async function acceptReplacement(pgPool: pg.Pool, game: GameForPlay, user
       game.replacement.replacementUserID,
       game.id,
     ])
-    // TBD -> Consequences?
 
     getSocketByUserID(game.playerIDs[game.replacement.playerIndexToReplace] ?? -1)?.disconnect()
     const newSocket = getSocketByUserID(game.replacement.replacementUserID)
@@ -138,15 +141,17 @@ export async function acceptReplacement(pgPool: pg.Pool, game: GameForPlay, user
   return ok(null)
 }
 
-export type RejectReplacementError = 'NO_RUNNING_REPLACEMENT'
+export type RejectReplacementError = 'NO_RUNNING_REPLACEMENT' | 'PLAYER_NOT_IN_GAME_AND_NOT_REPLACEMENT'
 export async function rejectReplacement(game: GameForPlay, userID: number): Promise<Result<null, RejectReplacementError>> {
   if (game.replacement == null) {
     return err('NO_RUNNING_REPLACEMENT')
   }
 
-  // TBD more checks
-  const playerIndex = game.playerIDs.findIndex((id) => id == userID)
-  game.replacement.rejectedByIndex.push(playerIndex)
+  const playerIndex = game.playerIDs.findIndex((id) => id === userID)
+  if ((playerIndex < 0 || playerIndex >= game.nPlayers) && userID !== game.replacement?.replacementUserID) {
+    return err('PLAYER_NOT_IN_GAME_AND_NOT_REPLACEMENT')
+  }
+
   game.replacement = null
   setReplacement(game.id, game.replacement)
   sendUpdatesOfGameToPlayers(game)
