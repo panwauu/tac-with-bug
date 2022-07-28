@@ -13,7 +13,7 @@
       :endDate="miscState.gameRunning ? new Date(miscState.created).toISOString() : undefined"
       :initialMilliseconds="Number(miscState.created) - Number(miscState.lastPlayed)"
       :mode="miscState.gameRunning ? 'up' : 'static'"
-      :displayDays="false"
+      largestUnit="hours"
     />
     <div>
       <TabView>
