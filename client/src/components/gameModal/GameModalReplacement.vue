@@ -86,16 +86,26 @@ import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 import { GameSocketKey } from '@/services/injections'
 import { computed, inject } from 'vue'
 import { username } from '@/services/useUser'
+import { useToast } from 'primevue/usetoast'
+import { i18n } from '@/services/i18n'
 
 const props = defineProps<{ updateData: UpdateDataType | null }>()
 const gameSocket = inject(GameSocketKey)
+const toast = useToast()
 
 async function startReplacement() {
   if (gameSocket == null) {
     return
   }
   const res = await gameSocket.emitWithAck(2000, 'replacement:offer')
-  console.log(res)
+  if (res.status !== 200) {
+    toast.add({
+      severity: 'error',
+      summary: i18n.global.t('Toast.GenericError.summary'),
+      detail: i18n.global.t('Toast.GenericError.detail'),
+      life: 3000,
+    })
+  }
 }
 
 async function answerReplacement(accept: boolean) {
@@ -103,7 +113,14 @@ async function answerReplacement(accept: boolean) {
     return
   }
   const res = await gameSocket.emitWithAck(2000, 'replacement:answer', { accept })
-  console.log(res)
+  if (res.status !== 200) {
+    toast.add({
+      severity: 'error',
+      summary: i18n.global.t('Toast.GenericError.summary'),
+      detail: i18n.global.t('Toast.GenericError.detail'),
+      life: 3000,
+    })
+  }
 }
 
 const replacementPossible = computed(() => {
