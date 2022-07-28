@@ -389,6 +389,15 @@
         "teufel": "Wer die Teufelskarte spielt, darf sich die Karten des im UZS nächsten Spielers anschauen und sofort eine von dessen Karten ausspielen und die Funktion mit dessen Kugeln ausführen.",
         "detailed": "Die vollständige Anleitung gibt es auf der",
         "detailedLink": "offiziellen Tac Website"
+      },
+      "Replacement": {
+        "explanation": "Der Spielerwechsel hilft das Spiel fortzusetzen, wenn ein Spieler nicht mehr online ist. Ein Zuschauer kann sich als Auswechselspieler anbieten und alle anderen Spieler müssen dem Wechsel zustimmen.",
+        "offerButton": "Wechsel anbieten",
+        "currentlyNone": "Aktuell gibt es keinen Wechsel",
+        "endOfferButton": "Wechsel zurückziehen",
+        "rejectButton": "Wechsel ablehnen",
+        "acceptButton": "Wechsel akzeptieren",
+        "currentHeading": "Aktueller Wechsel:"
       }
     },
     "EndedOverlay": {

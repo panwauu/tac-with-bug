@@ -1,18 +1,17 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
     <div class="instruction-text">
-      Der Spielerwechsel hilft das Spiel fortzusetzen, wenn ein Spieler nicht mehr online ist. Ein Zuschauer kann sich als Auswechselspieler anbieten und alle anderen Spieler
-      müssen dem Wechsel zustimmen.
+      {{ $t('Game.GameModal.Replacement.explanation') }}
     </div>
 
     <Button
       :disabled="!replacementPossible"
-      label="Auswechsel anbieten"
+      :label="$t('Game.GameModal.Replacement.offerButton')"
       class="p-button-success"
       @click="startReplacement"
     />
 
-    <h3>Aktueller Wechsel:</h3>
+    <h3>{{ $t('Game.GameModal.Replacement.currentHeading') }}</h3>
     <template v-if="updateData?.replacement != null">
       <div style="display: flex; align-items: center; margin-bottom: 10px">
         <PlayerWithPicture
@@ -23,6 +22,7 @@
         <i
           class="pi pi-arrows-h"
           style="margin: 0 10px"
+          aria-hidden="true"
         ></i>
         <PlayerWithPicture
           :username="updateData.players[updateData?.replacement.playerIndexToReplace].name"
@@ -44,6 +44,7 @@
           <i
             :class="updateData.replacement.acceptedByIndex?.includes(player.playerNumber) ? 'pi pi-check green' : 'pi pi-spin pi-spinner'"
             style="margin: 0 10px 0 0"
+            aria-hidden="true"
           ></i>
           <PlayerWithPicture
             :username="player.name"
@@ -56,23 +57,23 @@
         v-if="updateData.gamePlayer != -1"
         :disabled="updateData.replacement.acceptedByIndex.includes(updateData.gamePlayer)"
         class="p-button-success"
-        label="Wechsel akzeptieren"
+        :label="$t('Game.GameModal.Replacement.acceptButton')"
         @click="answerReplacement(true)"
       />
       <Button
         v-if="updateData.gamePlayer != -1"
         class="p-button-danger"
-        label="Wechsel ablehnen"
+        :label="$t('Game.GameModal.Replacement.rejectButton')"
         @click="answerReplacement(false)"
       />
       <Button
         v-if="updateData.replacement.replacementUsername === username"
         class="p-button-danger"
-        label="Wechsel zurückziehen"
+        :label="$t('Game.GameModal.Replacement.endOfferButton')"
         @click="answerReplacement(false)"
       />
     </template>
-    <div v-else>Aktuell gibt es keinen Wechsel</div>
+    <div v-else>{{ $t('Game.GameModal.Replacement.currentlyNone') }}</div>
   </div>
 </template>
 
