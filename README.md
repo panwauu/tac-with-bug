@@ -53,7 +53,7 @@ Flags:
 
 ## Package Setup
 
-[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is divided into three main parts:
+[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is divided into two main parts:
 
 | Folder             | Description                           |
 | ------------------ | ------------------------------------- |
@@ -76,7 +76,7 @@ Afterwards you can start the server and client.
 
 ```shell
 cd server
-npm run devStart
+npm run start:dev
 ```
 
 ```shell
