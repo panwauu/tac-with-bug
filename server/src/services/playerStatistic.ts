@@ -110,21 +110,20 @@ function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame
 }
 
 export function addWLStatistic(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay, nPlayer: number) {
-  if (game.status === 'aborted') {
+  if (game.status === 'aborted' || nPlayer >= game.nPlayers) {
     return addWLStatisticAborted(playerStatistic, game)
   }
 
   if (game.status === 'running') {
     playerStatistic.wl.nGamesRunning += 1
-    addToGamesHistory(playerStatistic, 'running')
-    return
+    return addToGamesHistory(playerStatistic, 'running')
   }
 
   if (game.game.coop) {
     return addWLStatisticCoop(playerStatistic, game, nPlayer)
   }
 
-  addWLStatisticWonLost(playerStatistic, game, nPlayer)
+  return addWLStatisticWonLost(playerStatistic, game, nPlayer)
 }
 
 function addToGamesHistory(playerStatistic: tStatistic.PlayerStatistic, status: 'won' | 'lost' | 'coop' | 'aborted' | 'running') {
@@ -165,9 +164,8 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
   if (user.isErr()) {
     throw new Error(user.error)
   }
-  const userID = user.value.id
 
-  const stat = await getPlayerStats(sqlClient, userID)
+  const stat = await getPlayerStats(sqlClient, user.value.id)
 
   const sub = await isSubscribed(sqlClient, username, false)
   const subscribed = sub.isErr() ? false : sub.value
