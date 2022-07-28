@@ -26,11 +26,10 @@ export interface GameData {
 }
 
 export type Replacement = {
-  running: boolean
   replacementUserID: number
   replacementUsername: string
-  playerToReplace: number
-  acceptedBy: number[]
-  rejectedBy: number[]
+  playerIndexToReplace: number
+  acceptedByIndex: number[]
+  rejectedByIndex: number[]
   startDate: number
 }

@@ -8,44 +8,25 @@ import { sleep } from '../helpers/sleep'
 
 const replacementStates: Record<string, Omit<Replacement, 'startDate'>> = {
   afterOffer: {
-    running: true,
-    acceptedBy: [],
-    rejectedBy: [],
+    acceptedByIndex: [],
+    rejectedByIndex: [],
     replacementUserID: 5,
     replacementUsername: 'UserE',
-    playerToReplace: 3,
-  },
-  afterReject: {
-    running: false,
-    acceptedBy: [],
-    rejectedBy: [1],
-    replacementUserID: 5,
-    replacementUsername: 'UserE',
-    playerToReplace: 3,
+    playerIndexToReplace: 2,
   },
   afterAccept1: {
-    running: true,
-    acceptedBy: [1],
-    rejectedBy: [],
+    acceptedByIndex: [1],
+    rejectedByIndex: [],
     replacementUserID: 5,
     replacementUsername: 'UserE',
-    playerToReplace: 3,
+    playerIndexToReplace: 2,
   },
   afterAccept2: {
-    running: true,
-    acceptedBy: [1, 2],
-    rejectedBy: [],
+    acceptedByIndex: [1, 2],
+    rejectedByIndex: [],
     replacementUserID: 5,
     replacementUsername: 'UserE',
-    playerToReplace: 3,
-  },
-  afterAccept3: {
-    running: false,
-    acceptedBy: [1, 2, 4],
-    rejectedBy: [],
-    replacementUserID: 5,
-    replacementUsername: 'UserE',
-    playerToReplace: 3,
+    playerIndexToReplace: 2,
   },
 }
 
