@@ -391,7 +391,7 @@
         "detailedLink": "official Tac website"
       },
       "Replacement": {
-        "explanation": "Player substitution helps continue the game when a player is no longer online. A spectator can offer to be a substitute and all other players must agree to the change.",
+        "explanation": "Player substitution helps continue the game when a player is no longer online. A spectator can offer to be a substitute and all other players must agree to the substitution.",
         "offerButton": "Offer substitution",
         "currentHeading": "Current substitution:",
         "acceptButton": "Accept substitution",
@@ -477,7 +477,7 @@
     "Toast": {
       "replacement-offer-summary": "Substitution request",
       "replacement-offer-detail": "The player {username} has offered to be transferred. \nAll players in the game must accept it in time to make the switch.",
-      "replacement-done-summary": "change performed",
+      "replacement-done-summary": "Substitution performed",
       "replacement-done-detail": "The player substitution has been carried out. {replacedUsername} has been replaced with {username}. Have fun playing.",
       "replacement-stopped-summary": "Substitution failed",
       "replacement-stopped-detail": "The player substitution did not take place. Maybe not everyone agreed to the move, or the request was withdrawn."
