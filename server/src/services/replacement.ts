@@ -1,6 +1,6 @@
 import { Result, ok, err } from 'neverthrow'
 import type pg from 'pg'
-import { getSocketByUserID, sendUpdatesOfGameToPlayers } from '../socket/game'
+import { getSocketByUserID, getSocketsInGame, nsp, sendUpdatesOfGameToPlayers } from '../socket/game'
 import type { GameForPlay } from '../sharedTypes/typesDBgame'
 import { getGame, updateGame } from './game'
 import { initalizeStatistic } from '../game/statistic'
@@ -94,7 +94,9 @@ export async function acceptReplacement(pgPool: pg.Pool, game: GameForPlay, user
       newSocket.data.gamePlayer = game.game.replacement.playerIndexToReplace
       newSocket.emit('replacement:changeGamePlayer', game.game.replacement.playerIndexToReplace)
     }
-    // TBD - Toasts
+    getSocketsInGame(nsp, game.id).forEach((s) =>
+      s.emit('toast:replacement-done', game.game.replacement?.replacementUsername ?? '', game.players[game.game.replacement?.playerIndexToReplace ?? 0])
+    )
 
     delete game.game.replacement
   }

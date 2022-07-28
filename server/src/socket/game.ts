@@ -107,7 +107,7 @@ async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePla
   }
 }
 
-function getSocketsInGame(nspGame: GameNamespace, gameID: number): GameSocketS[] {
+export function getSocketsInGame(nspGame: GameNamespace, gameID: number): GameSocketS[] {
   return [...nspGame.sockets.values()].filter((s) => s.data.gameID === gameID)
 }
 

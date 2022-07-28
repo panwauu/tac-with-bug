@@ -5,6 +5,7 @@ import { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 import Joi from 'joi'
 import { getGame } from '../services/game'
 import { acceptReplacement, checkReplacementConditions, endReplacementOnTime, rejectReplacement, startReplacement } from '../services/replacement'
+import { getSocketsInGame, nsp } from './game'
 
 export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS) {
   socket.on('replacement:offer', async (cb) => {
@@ -18,6 +19,9 @@ export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS
 
     if (checkReplacementConditions(game, game.game.activePlayer, socket.data.userID)) {
       await startReplacement(pgPool, game, socket.data.userID, game.game.activePlayer)
+      getSocketsInGame(nsp, socket.data.gameID)
+        .filter((s) => s.id != socket.id)
+        .forEach((s) => s.emit('toast:replacement-offer', game.game.replacement?.replacementUsername ?? ''))
       return cb({ status: 200 })
     }
 
@@ -57,6 +61,9 @@ export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS
         if (rejectRes.isErr()) {
           return cb({ status: 500 })
         }
+        getSocketsInGame(nsp, socket.data.gameID)
+          .filter((s) => s.id != socket.id)
+          .forEach((s) => s.emit('toast:replacement-stopped'))
       }
 
       return cb({ status: 200 })
