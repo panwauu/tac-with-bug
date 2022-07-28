@@ -171,7 +171,7 @@
         :miscState="miscState"
       />
       <GameModalAssistance v-if="modalStateLocal === 'assistance'" />
-      <GameModelReplacement
+      <GameModalReplacement
         v-if="modalStateLocal === 'replacement'"
         :updateData="updateData"
       />
@@ -188,7 +188,7 @@ import GameBoard from '@/components/game/GameBoard.vue'
 import OwnCards from '@/components/game/OwnCards.vue'
 import GameModalSettings from '@/components/gameModal/GameModalSettings.vue'
 import GameModalAssistance from '@/components/gameModal/GameModalAssistance.vue'
-import GameModelReplacement from '@/components/gameModal/GameModelReplacement.vue'
+import GameModalReplacement from '@/components/gameModal/GameModalReplacement.vue'
 import GameStatistic from '@/components/game/GameStatistic.vue'
 import Fieldset from 'primevue/fieldset'
 import RematchForm from './RematchForm.vue'
