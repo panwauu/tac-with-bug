@@ -17,6 +17,10 @@ export interface ServerToClientEvents {
   'game:online-players': (data: { onlineGamePlayers: number[]; nWatchingPlayers: number; watchingPlayerNames: string[] }) => void
 
   'replacement:changeGamePlayer': (gamePlayer: number) => void
+
+  'toast:replacement-offer': (username: string) => void
+  'toast:replacement-done': (username: string, replacedUsername: string) => void
+  'toast:replacement-stopped': () => void
 }
 
 interface SocketData {

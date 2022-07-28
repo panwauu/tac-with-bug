@@ -473,6 +473,14 @@
       "nooneWatching": "Keine Zuschauer",
       "anonymousWatching": "{n} anonymer Zuschauer | {n} anonyme Zuschauer",
       "buttonLabel": "{n} Zuschauer | {n} Zuschauer"
+    },
+    "Toast": {
+      "replacement-offer-summary": "Wechselanfrage",
+      "replacement-offer-detail": "Der Spieler {username} hat sich für einen Wechsel angeboten. Alle Spieler im Spiel müssen diesen rechtzeitig annehmen, um den Wechsel durchzuführen.",
+      "replacement-done-summary": "Wechsel durchgeführt",
+      "replacement-done-detail": "Der Spielerwechsel wurde durchgeführt. {replacedUsername} wurde durch {username} ersetzt. Viel Spaß weiter beim spielen.",
+      "replacement-stopped-summary": "Wechsel gescheitert",
+      "replacement-stopped-detail": "Der Spielerwechsel hat nicht stattgefunden. Vielleicht hat nicht jeder dem Wechsel zugestimmt oder die Anfrage wurde zurückgezogen."
     }
   },
   "Games": {

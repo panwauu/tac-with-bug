@@ -473,6 +473,14 @@
       "nooneWatching": "No spectators",
       "anonymousWatching": "{n} anonymous viewer | {n} anonymous viewers",
       "buttonLabel": "{n} spectator | {n} spectators"
+    },
+    "Toast": {
+      "replacement-offer-summary": "Substitution request",
+      "replacement-offer-detail": "The player {username} has offered to be transferred. \nAll players in the game must accept it in time to make the switch.",
+      "replacement-done-summary": "change performed",
+      "replacement-done-detail": "The player substitution has been carried out. {replacedUsername} has been replaced with {username}. Have fun playing.",
+      "replacement-stopped-summary": "Substitution failed",
+      "replacement-stopped-detail": "The player substitution did not take place. Maybe not everyone agreed to the move, or the request was withdrawn."
     }
   },
   "Games": {
