@@ -347,7 +347,8 @@
         "settings": "Settings",
         "assistance": "Control help",
         "errorreport": "Report an error",
-        "statistic": "Game statistics"
+        "statistic": "Game statistics",
+        "replacement": "Substitution"
       },
       "Settings": {
         "audioVolume": "Volume:",
@@ -388,6 +389,15 @@
         "teufel": "Whoever plays the devil card may look at the cards of the next player in the UZS and immediately play one of his cards and carry out the function with his balls.",
         "detailed": "The full instructions are available on the",
         "detailedLink": "official Tac website"
+      },
+      "Replacement": {
+        "explanation": "Player substitution helps continue the game when a player is no longer online. A spectator can offer to be a substitute and all other players must agree to the change.",
+        "offerButton": "Offer substitution",
+        "currentHeading": "Current substitution:",
+        "acceptButton": "Accept substitution",
+        "rejectButton": "Reject substitution",
+        "endOfferButton": "Withdraw substitution",
+        "currentlyNone": "There is currently no substitution"
       }
     },
     "EndedOverlay": {
