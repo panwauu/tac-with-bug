@@ -54,7 +54,7 @@
         </div>
       </div>
       <Button
-        v-if="updateData.gamePlayer != -1"
+        v-if="updateData.gamePlayer != -1 && updateData.gamePlayer != updateData.replacement.playerIndexToReplace"
         :disabled="updateData.replacement.acceptedByIndex.includes(updateData.gamePlayer)"
         class="p-button-success"
         :label="$t('Game.GameModal.Replacement.acceptButton')"
