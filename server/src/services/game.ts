@@ -258,8 +258,7 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
       coop: game.game.coop,
       nTeams: game.nTeams,
       nPlayers: game.nPlayers,
-      status:
-        game.status.substring(0, 3) === 'won' && game.status.length > 3 ? (game.game.teams[parseInt(game.status.substring(4))].includes(nPlayer) ? 'won' : 'lost') : game.status,
+      status: getStatusForOverview(game, nPlayer),
       created: game.created,
       lastPlayed: game.lastPlayed,
       players: game.players,
@@ -272,6 +271,17 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
   })
 
   return { games: games.sort(gamesSort(orderColumn, sortOrder ?? 1)), nEntries }
+}
+
+function getStatusForOverview(game: tDBTypes.GameForPlay, playerIndex: number) {
+  if (playerIndex >= game.nPlayers) {
+    return 'aborted'
+  }
+  if (game.status.substring(0, 3) === 'won' && game.status.length > 3) {
+    return game.game.teams[parseInt(game.status.substring(4))].includes(playerIndex) ? 'won' : 'lost'
+  }
+
+  return game.status
 }
 
 function gamesSort(sortField: string, sortOrder: number) {
