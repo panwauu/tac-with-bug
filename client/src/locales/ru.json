@@ -473,6 +473,14 @@
       "nooneWatching": "Нет зрителей",
       "anonymousWatching": "{n} анонимный зритель | {n} анонимных зрителей",
       "buttonLabel": "{n} зрителей | {n} зрителей"
+    },
+    "Toast": {
+      "replacement-offer-summary": "запрос на обмен",
+      "replacement-offer-detail": "Игрок {username} предложил перевод. Все игроки в игре должны принять это вовремя, чтобы совершить переключение.",
+      "replacement-done-summary": "выполненное изменение",
+      "replacement-done-detail": "Произведена смена игрока. {replacedUsername} заменено на {username}. Получайте удовольствие, играя.",
+      "replacement-stopped-summary": "Ошибка изменения",
+      "replacement-stopped-detail": "Смена игрока не состоялась. Возможно, не все согласились на переезд, или запрос был отозван."
     }
   },
   "Games": {

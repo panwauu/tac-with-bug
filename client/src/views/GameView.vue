@@ -33,7 +33,10 @@ import { sound } from '@/plugins/sound'
 import { audioHandler } from '@/services/compositionGame/audioHandler'
 import router from '@/router/index'
 import { GameSocketKey } from '@/services/injections'
+import { useToast } from 'primevue/usetoast'
+import { i18n } from '@/services/i18n'
 
+const toast = useToast()
 const gameSocket = registerGameSocket()
 provide(GameSocketKey, gameSocket)
 const miscState = useMisc()
@@ -53,6 +56,36 @@ gameSocket.on('game:online-players', miscState.setOnlinePlayers)
 gameSocket.on('update', updateHandler)
 gameSocket.on('reconnect_failed', closeGame)
 gameSocket.on('disconnect', closeGame)
+gameSocket.on('toast:replacement-offer', replacementOfferToast)
+gameSocket.on('toast:replacement-done', replacementDoneToast)
+gameSocket.on('toast:replacement-stopped', replacementStoppedToast)
+
+function replacementOfferToast(username: string) {
+  toast.add({
+    severity: 'warn',
+    life: 5000,
+    summary: i18n.global.t('Game.Toast.replacement-offer-summary'),
+    detail: i18n.global.t('Game.Toast.replacement-offer-detail', { username }),
+  })
+}
+
+function replacementDoneToast(username: string, replacedUsername: string) {
+  toast.add({
+    severity: 'success',
+    life: 5000,
+    summary: i18n.global.t('Game.Toast.replacement-done-summary'),
+    detail: i18n.global.t('Game.Toast.replacement-done-detail', { username, replacedUsername }),
+  })
+}
+
+function replacementStoppedToast() {
+  toast.add({
+    severity: 'error',
+    life: 5000,
+    summary: i18n.global.t('Game.Toast.replacement-stopped-summary'),
+    detail: i18n.global.t('Game.Toast.replacement-stopped-detail'),
+  })
+}
 
 onMounted(() => {
   positionStyles.onResize()
@@ -66,6 +99,9 @@ onUnmounted(() => {
   gameSocket.off('update', updateHandler)
   gameSocket.off('reconnect_failed', closeGame)
   gameSocket.off('disconnect', closeGame)
+  gameSocket.off('toast:replacement-offer', replacementOfferToast)
+  gameSocket.off('toast:replacement-done', replacementDoneToast)
+  gameSocket.off('toast:replacement-stopped', replacementStoppedToast)
   gameSocket.disconnect()
   sound.$stop()
 })
