@@ -1,10 +1,9 @@
-//import type { AbstractClassGame as game } from './game'
 import { Game } from '../game/game'
 import type { BallsType } from './typesBall'
 import type { PlayerCard } from './typesCard'
 import type { GameStatistic } from './typesStatistic'
 import type { Player } from './typesPlayers'
-import { Replacement } from './game'
+import type { Replacement } from './game'
 
 interface GameGeneral {
   id: number
@@ -31,6 +30,7 @@ export interface GameForPlay extends GameGeneral {
   game: Game
   colors: string[]
   rematch_open: boolean
+  replacement: Replacement | null
 }
 
 export interface UpdateDataType {
@@ -57,7 +57,7 @@ export interface UpdateDataType {
   lastPlayed: number
   rematch_open: boolean
   replacedPlayerIndices: number[]
-  replacement?: Replacement
+  replacement: Replacement | null
 }
 
 export type GetGamesType = {

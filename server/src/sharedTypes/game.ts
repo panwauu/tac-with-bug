@@ -22,7 +22,6 @@ export interface GameData {
   winningTeams: boolean[]
   statistic: tStatistic.GameStatistic[]
   replacedPlayerIndices: number[]
-  replacement?: Replacement
 }
 
 export type Replacement = {

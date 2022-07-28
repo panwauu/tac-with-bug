@@ -12,6 +12,7 @@ import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { getSocketByUserID } from '../socket/general'
+import { getReplacement } from './replacement'
 
 async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
   const query = `
@@ -49,6 +50,7 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
       game: new Game(0, 0, false, false, dbGame.game),
       colors: dbGame.colors,
       rematch_open: dbGame.rematch_open,
+      replacement: getReplacement(dbGame.id),
     })
   })
 
