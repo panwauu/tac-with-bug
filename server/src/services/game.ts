@@ -38,7 +38,6 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
   const games: tDBTypes.GameForPlay[] = []
 
   dbRes.rows.forEach((dbGame) => {
-    dbGame.players
     games.push({
       id: dbGame.id,
       status: dbGame.status,
