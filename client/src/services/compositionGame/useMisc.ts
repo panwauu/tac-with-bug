@@ -122,7 +122,7 @@ export function useMisc(nPlayers?: number): MiscStateType {
     setFlags: (data) => {
       miscState.aussetzenFlag = data.aussetzenFlag
       miscState.teufelFlag = data.teufelFlag
-      miscState.tournamentID = data.tournamentID
+      miscState.tournamentID = data.publicTournamentId
       miscState.rematch_open = data.rematch_open
     },
   })

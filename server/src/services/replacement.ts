@@ -44,7 +44,9 @@ export function checkReplacementConditions(game: GameForPlay, playerIndexToRepla
     game.replacement == null &&
     game.game.activePlayer === playerIndexToReplace &&
     Date.now() - game.lastPlayed > 60 * 1000 &&
-    !game.playerIDs.includes(replacementPlayerID)
+    !game.playerIDs.includes(replacementPlayerID) &&
+    game.privateTournamentId == null &&
+    game.publicTournamentId == null
   )
 }
 

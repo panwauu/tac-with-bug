@@ -35,7 +35,8 @@ export interface GameForPlay extends GameGeneral {
 
 export interface UpdateDataType {
   gamePlayer: number
-  tournamentID: number | null
+  publicTournamentId: number | null
+  privateTournamentId: number | null
   discardPile: string[]
   balls: BallsType
   priorBalls: BallsType

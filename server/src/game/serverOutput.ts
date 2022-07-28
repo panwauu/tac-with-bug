@@ -7,7 +7,8 @@ import type { UpdateDataType } from '../sharedTypes/typesDBgame'
 export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: number): UpdateDataType {
   return {
     gamePlayer: gamePlayer,
-    tournamentID: game.publicTournamentId,
+    publicTournamentId: game.publicTournamentId,
+    privateTournamentId: game.privateTournamentId,
     discardPile: game.game.cards.discardPile,
     balls: game.game.balls,
     priorBalls: game.game.priorBalls,

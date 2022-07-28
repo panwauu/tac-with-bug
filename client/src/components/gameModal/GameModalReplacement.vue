@@ -130,7 +130,9 @@ function updateReplacementPossible() {
     props.updateData.status === 'running' &&
     props.updateData.gamePlayer === -1 &&
     props.updateData.replacement == null &&
-    Date.now() - 60 * 1000 > props.updateData.lastPlayed
+    Date.now() - 60 * 1000 > props.updateData.lastPlayed &&
+    props.updateData.publicTournamentId == null &&
+    props.updateData.privateTournamentId == null
 }
 updateReplacementPossible()
 
