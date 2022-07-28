@@ -168,8 +168,8 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
   const games = await getGames(sqlClient, userID)
 
   return {
-    open: games.filter((g) => g.status === 'running').length,
-    aborted: games.filter((g) => g.status === 'aborted').length,
+    open: games.filter((g) => g.status === 'running' && g.playerIDs.findIndex((id) => id === userID) < g.nPlayers).length,
+    aborted: games.filter((g) => g.status === 'aborted' || g.playerIDs.findIndex((id) => id === userID) >= g.nPlayers).length,
     won: games.filter(
       (g) => g.status.substring(0, 4) === 'won-' && g.game.gameEnded && g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.findIndex((e) => e === userID)))]
     ).length,
@@ -191,7 +191,7 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
         }
       }),
     runningGames: games
-      .filter((g) => g.status === 'running')
+      .filter((g) => g.status === 'running' && g.playerIDs.findIndex((id) => id === userID) < g.nPlayers)
       .map((game) => {
         const teams = getTeamsFromGame(game)
 
