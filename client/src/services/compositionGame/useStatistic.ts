@@ -2,8 +2,8 @@ import { reactive, computed, ComputedRef } from 'vue'
 import { UnwrapNestedRefs } from '@/../node_modules/@vue/reactivity/dist/reactivity'
 import { i18n } from '@/services/i18n'
 
-import * as tPlayers from '@/../../server/src/sharedTypes/typesPlayers'
 import { GameStatistic, GameStatisticCardsType } from '@/../../server/src/sharedTypes/typesStatistic'
+import { UpdateDataType } from '../../../../server/src/sharedTypes/typesDBgame'
 
 type StatisticStateTypeNonReactive = {
   statistic: GameStatistic[]
@@ -18,7 +18,7 @@ type StatisticStateTypeNonReactive = {
     labels?: string[]
     datasets?: any[]
   }
-  setStatistic: (statistic: GameStatistic[], players: tPlayers.Player[], coopCounter: number, hexColors: string[]) => void
+  setStatistic: (updateData: UpdateDataType, hexColors: string[]) => void
 }
 
 export type StatisticStateType = UnwrapNestedRefs<StatisticStateTypeNonReactive>
@@ -48,21 +48,27 @@ export function useStatistic(): StatisticStateType {
 
       return result
     }),
-    setStatistic: (statistic, players, coopCounter, hexColors) => {
-      statisticState.statistic = statistic
+    setStatistic: (updateData, hexColors) => {
+      statisticState.statistic = updateData.statistic
+      const playerIndices = Array.from(Array(updateData.statistic.length - updateData.replacedPlayerIndices.length).keys()).concat(updateData.replacedPlayerIndices)
+      const teamIndices = updateData.coopCounter !== -1 ? Array(playerIndices.length).fill(0) : playerIndices.map((p) => updateData.teams.findIndex((t) => t.includes(p)))
 
-      if (statistic.length !== 0) {
+      if (updateData.statistic.length !== 0) {
         const data = {
           labelKeys: ['1o13cardsLayed', 'actionCardsTotal', 'actionCardsPlayed'],
           labels: ['', '', ''],
           datasets: [] as any[],
         }
-        for (let i = 0; i < players.length; i++) {
+        for (let i = 0; i < updateData.statistic.length; i++) {
           data.datasets.push({
-            label: players[i].name,
+            label: updateData.playernames[i] ?? '',
             backgroundColor: hexColors[i],
-            stack: coopCounter !== -1 ? 0 : players[i].team,
-            data: [statistic[i].cards['1'][0] + statistic[i].cards['13'][0], countSpecialCards(statistic[i].cards)[0], countSpecialCards(statistic[i].cards)[1]],
+            stack: teamIndices[i],
+            data: [
+              updateData.statistic[i].cards['1'][0] + updateData.statistic[i].cards['13'][0],
+              countSpecialCards(updateData.statistic[i].cards)[0],
+              countSpecialCards(updateData.statistic[i].cards)[1],
+            ],
           })
         }
 
@@ -77,21 +83,21 @@ export function useStatistic(): StatisticStateType {
         statisticState.cardStatistic = data
       }
 
-      if (statistic.length !== 0) {
+      if (updateData.statistic.length !== 0) {
         const data = {
           labelKeys: ['kickedBalls', 'numberSkipped', 'timePerPlay'],
           labels: ['', '', ''],
           datasets: [] as any[],
         }
-        for (let i = 0; i < players.length; i++) {
+        for (let i = 0; i < updateData.statistic.length; i++) {
           data.datasets.push({
-            label: players[i].name,
+            label: updateData.playernames[i] ?? '',
             backgroundColor: hexColors[i],
-            stack: coopCounter !== -1 ? 0 : players[i].team,
+            stack: teamIndices[i],
             data: [
-              statistic[i].actions.nBallsKickedEnemy + statistic[i].actions.nBallsKickedOwnTeam + statistic[i].actions.nBallsKickedSelf,
-              statistic[i].actions.nAussetzen,
-              statistic[i].actions.timePlayed / statistic[i].actions.nMoves,
+              updateData.statistic[i].actions.nBallsKickedEnemy + updateData.statistic[i].actions.nBallsKickedOwnTeam + updateData.statistic[i].actions.nBallsKickedSelf,
+              updateData.statistic[i].actions.nAussetzen,
+              updateData.statistic[i].actions.timePlayed / updateData.statistic[i].actions.nMoves,
             ],
           })
         }

@@ -59,6 +59,8 @@ export interface UpdateDataType {
   rematch_open: boolean
   replacedPlayerIndices: number[]
   replacement: Replacement | null
+  playernames: (string | null)[]
+  teams: number[][]
 }
 
 export type GetGamesType = {
