@@ -314,7 +314,7 @@ export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: Mov
   game.game.performAction(postMove, Math.floor((Date.now() - game.lastPlayed) / 1000))
 
   if (game.game.gameEnded) {
-    game.running = true
+    game.running = false
     game.rematch_open = true
   }
 
