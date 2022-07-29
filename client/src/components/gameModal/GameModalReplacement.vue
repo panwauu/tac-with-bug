@@ -127,7 +127,7 @@ const replacementPossible = ref(false)
 function updateReplacementPossible() {
   replacementPossible.value =
     props.updateData != null &&
-    props.updateData.status === 'running' &&
+    props.updateData.running &&
     props.updateData.gamePlayer === -1 &&
     props.updateData.replacement == null &&
     Date.now() - 60 * 1000 > props.updateData.lastPlayed &&

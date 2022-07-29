@@ -19,7 +19,7 @@ export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: nu
     winningTeams: game.game.winningTeams,
     aussetzenFlag: game.game.aussetzenFlag,
     teufelFlag: game.game.teufelFlag,
-    status: game.status,
+    running: game.running,
     coopCounter: game.game.coop
       ? game.game.statistic.reduce(function (accumulator, currentValue) {
           return accumulator + currentValue.cards.total[0]
@@ -88,15 +88,4 @@ function getCards(game: Game, player: number): tCard.PlayerCard[] {
   }
 
   return createCardsWithMovesForUnactivePlayer(game.cards.players[player])
-}
-
-export function getStatus(game: dbGame.GameForPlay) {
-  let status = 'running'
-  if (game.game.gameEnded) {
-    status = 'won'
-    if (!game.game.coop) {
-      status += '-' + game.game.winningTeams.findIndex((teamWinner) => teamWinner === true).toString()
-    }
-  }
-  return status
 }

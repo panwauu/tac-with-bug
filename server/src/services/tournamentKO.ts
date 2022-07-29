@@ -87,8 +87,11 @@ export function updateScore(tournament: PublicTournament | PrivateTournament, ga
 
 export type GetWinnerOfTournamentGameError = 'WINNER_OF_TOURNAMENT_GAME_NOT_FOUND'
 function getWinnerOfTournamentGame(game: GameForPlay, bracket: KoBracket, tournament: PublicTournament | PrivateTournament): Result<number, GetWinnerOfTournamentGameError> {
-  if (game.status.substring(0, 3) === 'won') {
-    const gameWinningTeam = parseInt(game.status[4])
+  if (!game.running && game.game.gameEnded) {
+    const gameWinningTeam = game.game.winningTeams.findIndex((w) => w === true)
+    if (gameWinningTeam === -1) {
+      return err('WINNER_OF_TOURNAMENT_GAME_NOT_FOUND')
+    }
     const gameWinningPlayer = game.players[game.game.teams[gameWinningTeam][0]] ?? ''
     const bracketWinningTeam = bracket.teams.find((t) => {
       return tournament.teams[t].players.includes(gameWinningPlayer)

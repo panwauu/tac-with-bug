@@ -136,7 +136,7 @@ describe('Game test suite via socket.io', () => {
       expect(generateGameSnapshot(result[0])).toMatchSnapshot()
       expect(generateGameSnapshot(result[1])).toMatchSnapshot()
       const game = result[0]
-      expect(game.status).toBe('won-0')
+      expect(game.running).toBe(true)
       expect(game.rematch_open).toBe(true)
     })
 

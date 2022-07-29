@@ -110,11 +110,11 @@ function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame
 }
 
 export function addWLStatistic(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay, nPlayer: number) {
-  if (game.status === 'aborted' || nPlayer >= game.nPlayers) {
+  if ((!game.running && !game.game.gameEnded) || nPlayer >= game.nPlayers) {
     return addWLStatisticAborted(playerStatistic, game)
   }
 
-  if (game.status === 'running') {
+  if (game.running) {
     playerStatistic.wl.nGamesRunning += 1
     return addToGamesHistory(playerStatistic, 'running')
   }
@@ -326,7 +326,7 @@ function getUserNetworkFromGamesEdges(games: tDBgame.GameForPlay[], nodes: tStat
 }
 
 function getUserNetworkFromGames(allGames: tDBgame.GameForPlay[], userID: number, username: string): tStatistic.UserNetwork {
-  const games = allGames.filter((g) => g.status !== 'aborted' && g.status !== 'running')
+  const games = allGames.filter((g) => g.game.gameEnded && !g.running)
 
   const nodes = getUserNetworkFromGamesNodes(games)
 

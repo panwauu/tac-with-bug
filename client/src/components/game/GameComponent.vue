@@ -252,7 +252,7 @@ async function updateHandler(): Promise<void> {
   props.miscState.setPlayers(props.updateData.players)
   props.miscState.setGameRunning(
     props.updateData.gameEnded,
-    props.updateData.status,
+    props.updateData.running,
     props.updateData.players,
     props.updateData.winningTeams,
     props.updateData.coopCounter,
