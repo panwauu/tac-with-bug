@@ -49,8 +49,6 @@ describe('Game test suite via socket.io', () => {
     await closeSockets([...gameSockets, ...usersWithSockets.map((uWS) => uWS.socket)])
   })
 
-  test.todo('Test offer conditions - bspw. not running game, ...')
-
   test('Should start replacement sucessfully', async () => {
     const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
 
