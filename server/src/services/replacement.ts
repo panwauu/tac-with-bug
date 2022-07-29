@@ -40,7 +40,7 @@ export async function endReplacementsByUserID(pgPool: pg.Pool, userID: number) {
 
 export function checkReplacementConditions(game: GameForPlay, playerIndexToReplace: number, replacementPlayerID: number): boolean {
   return (
-    game.status === 'running' &&
+    game.running &&
     game.replacement == null &&
     game.game.activePlayer === playerIndexToReplace &&
     Date.now() - game.lastPlayed > 60 * 1000 &&
@@ -129,7 +129,7 @@ export async function acceptReplacement(pgPool: pg.Pool, game: GameForPlay, user
     getSocketsInGame(nsp, game.id).forEach((s) =>
       s.emit('toast:replacement-done', game.replacement?.replacementUsername ?? '', game.players[game.replacement?.playerIndexToReplace ?? 0] ?? '')
     )
-    updateGame(pgPool, game.id, game.game.getJSON(), game.status, false, false)
+    await updateGame(pgPool, game.id, game.game.getJSON(), game.running, false, false)
 
     game.replacement = null
     setReplacement(game.id, null)

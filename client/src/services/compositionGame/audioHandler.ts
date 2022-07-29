@@ -15,7 +15,7 @@ export function audioHandler(newData: UpdateDataType, cardsState: CardsStateType
       sound.$play('lost')
     }
   } else if (
-    newData.status === 'running' &&
+    newData.running &&
     newData.cards.some((card) => card.possible === true) &&
     (cardsState.cards.every((card) => card.possible === false) || cardsState.cards.length === 0)
   ) {

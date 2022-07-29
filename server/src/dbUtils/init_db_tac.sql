@@ -140,7 +140,7 @@ CREATE SEQUENCE game_id_seq;
 
 CREATE TABLE games (
   id INT PRIMARY KEY DEFAULT nextval('game_id_seq'),
-  status varchar(20) NOT NULL,
+  running BOOLEAN NOT NULL DEFAULT TRUE,
   n_players int NOT NULL CHECK (
     n_players = 4
     OR n_players = 6

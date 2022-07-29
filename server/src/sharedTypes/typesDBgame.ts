@@ -7,7 +7,7 @@ import type { Replacement } from './game'
 
 interface GameGeneral {
   id: number
-  status: string
+  running: boolean
   nPlayers: number
   nTeams: number
   coop: boolean
@@ -21,6 +21,7 @@ interface GameGeneral {
 
 // Game from db
 export interface GameForOverview extends GameGeneral {
+  status: string
   coop: boolean
   teams: string[][]
   nPlayer: number
@@ -48,7 +49,7 @@ export interface UpdateDataType {
   aussetzenFlag: boolean
   teufelFlag: boolean
   discardedFlag: boolean
-  status: string
+  running: boolean
   coopCounter: number
   statistic: GameStatistic[]
   tradeDirection: number

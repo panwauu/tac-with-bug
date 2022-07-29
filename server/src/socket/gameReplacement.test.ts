@@ -14,13 +14,13 @@ const replacementStates: Record<string, Omit<Replacement, 'startDate'>> = {
     playerIndexToReplace: 2,
   },
   afterAccept1: {
-    acceptedByIndex: [1],
+    acceptedByIndex: [0],
     replacementUserID: 5,
     replacementUsername: 'UserE',
     playerIndexToReplace: 2,
   },
   afterAccept2: {
-    acceptedByIndex: [1, 2],
+    acceptedByIndex: [0, 1],
     replacementUserID: 5,
     replacementUsername: 'UserE',
     playerIndexToReplace: 2,
@@ -79,8 +79,7 @@ describe('Game test suite via socket.io', () => {
     const updateData = await Promise.all(updateGamePromise)
     for (const update of updateData) {
       expect(update.replacedPlayerIndices).toStrictEqual([])
-      expect(update.replacement).toMatchObject(replacementStates.afterReject)
-      expect(Date.now() - update.replacement.startDate).toBeLessThan(1000)
+      expect(update.replacement).toBeNull()
     }
   })
 
@@ -165,8 +164,9 @@ describe('Game test suite via socket.io', () => {
 
     const updateData = await Promise.all(updateGamePromise)
     for (const update of updateData) {
+      console.log(update)
       expect(update.replacedPlayerIndices).toStrictEqual([2])
-      expect(update.replacement).toMatchObject(replacementStates.afterAccept3)
+      expect(update.replacement).toBeNull()
     }
 
     expect(await changePlayerPromise[0]).toBe(2)

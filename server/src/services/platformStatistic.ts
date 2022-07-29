@@ -67,7 +67,7 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
             lastplayed - created as gameDuration,
             (SELECT SUM(cards) FROM (SELECT CAST(jsonb_extract_path(value, 'cards', 'total', '0') AS INTEGER) as cards 
               FROM jsonb_array_elements(game->'statistic')) as tcards) as playedcards
-        FROM games WHERE status!='running' AND status!='aborted') as t;`)
+        FROM games WHERE running=FALSE AND (game->'gameEnded')::BOOLEAN=TRUE) as t;`)
 
   const tutorialRes = await pgPool.query(`SELECT sum(tutorial)::INT as absolved_tutorial_steps FROM
 	(SELECT jsonb_array_elements(tutorial)::BOOLEAN::INT as tutorial FROM
@@ -274,7 +274,7 @@ export async function getPlatformStatistic(pgPool: pg.Pool): Promise<PlatformSta
   const activePlayerRes = await pgPool.query<{ created: string; userid: number }>(
     'SELECT userid, games.created FROM users_to_games LEFT JOIN games ON users_to_games.gameid=games.id;'
   )
-  const gameRes = await pgPool.query<{ created: string }>("SELECT created FROM games WHERE status = 'won' OR status = 'won-0' OR status = 'won-1' OR status = 'won-2';")
+  const gameRes = await pgPool.query<{ created: string }>("SELECT created FROM games WHERE running=FALSE AND (game->'gameEnded')::BOOLEAN=TRUE;")
 
   const hourDataset = createHourDataset(userRes.rows, gameRes.rows)
   const dayDataset = createDayDataset(userRes.rows, gameRes.rows)

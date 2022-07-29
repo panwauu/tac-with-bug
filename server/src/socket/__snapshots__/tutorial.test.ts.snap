@@ -334,6 +334,7 @@ Object {
           "state": "house",
         },
       ],
+      "replacedPlayerIndices": Array [],
       "sevenChosenPlayer": null,
       "statistic": Array [],
       "teams": Array [
@@ -514,6 +515,12 @@ Object {
       "7",
       "8",
     ],
+    "playernames": Array [
+      "Du",
+      "-Kai-",
+      "-Oskar-",
+      "-Sophia-",
+    ],
     "players": Array [
       Object {
         "active": false,
@@ -647,8 +654,18 @@ Object {
       },
     ],
     "rematch_open": false,
+    "replacedPlayerIndices": Array [],
     "statistic": Array [],
-    "status": "running",
+    "teams": Array [
+      Array [
+        0,
+        2,
+      ],
+      Array [
+        1,
+        3,
+      ],
+    ],
     "teufelFlag": false,
     "tradeDirection": -1,
     "winningTeams": Array [
@@ -1125,6 +1142,12 @@ Object {
       "7",
       "8",
     ],
+    "playernames": Array [
+      "Du",
+      "-Kai-",
+      "-Oskar-",
+      "-Sophia-",
+    ],
     "players": Array [
       Object {
         "active": true,
@@ -1259,7 +1282,16 @@ Object {
     ],
     "rematch_open": false,
     "statistic": Array [],
-    "status": "running",
+    "teams": Array [
+      Array [
+        0,
+        2,
+      ],
+      Array [
+        1,
+        3,
+      ],
+    ],
     "teufelFlag": false,
     "tradeDirection": -1,
     "winningTeams": Array [
@@ -1738,6 +1770,12 @@ Object {
       "7",
       "8",
     ],
+    "playernames": Array [
+      "Du",
+      "-Kai-",
+      "-Oskar-",
+      "-Sophia-",
+    ],
     "players": Array [
       Object {
         "active": true,
@@ -1872,7 +1910,16 @@ Object {
     ],
     "rematch_open": false,
     "statistic": Array [],
-    "status": "running",
+    "teams": Array [
+      Array [
+        0,
+        2,
+      ],
+      Array [
+        1,
+        3,
+      ],
+    ],
     "teufelFlag": false,
     "tradeDirection": -1,
     "winningTeams": Array [

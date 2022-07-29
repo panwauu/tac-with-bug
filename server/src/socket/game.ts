@@ -98,7 +98,7 @@ async function emitOnlinePlayersEvents(pgPool: pg.Pool, nsp: GameNamespace, game
 }
 
 async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePlayer: number, game: GameForPlay) {
-  if (game.status === 'running' && game.game.gameEnded === false && !game.game.cards.players.some((player) => player.length > 0)) {
+  if (game.running && game.game.gameEnded === false && !game.game.cards.players.some((player) => player.length > 0)) {
     const timeSinceLastPlayed = new Date().getTime() - new Date(game.lastPlayed).getTime()
     const delay = Math.max(Math.min(2000 - timeSinceLastPlayed, 2000), 0)
 
