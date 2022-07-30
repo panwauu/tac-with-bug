@@ -68,7 +68,7 @@ npm install
 
 cd server
 npm install
-npm run building
+npm run build-spec
 npm run tsc
 ```
 
@@ -76,7 +76,7 @@ Afterwards you can start the server and client.
 
 ```shell
 cd server
-npm run devStart
+npm run start:dev
 ```
 
 ```shell
