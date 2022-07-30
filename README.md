@@ -22,7 +22,7 @@ You will need the CLI for Postgres `psql`. I also recommend pgAdmin to manipulat
 
 - On Mac the easiest way is [Postgres.app](https://postgresapp.com).
 
-- On Ubuntu you can install the psql CLI only (without the postgres server). Sadly the version is only postgres 12 but it did not lead to problems up to now.
+- On Ubuntu you can install the psql CLI only (without the postgres server).
 
   ```
   sudo apt install postgresql-client
