@@ -53,7 +53,7 @@ Flags:
 
 ## Package Setup
 
-[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is divided into three main parts:
+[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is divided into the following main parts:
 
 | Folder             | Description                           |
 | ------------------ | ------------------------------------- |
