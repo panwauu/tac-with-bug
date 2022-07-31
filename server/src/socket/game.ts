@@ -7,8 +7,8 @@ import { getPlayerUpdateFromGame } from '../game/serverOutput'
 import { performMoveAndReturnGame, getGame } from '../services/game'
 import { gameSocketIOAuthentication } from '../helpers/authentication'
 import { initializeInfo } from './info'
-import { registerReplacementHandlers } from './gameReplacement'
-import { endReplacementIfRunning, endReplacementsByUserID } from '../services/replacement'
+import { registerSubstitutionHandlers } from './gameSubstitution'
+import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/substitution'
 
 export let nsp: GameNamespace
 
@@ -55,7 +55,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
 
     socket.on('disconnect', async () => {
       await emitOnlinePlayersEvents(pgPool, nspGame, socket.data.gameID ?? 0)
-      await endReplacementsByUserID(pgPool, socket.data.userID ?? -1)
+      await endSubstitutionsByUserID(pgPool, socket.data.userID ?? -1)
       logger.info(`User Disconnected: ${socket.data.userID}`)
     })
 
@@ -66,14 +66,14 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
       }
 
       const game = await performMoveAndReturnGame(pgPool, postMove, socket.data.gamePlayer, socket.data.gameID)
-      endReplacementIfRunning(game)
+      endSubstitutionIfRunning(game)
       getSocketsInGame(nspGame, socket.data.gameID).forEach((socketIterator) => {
         socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
       })
       dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
     })
 
-    registerReplacementHandlers(pgPool, socket)
+    registerSubstitutionHandlers(pgPool, socket)
   })
 }
 

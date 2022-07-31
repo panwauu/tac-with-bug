@@ -4,31 +4,31 @@ import logger from '../helpers/logger'
 import { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 import Joi from 'joi'
 import { getGame } from '../services/game'
-import { acceptReplacement, checkReplacementConditions, checkReplacementsForTime, rejectReplacement, startReplacement } from '../services/replacement'
+import { acceptSubstitution, checkSubstitutionConditions, checkSubstitutionsForTime, rejectSubstitution, startSubstitution } from '../services/substitution'
 import { getSocketsInGame, nsp } from './game'
 
-export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS) {
-  socket.on('replacement:offer', async (cb) => {
+export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocketS) {
+  socket.on('substitution:offer', async (cb) => {
     if (socket.data.gameID == null || socket.data.gamePlayer == null || socket.data.userID == null) {
       socket.disconnect()
       return cb({ status: 500 })
     }
 
-    await checkReplacementsForTime(pgPool)
+    await checkSubstitutionsForTime(pgPool)
     const game = await getGame(pgPool, socket.data.gameID)
 
-    if (!checkReplacementConditions(game, game.game.activePlayer, socket.data.userID)) {
+    if (!checkSubstitutionConditions(game, game.game.activePlayer, socket.data.userID)) {
       return cb({ status: 500 })
     }
 
-    await startReplacement(pgPool, game, socket.data.userID, game.game.activePlayer)
+    await startSubstitution(pgPool, game, socket.data.userID, game.game.activePlayer)
     getSocketsInGame(nsp, socket.data.gameID)
       .filter((s) => s.id !== socket.id)
-      .forEach((s) => s.emit('toast:replacement-offer', game.replacement?.replacementUsername ?? ''))
+      .forEach((s) => s.emit('toast:substitution-offer', game.substitution?.substitutionUsername ?? ''))
     return cb({ status: 200 })
   })
 
-  socket.on('replacement:answer', async (data, cb) => {
+  socket.on('substitution:answer', async (data, cb) => {
     if (socket.data.gameID == null || socket.data.gamePlayer == null || socket.data.userID == null) {
       socket.disconnect()
       return cb({ status: 500 })
@@ -42,22 +42,22 @@ export function registerReplacementHandlers(pgPool: pg.Pool, socket: GameSocketS
     }
 
     try {
-      await checkReplacementsForTime(pgPool)
+      await checkSubstitutionsForTime(pgPool)
       const game = await getGame(pgPool, socket.data.gameID)
 
       if (data.accept) {
-        const acceptRes = await acceptReplacement(pgPool, game, socket.data.userID)
+        const acceptRes = await acceptSubstitution(pgPool, game, socket.data.userID)
         if (acceptRes.isErr()) {
           return cb({ status: 500, error: acceptRes.error })
         }
       } else {
-        const rejectRes = await rejectReplacement(game, socket.data.userID)
+        const rejectRes = await rejectSubstitution(game, socket.data.userID)
         if (rejectRes.isErr()) {
           return cb({ status: 500 })
         }
         getSocketsInGame(nsp, socket.data.gameID)
           .filter((s) => s.id !== socket.id)
-          .forEach((s) => s.emit('toast:replacement-stopped'))
+          .forEach((s) => s.emit('toast:substitution-stopped'))
       }
 
       return cb({ status: 200 })

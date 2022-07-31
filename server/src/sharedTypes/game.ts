@@ -21,13 +21,13 @@ export interface GameData {
   gameEnded: boolean
   winningTeams: boolean[]
   statistic: tStatistic.GameStatistic[]
-  replacedPlayerIndices: number[]
+  substitutedPlayerIndices: number[]
 }
 
-export type Replacement = {
-  replacementUserID: number
-  replacementUsername: string
-  playerIndexToReplace: number
+export type Substitution = {
+  substitutionUserID: number
+  substitutionUsername: string
+  playerIndexToSubstitute: number
   acceptedByIndex: number[]
   startDate: number
 }

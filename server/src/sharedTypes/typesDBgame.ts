@@ -3,7 +3,7 @@ import type { BallsType } from './typesBall'
 import type { PlayerCard } from './typesCard'
 import type { GameStatistic } from './typesStatistic'
 import type { Player } from './typesPlayers'
-import type { Replacement } from './game'
+import type { Substitution } from './game'
 
 interface GameGeneral {
   id: number
@@ -31,7 +31,7 @@ export interface GameForPlay extends GameGeneral {
   game: Game
   colors: string[]
   rematch_open: boolean
-  replacement: Replacement | null
+  substitution: Substitution | null
 }
 
 export interface UpdateDataType {
@@ -58,8 +58,8 @@ export interface UpdateDataType {
   created: number
   lastPlayed: number
   rematch_open: boolean
-  replacedPlayerIndices: number[]
-  replacement: Replacement | null
+  substitutedPlayerIndices: number[]
+  substitution: Substitution | null
   playernames: (string | null)[]
   teams: number[][]
 }

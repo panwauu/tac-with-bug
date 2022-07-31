@@ -349,7 +349,7 @@
         "assistance": "Regelhilfe",
         "errorreport": "Fehler melden",
         "statistic": "Spielstatistik",
-        "replacement": "Spielerwechsel"
+        "substitution": "Spielerwechsel"
       },
       "Settings": {
         "audioVolume": "Lautstärke:",
@@ -391,7 +391,7 @@
         "detailed": "Die vollständige Anleitung gibt es auf der",
         "detailedLink": "offiziellen Tac Website"
       },
-      "Replacement": {
+      "Substitution": {
         "explanation": "Der Spielerwechsel hilft das Spiel fortzusetzen, wenn ein Spieler nicht mehr reagiert. Ein Zuschauer kann sich als Auswechselspieler anbieten und alle anderen Spieler müssen dem Wechsel zustimmen. Dafür muss der aktive Spieler seit einer Minute nicht gespielt haben und ein Zuschauer darf noch nicht in diesem Spiel gespielt haben.",
         "offerButton": "Wechsel anbieten",
         "currentlyNone": "Aktuell gibt es keinen Wechsel",
@@ -476,14 +476,14 @@
       "buttonLabel": "{n} Zuschauer | {n} Zuschauer"
     },
     "Toast": {
-      "replacement-offer-summary": "Wechselanfrage",
-      "replacement-offer-detail": "Der Spieler {username} hat sich für einen Wechsel angeboten. Alle Spieler im Spiel müssen diesen rechtzeitig annehmen, um den Wechsel durchzuführen.",
-      "replacement-done-summary": "Wechsel durchgeführt",
-      "replacement-done-detail": "Der Spielerwechsel wurde durchgeführt. {replacedUsername} wurde durch {username} ersetzt. Viel Spaß weiter beim spielen.",
-      "replacement-stopped-summary": "Wechsel gescheitert",
-      "replacement-stopped-detail": "Der Spielerwechsel hat nicht stattgefunden. Vielleicht hat nicht jeder dem Wechsel zugestimmt oder die Anfrage wurde zurückgezogen.",
-      "replacement-possible-summary": "Spielerwechsel möglich",
-      "replacement-possible-detail": "Der aktive Spieler hat schon etwas länger nicht mehr gespielt. Ein Spieler aus den Zuschauern kann jetzt gegen diesen ausgetauscht werden. Viel Glück beim Suchen!"
+      "substitution-offer-summary": "Wechselanfrage",
+      "substitution-offer-detail": "Der Spieler {username} hat sich für einen Wechsel angeboten. Alle Spieler im Spiel müssen diesen rechtzeitig annehmen, um den Wechsel durchzuführen.",
+      "substitution-done-summary": "Wechsel durchgeführt",
+      "substitution-done-detail": "Der Spielerwechsel wurde durchgeführt. {replacedUsername} wurde durch {username} ersetzt. Viel Spaß weiter beim spielen.",
+      "substitution-stopped-summary": "Wechsel gescheitert",
+      "substitution-stopped-detail": "Der Spielerwechsel hat nicht stattgefunden. Vielleicht hat nicht jeder dem Wechsel zugestimmt oder die Anfrage wurde zurückgezogen.",
+      "substitution-possible-summary": "Spielerwechsel möglich",
+      "substitution-possible-detail": "Der aktive Spieler hat schon etwas länger nicht mehr gespielt. Ein Spieler aus den Zuschauern kann jetzt gegen diesen ausgetauscht werden. Viel Glück beim Suchen!"
     }
   },
   "Games": {

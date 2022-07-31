@@ -349,7 +349,7 @@
         "assistance": "Control help",
         "errorreport": "Report an error",
         "statistic": "Game statistics",
-        "replacement": "Substitution"
+        "substitution": "Substitution"
       },
       "Settings": {
         "audioVolume": "Volume:",
@@ -391,7 +391,7 @@
         "detailed": "The full instructions are available on the",
         "detailedLink": "official Tac website"
       },
-      "Replacement": {
+      "Substitution": {
         "explanation": "Player substitution helps keep the game going when one player is unresponsive. A spectator can offer to be a substitute and all other players must agree to the change. For this, the active player must not have played for one minute and a spectator must not have played in this game.",
         "offerButton": "Offer substitution",
         "currentHeading": "Current substitution:",
@@ -476,14 +476,14 @@
       "buttonLabel": "{n} spectator | {n} spectators"
     },
     "Toast": {
-      "replacement-offer-summary": "Substitution request",
-      "replacement-offer-detail": "The player {username} has offered to be transferred. \nAll players in the game must accept it in time to make the switch.",
-      "replacement-done-summary": "Substitution performed",
-      "replacement-done-detail": "The player substitution has been carried out. {replacedUsername} has been replaced with {username}. Have fun playing.",
-      "replacement-stopped-summary": "Substitution failed",
-      "replacement-stopped-detail": "The player substitution did not take place. Maybe not everyone agreed to the move, or the request was withdrawn.",
-      "replacement-possible-summary": "Player substitution possible",
-      "replacement-possible-detail": "The active player hasn't played for a while. A player from the spectators can now be substituted for this one. Good luck with your search!"
+      "substitution-offer-summary": "Substitution request",
+      "substitution-offer-detail": "The player {username} has offered to be transferred. \nAll players in the game must accept it in time to make the switch.",
+      "substitution-done-summary": "Substitution performed",
+      "substitution-done-detail": "The player substitution has been carried out. {replacedUsername} has been replaced with {username}. Have fun playing.",
+      "substitution-stopped-summary": "Substitution failed",
+      "substitution-stopped-detail": "The player substitution did not take place. Maybe not everyone agreed to the move, or the request was withdrawn.",
+      "substitution-possible-summary": "Player substitution possible",
+      "substitution-possible-detail": "The active player hasn't played for a while. A player from the spectators can now be substituted for this one. Good luck with your search!"
     }
   },
   "Games": {
