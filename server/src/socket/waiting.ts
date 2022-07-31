@@ -243,5 +243,5 @@ async function createGameAux(sqlClient: pg.Pool, nPlayers: number, playerIDs: nu
     }
   }
 
-  return await createGame(sqlClient, teams, playersOrdered, meisterVersion, coop, colorsOrdered, undefined, undefined)
+  return createGame(sqlClient, teams, playersOrdered, meisterVersion, coop, colorsOrdered, undefined, undefined)
 }

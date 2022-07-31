@@ -136,7 +136,7 @@ export async function createGame(
         ${playerIDs.length === 6 ? ', ($6, $1, 4), ($7, $1, 5)' : ''};`
   await sqlClient.query(userToGameQuery, [createGameRes.rows[0].id, ...playerIDs])
 
-  return await getGame(sqlClient, createGameRes.rows[0].id)
+  return getGame(sqlClient, createGameRes.rows[0].id)
 }
 
 export async function updateGame(sqlClient: pg.Pool, gameID: number, gameJSON: string, running: boolean, setTimeFlag: boolean, openRematchFlag: boolean) {
