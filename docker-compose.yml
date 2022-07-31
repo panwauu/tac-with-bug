@@ -20,4 +20,4 @@ services:
       # store the data in a folder on the host to persist between containers
       - ./postgres-data:/var/lib/postgresql/data
       # copy the sql script to create tables
-      - ./server/src/dbUtils/initDB.sql:/docker-entrypoint-initdb.d/initDB.sql
+      - ./server/src/dbUtils/init_db_tac.sql:/docker-entrypoint-initdb.d/init_db_tac.sql

@@ -102,8 +102,11 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "./src/*",
-      "./coverage/*"
+      "src/*",
+      "coverage/*",
+      "playwright-report/*",
+      "public/*",
+      "test-results/*"
     ],
     "delay": 200
   },

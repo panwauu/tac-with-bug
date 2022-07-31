@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# This script populates the database from a .dump file
+# Flags:
+#    -f: filename of the dump (default: tac.dump)
+#    -u: TWB username (default: Oskar)
+#        Password of this user will be applied to all users so that you can login into all of them
+
 username='Oskar'
 filename='tac.dump'
 
