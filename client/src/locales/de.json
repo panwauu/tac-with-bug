@@ -399,7 +399,8 @@
         "rejectButton": "Wechsel ablehnen",
         "acceptButton": "Wechsel akzeptieren",
         "currentHeading": "Aktueller Wechsel:"
-      }
+      },
+      "SubstitutedPlayersHeader": "Ausgewechselte Spieler:"
     },
     "EndedOverlay": {
       "statistic": "Statistik",

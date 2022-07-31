@@ -129,7 +129,7 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
     getSocketsInGame(nsp, game.id).forEach((s) =>
       s.emit('toast:substitution-done', game.substitution?.substitutionUsername ?? '', game.players[game.substitution?.playerIndexToSubstitute ?? 0] ?? '')
     )
-    await updateGame(pgPool, game.id, game.game.getJSON(), game.running, false, false)
+    await updateGame(pgPool, game.id, game.game.getJSON(), game.running, true, false)
 
     game.substitution = null
     setSubstitution(game.id, null)

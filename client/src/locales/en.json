@@ -399,7 +399,8 @@
         "rejectButton": "Reject substitution",
         "endOfferButton": "Withdraw substitution",
         "currentlyNone": "There is currently no substitution"
-      }
+      },
+      "SubstitutedPlayersHeader": "Substituted players:"
     },
     "EndedOverlay": {
       "statistic": "Statistics",

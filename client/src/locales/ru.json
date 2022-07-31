@@ -399,7 +399,8 @@
         "rejectButton": "отклонить изменение",
         "endOfferButton": "отозвать переводной вексель",
         "currentlyNone": "В настоящее время нет изменений"
-      }
+      },
+      "SubstitutedPlayersHeader": "Замененные игроки:"
     },
     "EndedOverlay": {
       "statistic": "Статистика",
