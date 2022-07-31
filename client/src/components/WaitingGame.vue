@@ -43,7 +43,10 @@
       </Tag>
       <Tag class="status-badge">
         {{ active ? $t(`Waiting.Icons.${game.private ? 'private' : 'public'}`) : '' }}
-        <i :class="`pi pi-lock${game.private ? '' : '-open'} Symbol ${active ? 'SymbolMargin' : ''}`" />
+        <i
+          :class="`pi pi-lock${game.private ? '' : '-open'} Symbol ${active ? 'SymbolMargin' : ''}`"
+          aria-hidden="true"
+        />
       </Tag>
     </div>
     <div

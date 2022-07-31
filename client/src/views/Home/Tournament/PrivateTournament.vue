@@ -14,9 +14,12 @@
 
     <h3>{{ tournament.title }}:</h3>
     <TournamentStatusBadge :status="tournament.status" />
-    <table class="tournamentInfoTable">
+    <table
+      class="tournamentInfoTable"
+      :aria-label="$t('Tournament.Private.tableDescription')"
+    >
       <tr>
-        <td>{{ $t('Tournament.Private.admin') }}</td>
+        <th>{{ $t('Tournament.Private.admin') }}</th>
         <td>
           <PlayerWithPicture
             :username="tournament.adminPlayer"
@@ -25,15 +28,15 @@
         </td>
       </tr>
       <tr>
-        <td>{{ $t('Tournament.Private.playersPerGame') }}</td>
+        <th>{{ $t('Tournament.Private.playersPerGame') }}</th>
         <td>{{ tournament.playersPerTeam }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Tournament.Private.teamsPerGame') }}</td>
+        <th>{{ $t('Tournament.Private.teamsPerGame') }}</th>
         <td>{{ tournament.teamsPerMatch }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Tournament.Private.playersPerTournament') }}</td>
+        <th>{{ $t('Tournament.Private.playersPerTournament') }}</th>
         <td>{{ tournament.nTeams }}</td>
       </tr>
     </table>

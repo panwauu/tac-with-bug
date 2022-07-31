@@ -10,12 +10,12 @@
           class="carousel-element"
           :class="{ 'p-card': usePCardStyle, 'custom-card': !usePCardStyle }"
         >
-          <table>
+          <table :aria-label="$t('Advertisement.FunFacts.tableDescription')">
             <tr
               v-for="fact in Object.entries(slotProps.data)"
               :key="`Funfact-${fact[0]}`"
             >
-              <td style="padding-right: 10px">{{ $t(`Advertisement.FunFacts.${fact[0]}`) }}</td>
+              <th style="padding-right: 10px">{{ $t(`Advertisement.FunFacts.${fact[0]}`) }}</th>
               <td v-if="fact[0] === 'mostLoved' || fact[0] === 'leastLoved'">
                 <BallsImage
                   style="height: 30px"
