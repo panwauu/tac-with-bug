@@ -109,7 +109,6 @@ onUnmounted(() => {
 let substitutionTimeout: number
 function updateSubstitutionTimeout(updateData: UpdateDataType) {
   clearTimeout(substitutionTimeout)
-  const toast = useToast()
   const timeout = updateData.lastPlayed + 60 * 1000 - Date.now()
   if (timeout < 0) {
     return
@@ -117,7 +116,7 @@ function updateSubstitutionTimeout(updateData: UpdateDataType) {
   substitutionTimeout = window.setTimeout(() => {
     toast.add({
       severity: 'warn',
-      life: 5000,
+      life: 10000,
       summary: i18n.global.t('Game.Toast.replacement-possible-summary'),
       detail: i18n.global.t('Game.Toast.replacement-possible-detail'),
     })
