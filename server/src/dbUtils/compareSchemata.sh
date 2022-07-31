@@ -8,8 +8,10 @@ NC='\e[0m'
 ### Get the server schema
 postgresConnectionString=$(heroku config:get DATABASE_URL -a tac-with-bug)
 postgresUser="$(echo $postgresConnectionString | sed -E 's+postgres://++g' | sed -E 's+:.*++g')"
+[ -z "$postgresUser" ] && echo "${RED}Could not determine postgres User. Mostly likely no connection to heroku was established${NC}" && exit 1
 
 heroku run -a tac-with-bug "pg_dump -s $postgresConnectionString" | sed -E "s/$postgresUser/postgres/g" > server_schema.sql
+[ ! -s server_schema.sql ] && echo "${RED}Could not download server schema${NC}" && exit 1
 
 ### Populate test and server database with the schema
 set -e
