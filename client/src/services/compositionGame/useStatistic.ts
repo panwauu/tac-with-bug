@@ -50,7 +50,7 @@ export function useStatistic(): StatisticStateType {
     }),
     setStatistic: (updateData, hexColors) => {
       statisticState.statistic = updateData.statistic
-      const playerIndices = Array.from(Array(updateData.statistic.length - updateData.replacedPlayerIndices.length).keys()).concat(updateData.replacedPlayerIndices)
+      const playerIndices = Array.from(Array(updateData.statistic.length - updateData.substitutedPlayerIndices.length).keys()).concat(updateData.substitutedPlayerIndices)
       const teamIndices = updateData.coopCounter !== -1 ? Array(playerIndices.length).fill(0) : playerIndices.map((p) => updateData.teams.findIndex((t) => t.includes(p)))
 
       if (updateData.statistic.length !== 0) {

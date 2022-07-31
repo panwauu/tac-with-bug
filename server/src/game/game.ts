@@ -36,7 +36,7 @@ export class Game implements GameData {
   winningTeams: boolean[]
 
   statistic: tStatistic.GameStatistic[]
-  replacedPlayerIndices: number[]
+  substitutedPlayerIndices: number[]
 
   constructor(nPlayers: number, nTeams: number, meisterVersion: boolean, coop: boolean, gameLoad?: GameData) {
     if (gameLoad != null) {
@@ -61,7 +61,7 @@ export class Game implements GameData {
       this.winningTeams = gameLoad.winningTeams
       this.statistic = gameLoad.statistic
       this.sevenChosenPlayer = gameLoad?.sevenChosenPlayer ?? null
-      this.replacedPlayerIndices = gameLoad?.replacedPlayerIndices ?? []
+      this.substitutedPlayerIndices = gameLoad?.substitutedPlayerIndices ?? []
     } else {
       if (nPlayers !== 4 && nPlayers !== 6) {
         throw new Error('Invalid Player Number -> only 4 or 6')
@@ -98,7 +98,7 @@ export class Game implements GameData {
 
       this.tradeCards = nPlayers === 4 ? ['', '', '', ''] : ['', '', '', '', '', '']
       this.narrFlag = nPlayers === 4 ? [false, false, false, false] : [false, false, false, false, false, false]
-      this.replacedPlayerIndices = []
+      this.substitutedPlayerIndices = []
     }
   }
 

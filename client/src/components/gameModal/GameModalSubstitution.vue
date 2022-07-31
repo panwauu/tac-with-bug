@@ -1,21 +1,21 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
     <div class="instruction-text">
-      {{ $t('Game.GameModal.Replacement.explanation') }}
+      {{ $t('Game.GameModal.Substitution.explanation') }}
     </div>
 
     <Button
-      :disabled="!replacementPossible"
-      :label="$t('Game.GameModal.Replacement.offerButton')"
+      :disabled="!substitutionPossible"
+      :label="$t('Game.GameModal.Substitution.offerButton')"
       class="p-button-success"
-      @click="startReplacement"
+      @click="startSubstitution"
     />
 
-    <h3>{{ $t('Game.GameModal.Replacement.currentHeading') }}</h3>
-    <template v-if="updateData?.replacement != null">
+    <h3>{{ $t('Game.GameModal.Substitution.currentHeading') }}</h3>
+    <template v-if="updateData?.substitution != null">
       <div style="display: flex; align-items: center; margin-bottom: 10px">
         <PlayerWithPicture
-          :username="updateData.replacement.replacementUsername"
+          :username="updateData.substitution.substitutionUsername"
           :clickable="false"
           :nameFirst="false"
         />
@@ -25,24 +25,24 @@
           aria-hidden="true"
         ></i>
         <PlayerWithPicture
-          :username="updateData.players[updateData?.replacement.playerIndexToReplace].name"
+          :username="updateData.players[updateData?.substitution.playerIndexToSubstitute].name"
           :clickable="false"
         />
       </div>
       <CountdownTimer
         mode="down"
-        :initialMilliseconds="60 * 1000 + updateData.replacement.startDate - Date.now()"
+        :initialMilliseconds="60 * 1000 + updateData.substitution.startDate - Date.now()"
         largestUnit="seconds"
         style="min-width: 150px"
       />
       <div style="margin: 15px 0">
         <div
-          v-for="player in updateData.players.filter((_, i) => i != updateData?.replacement?.playerIndexToReplace)"
-          :key="`replacement_player_${player.name}`"
+          v-for="player in updateData.players.filter((_, i) => i != updateData?.substitution?.playerIndexToSubstitute)"
+          :key="`substitution_player_${player.name}`"
           style="display: flex; align-items: center"
         >
           <i
-            :class="updateData.replacement.acceptedByIndex?.includes(player.playerNumber) ? 'pi pi-check green' : 'pi pi-spin pi-spinner'"
+            :class="updateData.substitution.acceptedByIndex?.includes(player.playerNumber) ? 'pi pi-check green' : 'pi pi-spin pi-spinner'"
             style="margin: 0 10px 0 0"
             aria-hidden="true"
           ></i>
@@ -54,26 +54,26 @@
         </div>
       </div>
       <Button
-        v-if="updateData.gamePlayer != -1 && updateData.gamePlayer != updateData.replacement.playerIndexToReplace"
-        :disabled="updateData.replacement.acceptedByIndex.includes(updateData.gamePlayer)"
+        v-if="updateData.gamePlayer != -1 && updateData.gamePlayer != updateData.substitution.playerIndexToSubstitute"
+        :disabled="updateData.substitution.acceptedByIndex.includes(updateData.gamePlayer)"
         class="p-button-success"
-        :label="$t('Game.GameModal.Replacement.acceptButton')"
-        @click="answerReplacement(true)"
+        :label="$t('Game.GameModal.Substitution.acceptButton')"
+        @click="answerSubstitution(true)"
       />
       <Button
         v-if="updateData.gamePlayer != -1"
         class="p-button-danger"
-        :label="$t('Game.GameModal.Replacement.rejectButton')"
-        @click="answerReplacement(false)"
+        :label="$t('Game.GameModal.Substitution.rejectButton')"
+        @click="answerSubstitution(false)"
       />
       <Button
-        v-if="updateData.replacement.replacementUsername === username"
+        v-if="updateData.substitution.substitutionUsername === username"
         class="p-button-danger"
-        :label="$t('Game.GameModal.Replacement.endOfferButton')"
-        @click="answerReplacement(false)"
+        :label="$t('Game.GameModal.Substitution.endOfferButton')"
+        @click="answerSubstitution(false)"
       />
     </template>
-    <div v-else>{{ $t('Game.GameModal.Replacement.currentlyNone') }}</div>
+    <div v-else>{{ $t('Game.GameModal.Substitution.currentlyNone') }}</div>
   </div>
 </template>
 
@@ -93,11 +93,11 @@ const props = defineProps<{ updateData: UpdateDataType | null }>()
 const gameSocket = inject(GameSocketKey)
 const toast = useToast()
 
-async function startReplacement() {
+async function startSubstitution() {
   if (gameSocket == null) {
     return
   }
-  const res = await gameSocket.emitWithAck(2000, 'replacement:offer')
+  const res = await gameSocket.emitWithAck(2000, 'substitution:offer')
   if (res.status !== 200) {
     toast.add({
       severity: 'error',
@@ -108,11 +108,11 @@ async function startReplacement() {
   }
 }
 
-async function answerReplacement(accept: boolean) {
+async function answerSubstitution(accept: boolean) {
   if (gameSocket == null) {
     return
   }
-  const res = await gameSocket.emitWithAck(2000, 'replacement:answer', { accept })
+  const res = await gameSocket.emitWithAck(2000, 'substitution:answer', { accept })
   if (res.status !== 200) {
     toast.add({
       severity: 'error',
@@ -123,21 +123,21 @@ async function answerReplacement(accept: boolean) {
   }
 }
 
-const replacementPossible = ref(false)
-function updateReplacementPossible() {
-  replacementPossible.value =
+const substitutionPossible = ref(false)
+function updateSubstitutionPossible() {
+  substitutionPossible.value =
     props.updateData != null &&
     props.updateData.running &&
     props.updateData.gamePlayer === -1 &&
-    props.updateData.replacement == null &&
+    props.updateData.substitution == null &&
     Date.now() - 60 * 1000 > props.updateData.lastPlayed &&
     props.updateData.publicTournamentId == null &&
     props.updateData.privateTournamentId == null
 }
-updateReplacementPossible()
+updateSubstitutionPossible()
 
 const interval = window.setInterval(() => {
-  updateReplacementPossible()
+  updateSubstitutionPossible()
 }, 500)
 
 onBeforeUnmount(() => {

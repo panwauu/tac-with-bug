@@ -60,11 +60,11 @@
               @click="openModal('assistance')"
             />
             <Button
-              aria-label="Replacement"
+              aria-label="Substitution"
               icon="pi pi-arrows-h"
               class="p-button-rounded p-button-warning landscapeMenuButton"
-              :class="updateData?.replacement != null ? 'blink-animation' : ''"
-              @click="openModal('replacement')"
+              :class="updateData?.substitution != null ? 'blink-animation' : ''"
+              @click="openModal('substitution')"
             />
             <GameWatchingPlayers
               aria-label="Watching Players"
@@ -174,8 +174,8 @@
         :miscState="miscState"
       />
       <GameModalAssistance v-if="modalStateLocal === 'assistance'" />
-      <GameModalReplacement
-        v-if="modalStateLocal === 'replacement'"
+      <GameModalSubstitution
+        v-if="modalStateLocal === 'substitution'"
         :updateData="updateData"
       />
     </Dialog>
@@ -191,7 +191,7 @@ import GameBoard from '@/components/game/GameBoard.vue'
 import OwnCards from '@/components/game/OwnCards.vue'
 import GameModalSettings from '@/components/gameModal/GameModalSettings.vue'
 import GameModalAssistance from '@/components/gameModal/GameModalAssistance.vue'
-import GameModalReplacement from '@/components/gameModal/GameModalReplacement.vue'
+import GameModalSubstitution from '@/components/gameModal/GameModalSubstitution.vue'
 import GameStatistic from '@/components/game/GameStatistic.vue'
 import Fieldset from 'primevue/fieldset'
 import RematchForm from './RematchForm.vue'
@@ -327,10 +327,10 @@ function getMenu(displayText: boolean) {
       },
     },
     {
-      label: displayText ? i18n.global.t('Game.GameModal.title.replacement') : '',
+      label: displayText ? i18n.global.t('Game.GameModal.title.substitution') : '',
       icon: 'pi pi-arrows-h',
       command: () => {
-        openModal('replacement')
+        openModal('substitution')
       },
     },
   ]

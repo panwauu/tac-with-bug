@@ -56,34 +56,34 @@ gameSocket.on('game:online-players', miscState.setOnlinePlayers)
 gameSocket.on('update', updateHandler)
 gameSocket.on('reconnect_failed', closeGame)
 gameSocket.on('disconnect', closeGame)
-gameSocket.on('toast:replacement-offer', replacementOfferToast)
-gameSocket.on('toast:replacement-done', replacementDoneToast)
-gameSocket.on('toast:replacement-stopped', replacementStoppedToast)
+gameSocket.on('toast:substitution-offer', substitutionOfferToast)
+gameSocket.on('toast:substitution-done', substitutionDoneToast)
+gameSocket.on('toast:substitution-stopped', substitutionStoppedToast)
 
-function replacementOfferToast(username: string) {
+function substitutionOfferToast(username: string) {
   toast.add({
     severity: 'warn',
     life: 5000,
-    summary: i18n.global.t('Game.Toast.replacement-offer-summary'),
-    detail: i18n.global.t('Game.Toast.replacement-offer-detail', { username }),
+    summary: i18n.global.t('Game.Toast.substitution-offer-summary'),
+    detail: i18n.global.t('Game.Toast.substitution-offer-detail', { username }),
   })
 }
 
-function replacementDoneToast(username: string, replacedUsername: string) {
+function substitutionDoneToast(username: string, replacedUsername: string) {
   toast.add({
     severity: 'success',
     life: 5000,
-    summary: i18n.global.t('Game.Toast.replacement-done-summary'),
-    detail: i18n.global.t('Game.Toast.replacement-done-detail', { username, replacedUsername }),
+    summary: i18n.global.t('Game.Toast.substitution-done-summary'),
+    detail: i18n.global.t('Game.Toast.substitution-done-detail', { username, replacedUsername }),
   })
 }
 
-function replacementStoppedToast() {
+function substitutionStoppedToast() {
   toast.add({
     severity: 'error',
     life: 5000,
-    summary: i18n.global.t('Game.Toast.replacement-stopped-summary'),
-    detail: i18n.global.t('Game.Toast.replacement-stopped-detail'),
+    summary: i18n.global.t('Game.Toast.substitution-stopped-summary'),
+    detail: i18n.global.t('Game.Toast.substitution-stopped-detail'),
   })
 }
 
@@ -99,9 +99,9 @@ onUnmounted(() => {
   gameSocket.off('update', updateHandler)
   gameSocket.off('reconnect_failed', closeGame)
   gameSocket.off('disconnect', closeGame)
-  gameSocket.off('toast:replacement-offer', replacementOfferToast)
-  gameSocket.off('toast:replacement-done', replacementDoneToast)
-  gameSocket.off('toast:replacement-stopped', replacementStoppedToast)
+  gameSocket.off('toast:substitution-offer', substitutionOfferToast)
+  gameSocket.off('toast:substitution-done', substitutionDoneToast)
+  gameSocket.off('toast:substitution-stopped', substitutionStoppedToast)
   gameSocket.disconnect()
   sound.$stop()
 })
@@ -117,8 +117,8 @@ function updateSubstitutionTimeout(updateData: UpdateDataType) {
     toast.add({
       severity: 'warn',
       life: 10000,
-      summary: i18n.global.t('Game.Toast.replacement-possible-summary'),
-      detail: i18n.global.t('Game.Toast.replacement-possible-detail'),
+      summary: i18n.global.t('Game.Toast.substitution-possible-summary'),
+      detail: i18n.global.t('Game.Toast.substitution-possible-detail'),
     })
   }, timeout)
 }
