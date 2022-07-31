@@ -74,6 +74,22 @@
       />
     </template>
     <div v-else>{{ $t('Game.GameModal.Substitution.currentlyNone') }}</div>
+
+    <template v-if="updateData != null && updateData.playernames.length > updateData.players.length">
+      <h3>{{ $t('Game.GameModal.SubstitutedPlayersHeader') }}</h3>
+      <div
+        v-for="(substitutedUsername, substitutionIndex) in updateData.playernames.filter((_, i) => i >= (updateData?.players.length ?? 0))"
+        :key="`substitutedUser_${substitutedUsername}`"
+        class="substitutedPlayerElement"
+      >
+        <PlayerWithPicture
+          :username="substitutedUsername ?? ''"
+          :nameFirst="false"
+          style="margin-right: 15px"
+        />
+        <BallsImage :color="updateData.colors[updateData.substitutedPlayerIndices[substitutionIndex]]" />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -81,6 +97,7 @@
 import Button from 'primevue/button'
 import PlayerWithPicture from '../PlayerWithPicture.vue'
 import CountdownTimer from '../CountdownTimer.vue'
+import BallsImage from '../assets/BallsImage.vue'
 
 import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 import { GameSocketKey } from '@/services/injections'
@@ -153,5 +170,9 @@ onBeforeUnmount(() => {
 }
 .green {
   color: var(--green-600);
+}
+.substitutedPlayerElement {
+  display: flex;
+  margin-bottom: 5px;
 }
 </style>
