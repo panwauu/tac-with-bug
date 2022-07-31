@@ -106,8 +106,27 @@ onUnmounted(() => {
   sound.$stop()
 })
 
+let substitutionTimeout: number
+function updateSubstitutionTimeout(updateData: UpdateDataType) {
+  clearTimeout(substitutionTimeout)
+  const toast = useToast()
+  const timeout = updateData.lastPlayed + 60 * 1000 - Date.now()
+  if (timeout < 0) {
+    return
+  }
+  substitutionTimeout = window.setTimeout(() => {
+    toast.add({
+      severity: 'warn',
+      life: 5000,
+      summary: i18n.global.t('Game.Toast.replacement-possible-summary'),
+      detail: i18n.global.t('Game.Toast.replacement-possible-detail'),
+    })
+  }, timeout)
+}
+
 async function updateHandler(data: UpdateDataType): Promise<void> {
   audioHandler(data, cardsState, miscState)
+  updateSubstitutionTimeout(data)
   updateData.value = data
 }
 

@@ -480,7 +480,9 @@
       "replacement-done-summary": "выполненное изменение",
       "replacement-done-detail": "Произведена смена игрока. {replacedUsername} заменено на {username}. Получайте удовольствие, играя.",
       "replacement-stopped-summary": "Ошибка изменения",
-      "replacement-stopped-detail": "Смена игрока не состоялась. Возможно, не все согласились на переезд, или запрос был отозван."
+      "replacement-stopped-detail": "Смена игрока не состоялась. Возможно, не все согласились на переезд, или запрос был отозван.",
+      "replacement-possible-summary": "Возможна смена игрока",
+      "replacement-possible-detail": "Активный игрок некоторое время не играл. \nИгрока из зрителей теперь можно обменять на этого. \nУдачи в вашем поиске!"
     }
   },
   "Games": {

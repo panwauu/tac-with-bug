@@ -480,7 +480,9 @@
       "replacement-done-summary": "Wechsel durchgeführt",
       "replacement-done-detail": "Der Spielerwechsel wurde durchgeführt. {replacedUsername} wurde durch {username} ersetzt. Viel Spaß weiter beim spielen.",
       "replacement-stopped-summary": "Wechsel gescheitert",
-      "replacement-stopped-detail": "Der Spielerwechsel hat nicht stattgefunden. Vielleicht hat nicht jeder dem Wechsel zugestimmt oder die Anfrage wurde zurückgezogen."
+      "replacement-stopped-detail": "Der Spielerwechsel hat nicht stattgefunden. Vielleicht hat nicht jeder dem Wechsel zugestimmt oder die Anfrage wurde zurückgezogen.",
+      "replacement-possible-summary": "Spielerwechsel möglich",
+      "replacement-possible-detail": "Der aktive Spieler hat schon etwas länger nicht mehr gespielt. Ein Spieler aus den Zuschauern kann jetzt gegen diesen ausgetauscht werden. Viel Glück beim Suchen!"
     }
   },
   "Games": {

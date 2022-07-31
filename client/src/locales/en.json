@@ -480,7 +480,9 @@
       "replacement-done-summary": "Substitution performed",
       "replacement-done-detail": "The player substitution has been carried out. {replacedUsername} has been replaced with {username}. Have fun playing.",
       "replacement-stopped-summary": "Substitution failed",
-      "replacement-stopped-detail": "The player substitution did not take place. Maybe not everyone agreed to the move, or the request was withdrawn."
+      "replacement-stopped-detail": "The player substitution did not take place. Maybe not everyone agreed to the move, or the request was withdrawn.",
+      "replacement-possible-summary": "Player substitution possible",
+      "replacement-possible-detail": "The active player hasn't played for a while. A player from the spectators can now be substituted for this one. Good luck with your search!"
     }
   },
   "Games": {
