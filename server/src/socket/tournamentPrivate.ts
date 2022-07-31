@@ -4,9 +4,9 @@ import * as tTournament from '../sharedTypes/typesTournament'
 import Joi from 'joi'
 
 import logger from '../helpers/logger'
-import { getPrivateTournament } from '../services/tournamentsPrivate'
 import { getUser } from '../services/user'
 import {
+  getPrivateTournament,
   abortPrivateTournament,
   activatePlayer,
   addPlayer,
