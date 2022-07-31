@@ -234,7 +234,6 @@ describe('Sign-Up', () => {
 
     let dbRes = await testServer.pgPool.query('SELECT * FROM users WHERE username = $1', [validBody.username])
     expect(dbRes.rowCount).toBe(1)
-    let token = dbRes.rows[0].token
     const userID = dbRes.rows[0].id
 
     expect(dbRes.rows[0].activated).toBe(false)
@@ -246,7 +245,7 @@ describe('Sign-Up', () => {
 
     dbRes = await testServer.pgPool.query('SELECT * FROM users WHERE username = $1', [validBody.username])
     expect(dbRes.rowCount).toBe(1)
-    token = dbRes.rows[0].token
+    let token = dbRes.rows[0].token
 
     response = await testAgent.get('/gameApi/activation').query({ userID, token: token })
     expect(response.statusCode).toBe(200)

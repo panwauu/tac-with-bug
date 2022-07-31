@@ -14,8 +14,7 @@ import {
   setPlayerReady,
   createRematchGame,
 } from '../services/waiting'
-import { createGame } from '../services/game'
-import { getGame } from '../services/game'
+import { getGame, createGame } from '../services/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from './games'
 import { sendUpdatesOfGameToPlayers } from './game'
 import { getUser } from '../services/user'
