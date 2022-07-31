@@ -229,10 +229,10 @@ export function sevenReconstructPath(balls: tBall.BallsType, nBall: number, goal
   const endPaths: number[][] = []
   let finalPath: number[] | undefined
   for (let move = 0; move < 7; move++) {
-    for (let i = 0; i < startPaths.length; i++) {
-      const oneStepPositions = moveOneStep(balls, nBall, startPaths[i][startPaths[i].length - 1], 1, 7)
+    for (const startPath of startPaths) {
+      const oneStepPositions = moveOneStep(balls, nBall, startPath[startPath.length - 1], 1, 7)
       oneStepPositions.forEach((newPos) => {
-        endPaths.push(startPaths[i].concat([newPos]))
+        endPaths.push(startPath.concat([newPos]))
       })
     }
     finalPath = endPaths.find((path) => path[path.length - 1] === goalPosition)
