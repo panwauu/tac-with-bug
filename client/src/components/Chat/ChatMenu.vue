@@ -75,10 +75,14 @@
           class="chatMenuBodyCategory clickable"
           @click="messageStore.expandChatGroup(menuItemIterator)"
         >
-          <i :class="`pi pi-angle-right expandedIcon ${menuItem.expanded ? 'rotate90' : ''}`" />
+          <i
+            :class="`pi pi-angle-right expandedIcon ${menuItem.expanded ? 'rotate90' : ''}`"
+            aria-hidden="true"
+          />
           <i
             style="font-size: 20px; margin-left: 7px; margin-right: 5px"
             :class="menuItem.icon"
+            aria-hidden="true"
           />
           <div>{{ $t(`Chat.MenuOptions.${menuItem.label}`) }}</div>
         </div>

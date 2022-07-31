@@ -257,7 +257,8 @@
         "runningHeader": "During the tournament",
         "runningContent": "In the private tournament there are no fixed times when the games take place. Instead, the admin can launch any game as needed. Of course, a game can only be started if the playing teams have already been determined."
       },
-      "abortedPlayersList": "Player List:"
+      "abortedPlayersList": "Player List:",
+      "tableDescription": "Information about the private tournament"
     }
   },
   "GameView": {
@@ -937,7 +938,8 @@
       "nGamesTeam": "Completed team-games:",
       "bestTeamGame": "Best Team-Tac game:",
       "worstTeamGame": "Longest Team-Tac game:",
-      "averageTeamGame": "Average of Team-Tac results:"
+      "averageTeamGame": "Average of Team-Tac results:",
+      "tableDescription": "Platform Facts Table"
     },
     "description1": "Tac-With-Bug is an online multiplayer version of the popular board game",
     "description2": ". Compete against friends and strangers in games of four or six players. \nOr play Team Tac and try to set a new record."
