@@ -334,9 +334,9 @@ Object {
           "state": "house",
         },
       ],
-      "substitutedPlayerIndices": Array [],
       "sevenChosenPlayer": null,
       "statistic": Array [],
+      "substitutedPlayerIndices": Array [],
       "teams": Array [
         Array [
           0,
@@ -654,8 +654,8 @@ Object {
       },
     ],
     "rematch_open": false,
-    "substitutedPlayerIndices": Array [],
     "statistic": Array [],
+    "substitutedPlayerIndices": Array [],
     "teams": Array [
       Array [
         0,
