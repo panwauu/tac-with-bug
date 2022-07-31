@@ -392,7 +392,7 @@
         "detailedLink": "official Tac website"
       },
       "Replacement": {
-        "explanation": "Player substitution helps continue the game when a player is no longer online. A spectator can offer to be a substitute and all other players must agree to the substitution.",
+        "explanation": "Player substitution helps keep the game going when one player is unresponsive. A spectator can offer to be a substitute and all other players must agree to the change. For this, the active player must not have played for one minute and a spectator must not have played in this game.",
         "offerButton": "Offer substitution",
         "currentHeading": "Current substitution:",
         "acceptButton": "Accept substitution",
