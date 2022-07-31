@@ -34,17 +34,17 @@ Start the database with:
 docker compose up -d
 ```
 
-The database is initialized but not populated. To populate it you can use the test data:
-
-```
-psql -h localhost -U postgres -d tac -f './server/src/dbUtils/populate_test.sql'
-```
-
-You can access the database either inside the Docker container or from your system:
+You can access the database either inside the Docker container or from your system. The postgres password is `PGPASSWORD=postgres`.
 
 ```
 docker exec -it postgres psql
 psql -h localhost -U postgres -d tac -c 'INSERT YOUR SQL CODE;'
+```
+
+The database is initialized but not populated. To populate it you can use the test data:
+
+```
+psql -h localhost -U postgres -d tac -f './server/src/dbUtils/populate_test.sql'
 ```
 
 ## Package Setup
