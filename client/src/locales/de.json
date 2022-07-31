@@ -392,7 +392,7 @@
         "detailedLink": "offiziellen Tac Website"
       },
       "Replacement": {
-        "explanation": "Der Spielerwechsel hilft das Spiel fortzusetzen, wenn ein Spieler nicht mehr online ist. Ein Zuschauer kann sich als Auswechselspieler anbieten und alle anderen Spieler müssen dem Wechsel zustimmen.",
+        "explanation": "Der Spielerwechsel hilft das Spiel fortzusetzen, wenn ein Spieler nicht mehr reagiert. Ein Zuschauer kann sich als Auswechselspieler anbieten und alle anderen Spieler müssen dem Wechsel zustimmen. Dafür muss der aktive Spieler seit einer Minute nicht gespielt haben und ein Zuschauer darf noch nicht in diesem Spiel gespielt haben.",
         "offerButton": "Wechsel anbieten",
         "currentlyNone": "Aktuell gibt es keinen Wechsel",
         "endOfferButton": "Wechsel zurückziehen",
@@ -938,7 +938,8 @@
       "nGamesTeam": "Beendete Team-Spiele:",
       "bestTeamGame": "Bestes Team-Tac-Spiel:",
       "worstTeamGame": "Längstes Team-Tac-Spiel:",
-      "averageTeamGame": "Durchschnitt der Team-Tac-Ergebnisse:"
+      "averageTeamGame": "Durchschnitt der Team-Tac-Ergebnisse:",
+      "tableDescription": "Tabelle mit Statistiken zur Plattform"
     },
     "description1": "Tac-With-Bug ist eine Online-Mehrspieler-Version des beliebten Brettspiels",
     "description2": ". Tritt gegen Freunde und Fremde zu viert oder zu sechst an. Oder spiele Team-Tac und versuche einen neuen Rekord aufzustellen."
