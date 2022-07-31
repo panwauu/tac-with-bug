@@ -169,7 +169,7 @@ CREATE TABLE users_to_games (
   id SERIAL PRIMARY KEY,
   userid INT NOT NULL REFERENCES users(id),
   gameid INT NOT NULL REFERENCES games(id),
-  player_index INT NOT NULL,
+  player_index INT NOT NULL CHECK (player_index >= 0),
   CONSTRAINT unique_game_user_combination UNIQUE(userid, gameid),
   CONSTRAINT unique_game_player_index_combination UNIQUE(gameid, player_index)
 );
