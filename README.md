@@ -16,13 +16,13 @@ Two step guide to get started with the [Tac-With-Bug](https://tac-with-bug.herok
 
 ## Database Setup
 
-You will need the CLI for Postgres `psql`. I also recommend pgAdmin to manipulate the database using a GUI.
+You will need the CLI for Postgres `psql`. I also recommend [pgAdmin](https://www.pgadmin.org/) to manipulate the database using a GUI.
 
 - On Windows install [postgres (13.x)](https://www.postgresql.org/download/) locally.
 
 - On Mac the easiest way is [Postgres.app](https://postgresapp.com).
 
-- On Ubuntu you can install the psql CLI only (without the postgres server). Sadly the version is only postgres 12 but it did not lead to problems up to now.
+- On Ubuntu you can install the psql CLI only (without the postgres server).
 
   ```
   sudo apt install postgresql-client
@@ -34,26 +34,22 @@ Start the database with:
 docker compose up -d
 ```
 
-You can access the database inside the Docker container with:
+You can access the database either inside the Docker container or from your system. The postgres password is `PGPASSWORD=postgres`.
 
 ```
 docker exec -it postgres psql
+psql -h localhost -U postgres -d tac -c 'INSERT YOUR SQL CODE;'
 ```
 
-You can populate the database from a .dump file located in the root folder using:
+The database is initialized but not populated. To populate it you can use the test data:
 
 ```
-./dbDump.sh
-
-Flags:
-    -f: filename of the dump (default: tac.dump)
-    -u: TWB username (default: Oskar)
-        Password of this user will be applied to all users so that you can login into all of them
+psql -h localhost -U postgres -d tac -f './server/src/dbUtils/populate_test.sql'
 ```
 
 ## Package Setup
 
-[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is divided into two main parts:
+[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is divided into the following parts:
 
 | Folder             | Description                           |
 | ------------------ | ------------------------------------- |
