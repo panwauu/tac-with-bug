@@ -149,7 +149,8 @@ function updateSubstitutionPossible() {
     props.updateData.substitution == null &&
     Date.now() - 60 * 1000 > props.updateData.lastPlayed &&
     props.updateData.publicTournamentId == null &&
-    props.updateData.privateTournamentId == null
+    props.updateData.privateTournamentId == null &&
+    username.value != null
 }
 updateSubstitutionPossible()
 

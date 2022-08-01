@@ -1,0 +1,21 @@
+name: Test Deploy to Heroku
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'Git SHA to Deploy'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SHA_TO_DEPLOY: ${{ github.event.inputs.sha || github.sha }}
+
+    steps:
+      - name: Print sha
+        run: |
+          echo "${{ github.event.inputs.sha || github.sha }}"
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{secrets.SHA_TO_DEPLOY}}
