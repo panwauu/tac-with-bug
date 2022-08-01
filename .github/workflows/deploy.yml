@@ -2,11 +2,7 @@
 
 name: Deploy to Heroku
 
-on:
-  push:
-    branches:
-      - master
-      - main
+on: workflow_dispatch
 
 jobs:
   build:
@@ -43,51 +39,19 @@ jobs:
         run: |
           cd server
           npm ci
-      - name: Check linting and formatting of server
-        run: |
-          cd server
-          npm run lint
-          npm run prettier:check
       - name: Build server
         run: |
           cd server
           npm run build-spec
           npm run tsc
-      - name: Check Locale Files (All languages and identical keys)
-        run: |
-          cd server
-          npm run check-locales
       - name: Install client modules
         run: |
           cd client
           npm ci
-      - name: Check linting and formatting of client
-        run: |
-          cd client
-          npm run lint
-          npm run prettier:check
-      - name: Run client tsc
-        run: |
-          cd client
-          npm run tsc
       - name: Build Vue Files
         run: |
           cd client
           npm run build
-      - name: Run server test
-        run: |
-          cd server
-          npm run test
-        env:
-          paypal_Secret: ${{ secrets.PAYPAL_SECRET }}
-      - name: Install Playwright Browsers
-        run: |
-          cd server
-          npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: |
-          cd server
-          npm run test:e2e
       - name: Deploy - Heroku login credentials
         run: |
           cat > ~/.netrc <<EOF
