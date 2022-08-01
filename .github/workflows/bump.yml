@@ -3,7 +3,7 @@ name: 'Bump Version'
 on:
   push:
     branches:
-      - 'main'
+      - 'devel_oskar'
 
 jobs:
   bump-version:
@@ -18,6 +18,14 @@ jobs:
           token: ${{ secrets.TAG_GITHUB_TOKEN }}
       - name: 'cat package.json'
         run: cat ./server/package.json
+      - name: 'Automated Version Bump'
+        id: version-bump-client
+        uses: 'phips28/gh-action-bump-version@master'
+        with:
+          skip-commit: 'true'
+          skip-tag: 'true'
+        env:
+          PACKAGEJSON_DIR: 'client'
       - name: 'Automated Version Bump'
         id: version-bump
         uses: 'phips28/gh-action-bump-version@master'
