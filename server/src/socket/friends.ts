@@ -15,7 +15,7 @@ export function initializeFriends(pgPool: pg.Pool, socket: GeneralSocketS) {
   updateFriendOfSocket(pgPool, socket, socket.data.userID)
 }
 
-export async function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('friends:request', async (username, callback) => {
     if (socket.data.userID === undefined) {
       logger.error('Event forbidden for unauthenticated user (friends:request)', { stack: new Error().stack })

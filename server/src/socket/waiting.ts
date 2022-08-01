@@ -14,8 +14,7 @@ import {
   setPlayerReady,
   createRematchGame,
 } from '../services/waiting'
-import { createGame } from '../services/game'
-import { getGame } from '../services/game'
+import { getGame, createGame } from '../services/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from './games'
 import { sendUpdatesOfGameToPlayers } from './game'
 import { getUser } from '../services/user'
@@ -36,7 +35,7 @@ export async function terminateWaiting(pgPool: pg.Pool, socket: GeneralSocketS) 
   nspGeneral.emit('waiting:getGames', await getWaitingGames(pgPool))
 }
 
-export async function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   const emitGetGames = async () => {
     const waitingGames = await getWaitingGames(pgPool)
     nspGeneral.emit('waiting:getGames', waitingGames)
@@ -243,5 +242,5 @@ async function createGameAux(sqlClient: pg.Pool, nPlayers: number, playerIDs: nu
     }
   }
 
-  return await createGame(sqlClient, teams, playersOrdered, meisterVersion, coop, colorsOrdered, undefined, undefined)
+  return createGame(sqlClient, teams, playersOrdered, meisterVersion, coop, colorsOrdered, undefined, undefined)
 }

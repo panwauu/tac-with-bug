@@ -21,22 +21,13 @@ export interface GameData {
   gameEnded: boolean
   winningTeams: boolean[]
   statistic: tStatistic.GameStatistic[]
+  substitutedPlayerIndices: number[]
 }
 
-export interface AbstractClassGame extends GameData {
-  checkWinningTeams(): boolean[]
-  resetGame(): void
-  getJSON(): string
-  updateCardsWithMoves(): void
-  checkMove(move: tBall.MoveType): boolean
-  performAction(move: tBall.MoveType | 'dealCards', deltaTime: number): void
-  performActionAfterStatistics(move: tBall.MoveTextOrBall): void
-  determineGameEnded(): void
-  determineGameEndedCoop(): void
-  performNarrAction(move: tBall.MoveTextOrBall): void
-  performTradeCards(move: tBall.MoveTextOrBall): void
-  performTextAction(card: tCard.PlayerCard, move: tBall.MoveText): void
-  nextPlayer(): void
-  priorPlayer(): void
-  checkCards(): void
+export type Substitution = {
+  substitutionUserID: number
+  substitutionUsername: string
+  playerIndexToSubstitute: number
+  acceptedByIndex: number[]
+  startDate: number
 }

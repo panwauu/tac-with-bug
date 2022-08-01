@@ -13,7 +13,7 @@
       :endDate="miscState.gameRunning ? new Date(miscState.created).toISOString() : undefined"
       :initialMilliseconds="Number(miscState.created) - Number(miscState.lastPlayed)"
       :mode="miscState.gameRunning ? 'up' : 'static'"
-      :displayDays="false"
+      largestUnit="hours"
     />
     <div>
       <TabView>
@@ -56,7 +56,7 @@
                 v-for="i in [...Array(Object.keys(statisticState.cardsTable['1']).length - 1).keys()]"
                 :key="`Column-${i}`"
                 :field="i.toString()"
-                :header="miscState.players[i].name"
+                :header="updateData?.playernames[i] ?? ''"
               />
             </DataTable>
           </div>
@@ -79,10 +79,12 @@ import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import type { StatisticStateType } from '@/services/compositionGame/useStatistic'
 import { computed } from 'vue'
 import { i18n } from '@/services/i18n'
+import { UpdateDataType } from '../../../../server/src/sharedTypes/typesDBgame'
 
 const props = defineProps<{
   miscState: MiscStateType
   statisticState: StatisticStateType
+  updateData: UpdateDataType | null
 }>()
 
 const cardStatistic = computed(() => {

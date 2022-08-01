@@ -11,90 +11,90 @@
     :modal="true"
     :dismissableMask="true"
   >
-    <table>
+    <table :aria-label="$t('Profile.expHeader')">
       <tr>
-        <td>{{ $t('Profile.mostFrequent') + ':' }}</td>
+        <th>{{ $t('Profile.mostFrequent') + ':' }}</th>
         <td>{{ $t('Profile.mostFrequentExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Profile.bestPlayer') + ':' }}</td>
+        <th>{{ $t('Profile.bestPlayer') + ':' }}</th>
         <td>{{ $t('Profile.bestPlayerExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Profile.worstPlayer') + ':' }}</td>
+        <th>{{ $t('Profile.worstPlayer') + ':' }}</th>
         <td>{{ $t('Profile.worstPlayerExp') }}</td>
       </tr>
       <tr>
-        <td>
+        <th>
           <GamesHistoryBadge
             :win="'won'"
             style="margin: 2px auto"
           />
-        </td>
+        </th>
         <td>{{ $t('Profile.wIconExp') }}</td>
       </tr>
       <tr>
-        <td>
+        <th>
           <GamesHistoryBadge
             :win="'lost'"
             style="margin: 2px auto"
           />
-        </td>
+        </th>
         <td>{{ $t('Profile.lIconExp') }}</td>
       </tr>
       <tr>
-        <td>
+        <th>
           <GamesHistoryBadge
             :win="'coop'"
             style="margin: 2px auto"
           />
-        </td>
+        </th>
         <td>{{ $t('Profile.tIconExp') }}</td>
       </tr>
       <tr>
-        <td>
+        <th>
           <GamesHistoryBadge
             :win="'aborted'"
             style="margin: 2px auto"
           />
-        </td>
+        </th>
         <td>{{ $t('Profile.aIconExp') }}</td>
       </tr>
       <tr>
-        <td>
+        <th>
           <GamesHistoryBadge
             :win="'running'"
             style="margin: 2px auto"
           />
-        </td>
+        </th>
         <td>{{ $t('Profile.rIconExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Profile.success') + ':' }}</td>
+        <th>{{ $t('Profile.success') + ':' }}</th>
         <td>{{ $t('Profile.successExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Profile.generosity') + ':' }}</td>
+        <th>{{ $t('Profile.generosity') + ':' }}</th>
         <td>{{ $t('Profile.generosityExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Profile.aggression') + ':' }}</td>
+        <th>{{ $t('Profile.aggression') + ':' }}</th>
         <td>{{ $t('Profile.aggressionExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Profile.decision') + ':' }}</td>
+        <th>{{ $t('Profile.decision') + ':' }}</th>
         <td>{{ $t('Profile.decisionExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Profile.resentment') + ':' }}</td>
+        <th>{{ $t('Profile.resentment') + ':' }}</th>
         <td>{{ $t('Profile.resentmentExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Profile.usage') + ':' }}</td>
+        <th>{{ $t('Profile.usage') + ':' }}</th>
         <td>{{ $t('Profile.usageExp') }}</td>
       </tr>
       <tr>
-        <td>{{ $t('Profile.abortionrate') + ':' }}</td>
+        <th>{{ $t('Profile.abortionrate') + ':' }}</th>
         <td>{{ $t('Profile.abortionrateExp') }}</td>
       </tr>
     </table>

@@ -12,7 +12,7 @@ import { sendTournamentInvitation, sendTournamentReminder } from '../communicati
 import { getUser } from '../services/user'
 import { nspGeneral as nsp } from './general'
 
-export async function registerTournamentPublicHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('tournament:public:get', async (data, callback) => {
     const { error } = Joi.number().required().positive().integer().validate(data.id)
     if (error != null) {
@@ -238,7 +238,7 @@ export function pushChangedPublicTournament(tournament: tTournament.PublicTourna
   nsp.emit('tournament:public:update', tournament)
 }
 
-export async function registerTournamentBus() {
+export function registerTournamentBus() {
   tournamentBus.on('signUp-failed', async (data: { playerids: number[]; tournamentTitle: string }) => {
     getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUp-failed', { tournamentTitle: data.tournamentTitle }))
   })

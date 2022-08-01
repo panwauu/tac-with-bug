@@ -37,7 +37,7 @@ function startGame(game: any) {
     name: 'Game',
     query: {
       gameID: game.id,
-      nPlayers: game.players.length,
+      nPlayers: game.nPlayers,
     },
     params: { locale: router.currentRoute.value.params.locale },
   })

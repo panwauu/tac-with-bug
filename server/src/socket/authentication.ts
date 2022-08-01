@@ -3,7 +3,7 @@ import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import { verifyJWT } from '../helpers/jwtWrapper'
 import { initializeSocket, terminateSocket } from './general'
 
-export async function registerAuthHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerAuthHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('login', async ({ token }, callback) => {
     if (typeof token !== 'string') {
       return callback({ status: 422, error: 'NO_TOKEN' })

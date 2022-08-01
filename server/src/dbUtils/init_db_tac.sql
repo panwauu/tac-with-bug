@@ -140,7 +140,7 @@ CREATE SEQUENCE game_id_seq;
 
 CREATE TABLE games (
   id INT PRIMARY KEY DEFAULT nextval('game_id_seq'),
-  status varchar(20) NOT NULL,
+  running BOOLEAN NOT NULL DEFAULT TRUE,
   n_players int NOT NULL CHECK (
     n_players = 4
     OR n_players = 6
@@ -169,10 +169,7 @@ CREATE TABLE users_to_games (
   id SERIAL PRIMARY KEY,
   userid INT NOT NULL REFERENCES users(id),
   gameid INT NOT NULL REFERENCES games(id),
-  player_index INT NOT NULL CHECK (
-    player_index >= 0
-    AND player_index < 6
-  ),
+  player_index INT NOT NULL CHECK (player_index >= 0),
   CONSTRAINT unique_game_user_combination UNIQUE(userid, gameid),
   CONSTRAINT unique_game_player_index_combination UNIQUE(gameid, player_index)
 );

@@ -1,12 +1,13 @@
-import type { AbstractClassGame as game } from './game'
+import { Game } from '../game/game'
 import type { BallsType } from './typesBall'
 import type { PlayerCard } from './typesCard'
 import type { GameStatistic } from './typesStatistic'
 import type { Player } from './typesPlayers'
+import type { Substitution } from './game'
 
 interface GameGeneral {
   id: number
-  status: string
+  running: boolean
   nPlayers: number
   nTeams: number
   coop: boolean
@@ -14,26 +15,29 @@ interface GameGeneral {
   lastPlayed: number
   publicTournamentId: number | null
   privateTournamentId: number | null
-  players: string[]
-  playerIDs: number[]
+  players: (string | null)[]
+  playerIDs: (number | null)[]
 }
 
 // Game from db
 export interface GameForOverview extends GameGeneral {
+  status: string
   coop: boolean
   teams: string[][]
   nPlayer: number
 }
 
 export interface GameForPlay extends GameGeneral {
-  game: game
+  game: Game
   colors: string[]
   rematch_open: boolean
+  substitution: Substitution | null
 }
 
 export interface UpdateDataType {
   gamePlayer: number
-  tournamentID: number | null
+  publicTournamentId: number | null
+  privateTournamentId: number | null
   discardPile: string[]
   balls: BallsType
   priorBalls: BallsType
@@ -45,7 +49,7 @@ export interface UpdateDataType {
   aussetzenFlag: boolean
   teufelFlag: boolean
   discardedFlag: boolean
-  status: string
+  running: boolean
   coopCounter: number
   statistic: GameStatistic[]
   tradeDirection: number
@@ -54,6 +58,10 @@ export interface UpdateDataType {
   created: number
   lastPlayed: number
   rematch_open: boolean
+  substitutedPlayerIndices: number[]
+  substitution: Substitution | null
+  playernames: (string | null)[]
+  teams: number[][]
 }
 
 export type GetGamesType = {

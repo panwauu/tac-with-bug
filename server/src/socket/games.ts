@@ -38,7 +38,7 @@ export async function initializeGames(pgPool: pg.Pool, socket: GeneralSocketS) {
   emitRunningGamesUpdate(pgPool, socket)
 }
 
-export async function registerGamesHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
+export function registerGamesHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('games:getSummary', async () => {
     emitGamesUpdate(pgPool, socket)
   })

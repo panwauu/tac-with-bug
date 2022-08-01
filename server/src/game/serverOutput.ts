@@ -7,7 +7,8 @@ import type { UpdateDataType } from '../sharedTypes/typesDBgame'
 export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: number): UpdateDataType {
   return {
     gamePlayer: gamePlayer,
-    tournamentID: game.publicTournamentId,
+    publicTournamentId: game.publicTournamentId,
+    privateTournamentId: game.privateTournamentId,
     discardPile: game.game.cards.discardPile,
     balls: game.game.balls,
     priorBalls: game.game.priorBalls,
@@ -18,7 +19,7 @@ export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: nu
     winningTeams: game.game.winningTeams,
     aussetzenFlag: game.game.aussetzenFlag,
     teufelFlag: game.game.teufelFlag,
-    status: game.status,
+    running: game.running,
     coopCounter: game.game.coop
       ? game.game.statistic.reduce(function (accumulator, currentValue) {
           return accumulator + currentValue.cards.total[0]
@@ -32,14 +33,18 @@ export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: nu
     lastPlayed: game.lastPlayed,
     rematch_open: game.rematch_open,
     discardedFlag: game.game.cards.discardedFlag,
+    substitutedPlayerIndices: game.game.substitutedPlayerIndices,
+    substitution: game.substitution,
+    playernames: game.players,
+    teams: game.game.teams,
   }
 }
 
-function getPlayers(game: Game, names: string[]) {
+function getPlayers(game: Game, names: (string | null)[]) {
   const players: Player[] = []
   for (let i = 0; i < game.cards.players.length; i++) {
     const player: Player = {
-      name: names ? names[i] : 'Player ' + i.toString(),
+      name: names[i] ?? '',
       remainingCards: game.cards.players[i].length,
       active: game.activePlayer === i,
       playerNumber: i,
@@ -83,15 +88,4 @@ function getCards(game: Game, player: number): tCard.PlayerCard[] {
   }
 
   return createCardsWithMovesForUnactivePlayer(game.cards.players[player])
-}
-
-export function getStatus(game: dbGame.GameForPlay) {
-  let status = 'running'
-  if (game.game.gameEnded) {
-    status = 'won'
-    if (!game.game.coop) {
-      status += '-' + game.game.winningTeams.findIndex((teamWinner) => teamWinner === true).toString()
-    }
-  }
-  return status
 }

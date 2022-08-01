@@ -2,12 +2,11 @@ import type { Socket as ServerSocket, Namespace } from 'socket.io'
 import type { Socket as ClientSocket } from 'socket.io-client'
 import type { CreateGameType, MovePlayerType, SwitchColorType, WaitingGame, StartGameType } from './typesWaiting'
 import type { SubscriptionExport } from './typesSubscription'
-import type { GameForOverview, GetGamesType, GetRunningGamesType, UpdateDataType } from './typesDBgame'
+import type { GameForOverview, GetGamesType, GetRunningGamesType, UpdateDataType, GameForPlay } from './typesDBgame'
 import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTournament, TournamentTableData, LastTournamentWinners } from './typesTournament'
 import type { MoveTextOrBall } from './typesBall'
 import type { Friend } from './typesFriends'
 import type { TutorialStepOutput } from './typesTutorial'
-import type { GameForPlay } from './typesDBgame'
 import { ChatElement, ChatMessage } from './chat'
 
 export type AckData<T> = { status: number; error?: any; data?: T }

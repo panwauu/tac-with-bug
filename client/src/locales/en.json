@@ -257,7 +257,8 @@
         "runningHeader": "During the tournament",
         "runningContent": "In the private tournament there are no fixed times when the games take place. Instead, the admin can launch any game as needed. Of course, a game can only be started if the playing teams have already been determined."
       },
-      "abortedPlayersList": "Player List:"
+      "abortedPlayersList": "Player List:",
+      "tableDescription": "Information about the private tournament"
     }
   },
   "GameView": {
@@ -347,7 +348,8 @@
         "settings": "Settings",
         "assistance": "Control help",
         "errorreport": "Report an error",
-        "statistic": "Game statistics"
+        "statistic": "Game statistics",
+        "substitution": "Substitution"
       },
       "Settings": {
         "audioVolume": "Volume:",
@@ -388,7 +390,17 @@
         "teufel": "Whoever plays the devil card may look at the cards of the next player in the UZS and immediately play one of his cards and carry out the function with his balls.",
         "detailed": "The full instructions are available on the",
         "detailedLink": "official Tac website"
-      }
+      },
+      "Substitution": {
+        "explanation": "Player substitution helps keep the game going when one player is unresponsive. A spectator can offer to be a substitute and all other players must agree to the change. For this, the active player must not have played for one minute and a spectator must not have played in this game.",
+        "offerButton": "Offer substitution",
+        "currentHeading": "Current substitution:",
+        "acceptButton": "Accept substitution",
+        "rejectButton": "Reject substitution",
+        "endOfferButton": "Withdraw substitution",
+        "currentlyNone": "There is currently no substitution"
+      },
+      "SubstitutedPlayersHeader": "Substituted players:"
     },
     "EndedOverlay": {
       "statistic": "Statistics",
@@ -463,6 +475,16 @@
       "nooneWatching": "No spectators",
       "anonymousWatching": "{n} anonymous viewer | {n} anonymous viewers",
       "buttonLabel": "{n} spectator | {n} spectators"
+    },
+    "Toast": {
+      "substitution-offer-summary": "Substitution request",
+      "substitution-offer-detail": "The player {username} has offered to be transferred. \nAll players in the game must accept it in time to make the switch.",
+      "substitution-done-summary": "Substitution performed",
+      "substitution-done-detail": "The player substitution has been carried out. {replacedUsername} has been replaced with {username}. Have fun playing.",
+      "substitution-stopped-summary": "Substitution failed",
+      "substitution-stopped-detail": "The player substitution did not take place. Maybe not everyone agreed to the move, or the request was withdrawn.",
+      "substitution-possible-summary": "Player substitution possible",
+      "substitution-possible-detail": "The active player hasn't played for a while. A player from the spectators can now be substituted for this one. Good luck with your search!"
     }
   },
   "Games": {
@@ -917,7 +939,8 @@
       "nGamesTeam": "Completed team-games:",
       "bestTeamGame": "Best Team-Tac game:",
       "worstTeamGame": "Longest Team-Tac game:",
-      "averageTeamGame": "Average of Team-Tac results:"
+      "averageTeamGame": "Average of Team-Tac results:",
+      "tableDescription": "Platform Facts Table"
     },
     "description1": "Tac-With-Bug is an online multiplayer version of the popular board game",
     "description2": ". Compete against friends and strangers in games of four or six players. \nOr play Team Tac and try to set a new record."

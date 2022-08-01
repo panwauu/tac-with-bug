@@ -125,13 +125,13 @@ export function useCards(ballsState: BallsStateType, miscState: MiscStateType): 
         cardsCopy = cloneDeep(cardsState.ownCards ?? [])
       }
 
-      for (let i = 0; i < cardsCopy.length; i++) {
-        if (cardsCopy[i].title[0] === '7') {
-          cardsCopy[i].title = cardPictureDict['7']
-        } else if (cardsCopy[i].title.substring(0, 3) === 'tac') {
-          cardsCopy[i].title = cardPictureDict['tac']
+      for (const copiedCard of cardsCopy) {
+        if (copiedCard.title[0] === '7') {
+          copiedCard.title = cardPictureDict['7']
+        } else if (copiedCard.title.substring(0, 3) === 'tac') {
+          copiedCard.title = cardPictureDict['tac']
         } else {
-          cardsCopy[i].title = cardPictureDict[cardsCopy[i].title]
+          copiedCard.title = cardPictureDict[copiedCard.title]
         }
       }
       return cardsCopy

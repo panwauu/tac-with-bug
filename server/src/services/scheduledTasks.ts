@@ -128,3 +128,7 @@ function timePerGameToMS(timePerGame: string) {
   }
   return (parseInt(timePerGame.substring(3, 5)) + parseInt(timePerGame.substring(0, 2)) * 60) * 60 * 1000
 }
+
+export function addJob(job: schedule.Job) {
+  jobs.push(job)
+}

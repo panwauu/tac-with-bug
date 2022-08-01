@@ -42,6 +42,7 @@
             <img
               src="https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg"
               class="logo"
+              alt="NodeJS Logo"
             />
           </a>
           <a
@@ -52,6 +53,7 @@
             <img
               src="https://www.vectorlogo.zone/logos/expressjs/expressjs-ar21.svg"
               class="logo"
+              alt="ExpressJS Logo"
             />
           </a>
           <a
@@ -62,6 +64,7 @@
             <img
               src="https://cdn.worldvectorlogo.com/logos/socket-io.svg"
               class="logo"
+              alt="Socket.io Logo"
             />
           </a>
           <a
@@ -72,6 +75,7 @@
             <img
               src="https://www.primefaces.org/primevue/resources/images/primevue-logo.svg"
               class="logo"
+              alt="Primevue Logo"
             />
           </a>
           <a
@@ -82,6 +86,7 @@
             <img
               src="https://nodemailer.com/nm_logo_200x136.png"
               class="logo"
+              alt="Nodemailer Logo"
             />
           </a>
           <a
@@ -92,6 +97,7 @@
             <img
               src="https://kazupon.github.io/vue-i18n/vue-i18n-logo.png"
               class="logo"
+              alt="vue-i18n Logo"
             />
           </a>
           <a
@@ -102,6 +108,7 @@
             <img
               src="https://www.postgresql.org/media/img/about/press/elephant.png"
               class="logo"
+              alt="Postgres Logo"
             />
           </a>
         </div>

@@ -2,9 +2,12 @@ import type { Socket as ServerSocket, Namespace } from 'socket.io'
 import type { Socket as ClientSocket } from 'socket.io-client'
 import type { MoveTextOrBall } from './typesBall'
 import type { UpdateDataType } from './typesDBgame'
+import type { CallbackFunction } from './GeneralNamespaceDefinition'
 
 export interface ClientToServerEvents {
   postMove: (move: MoveTextOrBall) => void
+  'substitution:offer': (cb: CallbackFunction<null>) => void
+  'substitution:answer': (data: { accept: boolean }, cb: CallbackFunction<null>) => void
 }
 
 export interface ServerToClientEvents {
@@ -12,6 +15,12 @@ export interface ServerToClientEvents {
 
   update: (data: UpdateDataType) => void
   'game:online-players': (data: { onlineGamePlayers: number[]; nWatchingPlayers: number; watchingPlayerNames: string[] }) => void
+
+  'substitution:changeGamePlayer': (gamePlayer: number) => void
+
+  'toast:substitution-offer': (username: string) => void
+  'toast:substitution-done': (username: string, replacedUsername: string) => void
+  'toast:substitution-stopped': () => void
 }
 
 interface SocketData {
