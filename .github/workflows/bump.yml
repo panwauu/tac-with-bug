@@ -1,9 +1,9 @@
-name: 'Bump Version test'
+name: 'Bump Version'
 
 on:
   push:
     branches:
-      - 'devel_oskar'
+      - 'main'
 
 jobs:
   bump-version:
@@ -29,7 +29,7 @@ jobs:
           PACKAGEJSON_DIR: 'server'
       - name: 'cat package.json'
         run: cat ./server/package.json
-      - name: 'Output Step'
+      - name: 'Output New Tag'
         env:
           NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
         run: echo "New tag $NEW_TAG"
