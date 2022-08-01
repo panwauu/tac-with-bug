@@ -3,7 +3,6 @@ name: Check database consistency
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-  workflow_dispatch:
 
 jobs:
   build:
