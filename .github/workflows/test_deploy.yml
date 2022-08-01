@@ -19,3 +19,29 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{secrets.SHA_TO_DEPLOY}}
+      - name: Run script for version
+        run: |
+          chmod +x ./test_deploy.sh
+          sed -i -e 's/\r$//' ./test_deploy.sh
+          ./test_deploy.sh
+      - name: Advance deployed tag
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.TAG_GITHUB_TOKEN}}
+          script: |
+            console.log(context.SHA_TO_DEPLOY)
+            try {
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: "tags/test_deployed"
+              })
+            } catch (e) {
+              console.log("The deployed tag doesn't exist yet: " + e)
+            }
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.SHA_TO_DEPLOY,
+              ref: "refs/tags/test_deployed"
+            })
