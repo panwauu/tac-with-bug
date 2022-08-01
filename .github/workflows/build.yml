@@ -1,0 +1,97 @@
+name: Build and run test suite
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: tac
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 16.x
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: 'npm'
+          cache-dependency-path: |
+            server/package-lock.json
+            client/package-lock.json
+      - name: Install server modules
+        run: |
+          cd server
+          npm ci
+      - name: Check linting and formatting of server
+        run: |
+          cd server
+          npm run lint
+          npm run prettier:check
+      - name: Build server
+        run: |
+          cd server
+          npm run build-spec
+          npm run tsc
+      - name: Check Locale Files (All languages and identical keys)
+        run: |
+          cd server
+          npm run check-locales
+      - name: Install client modules
+        run: |
+          cd client
+          npm ci
+      - name: Check linting and formatting of client
+        run: |
+          cd client
+          npm run lint
+          npm run prettier:check
+      - name: Run client tsc
+        run: |
+          cd client
+          npm run tsc
+      - name: Build Vue Files
+        run: |
+          cd client
+          npm run build
+      - name: Run server test
+        run: |
+          cd server
+          npm run test -- --coverage=true
+        env:
+          paypal_Secret: ${{ secrets.PAYPAL_SECRET }}
+      - name: Install Playwright Browsers
+        run: |
+          cd server
+          npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: |
+          cd server
+          npm run test:e2e
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

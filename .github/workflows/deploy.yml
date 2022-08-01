@@ -1,23 +1,18 @@
-# Keep in Sync with test.yml
+# Keep in Sync with build.yml
 
 name: Deploy to Heroku
 
-on:
-  push:
-    branches:
-      - master
-      - main
+on: workflow_dispatch
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: tac        
+          POSTGRES_DB: tac
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         ports:
@@ -29,113 +24,81 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 16.x
-      env: 
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: 16.x
-        cache: 'npm'
-        cache-dependency-path: |
-          server/package-lock.json
-          client/package-lock.json
-    - name: Install server modules
-      run: |
-        cd server
-        npm ci
-    - name: Check linting and formatting of server
-      run: |
-        cd server
-        npm run lint
-        npm run prettier:check
-    - name: Build server
-      run: |
-        cd server
-        npm run build-spec
-        npm run tsc
-    - name: Check Locale Files (All languages and identical keys)
-      run: |
-        cd server
-        npm run check-locales
-    - name: Install client modules
-      run: |
-        cd client
-        npm ci
-    - name: Check linting and formatting of client
-      run: |
-        cd client
-        npm run lint
-        npm run prettier:check
-    - name: Run client tsc
-      run: |
-        cd client
-        npm run tsc
-    - name: Build Vue Files
-      run: |
-        cd client
-        npm run build
-    - name: Run server test
-      run: |
-        cd server
-        npm run test
-      env:
-        paypal_Secret: ${{ secrets.PAYPAL_SECRET }}
-    - name: Install Playwright Browsers
-      run: |
-        cd server
-        npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: |
-        cd server
-        npm run test:e2e
-    - name: Deploy - Heroku login credentials
-      run: |
-        cat > ~/.netrc <<EOF
-          machine api.heroku.com
-            login $HEROKU_EMAIL
-            password $HEROKU_API_KEY
-          machine git.heroku.com
-            login $HEROKU_EMAIL
-            password $HEROKU_API_KEY
-        EOF
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-    - name: Push to heroku
-      run: |
-        cd server
-        git init
-        git config user.name "Oskar Baumann"
-        git config user.email ${{ secrets.HEROKU_EMAIL }}
-        heroku git:remote --app $HEROKU_APP_NAME
-        git add -A;
-        git commit -m "Deploy";
-        git push --force heroku master;
-      env:
-        HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-    - name: Advance deployed tag
-      uses: actions/github-script@v5
-      with:
-        github-token: ${{secrets.TAG_GITHUB_TOKEN}}          
-        script: |
-          try {
-            await github.rest.git.deleteRef({
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: 'npm'
+          cache-dependency-path: |
+            server/package-lock.json
+            client/package-lock.json
+      - name: Install server modules
+        run: |
+          cd server
+          npm ci
+      - name: Build server
+        run: |
+          cd server
+          npm run build-spec
+          npm run tsc
+      - name: Install client modules
+        run: |
+          cd client
+          npm ci
+      - name: Build Vue Files
+        run: |
+          cd client
+          npm run build
+      - name: Deploy - Heroku login credentials
+        run: |
+          cat > ~/.netrc <<EOF
+            machine api.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+            machine git.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+          EOF
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+      - name: Push to heroku
+        run: |
+          cd server
+          git init
+          git config user.name "Oskar Baumann"
+          git config user.email ${{ secrets.HEROKU_EMAIL }}
+          heroku git:remote --app $HEROKU_APP_NAME
+          git add -A;
+          git commit -m "Deploy";
+          git push --force heroku master;
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+      - name: Advance deployed tag
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.TAG_GITHUB_TOKEN}}
+          script: |
+            try {
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: "tags/deployed"
+              })
+            } catch (e) {
+              console.log("The deployed tag doesn't exist yet: " + e)
+            }
+            await github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "tags/deployed"
+              sha: context.sha,
+              ref: "refs/tags/deployed"
             })
-          } catch (e) {
-            console.log("The deployed tag doesn't exist yet: " + e)
-          }
-          await github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            sha: context.sha,
-            ref: "refs/tags/deployed"
-          })
-    - name: Sanity check of tac-with-bug
-      uses: fjogeleit/http-request-action@master
-      with:
-        url: 'https://tac-with-bug.herokuapp.com'
-        method: 'GET'
+      - name: Sanity check of tac-with-bug
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: 'https://tac-with-bug.herokuapp.com'
+          method: 'GET'
