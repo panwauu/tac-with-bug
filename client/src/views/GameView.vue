@@ -94,18 +94,6 @@ onMounted(() => {
   }, 100)
 })
 
-onUnmounted(() => {
-  gameSocket.off('game:online-players', miscState.setOnlinePlayers)
-  gameSocket.off('update', updateHandler)
-  gameSocket.off('reconnect_failed', closeGame)
-  gameSocket.off('disconnect', closeGame)
-  gameSocket.off('toast:substitution-offer', substitutionOfferToast)
-  gameSocket.off('toast:substitution-done', substitutionDoneToast)
-  gameSocket.off('toast:substitution-stopped', substitutionStoppedToast)
-  gameSocket.disconnect()
-  sound.$stop()
-})
-
 let substitutionTimeout: number
 function updateSubstitutionTimeout(updateData: UpdateDataType) {
   clearTimeout(substitutionTimeout)
@@ -122,6 +110,19 @@ function updateSubstitutionTimeout(updateData: UpdateDataType) {
     })
   }, timeout)
 }
+
+onUnmounted(() => {
+  clearTimeout(substitutionTimeout)
+  gameSocket.off('game:online-players', miscState.setOnlinePlayers)
+  gameSocket.off('update', updateHandler)
+  gameSocket.off('reconnect_failed', closeGame)
+  gameSocket.off('disconnect', closeGame)
+  gameSocket.off('toast:substitution-offer', substitutionOfferToast)
+  gameSocket.off('toast:substitution-done', substitutionDoneToast)
+  gameSocket.off('toast:substitution-stopped', substitutionStoppedToast)
+  gameSocket.disconnect()
+  sound.$stop()
+})
 
 async function updateHandler(data: UpdateDataType): Promise<void> {
   audioHandler(data, cardsState, miscState)
