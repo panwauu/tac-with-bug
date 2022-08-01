@@ -24,7 +24,7 @@ jobs:
           tag-prefix: 'v'
           commit-message: 'CI: bumps version to {{version}}'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TAG_GITHUB_TOKEN }}
           PACKAGEJSON_DIR: 'server'
       - name: 'cat package.json'
         run: cat ./server/package.json
