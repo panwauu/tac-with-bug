@@ -15,7 +15,7 @@ jobs:
         uses: 'actions/checkout@v2'
         with:
           ref: ${{ github.ref }}
-          token: ${{ secrets.ACTION_GITHUB_TOKEN }}
+          token: ${{ secrets.TAG_GITHUB_TOKEN }}
       - name: 'cat package.json'
         run: cat ./server/package.json
       - name: 'Automated Version Bump'
