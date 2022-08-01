@@ -7,6 +7,8 @@ import { getPlayerUpdateFromGame } from '../game/serverOutput'
 import { performMoveAndReturnGame, getGame } from '../services/game'
 import { gameSocketIOAuthentication } from '../helpers/authentication'
 import { initializeInfo } from './info'
+import { registerSubstitutionHandlers } from './gameSubstitution'
+import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/substitution'
 
 export let nsp: GameNamespace
 
@@ -19,7 +21,8 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
     try {
       const gameID = parseInt(socket.handshake.auth.gameID as string)
       const game = await getGame(pgPool, gameID)
-      const gamePlayer = socket.data.userID == null ? -1 : game.playerIDs.findIndex((id) => id === socket.data.userID)
+      const gamePlayer =
+        socket.data.userID != null && game.playerIDs.findIndex((id) => id === socket.data.userID) < game.nPlayers ? game.playerIDs.findIndex((id) => id === socket.data.userID) : -1
 
       socket.data.gameID = gameID
       socket.data.gamePlayer = gamePlayer
@@ -52,6 +55,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
 
     socket.on('disconnect', async () => {
       await emitOnlinePlayersEvents(pgPool, nspGame, socket.data.gameID ?? 0)
+      await endSubstitutionsByUserID(pgPool, socket.data.userID ?? -1)
       logger.info(`User Disconnected: ${socket.data.userID}`)
     })
 
@@ -62,11 +66,14 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
       }
 
       const game = await performMoveAndReturnGame(pgPool, postMove, socket.data.gamePlayer, socket.data.gameID)
+      endSubstitutionIfRunning(game)
       getSocketsInGame(nspGame, socket.data.gameID).forEach((socketIterator) => {
         socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
       })
       dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
     })
+
+    registerSubstitutionHandlers(pgPool, socket)
   })
 }
 
@@ -91,7 +98,7 @@ async function emitOnlinePlayersEvents(pgPool: pg.Pool, nsp: GameNamespace, game
 }
 
 async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePlayer: number, game: GameForPlay) {
-  if (game.status === 'running' && game.game.gameEnded === false && !game.game.cards.players.some((player) => player.length > 0)) {
+  if (game.running && game.game.gameEnded === false && !game.game.cards.players.some((player) => player.length > 0)) {
     const timeSinceLastPlayed = new Date().getTime() - new Date(game.lastPlayed).getTime()
     const delay = Math.max(Math.min(2000 - timeSinceLastPlayed, 2000), 0)
 
@@ -104,8 +111,12 @@ async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePla
   }
 }
 
-function getSocketsInGame(nspGame: GameNamespace, gameID: number): GameSocketS[] {
+export function getSocketsInGame(nspGame: GameNamespace, gameID: number): GameSocketS[] {
   return [...nspGame.sockets.values()].filter((s) => s.data.gameID === gameID)
+}
+
+export function getSocketByUserID(userID: number): GameSocketS | undefined {
+  return [...nsp.sockets.values()].find((s) => s.data.userID === userID)
 }
 
 export function getPlayerIDsOfGame(gameID: number): number[] {

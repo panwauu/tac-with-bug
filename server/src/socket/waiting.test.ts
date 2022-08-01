@@ -282,7 +282,7 @@ describe('Test Suite via Socket.io', () => {
       const game = await getGame(testServer.pgPool, val[4].gameID)
       expect(game.players.sort()).toEqual(usersWithSockets.map((uws) => uws.username).sort())
       expect(game.playerIDs.sort()).toEqual(usersWithSockets.map((uws) => uws.id).sort())
-      expect(game.status).toBe('running')
+      expect(game.running).toBe(true)
       expect(game.rematch_open).toBe(false)
       gameID = game.id
     })
@@ -313,10 +313,13 @@ describe('Test Suite via Socket.io', () => {
     test('Abort of game should be possible for own game', async () => {
       await testServer.pgPool.query('UPDATE games SET created = current_timestamp, public_tournament_id = NULL WHERE id=$1;', [gameID])
       const res = await testAgent.delete('/gameApi/abortGame/').set({ Authorization: usersWithSockets[0].authHeader }).send({ gameID: gameID })
+      console.log(res.status)
+      console.log(res.body)
       expect(res.status).toBe(204)
 
-      const gameStatus = await testServer.pgPool.query('SELECT status FROM games WHERE id=$1;', [gameID])
-      expect(gameStatus.rows[0].status).toBe('aborted')
+      const gameStatus = await testServer.pgPool.query('SELECT * FROM games WHERE id=$1;', [gameID])
+      expect(gameStatus.rows[0].running).toBe(false)
+      expect(gameStatus.rows[0].game.gameEnded).toBe(false)
     })
   })
 

@@ -6,6 +6,7 @@ import { startSignUpOnCondition, endSignUpOnCondition } from '../services/tourna
 import { getDifferentName } from '../services/SweetNameGenerator'
 import { PublicTournament } from '../sharedTypes/typesTournament'
 import { closeSockets } from '../test/handleSocket'
+import { sleep } from '../helpers/sleep'
 
 describe('TournamentPublic test suite via Socket.io', () => {
   describe('Test with two teams - registration process', () => {
@@ -147,11 +148,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(tournament.registerTeams[0].activated[0]).toBe(true)
       expect(tournament.registerTeams[0].activated[1]).toBe(false)
 
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(null)
-        }, 200)
-      }) // TBD: Needed to pass test, but why?
+      await sleep(200) // TBD: Needed to pass test, but why?
       expect(spyInvitation).toBeCalledTimes(1)
     })
 

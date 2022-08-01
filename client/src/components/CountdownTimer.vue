@@ -22,23 +22,40 @@
 import { withDefaults, ref, onMounted, onUnmounted, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 
+type UnitKey = 'days' | 'hours' | 'minutes' | 'seconds'
+
 const props = withDefaults(
   defineProps<{
     endDate?: string
     initialMilliseconds?: number
     mode?: string
-    displayDays?: boolean
+    largestUnit?: UnitKey
+    smallestUnit?: UnitKey
   }>(),
   {
     endDate: undefined,
     initialMilliseconds: undefined,
     mode: 'down',
-    displayDays: true,
+    largestUnit: 'days',
+    smallestUnit: 'seconds',
   }
 )
 
-const elements = props.displayDays ? ['days', 'hours', 'minutes', 'seconds'] : ['hours', 'minutes', 'seconds']
-const units = props.displayDays ? [60 * 60 * 24, 60 * 60, 60, 1] : [60 * 60, 60, 1]
+const possibleElements: UnitKey[] = ['days', 'hours', 'minutes', 'seconds']
+const indexOfLargestElement = possibleElements.findIndex((e) => e === props.largestUnit)
+const indexOfSmallestElement = possibleElements.findIndex((e) => e === props.smallestUnit)
+if (indexOfSmallestElement < indexOfLargestElement) {
+  throw new Error('Could not load Timer as largest element was smaller than smallest element')
+}
+
+const unitToSeconds: Record<UnitKey, number> = {
+  days: 60 * 60 * 24,
+  hours: 60 * 60,
+  minutes: 60,
+  seconds: 1,
+}
+
+const elements = (['days', 'hours', 'minutes', 'seconds'] as UnitKey[]).slice(indexOfLargestElement, indexOfSmallestElement + 1)
 
 const getParsedEndDate = () => {
   if (props.endDate != null) {
@@ -58,7 +75,7 @@ const detail = ref(true)
 const timerContainerRef = ref<HTMLDivElement | null>(null)
 
 const startUpdateNumbers = () => {
-  interval.value = window.setInterval(updateNumbers, 1000)
+  interval.value = window.setInterval(updateNumbers, unitToSeconds[elements[elements.length - 1]] * 100)
 }
 const stopUpdateNumbers = () => {
   window.clearInterval(interval.value)
@@ -72,9 +89,9 @@ const updateNumbers = () => {
   }
 
   diffSeconds = Math.abs(diffSeconds)
-  units.forEach((u, i) => {
-    numbers.value[i] = Math.floor(diffSeconds / u)
-    diffSeconds -= numbers.value[i] * u
+  elements.forEach((e, i) => {
+    numbers.value[i] = Math.floor(diffSeconds / unitToSeconds[e])
+    diffSeconds -= numbers.value[i] * unitToSeconds[e]
   })
 }
 
@@ -82,7 +99,7 @@ useResizeObserver(timerContainerRef, () => {
   updateDetail()
 })
 const updateDetail = () => {
-  if (timerContainerRef.value?.clientWidth != null && timerContainerRef.value?.clientWidth < 400) {
+  if (timerContainerRef.value?.clientWidth != null && timerContainerRef.value?.clientWidth < 100 * elements.length) {
     detail.value = false
   } else {
     detail.value = true
@@ -136,7 +153,6 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
 }
-
 .timerElement {
   margin: 10px;
   padding: 10px;

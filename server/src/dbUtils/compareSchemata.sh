@@ -23,6 +23,7 @@ psql -h localhost -U postgres -d postgres -c 'DROP DATABASE IF EXISTS tac_test_s
 psql -h localhost -U postgres -d postgres -c 'CREATE DATABASE tac_test_schema;'
 
 psql -h localhost -U postgres -d tac_server_schema -f './server_schema.sql'
+psql -h localhost -U postgres -d tac_server_schema -f './changes.sql'
 psql -h localhost -U postgres -d tac_test_schema -f './init_db_tac.sql'
 
 ### Perform diff

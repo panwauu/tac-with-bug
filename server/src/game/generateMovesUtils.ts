@@ -157,12 +157,12 @@ export function getKriegerMove(balls: tBall.BallsType, nBall: number): number[] 
 
   const largerPos = []
   const smallerPos = []
-  for (let i = 0; i < balls.length; i++) {
-    if (balls[i].position >= ballStart(0, balls) && balls[i].position < ballGoal(0, balls)) {
-      if (balls[i].position > balls[nBall].position) {
-        largerPos.push(balls[i].position)
+  for (const ball of balls) {
+    if (ball.position >= ballStart(0, balls) && ball.position < ballGoal(0, balls)) {
+      if (ball.position > balls[nBall].position) {
+        largerPos.push(ball.position)
       } else {
-        smallerPos.push(balls[i].position)
+        smallerPos.push(ball.position)
       }
     }
   }
@@ -208,8 +208,8 @@ export function getSevenPositions(balls: tBall.BallsType, nBall: number, remaini
   let endAndInterimsNodes: number[] = []
   for (let move = 0; move < remainingMoves; move++) {
     endNodes = []
-    for (let i = 0; i < startNodes.length; i++) {
-      endNodes = endNodes.concat(moveOneStep(balls, nBall, startNodes[i], 1, 7))
+    for (const startNode of startNodes) {
+      endNodes = endNodes.concat(moveOneStep(balls, nBall, startNode, 1, 7))
     }
     endNodes = [...new Set(endNodes)]
 
@@ -279,8 +279,8 @@ export function getMovingPositions(balls: tBall.BallsType, nBall: number, cardTi
   let endNodes: number[] = []
   for (let move = 0; move < cardTitleNumber; move++) {
     endNodes = []
-    for (let i = 0; i < startNodes.length; i++) {
-      endNodes = endNodes.concat(moveOneStep(balls, nBall, startNodes[i], direction, cardTitleNumber))
+    for (const startNode of startNodes) {
+      endNodes = endNodes.concat(moveOneStep(balls, nBall, startNode, direction, cardTitleNumber))
     }
     if (move + 1 !== cardTitleNumber) {
       endNodes = endNodes.filter((position) => !balls.some((ball) => ball.position === position))

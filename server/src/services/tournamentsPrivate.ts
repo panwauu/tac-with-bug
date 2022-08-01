@@ -275,7 +275,7 @@ export async function startTournamentGame(
   }
 
   createdGame.playerIDs.forEach((id) => {
-    const socket = getSocketByUserID(id)
+    const socket = getSocketByUserID(id ?? -1)
     socket != null && emitGamesUpdate(pgPool, socket)
   })
 

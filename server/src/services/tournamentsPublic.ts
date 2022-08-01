@@ -189,7 +189,7 @@ async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament
     const createdGame = await createGame(sqlClient, 2, playeridsOrdered, true, false, colorsForGame, tournament.id, undefined)
 
     createdGame.playerIDs.forEach((id) => {
-      const socket = getSocketByUserID(id)
+      const socket = getSocketByUserID(id ?? -1)
       socket != null && emitGamesUpdate(sqlClient, socket)
     })
 

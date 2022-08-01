@@ -30,7 +30,7 @@ export interface MiscStateType {
   setGamePlayer: (gamePlayer: number) => void
   setDeckInfo: (deckInfoInput: number[]) => void
   setCoopCounter: (coopCounter: number) => void
-  setGameRunning: (gameEnded: boolean, status: string, players: tPlayers.Player[], winningTeams: boolean[], coopCounter: number, gamePlayer: number) => void
+  setGameRunning: (gameEnded: boolean, running: boolean, players: tPlayers.Player[], winningTeams: boolean[], coopCounter: number, gamePlayer: number) => void
   setTradeDirection: (players: tPlayers.Player[], tradeDirection: 1 | -1) => void
   setPlayers: (players: tPlayers.Player[]) => void
   setFlags: (data: UpdateDataType) => void
@@ -84,8 +84,8 @@ export function useMisc(nPlayers?: number): MiscStateType {
     setCoopCounter: (coopCounter) => {
       miscState.coopCounter = coopCounter
     },
-    setGameRunning: (gameEnded, status, players, winningTeams, coopCounter, gamePlayer) => {
-      if (gameEnded === true || status !== 'running') {
+    setGameRunning: (gameEnded, running, players, winningTeams, coopCounter, gamePlayer) => {
+      if (gameEnded === true || !running) {
         miscState.gameRunning = false
       } else {
         miscState.gameRunning = true
@@ -100,7 +100,7 @@ export function useMisc(nPlayers?: number): MiscStateType {
             players: teamPlayers.join(` ${i18n.global.t('Game.EndedOverlay.playersConnector')} `),
           })
         }
-      } else if (status === 'aborted') {
+      } else if (!running) {
         miscState.gameEndedText = i18n.global.t('Game.EndedOverlay.aborted')
       } else {
         miscState.gameEndedText = ''
@@ -122,7 +122,7 @@ export function useMisc(nPlayers?: number): MiscStateType {
     setFlags: (data) => {
       miscState.aussetzenFlag = data.aussetzenFlag
       miscState.teufelFlag = data.teufelFlag
-      miscState.tournamentID = data.tournamentID
+      miscState.tournamentID = data.publicTournamentId
       miscState.rematch_open = data.rematch_open
     },
   })

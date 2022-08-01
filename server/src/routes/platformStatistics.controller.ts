@@ -10,7 +10,7 @@ export class PlatformStatisticController extends Controller {
    */
   @Get('/getPlatformFunFacts')
   public async getPlatformFunFacts(@Request() request: express.Request): Promise<PlatformFunFacts> {
-    return await getPlatformFunFacts(request.app.locals.sqlClient)
+    return getPlatformFunFacts(request.app.locals.sqlClient)
   }
 
   /**
@@ -18,6 +18,6 @@ export class PlatformStatisticController extends Controller {
    */
   @Get('/getPlatformStats')
   public async getPlatformStats(@Request() request: express.Request): Promise<PlatformStats> {
-    return await getPlatformStatistic(request.app.locals.sqlClient)
+    return getPlatformStatistic(request.app.locals.sqlClient)
   }
 }

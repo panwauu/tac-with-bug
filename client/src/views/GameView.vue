@@ -19,7 +19,7 @@
 import GameComponent from '@/components/game/GameComponent.vue'
 
 import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, provide } from 'vue'
 import { registerGameSocket } from '@/services/registerSockets'
 import { usePositionStyles } from '@/services/compositionGame/usePositionStyles'
 import { useMisc } from '@/services/compositionGame/useMisc'
@@ -32,8 +32,13 @@ import { useInstructions } from '@/services/compositionGame/useInstructions'
 import { sound } from '@/plugins/sound'
 import { audioHandler } from '@/services/compositionGame/audioHandler'
 import router from '@/router/index'
+import { GameSocketKey } from '@/services/injections'
+import { useToast } from 'primevue/usetoast'
+import { i18n } from '@/services/i18n'
 
+const toast = useToast()
 const gameSocket = registerGameSocket()
+provide(GameSocketKey, gameSocket)
 const miscState = useMisc()
 const positionStyles = usePositionStyles(miscState)
 const statisticState = useStatistic()
@@ -50,6 +55,37 @@ const modalState = ref('settings')
 gameSocket.on('game:online-players', miscState.setOnlinePlayers)
 gameSocket.on('update', updateHandler)
 gameSocket.on('reconnect_failed', closeGame)
+gameSocket.on('disconnect', closeGame)
+gameSocket.on('toast:substitution-offer', substitutionOfferToast)
+gameSocket.on('toast:substitution-done', substitutionDoneToast)
+gameSocket.on('toast:substitution-stopped', substitutionStoppedToast)
+
+function substitutionOfferToast(username: string) {
+  toast.add({
+    severity: 'warn',
+    life: 5000,
+    summary: i18n.global.t('Game.Toast.substitution-offer-summary'),
+    detail: i18n.global.t('Game.Toast.substitution-offer-detail', { username }),
+  })
+}
+
+function substitutionDoneToast(username: string, replacedUsername: string) {
+  toast.add({
+    severity: 'success',
+    life: 5000,
+    summary: i18n.global.t('Game.Toast.substitution-done-summary'),
+    detail: i18n.global.t('Game.Toast.substitution-done-detail', { username, replacedUsername }),
+  })
+}
+
+function substitutionStoppedToast() {
+  toast.add({
+    severity: 'error',
+    life: 5000,
+    summary: i18n.global.t('Game.Toast.substitution-stopped-summary'),
+    detail: i18n.global.t('Game.Toast.substitution-stopped-detail'),
+  })
+}
 
 onMounted(() => {
   positionStyles.onResize()
@@ -62,12 +98,34 @@ onUnmounted(() => {
   gameSocket.off('game:online-players', miscState.setOnlinePlayers)
   gameSocket.off('update', updateHandler)
   gameSocket.off('reconnect_failed', closeGame)
+  gameSocket.off('disconnect', closeGame)
+  gameSocket.off('toast:substitution-offer', substitutionOfferToast)
+  gameSocket.off('toast:substitution-done', substitutionDoneToast)
+  gameSocket.off('toast:substitution-stopped', substitutionStoppedToast)
   gameSocket.disconnect()
   sound.$stop()
 })
 
+let substitutionTimeout: number
+function updateSubstitutionTimeout(updateData: UpdateDataType) {
+  clearTimeout(substitutionTimeout)
+  const timeout = updateData.lastPlayed + 60 * 1000 - Date.now()
+  if (timeout < 0) {
+    return
+  }
+  substitutionTimeout = window.setTimeout(() => {
+    toast.add({
+      severity: 'warn',
+      life: 10000,
+      summary: i18n.global.t('Game.Toast.substitution-possible-summary'),
+      detail: i18n.global.t('Game.Toast.substitution-possible-detail'),
+    })
+  }, timeout)
+}
+
 async function updateHandler(data: UpdateDataType): Promise<void> {
   audioHandler(data, cardsState, miscState)
+  updateSubstitutionTimeout(data)
   updateData.value = data
 }
 

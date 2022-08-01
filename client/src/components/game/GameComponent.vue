@@ -59,6 +59,13 @@
               class="p-button-rounded p-button-info landscapeMenuButton"
               @click="openModal('assistance')"
             />
+            <Button
+              aria-label="Substitution"
+              icon="pi pi-arrows-h"
+              class="p-button-rounded p-button-warning landscapeMenuButton"
+              :class="updateData?.substitution != null ? 'blink-animation' : ''"
+              @click="openModal('substitution')"
+            />
             <GameWatchingPlayers
               aria-label="Watching Players"
               :displayText="false"
@@ -131,6 +138,7 @@
             class="statistic"
             :statisticState="statisticState"
             :miscState="miscState"
+            :updateData="updateData"
           />
         </Fieldset>
         <Fieldset
@@ -158,6 +166,7 @@
         class="statistic"
         :statisticState="statisticState"
         :miscState="miscState"
+        :updateData="updateData"
       />
       <GameModalSettings
         v-if="modalStateLocal === 'settings'"
@@ -165,6 +174,10 @@
         :miscState="miscState"
       />
       <GameModalAssistance v-if="modalStateLocal === 'assistance'" />
+      <GameModalSubstitution
+        v-if="modalStateLocal === 'substitution'"
+        :updateData="updateData"
+      />
     </Dialog>
   </div>
 </template>
@@ -178,6 +191,7 @@ import GameBoard from '@/components/game/GameBoard.vue'
 import OwnCards from '@/components/game/OwnCards.vue'
 import GameModalSettings from '@/components/gameModal/GameModalSettings.vue'
 import GameModalAssistance from '@/components/gameModal/GameModalAssistance.vue'
+import GameModalSubstitution from '@/components/gameModal/GameModalSubstitution.vue'
 import GameStatistic from '@/components/game/GameStatistic.vue'
 import Fieldset from 'primevue/fieldset'
 import RematchForm from './RematchForm.vue'
@@ -238,7 +252,7 @@ async function updateHandler(): Promise<void> {
   props.miscState.setPlayers(props.updateData.players)
   props.miscState.setGameRunning(
     props.updateData.gameEnded,
-    props.updateData.status,
+    props.updateData.running,
     props.updateData.players,
     props.updateData.winningTeams,
     props.updateData.coopCounter,
@@ -246,7 +260,7 @@ async function updateHandler(): Promise<void> {
   )
   props.miscState.setTimestamps(props.updateData.created, props.updateData.lastPlayed)
   props.positionStyles.setBallsColors(props.updateData.colors)
-  props.statisticState.setStatistic(props.updateData.statistic, props.updateData.players, props.updateData.coopCounter, props.positionStyles.getHexColors())
+  props.statisticState.setStatistic(props.updateData, props.positionStyles.getHexColors())
   props.discardPileState.updateDiscardPile(props.updateData.discardPile, props.updateData.players, props.updateData.cards, props.positionStyles)
 
   if (tacFirstRevertState) {
@@ -310,6 +324,13 @@ function getMenu(displayText: boolean) {
       icon: 'pi pi-question',
       command: () => {
         openModal('assistance')
+      },
+    },
+    {
+      label: displayText ? i18n.global.t('Game.GameModal.title.substitution') : '',
+      icon: 'pi pi-arrows-h',
+      command: () => {
+        openModal('substitution')
       },
     },
   ]
@@ -496,5 +517,21 @@ function onResize() {
 
 .sick-game-portrait-query .statistic {
   width: 70vw !important;
+}
+
+@keyframes grow {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.3);
+  }
+}
+.blink-animation {
+  animation-name: grow;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-direction: alternate;
 }
 </style>

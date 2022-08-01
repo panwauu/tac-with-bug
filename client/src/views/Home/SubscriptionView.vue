@@ -139,14 +139,13 @@ import Luck from '@/components/icons/LuckSymbol.vue'
 import SelectButton from 'primevue/selectbutton'
 import Message from 'primevue/message'
 
-import { loadScript } from '@paypal/paypal-js'
+import { loadScript, PayPalButtonsComponent } from '@paypal/paypal-js'
 import { ref, onMounted, computed, onUnmounted, watch } from 'vue'
 import router from '@/router/index'
 import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
 import { useSubscription } from '@/services/useSubscription'
 import { injectStrict, SocketKey } from '@/services/injections'
-import { PayPalButtonsComponent } from '@paypal/paypal-js'
 import { isLoggedIn } from '@/services/useUser'
 const toast = useToast()
 
@@ -162,7 +161,7 @@ const planModel = [
 const selectedPlan = ref(planModel[2])
 
 const button = ref<PayPalButtonsComponent | undefined>()
-const paypal = ref(
+const paypalScriptPromise = ref(
   loadScript({
     'client-id': import.meta.env.VITE_PAYPAL_CLIENT_ID as string,
     intent: 'subscription',
@@ -221,7 +220,7 @@ function renderButton() {
     button.value?.close()
   }
 
-  paypal.value
+  paypalScriptPromise.value
     .then((paypal) => {
       if (paypal === null) {
         router.push({ name: 'Landing' })

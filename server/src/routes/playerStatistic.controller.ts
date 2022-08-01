@@ -4,8 +4,7 @@ import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatisti
 import { Controller, Get, Query, Route, Request } from 'tsoa'
 
 import type { UserNetworkApiResponse } from '../sharedTypes/typesStatistic'
-import { getUserNetworkData } from '../services/playerStatistic'
-import { getDataForProfilePage } from '../services/playerStatistic'
+import { getUserNetworkData, getDataForProfilePage } from '../services/playerStatistic'
 import { getTournamentParticipations } from '../services/tournaments'
 
 @Route('/profile')

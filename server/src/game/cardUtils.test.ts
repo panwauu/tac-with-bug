@@ -6,11 +6,11 @@ test('Init -> empty discard pile and empty hands', () => {
   const cards6 = initalizeCards(6, true)
   expect(cards4.discardPile.length).toEqual(0)
   expect(cards6.discardPile.length).toEqual(0)
-  for (let i = 0; i < cards4.players.length; i++) {
-    expect(cards4.players[i].length).toEqual(0)
+  for (const playerCards of cards4.players) {
+    expect(playerCards.length).toEqual(0)
   }
-  for (let i = 0; i < cards6.players.length; i++) {
-    expect(cards6.players[i].length).toEqual(0)
+  for (const playerCards of cards6.players) {
+    expect(playerCards.length).toEqual(0)
   }
 })
 
@@ -56,14 +56,14 @@ test('Deal Cards 4', () => {
 
   for (let j = 0; j < 4; j++) {
     dealCards(cards)
-    for (let i = 0; i < cards.players.length; i++) {
-      expect(cards.players[i].length).toEqual(5)
+    for (const playerCards of cards.players) {
+      expect(playerCards.length).toEqual(5)
     }
   }
   expect(cards.dealingPlayer).toEqual(startPlayer)
   dealCards(cards)
-  for (let i = 0; i < cards.players.length; i++) {
-    expect(cards.players[i].length).toEqual(6)
+  for (const playerCards of cards.players) {
+    expect(playerCards.length).toEqual(6)
   }
   expect(cards.dealingPlayer !== startPlayer).toEqual(true)
   expect(cards.deck.length).toEqual(104)
@@ -75,14 +75,14 @@ test('Deal Cards 4 - not meister', () => {
 
   for (let j = 0; j < 4; j++) {
     dealCards(cards)
-    for (let i = 0; i < cards.players.length; i++) {
-      expect(cards.players[i].length).toEqual(5)
+    for (const playerCards of cards.players) {
+      expect(playerCards.length).toEqual(5)
     }
   }
   expect(cards.dealingPlayer).toEqual(startPlayer)
   dealCards(cards)
-  for (let i = 0; i < cards.players.length; i++) {
-    expect(cards.players[i].length).toEqual(5)
+  for (const playerCards of cards.players) {
+    expect(playerCards.length).toEqual(5)
   }
   expect(cards.dealingPlayer !== startPlayer).toEqual(true)
   expect(cards.deck.length).toEqual(100)
@@ -94,8 +94,8 @@ test('Deal Cards 6', () => {
 
   for (let j = 0; j < 2; j++) {
     dealCards(cards)
-    for (let i = 0; i < cards.players.length; i++) {
-      expect(cards.players[i].length).toEqual(6)
+    for (const playerCards of cards.players) {
+      expect(playerCards.length).toEqual(6)
     }
   }
   dealCards(cards)
@@ -117,13 +117,13 @@ test('Deal Cards 6 - not Meisterversion', () => {
 
   for (let j = 0; j < 2; j++) {
     dealCards(cards)
-    for (let i = 0; i < cards.players.length; i++) {
-      expect(cards.players[i].length).toEqual(5)
+    for (const playerCards of cards.players) {
+      expect(playerCards.length).toEqual(5)
     }
   }
   dealCards(cards)
-  for (let i = 0; i < cards.players.length; i++) {
-    expect(cards.players[i].length).toEqual(6)
+  for (const playerCards of cards.players) {
+    expect(playerCards.length).toEqual(6)
   }
   expect(cards.deck.length).toEqual(96)
   expect(cards.dealingPlayer !== startPlayer).toEqual(true)
@@ -163,8 +163,8 @@ test('Randomize Array -> Random test', () => {
       arraySum[j] += array[j]
     }
   }
-  for (let i = 0; i < arraySum.length; i++) {
-    expect(Math.abs(arraySum[i]) < 100).toEqual(true)
+  for (const arraySumElement of arraySum) {
+    expect(Math.abs(arraySumElement) < 100).toEqual(true)
   }
 })
 
