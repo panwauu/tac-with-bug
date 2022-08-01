@@ -29,7 +29,7 @@ jobs:
         with:
           github-token: ${{secrets.TAG_GITHUB_TOKEN}}
           script: |
-            console.log(context.SHA_TO_DEPLOY)
+            console.log(env.SHA_TO_DEPLOY)
             try {
               await github.rest.git.deleteRef({
                 owner: context.repo.owner,
@@ -42,6 +42,6 @@ jobs:
             await github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              sha: context.SHA_TO_DEPLOY,
+              sha: env.SHA_TO_DEPLOY,
               ref: "refs/tags/test_deployed"
             })
