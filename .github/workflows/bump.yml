@@ -23,6 +23,7 @@ jobs:
         with:
           tag-prefix: 'v'
           commit-message: 'CI: bumps version to {{version}}'
+          skip-push: 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.TAG_GITHUB_TOKEN }}
           PACKAGEJSON_DIR: 'server'
