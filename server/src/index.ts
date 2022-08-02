@@ -10,5 +10,5 @@ const options: ServerOptions = {
 
 const server = new TacServer(options)
 server.listen().then((port) => {
-  logger.info(`Server started on port ${port}`)
+  logger.info(`Server (version ${process.env.npm_package_version}) started on port ${port}`)
 })
