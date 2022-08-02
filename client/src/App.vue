@@ -17,6 +17,7 @@ import ConnectionStatusOverlay from '@/components/ConnectionStatusOverlay.vue'
 import { watch, provide } from 'vue'
 import { registerSocketToastHandlers } from '@/services/socketToastTournament'
 import { useGamesSummary } from '@/services/useGamesSummary'
+import { useCheckVersion } from '@/services/useCheckVersions'
 import { GamesSummaryKey, SocketKey, FriendsStateKey, injectStrict } from '@/services/injections'
 import { logout } from '@/services/useUser'
 import { userFriends } from '@/services/useFriends'
@@ -84,6 +85,9 @@ function activateUser(userID: number, token: string) {
       })
     )
 }
+
+const servercheck = useCheckVersion(toast)
+servercheck.start()
 </script>
 
 <style scoped>
