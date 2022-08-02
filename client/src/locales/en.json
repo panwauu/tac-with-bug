@@ -909,6 +909,10 @@
     "GenericError": {
       "summary": "Something went wrong",
       "detail": "An error occurred on the server. Refresh the page and try again."
+    },
+    "VersionMismatch": {
+      "summary": "Outdated version",
+      "detail": "Your site's version seems to be out of date. That could cause problems. Reloading the page once should suffice to solve the problem. If the error persists, contact us via the imprint."
     }
   },
   "Connection": {
