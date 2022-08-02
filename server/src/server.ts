@@ -66,7 +66,7 @@ export class TacServer {
           maxAge: 31536000000,
           cacheControl: true,
           setHeaders: function (res, pathOfFile) {
-            if (path.basename(pathOfFile) == 'index.html') {
+            if (path.basename(pathOfFile) === 'index.html') {
               res.setHeader('Cache-Control', 'no-store, max-age=0')
             }
           },
