@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import logger from './helpers/logger'
+import logger from '../helpers/logger'
 import { TacServer, ServerOptions } from './server'
 
 const argv = minimist(process.argv.slice(2))
