@@ -1,7 +1,8 @@
 import { locales } from '../sharedDefinitions/locales'
 import { getPassedRatio, getPlatformStatistic } from '../services/platformStatistic'
 import { DayDatasetType, HourDatasetType } from '../sharedTypes/typesPlatformStatistic'
-import { version } from '../../package.json'
+import { readFileSync } from 'fs'
+import path from 'path'
 
 describe('Platform Statistic Test Suite', () => {
   test('Test week data extrapolation with synthetic data', async () => {
@@ -108,6 +109,7 @@ describe('Platform Statistic Test Suite', () => {
   test('Test server version', async () => {
     const response = await testAgent.get('/gameApi/getServerVersion/')
     expect(response.statusCode).toBe(200)
-    expect(response.body).toBe(version)
+    const packageJSON = JSON.parse(readFileSync(path.join('package.json')).toString())
+    expect(response.body).toBe(packageJSON.version)
   })
 })
