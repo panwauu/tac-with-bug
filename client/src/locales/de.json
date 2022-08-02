@@ -909,6 +909,10 @@
     "GenericError": {
       "summary": "Da ist etwas schiefgegangen",
       "detail": "Am Server ist ein Fehler aufgetreten. Aktualisiere die Seite und versuche es erneut."
+    },
+    "VersionMismatch": {
+      "summary": "Veraltete Version",
+      "detail": "Die Version deiner Website scheint veraltet zu sein. Das könnte zu Problemen führen. Es sollte reichen die Seite einmal neu zu laden. Wenn der Fehler weiterhin besteht, kontaktiere uns über das Impressum."
     }
   },
   "Connection": {

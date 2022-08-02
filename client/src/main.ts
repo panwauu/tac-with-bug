@@ -1,3 +1,5 @@
+console.log(`Version: ${import.meta.env.PACKAGE_VERSION}`)
+
 import './services/socket'
 
 if ('wakeLock' in navigator) {
