@@ -4,7 +4,7 @@ import type pg from 'pg'
 
 import { cloneDeep } from 'lodash'
 import { Game } from '../../game/game'
-import { TacServer } from '../../server'
+import { TacServer } from '../../entrypoints/server'
 import { normalizeAction, normalizeGame } from '../normalize/normalize'
 
 test()

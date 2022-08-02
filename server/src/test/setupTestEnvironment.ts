@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 import logger from '../helpers/logger'
 import intro from '../dbUtils/intro.json'
-import { TacServer } from '../server'
+import { TacServer } from '../entrypoints/server'
 import { initTestDatabaseClient } from '../dbUtils/initdBUtils'
 import './socket'
 

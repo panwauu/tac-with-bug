@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import path from 'path'
 
-dotenv.config({ path: path.resolve(__dirname, '../.env'), debug: true })
+dotenv.config({ path: path.resolve(__dirname, '../../.env'), debug: true })
 
 if (process.env.NODE_ENV !== 'production') {
   process.env.jwtSecret = 'SECRET_KEY'
