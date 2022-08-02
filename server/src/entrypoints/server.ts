@@ -11,19 +11,19 @@ import sslRequire from 'heroku-ssl-redirect'
 
 import pg from 'pg'
 import { Server } from 'socket.io'
-import { registerSocketNspGeneral } from './socket/general'
-import { registerSocketNspGame } from './socket/game'
+import { registerSocketNspGeneral } from '../socket/general'
+import { registerSocketNspGame } from '../socket/game'
 
-import { RegisterRoutes } from './routes/routes'
-import { validationErrorMiddleware } from './helpers/validationErrorMiddleware'
+import { RegisterRoutes } from '../routes/routes'
+import { validationErrorMiddleware } from '../helpers/validationErrorMiddleware'
 import swaggerUI from 'swagger-ui-express'
-import swaggerDoc from './swagger.json'
+import swaggerDoc from '../swagger.json'
 
-import { cancelAllJobs, registerJobs } from './services/scheduledTasks'
+import { cancelAllJobs, registerJobs } from '../services/scheduledTasks'
 
-import { initdBUtils } from './dbUtils/initdBUtils'
-import { loadTutorialLevels } from './services/tutorial'
-import logger from './helpers/logger'
+import { initdBUtils } from '../dbUtils/initdBUtils'
+import { loadTutorialLevels } from '../services/tutorial'
+import logger from '../helpers/logger'
 
 export type ServerOptions = {
   serveApp?: boolean
@@ -61,9 +61,15 @@ export class TacServer {
     // Handle production
     if (process.env.NODE_ENV === 'production' || options?.serveApp) {
       this.app.use(
-        express.static(path.join(__dirname, '../public'), {
-          maxAge: 60 * 60 * 1000,
+        express.static(path.join(__dirname, '../../public'), {
+          index: 'index.html',
+          maxAge: 31536000000,
           cacheControl: true,
+          setHeaders: function (res, pathOfFile) {
+            if (path.basename(pathOfFile) === 'index.html') {
+              res.setHeader('Cache-Control', 'no-store, max-age=0')
+            }
+          },
         })
       )
 
