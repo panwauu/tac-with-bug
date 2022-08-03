@@ -21,7 +21,7 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
       return cb({ status: 500, error: 'UNAUTH' })
     }
 
-    const schema = Joi.object({ title: Joi.string().required().allow(null), userids: Joi.array().required().items(Joi.number().min(0)) })
+    const schema = Joi.object({ title: Joi.string().required().allow(null), userids: Joi.array().required().items(Joi.number().min(0).invalid(socket.data.userID)).unique() })
     const { error } = schema.validate(data)
     if (error != null) {
       return cb({ status: 500, error: error })
