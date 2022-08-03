@@ -1,7 +1,6 @@
 import { Friend } from '../sharedTypes/typesFriends'
-import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
-import { closeSockets, connectSocket } from '../test/handleSocket'
-import { io } from 'socket.io-client'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { closeSockets } from '../test/handleSocket'
 import { GeneralSocketC } from '../test/socket'
 
 describe('Friends test suite via socket.io', () => {
@@ -10,8 +9,7 @@ describe('Friends test suite via socket.io', () => {
 
   beforeAll(async () => {
     usersWithSockets = await getUsersWithSockets({ n: 3 })
-    unauthenticatedSocket = io('http://localhost:1234', { reconnection: false, forceNew: true, autoConnect: false }) as any
-    await connectSocket(unauthenticatedSocket)
+    unauthenticatedSocket = await getUnauthenticatedSocket()
   })
 
   afterAll(async () => {
