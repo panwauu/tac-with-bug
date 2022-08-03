@@ -1,8 +1,7 @@
-import type { GameSocketC } from '../sharedTypes/GameNamespaceDefinition'
-
 import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets'
 import { registerGameSocket, initiateGameSocket } from '../test/handleGameSocket'
 import { closeSockets, connectSocket } from '../test/handleSocket'
+import { GameSocketC } from '../test/socket'
 
 describe('Game test suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[]
@@ -61,7 +60,7 @@ describe('Game test suite via socket.io', () => {
       })
 
       const promiseArray = [
-        new Promise<any>((resolve) => gameSocket.once('game:online-players', (data) => resolve(data))),
+        gameSocket.oncePromise('game:online-players'),
         new Promise<any>(
           (resolve) =>
             (interval = setInterval(() => {
@@ -96,10 +95,7 @@ describe('Game test suite via socket.io', () => {
         }, 500)
       })
       gameSocketOfPlayer2 = initiateGameSocket(gameID, usersWithSockets[2].token)
-      const promiseArray = [
-        new Promise<any>((resolve) => gameSocketOfPlayer2.once('game:online-players', (data) => resolve(data))),
-        new Promise<any>((resolve) => gameSocketOfPlayer2.once('update', (data) => resolve(data))),
-      ]
+      const promiseArray: any = [gameSocketOfPlayer2.oncePromise('game:online-players'), gameSocketOfPlayer2.oncePromise('update')]
       await connectSocket(gameSocketOfPlayer2)
       const result = await Promise.all(promiseArray)
       expect(result[0].onlineGamePlayers).toEqual([2])
@@ -110,10 +106,10 @@ describe('Game test suite via socket.io', () => {
 
     test('Register second player', async () => {
       gameSocketOfPlayer3 = initiateGameSocket(gameID, usersWithSockets[3].token)
-      const promiseArray = [
-        new Promise<any>((resolve) => gameSocketOfPlayer2.once('game:online-players', (data) => resolve(data))),
-        new Promise<any>((resolve) => gameSocketOfPlayer3.once('game:online-players', (data) => resolve(data))),
-        new Promise<any>((resolve) => gameSocketOfPlayer3.once('update', (data) => resolve(data))),
+      const promiseArray: any[] = [
+        gameSocketOfPlayer2.oncePromise('game:online-players'),
+        gameSocketOfPlayer3.oncePromise('game:online-players'),
+        gameSocketOfPlayer3.oncePromise('update'),
       ]
       await connectSocket(gameSocketOfPlayer3)
       const result = await Promise.all(promiseArray)
@@ -127,10 +123,7 @@ describe('Game test suite via socket.io', () => {
     })
 
     test('Post move', async () => {
-      const promiseArray = [
-        new Promise<any>((resolve) => gameSocketOfPlayer2.once('update', (data) => resolve(data))),
-        new Promise<any>((resolve) => gameSocketOfPlayer3.once('update', (data) => resolve(data))),
-      ]
+      const promiseArray = [gameSocketOfPlayer2.oncePromise('update'), gameSocketOfPlayer3.oncePromise('update')]
       gameSocketOfPlayer2.emit('postMove', [2, 0, 'beenden'])
       const result = await Promise.all(promiseArray)
       expect(generateGameSnapshot(result[0])).toMatchSnapshot()
@@ -141,7 +134,7 @@ describe('Game test suite via socket.io', () => {
     })
 
     test('Does emit onlinePlayers to gameSocket1 when gameSocket0 disconnects', async () => {
-      const promiseArray = [new Promise<any>((resolve) => gameSocketOfPlayer3.once('game:online-players', (data) => resolve(data)))]
+      const promiseArray = [gameSocketOfPlayer3.oncePromise('game:online-players')]
       gameSocketOfPlayer2.disconnect()
       const result = await Promise.all(promiseArray)
       expect(result[0].onlineGamePlayers).toEqual([3])
