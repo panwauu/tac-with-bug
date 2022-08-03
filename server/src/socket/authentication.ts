@@ -2,16 +2,19 @@ import type pg from 'pg'
 import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import { verifyJWT } from '../helpers/jwtWrapper'
 import { initializeSocket, terminateSocket } from './general'
+import Joi from 'joi'
 
 export function registerAuthHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
-  socket.on('login', async ({ token }, callback) => {
-    if (typeof token !== 'string') {
-      return callback({ status: 422, error: 'NO_TOKEN' })
+  socket.on('login', async (data, callback) => {
+    const schema = Joi.object({ token: Joi.string().required().min(1) })
+    const { error } = schema.validate(data)
+    if (error != null) {
+      return callback({ status: 422, error: error })
     }
 
     await terminateSocket(pgPool, socket)
 
-    const decoded = verifyJWT(token)
+    const decoded = verifyJWT(data.token)
     if (decoded.isErr()) {
       return callback({ status: 400, error: decoded.error })
     }

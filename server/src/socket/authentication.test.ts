@@ -1,44 +1,48 @@
-import type { AckData, GeneralSocketC } from '../sharedTypes/GeneralNamespaceDefinition'
 import { io } from 'socket.io-client'
-import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
-import { closeSockets } from '../test/handleSocket'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { closeSockets, connectSocket } from '../test/handleSocket'
+import { GeneralSocketC } from '../test/socket'
 
 describe('Authentication Test Suite via Socket.io', () => {
   let usersWithSockets: UserWithSocket[]
   let socket: GeneralSocketC
+  let anotherSocket: GeneralSocketC
 
   beforeAll(async () => {
     usersWithSockets = await getUsersWithSockets({ n: 2 })
-    socket = io('http://localhost:1234') as any
-    await new Promise((resolve) => {
-      socket.on('connect', () => {
-        resolve(null)
-      })
-    })
+    socket = await getUnauthenticatedSocket()
   })
 
   afterAll(async () => {
-    await closeSockets([...usersWithSockets, socket])
+    await closeSockets([...usersWithSockets, socket, anotherSocket])
   })
 
   test('Should be able to logout without interfering with other sockets', async () => {
-    const data = await new Promise<AckData<null>>((resolve) =>
-      usersWithSockets[0].socket.emit('logout', (data) => {
-        resolve(data)
-      })
-    )
+    const data = await usersWithSockets[0].socket.emitWithAck(5000, 'logout')
     expect(data.status).toBe(200)
     expect(usersWithSockets[0].socket.connected).toBe(true)
     expect(usersWithSockets[1].socket.connected).toBe(true)
     expect(socket.connected).toBe(true)
   })
 
+  test('Should not be able to login without token', async () => {
+    const data = await usersWithSockets[0].socket.emitWithAck(5000, 'login', undefined as any)
+    expect(data.status).toBe(422)
+    expect(usersWithSockets[0].socket.connected).toBe(true)
+    expect(usersWithSockets[1].socket.connected).toBe(true)
+    expect(socket.connected).toBe(true)
+  })
+
+  test('Should not be able to login with invalid token', async () => {
+    const data = await usersWithSockets[0].socket.emitWithAck(5000, 'login', { token: '1234' })
+    expect(data.status).toBe(400)
+    expect(usersWithSockets[0].socket.connected).toBe(true)
+    expect(usersWithSockets[1].socket.connected).toBe(true)
+    expect(socket.connected).toBe(true)
+  })
+
   test('Should be able to login without interfering with other sockets', async () => {
-    const data = await new Promise<AckData<null>>((resolve) =>
-      usersWithSockets[0].socket.emit('login', { token: usersWithSockets[0].token }, (data) => {
-        resolve(data)
-      })
-    )
+    const data = await usersWithSockets[0].socket.emitWithAck(5000, 'login', { token: usersWithSockets[0].token })
     expect(data.status).toBe(200)
     expect(usersWithSockets[0].socket.connected).toBe(true)
     expect(usersWithSockets[1].socket.connected).toBe(true)
@@ -46,49 +50,25 @@ describe('Authentication Test Suite via Socket.io', () => {
   })
 
   test('Should logout other socket with same userID', async () => {
-    const logoutData = await new Promise<AckData<null>>((resolve) =>
-      usersWithSockets[0].socket.emit('logout', (data) => {
-        resolve(data)
-      })
-    )
+    const logoutData = await usersWithSockets[0].socket.emitWithAck(5000, 'logout')
     expect(logoutData.status).toBe(200)
 
-    const logoutOtherUserPromise = new Promise((resolve) => {
-      usersWithSockets[1].socket.once('logged_out', () => {
-        resolve(true)
-      })
-    })
+    const logoutOtherUserPromise = usersWithSockets[1].socket.oncePromise('logged_out')
 
-    const loginData = await new Promise<AckData<null>>((resolve) =>
-      usersWithSockets[0].socket.emit('login', { token: usersWithSockets[1].token }, (data) => {
-        resolve(data)
-      })
-    )
+    const loginData = await usersWithSockets[0].socket.emitWithAck(5000, 'login', { token: usersWithSockets[1].token })
     expect(loginData.status).toBe(200)
     await logoutOtherUserPromise
 
-    expect(await logoutOtherUserPromise).toBe(true)
+    await logoutOtherUserPromise
     expect(usersWithSockets[0].socket.connected).toBe(true)
     expect(usersWithSockets[1].socket.connected).toBe(true)
     expect(socket.connected).toBe(true)
   })
 
   test('User with invalid token should be logged out', async () => {
-    const clientSocket = io('http://localhost:1234', { auth: { token: '1234' } })
-    const connProm = new Promise((resolve) => {
-      clientSocket.on('connect', () => {
-        console.log('conn')
-        resolve(null)
-      })
-    })
-    const logoutProm = new Promise((resolve) => {
-      clientSocket.on('logged_out', () => {
-        console.log('logout')
-        resolve(null)
-      })
-    })
-    expect(await connProm).toBe(null)
-    expect(await logoutProm).toBe(null)
-    clientSocket.close()
+    anotherSocket = io('http://localhost:1234', { auth: { token: '1234' } }) as GeneralSocketC
+    const logoutProm = anotherSocket.oncePromise('logged_out')
+    await connectSocket(anotherSocket)
+    await logoutProm
   })
 })
