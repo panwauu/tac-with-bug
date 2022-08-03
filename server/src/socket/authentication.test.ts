@@ -1,4 +1,3 @@
-import { io } from 'socket.io-client'
 import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets, connectSocket } from '../test/handleSocket'
 import { GeneralSocketC } from '../test/socket'
@@ -6,7 +5,6 @@ import { GeneralSocketC } from '../test/socket'
 describe('Authentication Test Suite via Socket.io', () => {
   let usersWithSockets: UserWithSocket[]
   let socket: GeneralSocketC
-  let anotherSocket: GeneralSocketC
 
   beforeAll(async () => {
     usersWithSockets = await getUsersWithSockets({ n: 2 })
@@ -14,7 +12,7 @@ describe('Authentication Test Suite via Socket.io', () => {
   })
 
   afterAll(async () => {
-    await closeSockets([...usersWithSockets, socket, anotherSocket])
+    await closeSockets([...usersWithSockets, socket])
   })
 
   test('Should be able to logout without interfering with other sockets', async () => {
@@ -66,9 +64,11 @@ describe('Authentication Test Suite via Socket.io', () => {
   })
 
   test('User with invalid token should be logged out', async () => {
-    anotherSocket = io('http://localhost:1234', { auth: { token: '1234' } }) as GeneralSocketC
-    const logoutProm = anotherSocket.oncePromise('logged_out')
-    await connectSocket(anotherSocket)
+    closeSockets([usersWithSockets[0].socket])
+    // @ts-ignore
+    usersWithSockets[0].socket.auth.token = '1234'
+    const logoutProm = usersWithSockets[0].socket.oncePromise('logged_out')
+    await connectSocket(usersWithSockets[0].socket)
     await logoutProm
   })
 })
