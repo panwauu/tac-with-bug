@@ -19,7 +19,7 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   socket.on('friends:request', async (username, callback) => {
     if (socket.data.userID === undefined) {
       logger.error('Event forbidden for unauthenticated user (friends:request)', { stack: new Error().stack })
-      return
+      return callback({ status: 500, error: 'UNAUTH' })
     }
 
     const { error } = Joi.string().required().validate(username)
@@ -57,7 +57,7 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   socket.on('friends:confirm', async (username, callback) => {
     if (socket.data.userID === undefined) {
       logger.error('Event forbidden for unauthenticated user (friends:confirm)', { stack: new Error().stack })
-      return
+      return callback({ status: 500, error: 'UNAUTH' })
     }
 
     const { error } = Joi.string().required().validate(username)
@@ -94,7 +94,7 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   socket.on('friends:cancel', async (username, callback) => {
     if (socket.data.userID === undefined) {
       logger.error('Event forbidden for unauthenticated user (friends:cancel)', { stack: new Error().stack })
-      return
+      return callback({ status: 500, error: 'UNAUTH' })
     }
 
     const { error } = Joi.string().required().validate(username)
