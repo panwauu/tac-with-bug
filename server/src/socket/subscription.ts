@@ -43,7 +43,7 @@ export function registerSubscriptionHandler(pgPool: pg.Pool, socket: GeneralSock
   socket.on('subscription:new', async (subscriptionID, callback) => {
     if (socket.data.userID === undefined) {
       logger.error('Event forbidden for unauthenticated user (subscription:new)', { stack: new Error().stack })
-      return
+      return callback({ status: 500, error: 'UNAUTH' })
     }
 
     const schema = Joi.object({

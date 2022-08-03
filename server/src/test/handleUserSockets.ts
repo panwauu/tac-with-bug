@@ -113,9 +113,9 @@ export async function unregisterUser(userWithCredentials: User) {
   }
 }
 
-export async function getUnauthenticatedSocket(opts: { connect: boolean }): Promise<GeneralSocketC> {
+export async function getUnauthenticatedSocket(opts?: { connect: boolean }): Promise<GeneralSocketC> {
   const clientSocket = io('http://localhost:1234', { reconnection: false, forceNew: true, autoConnect: false }) as any
-  if (opts.connect == null || opts.connect === true) {
+  if (opts?.connect == null || opts?.connect === true) {
     await connectSocket(clientSocket)
   }
   return clientSocket
