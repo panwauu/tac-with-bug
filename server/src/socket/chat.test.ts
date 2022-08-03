@@ -1,8 +1,7 @@
-import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
-import { closeSockets, connectSocket } from '../test/handleSocket'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { closeSockets } from '../test/handleSocket'
 import { Chance } from 'chance'
 import { GeneralSocketC } from '../test/socket'
-import { io } from 'socket.io-client'
 const chance = Chance()
 
 describe('Test Suite via Socket.io', () => {
@@ -11,8 +10,7 @@ describe('Test Suite via Socket.io', () => {
 
   beforeAll(async () => {
     usersWithSockets = await getUsersWithSockets({ n: 3 })
-    unauthenticatedSocket = io('http://localhost:1234', { reconnection: false, forceNew: true, autoConnect: false }) as any
-    await connectSocket(unauthenticatedSocket)
+    unauthenticatedSocket = await getUnauthenticatedSocket()
   })
 
   afterAll(async () => {

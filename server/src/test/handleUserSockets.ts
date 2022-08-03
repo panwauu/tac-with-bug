@@ -112,3 +112,9 @@ export async function unregisterUser(userWithCredentials: User) {
     throw new Error('Could not delete user')
   }
 }
+
+export async function getUnauthenticatedSocket(): Promise<GeneralSocketC> {
+  const clientSocket = io('http://localhost:1234', { reconnection: false, forceNew: true, autoConnect: false }) as any
+  await connectSocket(clientSocket)
+  return clientSocket
+}
