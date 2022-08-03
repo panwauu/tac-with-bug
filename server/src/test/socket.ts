@@ -35,7 +35,7 @@ class CustomSocket<L, E> extends Socket<L, E> {
       this.emit(ev as EventNames<E>, ...(args as any))
     })
   }
-  oncePromise<Ev extends ReservedOrUserEventNames<{}, L>>(ev: Ev, timeout?: number): Promise<onceCallbackFirstArgument<Ev, L>> {
+  oncePromise<Ev extends ReservedOrUserEventNames<Record<string, never>, L>>(ev: Ev, timeout?: number): Promise<onceCallbackFirstArgument<Ev, L>> {
     return new Promise((resolve, reject) => {
       let timer: any
       if (timeout != null) {

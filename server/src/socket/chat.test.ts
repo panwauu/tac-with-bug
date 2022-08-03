@@ -266,7 +266,7 @@ describe('Test Suite via Socket.io', () => {
         expect(resultChatOverview[chatIndexInOverview].players.sort()).toEqual(
           usersWithSockets
             .map((uWS) => uWS.username)
-            .filter((_, i) => i != promiseIndex)
+            .filter((_, i) => i !== promiseIndex)
             .sort()
         )
       })
