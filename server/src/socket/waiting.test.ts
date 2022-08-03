@@ -1,10 +1,10 @@
-import type { GameSocketC } from '../sharedTypes/GameNamespaceDefinition'
 import { registerGameSocket } from '../test/handleGameSocket'
 import Chance from 'chance'
 import { Result } from '../sharedTypes/GeneralNamespaceDefinition'
 import { disableRematchOfOldGames, getGame } from '../services/game'
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
-import { closeSockets } from '../test/handleSocket'
+import { closeSockets, connectSocket } from '../test/handleSocket'
+import { GameSocketC } from '../test/socket'
 const chance = new Chance()
 
 describe('Test Suite via Socket.io', () => {
@@ -21,16 +21,11 @@ describe('Test Suite via Socket.io', () => {
       await closeSockets(usersWithSockets)
     })
 
-    test('Test get games - should be Empty at beginning', (done) => {
-      usersWithSockets[0].socket.once('waiting:getGames', (data: any) => {
-        try {
-          expect(data).toStrictEqual([])
-          done()
-        } catch (err) {
-          done(err)
-        }
-      })
+    test('Test get games - should be Empty at beginning', async () => {
+      const promise = usersWithSockets[0].socket.oncePromise('waiting:getGames')
       usersWithSockets[0].socket.emit('waiting:getGames')
+      const data = await promise
+      expect(data).toStrictEqual([])
     })
 
     test('Test createGame', async () => {
@@ -42,11 +37,7 @@ describe('Test Suite via Socket.io', () => {
         private: chance.bool(),
       }
 
-      const dataPromise = new Promise<any>((resolve) => {
-        usersWithSockets[0].socket.once('waiting:getGames', (data: any) => {
-          resolve(data)
-        })
-      })
+      const dataPromise = usersWithSockets[0].socket.oncePromise('waiting:getGames')
       usersWithSockets[0].socket.emit('waiting:createGame', gameData)
 
       const game = (await dataPromise)[0]
@@ -68,55 +59,36 @@ describe('Test Suite via Socket.io', () => {
       waitingGameID = game.id
     })
 
-    test('Test switchColor', (done) => {
+    test('Test switchColor', async () => {
       const switching = { gameID: waitingGameID, username: usersWithSockets[0].username, color: 'blue' }
-
-      usersWithSockets[0].socket.once('waiting:getGames', (data: any) => {
-        const game = data[0]
-        try {
-          expect(game.balls[0]).toBe('blue')
-          done()
-        } catch (err) {
-          done(err)
-        }
-      })
+      const promise = usersWithSockets[0].socket.oncePromise('waiting:getGames')
       usersWithSockets[0].socket.emit('waiting:switchColor', switching)
+      const game = (await promise)[0]
+      expect(game.balls[0]).toBe('blue')
     })
 
-    test('Test movePlayer', (done) => {
+    test('Test movePlayer', async () => {
       const move = { gameID: waitingGameID, username: usersWithSockets[0].username, steps: 1 }
 
-      usersWithSockets[0].socket.once('waiting:getGames', (data: any) => {
-        const game = data[0]
-        try {
-          expect(game).not.toBeUndefined()
-          expect(game.gameid).toBe(null)
-          expect(game.admin).toBe(usersWithSockets[0].username)
-          expect(game.playerIDs[1]).toBeGreaterThan(0)
-          expect([game.playerIDs[0], ...game.playerIDs.splice(2, 6)].every((p) => p === null)).toBe(true)
-          expect(game.players[1]).toBe(usersWithSockets[0].username)
-          expect([game.players[0], ...game.players.splice(2, 6)].every((p) => p === null)).toBe(true)
-          expect(typeof game.balls[1]).toBe('string')
-          expect([game.balls[0], ...game.balls.splice(2, 6)].every((p) => p === null)).toBe(true)
-          expect(game.ready.every((r: any) => r === false)).toBe(true)
-          done()
-        } catch (err) {
-          done(err)
-        }
-      })
+      const promise = usersWithSockets[0].socket.oncePromise('waiting:getGames')
       usersWithSockets[0].socket.emit('waiting:movePlayer', move)
+      const game = (await promise)[0]
+      expect(game).not.toBeUndefined()
+      expect(game.gameid).toBe(null)
+      expect(game.admin).toBe(usersWithSockets[0].username)
+      expect(game.playerIDs[1]).toBeGreaterThan(0)
+      expect([game.playerIDs[0], ...game.playerIDs.splice(2, 6)].every((p) => p === null)).toBe(true)
+      expect(game.players[1]).toBe(usersWithSockets[0].username)
+      expect([game.players[0], ...game.players.splice(2, 6)].every((p) => p === null)).toBe(true)
+      expect(typeof game.balls[1]).toBe('string')
+      expect([game.balls[0], ...game.balls.splice(2, 6)].every((p) => p === null)).toBe(true)
+      expect(game.ready.every((r: any) => r === false)).toBe(true)
     })
 
-    test('Test removePlayer', (done) => {
-      usersWithSockets[0].socket.once('waiting:getGames', (data: any) => {
-        try {
-          expect(data).toStrictEqual([])
-          done()
-        } catch (err) {
-          done(err)
-        }
-      })
+    test('Test removePlayer', async () => {
+      const promise = usersWithSockets[0].socket.oncePromise('waiting:getGames')
       usersWithSockets[0].socket.emit('waiting:removePlayer', usersWithSockets[0].username)
+      expect(await promise).toStrictEqual([])
     })
   })
 
@@ -134,11 +106,7 @@ describe('Test Suite via Socket.io', () => {
 
     test('Create Game', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
-        return new Promise((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
 
       usersWithSockets[0].socket.emit('waiting:createGame', { nPlayers: 4, nTeams: 2, meister: true, private: false })
@@ -153,11 +121,7 @@ describe('Test Suite via Socket.io', () => {
 
     test('Join second player', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
-        return new Promise((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
 
       usersWithSockets[1].socket.emit('waiting:joinGame', waitingGameID)
@@ -170,11 +134,7 @@ describe('Test Suite via Socket.io', () => {
 
     test('Join third player', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
-        return new Promise((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
 
       usersWithSockets[2].socket.emit('waiting:joinGame', waitingGameID)
@@ -187,11 +147,7 @@ describe('Test Suite via Socket.io', () => {
 
     test('Join last player', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
-        return new Promise((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
 
       usersWithSockets[3].socket.emit('waiting:joinGame', waitingGameID)
@@ -204,11 +160,7 @@ describe('Test Suite via Socket.io', () => {
 
     test('Ready first player', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
-        return new Promise((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
 
       usersWithSockets[0].socket.emit('waiting:readyPlayer', { gameID: waitingGameID })
@@ -221,11 +173,7 @@ describe('Test Suite via Socket.io', () => {
 
     test('Ready second player', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
-        return new Promise((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
 
       usersWithSockets[1].socket.emit('waiting:readyPlayer', { gameID: waitingGameID })
@@ -238,11 +186,7 @@ describe('Test Suite via Socket.io', () => {
 
     test('Ready third player', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
-        return new Promise((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
 
       usersWithSockets[2].socket.emit('waiting:readyPlayer', { gameID: waitingGameID })
@@ -255,18 +199,10 @@ describe('Test Suite via Socket.io', () => {
 
     test('Ready last player', async () => {
       const pGetGames = usersWithSockets.map((uWS) => {
-        return new Promise<any>((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
       const pStartGame = usersWithSockets.map((uWS) => {
-        return new Promise<any>((resolve) => {
-          uWS.socket.once('waiting:startGame', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:startGame')
       })
 
       usersWithSockets[3].socket.emit('waiting:readyPlayer', { gameID: waitingGameID })
@@ -342,21 +278,13 @@ describe('Test Suite via Socket.io', () => {
       await testServer.pgPool.query('UPDATE games SET rematch_open=true WHERE id = $1;', [gameID])
 
       const waitForUserInGame = usersWithSockets.map((uWS) => {
-        return new Promise<any>((resolve) => {
-          uWS.socket.once('waiting:getGames', (data) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
       usersWithSockets[1].socket.emit('waiting:createGame', { nPlayers: 4, nTeams: 2, meister: true, private: false })
       const waitForUserInGameRes = await Promise.all(waitForUserInGame)
       expect(waitForUserInGameRes[0].length).toEqual(1)
 
-      const waitForGameUpdate = new Promise<any>((resolve) => {
-        gameSocket.once('update', (data) => {
-          resolve(data)
-        })
-      })
+      const waitForGameUpdate = gameSocket.oncePromise('update')
       const error = await new Promise<Result<null, any>>((resolve) =>
         usersWithSockets[0].socket.emit('waiting:createRematch', { gameID: gameID }, (data) => {
           resolve(data)
@@ -368,11 +296,7 @@ describe('Test Suite via Socket.io', () => {
       expect(game.rematch_open).toBe(false)
 
       const waitForLeaveGame = usersWithSockets.map((uWS) => {
-        return new Promise<any>((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
       usersWithSockets[1].socket.emit('waiting:removePlayer', usersWithSockets[1].username)
       const waitForLeaveGameRes = await Promise.all(waitForLeaveGame)
@@ -382,18 +306,8 @@ describe('Test Suite via Socket.io', () => {
     test('Unable to rematch if one player is not online', async () => {
       await testServer.pgPool.query('UPDATE games SET rematch_open=true WHERE id = $1;', [gameID])
 
-      const waitForGameUpdate = new Promise<any>((resolve) => {
-        gameSocket.once('update', (data) => {
-          resolve(data)
-        })
-      })
-      const disconnectPromise = new Promise<null>((resolve) => {
-        usersWithSockets[1].socket.once('disconnect', () => {
-          resolve(null)
-        })
-      })
-      usersWithSockets[1].socket.disconnect()
-      await disconnectPromise
+      const waitForGameUpdate = gameSocket.oncePromise('update')
+      await closeSockets([usersWithSockets[1]])
 
       const error = await new Promise<Result<null, any>>((resolve) =>
         usersWithSockets[0].socket.emit('waiting:createRematch', { gameID: gameID }, (data) => {
@@ -405,24 +319,14 @@ describe('Test Suite via Socket.io', () => {
       const game = await waitForGameUpdate
       expect(game.rematch_open).toBe(false)
 
-      const connectPromise = new Promise<null>((resolve) => {
-        usersWithSockets[1].socket.once('connect', () => {
-          resolve(null)
-        })
-      })
-      usersWithSockets[1].socket.connect()
-      await connectPromise
+      await connectSocket(usersWithSockets[1].socket)
     })
 
     test('Rematch should be created', async () => {
       await testServer.pgPool.query('UPDATE games SET rematch_open=true WHERE id = $1;', [gameID])
 
       const promises = usersWithSockets.map((uWS) => {
-        return new Promise<any>((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
 
       const result = await new Promise<Result<null, any>>((resolve) =>
@@ -445,11 +349,7 @@ describe('Test Suite via Socket.io', () => {
 
     test('Rematch should be destroyed if one leaves the room', async () => {
       const waitForLeaveGame = usersWithSockets.map((uWS) => {
-        return new Promise<any>((resolve) => {
-          uWS.socket.once('waiting:getGames', (data: any) => {
-            return resolve(data)
-          })
-        })
+        return uWS.socket.oncePromise('waiting:getGames')
       })
       usersWithSockets[1].socket.emit('waiting:removePlayer', usersWithSockets[1].username)
       const waitForLeaveGameRes = await Promise.all(waitForLeaveGame)
