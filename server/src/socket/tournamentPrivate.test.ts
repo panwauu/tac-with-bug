@@ -1,27 +1,17 @@
-import { TacServer } from '../entrypoints/server'
-import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
-
-async function tournamentCleanUp(testServer: TacServer, tournamentID: number | undefined) {
-  if (tournamentID == null) {
-    return
-  }
-  await testServer.pgPool.query('UPDATE games SET private_tournament_id = NULL WHERE private_tournament_id = $1;', [tournamentID])
-  await testServer.pgPool.query('DELETE FROM private_tournaments_register WHERE tournamentid = $1;', [tournamentID])
-  await testServer.pgPool.query('DELETE FROM users_to_private_tournaments WHERE tournamentid = $1;', [tournamentID])
-  await testServer.pgPool.query('DELETE FROM private_tournaments WHERE id = $1;', [tournamentID])
-}
+import { GeneralSocketC } from '../test/socket'
 
 describe('Private tournament test suite via Socket.io', () => {
-  let tournamentID: number, gameID: number, usersWithSockets: UserWithSocket[]
+  let tournamentID: number, gameID: number, usersWithSockets: UserWithSocket[], unauthSocket: GeneralSocketC
 
   beforeAll(async () => {
     usersWithSockets = await getUsersWithSockets({ n: 5 })
+    unauthSocket = await getUnauthenticatedSocket()
   })
 
   afterAll(async () => {
-    await tournamentCleanUp(testServer, tournamentID)
-    await closeSockets(usersWithSockets)
+    await closeSockets([...usersWithSockets, unauthSocket])
   })
 
   test('Should not create tournament with invalid data', async () => {
@@ -465,5 +455,19 @@ describe('Private tournament test suite via Socket.io', () => {
     const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:private:get', { id: tournamentID })
     expect(res.status).toBe(200)
     expect(res.data?.id).toBe(tournamentID)
+  })
+
+  test.each([
+    'tournament:private:create',
+    'tournament:private:planAddPlayer',
+    'tournament:private:planRemovePlayer',
+    'tournament:private:acceptParticipation',
+    'tournament:private:declineParticipation',
+    'tournament:private:start',
+    'tournament:private:abort',
+    'tournament:private:startGame',
+  ])('should not allow %s', async (eventname: any) => {
+    const res = (await unauthSocket.emitWithAck(5000, eventname, 0)) as any
+    expect(res.error).toBe('UNAUTH')
   })
 })
