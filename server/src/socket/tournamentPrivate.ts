@@ -41,7 +41,7 @@ export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: Genera
 
   socket.on('tournament:private:create', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:private:startGame)', { stack: new Error().stack })
+      logger.error('Event forbidden for unauthenticated user (tournament:private:create)', { stack: new Error().stack })
       return cb({ status: 500, error: 'UNAUTH' })
     }
     const schema = Joi.object({
@@ -72,7 +72,7 @@ export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: Genera
 
   socket.on('tournament:private:planAddPlayer', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:private:startGame)', { stack: new Error().stack })
+      logger.error('Event forbidden for unauthenticated user (tournament:private:planAddPlayer)', { stack: new Error().stack })
       return cb({ status: 500, error: 'UNAUTH' })
     }
     const schema = Joi.object({
@@ -127,7 +127,7 @@ export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: Genera
 
   socket.on('tournament:private:planRemovePlayer', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:private:startGame)', { stack: new Error().stack })
+      logger.error('Event forbidden for unauthenticated user (tournament:private:planRemovePlayer)', { stack: new Error().stack })
       return cb({ status: 500, error: 'UNAUTH' })
     }
     const schema = Joi.object({
@@ -175,7 +175,7 @@ export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: Genera
 
   socket.on('tournament:private:acceptParticipation', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:private:startGame)', { stack: new Error().stack })
+      logger.error('Event forbidden for unauthenticated user (tournament:private:acceptParticipation)', { stack: new Error().stack })
       return cb({ status: 500, error: 'UNAUTH' })
     }
     const schema = Joi.number().required().integer().positive()
@@ -211,7 +211,7 @@ export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: Genera
 
   socket.on('tournament:private:declineParticipation', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:private:startGame)', { stack: new Error().stack })
+      logger.error('Event forbidden for unauthenticated user (tournament:private:declineParticipation)', { stack: new Error().stack })
       return cb({ status: 500, error: 'UNAUTH' })
     }
     const schema = Joi.number().required().integer().positive()
@@ -247,7 +247,7 @@ export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: Genera
 
   socket.on('tournament:private:start', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:private:startGame)', { stack: new Error().stack })
+      logger.error('Event forbidden for unauthenticated user (tournament:private:start)', { stack: new Error().stack })
       return cb({ status: 500, error: 'UNAUTH' })
     }
     const schema = Joi.number().required().integer().positive()
@@ -282,7 +282,7 @@ export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: Genera
 
   socket.on('tournament:private:abort', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:private:startGame)', { stack: new Error().stack })
+      logger.error('Event forbidden for unauthenticated user (tournament:private:abort)', { stack: new Error().stack })
       return cb({ status: 500, error: 'UNAUTH' })
     }
 

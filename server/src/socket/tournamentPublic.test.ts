@@ -1,5 +1,5 @@
 import * as mail from '../communicationUtils/email'
-import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { getGame } from '../services/game'
 import { getPublicTournamentByID, startTournament, startTournamentRound, checkForceGameEnd, updateTournamentFromGame } from '../services/tournamentsPublic'
 import { startSignUpOnCondition, endSignUpOnCondition } from '../services/tournamentsRegister'
@@ -7,16 +7,18 @@ import { getDifferentName } from '../services/SweetNameGenerator'
 import { PublicTournament } from '../sharedTypes/typesTournament'
 import { closeSockets } from '../test/handleSocket'
 import { sleep } from '../helpers/sleep'
+import { GeneralSocketC } from '../test/socket'
 
 describe('TournamentPublic test suite via Socket.io', () => {
   describe('Test with two teams - registration process', () => {
-    let tournamentID: number, tournament: any, usersWithSockets: UserWithSocket[]
+    let tournamentID: number, tournament: any, usersWithSockets: UserWithSocket[], unauthSocket: GeneralSocketC
 
     const spyReminder = jest.spyOn(mail, 'sendTournamentReminder')
     const spyInvitation = jest.spyOn(mail, 'sendTournamentInvitation')
 
     beforeAll(async () => {
       usersWithSockets = await getUsersWithSockets({ ids: [1, 2, 3, 4] })
+      unauthSocket = await getUnauthenticatedSocket()
     })
 
     afterEach(() => {
@@ -24,7 +26,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
     })
 
     afterAll(async () => {
-      await closeSockets(usersWithSockets)
+      await closeSockets([...usersWithSockets, unauthSocket])
     })
 
     test('Create Tournament', async () => {
@@ -50,6 +52,20 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(dbRes.rows[0].status).toBe('signUp')
     })
 
+    test('Should not register team with missing data', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:registerTeam', { players: [usersWithSockets[0].username], tournamentID } as any)
+      expect(res.status).toBe(500)
+    })
+
+    test('Should not register team with invalid id', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:registerTeam', {
+        players: [usersWithSockets[0].username],
+        name: 'TestTeam',
+        tournamentID: 1000000,
+      } as any)
+      expect(res.status).toBe(500)
+    })
+
     test('First player create Team 1 alone', async () => {
       const promiseArray: any[] = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('tournament:public:update')
@@ -61,7 +77,12 @@ describe('TournamentPublic test suite via Socket.io', () => {
         expect(teamName.isErr()).toBe(false)
         throw new Error('No Teamname found')
       }
-      usersWithSockets[0].socket.emit('tournament:public:registerTeam', { players: [usersWithSockets[0].username], name: teamName.value, tournamentID })
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:registerTeam', {
+        players: [usersWithSockets[0].username],
+        name: teamName.value,
+        tournamentID,
+      })
+      expect(res.status).toBe(200)
 
       await Promise.all(promiseArray).then((val: any) => {
         expect(val[0].registerTeams.length).toBe(1)
@@ -71,13 +92,24 @@ describe('TournamentPublic test suite via Socket.io', () => {
       })
     })
 
+    test('Should not leave team with missing data', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:leaveTournament', {} as any)
+      expect(res.status).toBe(500)
+    })
+
+    test('Should not leave team with invalid data', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:leaveTournament', { tournamentID: 1000000 })
+      expect(res.status).toBe(500)
+    })
+
     test('First player leave Team 1', async () => {
       const promiseArray: any[] = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('tournament:public:update')
       })
       promiseArray.push(usersWithSockets[0].socket.oncePromise('tournament:toast:you-left-tournament'))
 
-      usersWithSockets[0].socket.emit('tournament:public:leaveTournament', { tournamentID })
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:leaveTournament', { tournamentID })
+      expect(res.status).toBe(200)
 
       return Promise.all(promiseArray).then((val: any) => {
         expect(val[0].registerTeams.length).toBe(0)
@@ -98,11 +130,12 @@ describe('TournamentPublic test suite via Socket.io', () => {
         throw new Error('No Teamname found')
       }
 
-      usersWithSockets[0].socket.emit('tournament:public:registerTeam', {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:registerTeam', {
         players: [usersWithSockets[0].username, usersWithSockets[1].username],
         name: teamName.value,
         tournamentID,
       })
+      expect(res.status).toBe(200)
 
       tournament = (await Promise.all(promiseArray))[0]
 
@@ -116,6 +149,16 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(spyInvitation).toBeCalledTimes(1)
     })
 
+    test('Should not activate with missing data', async () => {
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'tournament:public:activateUser', {} as any)
+      expect(res.status).toBe(500)
+    })
+
+    test('Should not activate with invalid data', async () => {
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'tournament:public:activateUser', { tournamentID: 1000000 })
+      expect(res.status).toBe(500)
+    })
+
     test('Second player activate', async () => {
       const promiseArray = usersWithSockets.map((uWS: any) => {
         return uWS.socket.oncePromise('tournament:public:update')
@@ -123,7 +166,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
       promiseArray.push(usersWithSockets[0].socket.oncePromise('tournament:toast:player-activated-team-complete'))
       promiseArray.push(usersWithSockets[1].socket.oncePromise('tournament:toast:you-activated-complete'))
 
-      usersWithSockets[1].socket.emit('tournament:public:activateUser', { tournamentID })
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'tournament:public:activateUser', { tournamentID })
+      expect(res.status).toBe(200)
 
       return Promise.all(promiseArray).then((val: any) => {
         expect(val[0].registerTeams.length).toBe(1)
@@ -143,7 +187,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
       promiseArray.push(usersWithSockets[0].socket.oncePromise('tournament:toast:partner-left-tournament'))
       promiseArray.push(usersWithSockets[1].socket.oncePromise('tournament:toast:you-left-tournament'))
 
-      usersWithSockets[1].socket.emit('tournament:public:leaveTournament', { tournamentID })
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'tournament:public:leaveTournament', { tournamentID })
+      expect(res.status).toBe(200)
 
       return Promise.all(promiseArray).then((val: any) => {
         expect(val[0].registerTeams.length).toBe(1)
@@ -154,6 +199,16 @@ describe('TournamentPublic test suite via Socket.io', () => {
       })
     })
 
+    test('Should not join with missing data', async () => {
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'tournament:public:joinTeam', { teamName: tournament.registerTeams[0].name } as any)
+      expect(res.status).toBe(500)
+    })
+
+    test('Should not join with invalid data', async () => {
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'tournament:public:joinTeam', { teamName: tournament.registerTeams[0].name, tournamentID: 1000000 })
+      expect(res.status).toBe(500)
+    })
+
     test('Second player join Team 1', async () => {
       const promiseArray = usersWithSockets.map((uWS: any) => {
         return uWS.socket.oncePromise('tournament:public:update')
@@ -161,7 +216,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
       promiseArray.push(usersWithSockets[0].socket.oncePromise('tournament:toast:player-joined-team-complete'))
       promiseArray.push(usersWithSockets[1].socket.oncePromise('tournament:toast:you-joined-team-complete'))
 
-      usersWithSockets[1].socket.emit('tournament:public:joinTeam', { teamName: tournament.registerTeams[0].name, tournamentID })
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'tournament:public:joinTeam', { teamName: tournament.registerTeams[0].name, tournamentID })
+      expect(res.status).toBe(200)
 
       return Promise.all(promiseArray).then((val: any) => {
         expect(val[0].registerTeams.length).toBe(1)
@@ -186,7 +242,12 @@ describe('TournamentPublic test suite via Socket.io', () => {
         throw new Error('No Teamname found')
       }
 
-      usersWithSockets[2].socket.emit('tournament:public:registerTeam', { players: [usersWithSockets[2].username], name: teamName.value, tournamentID })
+      const res = await usersWithSockets[2].socket.emitWithAck(5000, 'tournament:public:registerTeam', {
+        players: [usersWithSockets[2].username],
+        name: teamName.value,
+        tournamentID,
+      })
+      expect(res.status).toBe(200)
 
       await Promise.all(promiseArray).then((val: any) => {
         expect(val[0].registerTeams.length).toBe(2)
@@ -208,7 +269,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
         }),
       ]
 
-      usersWithSockets[3].socket.emit('tournament:public:joinTeam', { teamName: tournament.registerTeams[1].name, tournamentID })
+      const res = await usersWithSockets[3].socket.emitWithAck(5000, 'tournament:public:joinTeam', { teamName: tournament.registerTeams[1].name, tournamentID })
+      expect(res.status).toBe(200)
 
       return Promise.all(promiseArray).then((val: any) => {
         expect(val[0].status).toBe('signUpEnded')
@@ -221,6 +283,35 @@ describe('TournamentPublic test suite via Socket.io', () => {
         expect(spyReminder.mock.calls[0][0].ical).not.toBe(null)
       })
     })
+
+    test('Should not be able to request tournament without id', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:get', {} as any)
+      expect(res.status).toBe(500)
+    })
+
+    test('Should not be able to request tournament with invalid id', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:get', { id: 1000000 })
+      expect(res.status).toBe(500)
+    })
+
+    test('Should be able to request tournament', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:get', { id: tournamentID })
+      expect(res.status).toBe(200)
+      expect(res.data?.id).toBe(tournamentID)
+    })
+
+    test('Should be able to request current tournament', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:get-current')
+      expect(res.status).toBe(200)
+    })
+
+    test.each(['tournament:public:registerTeam', 'tournament:public:joinTeam', 'tournament:public:activateUser', 'tournament:public:leaveTournament'])(
+      'should not allow %s',
+      async (eventname: any) => {
+        const res = (await unauthSocket.emitWithAck(5000, eventname, 0)) as any
+        expect(res.error).toBe('UNAUTH')
+      }
+    )
   })
 
   describe('Test failing signUp', () => {
@@ -265,7 +356,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
         expect(teamName.isErr()).toBe(false)
         throw new Error('No Teamname found')
       }
-      usersWithSockets[0].socket.emit('tournament:public:registerTeam', { players: [usersWithSockets[0].username], name: teamName.value, tournamentID })
+      usersWithSockets[0].socket.emitWithAck(5000, 'tournament:public:registerTeam', { players: [usersWithSockets[0].username], name: teamName.value, tournamentID })
 
       await Promise.all(promiseArray).then((val: any) => {
         expect(val[0]?.registerTeam?.name).not.toBeUndefined()
@@ -330,7 +421,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
           expect(teamName.isErr()).toBe(false)
           throw new Error('No Teamname found')
         }
-        usersWithSockets[i].socket.emit('tournament:public:registerTeam', { players: [usersWithSockets[i].username], name: teamName.value, tournamentID })
+        usersWithSockets[i].socket.emitWithAck(5000, 'tournament:public:registerTeam', { players: [usersWithSockets[i].username], name: teamName.value, tournamentID })
 
         await Promise.all(promiseArray).then((val: any) => {
           expect(val[0].registerTeams.length).toBe(i + 1)
@@ -347,7 +438,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
           return uWS.socket.oncePromise('tournament:public:update')
         })
 
-        usersWithSockets[4 + i].socket.emit('tournament:public:joinTeam', { teamName: team?.name ?? '', tournamentID })
+        usersWithSockets[4 + i].socket.emitWithAck(5000, 'tournament:public:joinTeam', { teamName: team?.name ?? '', tournamentID })
 
         tournament = (await Promise.all(promiseArray))[0]
       }

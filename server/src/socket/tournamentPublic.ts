@@ -31,10 +31,10 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
     return callback({ status: 200, data: tournament })
   })
 
-  socket.on('tournament:public:registerTeam', async (data) => {
+  socket.on('tournament:public:registerTeam', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:registerTeam)', { stack: new Error().stack })
-      return
+      logger.error('Event forbidden for unauthenticated user (tournament:public:registerTeam)', { stack: new Error().stack })
+      return cb?.({ status: 500, error: 'UNAUTH' })
     }
 
     const schema = Joi.object({
@@ -44,20 +44,19 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
     })
     const { error } = schema.validate(data)
     if (error != null) {
-      logger.error('JOI Error', error)
-      return
+      return cb?.({ status: 500, error: error })
     }
 
     try {
       const user = await getUser(pgPool, { id: socket.data.userID })
       if (user.isErr()) {
-        return
+        return cb?.({ status: 500, error: user.error })
       }
 
       const registerTeamResult = await registerTeam(pgPool, data.tournamentID, data.players, data.name, socket.data.userID)
       if (registerTeamResult.isErr()) {
         logger.error(registerTeamResult.error)
-        return
+        return cb?.({ status: 500, error: registerTeamResult.error })
       }
       const tournament = registerTeamResult.value
       pushChangedPublicTournament(tournament)
@@ -67,7 +66,7 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
       const teamToRegister = tournament.registerTeams.find((r) => r.playerids.includes(user.value.id))
       if (teamToRegister === undefined) {
         logger.error('Cannot find registerTeam for event Handler')
-        return
+        return cb?.({ status: 500 })
       }
       const dataForClient = { registerTeam: teamToRegister, tournamentTitle: tournament.title, player: user.value.username }
       socket.emit('tournament:toast:you-created-a-team', dataForClient)
@@ -75,15 +74,17 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
         nsp,
         teamToRegister.playerids.filter((_, i) => teamToRegister.activated[i] === false)
       ).forEach((s) => s.emit('tournament:toast:invited-to-a-team', dataForClient))
+      return cb?.({ status: 200 })
     } catch (err) {
       logger.error('Error in tournament:public:registerTeam', err)
+      return cb?.({ status: 500, error: err })
     }
   })
 
-  socket.on('tournament:public:joinTeam', async (data) => {
+  socket.on('tournament:public:joinTeam', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:joinTeam)', { stack: new Error().stack })
-      return
+      logger.error('Event forbidden for unauthenticated user (tournament:public:joinTeam)', { stack: new Error().stack })
+      return cb?.({ status: 500, error: 'UNAUTH' })
     }
 
     const schema = Joi.object({
@@ -92,21 +93,20 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
     })
     const { error } = schema.validate(data)
     if (error != null) {
-      logger.error('JOI Error', error)
-      return
+      return cb?.({ status: 500, error: error })
     }
 
     try {
       const user = await getUser(pgPool, { id: socket.data.userID })
       if (user.isErr()) {
         logger.error(user.error)
-        return
+        return cb?.({ status: 500, error: user.error })
       }
 
       const joinTeamResult = await joinTeam(pgPool, data.tournamentID, socket.data.userID, user.value.username, data.teamName)
       if (joinTeamResult.isErr()) {
         logger.error(joinTeamResult.error)
-        return
+        return cb?.({ status: 500, error: joinTeamResult.error })
       }
       const tournament = joinTeamResult.value
       pushChangedPublicTournament(tournament)
@@ -138,32 +138,34 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
           s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: tournament.title })
         )
       }
+      return cb?.({ status: 200 })
     } catch (err) {
       logger.error('Error in tournament:public:joinTeam', err)
+      return cb?.({ status: 500, error: err })
     }
   })
 
-  socket.on('tournament:public:activateUser', async (data) => {
+  socket.on('tournament:public:activateUser', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:activateUser)', { stack: new Error().stack })
-      return
+      logger.error('Event forbidden for unauthenticated user (tournament:public:activateUser)', { stack: new Error().stack })
+      return cb?.({ status: 500, error: 'UNAUTH' })
     }
 
     const { error } = Joi.number().required().positive().integer().validate(data.tournamentID)
     if (error != null) {
-      return
+      return cb?.({ status: 500, error: error })
     }
 
     try {
       const user = await getUser(pgPool, { id: socket.data.userID })
       if (user.isErr()) {
-        return
+        return cb?.({ status: 500, error: user.error })
       }
 
       const activateUserResult = await activateUser(pgPool, data.tournamentID, socket.data.userID)
       if (activateUserResult.isErr()) {
         logger.error(activateUserResult.error)
-        return
+        return cb?.({ status: 500, error: activateUserResult.error })
       }
       const tournament = activateUserResult.value
       pushChangedPublicTournament(tournament)
@@ -195,32 +197,34 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
           s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: tournament.title })
         )
       }
+      return cb?.({ status: 200 })
     } catch (err) {
       logger.error('Error in tournament:public:activateUser', err)
+      return cb?.({ status: 500, error: err })
     }
   })
 
-  socket.on('tournament:public:leaveTournament', async (data) => {
+  socket.on('tournament:public:leaveTournament', async (data, cb) => {
     if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tournament:leaveTournament)', { stack: new Error().stack })
-      return
+      logger.error('Event forbidden for unauthenticated user (tournament:public:leaveTournament)', { stack: new Error().stack })
+      return cb?.({ status: 500, error: 'UNAUTH' })
     }
 
     const { error } = Joi.number().required().positive().integer().validate(data.tournamentID)
     if (error != null) {
-      return
+      return cb?.({ status: 500, error: error })
     }
 
     try {
       const user = await getUser(pgPool, { id: socket.data.userID })
       if (user.isErr()) {
-        return
+        return cb?.({ status: 500, error: user.error })
       }
 
       const leaveTournamentResult = await leaveTournament(pgPool, data.tournamentID, socket.data.userID)
       if (leaveTournamentResult.isErr()) {
         logger.error(leaveTournamentResult.error)
-        return
+        return cb?.({ status: 500, error: leaveTournamentResult.error })
       }
       const { tournament, registerTeamForNotification } = leaveTournamentResult.value
       pushChangedPublicTournament(tournament)
@@ -228,8 +232,10 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
       const dataForClient = { registerTeam: registerTeamForNotification, tournamentTitle: tournament.title, player: user.value.username }
       socket.emit('tournament:toast:you-left-tournament', dataForClient)
       getSocketsOfPlayerIDs(nsp, registerTeamForNotification.playerids).forEach((s) => s.emit('tournament:toast:partner-left-tournament', dataForClient))
+      return cb?.({ status: 200 })
     } catch (err) {
       logger.error('Error in tournament:public:leaveTournament', err)
+      return cb?.({ status: 500, error: err })
     }
   })
 }
