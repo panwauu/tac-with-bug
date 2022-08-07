@@ -2,12 +2,12 @@ import { registerGameSocket } from '../test/handleGameSocket'
 import Chance from 'chance'
 import { Result } from '../sharedTypes/GeneralNamespaceDefinition'
 import { disableRematchOfOldGames, getGame } from '../services/game'
-import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets, connectSocket } from '../test/handleSocket'
-import { GameSocketC } from '../test/socket'
+import { GameSocketC, GeneralSocketC } from '../test/socket'
 const chance = new Chance()
 
-describe('Test Suite via Socket.io', () => {
+describe('Waiting game test suite via Socket.io', () => {
   describe('Test with one users', () => {
     let waitingGameID: number, usersWithSockets: UserWithSocket[]
 
@@ -28,7 +28,21 @@ describe('Test Suite via Socket.io', () => {
       expect(data).toStrictEqual([])
     })
 
-    test('Test createGame', async () => {
+    test('Should not create waiting game with missing data', async () => {
+      const resWithoutPlayers = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:createGame', { nTeams: 2, meister: true, private: false } as any)
+      expect(resWithoutPlayers.status).toBe(500)
+
+      const resWithoutTeams = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:createGame', { nPlayers: 4, meister: true, private: false } as any)
+      expect(resWithoutTeams.status).toBe(500)
+
+      const resWithoutMeister = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:createGame', { nPlayers: 4, nTeams: 2, private: false } as any)
+      expect(resWithoutMeister.status).toBe(500)
+
+      const resWithoutPrivate = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:createGame', { nPlayers: 4, nTeams: 2, meister: true } as any)
+      expect(resWithoutPrivate.status).toBe(500)
+    })
+
+    test('Should create waiting game', async () => {
       const nPlayers = chance.pickone([4, 6])
       const gameData = {
         nPlayers: nPlayers,
@@ -60,7 +74,25 @@ describe('Test Suite via Socket.io', () => {
       waitingGameID = game.id
     })
 
-    test('Test switchColor', async () => {
+    test('Should not switch color with invalid data', async () => {
+      const resWrongColor = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, username: usersWithSockets[0].username, color: 'a' })
+      expect(resWrongColor.status).toBe(500)
+      const sameColor = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, username: usersWithSockets[0].username, color: 'red' })
+      expect(sameColor.status).toBe(500)
+      const resInvalidUser = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, username: 'a', color: 'blue' })
+      expect(resInvalidUser.status).toBe(500)
+    })
+
+    test('Should not switch color with incomplete data', async () => {
+      const noGameId = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', { username: usersWithSockets[0].username, color: 'red' } as any)
+      expect(noGameId.status).toBe(500)
+      const noUser = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, color: 'blue' } as any)
+      expect(noUser.status).toBe(500)
+      const noColor = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, username: usersWithSockets[0].username } as any)
+      expect(noColor.status).toBe(500)
+    })
+
+    test('Should switch color', async () => {
       const switching = { gameID: waitingGameID, username: usersWithSockets[0].username, color: 'blue' }
       const promise = usersWithSockets[0].socket.oncePromise('waiting:getGames')
       await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', switching)
@@ -68,7 +100,27 @@ describe('Test Suite via Socket.io', () => {
       expect(game.balls[0]).toBe('blue')
     })
 
-    test('Test movePlayer', async () => {
+    test('Should not move player with incomplete data', async () => {
+      const resWithoutGameId = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:movePlayer', { username: usersWithSockets[0].username, steps: 1 } as any)
+      expect(resWithoutGameId.status).toBe(500)
+      const resNegativeGameId = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:movePlayer', { gameID: -1, username: usersWithSockets[0].username, steps: 1 } as any)
+      expect(resNegativeGameId.status).toBe(500)
+      const resWithoutUsername = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:movePlayer', { gameID: waitingGameID, steps: 1 } as any)
+      expect(resWithoutUsername.status).toBe(500)
+      const resWithoutSteps = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:movePlayer', { gameID: waitingGameID, username: usersWithSockets[0].username } as any)
+      expect(resWithoutSteps.status).toBe(500)
+    })
+
+    test('Should not move player with invalid data', async () => {
+      const resInvalidGame = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:movePlayer', { gameID: 1000000, username: usersWithSockets[0].username, steps: 1 })
+      expect(resInvalidGame.status).toBe(500)
+      const resInvalidUser = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:movePlayer', { gameID: waitingGameID, username: 'a', steps: 1 })
+      expect(resInvalidUser.status).toBe(500)
+      const resWrongDir = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:movePlayer', { gameID: waitingGameID, username: usersWithSockets[0].username, steps: -1 })
+      expect(resWrongDir.status).toBe(500)
+    })
+
+    test('Should move player', async () => {
       const move = { gameID: waitingGameID, username: usersWithSockets[0].username, steps: 1 }
 
       const promise = usersWithSockets[0].socket.oncePromise('waiting:getGames')
@@ -87,7 +139,14 @@ describe('Test Suite via Socket.io', () => {
       expect(game.ready.every((r: any) => r === false)).toBe(true)
     })
 
-    test('Test removePlayer', async () => {
+    test('Should not remove player without or wrong username', async () => {
+      const resWithoutUser = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:removePlayer', undefined as any)
+      expect(resWithoutUser.status).toBe(500)
+      const resInvalidUser = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:removePlayer', 'a')
+      expect(resInvalidUser.status).toBe(500)
+    })
+
+    test('Should remove player', async () => {
       const promise = usersWithSockets[0].socket.oncePromise('waiting:getGames')
       usersWithSockets[0].socket.emitWithAck(5000, 'waiting:removePlayer', usersWithSockets[0].username)
       expect(await promise).toStrictEqual([])
@@ -95,10 +154,10 @@ describe('Test Suite via Socket.io', () => {
   })
 
   describe('Test with multiple users', () => {
-    let waitingGameID: number, usersWithSockets: any[], gameID: number
+    let waitingGameID: number, usersWithSockets: UserWithSocket[], gameID: number
 
     beforeAll(async () => {
-      usersWithSockets = await getUsersWithSockets({ ids: [1, 2, 3, 4] })
+      usersWithSockets = await getUsersWithSockets({ ids: [1, 2, 3, 4, 5] })
     })
 
     afterAll(async () => {
@@ -122,7 +181,14 @@ describe('Test Suite via Socket.io', () => {
       })
     })
 
-    test('Join second player', async () => {
+    test('Should not add second player for invalid data', async () => {
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:joinGame', undefined as any)
+      expect(res.status).toBe(500)
+      const resInvalidID = await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:joinGame', 1000000)
+      expect(resInvalidID.status).toBe(500)
+    })
+
+    test('Second player should join waiting game', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('waiting:getGames')
       })
@@ -136,7 +202,42 @@ describe('Test Suite via Socket.io', () => {
       })
     })
 
-    test('Join third player', async () => {
+    test('Non-admin should not be able to change other color', async () => {
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, username: usersWithSockets[0].username, color: 'green' })
+      expect(res.status).toBe(500)
+    })
+
+    test('Non-admin should not be able to remove player 2', async () => {
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:removePlayer', usersWithSockets[0].username)
+      expect(res.status).toBe(500)
+    })
+
+    test('Admin should be able to remove player 2', async () => {
+      const promiseArray = usersWithSockets.map((uWS) => {
+        return uWS.socket.oncePromise('waiting:getGames')
+      })
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:removePlayer', usersWithSockets[1].username)
+      expect(res.status).toBe(200)
+      return Promise.all(promiseArray).then((val) => {
+        expect(val[0][0].players[1]).toBeNull()
+      })
+    })
+
+    test('Second player should join waiting game', async () => {
+      const promiseArray = usersWithSockets.map((uWS) => {
+        return uWS.socket.oncePromise('waiting:getGames')
+      })
+
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:joinGame', waitingGameID)
+      expect(res.status).toBe(200)
+
+      return Promise.all(promiseArray).then((val: any) => {
+        const game = val[0][0]
+        expect(game.players[1]).toBe(usersWithSockets[1].username)
+      })
+    })
+
+    test('Third player should join waiting game', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('waiting:getGames')
       })
@@ -148,6 +249,11 @@ describe('Test Suite via Socket.io', () => {
         const game = val[0][0]
         expect(game.players[2]).toBe(usersWithSockets[2].username)
       })
+    })
+
+    test('Should not ready first player if not full', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: waitingGameID })
+      expect(res.status).toBe(500)
     })
 
     test('Join last player', async () => {
@@ -163,6 +269,18 @@ describe('Test Suite via Socket.io', () => {
         expect(game.players[3]).toBe(usersWithSockets[3].username)
       })
     })
+
+    /*test('Should not add player if already full', async () => {
+      const res = await usersWithSockets[4].socket.emitWithAck(5000, 'waiting:joinGame', waitingGameID)
+      expect(res.status).toBe(500)
+    })
+
+    /*test('Should not ready first player with invalid data', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: 1000000 })
+      expect(res.status).toBe(500)
+      const resNotInGame = await usersWithSockets[4].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: waitingGameID })
+      expect(resNotInGame.status).toBe(500)
+    })*/
 
     test('Ready first player', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
@@ -207,23 +325,37 @@ describe('Test Suite via Socket.io', () => {
       const pGetGames = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('waiting:getGames')
       })
-      const pStartGame = usersWithSockets.map((uWS) => {
-        return uWS.socket.oncePromise('waiting:startGame')
-      })
+      const pStartGame = usersWithSockets
+        .filter((_, i) => i < 4)
+        .map((uWS) => {
+          return uWS.socket.oncePromise('waiting:startGame')
+        })
 
-      await usersWithSockets[3].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: waitingGameID })
+      const res = await usersWithSockets[3].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: waitingGameID })
+      expect(res.status).toBe(200)
 
-      const val = await Promise.all([...pGetGames, ...pStartGame])
-      expect(val[0].length).toBe(0)
-      expect(val[4].gamePlayer).toBe(0)
-      expect(val[5].gamePlayer).toBe(2)
-      expect(val[6].gamePlayer).toBe(1)
-      expect(val[7].gamePlayer).toBe(3)
-      expect(val[4].gameID).toBeGreaterThan(0)
+      const gamesRes = await Promise.all(pGetGames)
+      const startRes = await Promise.all(pStartGame)
+      expect(gamesRes[0].length).toBe(0)
+      expect(startRes[0].gamePlayer).toBe(0)
+      expect(startRes[1].gamePlayer).toBe(2)
+      expect(startRes[2].gamePlayer).toBe(1)
+      expect(startRes[3].gamePlayer).toBe(3)
+      expect(startRes[0].gameID).toBeGreaterThan(0)
 
-      const game = await getGame(testServer.pgPool, val[4].gameID)
-      expect(game.players.sort()).toEqual(usersWithSockets.map((uws) => uws.username).sort())
-      expect(game.playerIDs.sort()).toEqual(usersWithSockets.map((uws) => uws.id).sort())
+      const game = await getGame(testServer.pgPool, startRes[0].gameID)
+      expect(game.players.sort()).toEqual(
+        usersWithSockets
+          .filter((_, i) => i < 4)
+          .map((uws) => uws.username)
+          .sort()
+      )
+      expect(game.playerIDs.sort()).toEqual(
+        usersWithSockets
+          .filter((_, i) => i < 4)
+          .map((uws) => uws.id)
+          .sort()
+      )
       expect(game.running).toBe(true)
       expect(game.rematch_open).toBe(false)
       gameID = game.id
@@ -380,5 +512,26 @@ describe('Test Suite via Socket.io', () => {
       const ids = await disableRematchOfOldGames(testServer.pgPool)
       expect(ids).toContain(gameID)
     })
+  })
+
+  describe('Test socket authentication', () => {
+    let unauthSocket: GeneralSocketC
+
+    beforeAll(async () => {
+      unauthSocket = await getUnauthenticatedSocket()
+    })
+
+    afterAll(async () => {
+      await closeSockets([unauthSocket])
+    })
+
+    test.each(['waiting:joinGame', 'waiting:createGame', 'waiting:movePlayer', 'waiting:removePlayer', 'waiting:readyPlayer', 'waiting:switchColor', 'waiting:createRematch'])(
+      'should not allow %s',
+      async (eventname: any) => {
+        console.log(eventname)
+        const res = (await unauthSocket.emitWithAck(5000, eventname, 0)) as any
+        expect(res.error).toBe('UNAUTH')
+      }
+    )
   })
 })

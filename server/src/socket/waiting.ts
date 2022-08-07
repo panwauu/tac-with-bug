@@ -51,8 +51,14 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
       return cb?.({ status: 500, error: user.error })
     }
 
-    await removePlayer(pgPool, user.value.username, socket.data.userID)
-    await addPlayer(pgPool, gameID, socket.data.userID)
+    const removeRes = await removePlayer(pgPool, user.value.username, socket.data.userID)
+    if (removeRes.isErr()) {
+      return cb?.({ status: 500, error: removeRes.error })
+    }
+    const addRes = await addPlayer(pgPool, gameID, socket.data.userID)
+    if (addRes.isErr()) {
+      return cb?.({ status: 500, error: addRes.error })
+    }
     emitGetGames()
     return cb?.({ status: 200 })
   })
