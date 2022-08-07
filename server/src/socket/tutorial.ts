@@ -1,6 +1,5 @@
 import type pg from 'pg'
 import type { TutorialStepDefinition } from '../sharedTypes/typesTutorial'
-import logger from '../helpers/logger'
 import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import { Game } from '../game/game'
 import { getPlayerUpdateFromGame } from '../game/serverOutput'
@@ -27,9 +26,7 @@ export function registerTutorialHandler(pgPool: pg.Pool, socket: GeneralSocketS)
       tutorialStep: Joi.number().required().integer().min(0),
     })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return callback({ status: 500, error: error })
-    }
+    if (error != null) return callback({ status: 500, error: error })
 
     const dbRes = await pgPool.query<{ size: number; tutorial_step_definition: TutorialStepDefinition }>(
       'SELECT jsonb_array_length(data) as size, data->CAST($2 AS INT) as tutorial_step_definition FROM tutorials WHERE id=$1;',
@@ -49,9 +46,7 @@ export function registerTutorialHandler(pgPool: pg.Pool, socket: GeneralSocketS)
       const gameForPlay = data.game
       gameForPlay.game = new Game(data.game.nPlayers, data.game.nTeams, data.game.game.cards.meisterVersion, data.game.coop, data.game.game)
       const res = gameForPlay.game.checkMove(data.move)
-      if (!res) {
-        return callback({ status: 500, error: 'Move is not valid' })
-      }
+      if (!res) return callback({ status: 500, error: 'Move is not valid' })
 
       gameForPlay.game.performActionAfterStatistics(data.move)
 
@@ -75,9 +70,7 @@ export function registerTutorialHandler(pgPool: pg.Pool, socket: GeneralSocketS)
 
     try {
       const progress = await getTutorialProgress(pgPool, socket.data.userID)
-      if (progress.isErr()) {
-        return callback({ status: 500, error: progress.error })
-      }
+      if (progress.isErr()) return callback({ status: 500, error: progress.error })
 
       return callback({ status: 200, data: { progress: progress.value } })
     } catch (err) {
@@ -86,10 +79,7 @@ export function registerTutorialHandler(pgPool: pg.Pool, socket: GeneralSocketS)
   })
 
   socket.on('tutorial:changeTutorialStep', async (data, callback) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tutorial:changeTutorialStep)', { stack: new Error().stack })
-      return callback({ status: 500 })
-    }
+    if (socket.data.userID === undefined) return callback({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({
       tutorialID: Joi.number().required().integer().min(0),
@@ -97,15 +87,11 @@ export function registerTutorialHandler(pgPool: pg.Pool, socket: GeneralSocketS)
       done: Joi.boolean().required(),
     })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return callback({ status: 500, error: error })
-    }
+    if (error != null) return callback({ status: 500, error: error })
 
     try {
       const setRes = await setTutorialProgress(pgPool, socket.data.userID, data.tutorialID, data.tutorialStep, data.done)
-      if (setRes.isErr()) {
-        return callback({ status: 500, error: setRes.error })
-      }
+      if (setRes.isErr()) return callback({ status: 500, error: setRes.error })
 
       return callback({ status: 200, data: { progress: setRes.value } })
     } catch (err) {
@@ -114,22 +100,15 @@ export function registerTutorialHandler(pgPool: pg.Pool, socket: GeneralSocketS)
   })
 
   socket.on('tutorial:resetTutorial', async (data, callback) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (tutorial:resetTutorial)', { stack: new Error().stack })
-      return callback({ status: 500 })
-    }
+    if (socket.data.userID === undefined) return callback({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({ tutorialID: Joi.number().required().integer().min(0) })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return callback({ status: 500, error: error })
-    }
+    if (error != null) return callback({ status: 500, error: error })
 
     try {
       const setRes = await resetTutorialProgress(pgPool, socket.data.userID, data.tutorialID)
-      if (setRes.isErr()) {
-        return callback({ status: 500, error: setRes.error })
-      }
+      if (setRes.isErr()) return callback({ status: 500, error: setRes.error })
 
       return callback({ status: 200, data: { progress: setRes.value } })
     } catch (err) {

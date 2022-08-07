@@ -14,6 +14,7 @@ module.exports = {
     'no-throw-literal': 'error',
     eqeqeq: ['error', 'always', { null: 'ignore' }],
     'max-len': ['error', { code: 180 }],
+    curly: ['error', 'multi-line', 'consistent'],
 
     // Enable in the future?
     'no-param-reassign': ['off', { props: true }],

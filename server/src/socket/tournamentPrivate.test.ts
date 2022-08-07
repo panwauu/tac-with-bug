@@ -33,9 +33,7 @@ describe('Private tournament test suite via Socket.io', () => {
       tournamentType: 'KO',
     })
     expect(res.data).not.toBeNull()
-    if (res.data == null) {
-      throw new Error('Empty Game')
-    }
+    if (res.data == null) throw new Error('Empty Game')
     tournamentID = res.data.id
   })
 
