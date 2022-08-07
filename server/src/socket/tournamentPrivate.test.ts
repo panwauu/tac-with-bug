@@ -441,17 +441,17 @@ describe('Private tournament test suite via Socket.io', () => {
     expect(gameRes.rows[0].private_tournament_id).toBeNull()
   })
 
-  test('Should not be able to request game without id', async () => {
+  test('Should not be able to request tournament without id', async () => {
     const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:private:get', {} as any)
     expect(res.status).toBe(500)
   })
 
-  test('Should not be able to request game with invalid id', async () => {
+  test('Should not be able to request tournament with invalid id', async () => {
     const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:private:get', { id: 1000000 })
     expect(res.status).toBe(500)
   })
 
-  test('Should be able to request game', async () => {
+  test('Should be able to request tournament', async () => {
     const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:private:get', { id: tournamentID })
     expect(res.status).toBe(200)
     expect(res.data?.id).toBe(tournamentID)
