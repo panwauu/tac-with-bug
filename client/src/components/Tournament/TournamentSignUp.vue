@@ -108,7 +108,7 @@ function signUpTeam() {
   }
 
   if (confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
-    socket.emit('tournament:public:registerTeam', {
+    socket.emitWithAck(5000, 'tournament:public:registerTeam', {
       name: signUpTeamName.value,
       players: signUpPartner.value !== '' ? [username.value, signUpPartner.value] : [username.value],
       tournamentID: props.tournament.id,
