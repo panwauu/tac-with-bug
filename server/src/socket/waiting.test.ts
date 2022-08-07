@@ -270,17 +270,17 @@ describe('Waiting game test suite via Socket.io', () => {
       })
     })
 
-    /*test('Should not add player if already full', async () => {
+    test('Should not add player if already full', async () => {
       const res = await usersWithSockets[4].socket.emitWithAck(5000, 'waiting:joinGame', waitingGameID)
       expect(res.status).toBe(500)
     })
 
-    /*test('Should not ready first player with invalid data', async () => {
+    test('Should not ready first player with invalid data', async () => {
       const res = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: 1000000 })
       expect(res.status).toBe(500)
       const resNotInGame = await usersWithSockets[4].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: waitingGameID })
       expect(resNotInGame.status).toBe(500)
-    })*/
+    })
 
     test('Ready first player', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
@@ -528,7 +528,6 @@ describe('Waiting game test suite via Socket.io', () => {
     test.each(['waiting:joinGame', 'waiting:createGame', 'waiting:movePlayer', 'waiting:removePlayer', 'waiting:readyPlayer', 'waiting:switchColor', 'waiting:createRematch'])(
       'should not allow %s',
       async (eventname: any) => {
-        console.log(eventname)
         const res = (await unauthSocket.emitWithAck(5000, eventname, 0)) as any
         expect(res.error).toBe('UNAUTH')
       }
