@@ -84,12 +84,12 @@ export interface ClientToServerEvents extends Record<string, any> {
 
   // waiting
   'waiting:getGames': () => void
-  'waiting:joinGame': (gameID: number) => void
-  'waiting:createGame': (data: CreateGameType) => void
-  'waiting:movePlayer': (data: MovePlayerType) => void
-  'waiting:removePlayer': (username: string) => void
-  'waiting:readyPlayer': (data: { gameID: number }) => void
-  'waiting:switchColor': (data: SwitchColorType) => void
+  'waiting:joinGame': (gameID: number, cb: CallbackFunction<undefined>) => void
+  'waiting:createGame': (data: CreateGameType, cb: CallbackFunction<undefined>) => void
+  'waiting:movePlayer': (data: MovePlayerType, cb: CallbackFunction<undefined>) => void
+  'waiting:removePlayer': (username: string, cb: CallbackFunction<undefined>) => void
+  'waiting:readyPlayer': (data: { gameID: number }, cb: CallbackFunction<undefined>) => void
+  'waiting:switchColor': (data: SwitchColorType, cb: CallbackFunction<undefined>) => void
   'waiting:createRematch': (data: { gameID: number }, cb: Cb<null, any>) => void
 
   // friends

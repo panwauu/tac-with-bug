@@ -94,20 +94,20 @@ async function createRematch() {
 }
 
 function movePlayer(data: { gameID: number; username: string; steps: number }) {
-  socket.emit('waiting:movePlayer', data)
+  socket.emitWithAck(5000, 'waiting:movePlayer', data)
 }
 
 function removePlayer(username: string) {
   if (confirm(i18n.global.t('Waiting.leaveRematch'))) {
-    socket.emit('waiting:removePlayer', username)
+    socket.emitWithAck(5000, 'waiting:removePlayer', username)
   }
 }
 
 function setPlayerReady(gameID: number) {
-  socket.emit('waiting:readyPlayer', { gameID: gameID })
+  socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: gameID })
 }
 
 function setPlayerColor(username: string, gameID: number, color: string) {
-  socket.emit('waiting:switchColor', { gameID: gameID, username: username, color: color })
+  socket.emitWithAck(5000, 'waiting:switchColor', { gameID: gameID, username: username, color: color })
 }
 </script>
