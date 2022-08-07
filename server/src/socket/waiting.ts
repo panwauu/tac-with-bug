@@ -1,7 +1,6 @@
 import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import type pg from 'pg'
 import Joi from 'joi'
-import logger from '../helpers/logger'
 
 import { changeColor, deleteWaitingGame, getWaitingGames, removePlayer, addPlayer, createWaitingGame, movePlayer, setPlayerReady, createRematchGame } from '../services/waiting'
 import { getGame, createGame } from '../services/game'
@@ -34,40 +33,27 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   socket.on('waiting:getGames', emitGetGames)
 
   socket.on('waiting:joinGame', async (gameID, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (waiting:joinGame)', { stack: new Error().stack })
-      return cb?.({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.number().required().integer().positive()
     const { error } = schema.validate(gameID)
-    if (error != null) {
-      logger.error('JOI Error', error)
-      return cb?.({ status: 500, error })
-    }
+    if (error != null) return cb?.({ status: 500, error })
 
     const user = await getUser(pgPool, { id: socket.data.userID })
-    if (user.isErr()) {
-      return cb?.({ status: 500, error: user.error })
-    }
+    if (user.isErr()) return cb?.({ status: 500, error: user.error })
 
     const removeRes = await removePlayer(pgPool, user.value.username, socket.data.userID)
-    if (removeRes.isErr()) {
-      return cb?.({ status: 500, error: removeRes.error })
-    }
+    if (removeRes.isErr()) return cb?.({ status: 500, error: removeRes.error })
+
     const addRes = await addPlayer(pgPool, gameID, socket.data.userID)
-    if (addRes.isErr()) {
-      return cb?.({ status: 500, error: addRes.error })
-    }
+    if (addRes.isErr()) return cb?.({ status: 500, error: addRes.error })
+
     emitGetGames()
     return cb?.({ status: 200 })
   })
 
   socket.on('waiting:createGame', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (waiting:createGame)', { stack: new Error().stack })
-      return cb?.({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({
       nPlayers: Joi.number().required().valid(4, 6),
@@ -76,15 +62,10 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
       private: Joi.boolean().required(),
     })
     const { error } = schema.validate(data)
-    if (error != null) {
-      logger.error('JOI Error', error)
-      return cb?.({ status: 500, error })
-    }
+    if (error != null) return cb?.({ status: 500, error })
 
     const user = await getUser(pgPool, { id: socket.data.userID })
-    if (user.isErr()) {
-      return cb?.({ status: 500, error: user.error })
-    }
+    if (user.isErr()) return cb?.({ status: 500, error: user.error })
 
     await removePlayer(pgPool, user.value.username, socket.data.userID)
     await createWaitingGame(pgPool, data.nPlayers === 4 ? 4 : 6, data.nTeams === 1 ? 1 : data.nTeams === 2 ? 2 : 3, data.meister, data.private, socket.data.userID)
@@ -93,10 +74,7 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   })
 
   socket.on('waiting:movePlayer', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (waiting:movePlayer)', { stack: new Error().stack })
-      return cb?.({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({
       gameID: Joi.number().required().integer().positive(),
@@ -104,58 +82,38 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
       steps: Joi.number().required().integer(),
     })
     const { error } = schema.validate(data)
-    if (error != null) {
-      logger.error('JOI Error', error)
-      return cb?.({ status: 500, error })
-    }
+    if (error != null) return cb?.({ status: 500, error })
 
     const res = await movePlayer(pgPool, data.gameID, data.username, data.steps > 0, socket.data.userID)
-    if (res.isErr()) {
-      return cb?.({ status: 500, error: res.error })
-    }
+    if (res.isErr()) return cb?.({ status: 500, error: res.error })
+
     emitGetGames()
     return cb?.({ status: 200 })
   })
 
   socket.on('waiting:removePlayer', async (username, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (waiting:removePlayer)', { stack: new Error().stack })
-      return cb?.({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.string().required()
     const { error } = schema.validate(username)
-    if (error != null) {
-      logger.error('JOI Error', error)
-      return cb?.({ status: 500, error })
-    }
+    if (error != null) return cb?.({ status: 500, error })
 
     const res = await removePlayer(pgPool, username, socket.data.userID)
-    if (res.isErr()) {
-      return cb?.({ status: 500, error: res.error })
-    }
+    if (res.isErr()) return cb?.({ status: 500, error: res.error })
+
     emitGetGames()
     return cb?.({ status: 200 })
   })
 
   socket.on('waiting:readyPlayer', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (waiting:readyPlayer)', { stack: new Error().stack })
-      return cb?.({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({ gameID: Joi.number().required().integer().positive() })
     const { error } = schema.validate(data)
-    if (error != null) {
-      logger.error('JOI Error', error)
-      return cb?.({ status: 500, error })
-    }
+    if (error != null) return cb?.({ status: 500, error })
 
     const game = await setPlayerReady(pgPool, data.gameID, socket.data.userID)
-    if (game.isErr()) {
-      logger.error(game.error)
-      return cb?.({ status: 500, error: game.error })
-    }
+    if (game.isErr()) return cb?.({ status: 500, error: game.error })
 
     if (game.value.ready.every((r, i) => r === true || i >= game.value.nPlayers)) {
       deleteWaitingGame(pgPool, data.gameID)
@@ -179,10 +137,7 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   })
 
   socket.on('waiting:switchColor', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (waiting:switchColor)', { stack: new Error().stack })
-      return cb?.({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({
       gameID: Joi.number().required().integer().positive(),
@@ -190,39 +145,26 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
       color: Joi.string().required(),
     })
     const { error } = schema.validate(data)
-    if (error != null) {
-      logger.error('JOI Error', error)
-      return cb?.({ status: 500, error })
-    }
+    if (error != null) return cb?.({ status: 500, error })
 
     const res = await changeColor(pgPool, data.gameID, data.username, data.color, socket.data.userID)
-    if (res.isErr()) {
-      logger.error(res.error)
-      return cb?.({ status: 500, error: res.error })
-    }
+    if (res.isErr()) return cb?.({ status: 500, error: res.error })
     emitGetGames()
     return cb?.({ status: 200 })
   })
 
   socket.on('waiting:createRematch', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (waiting:createRematch)', { stack: new Error().stack })
-      return cb({ ok: false, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb({ ok: false, error: 'UNAUTH' })
 
     const schema = Joi.object({ gameID: Joi.number().required().integer().positive() })
     const { error } = schema.validate(data)
-    if (error != null) {
-      logger.error('JOI Error', error)
-      return cb({ ok: false, error })
-    }
+    if (error != null) return cb({ ok: false, error })
 
     const game = await getGame(pgPool, data.gameID)
     const rematchResult = await createRematchGame(pgPool, game, socket.data.userID)
     sendUpdatesOfGameToPlayers(game)
-    if (rematchResult.isErr()) {
-      return cb({ ok: false, error: rematchResult.error })
-    }
+    if (rematchResult.isErr()) return cb({ ok: false, error: rematchResult.error })
+
     await transferLatestMessagesToOtherChannel(pgPool, `w-${rematchResult.value}`, `g-${game.id}`)
     emitGetGames()
     return cb({ ok: true, value: null })

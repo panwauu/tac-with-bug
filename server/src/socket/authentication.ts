@@ -8,9 +8,7 @@ export function registerAuthHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('login', async (data, callback) => {
     const schema = Joi.object({ token: Joi.string().required().min(1) })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return callback({ status: 422, error: error })
-    }
+    if (error != null) return callback({ status: 422, error: error })
 
     await terminateSocket(pgPool, socket)
 

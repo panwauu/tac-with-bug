@@ -14,9 +14,7 @@ export function registerTournamentHandler(pgPool: pg.Pool, socket: GeneralSocket
       filter: Joi.required().valid('public', 'private', null),
     })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return cb({ status: 500, error: error })
-    }
+    if (error != null) return cb({ status: 500, error: error })
 
     try {
       const res = await lazyLoadTournamentsTable(pgPool, socket.data.userID, data.limit, data.first, data.filter)

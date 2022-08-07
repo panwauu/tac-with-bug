@@ -28,10 +28,7 @@ async function onGet(pgPool: pg.Pool, socket: GeneralSocketS) {
   }
 
   const sub = await getSubscription(pgPool, socket.data.userID)
-  if (sub.isErr()) {
-    logger.error(sub.error)
-    return
-  }
+  if (sub.isErr()) return
   emitSubscription(socket, sub.value)
 }
 
@@ -41,10 +38,7 @@ export function registerSubscriptionHandler(pgPool: pg.Pool, socket: GeneralSock
   })
 
   socket.on('subscription:new', async (subscriptionID, callback) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (subscription:new)', { stack: new Error().stack })
-      return callback({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return callback({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({
       callback: Joi.function().required(),
@@ -54,9 +48,7 @@ export function registerSubscriptionHandler(pgPool: pg.Pool, socket: GeneralSock
     if (error?.details[0]?.path[0] === 'callback') {
       return
     }
-    if (error != null) {
-      return callback({ status: 400, error: error })
-    }
+    if (error != null) return callback({ status: 400, error: error })
 
     try {
       const newSubRes = await newSubscription(pgPool, socket.data.userID, subscriptionID)
@@ -83,29 +75,21 @@ export function registerSubscriptionHandler(pgPool: pg.Pool, socket: GeneralSock
   })
 
   socket.on('subscription:cancel', async (callback) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (subscription:cancel)', { stack: new Error().stack })
-      return
-    }
+    if (socket.data.userID === undefined) return callback({ status: 500, error: 'UNAUTH' })
 
     try {
       await cancelSubscription(pgPool, socket.data.userID)
       const sub = await getSubscription(pgPool, socket.data.userID)
-      if (sub.isErr()) {
-        return callback({ status: 500, error: sub.error })
-      }
+      if (sub.isErr()) return callback({ status: 500, error: sub.error })
+
       emitSubscription(socket, sub.value)
       const user = await getUser(pgPool, { id: socket.data.userID })
-      if (user.isErr()) {
-        return callback({ status: 500, error: user.error })
-      }
+      if (user.isErr()) return callback({ status: 500, error: user.error })
+
       sendCancelSubscription({ user: user.value })
       return callback({ status: 200 })
     } catch (err) {
-      callback({
-        status: 500,
-        error: err,
-      })
+      callback({ status: 500, error: err })
     }
   })
 
