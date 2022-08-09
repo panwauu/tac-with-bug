@@ -162,7 +162,6 @@ describe('Game test suite via socket.io', () => {
 
     const updateData = await Promise.all(updateGamePromise)
     for (const update of updateData) {
-      console.log(update)
       expect(update.substitutedPlayerIndices).toStrictEqual([2])
       expect(update.substitution).toBeNull()
     }

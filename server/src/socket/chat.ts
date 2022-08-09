@@ -1,6 +1,5 @@
 import type pg from 'pg'
 import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
-import logger from '../helpers/logger'
 
 import { getSocketByUserID } from './general'
 import { addUserToChat, changeGroupName, createChat, getUsersInChat, insertChatMessage, leaveChat, loadChat, loadChatOverview, markChatAsRead } from '../services/chat'
@@ -16,16 +15,11 @@ export function initializeChat(pgPool: pg.Pool, socket: GeneralSocketS) {
 
 export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('chat:startChat', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (chat:startChat)')
-      return cb({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb({ status: 500, error: 'UNAUTH' })
 
-    const schema = Joi.object({ title: Joi.string().required().allow(null), userids: Joi.array().required().items(Joi.number().min(0)) })
+    const schema = Joi.object({ title: Joi.string().required().allow(null), userids: Joi.array().required().items(Joi.number().min(0).invalid(socket.data.userID)).unique() })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return cb({ status: 500, error: error })
-    }
+    if (error != null) return cb({ status: 500, error })
 
     const res = await createChat(pgPool, data.userids.concat(socket.data.userID), data.title)
     if (res.isErr()) {
@@ -39,16 +33,11 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   })
 
   socket.on('chat:addUser', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (chat:addUser)')
-      return cb({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({ userid: Joi.number().required().min(0), chatid: Joi.number().required().min(0) })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return cb({ status: 500, error: error })
-    }
+    if (error != null) return cb({ status: 500, error })
 
     const res = await addUserToChat(pgPool, data.userid, data.chatid)
     if (res.isErr()) {
@@ -61,16 +50,11 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   })
 
   socket.on('chat:changeTitle', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (chat:changeTitle)')
-      return cb({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({ title: Joi.string().required().min(2), chatid: Joi.number().required().min(0) })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return cb({ status: 500, error: error })
-    }
+    if (error != null) return cb({ status: 500, error })
 
     const res = await changeGroupName(pgPool, data.chatid, data.title)
     if (res.isErr()) {
@@ -84,16 +68,11 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   })
 
   socket.on('chat:leaveChat', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (chat:leaveChat)')
-      return cb({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({ chatid: Joi.number().required().min(0) })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return cb({ status: 500, error: error })
-    }
+    if (error != null) return cb({ status: 500, error })
 
     const usersInChat = await getUsersInChat(pgPool, data.chatid)
 
@@ -108,16 +87,11 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   })
 
   socket.on('chat:markAsRead', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (chat:markAsRead)')
-      return cb({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({ chatid: Joi.number().required().min(0) })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return cb({ status: 500, error: error })
-    }
+    if (error != null) return cb({ status: 500, error })
 
     await markChatAsRead(pgPool, socket.data.userID, data.chatid)
     const chatOverview = await loadChatOverview(pgPool, socket.data.userID)
@@ -126,16 +100,11 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   })
 
   socket.on('chat:sendMessage', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (chat:sendMessage)')
-      return cb({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({ chatid: Joi.number().required().min(0), body: Joi.string().required().min(1).max(500) })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return cb({ status: 500, error: error })
-    }
+    if (error != null) return cb({ status: 500, error })
 
     const res = await insertChatMessage(pgPool, socket.data.userID, data.chatid, data.body)
     if (res.isErr()) {
@@ -146,16 +115,11 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   })
 
   socket.on('chat:singleChat:load', async (data, cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (chat:singleChat:load)')
-      return cb({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({ chatid: Joi.number().required().min(0) })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return cb({ status: 500, error: error })
-    }
+    if (error != null) return cb({ status: 500, error })
 
     const chat = await loadChat(pgPool, socket.data.userID, data.chatid)
     if (chat.isErr()) {
@@ -165,10 +129,7 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   })
 
   socket.on('chat:overview:load', async (cb) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (chat:overview:load)')
-      return cb({ status: 500, error: 'UNAUTH' })
-    }
+    if (socket.data.userID === undefined) return cb({ status: 500, error: 'UNAUTH' })
 
     const chat = await loadChatOverview(pgPool, socket.data.userID)
     return cb({ status: 200, data: chat })

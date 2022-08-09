@@ -26,22 +26,14 @@ describeIf(!skipTests, 'Test Suite via Socket.io', () => {
 
   describe('Test all chat', () => {
     test('get nSubscription should be zero', async () => {
-      const promise = new Promise<any>((resolve) => {
-        userWithSocket.socket.once('subscription:nSubscriptions', (data: any) => {
-          return resolve(data)
-        })
-      })
+      const promise = userWithSocket.socket.oncePromise('subscription:nSubscriptions')
       userWithSocket.socket.emit('subscription:nSubscriptions')
       const data = await promise
       expect(data).toBe('0')
     })
 
     test('get subscription - empty', async () => {
-      const promise = new Promise<any>((resolve) => {
-        userWithSocket.socket.once('subscription:get', (data: any) => {
-          return resolve(data)
-        })
-      })
+      const promise = userWithSocket.socket.oncePromise('subscription:get')
       userWithSocket.socket.emit('subscription:get')
       const data = await promise
       expect(data.status).toBe(null)
@@ -50,39 +42,19 @@ describeIf(!skipTests, 'Test Suite via Socket.io', () => {
     })
 
     test('new subscription - wrong id type', async () => {
-      const data = await new Promise<any>((resolve) => {
-        // @ts-ignore
-        userWithSocket.socket.emit('subscription:new', false, (response: any) => {
-          resolve(response)
-        })
-      })
+      const data = await userWithSocket.socket.emitWithAck(5000, 'subscription:new', false as any)
       expect(data.status).toBe(400)
       expect(spySubscriptionError).toBeCalledTimes(0)
     })
 
     test('new subscription - invalid id', async () => {
-      const data = await new Promise<any>((resolve) => {
-        userWithSocket.socket.emit('subscription:new', '1', (response: any) => {
-          resolve(response)
-        })
-      })
+      const data = await userWithSocket.socket.emitWithAck(5000, 'subscription:new', '1')
       expect(data.status).toBe(500)
       expect(spySubscriptionError).toBeCalledTimes(1)
     })
 
     test('new subscription - valid id', async () => {
-      const promiseArray = [
-        new Promise((resolve) => {
-          userWithSocket.socket.emit('subscription:new', subscriptionID, (response: any) => {
-            resolve(response)
-          })
-        }),
-        new Promise((resolve) => {
-          userWithSocket.socket.once('subscription:get', (data: any) => {
-            return resolve(data)
-          })
-        }),
-      ]
+      const promiseArray = [userWithSocket.socket.emitWithAck(5000, 'subscription:new', subscriptionID), userWithSocket.socket.oncePromise('subscription:get')]
 
       return Promise.all(promiseArray).then((val: any) => {
         expect(val[0].status).toBe(200)
@@ -94,22 +66,14 @@ describeIf(!skipTests, 'Test Suite via Socket.io', () => {
     })
 
     test('get nSubscription should be one', async () => {
-      const promise = new Promise((resolve) => {
-        userWithSocket.socket.once('subscription:nSubscriptions', (data: any) => {
-          return resolve(data)
-        })
-      })
+      const promise = userWithSocket.socket.oncePromise('subscription:nSubscriptions')
       userWithSocket.socket.emit('subscription:nSubscriptions')
       const data = await promise
       expect(data).toBe('1')
     })
 
     test('get subscription', async () => {
-      const promise = new Promise<any>((resolve) => {
-        userWithSocket.socket.once('subscription:get', (data: any) => {
-          return resolve(data)
-        })
-      })
+      const promise = userWithSocket.socket.oncePromise('subscription:get')
       userWithSocket.socket.emit('subscription:get')
       const data = await promise
       expect(data.status).toBe('running')

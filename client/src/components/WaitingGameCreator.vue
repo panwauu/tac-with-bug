@@ -110,7 +110,7 @@ const privateModel = [
 const selectedPrivate = ref(privateModel[1])
 
 const createGame = () => {
-  socket.emit('waiting:createGame', {
+  socket.emitWithAck(5000, 'waiting:createGame', {
     nPlayers: selectedPlayers.value.value,
     nTeams: selectedTeams.value.value,
     meister: selectedMeister.value.value,

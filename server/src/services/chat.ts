@@ -46,7 +46,7 @@ export async function createChat(pgPool: pg.Pool, userids: number[], title: stri
 }
 
 export async function changeGroupName(pgPool: pg.Pool, chatid: number, title: string): Promise<Result<null, 'GROUP_NAME_NOT_CHANGED'>> {
-  const res = await pgPool.query('UPDATE chats SET group_name = $2 WHERE id = $1 RETURNING *;', [chatid, title])
+  const res = await pgPool.query('UPDATE chats SET group_name = $2 WHERE id = $1 AND group_chat = TRUE RETURNING *;', [chatid, title])
   if (res.rows.length !== 1) {
     return err('GROUP_NAME_NOT_CHANGED')
   }
@@ -68,8 +68,9 @@ export async function addUserToChat(pgPool: pg.Pool, userid: number, chatid: num
     return err('USER_LIMIT_IS_ALREADY_REACHED')
   }
 
-  const insertRes = await pgPool.query('INSERT INTO users_to_chats (userid, chatid) VALUES ($1, $2) RETURNING *;', [userid, chatid])
-  if (insertRes.rows.length === 0) {
+  try {
+    await pgPool.query('INSERT INTO users_to_chats (userid, chatid) VALUES ($1, $2) RETURNING *;', [userid, chatid])
+  } catch {
     return err('USER_COULD_NOT_BE_ADDED')
   }
   return ok(res.rows[0].userids.concat(userid))

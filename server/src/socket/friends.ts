@@ -17,26 +17,17 @@ export function initializeFriends(pgPool: pg.Pool, socket: GeneralSocketS) {
 
 export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('friends:request', async (username, callback) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (friends:request)', { stack: new Error().stack })
-      return
-    }
+    if (socket.data.userID === undefined) return callback({ status: 500, error: 'UNAUTH' })
 
     const { error } = Joi.string().required().validate(username)
-    if (error != null) {
-      return callback({ status: 422, error: error })
-    }
+    if (error != null) return callback({ status: 422, error: error })
 
     try {
       const userToRequest = await getUser(pgPool, { username: username })
-      if (userToRequest.isErr()) {
-        return callback({ status: 500, error: userToRequest.error })
-      }
+      if (userToRequest.isErr()) return callback({ status: 500, error: userToRequest.error })
 
       const userRequesting = await getUser(pgPool, { id: socket.data.userID })
-      if (userRequesting.isErr()) {
-        return callback({ status: 500, error: userRequesting.error })
-      }
+      if (userRequesting.isErr()) return callback({ status: 500, error: userRequesting.error })
 
       await addFriendshipRequest(pgPool, socket.data.userID, userToRequest.value.id)
       updateFriendOfSocket(pgPool, socket, socket.data.userID)
@@ -55,26 +46,17 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   })
 
   socket.on('friends:confirm', async (username, callback) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (friends:confirm)', { stack: new Error().stack })
-      return
-    }
+    if (socket.data.userID === undefined) return callback({ status: 500, error: 'UNAUTH' })
 
     const { error } = Joi.string().required().validate(username)
-    if (error != null) {
-      return callback({ status: 422, error: error })
-    }
+    if (error != null) return callback({ status: 422, error: error })
 
     try {
       const userRequesting = await getUser(pgPool, { username: username })
-      if (userRequesting.isErr()) {
-        return callback({ status: 500, error: userRequesting.error })
-      }
+      if (userRequesting.isErr()) return callback({ status: 500, error: userRequesting.error })
 
       const userToConfirm = await getUser(pgPool, { id: socket.data.userID })
-      if (userToConfirm.isErr()) {
-        return callback({ status: 500, error: userToConfirm.error })
-      }
+      if (userToConfirm.isErr()) return callback({ status: 500, error: userToConfirm.error })
 
       await confirmFriendshipRequest(pgPool, socket.data.userID, userRequesting.value.id)
       updateFriendOfSocket(pgPool, socket, socket.data.userID)
@@ -92,26 +74,17 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   })
 
   socket.on('friends:cancel', async (username, callback) => {
-    if (socket.data.userID === undefined) {
-      logger.error('Event forbidden for unauthenticated user (friends:cancel)', { stack: new Error().stack })
-      return
-    }
+    if (socket.data.userID === undefined) return callback({ status: 500, error: 'UNAUTH' })
 
     const { error } = Joi.string().required().validate(username)
-    if (error != null) {
-      return callback({ status: 422, error: error })
-    }
+    if (error != null) return callback({ status: 422, error: error })
 
     try {
       const userToCancel = await getUser(pgPool, { username: username })
-      if (userToCancel.isErr()) {
-        return callback({ status: 500, error: userToCancel.error })
-      }
+      if (userToCancel.isErr()) return callback({ status: 500, error: userToCancel.error })
 
       const userCancelling = await getUser(pgPool, { id: socket.data.userID })
-      if (userCancelling.isErr()) {
-        return callback({ status: 500, error: userCancelling.error })
-      }
+      if (userCancelling.isErr()) return callback({ status: 500, error: userCancelling.error })
 
       const pendingUser = await cancelFriendship(pgPool, socket.data.userID, userToCancel.value.id)
       updateFriendOfSocket(pgPool, socket, socket.data.userID)
@@ -136,9 +109,7 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
 
   socket.on('friends:ofUser', async (username, callback) => {
     const { error } = Joi.string().required().validate(username)
-    if (error != null) {
-      return callback({ status: 422, error: error })
-    }
+    if (error != null) return callback({ status: 422, error: error })
 
     try {
       const user = await getUser(pgPool, { username: username })

@@ -1,4 +1,4 @@
-import type { GeneralSocketC } from '../sharedTypes/GeneralNamespaceDefinition'
+import type { GeneralSocketC } from '../test/socket'
 import { io } from 'socket.io-client'
 import { connectSocket } from './handleSocket'
 import Chance from 'chance'
@@ -111,4 +111,12 @@ export async function unregisterUser(userWithCredentials: User) {
   if (res.statusCode !== 204) {
     throw new Error('Could not delete user')
   }
+}
+
+export async function getUnauthenticatedSocket(opts?: { connect: boolean }): Promise<GeneralSocketC> {
+  const clientSocket = io('http://localhost:1234', { reconnection: false, forceNew: true, autoConnect: false }) as any
+  if (opts?.connect == null || opts?.connect === true) {
+    await connectSocket(clientSocket)
+  }
+  return clientSocket
 }
