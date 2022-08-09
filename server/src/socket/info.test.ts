@@ -1,10 +1,9 @@
-import { GeneralSocketC } from '../sharedTypes/GeneralNamespaceDefinition'
 import { GameSocketC } from '../sharedTypes/GameNamespaceDefinition'
 
-import { io } from 'socket.io-client'
 import { registerGameSocket } from '../test/handleGameSocket'
-import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
-import { closeSockets } from '../test/handleSocket'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { closeSockets, connectSocket } from '../test/handleSocket'
+import { GeneralSocketC } from '../test/socket'
 
 describe('Info sest suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[], socket: GeneralSocketC, gameSocket: GameSocketC
@@ -19,19 +18,8 @@ describe('Info sest suite via socket.io', () => {
   })
 
   test('On disconnect the number of connections should be sent', async () => {
-    const disconnectPromise = new Promise((resolve) => {
-      usersWithSockets[0].socket.once('disconnect', () => {
-        resolve(null)
-      })
-    })
-    const updatePromise = new Promise<any>((resolve) => {
-      usersWithSockets[1].socket.once('info:serverConnections', (data) => {
-        resolve(data)
-      })
-    })
-
-    usersWithSockets[0].socket.disconnect()
-    await disconnectPromise
+    const updatePromise = usersWithSockets[1].socket.oncePromise('info:serverConnections')
+    await closeSockets([usersWithSockets[0].socket])
     const update = await updatePromise
     expect(update.total).toBe(1)
     expect(update.authenticated).toBe(1)
@@ -39,24 +27,11 @@ describe('Info sest suite via socket.io', () => {
   })
 
   test('On new connection the number of connections should be sent', async () => {
-    const updatePromise = new Promise<any>((resolve) => {
-      usersWithSockets[1].socket.once('info:serverConnections', (data) => {
-        resolve(data)
-      })
-    })
-    socket = io('http://localhost:1234') as any
-    const connectPromise = new Promise((resolve) => {
-      socket.once('connect', () => {
-        resolve(null)
-      })
-    })
-    const unauthUpdatePromise = new Promise<any>((resolve) => {
-      socket.once('info:serverConnections', (data) => {
-        resolve(data)
-      })
-    })
+    const updatePromise = usersWithSockets[1].socket.oncePromise('info:serverConnections')
+    socket = await getUnauthenticatedSocket({ connect: false })
+    const unauthUpdatePromise = socket.oncePromise('info:serverConnections')
 
-    await connectPromise
+    await connectSocket(socket)
     const update = await updatePromise
     const updateUnauth = await unauthUpdatePromise
     expect(update.total).toBe(2)
@@ -68,16 +43,8 @@ describe('Info sest suite via socket.io', () => {
   })
 
   test('On new game connection the number of connections should be sent', async () => {
-    const updatePromise = new Promise<any>((resolve) => {
-      usersWithSockets[1].socket.once('info:serverConnections', (data) => {
-        resolve(data)
-      })
-    })
-    const unauthUpdatePromise = new Promise<any>((resolve) => {
-      socket.once('info:serverConnections', (data) => {
-        resolve(data)
-      })
-    })
+    const updatePromise = usersWithSockets[1].socket.oncePromise('info:serverConnections')
+    const unauthUpdatePromise = socket.oncePromise('info:serverConnections')
     gameSocket = await registerGameSocket(gameID, usersWithSockets[1].token)
 
     const update = await updatePromise

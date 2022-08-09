@@ -1,5 +1,6 @@
 import { Socket } from 'socket.io-client'
 import type { EventsMap, EventNames } from '@socket.io/component-emitter'
+import { ReservedOrUserEventNames } from 'socket.io/dist/typed-events'
 
 type Head<T extends any[]> = T extends [...infer Head, any] ? Head : any[]
 type Last<T extends any[]> = T extends [...any, infer Last] ? Last : any
@@ -17,6 +18,8 @@ type EventsWithCallback<T> = {
     : never
 }[keyof T]
 
+type onceCallbackFirstArgument<Ev, E> = Ev extends EventNames<E> ? (E[Ev] extends (...args: any) => void ? Parameters<E[Ev]>[0] : never) : never
+
 class CustomSocket<L, E> extends Socket<L, E> {
   emitWithAck<Ev extends EventsWithCallback<E>>(timeout: number, ev: Ev, ...args: Head<EventParams<E, Ev>>): Promise<FirstParamType<Last<EventParams<E, Ev>>>> {
     return new Promise((resolve, reject) => {
@@ -32,10 +35,27 @@ class CustomSocket<L, E> extends Socket<L, E> {
       this.emit(ev as EventNames<E>, ...(args as any))
     })
   }
+  oncePromise<Ev extends ReservedOrUserEventNames<Record<string, never>, L>>(ev: Ev, timeout?: number): Promise<onceCallbackFirstArgument<Ev, L>> {
+    return new Promise((resolve, reject) => {
+      let timer: any
+      if (timeout != null) {
+        timer = setTimeout(() => {
+          reject(new Error('timeout!'))
+        }, timeout)
+      }
+
+      this.once(ev as any, (data: any) => {
+        clearTimeout(timer)
+        resolve(data)
+      })
+    })
+  }
 }
 
 // @ts-ignore
 Socket.prototype.emitWithAck = CustomSocket.prototype.emitWithAck
+// @ts-ignore
+Socket.prototype.oncePromise = CustomSocket.prototype.oncePromise
 
 import type { ServerToClientEvents, ClientToServerEvents } from '../sharedTypes/GeneralNamespaceDefinition'
 export type GeneralSocketC = CustomSocket<ServerToClientEvents, ClientToServerEvents>

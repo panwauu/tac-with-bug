@@ -59,7 +59,7 @@ const alreadyRegistered = computed(() => {
 
 function joinTeam(team: RegisterTeam, tournamentID: number) {
   if (!(teamActivated(team) || alreadyRegistered.value) && confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
-    socket.emit('tournament:public:joinTeam', {
+    socket.emitWithAck(5000, 'tournament:public:joinTeam', {
       tournamentID: tournamentID,
       teamName: team.name,
     })
@@ -67,12 +67,12 @@ function joinTeam(team: RegisterTeam, tournamentID: number) {
 }
 
 function leaveTournament() {
-  socket.emit('tournament:public:leaveTournament', { tournamentID: props.tournament.id })
+  socket.emitWithAck(5000, 'tournament:public:leaveTournament', { tournamentID: props.tournament.id })
 }
 
 function activateUser() {
   if (confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
-    socket.emit('tournament:public:activateUser', { tournamentID: props.tournament.id })
+    socket.emitWithAck(5000, 'tournament:public:activateUser', { tournamentID: props.tournament.id })
   }
 }
 </script>

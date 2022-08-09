@@ -52,22 +52,17 @@ export function registerGamesHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
       username: Joi.string(),
     })
     const { error } = schema.validate(data)
-    if (error != null) {
-      return callback({ status: 422, error: error })
-    }
+    if (error != null) return callback({ status: 422, error: error })
 
     try {
       let userID = socket.data.userID
       if (data.username != null) {
         const user = await getUser(pgPool, { username: data.username })
-        if (user.isErr()) {
-          throw new Error(user.error)
-        }
+        if (user.isErr()) throw new Error(user.error)
+
         userID = user.value.id
       }
-      if (userID === undefined) {
-        return callback({ status: 500, error: 'No user found' })
-      }
+      if (userID === undefined) return callback({ status: 500, error: 'No user found' })
       const { games, nEntries } = await getGamesLazy(pgPool, userID, data.first, data.limit, data.sortField, data.sortOrder)
 
       return callback({ status: 200, data: { games, nEntries } })

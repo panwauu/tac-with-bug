@@ -234,7 +234,7 @@ export async function removePlayer(sqlClient: pg.Pool, usernameToRemove: string,
   return ok(null)
 }
 
-export type AddPlayerError = 'WAITING_GAME_IS_ALREADY_FULL' | 'COULD_NOT_FIND_COLOR_FOR_NEW_PLAYER' | GetWaitingGameError
+export type AddPlayerError = 'WAITING_GAME_IS_ALREADY_FULL' | 'COULD_NOT_FIND_COLOR_FOR_NEW_PLAYER' | 'COULD_NOT_ADD_PLAYER' | GetWaitingGameError
 export async function addPlayer(sqlClient: pg.Pool, waitingGameID: number, userID: number): Promise<Result<null, AddPlayerError>> {
   const game = await getWaitingGame(sqlClient, waitingGameID)
   if (game.isErr()) {
@@ -251,7 +251,11 @@ export async function addPlayer(sqlClient: pg.Pool, waitingGameID: number, userI
     return err('COULD_NOT_FIND_COLOR_FOR_NEW_PLAYER')
   }
 
-  await sqlClient.query(`UPDATE waitinggames SET player${insertIndex}=$1, balls${insertIndex}=$2 WHERE id = $3;`, [userID, color, waitingGameID])
+  try {
+    await sqlClient.query(`UPDATE waitinggames SET player${insertIndex}=$1, balls${insertIndex}=$2 WHERE id = $3;`, [userID, color, waitingGameID])
+  } catch {
+    return err('COULD_NOT_ADD_PLAYER')
+  }
   return ok(null)
 }
 

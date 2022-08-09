@@ -64,10 +64,10 @@ export interface ClientToServerEvents extends Record<string, any> {
 
   'tournament:public:get': (data: { id: number }, cb: CallbackFunction<PublicTournament>) => void
   'tournament:public:get-current': (cb: CallbackFunction<PublicTournament>) => void
-  'tournament:public:registerTeam': (data: { players: string[]; name: string; tournamentID: number }) => void
-  'tournament:public:joinTeam': (data: { teamName: string; tournamentID: number }) => void
-  'tournament:public:activateUser': (data: { tournamentID: number }) => void
-  'tournament:public:leaveTournament': (data: { tournamentID: number }) => void
+  'tournament:public:registerTeam': (data: { players: string[]; name: string; tournamentID: number }, cb: CallbackFunction<null>) => void
+  'tournament:public:joinTeam': (data: { teamName: string; tournamentID: number }, cb: CallbackFunction<null>) => void
+  'tournament:public:activateUser': (data: { tournamentID: number }, cb: CallbackFunction<null>) => void
+  'tournament:public:leaveTournament': (data: { tournamentID: number }, cb: CallbackFunction<null>) => void
 
   'tournament:private:get': (data: { id: number }, cb: CallbackFunction<PrivateTournament>) => void
   'tournament:private:create': (
@@ -84,12 +84,12 @@ export interface ClientToServerEvents extends Record<string, any> {
 
   // waiting
   'waiting:getGames': () => void
-  'waiting:joinGame': (gameID: number) => void
-  'waiting:createGame': (data: CreateGameType) => void
-  'waiting:movePlayer': (data: MovePlayerType) => void
-  'waiting:removePlayer': (username: string) => void
-  'waiting:readyPlayer': (data: { gameID: number }) => void
-  'waiting:switchColor': (data: SwitchColorType) => void
+  'waiting:joinGame': (gameID: number, cb: CallbackFunction<undefined>) => void
+  'waiting:createGame': (data: CreateGameType, cb: CallbackFunction<undefined>) => void
+  'waiting:movePlayer': (data: MovePlayerType, cb: CallbackFunction<undefined>) => void
+  'waiting:removePlayer': (username: string, cb: CallbackFunction<undefined>) => void
+  'waiting:readyPlayer': (data: { gameID: number }, cb: CallbackFunction<undefined>) => void
+  'waiting:switchColor': (data: SwitchColorType, cb: CallbackFunction<undefined>) => void
   'waiting:createRematch': (data: { gameID: number }, cb: Cb<null, any>) => void
 
   // friends

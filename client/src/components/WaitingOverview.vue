@@ -268,28 +268,28 @@ function joinGame(game: WaitingGameType) {
     return
   }
 
-  socket.emit('waiting:joinGame', game.id)
+  socket.emitWithAck(5000, 'waiting:joinGame', game.id)
 }
 
 function movePlayer(data: { gameID: number; username: string; steps: number }) {
-  socket.emit('waiting:movePlayer', data)
+  socket.emitWithAck(5000, 'waiting:movePlayer', data)
 }
 
 function removePlayer(usernameToRemove: string) {
   const confirmText = i18n.global.t(usernameToRemove === username.value ? 'Waiting.removePlayerConfirmSelf' : 'Waiting.removePlayerConfirmOther')
   if (confirm(confirmText)) {
-    socket.emit('waiting:removePlayer', usernameToRemove)
+    socket.emitWithAck(5000, 'waiting:removePlayer', usernameToRemove)
   }
 }
 
 function setPlayerReady(gameID: number) {
-  socket.emit('waiting:readyPlayer', {
+  socket.emitWithAck(5000, 'waiting:readyPlayer', {
     gameID: gameID,
   })
 }
 
 function setPlayerColor(usernameToChange: string, gameID: number, color: string) {
-  socket.emit('waiting:switchColor', {
+  socket.emitWithAck(5000, 'waiting:switchColor', {
     gameID: gameID,
     username: usernameToChange,
     color: color,
