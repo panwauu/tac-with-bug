@@ -85,6 +85,14 @@ export async function sendSubscriptionError({ error }: { error: any }) {
   return email.send({ message: { to: process.env.mailAddress, text: `Subscription Error: ${JSON.stringify(error)}` } })
 }
 
+export async function sendSubscriptionPaymentReminder({ user }: { user: User }) {
+  return email.send({
+    template: 'subscriptionUpcomming',
+    message: { to: user.email },
+    locals: { locale: user.locale, name: user.username },
+  })
+}
+
 export async function sendTournamentReminder({ user, tournament, ical }: { user: User; tournament: PublicTournament; ical: ICalCalendar }) {
   return email.send({
     template: 'tournamentReminder',
