@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { ok, err, Result } from 'neverthrow'
 import pg from 'pg'
+import { getEmailNotificationSettings } from '../services/settings'
+import { sendSubscriptionPaymentReminder } from '../communicationUtils/email'
+import logger from '../helpers/logger'
+import { getUser } from '../services/user'
 import { getToken, requestTokenFromPaypal } from './paypalToken'
 
 interface Subscription {
@@ -203,4 +207,51 @@ export async function newSubscription(sqlClient: pg.Pool, userID: number, subscr
 
   await sqlClient.query('UPDATE users SET currentsubscription=$1 WHERE id=$2;', [subscription.id, userID])
   return ok(null)
+}
+
+export async function updateSubscriptions(sqlClient: pg.Pool) {
+  /* Update all passed subscriptions */
+  const res = await sqlClient.query<{ userid: number }>(`SELECT userid FROM subscriptions WHERE status='running' AND validuntil < current_timestamp;`)
+  for (const entry of res.rows) {
+    const subscription = await getSubscription(sqlClient, entry.userid, true)
+    if (subscription.isErr()) {
+      logger.error(subscription.error)
+      continue
+    }
+    logger.info(`User with id ${subscription.value.userid} has now status ${subscription.value.status} until ${subscription.value.validuntil}`)
+  }
+
+  /* Thank users for upcomming subscription */
+  const tomorrowRes = await sqlClient.query<{ userid: number }>(`SELECT userid FROM subscriptions WHERE validuntil::date = DATE 'tomorrow';`)
+  for (const entry of tomorrowRes.rows) {
+    const user = await getUser(sqlClient, { id: entry.userid })
+    if (user.isErr()) {
+      logger.error(user.error)
+      continue
+    }
+
+    const subscription = await getSubscription(sqlClient, entry.userid, true)
+    if (subscription.isErr()) {
+      logger.error(subscription.error)
+      continue
+    }
+
+    if (subscription.value.validuntil == null || !isTomorrow(new Date(subscription.value.validuntil))) {
+      logger.info(`Update subscription: User with id ${subscription.value.userid} has now status ${subscription.value.status} until ${subscription.value.validuntil}`)
+      continue
+    }
+
+    if (subscription.value.status === 'running') {
+      const settings = await getEmailNotificationSettings(sqlClient, user.value.id)
+      if (settings.isOk() && settings.value.sponsoring) {
+        sendSubscriptionPaymentReminder({ user: user.value })
+      }
+    }
+  }
+}
+
+function isTomorrow(date: Date) {
+  const tomorrow = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1)
+  const dayAfterTomorrow = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 2)
+  return date.getTime() > tomorrow.getTime() && date.getTime() < dayAfterTomorrow.getTime()
 }
