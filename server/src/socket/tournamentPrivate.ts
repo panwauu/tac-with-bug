@@ -17,6 +17,7 @@ import {
 } from '../services/tournamentsPrivate'
 import { nspGeneral } from './general'
 import { sendPrivateTournamentInvitation } from '../communicationUtils/email'
+import { getEmailNotificationSettings } from '../services/settings'
 
 export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('tournament:private:get', async (data, cb) => {
@@ -88,12 +89,15 @@ export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: Genera
       const invitedUser = await getUser(pgPool, { username: data.usernameToAdd })
       if (invitedUser.isErr()) return cb({ status: 500, error: invitedUser.error })
 
-      sendPrivateTournamentInvitation({
-        user: invitedUser.value,
-        tournamentTitle: newTournament.value.title,
-        invitingPlayer: newTournament.value.adminPlayer,
-        teamName: data.teamTitle,
-      })
+      const settings = await getEmailNotificationSettings(pgPool, user.value.id)
+      if (settings.isOk() && settings.value.tournamentInvitations) {
+        sendPrivateTournamentInvitation({
+          user: invitedUser.value,
+          tournamentTitle: newTournament.value.title,
+          invitingPlayer: newTournament.value.adminPlayer,
+          teamName: data.teamTitle,
+        })
+      }
 
       pushChangedPrivateTournament(newTournament.value)
       return cb({ status: 200, data: newTournament.value })

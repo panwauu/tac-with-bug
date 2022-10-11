@@ -11,6 +11,7 @@ import { generateIcal } from '../communicationUtils/icalGenerator'
 import { sendTournamentInvitation, sendTournamentReminder } from '../communicationUtils/email'
 import { getUser } from '../services/user'
 import { nspGeneral as nsp } from './general'
+import { getEmailNotificationSettings } from '../services/settings'
 
 export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('tournament:public:get', async (data, callback) => {
@@ -237,7 +238,12 @@ async function sendMailToUnactivatedPlayer(sqlClient: pg.Pool, players: string[]
     const user = await getUser(sqlClient, { username: player })
     if (user.isErr()) throw new Error(user.error)
 
-    sendTournamentInvitation({ user: user.value, invitingPlayer: username, tournamentTitle: '', teamName })
+    const settings = await getEmailNotificationSettings(sqlClient, user.value.id)
+    if (settings.isErr()) throw new Error(settings.error)
+
+    if (settings.value.tournamentInvitations) {
+      sendTournamentInvitation({ user: user.value, invitingPlayer: username, tournamentTitle: '', teamName })
+    }
   })
 }
 
