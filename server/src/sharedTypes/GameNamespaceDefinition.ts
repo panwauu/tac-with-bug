@@ -6,7 +6,7 @@ import type { CallbackFunction } from './GeneralNamespaceDefinition'
 
 export interface ClientToServerEvents {
   postMove: (move: MoveTextOrBall) => void
-  'substitution:offer': (cb: CallbackFunction<null>) => void
+  'substitution:offer': (playerIndexToSubstitute: number, cb: CallbackFunction<null>) => void
   'substitution:answer': (data: { accept: boolean }, cb: CallbackFunction<null>) => void
 }
 

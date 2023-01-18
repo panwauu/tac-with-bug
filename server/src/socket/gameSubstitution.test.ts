@@ -6,6 +6,46 @@ import { initiateGameSocket } from '../test/handleGameSocket'
 import { closeSockets, connectSocket, waitForEventOnSockets } from '../test/handleSocket'
 import { sleep } from '../helpers/sleep'
 
+describe('Test substitution start conditions with socket.io', () => {
+  let usersWithSocket: UserWithSocket
+  let gameSocket: GameSocketC
+  let testCaseNumber = 0
+  const testCases = [
+    // [gameID, playerIndexToSubstitute, expectedStatus]
+    [10, 0, 200], // During trade
+    [10, 1, 200],
+    [10, 2, 200],
+    [10, 3, 200],
+    [11, 0, 500], // During teufel
+    [11, 1, 500],
+    [11, 2, 200],
+    [11, 3, 500],
+    [12, 0, 500], // During narr
+    [12, 1, 500],
+    [12, 2, 200],
+    [12, 3, 500],
+    [4, 0, 500], // Tournament game
+    [8, 0, 500], // Ended game
+  ]
+
+  beforeEach(async () => {
+    usersWithSocket = (await getUsersWithSockets({ ids: [5] }))[0]
+    gameSocket = initiateGameSocket(testCases[testCaseNumber][0], usersWithSocket.token)
+    await connectSocket(gameSocket)
+    await sleep(100)
+  })
+
+  afterEach(async () => {
+    testCaseNumber += 1
+    await closeSockets([gameSocket, usersWithSocket.socket])
+  })
+
+  test.each(testCases)('Substitution from game %s of the player %s should result in status %s', async (_, playerIndexToSubstitute, expectedStatus) => {
+    const offerRes = await gameSocket.emitWithAck(5000, 'substitution:offer', playerIndexToSubstitute)
+    expect(offerRes.status).toBe(expectedStatus)
+  })
+})
+
 const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
   afterOffer: {
     acceptedByIndex: [],
@@ -52,7 +92,7 @@ describe('Game test suite via socket.io', () => {
   test('Should start substitution sucessfully', async () => {
     const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
 
-    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:offer')
+    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:offer', 2)
     expect(offerRes.status).toBe(200)
 
     const updateData = await Promise.all(updateGamePromise)
@@ -64,7 +104,7 @@ describe('Game test suite via socket.io', () => {
   })
 
   test('Should not start substitution if already running', async () => {
-    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:offer')
+    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:offer', 2)
     expect(offerRes.status).toBe(500)
   })
 
@@ -94,7 +134,7 @@ describe('Game test suite via socket.io', () => {
   test('Should start substitution sucessfully again', async () => {
     const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
 
-    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:offer')
+    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:offer', 2)
     expect(offerRes.status).toBe(200)
 
     const updateData = await Promise.all(updateGamePromise)

@@ -8,7 +8,7 @@ import { acceptSubstitution, checkSubstitutionConditions, checkSubstitutionsForT
 import { getSocketsInGame, nsp } from './game'
 
 export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocketS) {
-  socket.on('substitution:offer', async (cb) => {
+  socket.on('substitution:offer', async (playerIndexToSubstitute, cb) => {
     if (socket.data.gameID == null || socket.data.gamePlayer == null || socket.data.userID == null) {
       socket.disconnect()
       return cb({ status: 500 })
@@ -17,11 +17,11 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
     await checkSubstitutionsForTime(pgPool)
     const game = await getGame(pgPool, socket.data.gameID)
 
-    if (!checkSubstitutionConditions(game, game.game.activePlayer, socket.data.userID)) {
-      return cb({ status: 500 })
+    if (!checkSubstitutionConditions(game, playerIndexToSubstitute, socket.data.userID)) {
+      return cb({ status: 500, error: 'Substitution not allowed' })
     }
 
-    await startSubstitution(pgPool, game, socket.data.userID, game.game.activePlayer)
+    await startSubstitution(pgPool, game, socket.data.userID, playerIndexToSubstitute)
     getSocketsInGame(nsp, socket.data.gameID)
       .filter((s) => s.id !== socket.id)
       .forEach((s) => s.emit('toast:substitution-offer', game.substitution?.substitutionUsername ?? ''))
