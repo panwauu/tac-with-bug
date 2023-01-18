@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Tutorial Test Suite via Socket.io Test Tutorials Move should be able to be performed 1`] = `
-Object {
-  "game": Object {
-    "colors": Array [
+{
+  "game": {
+    "colors": [
       "red",
       "green",
       "blue",
@@ -11,94 +11,94 @@ Object {
     ],
     "coop": false,
     "created": 0,
-    "game": Object {
+    "game": {
       "activePlayer": 1,
       "aussetzenFlag": false,
-      "balls": Array [
-        Object {
+      "balls": [
+        {
           "player": 0,
           "position": 16,
           "state": "invalid",
         },
-        Object {
+        {
           "player": 0,
           "position": 1,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 2,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 3,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 4,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 5,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 6,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 7,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 8,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 9,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 10,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 11,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 12,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 13,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 14,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 15,
           "state": "house",
         },
       ],
-      "cards": Object {
+      "cards": {
         "dealingPlayer": 2,
-        "deck": Array [
+        "deck": [
           "5",
           "1",
           "12",
@@ -124,33 +124,33 @@ Object {
           "12",
           "7",
         ],
-        "discardPile": Array [
+        "discardPile": [
           "1",
         ],
         "discardPlayer": 0,
         "meisterVersion": true,
-        "players": Array [
-          Array [
+        "players": [
+          [
             "5",
             "12",
             "7",
             "8",
           ],
-          Array [
+          [
             "1",
             "1",
             "6",
             "tac",
             "engel",
           ],
-          Array [
+          [
             "2",
             "2",
             "trickser",
             "1",
             "10",
           ],
-          Array [
+          [
             "7",
             "8",
             "8",
@@ -159,38 +159,19 @@ Object {
           ],
         ],
       },
-      "cardsWithMoves": Array [
-        Object {
-          "ballActions": Object {
-            "4": Array [
+      "cardsWithMoves": [
+        {
+          "ballActions": {
+            "4": [
               32,
             ],
-            "5": Array [
+            "5": [
               32,
             ],
-            "6": Array [
+            "6": [
               32,
             ],
-            "7": Array [
-              32,
-            ],
-          },
-          "possible": true,
-          "textAction": "",
-          "title": "1",
-        },
-        Object {
-          "ballActions": Object {
-            "4": Array [
-              32,
-            ],
-            "5": Array [
-              32,
-            ],
-            "6": Array [
-              32,
-            ],
-            "7": Array [
+            "7": [
               32,
             ],
           },
@@ -198,24 +179,43 @@ Object {
           "textAction": "",
           "title": "1",
         },
-        Object {
-          "ballActions": Object {},
+        {
+          "ballActions": {
+            "4": [
+              32,
+            ],
+            "5": [
+              32,
+            ],
+            "6": [
+              32,
+            ],
+            "7": [
+              32,
+            ],
+          },
+          "possible": true,
+          "textAction": "",
+          "title": "1",
+        },
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "6",
         },
-        Object {
-          "ballActions": Object {
-            "4": Array [
+        {
+          "ballActions": {
+            "4": [
               32,
             ],
-            "5": Array [
+            "5": [
               32,
             ],
-            "6": Array [
+            "6": [
               32,
             ],
-            "7": Array [
+            "7": [
               32,
             ],
           },
@@ -223,18 +223,18 @@ Object {
           "textAction": "",
           "title": "tac",
         },
-        Object {
-          "ballActions": Object {
-            "10": Array [
+        {
+          "ballActions": {
+            "10": [
               48,
             ],
-            "11": Array [
+            "11": [
               48,
             ],
-            "8": Array [
+            "8": [
               48,
             ],
-            "9": Array [
+            "9": [
               48,
             ],
           },
@@ -246,109 +246,109 @@ Object {
       "coop": false,
       "gameEnded": false,
       "nPlayers": 4,
-      "narrFlag": Array [
+      "narrFlag": [
         false,
         false,
         false,
         false,
       ],
-      "priorBalls": Array [
-        Object {
+      "priorBalls": [
+        {
           "player": 0,
           "position": 0,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 1,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 2,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 3,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 4,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 5,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 6,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 7,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 8,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 9,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 10,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 11,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 12,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 13,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 14,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 15,
           "state": "house",
         },
       ],
       "sevenChosenPlayer": null,
-      "statistic": Array [],
-      "substitutedPlayerIndices": Array [],
-      "teams": Array [
-        Array [
+      "statistic": [],
+      "substitutedPlayerIndices": [],
+      "teams": [
+        [
           0,
           2,
         ],
-        Array [
+        [
           1,
           3,
         ],
       ],
       "teufelFlag": false,
-      "tradeCards": Array [
+      "tradeCards": [
         "",
         "",
         "",
@@ -356,7 +356,7 @@ Object {
       ],
       "tradeDirection": -1,
       "tradeFlag": false,
-      "winningTeams": Array [
+      "winningTeams": [
         false,
         false,
       ],
@@ -365,13 +365,13 @@ Object {
     "lastPlayed": 0,
     "nPlayers": 4,
     "nTeams": 2,
-    "playerIDs": Array [
+    "playerIDs": [
       0,
       0,
       0,
       0,
     ],
-    "players": Array [
+    "players": [
       "Du",
       "-Kai-",
       "-Oskar-",
@@ -381,117 +381,117 @@ Object {
     "status": "running",
     "tournamentid": null,
   },
-  "updateData": Object {
+  "updateData": {
     "aussetzenFlag": false,
-    "balls": Array [
-      Object {
+    "balls": [
+      {
         "player": 0,
         "position": 16,
         "state": "invalid",
       },
-      Object {
+      {
         "player": 0,
         "position": 1,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 2,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 3,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 4,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 5,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 6,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 7,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 8,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 9,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 10,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 11,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 12,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 13,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 14,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 15,
         "state": "house",
       },
     ],
-    "cards": Array [
-      Object {
-        "ballActions": Object {},
+    "cards": [
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "5",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "12",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "7",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "8",
       },
     ],
-    "colors": Array [
+    "colors": [
       "red",
       "green",
       "blue",
@@ -499,34 +499,34 @@ Object {
     ],
     "coopCounter": -1,
     "created": 0,
-    "deckInfo": Array [
+    "deckInfo": [
       2,
       24,
     ],
-    "discardPile": Array [
+    "discardPile": [
       "1",
     ],
     "gameEnded": false,
     "gamePlayer": 0,
     "lastPlayed": 0,
-    "ownCards": Array [
+    "ownCards": [
       "5",
       "12",
       "7",
       "8",
     ],
-    "playernames": Array [
+    "playernames": [
       "Du",
       "-Kai-",
       "-Oskar-",
       "-Sophia-",
     ],
-    "players": Array [
-      Object {
+    "players": [
+      {
         "active": false,
         "discarded": true,
         "name": "Du",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -534,11 +534,11 @@ Object {
         "remainingCards": 4,
         "team": 0,
       },
-      Object {
+      {
         "active": true,
         "discarded": false,
         "name": "-Kai-",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -546,11 +546,11 @@ Object {
         "remainingCards": 5,
         "team": 1,
       },
-      Object {
+      {
         "active": false,
         "discarded": false,
         "name": "-Oskar-",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -558,11 +558,11 @@ Object {
         "remainingCards": 5,
         "team": 0,
       },
-      Object {
+      {
         "active": false,
         "discarded": false,
         "name": "-Sophia-",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -571,104 +571,104 @@ Object {
         "team": 1,
       },
     ],
-    "priorBalls": Array [
-      Object {
+    "priorBalls": [
+      {
         "player": 0,
         "position": 0,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 1,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 2,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 3,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 4,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 5,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 6,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 7,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 8,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 9,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 10,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 11,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 12,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 13,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 14,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 15,
         "state": "house",
       },
     ],
     "rematch_open": false,
-    "statistic": Array [],
-    "substitutedPlayerIndices": Array [],
-    "teams": Array [
-      Array [
+    "statistic": [],
+    "substitutedPlayerIndices": [],
+    "teams": [
+      [
         0,
         2,
       ],
-      Array [
+      [
         1,
         3,
       ],
     ],
     "teufelFlag": false,
     "tradeDirection": -1,
-    "winningTeams": Array [
+    "winningTeams": [
       false,
       false,
     ],
@@ -677,10 +677,10 @@ Object {
 `;
 
 exports[`Tutorial Test Suite via Socket.io Test Tutorials Tutorial step should be loaded for authenticated user 1`] = `
-Object {
-  "config": Object {},
-  "game": Object {
-    "colors": Array [
+{
+  "config": {},
+  "game": {
+    "colors": [
       "red",
       "green",
       "blue",
@@ -688,94 +688,94 @@ Object {
     ],
     "coop": false,
     "created": 0,
-    "game": Object {
+    "game": {
       "activePlayer": 0,
       "aussetzenFlag": false,
-      "balls": Array [
-        Object {
+      "balls": [
+        {
           "player": 0,
           "position": 0,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 1,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 2,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 3,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 4,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 5,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 6,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 7,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 8,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 9,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 10,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 11,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 12,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 13,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 14,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 15,
           "state": "house",
         },
       ],
-      "cards": Object {
+      "cards": {
         "dealingPlayer": 2,
-        "deck": Array [
+        "deck": [
           "5",
           "1",
           "12",
@@ -801,31 +801,31 @@ Object {
           "12",
           "7",
         ],
-        "discardPile": Array [],
+        "discardPile": [],
         "meisterVersion": true,
-        "players": Array [
-          Array [
+        "players": [
+          [
             "5",
             "1",
             "12",
             "7",
             "8",
           ],
-          Array [
+          [
             "1",
             "1",
             "6",
             "tac",
             "engel",
           ],
-          Array [
+          [
             "2",
             "2",
             "trickser",
             "1",
             "10",
           ],
-          Array [
+          [
             "7",
             "8",
             "8",
@@ -834,33 +834,33 @@ Object {
           ],
         ],
       },
-      "cardsWithMoves": Array [
-        Object {
-          "ballActions": Object {},
+      "cardsWithMoves": [
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "5",
         },
-        Object {
-          "ballActions": Object {},
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "1",
         },
-        Object {
-          "ballActions": Object {},
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "12",
         },
-        Object {
-          "ballActions": Object {},
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "7",
         },
-        Object {
-          "ballActions": Object {},
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "8",
@@ -869,107 +869,107 @@ Object {
       "coop": false,
       "gameEnded": false,
       "nPlayers": 4,
-      "narrFlag": Array [
+      "narrFlag": [
         false,
         false,
         false,
         false,
       ],
-      "priorBalls": Array [
-        Object {
+      "priorBalls": [
+        {
           "player": 0,
           "position": 0,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 1,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 2,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 3,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 4,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 5,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 6,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 7,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 8,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 9,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 10,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 11,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 12,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 13,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 14,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 15,
           "state": "house",
         },
       ],
-      "statistic": Array [],
-      "teams": Array [
-        Array [
+      "statistic": [],
+      "teams": [
+        [
           0,
           2,
         ],
-        Array [
+        [
           1,
           3,
         ],
       ],
       "teufelFlag": false,
-      "tradeCards": Array [
+      "tradeCards": [
         "",
         "",
         "",
@@ -977,7 +977,7 @@ Object {
       ],
       "tradeDirection": -1,
       "tradeFlag": false,
-      "winningTeams": Array [
+      "winningTeams": [
         false,
         false,
       ],
@@ -986,13 +986,13 @@ Object {
     "lastPlayed": 0,
     "nPlayers": 4,
     "nTeams": 2,
-    "playerIDs": Array [
+    "playerIDs": [
       0,
       0,
       0,
       0,
     ],
-    "players": Array [
+    "players": [
       "Du",
       "-Kai-",
       "-Oskar-",
@@ -1003,123 +1003,123 @@ Object {
     "tournamentid": null,
   },
   "goal": null,
-  "updateData": Object {
+  "updateData": {
     "aussetzenFlag": false,
-    "balls": Array [
-      Object {
+    "balls": [
+      {
         "player": 0,
         "position": 0,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 1,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 2,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 3,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 4,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 5,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 6,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 7,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 8,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 9,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 10,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 11,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 12,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 13,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 14,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 15,
         "state": "house",
       },
     ],
-    "cards": Array [
-      Object {
-        "ballActions": Object {},
+    "cards": [
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "5",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "1",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "12",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "7",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "8",
       },
     ],
-    "colors": Array [
+    "colors": [
       "red",
       "green",
       "blue",
@@ -1127,33 +1127,33 @@ Object {
     ],
     "coopCounter": -1,
     "created": 0,
-    "deckInfo": Array [
+    "deckInfo": [
       2,
       24,
     ],
-    "discardPile": Array [],
+    "discardPile": [],
     "gameEnded": false,
     "gamePlayer": 0,
     "lastPlayed": 0,
-    "ownCards": Array [
+    "ownCards": [
       "5",
       "1",
       "12",
       "7",
       "8",
     ],
-    "playernames": Array [
+    "playernames": [
       "Du",
       "-Kai-",
       "-Oskar-",
       "-Sophia-",
     ],
-    "players": Array [
-      Object {
+    "players": [
+      {
         "active": true,
         "discarded": false,
         "name": "Du",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -1161,11 +1161,11 @@ Object {
         "remainingCards": 5,
         "team": 0,
       },
-      Object {
+      {
         "active": false,
         "discarded": false,
         "name": "-Kai-",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -1173,11 +1173,11 @@ Object {
         "remainingCards": 5,
         "team": 1,
       },
-      Object {
+      {
         "active": false,
         "discarded": false,
         "name": "-Oskar-",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -1185,11 +1185,11 @@ Object {
         "remainingCards": 5,
         "team": 0,
       },
-      Object {
+      {
         "active": false,
         "discarded": false,
         "name": "-Sophia-",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -1198,103 +1198,103 @@ Object {
         "team": 1,
       },
     ],
-    "priorBalls": Array [
-      Object {
+    "priorBalls": [
+      {
         "player": 0,
         "position": 0,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 1,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 2,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 3,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 4,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 5,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 6,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 7,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 8,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 9,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 10,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 11,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 12,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 13,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 14,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 15,
         "state": "house",
       },
     ],
     "rematch_open": false,
-    "statistic": Array [],
-    "teams": Array [
-      Array [
+    "statistic": [],
+    "teams": [
+      [
         0,
         2,
       ],
-      Array [
+      [
         1,
         3,
       ],
     ],
     "teufelFlag": false,
     "tradeDirection": -1,
-    "winningTeams": Array [
+    "winningTeams": [
       false,
       false,
     ],
@@ -1303,10 +1303,10 @@ Object {
 `;
 
 exports[`Tutorial Test Suite via Socket.io Test Tutorials Tutorial step should be loaded for unauthenticated user 1`] = `
-Object {
-  "config": Object {},
-  "game": Object {
-    "colors": Array [
+{
+  "config": {},
+  "game": {
+    "colors": [
       "red",
       "green",
       "blue",
@@ -1314,94 +1314,94 @@ Object {
     ],
     "coop": false,
     "created": 0,
-    "game": Object {
+    "game": {
       "activePlayer": 0,
       "aussetzenFlag": false,
-      "balls": Array [
-        Object {
+      "balls": [
+        {
           "player": 0,
           "position": 0,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 1,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 2,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 3,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 4,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 5,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 6,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 7,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 8,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 9,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 10,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 11,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 12,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 13,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 14,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 15,
           "state": "house",
         },
       ],
-      "cards": Object {
+      "cards": {
         "dealingPlayer": 2,
-        "deck": Array [
+        "deck": [
           "5",
           "1",
           "12",
@@ -1427,31 +1427,31 @@ Object {
           "12",
           "7",
         ],
-        "discardPile": Array [],
+        "discardPile": [],
         "meisterVersion": true,
-        "players": Array [
-          Array [
+        "players": [
+          [
             "5",
             "1",
             "12",
             "7",
             "8",
           ],
-          Array [
+          [
             "1",
             "1",
             "6",
             "tac",
             "engel",
           ],
-          Array [
+          [
             "2",
             "2",
             "trickser",
             "1",
             "10",
           ],
-          Array [
+          [
             "7",
             "8",
             "8",
@@ -1460,33 +1460,33 @@ Object {
           ],
         ],
       },
-      "cardsWithMoves": Array [
-        Object {
-          "ballActions": Object {},
+      "cardsWithMoves": [
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "5",
         },
-        Object {
-          "ballActions": Object {},
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "1",
         },
-        Object {
-          "ballActions": Object {},
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "12",
         },
-        Object {
-          "ballActions": Object {},
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "7",
         },
-        Object {
-          "ballActions": Object {},
+        {
+          "ballActions": {},
           "possible": false,
           "textAction": "",
           "title": "8",
@@ -1495,107 +1495,107 @@ Object {
       "coop": false,
       "gameEnded": false,
       "nPlayers": 4,
-      "narrFlag": Array [
+      "narrFlag": [
         false,
         false,
         false,
         false,
       ],
-      "priorBalls": Array [
-        Object {
+      "priorBalls": [
+        {
           "player": 0,
           "position": 0,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 1,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 2,
           "state": "house",
         },
-        Object {
+        {
           "player": 0,
           "position": 3,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 4,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 5,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 6,
           "state": "house",
         },
-        Object {
+        {
           "player": 1,
           "position": 7,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 8,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 9,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 10,
           "state": "house",
         },
-        Object {
+        {
           "player": 2,
           "position": 11,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 12,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 13,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 14,
           "state": "house",
         },
-        Object {
+        {
           "player": 3,
           "position": 15,
           "state": "house",
         },
       ],
-      "statistic": Array [],
-      "teams": Array [
-        Array [
+      "statistic": [],
+      "teams": [
+        [
           0,
           2,
         ],
-        Array [
+        [
           1,
           3,
         ],
       ],
       "teufelFlag": false,
-      "tradeCards": Array [
+      "tradeCards": [
         "",
         "",
         "",
@@ -1603,7 +1603,7 @@ Object {
       ],
       "tradeDirection": -1,
       "tradeFlag": false,
-      "winningTeams": Array [
+      "winningTeams": [
         false,
         false,
       ],
@@ -1612,13 +1612,13 @@ Object {
     "lastPlayed": 0,
     "nPlayers": 4,
     "nTeams": 2,
-    "playerIDs": Array [
+    "playerIDs": [
       0,
       0,
       0,
       0,
     ],
-    "players": Array [
+    "players": [
       "Du",
       "-Kai-",
       "-Oskar-",
@@ -1628,126 +1628,126 @@ Object {
     "status": "running",
     "tournamentid": null,
   },
-  "goal": Object {
+  "goal": {
     "modalState": "settings",
   },
-  "updateData": Object {
+  "updateData": {
     "aussetzenFlag": false,
-    "balls": Array [
-      Object {
+    "balls": [
+      {
         "player": 0,
         "position": 0,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 1,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 2,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 3,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 4,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 5,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 6,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 7,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 8,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 9,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 10,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 11,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 12,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 13,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 14,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 15,
         "state": "house",
       },
     ],
-    "cards": Array [
-      Object {
-        "ballActions": Object {},
+    "cards": [
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "5",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "1",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "12",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "7",
       },
-      Object {
-        "ballActions": Object {},
+      {
+        "ballActions": {},
         "possible": false,
         "textAction": "",
         "title": "8",
       },
     ],
-    "colors": Array [
+    "colors": [
       "red",
       "green",
       "blue",
@@ -1755,33 +1755,33 @@ Object {
     ],
     "coopCounter": -1,
     "created": 0,
-    "deckInfo": Array [
+    "deckInfo": [
       2,
       24,
     ],
-    "discardPile": Array [],
+    "discardPile": [],
     "gameEnded": false,
     "gamePlayer": 0,
     "lastPlayed": 0,
-    "ownCards": Array [
+    "ownCards": [
       "5",
       "1",
       "12",
       "7",
       "8",
     ],
-    "playernames": Array [
+    "playernames": [
       "Du",
       "-Kai-",
       "-Oskar-",
       "-Sophia-",
     ],
-    "players": Array [
-      Object {
+    "players": [
+      {
         "active": true,
         "discarded": false,
         "name": "Du",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -1789,11 +1789,11 @@ Object {
         "remainingCards": 5,
         "team": 0,
       },
-      Object {
+      {
         "active": false,
         "discarded": false,
         "name": "-Kai-",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -1801,11 +1801,11 @@ Object {
         "remainingCards": 5,
         "team": 1,
       },
-      Object {
+      {
         "active": false,
         "discarded": false,
         "name": "-Oskar-",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -1813,11 +1813,11 @@ Object {
         "remainingCards": 5,
         "team": 0,
       },
-      Object {
+      {
         "active": false,
         "discarded": false,
         "name": "-Sophia-",
-        "narrFlag": Array [
+        "narrFlag": [
           false,
           false,
         ],
@@ -1826,103 +1826,103 @@ Object {
         "team": 1,
       },
     ],
-    "priorBalls": Array [
-      Object {
+    "priorBalls": [
+      {
         "player": 0,
         "position": 0,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 1,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 2,
         "state": "house",
       },
-      Object {
+      {
         "player": 0,
         "position": 3,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 4,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 5,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 6,
         "state": "house",
       },
-      Object {
+      {
         "player": 1,
         "position": 7,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 8,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 9,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 10,
         "state": "house",
       },
-      Object {
+      {
         "player": 2,
         "position": 11,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 12,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 13,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 14,
         "state": "house",
       },
-      Object {
+      {
         "player": 3,
         "position": 15,
         "state": "house",
       },
     ],
     "rematch_open": false,
-    "statistic": Array [],
-    "teams": Array [
-      Array [
+    "statistic": [],
+    "teams": [
+      [
         0,
         2,
       ],
-      Array [
+      [
         1,
         3,
       ],
     ],
     "teufelFlag": false,
     "tradeDirection": -1,
-    "winningTeams": Array [
+    "winningTeams": [
       false,
       false,
     ],
