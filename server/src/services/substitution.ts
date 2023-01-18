@@ -42,12 +42,23 @@ export function checkSubstitutionConditions(game: GameForPlay, playerIndexToSubs
   return (
     game.running &&
     game.substitution == null &&
-    game.game.activePlayer === playerIndexToSubstitute &&
+    (playerShouldPlay(game, playerIndexToSubstitute) || playerShouldTrade(game, playerIndexToSubstitute)) &&
     Date.now() - game.lastPlayed > 60 * 1000 &&
     !game.playerIDs.includes(substitutionPlayerID) &&
     game.privateTournamentId == null &&
     game.publicTournamentId == null
   )
+}
+
+// Ordinary move or teufel
+function playerShouldPlay(game: GameForPlay, playerIndexToSubstitute: number): boolean {
+  return game.game.activePlayer === playerIndexToSubstitute && !game.game.narrFlag.some((f) => f) && !game.game.tradeFlag
+}
+
+// Could be narr or trade
+function playerShouldTrade(game: GameForPlay, playerIndexToSubstitute: number): boolean {
+  if (playerIndexToSubstitute >= game.nPlayers) return false
+  return (game.game.narrFlag.some((f) => f) && !game.game.narrFlag[playerIndexToSubstitute]) || (game.game.tradeFlag && game.game.tradeCards[playerIndexToSubstitute] === '')
 }
 
 export async function startSubstitution(pgPool: pg.Pool, game: GameForPlay, substitutionPlayerID: number, playerIndexToSubstitute: number): Promise<Result<null, GetUserErrors>> {
