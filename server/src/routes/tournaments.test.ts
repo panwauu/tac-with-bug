@@ -154,12 +154,30 @@ describe('Tournament API', () => {
     })
     expect(changeResFail.statusCode).toBe(500)
 
-    const changeRes = await testAgent.post('/gameApi/changeTournamentSignUpSize').set({ Authorization: userWithCredentials.authHeader }).send({
+    const changeResTooLarge = await testAgent.post('/gameApi/changeTournamentSignUpSize').set({ Authorization: userWithCredentials.authHeader }).send({
+      nTeams: 16,
+      tournamentID: apiRes.body.id,
+    })
+    expect(changeResTooLarge.statusCode).toBe(500)
+
+    const changeRes = await testAgent
+      .post('/gameApi/changeTournamentSignUpSize')
+      .set({ Authorization: userWithCredentials.authHeader })
+      .send({
+        nTeams: 16,
+        tournamentID: apiRes.body.id,
+        creationDates: ['2021-01-03 00:00:00+02', '2021-01-04 00:00:00+02', '2021-01-05 00:00:00+02', '2021-01-06 00:00:00+02'],
+      })
+    expect(changeRes.statusCode).toBe(200)
+    expect(changeRes.body.id).toBe(apiRes.body.id)
+    expect(changeRes.body.data.brackets.length).toBe(4)
+
+    const changeResSmaller = await testAgent.post('/gameApi/changeTournamentSignUpSize').set({ Authorization: userWithCredentials.authHeader }).send({
       nTeams: 4,
       tournamentID: apiRes.body.id,
     })
-    expect(changeRes.statusCode).toBe(200)
-    expect(changeRes.body.id).toBe(apiRes.body.id)
-    expect(changeRes.body.data.brackets.length).toBe(2)
+    expect(changeResSmaller.statusCode).toBe(200)
+    expect(changeResSmaller.body.id).toBe(apiRes.body.id)
+    expect(changeResSmaller.body.data.brackets.length).toBe(2)
   })
 })

@@ -103,8 +103,7 @@ export class TournamentsController extends Controller {
   ): Promise<void> {
     const tournament = await getPublicTournamentByID(request.app.locals.sqlClient, requestBody.tournamentID)
     if (tournament.isErr()) return serverError(500, { message: tournament.error })
-    if (tournament.value.status != 'signUpEnded' && tournament.value.status != 'running')
-      return serverError(500, { message: 'Tournament should in running or signUpEnded for signup status' })
+    if (tournament.value.status != 'signUpEnded' && tournament.value.status != 'running') return serverError(500, { message: 'Tournament should in running or signUpEnded status' })
 
     const idRes = await request.app.locals.sqlClient.query('SELECT id, username FROM users WHERE username = $1 OR username = $2;', [
       requestBody.usernameToReplace,
@@ -114,9 +113,7 @@ export class TournamentsController extends Controller {
     const userIDToReplace = idRes.rows.find((r: any) => r.username === requestBody.usernameToReplace)?.id
     const userIDOfReplacement = idRes.rows.find((r: any) => r.username === requestBody.usernameOfReplacement)?.id
 
-    if (userIDToReplace === undefined || userIDOfReplacement === undefined) {
-      return serverError(500, { message: 'Usernames not found' })
-    }
+    if (userIDToReplace === undefined || userIDOfReplacement === undefined || userIDOfReplacement === userIDToReplace) return serverError(500, { message: 'Usernames not found' })
 
     const updateRes = await request.app.locals.sqlClient.query('UPDATE users_to_tournaments SET userid = $2 WHERE userid = $1 AND tournamentid = $3;', [
       userIDToReplace,
@@ -135,7 +132,7 @@ export class TournamentsController extends Controller {
   @Post('/changeTournamentSignUpSize')
   public async changeTournamentSignUpSize(
     @Request() request: express.Request,
-    @Body() requestBody: { nTeams: number; tournamentID: number },
+    @Body() requestBody: { nTeams: number; tournamentID: number; creationDates?: string[] },
     @Res() serverError: TsoaResponse<500, { message: string; details?: any }>
   ): Promise<PublicTournament> {
     const tournament = await getPublicTournamentByID(request.app.locals.sqlClient, requestBody.tournamentID)
@@ -148,9 +145,12 @@ export class TournamentsController extends Controller {
     const tournamentDataKO = createTournamentDataKO(requestBody.nTeams, tournament.value.teamsPerMatch)
     if (tournamentDataKO.isErr()) return serverError(500, { message: tournamentDataKO.error })
 
+    const newCreationDates = requestBody.creationDates ?? tournament.value.creationDates.slice(0, tournamentDataKO.value.brackets.length)
+    if (newCreationDates.length != tournamentDataKO.value.brackets.length) return serverError(500, { message: 'wrong creation date length' })
+
     const updateRes = await request.app.locals.sqlClient.query(
-      "UPDATE tournaments SET n_teams = $1, data = $3 WHERE (status = 'signUp' OR  status = 'signUpWaiting') AND id = $2;",
-      [requestBody.nTeams, requestBody.tournamentID, JSON.stringify(tournamentDataKO.value)]
+      "UPDATE tournaments SET n_teams = $1, data = $3, creation_dates = $4 WHERE (status = 'signUp' OR  status = 'signUpWaiting') AND id = $2;",
+      [requestBody.nTeams, requestBody.tournamentID, JSON.stringify(tournamentDataKO.value), newCreationDates]
     )
     if (updateRes.rowCount !== 1) return serverError(500, { message: 'Could not Update Database' })
 
