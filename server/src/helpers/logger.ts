@@ -1,10 +1,26 @@
 import winston from 'winston'
 import Transport from 'winston-transport'
+import type pg from 'pg'
 
-import pg from 'pg'
+const { transports, format, createLogger } = winston
+
+const consoleOptions = {
+  level: 'silly',
+  json: false,
+  handleExceptions: true,
+  colorize: true,
+  format: format.simple(),
+}
+
+const loggerOptions = {
+  transports: [new transports.Console(consoleOptions)] as Transport[],
+  exitOnError: false,
+}
+
+let logger = createLogger(loggerOptions)
 
 interface PostgresTransportOptions {
-  postgres: string | pg.Pool
+  postgres: pg.Pool
   tableName?: string
   level?: string
   name?: string
@@ -20,18 +36,7 @@ class PostgresTransport extends Transport {
     super(opts)
 
     this.tableName = opts.tableName ?? 'logs'
-
-    if (typeof opts.postgres === 'string') {
-      this.pgPool = new pg.Pool({
-        connectionString: opts.postgres,
-        ssl: { rejectUnauthorized: false },
-        max: 15,
-        idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 2000,
-      })
-    } else {
-      this.pgPool = opts.postgres
-    }
+    this.pgPool = opts.postgres
   }
 
   log(info: any, callback: any) {
@@ -49,51 +54,24 @@ class PostgresTransport extends Transport {
   }
 }
 
-const { transports, format, createLogger } = winston
-
-function getLoggingDatabaseURL(): string | null {
-  const databaseEnvKey = process.env.DATABASE_LOGGING_ENV_KEY_TO_URL
-  if (databaseEnvKey === undefined) {
-    return null
+export function attachPostgresLogger(pgPool: pg.Pool) {
+  const loggerOptions = {
+    transports: [
+      new transports.Console(consoleOptions),
+      new PostgresTransport({
+        level: 'warn',
+        postgres: pgPool,
+        tableName: 'logs',
+        handleExceptions: true,
+      }),
+    ] as Transport[],
+    exitOnError: false,
   }
+  logger = createLogger(loggerOptions)
 
-  const databaseUrl = process.env[databaseEnvKey]
-  if (databaseUrl === undefined) {
-    return null
+  if (process.env.NODE_ENV === 'production') {
+    logger.error('This is a test error to test if the postgres logger is working when server starts', { reason: 'test' })
   }
-
-  return databaseUrl
-}
-
-const consoleOptions = {
-  level: 'silly',
-  json: false,
-  handleExceptions: true,
-  colorize: true,
-  format: format.simple(),
-}
-
-const loggerOptions = {
-  transports: [new transports.Console(consoleOptions)] as Transport[],
-  exitOnError: false,
-}
-
-const databaseUrl = getLoggingDatabaseURL()
-if (databaseUrl != null) {
-  loggerOptions.transports.push(
-    new PostgresTransport({
-      level: 'warn',
-      postgres: databaseUrl,
-      tableName: 'logs',
-      handleExceptions: true,
-    })
-  )
-}
-
-const logger = createLogger(loggerOptions)
-
-if (process.env.NODE_ENV === 'production') {
-  logger.warn('This is a test warning to test if the postgres logger is working when server starts', { reason: 'test' })
 }
 
 export default logger
