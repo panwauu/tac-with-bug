@@ -70,10 +70,10 @@
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://www.primefaces.org/primevue/showcase/#/"
+            href="https://www.primefaces.org/primevue/"
           >
             <img
-              src="https://www.primefaces.org/primevue/resources/images/primevue-logo.svg"
+              src="https://raw.githubusercontent.com/primefaces/primevue/master/assets/images/logo.svg"
               class="logo"
               alt="Primevue Logo"
             />
