@@ -23,7 +23,7 @@ import { cancelAllJobs, registerJobs } from '../services/scheduledTasks'
 
 import { initdBUtils } from '../dbUtils/initdBUtils'
 import { loadTutorialLevels } from '../services/tutorial'
-import logger from '../helpers/logger'
+import logger, { attachPostgresLogger } from '../helpers/logger'
 
 export type ServerOptions = {
   serveApp?: boolean
@@ -37,6 +37,7 @@ export class TacServer {
 
   constructor(options?: ServerOptions) {
     this.pgPool = initdBUtils()
+    attachPostgresLogger(this.pgPool)
 
     this.app = express()
     this.app.locals.sqlClient = this.pgPool

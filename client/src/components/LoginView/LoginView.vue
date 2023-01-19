@@ -93,6 +93,7 @@ async function login() {
     deleteProfilePics()
     settingsStore.setColorblind(response.colorBlindnessFlag, false)
     settingsStore.setDefaultPositions(response.gameDefaultPositions as [number, number], false)
+    settingsStore.setAdmin(response.admin)
     router.push({
       name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing',
       query: router.currentRoute.value.query,

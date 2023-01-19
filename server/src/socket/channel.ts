@@ -4,6 +4,7 @@ import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import Joi from 'joi'
 import { addChannelMessage, getChannelMessages } from '../services/channel'
 import { nspGeneral } from './general'
+import { isAdmin } from '../helpers/authentication'
 
 export function registerChannelHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('channel:sendMessage', async (data, cb) => {
@@ -15,6 +16,11 @@ export function registerChannelHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     })
     const { error } = schema.validate(data)
     if (error != null) return cb({ status: 500, error })
+
+    if (data.channel === 'news') {
+      const admin = await isAdmin(pgPool, socket.data.userID)
+      if (admin.isErr() || admin.value === false) return cb({ status: 500 })
+    }
 
     await addChannelMessage(pgPool, socket.data.userID, data.body.trim(), data.channel)
     const messages = await getChannelMessages(pgPool, data.channel)

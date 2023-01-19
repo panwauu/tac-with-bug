@@ -5,7 +5,6 @@
       v-model:modalState="modalState"
       :positionStyles="positionStyles"
       :miscState="miscState"
-      :statisticState="statisticState"
       :discardPileState="discardPileState"
       :ballsState="ballsState"
       :performMove="performMoveAndEmit"
@@ -39,7 +38,6 @@ import { ref, computed, watch } from 'vue'
 import { isEqual } from 'lodash'
 import { usePositionStyles } from '@/services/compositionGame/usePositionStyles'
 import { useMisc } from '@/services/compositionGame/useMisc'
-import { useStatistic } from '@/services/compositionGame/useStatistic'
 import { useBalls } from '@/services/compositionGame/useBalls'
 import { useDiscardPile } from '@/services/compositionGame/useDiscardPile'
 import { usePerformMove } from '@/services/compositionGame/usePerformMove'
@@ -59,7 +57,6 @@ const tutorialProgress = computed(() => {
 
 const miscState = useMisc(4)
 const positionStyles = usePositionStyles(miscState)
-const statisticState = useStatistic()
 const discardPileState = useDiscardPile(miscState.gamePlayer)
 const ballsState = useBalls()
 const cardsState = useCards(ballsState, miscState)
@@ -154,7 +151,7 @@ async function performMoveAndEmit(performMoveAction: PerformMoveAction) {
 }
 
 function watcherDone() {
-  if (loading.value || tutorialProgress.value[tutorialStep.value] || displayTutorialOverlay.value) {
+  if (loading.value || tutorialProgress?.value?.[tutorialStep.value] || displayTutorialOverlay?.value) {
     return
   }
   const done = checkDone()

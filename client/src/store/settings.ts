@@ -6,11 +6,15 @@ import { isLoggedIn } from '../services/useUser'
 
 export const useSettingsStore = defineStore('settings', {
   state: () => ({
+    admin: useStorage<boolean>('TacSettingsAdmin', false, localStorage),
     colorblind: useStorage('TacSettingsColorblind', false, localStorage),
     defaultPositions: useStorage<[number, number]>('TacSettingsDefaultPositions', [1, 0], localStorage),
   }),
   getters: {},
   actions: {
+    setAdmin(admin: boolean): void {
+      this.admin = admin
+    },
     setColorblind(colorblind: boolean, saveToServer: boolean): void {
       if (isLoggedIn.value && saveToServer === true) {
         Service.setColorBlindnessFlag({ colorBlindnessFlag: colorblind })
