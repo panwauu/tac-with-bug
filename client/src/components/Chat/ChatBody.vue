@@ -114,7 +114,7 @@
       @click="messagesStore.markAsRead"
     >
       <form
-        v-if="!messagesStore.mayNotUseChat"
+        v-if="!messagesStore.mayNotUseChat && !(messagesStore.selectedChat.type === 'channel' && messagesStore.selectedChat.id === 'news' && !settingsStore.admin)"
         style="height: 100%"
         @submit.prevent="submitChatInput"
       >
@@ -145,6 +145,15 @@
         style="margin: 0"
       >
         {{ $t('Chat.mayNotUseOverlay') }}
+      </Message>
+      <Message
+        v-if="messagesStore.selectedChat.type === 'channel' && messagesStore.selectedChat.id === 'news' && !settingsStore.admin"
+        severity="warn"
+        :sticky="true"
+        :closable="false"
+        style="margin: 0"
+      >
+        {{ $t('Chat.onlyAdminsOverlay') }}
       </Message>
     </div>
 
@@ -183,9 +192,11 @@ import { useMessagesStore, formatChannelName } from '@/store/messages'
 import { isLoggedIn, username } from '@/services/useUser'
 import { ref } from 'vue'
 import { i18n, currentLocale } from '@/services/i18n'
+import { useSettingsStore } from '@/store/settings'
 
 const chatStore = useChatStore()
 const messagesStore = useMessagesStore()
+const settingsStore = useSettingsStore()
 
 function displaySenderAndTime(groupIndex: number, messageIndex: number): boolean {
   return (
