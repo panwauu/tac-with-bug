@@ -77,7 +77,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
   })
 }
 
-async function emitOnlinePlayersEvents(pgPool: pg.Pool, nsp: GameNamespace, gameID: number) {
+export async function emitOnlinePlayersEvents(pgPool: pg.Pool, nsp: GameNamespace, gameID: number) {
   const socketsInGame = getSocketsInGame(nsp, gameID)
 
   const onlineGamePlayers = socketsInGame.map((s) => s.data.gamePlayer).filter((v) => v != null && v >= 0) as number[]
