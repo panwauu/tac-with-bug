@@ -392,7 +392,7 @@
         "detailedLink": "offiziellen Tac Website"
       },
       "Substitution": {
-        "explanation": "Der Spielerwechsel hilft das Spiel fortzusetzen, wenn ein Spieler nicht mehr reagiert. Ein Zuschauer kann sich als Auswechselspieler anbieten und alle anderen Spieler müssen dem Wechsel zustimmen. Dafür muss der aktive Spieler seit einer Minute nicht gespielt haben und ein Zuschauer darf noch nicht in diesem Spiel gespielt haben.",
+        "explanation": "Der Spielerwechsel hilft das Spiel fortzusetzen, wenn ein Spieler nicht mehr reagiert. Ein Zuschauer kann sich als Auswechselspieler anbieten und alle anderen Spieler müssen dem Wechsel zustimmen. Dafür muss der aktive Spieler seit einer Minute nicht gespielt haben und der Auswechselspieler darf noch nicht in diesem Spiel gespielt haben. Es funktioniert auch wenn ein einzelner Spieler seine Karten nicht getauscht oder weitergegeben hat.",
         "offerButton": "Wechsel anbieten",
         "currentlyNone": "Aktuell gibt es keinen Wechsel",
         "endOfferButton": "Wechsel zurückziehen",
