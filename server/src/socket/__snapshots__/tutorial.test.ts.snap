@@ -378,6 +378,7 @@ exports[`Tutorial Test Suite via Socket.io Test Tutorials Move should be able to
       "-Sophia-",
     ],
     "rematch_open": false,
+    "running": true,
     "status": "running",
     "tournamentid": null,
   },
@@ -654,6 +655,7 @@ exports[`Tutorial Test Suite via Socket.io Test Tutorials Move should be able to
       },
     ],
     "rematch_open": false,
+    "running": true,
     "statistic": [],
     "substitutedPlayerIndices": [],
     "teams": [
@@ -999,6 +1001,7 @@ exports[`Tutorial Test Suite via Socket.io Test Tutorials Tutorial step should b
       "-Sophia-",
     ],
     "rematch_open": false,
+    "running": true,
     "status": "running",
     "tournamentid": null,
   },
@@ -1281,6 +1284,7 @@ exports[`Tutorial Test Suite via Socket.io Test Tutorials Tutorial step should b
       },
     ],
     "rematch_open": false,
+    "running": true,
     "statistic": [],
     "teams": [
       [
@@ -1625,6 +1629,7 @@ exports[`Tutorial Test Suite via Socket.io Test Tutorials Tutorial step should b
       "-Sophia-",
     ],
     "rematch_open": false,
+    "running": true,
     "status": "running",
     "tournamentid": null,
   },
@@ -1909,6 +1914,7 @@ exports[`Tutorial Test Suite via Socket.io Test Tutorials Tutorial step should b
       },
     ],
     "rematch_open": false,
+    "running": true,
     "statistic": [],
     "teams": [
       [
