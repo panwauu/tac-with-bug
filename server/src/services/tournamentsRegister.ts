@@ -1,6 +1,6 @@
 import { err, ok, Result } from 'neverthrow'
-import pg from 'pg'
-import * as tTournament from '../sharedTypes/typesTournament'
+import type pg from 'pg'
+import type * as tTournament from '../sharedTypes/typesTournament'
 
 import { tournamentBus } from './tournaments'
 import { getPublicTournamentByID, getPublicTournament, GetTournamentByIDError } from './tournamentsPublic'

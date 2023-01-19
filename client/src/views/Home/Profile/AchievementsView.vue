@@ -31,7 +31,7 @@ import Crown from '@/components/icons/CrownSymbol.vue'
 
 import { watch, ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient'
-import { TournamentParticipation } from '@/../../server/src/sharedTypes/typesTournament'
+import type { TournamentParticipation } from '@/../../server/src/sharedTypes/typesTournament'
 import router from '@/router'
 
 const props = defineProps<{ username: string }>()

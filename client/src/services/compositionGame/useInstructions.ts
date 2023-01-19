@@ -1,9 +1,9 @@
 import { reactive, watch } from 'vue'
 import { i18n } from '@/services/i18n'
 
-import { MiscStateType } from './useMisc'
-import { CardsStateType } from './useCards'
-import { BallsStateType } from './useBalls'
+import type { MiscStateType } from './useMisc'
+import type { CardsStateType } from './useCards'
+import type { BallsStateType } from './useBalls'
 
 export interface InstructionsStateType {
   instructions: string[]

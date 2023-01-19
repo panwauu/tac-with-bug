@@ -1,5 +1,5 @@
-import * as tCard from '../sharedTypes/typesCard'
-import * as tBall from '../sharedTypes/typesBall'
+import type * as tCard from '../sharedTypes/typesCard'
+import type * as tBall from '../sharedTypes/typesBall'
 
 import { ballStart, ballGoal, ballPlayer } from './ballUtils'
 import { ballInLastGoalPosition, sevenReconstructPath } from './performMoveUtils'

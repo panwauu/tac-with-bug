@@ -1,6 +1,6 @@
 import type pg from 'pg'
 import { cloneDeep } from 'lodash'
-import { CapturedType } from './capture'
+import type { CapturedType } from './capture'
 import logger from '../helpers/logger'
 import { repeatGame } from '../test/captureCompare'
 

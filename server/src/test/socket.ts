@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io-client'
 import type { EventsMap, EventNames } from '@socket.io/component-emitter'
-import { ReservedOrUserEventNames } from 'socket.io/dist/typed-events'
+import type { ReservedOrUserEventNames } from 'socket.io/dist/typed-events'
 
 type Head<T extends any[]> = T extends [...infer Head, any] ? Head : any[]
 type Last<T extends any[]> = T extends [...any, infer Last] ? Last : any

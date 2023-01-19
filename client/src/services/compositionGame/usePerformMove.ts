@@ -1,10 +1,10 @@
 import { getRemainingMoves } from '@/js/sevenGetSteps'
 
-import { BallsStateType } from './useBalls'
-import { MiscStateType } from './useMisc'
-import { DiscardPileStateType } from './useDiscardPile'
-import { CardsStateType } from './useCards'
-import { MoveTextOrBall } from '@/../../server/src/sharedTypes/typesBall'
+import type { BallsStateType } from './useBalls'
+import type { MiscStateType } from './useMisc'
+import type { DiscardPileStateType } from './useDiscardPile'
+import type { CardsStateType } from './useCards'
+import type { MoveTextOrBall } from '@/../../server/src/sharedTypes/typesBall'
 
 export type PerformMoveAction = {
   textAction: string

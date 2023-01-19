@@ -39,7 +39,7 @@ import FriendButton from '@/components/FriendButton.vue'
 import { watch, ref, computed } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey, FriendsStateKey } from '@/services/injections'
-import { Friend } from '@/../../server/src/sharedTypes/typesFriends'
+import type { Friend } from '@/../../server/src/sharedTypes/typesFriends'
 import { username as loggedInUsername } from '@/services/useUser'
 
 const socket = injectStrict(SocketKey)

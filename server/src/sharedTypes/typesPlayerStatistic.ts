@@ -1,4 +1,4 @@
-import { HofReason } from './typesHof'
+import type { HofReason } from './typesHof'
 
 export interface PlayerFrontendStatistic {
   history: ('won' | 'lost' | 'coop' | 'aborted' | 'running')[]

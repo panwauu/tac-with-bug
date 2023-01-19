@@ -4,10 +4,10 @@ import { getGame } from '../services/game'
 import { getPublicTournamentByID, startTournament, startTournamentRound, checkForceGameEnd, updateTournamentFromGame } from '../services/tournamentsPublic'
 import { startSignUpOnCondition, endSignUpOnCondition } from '../services/tournamentsRegister'
 import { getDifferentName } from '../services/SweetNameGenerator'
-import { PublicTournament } from '../sharedTypes/typesTournament'
+import type { PublicTournament } from '../sharedTypes/typesTournament'
 import { closeSockets } from '../test/handleSocket'
 import { sleep } from '../helpers/sleep'
-import { GeneralSocketC } from '../test/socket'
+import type { GeneralSocketC } from '../test/socket'
 
 describe('TournamentPublic test suite via Socket.io', () => {
   describe('Test with two teams - registration process', () => {

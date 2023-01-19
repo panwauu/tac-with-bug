@@ -3,7 +3,7 @@ import { reactive, watch, onBeforeUnmount } from 'vue'
 import { positionStyles6, buildStyles, PositionStyle } from '@/js/buildCells'
 import { getCircleStart, getCircleHouse, getPlayerCards, getPlayerPicture, getPlayerName, getCoopCardCounter, getDeckPositions } from '@/js/getAnnotationStyles'
 import { getNRotation } from '@/js/rotateBoard'
-import { MiscStateType } from './useMisc'
+import type { MiscStateType } from './useMisc'
 import { useSettingsStore } from '../../store/settings'
 
 export interface PositionStylesState {

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { nextTick } from 'vue'
-import { GetRunningGamesType } from '@/../../server/src/sharedTypes/typesDBgame'
+import type { GetRunningGamesType } from '@/../../server/src/sharedTypes/typesDBgame'
 
 nextTick(() => {
   const serverInfoStore = useServerInfoStore()

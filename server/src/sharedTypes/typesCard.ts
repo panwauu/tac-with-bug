@@ -1,4 +1,4 @@
-import { BallActions } from './typesBall'
+import type { BallActions } from './typesBall'
 
 export interface CardsType {
   dealingPlayer: number

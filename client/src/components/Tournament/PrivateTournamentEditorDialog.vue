@@ -44,7 +44,7 @@ import PlayersAutoComplete from '../PlayersAutoComplete.vue'
 
 import { ref, computed, watch } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
-import { PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import type { PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
 
 const props = defineProps<{ tournament: PrivateTournament; visible: boolean; propTeamName: string | null }>()
 const emit = defineEmits<{ (eventName: 'update:visible', visible: boolean): void }>()

@@ -1,5 +1,5 @@
-import pg from 'pg'
-import * as hofTypes from '../sharedTypes/typesHof'
+import type pg from 'pg'
+import type * as hofTypes from '../sharedTypes/typesHof'
 
 export async function getHofData(sqlClient: pg.Pool): Promise<hofTypes.HofData> {
   const res = await sqlClient.query('SELECT hof.status, users.username FROM hof INNER JOIN users ON users.id = hof.userid;')

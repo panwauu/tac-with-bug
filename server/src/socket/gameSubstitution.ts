@@ -1,7 +1,7 @@
 import type pg from 'pg'
 import logger from '../helpers/logger'
 
-import { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
+import type { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 import Joi from 'joi'
 import { getGame } from '../services/game'
 import { acceptSubstitution, checkSubstitutionConditions, checkSubstitutionsForTime, rejectSubstitution, startSubstitution } from '../services/substitution'

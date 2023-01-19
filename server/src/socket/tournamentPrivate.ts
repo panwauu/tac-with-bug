@@ -1,6 +1,6 @@
 import type pg from 'pg'
 import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
-import * as tTournament from '../sharedTypes/typesTournament'
+import type * as tTournament from '../sharedTypes/typesTournament'
 import Joi from 'joi'
 
 import logger from '../helpers/logger'

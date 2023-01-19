@@ -1,5 +1,5 @@
-import { LastTournamentWinners } from '@/../../server/src/sharedTypes/typesTournament'
-import { GeneralSocketC } from './socket'
+import type { LastTournamentWinners } from '@/../../server/src/sharedTypes/typesTournament'
+import type { GeneralSocketC } from './socket'
 import { ref } from 'vue'
 
 const tournamentWinners = ref<LastTournamentWinners>([])

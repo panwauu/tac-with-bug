@@ -1,5 +1,5 @@
 import { DefaultService } from '@/generatedClient'
-import { ToastServiceMethods } from 'primevue/toastservice'
+import type { ToastServiceMethods } from 'primevue/toastservice'
 import { onUnmounted } from 'vue'
 import { i18n } from './i18n'
 

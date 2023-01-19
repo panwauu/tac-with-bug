@@ -1,6 +1,6 @@
-import * as tBall from '@/../../server/src/sharedTypes/typesBall'
-import * as tCard from '../@types/typesCard'
-import { DiscardElement } from '@/services/compositionGame/useDiscardPile'
+import type * as tBall from '@/../../server/src/sharedTypes/typesBall'
+import type * as tCard from '../@types/typesCard'
+import type { DiscardElement } from '@/services/compositionGame/useDiscardPile'
 
 export function getRemainingMoves(card: tCard.PlayerCard, balls: tBall.BallsType, nBall: number, newPosition: number, discardPile: DiscardElement[]): number {
   const lastNonTacCard = getLastNonTacCard(discardPile)

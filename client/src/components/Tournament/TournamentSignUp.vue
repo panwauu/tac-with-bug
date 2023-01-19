@@ -68,7 +68,7 @@ import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import PlayersAutoComplete from '@/components/PlayersAutoComplete.vue'
 
-import { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import type { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 
 import { computed, ref } from 'vue'
 import { i18n } from '@/services/i18n'
