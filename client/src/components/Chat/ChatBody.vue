@@ -62,9 +62,7 @@
               :class="[
                 'chatMessageContainer',
                 message.sender === username ? 'chatMessageContOwn' : 'chatMessageContFor',
-                message.sender != null && messageIndex >= 1 && message.sender === messagesStore.getDateGroupedChatMessages[messageGroupIndex].messages[messageIndex - 1].sender
-                  ? 'chatMessageContainerNotNew'
-                  : '',
+                message.sender != null && messageIndex >= 1 && message.sender === messageGroup.messages[messageIndex - 1].sender ? 'chatMessageContainerNotNew' : '',
               ]"
             >
               <div
