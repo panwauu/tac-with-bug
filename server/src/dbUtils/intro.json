@@ -135,7 +135,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {},
     "goal": null
@@ -276,7 +277,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {},
     "goal": {
@@ -424,7 +426,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {
       "selectedCard": -1
@@ -574,7 +577,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {
       "selectedCard": 1
@@ -786,7 +790,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {
       "selectedCard": 0
@@ -925,7 +930,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {
       "selectedCard": 3
@@ -1084,7 +1090,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {},
     "goal": {
@@ -1223,7 +1230,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {},
     "goal": {
@@ -1362,7 +1370,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {},
     "goal": {
@@ -1501,7 +1510,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {},
     "goal": {
@@ -1638,7 +1648,8 @@
       "colors": ["red", "green", "blue", "black"],
       "id": 0,
       "created": 0,
-      "lastPlayed": 0
+      "lastPlayed": 0,
+      "running": true
     },
     "config": {},
     "goal": {
