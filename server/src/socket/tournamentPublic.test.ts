@@ -8,6 +8,7 @@ import type { PublicTournament } from '../sharedTypes/typesTournament'
 import { closeSockets } from '../test/handleSocket'
 import { sleep } from '../helpers/sleep'
 import type { GeneralSocketC } from '../test/socket'
+import { isEqual } from 'lodash'
 
 describe('TournamentPublic test suite via Socket.io', () => {
   describe('Test with two teams - registration process', () => {
@@ -447,7 +448,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(tournament.status).toBe('signUpEnded')
       expect(tournament.registerTeams.length).toBe(0)
       expect(tournament.teams.length).toBe(4)
-      expect(tournament.data.brackets.every((b: any) => b.every((m: any) => m.winner === -1 && m.gameID === -1 && m.score === [0, 0])))
+      expect(tournament.data.brackets.every((b: any) => b.every((m: any) => m.winner === -1 && m.gameID === -1 && isEqual(m.score, [0, 0]))))
       expect(tournament.data.brackets[1][0].teams).toStrictEqual([-1, -1])
       expect(
         tournament.data.brackets[0]
