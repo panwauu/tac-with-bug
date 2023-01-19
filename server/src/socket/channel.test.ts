@@ -1,6 +1,6 @@
 import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
-import { GeneralSocketC } from '../test/socket'
+import type { GeneralSocketC } from '../test/socket'
 
 describe('Channel test suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[], socket: GeneralSocketC

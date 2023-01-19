@@ -1,8 +1,8 @@
 import { reactive } from 'vue'
 import { cloneDeep } from 'lodash'
 
-import * as tBall from '@/../../server/src/sharedTypes/typesBall'
-import { CardsStateType } from './useCards'
+import type * as tBall from '@/../../server/src/sharedTypes/typesBall'
+import type { CardsStateType } from './useCards'
 
 export interface BallsStateType {
   balls: tBall.BallsType

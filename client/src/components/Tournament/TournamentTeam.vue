@@ -37,7 +37,7 @@
 import Button from 'primevue/button'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
-import { PublicTournament, RegisterTeam } from '@/../../server/src/sharedTypes/typesTournament'
+import type { PublicTournament, RegisterTeam } from '@/../../server/src/sharedTypes/typesTournament'
 import { computed } from 'vue'
 import { i18n } from '@/services/i18n'
 import { injectStrict, SocketKey } from '@/services/injections'

@@ -1,9 +1,9 @@
 import Email from 'email-templates'
 import path from 'path'
 import nodemailer from 'nodemailer'
-import { User } from '../sharedTypes/typesDBuser'
-import { PublicTournament } from '../sharedTypes/typesTournament'
-import { ICalCalendar } from 'ical-generator'
+import type { User } from '../sharedTypes/typesDBuser'
+import type { PublicTournament } from '../sharedTypes/typesTournament'
+import type { ICalCalendar } from 'ical-generator'
 import { locales, fallbackLocale } from '../sharedDefinitions/locales'
 
 const mailTransporter = nodemailer.createTransport({

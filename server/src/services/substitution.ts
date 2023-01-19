@@ -7,7 +7,7 @@ import { initalizeStatistic } from '../game/statistic'
 import { addJob } from './scheduledTasks'
 import { scheduleJob } from 'node-schedule'
 import { getUser, GetUserErrors } from './user'
-import { Substitution } from '../sharedTypes/game'
+import type { Substitution } from '../sharedTypes/game'
 
 const MAX_TIME_FOR_SUBSTITUTION = 60 * 1000
 

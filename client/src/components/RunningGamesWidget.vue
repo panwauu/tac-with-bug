@@ -41,7 +41,7 @@ import Column from 'primevue/column'
 import PlayerWithPicture from './PlayerWithPicture.vue'
 
 import { ref } from 'vue'
-import { GetRunningGamesType } from '../../../server/src/sharedTypes/typesDBgame'
+import type { GetRunningGamesType } from '../../../server/src/sharedTypes/typesDBgame'
 import router from '@/router'
 import { useServerInfoStore } from '@/store/serverInfo'
 

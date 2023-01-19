@@ -1,6 +1,6 @@
-import pg from 'pg'
-import * as tStatistic from '../sharedTypes/typesStatistic'
-import * as tDBgame from '../sharedTypes/typesDBgame'
+import type pg from 'pg'
+import type * as tStatistic from '../sharedTypes/typesStatistic'
+import type * as tDBgame from '../sharedTypes/typesDBgame'
 import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
 
 import { initalizeStatistic } from '../game/statistic'

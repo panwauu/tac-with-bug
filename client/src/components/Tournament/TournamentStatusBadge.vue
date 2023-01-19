@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import Tag from 'primevue/tag'
 
-import { PublicTournament, PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import type { PublicTournament, PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { computed } from 'vue'
 
 const props = defineProps<{ status: PublicTournament['status'] | PrivateTournament['status'] }>()

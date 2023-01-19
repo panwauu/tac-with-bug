@@ -1,9 +1,9 @@
 import { reactive, computed, ComputedRef } from 'vue'
-import { UnwrapNestedRefs } from '@/../node_modules/@vue/reactivity/dist/reactivity'
+import type { UnwrapNestedRefs } from '@/../node_modules/@vue/reactivity/dist/reactivity'
 import { i18n } from '@/services/i18n'
 
-import { GameStatistic, GameStatisticCardsType } from '@/../../server/src/sharedTypes/typesStatistic'
-import { UpdateDataType } from '../../../../server/src/sharedTypes/typesDBgame'
+import type { GameStatistic, GameStatisticCardsType } from '@/../../server/src/sharedTypes/typesStatistic'
+import type { UpdateDataType } from '../../../../server/src/sharedTypes/typesDBgame'
 
 type StatisticStateTypeNonReactive = {
   statistic: GameStatistic[]

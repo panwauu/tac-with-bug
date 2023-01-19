@@ -1,10 +1,10 @@
 import { reactive } from 'vue'
 import { cardPictureDict } from './useCards'
 
-import * as tCard from '@/@types/typesCard'
-import { PlayerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
-import * as tPlayers from '@/../../server/src/sharedTypes/typesPlayers'
-import { PositionStylesState } from './usePositionStyles'
+import type * as tCard from '@/@types/typesCard'
+import type { PlayerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
+import type * as tPlayers from '@/../../server/src/sharedTypes/typesPlayers'
+import type { PositionStylesState } from './usePositionStyles'
 
 export interface DiscardElement {
   index: number

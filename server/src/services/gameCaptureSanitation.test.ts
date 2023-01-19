@@ -1,4 +1,4 @@
-import { CapturedType } from './capture'
+import type { CapturedType } from './capture'
 import { sanitizeGameCapture } from './gameCaptureSanitation'
 import rawTestData from './gameCaptureSanitation.test.json'
 

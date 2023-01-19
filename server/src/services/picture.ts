@@ -1,4 +1,4 @@
-import pg from 'pg'
+import type pg from 'pg'
 import sharp from 'sharp'
 
 // https://avatars.dicebear.com/styles/bottts
@@ -6,7 +6,7 @@ import { createAvatar } from '@dicebear/avatars'
 import * as style from '@dicebear/avatars-bottts-sprites'
 
 import { resolveUserIdentifier } from '../services/user'
-import { UserIdentifier } from '../sharedTypes/typesDBuser'
+import type { UserIdentifier } from '../sharedTypes/typesDBuser'
 import { ok, err, Result } from 'neverthrow'
 
 const profilePictureSize = 160

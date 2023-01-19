@@ -1,8 +1,8 @@
 import logger from '../helpers/logger'
-import * as tBall from '../sharedTypes/typesBall'
-import pg from 'pg'
-import { Game } from '../game/game'
-import { CardsType } from '../sharedTypes/typesCard'
+import type * as tBall from '../sharedTypes/typesBall'
+import type pg from 'pg'
+import type { Game } from '../game/game'
+import type { CardsType } from '../sharedTypes/typesCard'
 import { sanitizeGameCapture } from './gameCaptureSanitation'
 
 export interface CapturedType {
