@@ -1,4 +1,4 @@
-import { GeneralSocketC } from '../services/socket'
+import type { GeneralSocketC } from '../services/socket'
 import { defineStore } from 'pinia'
 import { isLoggedIn } from '../services/useUser'
 import router from '../router/index'

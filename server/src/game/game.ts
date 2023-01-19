@@ -1,7 +1,7 @@
-import * as tCard from '../sharedTypes/typesCard'
-import * as tBall from '../sharedTypes/typesBall'
-import * as tStatistic from '../sharedTypes/typesStatistic'
-import { GameData } from '../sharedTypes/game'
+import type * as tCard from '../sharedTypes/typesCard'
+import type * as tBall from '../sharedTypes/typesBall'
+import type * as tStatistic from '../sharedTypes/typesStatistic'
+import type { GameData } from '../sharedTypes/game'
 
 import { cloneDeep } from 'lodash'
 import logger from '../helpers/logger'

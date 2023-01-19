@@ -5,7 +5,7 @@
     </div>
 
     <Button
-      :disabled="!substitutionPossible"
+      :disabled="playerIndexPossibleToSubstitute == null"
       :label="$t('Game.GameModal.Substitution.offerButton')"
       class="p-button-success"
       @click="startSubstitution"
@@ -111,10 +111,9 @@ const gameSocket = inject(GameSocketKey)
 const toast = useToast()
 
 async function startSubstitution() {
-  if (gameSocket == null) {
-    return
-  }
-  const res = await gameSocket.emitWithAck(2000, 'substitution:offer')
+  if (gameSocket == null || playerIndexPossibleToSubstitute.value == null) return
+
+  const res = await gameSocket.emitWithAck(2000, 'substitution:offer', playerIndexPossibleToSubstitute.value)
   if (res.status !== 200) {
     toast.add({
       severity: 'error',
@@ -140,17 +139,36 @@ async function answerSubstitution(accept: boolean) {
   }
 }
 
-const substitutionPossible = ref(false)
+const playerIndexPossibleToSubstitute = ref<number | undefined>(undefined)
+
 function updateSubstitutionPossible() {
-  substitutionPossible.value =
-    props.updateData != null &&
-    props.updateData.running &&
-    props.updateData.gamePlayer === -1 &&
-    props.updateData.substitution == null &&
-    Date.now() - 60 * 1000 > props.updateData.lastPlayed &&
-    props.updateData.publicTournamentId == null &&
-    props.updateData.privateTournamentId == null &&
-    username.value != null
+  if (
+    props.updateData == null ||
+    !props.updateData.running ||
+    props.updateData.gamePlayer !== -1 ||
+    username.value == null ||
+    props.updateData.substitution != null ||
+    props.updateData.publicTournamentId != null ||
+    props.updateData.privateTournamentId != null ||
+    Date.now() - 60 * 1000 <= props.updateData.lastPlayed
+  ) {
+    playerIndexPossibleToSubstitute.value = undefined
+    return
+  }
+
+  if (props.updateData.players[0].narrFlag[0]) {
+    // narr
+    const potentialPlayernumbers = props.updateData.players.filter((p) => !p.narrFlag[1]).map((p) => p.playerNumber)
+    playerIndexPossibleToSubstitute.value = potentialPlayernumbers.length === 1 ? potentialPlayernumbers[0] : undefined
+  } else if (props.updateData.players[0].tradeInformation != null) {
+    // trade
+    const potentialPlayernumbers = props.updateData.players.filter((p) => p?.tradeInformation?.[1] === false).map((p) => p.playerNumber)
+    playerIndexPossibleToSubstitute.value = potentialPlayernumbers.length === 1 ? potentialPlayernumbers[0] : undefined
+  } else {
+    // ordinary move
+    const activePlayer = props.updateData.players.findIndex((p) => p.active)
+    playerIndexPossibleToSubstitute.value = activePlayer === -1 ? undefined : activePlayer
+  }
 }
 updateSubstitutionPossible()
 
@@ -169,9 +187,11 @@ onBeforeUnmount(() => {
   margin: 0 auto 15px auto;
   text-align: center;
 }
+
 .green {
   color: var(--green-600);
 }
+
 .substitutedPlayerElement {
   display: flex;
   margin-bottom: 5px;

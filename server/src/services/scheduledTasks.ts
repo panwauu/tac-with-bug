@@ -1,4 +1,4 @@
-import pg from 'pg'
+import type pg from 'pg'
 
 import schedule from 'node-schedule'
 
@@ -6,7 +6,7 @@ import logger from '../helpers/logger'
 import { endNotProperlyEndedGames, abortNotEndedGames, disableRematchOfOldGames, getGame } from '../services/game'
 import { getPublicTournament, startTournament, startTournamentRound, checkForceGameEnd } from './tournamentsPublic'
 import { startSignUpOnCondition, endSignUpOnCondition } from './tournamentsRegister'
-import { PublicTournament } from '../sharedTypes/typesTournament'
+import type { PublicTournament } from '../sharedTypes/typesTournament'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
 
 const jobs: schedule.Job[] = []

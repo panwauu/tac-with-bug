@@ -4,7 +4,7 @@ import { Controller, Get, Post, Body, Route, Request, Security, Query, TsoaRespo
 import { createTournament } from '../services/tournamentsManualEditing'
 import { endSignupIfComplete } from '../services/tournamentsRegister'
 import { getDifferentName } from '../services/SweetNameGenerator'
-import { PublicTournament } from '../sharedTypes/typesTournament'
+import type { PublicTournament } from '../sharedTypes/typesTournament'
 import { getPublicTournamentByID } from '../services/tournamentsPublic'
 import { registerJobsForOneTournament } from '../services/scheduledTasks'
 

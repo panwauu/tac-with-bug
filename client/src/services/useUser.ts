@@ -1,7 +1,7 @@
 import router from '@/router'
 import { reactive, computed, readonly } from 'vue'
 import { OpenAPI } from '../generatedClient/index'
-import { GeneralSocketC } from './socket'
+import type { GeneralSocketC } from './socket'
 
 interface User {
   username: string

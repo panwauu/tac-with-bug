@@ -9,7 +9,7 @@ import helmet from 'helmet'
 import http from 'http'
 import sslRequire from 'heroku-ssl-redirect'
 
-import pg from 'pg'
+import type pg from 'pg'
 import { Server } from 'socket.io'
 import { registerSocketNspGeneral } from '../socket/general'
 import { registerSocketNspGame } from '../socket/game'
