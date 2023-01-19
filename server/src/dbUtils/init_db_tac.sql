@@ -454,3 +454,10 @@ CREATE TABLE channel_messages (
     body TEXT NOT NULL,
     created timestamptz NOT NULL DEFAULT current_timestamp
 );
+
+CREATE TABLE logs (
+    level TEXT NOT NULL,
+    message TEXT NOT NULL,
+    meta JSONB,
+    timestamp timestamptz NOT NULL DEFAULT current_timestamp
+);
