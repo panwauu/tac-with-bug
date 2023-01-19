@@ -5,7 +5,8 @@ import { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 import Joi from 'joi'
 import { getGame } from '../services/game'
 import { acceptSubstitution, checkSubstitutionConditions, checkSubstitutionsForTime, rejectSubstitution, startSubstitution } from '../services/substitution'
-import { getSocketsInGame, nsp } from './game'
+import { getSocketsInGame, nsp, emitOnlinePlayersEvents } from './game'
+import { sleep } from '../helpers/sleep'
 
 export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocketS) {
   socket.on('substitution:offer', async (playerIndexToSubstitute, cb) => {
@@ -60,6 +61,8 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
           .forEach((s) => s.emit('toast:substitution-stopped'))
       }
 
+      await emitOnlinePlayersEvents(pgPool, nsp, game.id)
+      sleep(1000).then(() => emitOnlinePlayersEvents(pgPool, nsp, game.id))
       return cb({ status: 200 })
     } catch (err) {
       return cb({ status: 500 })

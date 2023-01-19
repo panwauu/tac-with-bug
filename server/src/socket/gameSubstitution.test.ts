@@ -208,5 +208,13 @@ describe('Game test suite via socket.io', () => {
 
     expect(await changePlayerPromise[0]).toBe(2)
     expect(gameSockets[2].disconnected).toBe(true)
+
+    const onlinePlayersPromise = waitForEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'game:online-players')
+    const onlinePlayers = await Promise.all(onlinePlayersPromise)
+    for (const onlinePlayer of onlinePlayers) {
+      expect(onlinePlayer.onlineGamePlayers).toEqual(expect.arrayContaining([0, 1, 2, 3]))
+      expect(onlinePlayer.nWatchingPlayers).toEqual(1)
+      expect(onlinePlayer.watchingPlayerNames).toEqual(expect.arrayContaining(['UserF']))
+    }
   })
 })
