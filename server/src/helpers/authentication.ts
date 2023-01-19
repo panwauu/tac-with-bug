@@ -68,7 +68,7 @@ export async function expressAuthentication(request: express.Request, securityNa
   return Promise.reject({ msg: 'You have no permission to this resource!' })
 }
 
-async function isAdmin(pgPool: pg.Pool, userID: number): Promise<Result<boolean, 'USER_NOT_FOUND'>> {
+export async function isAdmin(pgPool: pg.Pool, userID: number): Promise<Result<boolean, 'USER_NOT_FOUND'>> {
   const dbRes = await pgPool.query<{ admin: boolean }>('SELECT admin FROM users WHERE id=$1;', [userID])
   if (dbRes.rowCount === 0) {
     return err('USER_NOT_FOUND')
