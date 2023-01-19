@@ -37,7 +37,7 @@ export function createCardWithMove(
       continue
     }
     const moves = getMoves(balls, nBall, card.title, teams, coop)
-    if (moves !== [] && moves.length > 0) {
+    if (Array.isArray(moves) && moves.length > 0) {
       card.possible = true
       card.ballActions[nBall] = moves
     }
@@ -50,7 +50,7 @@ export function createCardWithMove(
       }
       let moves = getMoves(balls, nBall, '1', teams, coop)
       moves = moves.concat(getMoves(balls, nBall, '13', teams, coop))
-      if (moves !== [] && moves.length > 0) {
+      if (Array.isArray(moves) && moves.length > 0) {
         card.possible = true
         card.ballActions[nBall] = moves
       }
