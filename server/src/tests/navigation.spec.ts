@@ -9,7 +9,7 @@ test('Should redirect to advert when first visiting', async ({ page }) => {
   expect(alreadyVisited).toBe('true')
 
   // No redirect on first visit
-  page.reload()
+  // page.reload()
   await page.goto('/#/')
   await expect(page).toHaveURL(/.*\/#\//)
 
@@ -37,7 +37,7 @@ test('Should not redirect to advert when first visiting with specific route', as
   }
 
   // Dont redirect on second visit with specific route
-  page.reload()
+  //page.reload()
   await page.goto('/#/settings')
   await expect(page).toHaveURL(/.*\/#\/settings/)
 
