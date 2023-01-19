@@ -62,20 +62,18 @@
               :class="[
                 'chatMessageContainer',
                 message.sender === username ? 'chatMessageContOwn' : 'chatMessageContFor',
-                message.sender != null && messageIndex >= 1 && message.sender === messagesStore.getDateGroupedChatMessages[messageGroupIndex].messages[messageIndex - 1].sender
-                  ? 'chatMessageContainerNotNew'
-                  : '',
+                message.sender != null && messageIndex >= 1 && message.sender === messageGroup.messages[messageIndex - 1].sender ? 'chatMessageContainerNotNew' : '',
               ]"
             >
               <div
                 class="p-card chatMessage"
                 :class="{
-                  chatMessageOwn: message.sender === username && displaySenderAndTime(messageGroupIndex, messageIndex),
-                  chatMessageNotOwn: message.sender !== username && displaySenderAndTime(messageGroupIndex, messageIndex),
+                  chatMessageOwn: message.sender === username && displaySenderAndTime(messageGroup, messageIndex),
+                  chatMessageNotOwn: message.sender !== username && displaySenderAndTime(messageGroup, messageIndex),
                 }"
               >
                 <div
-                  v-if="displaySenderAndTime(messageGroupIndex, messageIndex)"
+                  v-if="displaySenderAndTime(messageGroup, messageIndex)"
                   class="chatMessageHeader"
                 >
                   <ProfilePicture
@@ -114,7 +112,7 @@
       @click="messagesStore.markAsRead"
     >
       <form
-        v-if="!messagesStore.mayNotUseChat"
+        v-if="!messagesStore.mayNotUseChat && !(messagesStore.selectedChat.type === 'channel' && messagesStore.selectedChat.id === 'news' && !settingsStore.admin)"
         style="height: 100%"
         @submit.prevent="submitChatInput"
       >
@@ -145,6 +143,15 @@
         style="margin: 0"
       >
         {{ $t('Chat.mayNotUseOverlay') }}
+      </Message>
+      <Message
+        v-if="messagesStore.selectedChat.type === 'channel' && messagesStore.selectedChat.id === 'news' && !settingsStore.admin"
+        severity="warn"
+        :sticky="true"
+        :closable="false"
+        style="margin: 0"
+      >
+        {{ $t('Chat.onlyAdminsOverlay') }}
       </Message>
     </div>
 
@@ -183,16 +190,21 @@ import { useMessagesStore, formatChannelName } from '@/store/messages'
 import { isLoggedIn, username } from '@/services/useUser'
 import { ref } from 'vue'
 import { i18n, currentLocale } from '@/services/i18n'
+import { useSettingsStore } from '@/store/settings'
+import type { ChatMessage } from '../../../../server/src/sharedTypes/chat'
 
 const chatStore = useChatStore()
 const messagesStore = useMessagesStore()
+const settingsStore = useSettingsStore()
 
-function displaySenderAndTime(groupIndex: number, messageIndex: number): boolean {
-  return (
-    messageIndex === 0 ||
-    messagesStore.getDateGroupedChatMessages[groupIndex].messages[messageIndex].sender !==
-      messagesStore.getDateGroupedChatMessages[groupIndex].messages[messageIndex - 1].sender
-  )
+function displaySenderAndTime(
+  messageGroup: {
+    date: string
+    messages: ChatMessage[]
+  },
+  messageIndex: number
+): boolean {
+  return messageIndex === 0 || messageGroup.messages[messageIndex].sender !== messageGroup.messages[messageIndex - 1].sender
 }
 
 function beautifyDate(timestamp: string): string {

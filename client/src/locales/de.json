@@ -328,7 +328,8 @@
     "Dates": {
       "today": "Heute",
       "yesterday": "Gestern"
-    }
+    },
+    "onlyAdminsOverlay": "In diesem Kanal dürfen leider nur Admins schreiben"
   },
   "Game": {
     "viewerModeText": "Du befindest dich im Zuschauermodus. Du siehst daher auch keine Karten! Du kannst den Spielchat lesen aber keine Nachrichten in diesem abschicken.",
@@ -843,7 +844,7 @@
       "localesQ": "Wie kann ich Fehler in einzelnen Sprache verbessern?",
       "localesA": "Die einzelnen Textelemente können Open-Source von allen Spielern verwaltet werden. Ich freue mich sehr, wenn alle Sprachen verbessert werden! Dafür braucht ihr einen GitHub Account - Weitere Informationen dafür findet ihr <a target='_blank' rel='noopener noreferrer' href='{link}'>hier</a>. Wenn ihr euch andere Sprachen wünscht, dann könnt ihr mir einfach schreiben.",
       "bugsQ": "Was kann ich tun, wenn ich Fehler entdecke?",
-      "bugsA": "Fehler werden von Zeit zu Zeit auftreten. Entschuldigung dafür. Meist löst ein Neuladen der Seite das Problem. Wenn dir ein Fehler mehrfach auffällt, dann schreibe mir einfach eine Mail. Bitte beschreibe den Fehler möglichst genau und füge hinzu welchen Browser du benutzt."
+      "bugsA": "Fehler werden von Zeit zu Zeit auftreten. Entschuldigung dafür. Meist löst ein Neuladen der Seite das Problem. Wenn dir ein Fehler mehrfach auffällt, dann schreibe mir einfach eine Mail (oskar@spieltac.de) oder erstelle ein Github-Issue (https://github.com/panwauu/tac-with-bug). Bitte beschreibe den Fehler möglichst genau und füge hinzu welchen Browser du benutzt."
     },
     "Game": {
       "header": "Im Spiel",

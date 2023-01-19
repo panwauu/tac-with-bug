@@ -74,7 +74,7 @@ const setLocale = async () => {
   if (selectedLocale.value == null) {
     return
   }
-  await setLocaleAndLoadMessages(i18n, selectedLocale.value)
+  await setLocaleAndLoadMessages(selectedLocale.value)
   if (props.uploadFlag) {
     await Service.setSettingsLocale({ locale: selectedLocale.value })
   }

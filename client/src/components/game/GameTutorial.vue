@@ -71,7 +71,7 @@
             severity="success"
             :closable="false"
           >
-            {{ $t(`Tutorial.Encouragement.${Math.floor(Math.random() * 10)} `) }}
+            {{ $t(`Tutorial.Encouragement.${Math.floor(Math.random() * 10)}`) }}
             {{ $t(`Tutorial.nextQuestion`) }}
           </Message>
           <template v-else>
@@ -96,7 +96,7 @@
                   :for="`radio - ${String(i)} `"
                   style="margin-left: 10px"
                 >
-                  {{ $t(`Tutorial.${tutorialID}.${tutorialStep}.answer - ${tutorialStepOutput?.goal?.quiz?.order?.[i]}`) }}
+                  {{ $t(`Tutorial.${tutorialID}.${tutorialStep}.answer-${tutorialStepOutput?.goal?.quiz?.order?.[i]}`) }}
                 </label>
               </div>
             </div>

@@ -19,7 +19,7 @@ export function resolveUserIdentifier(identifier: UserIdentifier, insertionIndex
 export type GetUserErrors = 'USER_NOT_FOUND_IN_DB'
 export async function getUser(sqlClient: pg.Pool, identifier: UserIdentifier): Promise<Result<User, GetUserErrors>> {
   const queryIdent = resolveUserIdentifier(identifier, 1)
-  const query = `SELECT id, email, username, password, token, activated, locale, color_blindness_flag, lastlogin, registered, user_description, game_default_position 
+  const query = `SELECT id, email, username, password, token, activated, locale, color_blindness_flag, lastlogin, registered, user_description, game_default_position, admin 
     FROM users WHERE ${queryIdent.sql};`
   const res = await sqlClient.query(query, [queryIdent.value])
   if (res.rowCount !== 1) {
@@ -38,6 +38,7 @@ export async function getUser(sqlClient: pg.Pool, identifier: UserIdentifier): P
     lastlogin: res.rows[0].lastlogin,
     userDescription: res.rows[0].user_description,
     gameDefaultPositions: res.rows[0].game_default_position,
+    admin: res.rows[0].admin,
   })
 }
 
@@ -91,6 +92,7 @@ export async function signUpUser(sqlClient: pg.Pool, username: string, email: st
       lastlogin: res.rows[0].lastlogin,
       userDescription: res.rows[0].user_description,
       gameDefaultPositions: res.rows[0].game_default_position,
+      admin: res.rows[0].admin,
     }
   })
 }

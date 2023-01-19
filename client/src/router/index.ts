@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { i18n, setLocaleAndLoadMessages } from '@/services/i18n'
+import { setLocaleAndLoadMessages } from '@/services/i18n'
 import { locales, fallbackLocale } from '../../../server/src/sharedDefinitions/locales'
 const Game = () => import('@/views/GameView.vue')
 const Home = () => import('@/views/HomeView.vue')
@@ -210,7 +210,7 @@ router.beforeEach(async (to, from, next) => {
     toLocale = fallbackLocale
   }
 
-  setLocaleAndLoadMessages(i18n, toLocale)
+  setLocaleAndLoadMessages(toLocale)
 
   return next()
 })
