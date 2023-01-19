@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io-client'
 import type { EventsMap, EventNames } from '@socket.io/component-emitter'
-import { ReservedOrUserEventNames } from 'socket.io/dist/typed-events'
+import type { ReservedOrUserEventNames } from 'socket.io/dist/typed-events'
 
 type Head<T extends any[]> = T extends [...infer Head, any] ? Head : any[]
 type Last<T extends any[]> = T extends [...any, infer Last] ? Last : any
@@ -18,9 +18,9 @@ type EventsWithCallback<T> = {
     : never
 }[keyof T]
 
-type onceCallbackFirstArgument<Ev, E> = Ev extends EventNames<E> ? (E[Ev] extends (...args: any) => void ? Parameters<E[Ev]>[0] : never) : never
+type onceCallbackFirstArgument<Ev, E extends EventsMap> = Ev extends EventNames<E> ? (E[Ev] extends (...args: any) => void ? Parameters<E[Ev]>[0] : never) : never
 
-class CustomSocket<L, E> extends Socket<L, E> {
+class CustomSocket<L extends EventsMap, E extends EventsMap> extends Socket<L, E> {
   emitWithAck<Ev extends EventsWithCallback<E>>(timeout: number, ev: Ev, ...args: Head<EventParams<E, Ev>>): Promise<FirstParamType<Last<EventParams<E, Ev>>>> {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {

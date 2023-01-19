@@ -79,7 +79,7 @@ import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import type { StatisticStateType } from '@/services/compositionGame/useStatistic'
 import { computed } from 'vue'
 import { i18n } from '@/services/i18n'
-import { UpdateDataType } from '../../../../server/src/sharedTypes/typesDBgame'
+import type { UpdateDataType } from '../../../../server/src/sharedTypes/typesDBgame'
 
 const props = defineProps<{
   miscState: MiscStateType

@@ -1,8 +1,8 @@
 import { cloneDeep } from 'lodash'
 import { err, ok, Result } from 'neverthrow'
 import { ballPlayer } from '../game/ballUtils'
-import { GameForPlay } from '../sharedTypes/typesDBgame'
-import { KoBracket, PrivateTournament, PublicTournament, TournamentDataKO } from '../sharedTypes/typesTournament'
+import type { GameForPlay } from '../sharedTypes/typesDBgame'
+import type { KoBracket, PrivateTournament, PublicTournament, TournamentDataKO } from '../sharedTypes/typesTournament'
 import { shuffleArray } from '../game/cardUtils'
 
 export type CreateTournamentDataKOError = 'N_TEAMS_NOT_VALID_FOR_KO' | 'RANDOM_TEAM_CREATION_ERROR'

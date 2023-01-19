@@ -47,12 +47,12 @@ const config: PlaywrightTestConfig = {
       },
     },
 
-    /*{
+    {
       name: 'webkit',
       use: {
         ...devices['Desktop Safari'],
       },
-    },*/
+    },
   ],
 
   webServer: {

@@ -1,7 +1,7 @@
 import logger from '../helpers/logger'
-import pg from 'pg'
-import * as tTournament from '../sharedTypes/typesTournament'
-import * as dbGame from '../sharedTypes/typesDBgame'
+import type pg from 'pg'
+import type * as tTournament from '../sharedTypes/typesTournament'
+import type * as dbGame from '../sharedTypes/typesDBgame'
 
 import { colors } from '../sharedDefinitions/colors'
 import { shuffleArray } from '../game/cardUtils'

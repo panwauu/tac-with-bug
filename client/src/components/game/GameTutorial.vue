@@ -71,7 +71,7 @@
             severity="success"
             :closable="false"
           >
-            {{ $t(`Tutorial.Encouragement.${Math.floor(Math.random() * 10)}`) }}
+            {{ $t(`Tutorial.Encouragement.${Math.floor(Math.random() * 10)} `) }}
             {{ $t(`Tutorial.nextQuestion`) }}
           </Message>
           <template v-else>
@@ -82,21 +82,21 @@
             >
               <div
                 v-for="i in [...Array(tutorialStepOutput?.goal?.quiz.nSolutions).keys()]"
-                :key="`Quizquestion-${String(i)}`"
+                :key="`Quizquestion - ${String(i)} `"
                 class="p-field-radiobutton"
                 style="margin: 5px"
               >
                 <RadioButton
-                  :id="`radio-${String(i)}`"
+                  :id="`radio - ${String(i)} `"
                   v-model="quizSelected"
                   name="quiz"
                   :value="tutorialStepOutput?.goal?.quiz?.order?.[i]"
                 />
                 <label
-                  :for="`radio-${String(i)}`"
+                  :for="`radio - ${String(i)} `"
                   style="margin-left: 10px"
                 >
-                  {{ $t(`Tutorial.${tutorialID}.${tutorialStep}.answer-${tutorialStepOutput?.goal?.quiz?.order?.[i]}`) }}
+                  {{ $t(`Tutorial.${tutorialID}.${tutorialStep}.answer - ${tutorialStepOutput?.goal?.quiz?.order?.[i]}`) }}
                 </label>
               </div>
             </div>
@@ -150,7 +150,7 @@ import ProgressBar from 'primevue/progressbar'
 
 import { ref, computed } from 'vue'
 import router from '@/router/index'
-import { TutorialStepOutput } from '@/../../server/src/sharedTypes/typesTutorial'
+import type { TutorialStepOutput } from '@/../../server/src/sharedTypes/typesTutorial'
 
 import { useTutorialStore } from '@/store/tutorial'
 const tutorialStore = useTutorialStore()

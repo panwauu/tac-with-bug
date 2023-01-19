@@ -1,5 +1,5 @@
-import pg from 'pg'
-import { UserIdentifier } from '../sharedTypes/typesDBuser'
+import type pg from 'pg'
+import type { UserIdentifier } from '../sharedTypes/typesDBuser'
 import { resolveUserIdentifier } from './user'
 
 export async function activateUser(sqlClient: pg.Pool, identifier: UserIdentifier) {

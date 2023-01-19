@@ -1,7 +1,7 @@
 import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
 import { Chance } from 'chance'
-import { GeneralSocketC } from '../test/socket'
+import type { GeneralSocketC } from '../test/socket'
 const chance = Chance()
 
 describe('Test Suite via Socket.io', () => {

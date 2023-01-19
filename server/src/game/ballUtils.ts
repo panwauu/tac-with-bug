@@ -1,4 +1,4 @@
-import * as tBall from '../sharedTypes/typesBall'
+import type * as tBall from '../sharedTypes/typesBall'
 
 import { ballInLastGoalPosition } from './performMoveUtils'
 

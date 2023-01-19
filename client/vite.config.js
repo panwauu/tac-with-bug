@@ -6,7 +6,7 @@ import path from 'path'
 import loadVersion from 'vite-plugin-package-version'
 
 export default defineConfig({
-  plugins: [vue(), eslintPlugin({ throwOnError: false, throwOnWarning: false }), Checker({ vueTsc: true }), loadVersion()],
+  plugins: [vue(), eslintPlugin(), Checker({ vueTsc: true }), loadVersion()],
   server: {
     port: 8080,
     proxy: {

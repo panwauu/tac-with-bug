@@ -1,14 +1,15 @@
 import type pg from 'pg'
 import logger from '../helpers/logger'
 
-import { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
+import type { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 import Joi from 'joi'
 import { getGame } from '../services/game'
 import { acceptSubstitution, checkSubstitutionConditions, checkSubstitutionsForTime, rejectSubstitution, startSubstitution } from '../services/substitution'
-import { getSocketsInGame, nsp } from './game'
+import { getSocketsInGame, nsp, emitOnlinePlayersEvents } from './game'
+import { sleep } from '../helpers/sleep'
 
 export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocketS) {
-  socket.on('substitution:offer', async (cb) => {
+  socket.on('substitution:offer', async (playerIndexToSubstitute, cb) => {
     if (socket.data.gameID == null || socket.data.gamePlayer == null || socket.data.userID == null) {
       socket.disconnect()
       return cb({ status: 500 })
@@ -17,11 +18,11 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
     await checkSubstitutionsForTime(pgPool)
     const game = await getGame(pgPool, socket.data.gameID)
 
-    if (!checkSubstitutionConditions(game, game.game.activePlayer, socket.data.userID)) {
-      return cb({ status: 500 })
+    if (!checkSubstitutionConditions(game, playerIndexToSubstitute, socket.data.userID)) {
+      return cb({ status: 500, error: 'Substitution not allowed' })
     }
 
-    await startSubstitution(pgPool, game, socket.data.userID, game.game.activePlayer)
+    await startSubstitution(pgPool, game, socket.data.userID, playerIndexToSubstitute)
     getSocketsInGame(nsp, socket.data.gameID)
       .filter((s) => s.id !== socket.id)
       .forEach((s) => s.emit('toast:substitution-offer', game.substitution?.substitutionUsername ?? ''))
@@ -60,6 +61,8 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
           .forEach((s) => s.emit('toast:substitution-stopped'))
       }
 
+      await emitOnlinePlayersEvents(pgPool, nsp, game.id)
+      sleep(1000).then(() => emitOnlinePlayersEvents(pgPool, nsp, game.id))
       return cb({ status: 200 })
     } catch (err) {
       return cb({ status: 500 })

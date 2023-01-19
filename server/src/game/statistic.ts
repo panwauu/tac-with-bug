@@ -1,6 +1,6 @@
-import * as tCard from '../sharedTypes/typesCard'
-import * as tBall from '../sharedTypes/typesBall'
-import * as tStatistic from '../sharedTypes/typesStatistic'
+import type * as tCard from '../sharedTypes/typesCard'
+import type * as tBall from '../sharedTypes/typesBall'
+import type * as tStatistic from '../sharedTypes/typesStatistic'
 
 import { ballPlayer } from './ballUtils'
 

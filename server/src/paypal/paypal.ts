@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ok, err, Result } from 'neverthrow'
-import pg from 'pg'
+import type pg from 'pg'
 import { getToken, requestTokenFromPaypal } from './paypalToken'
 
 interface Subscription {

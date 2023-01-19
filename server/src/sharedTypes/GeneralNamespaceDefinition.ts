@@ -7,7 +7,7 @@ import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTou
 import type { MoveTextOrBall } from './typesBall'
 import type { Friend } from './typesFriends'
 import type { TutorialStepOutput } from './typesTutorial'
-import { ChatElement, ChatMessage } from './chat'
+import type { ChatElement, ChatMessage } from './chat'
 
 export type AckData<T> = { status: number; error?: any; data?: T }
 export type CallbackFunction<T> = (data: AckData<T>) => void

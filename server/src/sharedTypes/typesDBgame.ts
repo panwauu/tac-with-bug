@@ -1,4 +1,4 @@
-import { Game } from '../game/game'
+import type { Game } from '../game/game'
 import type { BallsType } from './typesBall'
 import type { PlayerCard } from './typesCard'
 import type { GameStatistic } from './typesStatistic'

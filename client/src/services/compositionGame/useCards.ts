@@ -1,10 +1,10 @@
 import { reactive } from 'vue'
 import { cloneDeep } from 'lodash'
 
-import * as tCard from '@/@types/typesCard'
-import { PlayerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
-import { BallsStateType } from './useBalls'
-import { MiscStateType } from './useMisc'
+import type * as tCard from '@/@types/typesCard'
+import type { PlayerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
+import type { BallsStateType } from './useBalls'
+import type { MiscStateType } from './useMisc'
 
 export const cardPictureDict: { [key: string]: string } = {
   '1': 'eins',
