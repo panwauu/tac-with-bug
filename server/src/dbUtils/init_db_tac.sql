@@ -424,12 +424,10 @@ CREATE TABLE chats (
 
 CREATE TABLE chat_messages (
   id SERIAL PRIMARY KEY,
-  sender INTEGER REFERENCES users (id) ON DELETE
-  SET
-    NULL,
-    chatid INTEGER NOT NULL REFERENCES chats (id),
-    body TEXT NOT NULL,
-    created timestamptz NOT NULL DEFAULT current_timestamp
+  sender INTEGER REFERENCES users (id) ON DELETE SET NULL,
+  chatid INTEGER NOT NULL REFERENCES chats (id),
+  body TEXT NOT NULL,
+  created timestamptz NOT NULL DEFAULT current_timestamp
 );
 
 CREATE TABLE users_to_chats (
