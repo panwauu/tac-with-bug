@@ -11,7 +11,7 @@
     "start:dev": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node ./dist/entrypoints/index.js",
     "start:test": "cross-env NODE_ENV=test node --es-module-specifier-resolution=node ./dist/entrypoints/index.js --serve",
     "build-spec": "echo 'build started' && tsoa spec-and-routes && openapi --input ./src/swagger.json --output ../client/src/generatedClient --useUnionTypes && echo 'build ended'",
-    "build-spec:watch": "onchange \"src/routes/*.controller.ts\" -e \"src/routes/routes.ts\" -i -k -- npm run build:spec",
+    "build-spec:watch": "onchange \"src/routes/*.controller.ts\" -e \"src/routes/routes.ts\" -i -k -- npm run build-spec",
     "tsc": "tsc",
     "tsc:watch": "tsc --watch",
     "test": "jest --runInBand",
