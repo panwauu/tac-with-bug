@@ -28,4 +28,5 @@ export interface User {
   colorBlindnessFlag: boolean
   userDescription: string
   gameDefaultPositions: [number, number]
+  admin: boolean
 }
