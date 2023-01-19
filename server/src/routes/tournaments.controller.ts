@@ -103,7 +103,9 @@ export class TournamentsController extends Controller {
   ): Promise<void> {
     const tournament = await getPublicTournamentByID(request.app.locals.sqlClient, requestBody.tournamentID)
     if (tournament.isErr()) return serverError(500, { message: tournament.error })
-    if (tournament.value.status != 'signUpEnded' && tournament.value.status != 'running') return serverError(500, { message: 'Tournament should in running or signUpEnded status' })
+    if (tournament.value.status !== 'signUpEnded' && tournament.value.status !== 'running') {
+      return serverError(500, { message: 'Tournament should in running or signUpEnded status' })
+    }
 
     const idRes = await request.app.locals.sqlClient.query('SELECT id, username FROM users WHERE username = $1 OR username = $2;', [
       requestBody.usernameToReplace,
@@ -137,16 +139,17 @@ export class TournamentsController extends Controller {
   ): Promise<PublicTournament> {
     const tournament = await getPublicTournamentByID(request.app.locals.sqlClient, requestBody.tournamentID)
     if (tournament.isErr()) return serverError(500, { message: tournament.error })
-    if (tournament.value.status != 'signUpWaiting' && tournament.value.status != 'signUp')
+    if (tournament.value.status !== 'signUpWaiting' && tournament.value.status !== 'signUp') {
       return serverError(500, { message: 'Tournament should in signup or waiting for signup status' })
+    }
 
-    if (tournament.value.tournamentType != 'KO') return serverError(500, { message: 'NOT IMPLEMENTED' })
+    if (tournament.value.tournamentType !== 'KO') return serverError(500, { message: 'NOT IMPLEMENTED' })
 
     const tournamentDataKO = createTournamentDataKO(requestBody.nTeams, tournament.value.teamsPerMatch)
     if (tournamentDataKO.isErr()) return serverError(500, { message: tournamentDataKO.error })
 
     const newCreationDates = requestBody.creationDates ?? tournament.value.creationDates.slice(0, tournamentDataKO.value.brackets.length)
-    if (newCreationDates.length != tournamentDataKO.value.brackets.length) return serverError(500, { message: 'wrong creation date length' })
+    if (newCreationDates.length !== tournamentDataKO.value.brackets.length) return serverError(500, { message: 'wrong creation date length' })
 
     const updateRes = await request.app.locals.sqlClient.query(
       "UPDATE tournaments SET n_teams = $1, data = $3, creation_dates = $4 WHERE (status = 'signUp' OR  status = 'signUpWaiting') AND id = $2;",
