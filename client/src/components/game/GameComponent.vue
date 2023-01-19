@@ -135,6 +135,7 @@
           :collapsed="true"
         >
           <GameStatistic
+            v-if="statisticState != null"
             class="statistic"
             :statisticState="statisticState"
             :miscState="miscState"
@@ -162,7 +163,7 @@
       :dismissableMask="true"
     >
       <GameStatistic
-        v-if="modalStateLocal === 'statistic'"
+        v-if="modalStateLocal === 'statistic' && statisticState != null"
         class="statistic"
         :statisticState="statisticState"
         :miscState="miscState"
@@ -218,7 +219,7 @@ const emit = defineEmits(['closeGame', 'update:modalVisible', 'update:modalState
 const props = defineProps<{
   positionStyles: PositionStylesState
   miscState: MiscStateType
-  statisticState: StatisticStateType
+  statisticState?: StatisticStateType
   ballsState: BallsStateType
   cardsState: CardsStateType
   discardPileState: DiscardPileStateType
@@ -260,7 +261,7 @@ async function updateHandler(): Promise<void> {
   )
   props.miscState.setTimestamps(props.updateData.created, props.updateData.lastPlayed)
   props.positionStyles.setBallsColors(props.updateData.colors)
-  props.statisticState.setStatistic(props.updateData, props.positionStyles.getHexColors())
+  props.statisticState?.setStatistic(props.updateData, props.positionStyles.getHexColors())
   props.discardPileState.updateDiscardPile(props.updateData.discardPile, props.updateData.players, props.updateData.cards, props.positionStyles)
 
   if (tacFirstRevertState) {
