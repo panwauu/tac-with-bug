@@ -1,6 +1,6 @@
 import type pg from 'pg'
 import type { Friend } from '../sharedTypes/typesFriends'
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID } from 'crypto'
 import type { UserIdentifier, User } from '../sharedTypes/typesDBuser'
 import { getSubscription, cancelSubscription, GetSubscriptionError, CancelSubscriptionError } from '../paypal/paypal'
 import { Result, err, ok } from 'neverthrow'
@@ -43,7 +43,7 @@ export async function getUser(sqlClient: pg.Pool, identifier: UserIdentifier): P
 }
 
 export async function changeMail(sqlClient: pg.Pool, userID: number, email: string): Promise<string> {
-  const validationToken = uuidv4().toString()
+  const validationToken = randomUUID()
   const res = await sqlClient.query('UPDATE users SET email = $1, activated = false, token = $2  WHERE id = $3', [email, validationToken, userID])
   expectOneChangeInDatabase(res)
   return validationToken
@@ -75,7 +75,7 @@ export async function updateUsersLastLogin(sqlClient: pg.Pool, username: string)
 }
 
 export async function signUpUser(sqlClient: pg.Pool, username: string, email: string, password: string, locale: string): Promise<User> {
-  const validationToken = uuidv4().toString()
+  const validationToken = randomUUID()
   const query = 'INSERT INTO users (username, email, password, token, locale) VALUES ($1, $2, $3, $4, $5) RETURNING *'
   const values = [username, email, password, validationToken, locale]
   return sqlClient.query(query, values).then((res) => {

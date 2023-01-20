@@ -12,7 +12,7 @@ export function generateIcal(tournament: PublicTournament) {
       end: new Date(start.getTime() + millisPerGame),
       summary: 'Tac Turnier',
       description: `Spiel ${i + 1}`,
-      url: 'https://tac-with-bug.herokuapp.com/',
+      url: 'https://www.tac-with-bug.com/',
     }
 
     const event = cal.createEvent(eventObj)

@@ -6,13 +6,13 @@
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=panwauu_tac-with-bug&metric=coverage)](https://sonarcloud.io/summary/new_code?id=panwauu_tac-with-bug)
 
-[![TWB Logo](client/src/assets/TwbLogo.png)](https://tac-with-bug.herokuapp.com/)
+[![TWB Logo](client/src/assets/TwbLogo.png)](https://www.tac-with-bug.com/)
 
-[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is a online Multiplayer for the boardgame [TAC](https://shop.spiel-tac.de/Home). The game is a Vue webapp with a Node backend. Contributions are welcome.
+[Tac-With-Bug](https://www.tac-with-bug.com/) is a online Multiplayer for the boardgame [TAC](https://shop.spiel-tac.de/Home). The game is a Vue webapp with a Node backend. Contributions are welcome.
 
 # Getting Started Guide
 
-Two step guide to get started with the [Tac-With-Bug](https://tac-with-bug.herokuapp.com/) development.
+Two step guide to get started with the [Tac-With-Bug](https://www.tac-with-bug.com/) development.
 
 ## Database Setup
 
@@ -49,7 +49,7 @@ psql -h localhost -U postgres -d tac -f './server/src/dbUtils/populate_test.sql'
 
 ## Package Setup
 
-[Tac-With-Bug](https://tac-with-bug.herokuapp.com/) is divided into the following parts:
+[Tac-With-Bug](https://www.tac-with-bug.com/) is divided into the following parts:
 
 | Folder             | Description                           |
 | ------------------ | ------------------------------------- |

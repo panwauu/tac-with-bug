@@ -1,5 +1,32 @@
 console.log(`Version: ${import.meta.env.PACKAGE_VERSION}`)
 
+import { user, logout } from '@/services/useUser'
+const { fetch: originalFetch } = window
+
+window.fetch = async (...args) => {
+  const resource = args[0]
+  let config = args[1]
+
+  if (user.token != null) {
+    if (config == null) {
+      config = { headers: { Authorization: `Bearer ${user.token}` } }
+    } else if (config.headers == null) {
+      config.headers = { Authorization: `Bearer ${user.token}` }
+    } else if (Array.isArray(config.headers)) {
+      if (config.headers.every((h) => h[0] !== 'Authorization')) config.headers.push(['Authorization', `Bearer ${user.token}`])
+    } else if (config.headers instanceof Headers) {
+      if (config.headers.get('Authorization') == null) config.headers.set('Authorization', `Bearer ${user.token}`)
+    } else {
+      if (config.headers['Authorization'] == null) config.headers['Authorization'] = `Bearer ${user.token}`
+    }
+  }
+
+  const response = await originalFetch(resource, config)
+  if (response.status === 401) logout(socket)
+
+  return response
+}
+
 import './services/socket'
 
 if ('wakeLock' in navigator) {

@@ -65,7 +65,6 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
-import axios from 'axios'
 import VueCropper, { VueCropperMethods } from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 import FileUpload from 'primevue/fileupload'
@@ -106,13 +105,13 @@ const submit = async () => {
       const jwtToken = user.token
       const myFormData = new FormData()
       myFormData.append('profilePic', blob ?? '')
-      try {
-        await axios.post('/gameApi/uploadProfilePicture', myFormData, {
-          headers: {
-            Authorization: 'Bearer ' + jwtToken,
-            'Content-Type': 'multipart/form-data',
-          },
-        })
+      const postRes = await fetch('/gameApi/uploadProfilePicture', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${jwtToken}` },
+        body: myFormData,
+      })
+
+      if (postRes.status === 204) {
         deleteProfilePic(user.username ?? '')
         requestProfilePic(user.username ?? '')
         toast.add({
@@ -122,8 +121,7 @@ const submit = async () => {
           life: 2000,
         })
         emit('settingoperationdone')
-      } catch (err) {
-        console.log(err)
+      } else {
         toast.add({
           severity: 'error',
           summary: i18n.global.t('Settings.UploadProfilePicture.toastSummaryFailureUpload'),
