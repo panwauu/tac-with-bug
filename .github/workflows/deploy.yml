@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: |
             server/package-lock.json
             client/package-lock.json
@@ -100,5 +100,5 @@ jobs:
       - name: Sanity check of tac-with-bug
         uses: fjogeleit/http-request-action@master
         with:
-          url: 'https://tac-with-bug.herokuapp.com'
-          method: 'GET'
+          url: "https://www.tac-with-bug.com"
+          method: "GET"

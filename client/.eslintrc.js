@@ -9,6 +9,7 @@ module.exports = {
     'no-trailing-spaces': 'error',
     'max-len': ['error', { code: 180 }],
     eqeqeq: ['error', 'always', { null: 'ignore' }],
+    'no-duplicate-imports': 'error',
 
     /* Maybe remove in future */
     '@typescript-eslint/no-explicit-any': 0,

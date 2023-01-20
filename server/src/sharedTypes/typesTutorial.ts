@@ -1,6 +1,5 @@
 import type { BallsType } from './typesBall'
-import type { GameForPlay } from './typesDBgame'
-import type { UpdateDataType } from './typesDBgame'
+import type { GameForPlay, UpdateDataType } from './typesDBgame'
 
 export interface TutorialStepOutput extends TutorialStepDefinition {
   updateData: UpdateDataType

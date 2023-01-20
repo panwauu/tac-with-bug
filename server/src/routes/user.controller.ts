@@ -3,7 +3,7 @@ import type express from 'express'
 import { Controller, Get, Post, Delete, Body, Route, Request, Security, Query, TsoaResponse, Res, SuccessResponse } from 'tsoa'
 
 import bcrypt from 'bcrypt'
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID } from 'crypto'
 import Joi from 'joi'
 
 import { sendActivation, sendNewPassword } from '../communicationUtils/email'
@@ -241,7 +241,7 @@ export class UserController extends Controller {
       return identificationError(400, 'User not found')
     }
 
-    const password = uuidv4().toString().substring(0, 15)
+    const password = randomUUID().substring(0, 15)
     await sendNewPassword({ user: user.value, password })
     const hash = await bcrypt.hash(password, 10)
     await changePassword(request.app.locals.sqlClient, user.value.id, hash)
