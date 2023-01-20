@@ -15,6 +15,7 @@ module.exports = {
     eqeqeq: ['error', 'always', { null: 'ignore' }],
     'max-len': ['error', { code: 180 }],
     curly: ['error', 'multi-line', 'consistent'],
+    'no-duplicate-imports': 'error',
 
     // Enable in the future?
     'no-param-reassign': ['off', { props: true }],
