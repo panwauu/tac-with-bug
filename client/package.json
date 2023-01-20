@@ -15,7 +15,6 @@
     "@paypal/paypal-js": "^5.1.4",
     "@vueuse/core": "^8.9.4",
     "apexcharts": "^3.36.3",
-    "axios": "^0.25.0",
     "chart.js": "^3.9.1",
     "cytoscape": "^3.23.0",
     "email-validator": "^2.0.4",
