@@ -4,7 +4,7 @@ import logger from '../helpers/logger'
 import Joi from 'joi'
 
 import { addFriendshipRequest, confirmFriendshipRequest, cancelFriendship, getFriendships, getUser } from '../services/user'
-import { getSocketByUserID } from './general'
+import { getSocketByUserID, isUserOnline } from './general'
 
 async function updateFriendOfSocket(pgPool: pg.Pool, socketToUpdate: GeneralSocketS, userID?: number) {
   const friends = userID != null ? await getFriendships(pgPool, userID) : []
@@ -119,6 +119,26 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
 
       const friendships = await getFriendships(pgPool, user.value.id)
       return callback({ status: 200, data: friendships.filter((f) => f.status === 'done' || user.value.id === socket.data.userID) })
+    } catch (err) {
+      return callback({ status: 500, error: err })
+    }
+  })
+
+  socket.on('friends:isFriendOnline', async (username, callback) => {
+    const { error } = Joi.string().required().validate(username)
+    if (error != null) return callback({ status: 422, error: error })
+
+    try {
+      if (socket.data.userID == null) return callback({ status: 500, error: 'Unauthorized socket' })
+
+      const friendships = await getFriendships(pgPool, socket.data.userID)
+      const friendship = friendships.find((f) => f.status === 'done' && f.username === username)
+      if (friendship == null) return callback({ status: 500, error: 'You can only see the online status of your friends' })
+
+      const friend = await getUser(pgPool, { username: username })
+      if (friend.isErr()) return callback({ status: 500, error: friend.error })
+
+      return callback({ status: 200, data: isUserOnline(friend.value.id) })
     } catch (err) {
       return callback({ status: 500, error: err })
     }

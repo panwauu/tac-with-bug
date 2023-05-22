@@ -119,6 +119,22 @@ describe('Friends test suite via socket.io', () => {
     expect(result[2].username).toEqual(usersWithSockets[1].username)
   })
 
+  test('Should be able to see that friend is online', async () => {
+    const response = await usersWithSockets[1].socket.emitWithAck(5000, 'friends:isFriendOnline', usersWithSockets[0].username)
+    expect(response.status).toBe(200)
+    expect(response.data).toBe(true)
+  })
+
+  test('Should not be able to see online status if not friend', async () => {
+    const response = await usersWithSockets[2].socket.emitWithAck(5000, 'friends:isFriendOnline', usersWithSockets[0].username)
+    expect(response.status).not.toBe(200)
+  })
+
+  test('Should not be able to see online status if username not valid', async () => {
+    const response = await usersWithSockets[0].socket.emitWithAck(5000, 'friends:isFriendOnline', 'a')
+    expect(response.status).not.toBe(200)
+  })
+
   test('Uninvolved player should see consented friendhips of others', async () => {
     const response = await usersWithSockets[2].socket.emitWithAck(5000, 'friends:ofUser', usersWithSockets[0].username)
     expect(response.status).toBe(200)

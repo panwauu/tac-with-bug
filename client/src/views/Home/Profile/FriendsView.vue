@@ -9,6 +9,7 @@
           <PlayerWithPicture
             :username="slotProps.data.username"
             :nameFirst="false"
+            :online="onlineFriends.includes(slotProps.data.username)"
           />
         </template>
       </Column>
@@ -81,4 +82,19 @@ const friendsForTable = computed(() => {
   }
   return friends.value
 })
+
+const onlineFriends = ref<string[]>([])
+
+watch(
+  () => friends.value,
+  () => {
+    for (const friend of friends.value) {
+      socket.emitWithAck(2000, 'friends:isFriendOnline', friend.username).then((r) => {
+        if (r.data != null && r.data) {
+          onlineFriends.value.push(friend.username)
+        }
+      })
+    }
+  }
+)
 </script>
