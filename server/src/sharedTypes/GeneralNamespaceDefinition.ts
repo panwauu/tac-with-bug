@@ -97,6 +97,7 @@ export interface ClientToServerEvents extends Record<string, any> {
   'friends:confirm': (username: string, cb: CallbackFunction<boolean>) => void
   'friends:cancel': (username: string, cb: CallbackFunction<boolean>) => void
   'friends:ofUser': (username: string, cb: CallbackFunction<Friend[]>) => void
+  'friends:isFriendOnline': (username: string, cb: CallbackFunction<boolean>) => void
 }
 
 export interface ServerToClientEvents {
