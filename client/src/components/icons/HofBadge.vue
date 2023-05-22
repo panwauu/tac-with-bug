@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { withDefaults } from 'vue'
 import router from '@/router/index'
 
 const props = withDefaults(defineProps<{ clickable?: boolean; sponsorsOnly?: boolean }>(), { clickable: true, sponsorsOnly: true })

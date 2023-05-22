@@ -28,7 +28,6 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "importsNotUsedAsValues": "error",
 
     /* Additional Checks */
     "noUnusedLocals": true,

@@ -5,7 +5,7 @@
     :suggestions="filteredPlayers"
     field="username"
     appendTo="body"
-    :inputStyle="'width: 100%;'"
+    :inputStyle="{ width: '100%' }"
     :placeholder="$t('PlayersAutoComplete.placeholder')"
     @complete="searchPlayers()"
   >

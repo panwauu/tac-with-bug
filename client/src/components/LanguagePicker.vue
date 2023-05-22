@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import Dropdown from 'primevue/dropdown'
 
-import { withDefaults, ref } from 'vue'
+import { ref } from 'vue'
 import { locales } from '@/../../server/src/sharedDefinitions/locales'
 import { i18n, setLocaleAndLoadMessages } from '../services/i18n'
 import { DefaultService as Service } from '@/generatedClient/index'

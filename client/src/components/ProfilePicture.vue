@@ -25,7 +25,7 @@ import AvatarDummy from '../assets/avatar-dummy.png'
 import Badge from 'primevue/badge'
 import Crown from '@/components/icons/CrownSymbol.vue'
 
-import { withDefaults, watch, computed } from 'vue'
+import { watch, computed } from 'vue'
 import { getProfilePicSrc, requestProfilePic } from '../services/useProfilePicture'
 import { getCrown } from '../services/useTournamentWinners'
 import { username as loggedInUsername } from '@/services/useUser'
