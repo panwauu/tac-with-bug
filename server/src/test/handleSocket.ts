@@ -1,8 +1,9 @@
-import type { Socket } from 'socket.io-client'
+import { Socket } from 'socket.io'
 import { sleep } from '../helpers/sleep'
 import type { GameSocketC, GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
+import type { CustomSocket } from './socket'
 
-type SupportedSockets = Socket | GameSocketC | GameSocketS
+type SupportedSockets = Socket | CustomSocket<any, any> | GameSocketC | GameSocketS
 type SomeKindOfSocket = { socket: SupportedSockets } | SupportedSockets
 
 export async function connectSocket(socket: SupportedSockets): Promise<void> {
