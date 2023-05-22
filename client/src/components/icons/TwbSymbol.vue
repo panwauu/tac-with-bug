@@ -213,6 +213,5 @@
 </template>
 
 <script setup lang="ts">
-import { withDefaults } from 'vue'
 withDefaults(defineProps<{ side?: string }>(), { side: 'both' })
 </script>

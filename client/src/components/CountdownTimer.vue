@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { withDefaults, ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 
 type UnitKey = 'days' | 'hours' | 'minutes' | 'seconds'

@@ -23,7 +23,6 @@
 <script setup lang="ts">
 import ProfilePicture from './ProfilePicture.vue'
 import router from '@/router/index'
-import { withDefaults } from 'vue'
 
 const props = withDefaults(
   defineProps<{

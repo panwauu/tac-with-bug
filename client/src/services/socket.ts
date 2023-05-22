@@ -18,6 +18,7 @@ type EventsWithCallback<T> = {
 }[keyof T]
 
 class CustomSocket<L extends EventsMap, E extends EventsMap> extends Socket<L, E> {
+  // @ts-ignore
   emitWithAck<Ev extends EventsWithCallback<E>>(timeout: number, ev: Ev, ...args: Head<EventParams<E, Ev>>): Promise<FirstParamType<Last<EventParams<E, Ev>>>> {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
