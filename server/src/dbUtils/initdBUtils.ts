@@ -1,7 +1,9 @@
 import pg from 'pg'
 
-export function initdBUtils(): pg.Pool {
-  if (process.env.NODE_ENV === 'production') {
+export function initdBUtils(config?: pg.PoolConfig): pg.Pool {
+  if (config != null) {
+    return new pg.Pool(config)
+  } else if (process.env.NODE_ENV === 'production') {
     return new pg.Pool({
       connectionString: process.env.DATABASE_URL,
       ssl: {
@@ -38,7 +40,7 @@ export function initdBUtils(): pg.Pool {
   throw new Error('Database connection cannot be established without NODE_ENV')
 }
 
-export function initTestDatabaseClient(database: 'postgres' | 'tac_test'): pg.Client {
+export function initTestDatabaseClient(database: string): pg.Client {
   return new pg.Client({
     connectionString: `postgresql://postgres:postgres@localhost:5432/${database}`,
     connectionTimeoutMillis: 2000,

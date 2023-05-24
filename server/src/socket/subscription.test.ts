@@ -9,15 +9,15 @@ describeIf(!skipTests, 'Test Suite via Socket.io', () => {
   let userWithSocket: UserWithSocket
   const subscriptionID = 'I-K2P36MWMH55P'
 
-  const spyNewSubscription = jest.spyOn(mail, 'sendNewSubscription')
-  const spySubscriptionError = jest.spyOn(mail, 'sendSubscriptionError')
+  const spyNewSubscription = vitest.spyOn(mail, 'sendNewSubscription')
+  const spySubscriptionError = vitest.spyOn(mail, 'sendSubscriptionError')
 
   beforeAll(async () => {
     userWithSocket = (await getUsersWithSockets({ n: 1 }))[0]
   })
 
   afterEach(() => {
-    jest.clearAllMocks()
+    vitest.clearAllMocks()
   })
 
   afterAll(async () => {
