@@ -17,11 +17,11 @@ describe('Sign-Up', () => {
     locale: 'de',
   }
 
-  const spyNewPassword = jest.spyOn(mail, 'sendNewPassword')
-  const spyActivation = jest.spyOn(mail, 'sendActivation')
+  const spyNewPassword = vitest.spyOn(mail, 'sendNewPassword')
+  const spyActivation = vitest.spyOn(mail, 'sendActivation')
 
   afterEach(() => {
-    jest.clearAllMocks()
+    vitest.clearAllMocks()
   })
 
   test('Empty Request', async () => {

@@ -5,6 +5,7 @@
     "target": "es2020",
     "sourceMap": true,
     "outDir": "./dist",
+    "types": ["vitest/globals" ],
     "typeRoots": ["src/@types", "./node_modules/@types"],
     "resolveJsonModule": true,
 

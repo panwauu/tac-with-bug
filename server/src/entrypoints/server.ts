@@ -27,6 +27,7 @@ import logger, { attachPostgresLogger } from '../helpers/logger'
 
 export type ServerOptions = {
   serveApp?: boolean
+  pgPoolConfig?: pg.PoolConfig
 }
 
 export class TacServer {
@@ -36,7 +37,7 @@ export class TacServer {
   pgPool: pg.Pool
 
   constructor(options?: ServerOptions) {
-    this.pgPool = initdBUtils()
+    this.pgPool = initdBUtils(options?.pgPoolConfig)
     attachPostgresLogger(this.pgPool)
 
     this.app = express()
@@ -87,6 +88,8 @@ export class TacServer {
 
     const portToListen = port ?? (process.env.PORT != null ? parseInt(process.env.PORT) : 3000)
     this.httpServer.listen(portToListen)
+    logger.debug(`Listening on port: ${(this.httpServer.address() as any)?.port}`)
+
     return portToListen
   }
 
