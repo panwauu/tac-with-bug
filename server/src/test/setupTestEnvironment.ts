@@ -7,10 +7,10 @@ import { TacServer } from '../entrypoints/server'
 import { initTestDatabaseClient } from '../dbUtils/initdBUtils'
 import './socket'
 import Chance from 'chance'
-let chance = Chance()
+const chance = Chance()
 
 beforeAll(async () => {
-  let databaseName = `test_temp_${chance.string({ length: 21, alpha: true, casing: 'lower' })}`
+  const databaseName = `test_temp_${chance.string({ length: 21, alpha: true, casing: 'lower' })}`
   await prepareTestDatabase(databaseName)
   ;(global as any).databaseName = databaseName
   ;(global as any).testServer = new TacServer({
