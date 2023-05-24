@@ -1,5 +1,5 @@
 require('sharp')
 
-export function setup() {}
+export function setup() {} // eslint-disable-line
 
-export function teardown() {}
+export function teardown() {} // eslint-disable-line
