@@ -1,4 +1,11 @@
 import type express from 'express'
+import {
+  getEmailNotificationSettings,
+  GetEmailNotificationSettingsError,
+  EmailNotificationSettingsType,
+  SetEmailNotificationSettingsError,
+  setEmailNotificationSettings,
+} from '../services/settings'
 import { Controller, Get, Post, Body, Route, Request, Security, TsoaResponse, Res } from 'tsoa'
 
 import { LocaleValidationErrors, validateLocale } from '../helpers/validationHelpers'
@@ -63,5 +70,34 @@ export class SettingsController extends Controller {
     }
 
     await request.app.locals.sqlClient.query('UPDATE users SET game_default_position = $1 WHERE id = $2;', [reqBody.gameDefaultPositions, request.userData.userID])
+  }
+
+  /**
+   * Get notification settings
+   */
+  @Security('jwt')
+  @Get('/getEmailNotificationSettings')
+  public async getEmailNotificationSettings(
+    @Request() request: express.Request,
+    @Res() serverError: TsoaResponse<500, GetEmailNotificationSettingsError>
+  ): Promise<EmailNotificationSettingsType> {
+    const settings = await getEmailNotificationSettings(request.app.locals.sqlClient, request.userData.userID)
+    if (settings.isErr()) return serverError(500, settings.error)
+    return settings.value
+  }
+
+  /**
+   * Set notification setting
+   */
+  @Security('jwt')
+  @Post('/setEmailNotificationSettings')
+  public async setEmailNotificationSettings(
+    @Request() request: express.Request,
+    @Body() settingsObject: EmailNotificationSettingsType,
+    @Res() serverError: TsoaResponse<500, SetEmailNotificationSettingsError>
+  ): Promise<EmailNotificationSettingsType> {
+    const changedSettings = await setEmailNotificationSettings(request.app.locals.sqlClient, request.userData.userID, settingsObject)
+    if (changedSettings.isErr()) return serverError(500, changedSettings.error)
+    return changedSettings.value
   }
 }

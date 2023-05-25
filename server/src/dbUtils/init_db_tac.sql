@@ -21,7 +21,8 @@ CREATE TABLE users (
   color_blindness_flag BOOLEAN NOT NULL DEFAULT false,
   admin BOOLEAN NOT NULL DEFAULT FALSE,
   game_default_position INTEGER [2] NOT NULL DEFAULT '{1, 0}',
-  user_description VARCHAR(200) NOT NULL DEFAULT ''
+  user_description VARCHAR(200) NOT NULL DEFAULT '',
+  notification_settings BOOLEAN [] NOT NULL DEFAULT array_fill(TRUE, ARRAY [6]) CHECK (array_length(notification_settings, 1) = 6)
 );
 
 CREATE TABLE subscriptions (
