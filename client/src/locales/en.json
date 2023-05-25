@@ -668,6 +668,16 @@
     },
     "Audio": {
       "header": "Volume"
+    },
+    "EmailNotifiactions": {
+      "header": "Notifications",
+      "checkboxHeader": "Here you can select the occasions on which we may send you an e-mail:",
+      "news": "News and updates about Tac-With-Bug",
+      "tournamentNews": "News about tournaments",
+      "tournamentInvitations": "Invitations from other players to tournaments",
+      "sponsoring": "Updates about your sponsorship",
+      "messages": "For unread messages",
+      "friendRequests": "On the occasion of open friend requests"
     }
   },
   "Profile": {

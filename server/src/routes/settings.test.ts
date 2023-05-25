@@ -1,6 +1,7 @@
+import { EmailNotificationSettingsDecoder, EmailNotificationSettingsType } from '../services/settings'
 import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets'
 
-describe('Profile Picture', () => {
+describe('Settings-REST test', () => {
   let userWithCredentials: User
 
   beforeAll(async () => {
@@ -100,6 +101,51 @@ describe('Profile Picture', () => {
       const response = await testAgent.get('/gameApi/getGameDefaultPositions').set({ Authorization: userWithCredentials.authHeader })
       expect(response.statusCode).toBe(200)
       expect(response.body).toStrictEqual([-1, 2])
+    })
+  })
+
+  describe('Test notification settings', () => {
+    const settings: EmailNotificationSettingsType = {
+      news: false,
+      tournamentNews: true,
+      tournamentInvitations: true,
+      sponsoring: true,
+      messages: true,
+      friendRequests: true,
+    }
+
+    test('Should not get notification settings without authentication', async () => {
+      const response = await testAgent.get('/gameApi/getEmailNotificationSettings')
+      expect(response.statusCode).toBe(401)
+    })
+
+    test('Should get notification settings', async () => {
+      const response = await testAgent.get('/gameApi/getEmailNotificationSettings').set({ Authorization: userWithCredentials.authHeader })
+      expect(response.statusCode).toBe(200)
+      for (const key of EmailNotificationSettingsDecoder) {
+        expect(response.body[key]).toBe(true)
+      }
+    })
+
+    test('Should not set notification setting without authentication', async () => {
+      const response = await testAgent.post('/gameApi/setEmailNotificationSettings').send(settings)
+      expect(response.statusCode).toBe(401)
+    })
+
+    test('Should set notification settings', async () => {
+      const response = await testAgent.post('/gameApi/setEmailNotificationSettings').set({ Authorization: userWithCredentials.authHeader }).send(settings)
+      expect(response.statusCode).toBe(200)
+      for (const key of EmailNotificationSettingsDecoder) {
+        expect(response.body[key]).toBe(key !== 'news')
+      }
+    })
+
+    test('Should get changed notification settings', async () => {
+      const response = await testAgent.get('/gameApi/getEmailNotificationSettings').set({ Authorization: userWithCredentials.authHeader })
+      expect(response.statusCode).toBe(200)
+      for (const key of EmailNotificationSettingsDecoder) {
+        expect(response.body[key]).toBe(key !== 'news')
+      }
     })
   })
 })
