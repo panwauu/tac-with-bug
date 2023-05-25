@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Tutorial Test Suite via Socket.io Test Tutorials Move should be able to be performed 1`] = `
+exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be able to be performed 1`] = `
 {
   "game": {
     "colors": [
@@ -678,7 +678,7 @@ exports[`Tutorial Test Suite via Socket.io Test Tutorials Move should be able to
 }
 `;
 
-exports[`Tutorial Test Suite via Socket.io Test Tutorials Tutorial step should be loaded for authenticated user 1`] = `
+exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step should be loaded for authenticated user 1`] = `
 {
   "config": {},
   "game": {
@@ -1306,7 +1306,7 @@ exports[`Tutorial Test Suite via Socket.io Test Tutorials Tutorial step should b
 }
 `;
 
-exports[`Tutorial Test Suite via Socket.io Test Tutorials Tutorial step should be loaded for unauthenticated user 1`] = `
+exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step should be loaded for unauthenticated user 1`] = `
 {
   "config": {},
   "game": {

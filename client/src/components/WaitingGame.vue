@@ -163,7 +163,7 @@ import Teams from '@/components/icons/TeamsSymbol.vue'
 import Tag from 'primevue/tag'
 
 import type { WaitingGame } from '@/../../server/src/sharedTypes/typesWaiting'
-import { withDefaults, computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { username } from '@/services/useUser'
 
 import BallsImage from './assets/BallsImage.vue'

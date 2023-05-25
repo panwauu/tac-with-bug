@@ -5,7 +5,7 @@
     :suggestions="filteredPlayers"
     field="username"
     appendTo="body"
-    :inputStyle="'width: 100%;'"
+    :inputStyle="{ width: '100%' }"
     :placeholder="$t('PlayersAutoComplete.placeholder')"
     @complete="searchPlayers()"
   >
@@ -49,8 +49,10 @@ const localUsername = computed({
 })
 
 function searchPlayers() {
-  Service.searchPlayers(localUsername.value, 10).then((res) => {
-    filteredPlayers.value = res.filter((v) => props.playersToAvoid == null || !props.playersToAvoid.includes(v.username))
-  })
+  Service.searchPlayers(localUsername.value, 10)
+    .then((res) => {
+      filteredPlayers.value = res.filter((v) => props.playersToAvoid == null || !props.playersToAvoid.includes(v.username))
+    })
+    .catch((err) => console.log(err))
 }
 </script>

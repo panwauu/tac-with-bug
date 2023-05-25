@@ -23,7 +23,6 @@
 <script setup lang="ts">
 import ProfilePicture from './ProfilePicture.vue'
 import router from '@/router/index'
-import { withDefaults } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -47,9 +46,9 @@ const props = withDefaults(
   }
 )
 
-const click = () => {
+const click = async () => {
   if (props.clickable && props.username !== '') {
-    router.push({
+    await router.push({
       name: 'Profile',
       params: { username: props.username, locale: router.currentRoute.value.params.locale },
     })

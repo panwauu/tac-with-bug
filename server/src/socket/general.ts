@@ -26,7 +26,7 @@ export function registerSocketNspGeneral(nsp: GeneralNamespace, pgPool: pg.Pool)
 
   nsp.on('connection', async (socket) => {
     socket.on('disconnect', async () => {
-      terminateSocket(pgPool, socket)
+      await terminateSocket(pgPool, socket)
     })
 
     registerAuthHandlers(pgPool, socket)
@@ -41,7 +41,7 @@ export function registerSocketNspGeneral(nsp: GeneralNamespace, pgPool: pg.Pool)
     registerFriendsHandlers(pgPool, socket)
     registerChannelHandlers(pgPool, socket)
 
-    initializeSocket(pgPool, socket)
+    await initializeSocket(pgPool, socket)
   })
 }
 
@@ -53,18 +53,18 @@ export async function initializeSocket(pgPool: pg.Pool, socket: GeneralSocketS) 
     }
   }
 
-  initializeInfo()
-  initializeTutorial(pgPool, socket)
-  initializeWaiting(pgPool, socket)
+  await initializeInfo()
+  await initializeTutorial(pgPool, socket)
+  await initializeWaiting(pgPool, socket)
   initializeSubscription(pgPool, socket)
-  initializeGames(pgPool, socket)
-  initializeFriends(pgPool, socket)
+  await initializeGames(pgPool, socket)
+  await initializeFriends(pgPool, socket)
   initializeChat(pgPool, socket)
 }
 
 export async function terminateSocket(pgPool: pg.Pool, socket: GeneralSocketS) {
   await terminateWaiting(pgPool, socket)
-  terminateInfo()
+  await terminateInfo()
 }
 
 export function isUserOnline(userID: number) {

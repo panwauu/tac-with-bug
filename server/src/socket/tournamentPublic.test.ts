@@ -14,8 +14,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
   describe('Test with two teams - registration process', () => {
     let tournamentID: number, tournament: any, usersWithSockets: UserWithSocket[], unauthSocket: GeneralSocketC
 
-    const spyReminder = jest.spyOn(mail, 'sendTournamentReminder')
-    const spyInvitation = jest.spyOn(mail, 'sendTournamentInvitation')
+    const spyReminder = vitest.spyOn(mail, 'sendTournamentReminder')
+    const spyInvitation = vitest.spyOn(mail, 'sendTournamentInvitation')
 
     beforeAll(async () => {
       usersWithSockets = await getUsersWithSockets({ ids: [1, 2, 3, 4] })
@@ -23,7 +23,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
     })
 
     afterEach(() => {
-      jest.clearAllMocks()
+      vitest.clearAllMocks()
     })
 
     afterAll(async () => {

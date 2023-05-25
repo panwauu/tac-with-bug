@@ -3,7 +3,8 @@ import type { GameSocketC } from '../test/socket'
 import { connectSocket } from './handleSocket'
 
 export function initiateGameSocket(gameID: number | string, token: string): GameSocketC {
-  return io('http://localhost:1234/game', { auth: { gameID: gameID, token: token }, forceNew: true, autoConnect: false }) as any
+  const port = (global as any).testServer.httpServer.address().port
+  return io(`http://localhost:${port}/game`, { auth: { gameID: gameID, token: token }, forceNew: true, autoConnect: false }) as any
 }
 
 export async function registerGameSocket(gameID: number | string, token: string): Promise<GameSocketC> {
