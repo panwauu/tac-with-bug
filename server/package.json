@@ -16,7 +16,7 @@
     "tsc:watch": "tsc --watch",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "test:e2e": "playwright test --config=src/tests/playwright.config.ts",
+    "test:e2e": "playwright test --config=src/test/e2e/playwright.config.ts",
     "lint": "eslint -c .eslintrc.js ./src",
     "prettier:format": "prettier --config .prettierrc --write .",
     "prettier:check": "prettier --config .prettierrc --check .",
