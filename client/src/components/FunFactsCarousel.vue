@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import Carousel from 'primevue/carousel'
-import { reactive, computed, withDefaults } from 'vue'
+import { reactive, computed } from 'vue'
 import { DefaultService as Service } from '@/generatedClient'
 import BallsImage from './assets/BallsImage.vue'
 
@@ -67,23 +67,25 @@ const funfacts = reactive({
   },
 })
 
-Service.getPlatformFunFacts().then((res) => {
-  funfacts.gamesAndUsers.nGames4 = res.nGames4
-  funfacts.gamesAndUsers.nGames6 = res.nGames6
-  funfacts.gamesAndUsers.nGamesTeam = res.nGamesTeam
-  funfacts.gamesAndUsers.registeredUsers = res.registeredUsers
-  funfacts.gameDurations.fastestGame = getIntervalString(res.fastestGame)
-  funfacts.gameDurations.longestGame = getIntervalString(res.longestGame)
-  funfacts.gameDurations.averagePlayingTime = getIntervalString(res.averagePlayingTime)
-  funfacts.teamStats.bestTeamGame = res.bestTeamGame
-  funfacts.teamStats.worstTeamGame = res.worstTeamGame
-  funfacts.teamStats.averageTeamGame = res.averageTeamGame
-  funfacts.misc.nFriends = res.nFriends
-  funfacts.misc.nTutorials = res.nTutorials
-  funfacts.colors.mostLoved = res.colors[0]
-  funfacts.colors.leastLoved = res.colors[res.colors.length - 1]
-  funfacts.colors.nColorBlinds = res.nColorBlind
-})
+Service.getPlatformFunFacts()
+  .then((res) => {
+    funfacts.gamesAndUsers.nGames4 = res.nGames4
+    funfacts.gamesAndUsers.nGames6 = res.nGames6
+    funfacts.gamesAndUsers.nGamesTeam = res.nGamesTeam
+    funfacts.gamesAndUsers.registeredUsers = res.registeredUsers
+    funfacts.gameDurations.fastestGame = getIntervalString(res.fastestGame)
+    funfacts.gameDurations.longestGame = getIntervalString(res.longestGame)
+    funfacts.gameDurations.averagePlayingTime = getIntervalString(res.averagePlayingTime)
+    funfacts.teamStats.bestTeamGame = res.bestTeamGame
+    funfacts.teamStats.worstTeamGame = res.worstTeamGame
+    funfacts.teamStats.averageTeamGame = res.averageTeamGame
+    funfacts.misc.nFriends = res.nFriends
+    funfacts.misc.nTutorials = res.nTutorials
+    funfacts.colors.mostLoved = res.colors[0]
+    funfacts.colors.leastLoved = res.colors[res.colors.length - 1]
+    funfacts.colors.nColorBlinds = res.nColorBlind
+  })
+  .catch((err) => console.log(err))
 
 function getIntervalString(seconds: number) {
   const s = Math.floor(seconds % 60)

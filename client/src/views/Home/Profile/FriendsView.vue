@@ -9,6 +9,7 @@
           <PlayerWithPicture
             :username="slotProps.data.username"
             :nameFirst="false"
+            :online="props.username === user.username ? onlineFriends.includes(slotProps.data.username) : undefined"
           />
         </template>
       </Column>
@@ -40,7 +41,7 @@ import { watch, ref, computed } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey, FriendsStateKey } from '@/services/injections'
 import type { Friend } from '@/../../server/src/sharedTypes/typesFriends'
-import { username as loggedInUsername } from '@/services/useUser'
+import { username as loggedInUsername, user } from '@/services/useUser'
 
 const socket = injectStrict(SocketKey)
 const friendsState = injectStrict(FriendsStateKey)
@@ -49,10 +50,10 @@ const props = defineProps<{ username: string }>()
 const loading = ref(false)
 const friends = ref<Friend[]>([])
 
-updateData()
+updateData().catch((err) => console.log(err))
 watch(
   () => props.username,
-  () => updateData()
+  () => updateData().catch((err) => console.log(err))
 )
 
 async function updateData() {
@@ -71,7 +72,7 @@ async function updateData() {
     loading.value = false
   } catch (err) {
     console.log(err)
-    router.push({ name: 'Landing' })
+    await router.push({ name: 'Landing' })
   }
 }
 
@@ -81,4 +82,28 @@ const friendsForTable = computed(() => {
   }
   return friends.value
 })
+
+const onlineFriends = ref<string[]>([])
+
+watch(
+  () => [...friends.value, props.username],
+  () => {
+    if (props.username !== user.username) {
+      onlineFriends.value = []
+      return
+    }
+
+    for (const friend of friends.value) {
+      socket
+        .emitWithAck(2000, 'friends:isFriendOnline', friend.username)
+        .then((r) => {
+          if (r.data != null && r.data) {
+            onlineFriends.value.push(friend.username)
+          }
+        })
+        .catch((err) => console.log(err))
+    }
+  },
+  { deep: true }
+)
 </script>

@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import Dropdown from 'primevue/dropdown'
 
-import { withDefaults, ref } from 'vue'
+import { ref } from 'vue'
 import { locales } from '@/../../server/src/sharedDefinitions/locales'
 import { i18n, setLocaleAndLoadMessages } from '../services/i18n'
 import { DefaultService as Service } from '@/generatedClient/index'
@@ -79,7 +79,7 @@ const setLocale = async () => {
     await Service.setSettingsLocale({ locale: selectedLocale.value })
   }
 
-  router.push({ name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing', params: { locale: selectedLocale.value } })
+  await router.push({ name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing', params: { locale: selectedLocale.value } })
 }
 </script>
 

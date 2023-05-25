@@ -47,7 +47,8 @@ async function getUser(id: number): Promise<User> {
 async function getUserWithSocket(id: number): Promise<UserWithSocket> {
   const user = await getUser(id)
 
-  const clientSocket = io('http://localhost:1234', { auth: { token: user.token }, reconnection: false, forceNew: true, autoConnect: false }) as any
+  const port = (global as any).testServer.httpServer.address().port
+  const clientSocket = io(`http://localhost:${port}`, { auth: { token: user.token }, reconnection: false, forceNew: true, autoConnect: false }) as any
   await connectSocket(clientSocket)
   const result: UserWithSocket = { ...user, socket: clientSocket }
   return result
@@ -114,7 +115,8 @@ export async function unregisterUser(userWithCredentials: User) {
 }
 
 export async function getUnauthenticatedSocket(opts?: { connect: boolean }): Promise<GeneralSocketC> {
-  const clientSocket = io('http://localhost:1234', { reconnection: false, forceNew: true, autoConnect: false }) as any
+  const port = (global as any).testServer.httpServer.address().port
+  const clientSocket = io(`http://localhost:${port}`, { reconnection: false, forceNew: true, autoConnect: false }) as any
   if (opts?.connect == null || opts?.connect === true) {
     await connectSocket(clientSocket)
   }

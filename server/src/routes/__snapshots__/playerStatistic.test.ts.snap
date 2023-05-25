@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Platform PlayerStatistic Test Suite Should return playerStats of existing player 1`] = `
+exports[`Platform PlayerStatistic Test Suite > Should return playerStats of existing player 1`] = `
 {
   "gamesDistribution": {
     "aborted": 2,
@@ -83,7 +83,7 @@ exports[`Platform PlayerStatistic Test Suite Should return playerStats of existi
 }
 `;
 
-exports[`Platform PlayerStatistic Test Suite Should return tournamentParticipations of existing player 1`] = `
+exports[`Platform PlayerStatistic Test Suite > Should return tournamentParticipations of existing player 1`] = `
 [
   {
     "date": "2022-01-01T00:10:00.000Z",
@@ -107,7 +107,7 @@ exports[`Platform PlayerStatistic Test Suite Should return tournamentParticipati
 ]
 `;
 
-exports[`Platform PlayerStatistic Test Suite Should return userGraph of existing player 1`] = `
+exports[`Platform PlayerStatistic Test Suite > Should return userGraph of existing player 1`] = `
 {
   "graph": {
     "edges": [

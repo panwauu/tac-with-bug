@@ -25,7 +25,7 @@ import AvatarDummy from '../assets/avatar-dummy.png'
 import Badge from 'primevue/badge'
 import Crown from '@/components/icons/CrownSymbol.vue'
 
-import { withDefaults, watch, computed } from 'vue'
+import { watch, computed } from 'vue'
 import { getProfilePicSrc, requestProfilePic } from '../services/useProfilePicture'
 import { getCrown } from '../services/useTournamentWinners'
 import { username as loggedInUsername } from '@/services/useUser'
@@ -42,22 +42,22 @@ const props = withDefaults(
   }
 )
 
-requestProfilePic(props.username)
+requestProfilePic(props.username).catch((err) => console.log(err))
 watch(
   () => props.username,
   () => {
-    requestProfilePic(props.username)
+    requestProfilePic(props.username).catch((err) => console.log(err))
   }
 )
 watch(
   () => loggedInUsername.value,
   () => {
-    requestProfilePic(props.username)
+    requestProfilePic(props.username).catch((err) => console.log(err))
   }
 )
 
 const srcImage = computed(() => {
-  return getProfilePicSrc(props.username) || AvatarDummy
+  return getProfilePicSrc(props.username) ?? AvatarDummy
 })
 </script>
 

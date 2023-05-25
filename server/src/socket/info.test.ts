@@ -45,6 +45,7 @@ describe('Info sest suite via socket.io', () => {
   test('On new game connection the number of connections should be sent', async () => {
     const updatePromise = usersWithSockets[1].socket.oncePromise('info:serverConnections')
     const unauthUpdatePromise = socket.oncePromise('info:serverConnections')
+    //@ts-ignore
     gameSocket = await registerGameSocket(gameID, usersWithSockets[1].token)
 
     const update = await updatePromise

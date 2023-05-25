@@ -3,7 +3,7 @@ import path from 'path'
 
 async function globalSetup() {
   console.log('Building frontend: start')
-  execSync('npm run build', { cwd: path.join(__dirname, '..', '..', '..', 'client'), stdio: 'inherit' })
+  execSync('npm run build', { cwd: path.join(__dirname, '..', '..', '..', '..', 'client'), stdio: 'inherit' })
   console.log('Building frontend: end')
 }
 

@@ -9,7 +9,7 @@ export function audioHandler(newData: UpdateDataType, cardsState: CardsStateType
   }
 
   if (newData.gameEnded) {
-    if (newData.winningTeams[newData.players[newData.gamePlayer].team] === true) {
+    if (newData.winningTeams[newData.players[newData.gamePlayer].team] === true || newData.coopCounter > 0) {
       sound.$play('won')
     } else {
       sound.$play('lost')
