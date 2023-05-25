@@ -49,5 +49,9 @@
   "NewFriendRequest.body.hello": "Привет",
   "NewFriendRequest.body.message": "У вас есть новый запрос на дружбу на Tac-With-Bug!",
   "NewFriendRequest.body.goToWebsite": "Зайдите на сайт сейчас и ответьте на запрос.",
-  "NewFriendRequest.body.regards": "Приветствую и получайте удовольствие"
+  "NewFriendRequest.body.regards": "Приветствую и получайте удовольствие",
+  "UnreadMessages.body.hello": "Привет",
+  "UnreadMessages.body.message": "У вас есть непрочитанные сообщения на сайте Tac-With-Bug. Посетите сайт и ответьте на них.",
+  "UnreadMessages.subject": "Непрочитанные сообщения на Tac-With-Bugg",
+  "UnreadMessages.body.regards": "Приветствую и получайте удовольствие"
 }

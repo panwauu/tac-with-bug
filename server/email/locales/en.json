@@ -49,5 +49,9 @@
   "NewFriendRequest.body.hello": "Hello",
   "NewFriendRequest.body.message": "You have a new friend request on Tac-With-Bug!",
   "NewFriendRequest.body.goToWebsite": "Visit Tac-With-Bug to answer it.",
-  "NewFriendRequest.body.regards": "Best regards,"
+  "NewFriendRequest.body.regards": "Best regards,",
+  "UnreadMessages.body.hello": "Hello",
+  "UnreadMessages.body.message": "You have unread messages on Tac-With-Bug. Go to the website and check them out",
+  "UnreadMessages.subject": "Unread messages on Tac-With-Bug",
+  "UnreadMessages.body.regards": "Best regards,"
 }
