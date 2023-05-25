@@ -44,7 +44,7 @@ export class DevController extends Controller {
   @Get('/getEmailsFromUsersForNews')
   public async getEmailsFromUsersForNews(@Request() request: express.Request, @Query() type: 'news' | 'tournamentNews', @Res() serverError: TsoaResponse<500, string>) {
     try {
-      return getEmailsFromUsersForNews(request.app.locals.sqlClient, type)
+      return await getEmailsFromUsersForNews(request.app.locals.sqlClient, type)
     } catch (err) {
       return serverError(500, (err as any)?.message)
     }
