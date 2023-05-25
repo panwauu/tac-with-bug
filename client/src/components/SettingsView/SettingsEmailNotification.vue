@@ -21,12 +21,6 @@
           class="checkbox-label"
         >
           {{ $t(`Settings.EmailNotifiactions.${category.key}`) }}
-          <small
-            v-if="['news', 'tournamentNews'].includes(category.key)"
-            style="color: red"
-          >
-            !NOT SUPPORTED YET!
-          </small>
         </label>
       </div>
     </div>
@@ -61,12 +55,12 @@ const activatedElements = computed({
       changes.map((c) => {
         return c.key
       })
-    )
+    ).catch((err) => console.error(err))
   },
 })
 const loading = ref(true)
 
-load()
+load().catch((err) => console.error(err))
 async function load() {
   loading.value = true
   try {

@@ -244,7 +244,7 @@ export async function updateSubscriptions(sqlClient: pg.Pool) {
     if (subscription.value.status === 'running') {
       const settings = await getEmailNotificationSettings(sqlClient, user.value.id)
       if (settings.isOk() && settings.value.sponsoring) {
-        sendSubscriptionPaymentReminder({ user: user.value })
+        await sendSubscriptionPaymentReminder({ user: user.value })
       }
     }
   }
