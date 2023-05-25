@@ -9,7 +9,7 @@
           <PlayerWithPicture
             :username="slotProps.data.username"
             :nameFirst="false"
-            :online="onlineFriends.includes(slotProps.data.username)"
+            :online="props.username === user.username ? onlineFriends.includes(slotProps.data.username) : undefined"
           />
         </template>
       </Column>
@@ -41,7 +41,7 @@ import { watch, ref, computed } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey, FriendsStateKey } from '@/services/injections'
 import type { Friend } from '@/../../server/src/sharedTypes/typesFriends'
-import { username as loggedInUsername } from '@/services/useUser'
+import { username as loggedInUsername, user } from '@/services/useUser'
 
 const socket = injectStrict(SocketKey)
 const friendsState = injectStrict(FriendsStateKey)
@@ -86,8 +86,13 @@ const friendsForTable = computed(() => {
 const onlineFriends = ref<string[]>([])
 
 watch(
-  () => friends.value,
+  () => [...friends.value, props.username],
   () => {
+    if (props.username !== user.username) {
+      onlineFriends.value = []
+      return
+    }
+
     for (const friend of friends.value) {
       socket
         .emitWithAck(2000, 'friends:isFriendOnline', friend.username)
@@ -98,6 +103,7 @@ watch(
         })
         .catch((err) => console.log(err))
     }
-  }
+  },
+  { deep: true }
 )
 </script>
