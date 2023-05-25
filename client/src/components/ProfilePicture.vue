@@ -57,7 +57,7 @@ watch(
 )
 
 const srcImage = computed(() => {
-  return getProfilePicSrc(props.username) || AvatarDummy
+  return getProfilePicSrc(props.username) ?? AvatarDummy
 })
 </script>
 
