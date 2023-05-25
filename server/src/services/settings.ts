@@ -41,3 +41,9 @@ export async function setEmailNotificationSettings(
     return err('COULD_NOT_CHANGE_NOTIFICATION_VALUES')
   }
 }
+
+export async function getEmailsFromUsersForNews(pgPool: pg.Pool, type: 'news' | 'tournamentNews') {
+  const indexOfSettings = EmailNotificationSettingsDecoder.findIndex((e) => e === type)
+  const res = await pgPool.query<{ email: string }>(`SELECT email FROM users WHERE notification_settings[${indexOfSettings + 1}] IS true;`)
+  return res.rows.map((e) => e.email).join(';')
+}
