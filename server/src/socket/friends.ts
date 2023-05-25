@@ -5,6 +5,8 @@ import Joi from 'joi'
 
 import { addFriendshipRequest, confirmFriendshipRequest, cancelFriendship, getFriendships, getUser } from '../services/user'
 import { getSocketByUserID, isUserOnline } from './general'
+import { getEmailNotificationSettings } from '../services/settings'
+import { sendFriendRequestReminder } from '../communicationUtils/email'
 
 async function updateFriendOfSocket(pgPool: pg.Pool, socketToUpdate: GeneralSocketS, userID?: number) {
   const friends = userID != null ? await getFriendships(pgPool, userID) : []
@@ -36,6 +38,11 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
       if (otherUserSocket?.data?.userID != null) {
         await updateFriendOfSocket(pgPool, otherUserSocket, otherUserSocket.data.userID)
         otherUserSocket?.emit('friends:new-request', { username: userRequesting.value.username })
+      }
+
+      const emailNotificationSettings = await getEmailNotificationSettings(pgPool, userToRequest.value.id)
+      if (emailNotificationSettings.isOk() && emailNotificationSettings.value.friendRequests) {
+        await sendFriendRequestReminder({ user: userToRequest.value })
       }
 
       return callback({ status: 200 })

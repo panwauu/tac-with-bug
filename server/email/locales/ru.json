@@ -44,5 +44,10 @@
   "PrivateTournamentInvitation.body.invitation2": "На частном турнире TAC-с ошибками",
   "PrivateTournamentInvitation.body.invitation3": "участвовать в",
   "PrivateTournamentInvitation.body.complete": "Чтобы завершить регистрацию, вам необходимо ориентироваться на TAC-FIT-BUG к турнирам и щелкните зеленый крюк рядом с вашим именем.",
-  "PrivateTournamentInvitation.body.regards": "С наилучшими пожеланиями и веселиться"
+  "PrivateTournamentInvitation.body.regards": "С наилучшими пожеланиями и веселиться",
+  "NewFriendRequest.subject": "Новый запрос на дружбу на Tac-With-Bug",
+  "NewFriendRequest.body.hello": "Привет",
+  "NewFriendRequest.body.message": "У вас есть новый запрос на дружбу на Tac-With-Bug!",
+  "NewFriendRequest.body.goToWebsite": "Зайдите на сайт сейчас и ответьте на запрос.",
+  "NewFriendRequest.body.regards": "Приветствую и получайте удовольствие"
 }
