@@ -144,3 +144,11 @@ export async function sendFriendRequestReminder({ user }: { user: User }) {
     locals: { locale: user.locale, name: user.username },
   })
 }
+
+export async function sendUnreadMessagesReminder(params: { username: string; email: string; locale: string }) {
+  return email.send({
+    template: 'unreadMessages',
+    message: { to: params.email },
+    locals: { locale: params.locale, name: params.username },
+  })
+}

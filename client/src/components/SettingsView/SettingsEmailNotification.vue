@@ -22,7 +22,7 @@
         >
           {{ $t(`Settings.EmailNotifiactions.${category.key}`) }}
           <small
-            v-if="['news', 'tournamentNews', 'messages'].includes(category.key)"
+            v-if="['news', 'tournamentNews'].includes(category.key)"
             style="color: red"
           >
             !NOT SUPPORTED YET!
