@@ -44,5 +44,10 @@
   "PrivateTournamentInvitation.body.invitation2": "to the private Tac-With-Bug tournament",
   "PrivateTournamentInvitation.body.invitation3": "",
   "PrivateTournamentInvitation.body.complete": "To complete the registration you need to navigate on Tac-With-Bug to the tournaments and click the green hook next to your name.",
-  "PrivateTournamentInvitation.body.regards": "Best regards and have fun"
+  "PrivateTournamentInvitation.body.regards": "Best regards and have fun",
+  "NewFriendRequest.subject": "You have a new Friendrequest on Tac-With-Bug",
+  "NewFriendRequest.body.hello": "Hello",
+  "NewFriendRequest.body.message": "You have a new friend request on Tac-With-Bug!",
+  "NewFriendRequest.body.goToWebsite": "Visit Tac-With-Bug to answer it.",
+  "NewFriendRequest.body.regards": "Best regards,"
 }

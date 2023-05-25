@@ -136,3 +136,11 @@ export async function sendPrivateTournamentInvitation({
     locals: { locale: user.locale, name: user.username, invitingPlayer: invitingPlayer, teamName: teamName, tournamentName: tournamentTitle },
   })
 }
+
+export async function sendFriendRequestReminder({ user }: { user: User }) {
+  return email.send({
+    template: 'newFriendRequest',
+    message: { to: user.email },
+    locals: { locale: user.locale, name: user.username },
+  })
+}
