@@ -42,17 +42,17 @@ const props = withDefaults(
   }
 )
 
-requestProfilePic(props.username)
+requestProfilePic(props.username).catch((err) => console.log(err))
 watch(
   () => props.username,
   () => {
-    requestProfilePic(props.username)
+    requestProfilePic(props.username).catch((err) => console.log(err))
   }
 )
 watch(
   () => loggedInUsername.value,
   () => {
-    requestProfilePic(props.username)
+    requestProfilePic(props.username).catch((err) => console.log(err))
   }
 )
 

@@ -46,9 +46,9 @@ const props = withDefaults(
   }
 )
 
-const click = () => {
+const click = async () => {
   if (props.clickable && props.username !== '') {
-    router.push({
+    await router.push({
       name: 'Profile',
       params: { username: props.username, locale: router.currentRoute.value.params.locale },
     })

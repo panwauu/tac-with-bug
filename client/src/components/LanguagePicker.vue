@@ -79,7 +79,7 @@ const setLocale = async () => {
     await Service.setSettingsLocale({ locale: selectedLocale.value })
   }
 
-  router.push({ name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing', params: { locale: selectedLocale.value } })
+  await router.push({ name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing', params: { locale: selectedLocale.value } })
 }
 </script>
 

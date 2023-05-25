@@ -12,9 +12,9 @@ import router from '@/router/index'
 
 const props = withDefaults(defineProps<{ clickable?: boolean; sponsorsOnly?: boolean }>(), { clickable: true, sponsorsOnly: true })
 
-const toSubscription = () => {
+const toSubscription = async () => {
   if (props.clickable) {
-    router.push({ name: 'Subscription' })
+    await router.push({ name: 'Subscription' })
   }
 }
 </script>

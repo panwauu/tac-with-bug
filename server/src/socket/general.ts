@@ -58,7 +58,7 @@ export async function initializeSocket(pgPool: pg.Pool, socket: GeneralSocketS) 
   initializeWaiting(pgPool, socket)
   initializeSubscription(pgPool, socket)
   initializeGames(pgPool, socket)
-  initializeFriends(pgPool, socket)
+  await initializeFriends(pgPool, socket)
   initializeChat(pgPool, socket)
 }
 

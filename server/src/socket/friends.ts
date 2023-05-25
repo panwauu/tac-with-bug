@@ -11,8 +11,8 @@ async function updateFriendOfSocket(pgPool: pg.Pool, socketToUpdate: GeneralSock
   socketToUpdate.emit('friends:update', friends)
 }
 
-export function initializeFriends(pgPool: pg.Pool, socket: GeneralSocketS) {
-  updateFriendOfSocket(pgPool, socket, socket.data.userID)
+export async function initializeFriends(pgPool: pg.Pool, socket: GeneralSocketS) {
+  await updateFriendOfSocket(pgPool, socket, socket.data.userID)
 }
 
 export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
@@ -30,11 +30,11 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
       if (userRequesting.isErr()) return callback({ status: 500, error: userRequesting.error })
 
       await addFriendshipRequest(pgPool, socket.data.userID, userToRequest.value.id)
-      updateFriendOfSocket(pgPool, socket, socket.data.userID)
+      await updateFriendOfSocket(pgPool, socket, socket.data.userID)
 
       const otherUserSocket = getSocketByUserID(userToRequest.value.id)
       if (otherUserSocket != null && otherUserSocket.data.userID != null) {
-        updateFriendOfSocket(pgPool, otherUserSocket, otherUserSocket.data.userID)
+        await updateFriendOfSocket(pgPool, otherUserSocket, otherUserSocket.data.userID)
         otherUserSocket?.emit('friends:new-request', { username: userRequesting.value.username })
       }
 
@@ -59,11 +59,11 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
       if (userToConfirm.isErr()) return callback({ status: 500, error: userToConfirm.error })
 
       await confirmFriendshipRequest(pgPool, socket.data.userID, userRequesting.value.id)
-      updateFriendOfSocket(pgPool, socket, socket.data.userID)
+      await updateFriendOfSocket(pgPool, socket, socket.data.userID)
 
       const otherUserSocket = getSocketByUserID(userRequesting.value.id)
       if (otherUserSocket != null && otherUserSocket.data.userID != null) {
-        updateFriendOfSocket(pgPool, otherUserSocket, otherUserSocket.data.userID)
+        await updateFriendOfSocket(pgPool, otherUserSocket, otherUserSocket.data.userID)
         otherUserSocket.emit('friends:friend-confirmed', { username: userToConfirm.value.username })
       }
 
@@ -87,11 +87,11 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
       if (userCancelling.isErr()) return callback({ status: 500, error: userCancelling.error })
 
       const pendingUser = await cancelFriendship(pgPool, socket.data.userID, userToCancel.value.id)
-      updateFriendOfSocket(pgPool, socket, socket.data.userID)
+      await updateFriendOfSocket(pgPool, socket, socket.data.userID)
 
       const otherUserSocket = getSocketByUserID(userToCancel.value.id)
       if (otherUserSocket != null && otherUserSocket.data.userID != null) {
-        updateFriendOfSocket(pgPool, otherUserSocket, otherUserSocket.data.userID)
+        await updateFriendOfSocket(pgPool, otherUserSocket, otherUserSocket.data.userID)
         if (pendingUser === null) {
           otherUserSocket?.emit('friends:friend-cancelled', { username: userCancelling.value.username })
         } else if (pendingUser === userToCancel.value.id) {
