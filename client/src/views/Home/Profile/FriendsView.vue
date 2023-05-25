@@ -50,10 +50,10 @@ const props = defineProps<{ username: string }>()
 const loading = ref(false)
 const friends = ref<Friend[]>([])
 
-updateData()
+updateData().catch((err) => console.log(err))
 watch(
   () => props.username,
-  () => updateData()
+  () => updateData().catch((err) => console.log(err))
 )
 
 async function updateData() {
@@ -72,7 +72,7 @@ async function updateData() {
     loading.value = false
   } catch (err) {
     console.log(err)
-    router.push({ name: 'Landing' })
+    await router.push({ name: 'Landing' })
   }
 }
 
@@ -89,11 +89,14 @@ watch(
   () => friends.value,
   () => {
     for (const friend of friends.value) {
-      socket.emitWithAck(2000, 'friends:isFriendOnline', friend.username).then((r) => {
-        if (r.data != null && r.data) {
-          onlineFriends.value.push(friend.username)
-        }
-      })
+      socket
+        .emitWithAck(2000, 'friends:isFriendOnline', friend.username)
+        .then((r) => {
+          if (r.data != null && r.data) {
+            onlineFriends.value.push(friend.username)
+          }
+        })
+        .catch((err) => console.log(err))
     }
   }
 )
