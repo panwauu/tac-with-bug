@@ -44,10 +44,10 @@ function updatePriorBalls(card: tCard.PlayerCard, balls: tBall.BallsType, priorB
     const auxBalls = cloneDeep(balls)
     Object.assign(balls, cloneDeep(priorBalls))
     Object.assign(priorBalls, cloneDeep(auxBalls))
-  } else if (card.title.substring(0, 3) === 'tac' && card.title.length > 3) {
+  } else if (card.title.startsWith('tac-')) {
     return
   } // If 7 was taced and is continued
-  else if (card.title.substring(0, 2) === '7-') {
+  else if (card.title.startsWith('7-')) {
     return
   } // If 7 was played and is continued
   else {
@@ -75,7 +75,7 @@ function kickBalls(balls: tBall.BallsType, card: tCard.PlayerCard, newPosition: 
     moveBallToHouse(balls, nBallInDestination)
   }
 
-  if (card.title[0] === '7' || (card.title.substring(0, 3) === 'tac' && lastNonTacCard === '7')) {
+  if (card.title.startsWith('7') || (card.title.startsWith('tac') && lastNonTacCard === '7')) {
     // kick all balls inbetween if "7"
     moveBallsBetweenPositionsToHouse(balls, nBall, newPosition)
   }
@@ -160,13 +160,13 @@ function lockBallsInGoal(balls: tBall.BallsType, nBall: number, remainingMoves: 
 
 function getRemainingMoves(card: tCard.PlayerCard, balls: tBall.BallsType, nBall: number, newPosition: number, lastNonTacCard: tCard.CardType | undefined): number {
   let remainingMoves = 0
-  if (card.title[0] === '7' || (card.title.substring(0, 3) === 'tac' && lastNonTacCard === '7')) {
+  if (card.title.startsWith('7') || (card.title.startsWith('tac') && lastNonTacCard === '7')) {
     // reset all balls inbetween if "7"
     let priorRemainingMoves = 7
-    if (card.title.substring(0, 2) === '7-') {
+    if (card.title.startsWith('7-')) {
       priorRemainingMoves = parseInt(card.title.substring(2, card.title.length))
     }
-    if (card.title.substring(0, 3) === 'tac' && card.title.length > 3) {
+    if (card.title.startsWith('tac-')) {
       priorRemainingMoves = parseInt(card.title.substring(4, card.title.length))
     }
     remainingMoves = priorRemainingMoves - (sevenReconstructPath(balls, nBall, newPosition).length - 1)
@@ -185,13 +185,13 @@ function updateCardAfter7(
 ) {
   let activePlayer = activePlayerParam
 
-  if (card.title[0] === '7' || (card.title.substring(0, 3) === 'tac' && lastNonTacCard === '7')) {
+  if (card.title.startsWith('7') || (card.title.startsWith('tac') && lastNonTacCard === '7')) {
     if (teufelflag) {
       activePlayer = (activePlayer + 1) % cards.players.length
     }
 
     if (remainingMoves > 0) {
-      if (card.title[0] === '7') {
+      if (card.title.startsWith('7')) {
         cards.players[activePlayer][cardIndex] = `7-${remainingMoves.toString()}`
         card.title = '7-' + remainingMoves.toString()
       } else {
@@ -199,7 +199,7 @@ function updateCardAfter7(
         card.title = 'tac-' + remainingMoves.toString()
       }
     } else {
-      if (card.title[0] === '7') {
+      if (card.title.startsWith('7')) {
         cards.players[activePlayer][cardIndex] = '7'
         card.title = '7'
       } else {

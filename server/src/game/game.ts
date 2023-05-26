@@ -174,7 +174,7 @@ export class Game implements GameData {
           }
           tacCard.title = 'tac'
           cardsWithMoves.push(tacCard)
-        } else if (card.substring(0, 4) === 'tac-') {
+        } else if (card.startsWith('tac-')) {
           const tacCard = createCardWithMove(
             '7' + card.substring(3, card.length),
             this.balls,
@@ -205,9 +205,9 @@ export class Game implements GameData {
     }
 
     // If 7 has started -> only possible to resume
-    if (cardsWithMoves.some((card) => card.title.substring(0, 2) === '7-' || card.title.substring(0, 4) === 'tac-')) {
+    if (cardsWithMoves.some((card) => card.title.startsWith('7-') || card.title.startsWith('tac-'))) {
       cardsWithMoves
-        .filter((card) => !(card.title.substring(0, 2) === '7-' || card.title.substring(0, 4) === 'tac-'))
+        .filter((card) => !(card.title.startsWith('7-') || card.title.startsWith('tac-')))
         .forEach((card) => {
           card.possible = false
           card.ballActions = {}
@@ -310,7 +310,7 @@ export class Game implements GameData {
           this.aussetzenFlag = false
         }
         performBallAction(card, move[2], move[3], move[1], this.balls, this.activePlayer, this.cards, this.priorBalls, this.teufelFlag)
-        if ((card.title[0] === '7' && card.title.length > 1) || card.title.substring(0, 4) === 'tac-') {
+        if ((card.title.startsWith('7') && card.title.length > 1) || card.title.startsWith('tac-')) {
           // do not discard or move on to next Player
           this.sevenChosenPlayer = ballPlayer(move[2])
         } else if (this.teufelFlag === true) {
