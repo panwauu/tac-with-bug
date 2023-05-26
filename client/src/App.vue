@@ -86,7 +86,7 @@ function activateUser(userID: number, token: string) {
     )
 }
 
-const interval = setInterval(() => checkVersion(toast).catch((err) => console.error(err)), 5 * 60 * 1000)
+const interval = setInterval(async () => checkVersion(toast).catch((err) => console.error(err)), 5 * 60 * 1000)
 onUnmounted(() => clearInterval(interval))
 </script>
 
