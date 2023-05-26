@@ -1,7 +1,8 @@
 import type express from 'express'
-import { Controller, Get, Query, Route, Request, Security } from 'tsoa'
+import { Controller, Get, Query, Route, Request, Security, TsoaResponse, Res } from 'tsoa'
 
 import { retrieveCapturedGame } from '../services/capture'
+import { getEmailsFromUsersForNews } from '../services/settings'
 
 @Route('/')
 export class DevController extends Controller {
@@ -38,4 +39,14 @@ export class DevController extends Controller {
         await removeCapturedGames(request.app.locals.sqlClient)
     }
     */
+
+  @Security('jwt', ['admin'])
+  @Get('/getEmailsFromUsersForNews')
+  public async getEmailsFromUsersForNews(@Request() request: express.Request, @Query() type: 'news' | 'tournamentNews', @Res() serverError: TsoaResponse<500, string>) {
+    try {
+      return await getEmailsFromUsersForNews(request.app.locals.sqlClient, type)
+    } catch (err) {
+      return serverError(500, (err as any)?.message)
+    }
+  }
 }

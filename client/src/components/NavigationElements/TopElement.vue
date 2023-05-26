@@ -43,7 +43,7 @@ import router from '@/router/index'
 import { username } from '@/services/useUser'
 import { FriendsStateKey, injectStrict } from '@/services/injections'
 
-defineEmits(['logout'])
+defineEmits<{ logout: [] }>()
 
 const friendsState = injectStrict(FriendsStateKey)
 

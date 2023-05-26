@@ -135,7 +135,7 @@ export function getMoves(balls: tBall.BallsType, nBall: number, cardTitle: strin
     movePositions = getKriegerMove(balls, nBall)
   } else if (cardTitle === 'trickser') {
     movePositions = getSwitchingMoves(balls, nBall)
-  } else if (cardTitle[0] === '7') {
+  } else if (cardTitle.startsWith('7')) {
     let remainingMoves = 7
     if (cardTitle.length > 1) {
       remainingMoves = parseInt(cardTitle.substring(2, cardTitle.length))

@@ -60,7 +60,7 @@ import { DefaultService as Service } from '@/generatedClient'
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n'
 
-const emits = defineEmits<{ (e: 'update:modelValue', modelValue: string): void }>()
+const emits = defineEmits<{ 'update:modelValue': [modelValue: string] }>()
 const props = defineProps<{ username: string; modelValue: string }>()
 
 const toast = useToast()

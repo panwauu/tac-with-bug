@@ -19,6 +19,11 @@
   "CancelSubscription.body.thanks": "Thank you for helping me develop and operate Tac-With-Bug in the past!",
   "CancelSubscription.body.payments": "Your subscription has been successfully completed and no further amounts will be deducted.",
   "CancelSubscription.body.regards": "I wish you all the best and send greetings from Munich",
+  "SubscriptionUpcomming.subject": "Your TAC-With-Bug support",
+  "SubscriptionUpcomming.body.hello": "Hello",
+  "SubscriptionUpcomming.body.thanks": "Thank you for supporting me in the development of TAC-With-Bug! This helps me to implement new features and cover the running costs for the platform.",
+  "SubscriptionUpcomming.body.payments": "Your support will be extended tomorrow. If you want to end your support, you can end it on Tac-with-bug today or directly at PayPal.",
+  "SubscriptionUpcomming.body.regards": "Best regards from munich",
   "TournamentReminder.subject": "Tac-With-Bug Tournament",
   "TournamentReminder.body.hello": "Hello",
   "TournamentReminder.body.registration1": "The registration phase for the Tac-With-Bug tournament",
@@ -39,5 +44,14 @@
   "PrivateTournamentInvitation.body.invitation2": "to the private Tac-With-Bug tournament",
   "PrivateTournamentInvitation.body.invitation3": "",
   "PrivateTournamentInvitation.body.complete": "To complete the registration you need to navigate on Tac-With-Bug to the tournaments and click the green hook next to your name.",
-  "PrivateTournamentInvitation.body.regards": "Best regards and have fun"
+  "PrivateTournamentInvitation.body.regards": "Best regards and have fun",
+  "NewFriendRequest.subject": "You have a new Friendrequest on Tac-With-Bug",
+  "NewFriendRequest.body.hello": "Hello",
+  "NewFriendRequest.body.message": "You have a new friend request on Tac-With-Bug!",
+  "NewFriendRequest.body.goToWebsite": "Visit Tac-With-Bug to answer it.",
+  "NewFriendRequest.body.regards": "Best regards,",
+  "UnreadMessages.body.hello": "Hello",
+  "UnreadMessages.body.message": "You have unread messages on Tac-With-Bug. Go to the website and check them out",
+  "UnreadMessages.subject": "Unread messages on Tac-With-Bug",
+  "UnreadMessages.body.regards": "Best regards,"
 }

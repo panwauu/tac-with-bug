@@ -448,7 +448,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(tournament.status).toBe('signUpEnded')
       expect(tournament.registerTeams.length).toBe(0)
       expect(tournament.teams.length).toBe(4)
-      expect(tournament.data.brackets.every((b: any) => b.every((m: any) => m.winner === -1 && m.gameID === -1 && isEqual(m.score, [0, 0]))))
+      expect(tournament.data.brackets.every((b: any) => b.every((m: any) => m.winner === -1 && m.gameID === -1 && isEqual(m.score, [0, 0])))).toBe(true)
       expect(tournament.data.brackets[1][0].teams).toStrictEqual([-1, -1])
       expect(
         tournament.data.brackets[0]
@@ -471,7 +471,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
       tournament = (await Promise.all(promiseArrayUpdate))[0]
       expect(tournament.id).toBe(tournamentID)
       expect(tournament.status).toBe('running')
-      expect(tournament.data.brackets[0].every((m: any) => m.gameID !== -1))
+      expect(tournament.data.brackets[0].every((m: any) => m.gameID !== -1)).toBe(true)
     })
 
     test('Force Tournament Round To End', async () => {
@@ -499,7 +499,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(tournament.id).toBe(tournamentID)
 
       expect(tournament.status).toBe('running')
-      expect(tournament.data.brackets[0].every((m: any) => m.winner !== -1))
+      expect(tournament.data.brackets[0].every((m: any) => m.winner !== -1)).toBe(true)
       expect(tournament.data.brackets[0][0].winner).toBe(tournament.data.brackets[0][0].teams[1])
       expect(tournament.data.brackets[1][0].teams.every((t: any) => [0, 1, 2, 3].includes(t))).toBe(true)
       expect(tournament.creationPhase).toBe(2)
@@ -523,7 +523,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(tournament.id).toBe(tournamentID)
 
       expect(tournament.status).toBe('running')
-      expect(tournament.data.brackets[1].every((m: any) => m.gameID !== -1))
+      expect(tournament.data.brackets[1].every((m: any) => m.gameID !== -1)).toBe(true)
       expect(tournament.creationPhase).toBe(3)
     })
 

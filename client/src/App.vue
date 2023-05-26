@@ -14,10 +14,10 @@ import Toast from 'primevue/toast'
 import ChatWrapper from '@/components/Chat/ChatWrapper.vue'
 import ConnectionStatusOverlay from '@/components/ConnectionStatusOverlay.vue'
 
-import { watch, provide } from 'vue'
+import { watch, provide, onUnmounted } from 'vue'
 import { registerSocketToastHandlers } from '@/services/socketToastTournament'
 import { useGamesSummary } from '@/services/useGamesSummary'
-import { useCheckVersion } from '@/services/useCheckVersions'
+import { checkVersion } from '@/services/useCheckVersions'
 import { GamesSummaryKey, SocketKey, FriendsStateKey, injectStrict } from '@/services/injections'
 import { logout } from '@/services/useUser'
 import { userFriends } from '@/services/useFriends'
@@ -35,18 +35,18 @@ const friendsState = userFriends(socket)
 provide(GamesSummaryKey, gamesSummary)
 provide(FriendsStateKey, friendsState)
 
-socket.on('logged_out', () => {
+socket.on('logged_out', async () => {
   toast.add({
     severity: 'warn',
     life: 10000,
     summary: i18n.global.t('Connection.ServerSideLogoutSummary'),
     detail: i18n.global.t('Connection.ServerSideLogoutDetail'),
   })
-  logout(socket)
+  await logout(socket)
 })
 
 registerSocketToastHandlers(socket)
-initTournamentWinners(socket)
+initTournamentWinners(socket).catch((err) => console.error(err))
 
 checkForEmailActivation()
 watch(
@@ -75,7 +75,7 @@ function activateUser(userID: number, token: string) {
         detail: i18n.global.t('Login.SignIn.activationSuccessDetails'),
         life: 10000,
       })
-      router.push({ name: 'Landing' })
+      return router.push({ name: 'Landing' })
     })
     .catch(() =>
       toast.add({
@@ -86,8 +86,8 @@ function activateUser(userID: number, token: string) {
     )
 }
 
-const servercheck = useCheckVersion(toast)
-servercheck.start()
+const interval = setInterval(async () => checkVersion(toast).catch((err) => console.error(err)), 5 * 60 * 1000)
+onUnmounted(() => clearInterval(interval))
 </script>
 
 <style scoped>

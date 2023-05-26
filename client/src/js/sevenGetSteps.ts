@@ -6,13 +6,13 @@ export function getRemainingMoves(card: tCard.PlayerCard, balls: tBall.BallsType
   const lastNonTacCard = getLastNonTacCard(discardPile)
 
   let remainingMoves = 0
-  if (card.title?.[0] === '7' || (card.title?.substring(0, 3) === 'tac' && lastNonTacCard?.cardTitle === 'sieben')) {
+  if (card.title?.startsWith('7') || (card.title?.startsWith('tac') && lastNonTacCard?.cardTitle === 'sieben')) {
     // reset all balls inbetween if "7"
     let priorRemainingMoves = 7
-    if (card.title.substring(0, 2) === '7-') {
+    if (card.title.startsWith('7-')) {
       priorRemainingMoves = parseInt(card.title.substring(2, card.title.length))
     }
-    if (card.title.substring(0, 3) === 'tac' && card.title.length > 3) {
+    if (card.title.startsWith('tac') && card.title.length > 3) {
       priorRemainingMoves = parseInt(card.title.substring(4, card.title.length))
     }
     remainingMoves = priorRemainingMoves - (sevenReconstructPath(balls, nBall, newPosition).length - 1)

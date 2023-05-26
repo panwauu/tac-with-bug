@@ -61,7 +61,7 @@ import { injectStrict, SocketKey } from '@/services/injections'
 const props = defineProps<{ visible: boolean }>()
 const socket = injectStrict(SocketKey)
 
-const emit = defineEmits(['update:visible'])
+const emit = defineEmits<{ 'update:visible': [value: boolean] }>()
 
 const localVisible = computed({
   get(): boolean {

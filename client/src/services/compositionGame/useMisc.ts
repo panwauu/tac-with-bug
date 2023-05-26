@@ -43,7 +43,7 @@ export function useMisc(nPlayers?: number): MiscStateType {
 
   const miscState: MiscStateType = reactive({
     gameID: parseInt(route.query.gameID as string),
-    nPlayers: nPlayers != null ? nPlayers : parseInt(route.query.nPlayers as string),
+    nPlayers: nPlayers ?? parseInt(route.query.nPlayers as string),
     gamePlayer: -1,
     viewerMode: true,
     deckInfo: [0, 0],

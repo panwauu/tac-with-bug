@@ -128,10 +128,10 @@ import { username as loggedInUser } from '@/services/useUser'
 import { DefaultService as Service } from '@/generatedClient'
 
 const emit = defineEmits<{
-  (eventName: 'sort', events: any): void
-  (eventName: 'page', events: any): void
-  (eventName: 'rowSelect', game: GameForOverview): void
-  (eventName: 'reload', event: any): void
+  sort: [events: any]
+  page: [events: any]
+  rowSelect: [game: GameForOverview]
+  reload: [event: any]
 }>()
 
 defineProps<{ username: string; games: GameForOverview[]; nEntries: number; loading: boolean; paginator?: boolean }>()

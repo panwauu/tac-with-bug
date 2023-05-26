@@ -8,6 +8,8 @@ import { getPublicTournament, startTournament, startTournamentRound, checkForceG
 import { startSignUpOnCondition, endSignUpOnCondition } from './tournamentsRegister'
 import type { PublicTournament } from '../sharedTypes/typesTournament'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
+import { updateSubscriptions } from '../paypal/paypal'
+import { notifyUsersOfMissedMessages } from './chat'
 
 const jobs: schedule.Job[] = []
 
@@ -37,6 +39,12 @@ export async function registerJobs(sqlClient: pg.Pool) {
           const game = await getGame(sqlClient, id)
           sendUpdatesOfGameToPlayers(game)
         }
+      })
+    )
+    jobs.push(
+      schedule.scheduleJob({ rule: '0 12 * * * *', tz: 'Europe/Berlin' }, async () => {
+        await notifyUsersOfMissedMessages(sqlClient)
+        await updateSubscriptions(sqlClient)
       })
     )
 
