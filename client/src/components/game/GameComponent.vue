@@ -242,7 +242,7 @@ async function updateHandler(): Promise<void> {
   const tacFirstRevertState =
     props.discardPileState.discardPile.length > 0 &&
     props.discardPileState.discardPile.length + 1 === props.updateData.discardPile.length &&
-    props.updateData.discardPile[props.updateData.discardPile.length - 1].substring(0, 3) === 'tac' &&
+    props.updateData.discardPile[props.updateData.discardPile.length - 1].startsWith('tac') &&
     !props.updateData.discardedFlag &&
     !props.miscState.players[props.miscState.gamePlayer].active
 

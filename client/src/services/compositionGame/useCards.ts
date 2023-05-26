@@ -126,9 +126,9 @@ export function useCards(ballsState: BallsStateType, miscState: MiscStateType): 
       }
 
       for (const copiedCard of cardsCopy) {
-        if (copiedCard.title[0] === '7') {
+        if (copiedCard.title.startsWith('7')) {
           copiedCard.title = cardPictureDict['7']
-        } else if (copiedCard.title.substring(0, 3) === 'tac') {
+        } else if (copiedCard.title.startsWith('tac')) {
           copiedCard.title = cardPictureDict['tac']
         } else {
           copiedCard.title = cardPictureDict[copiedCard.title]
