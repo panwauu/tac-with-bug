@@ -36,7 +36,7 @@ const toast = useToast()
 const usernameOrEmail = ref('')
 const loading = ref(false)
 
-const emit = defineEmits<{ (eventName: 'done'): void }>()
+const emit = defineEmits<{ done: [] }>()
 
 async function executeNewPassword() {
   loading.value = true

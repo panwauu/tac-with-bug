@@ -30,7 +30,7 @@ import InputText from 'primevue/inputtext'
 
 import { computed, watch } from 'vue'
 
-const emit = defineEmits<{ (eventName: 'update:teamname', teamname: string): void; (eventName: 'update:valid', valid: boolean): void }>()
+const emit = defineEmits<{ 'update:teamname': [teamname: string]; 'update:valid': [valid: boolean] }>()
 const props = defineProps<{ teamname: string; disabled: boolean; existingTeamNames: string[]; valid: boolean }>()
 
 const localTeamName = computed({

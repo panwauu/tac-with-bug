@@ -38,10 +38,10 @@ export function addCardToDiscardPile(cards: tCard.CardsType, cardIndex: number, 
   const nPlayer = teufelFlag ? (activePlayer + 1) % cards.players.length : activePlayer
   cards.discardPlayer = nPlayer
   cards.discardPile.push(cards.players[nPlayer][cardIndex])
-  if (cards.discardPile[cards.discardPile.length - 1][0] === '7') {
+  if (cards.discardPile[cards.discardPile.length - 1].startsWith('7')) {
     cards.discardPile[cards.discardPile.length - 1] = '7'
   }
-  if (cards.discardPile[cards.discardPile.length - 1].substring(0, 3) === 'tac') {
+  if (cards.discardPile[cards.discardPile.length - 1].startsWith('tac')) {
     cards.discardPile[cards.discardPile.length - 1] = 'tac'
   }
 }

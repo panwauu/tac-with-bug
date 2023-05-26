@@ -85,6 +85,14 @@ export async function sendSubscriptionError({ error }: { error: any }) {
   return email.send({ message: { to: process.env.mailAddress, text: `Subscription Error: ${JSON.stringify(error)}` } })
 }
 
+export async function sendSubscriptionPaymentReminder({ user }: { user: User }) {
+  return email.send({
+    template: 'subscriptionUpcomming',
+    message: { to: user.email },
+    locals: { locale: user.locale, name: user.username },
+  })
+}
+
 export async function sendTournamentReminder({ user, tournament, ical }: { user: User; tournament: PublicTournament; ical: ICalCalendar }) {
   return email.send({
     template: 'tournamentReminder',
@@ -126,5 +134,21 @@ export async function sendPrivateTournamentInvitation({
     template: 'privateTournamentInvitation',
     message: { to: user.email },
     locals: { locale: user.locale, name: user.username, invitingPlayer: invitingPlayer, teamName: teamName, tournamentName: tournamentTitle },
+  })
+}
+
+export async function sendFriendRequestReminder({ user }: { user: User }) {
+  return email.send({
+    template: 'newFriendRequest',
+    message: { to: user.email },
+    locals: { locale: user.locale, name: user.username },
+  })
+}
+
+export async function sendUnreadMessagesReminder(params: { username: string; email: string; locale: string }) {
+  return email.send({
+    template: 'unreadMessages',
+    message: { to: params.email },
+    locals: { locale: params.locale, name: params.username },
   })
 }

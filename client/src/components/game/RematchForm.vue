@@ -45,7 +45,7 @@ import { useWaitingStore } from '@/store/waiting'
 const toast = useToast()
 const waitingStore = useWaitingStore()
 
-defineEmits(['closeGame', 'update:modalVisible', 'update:modalState'])
+defineEmits<{ closeGame: []; 'update:modalVisible': []; 'update:modalState': [] }>()
 const socket = injectStrict(SocketKey)
 
 const props = defineProps<{

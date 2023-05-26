@@ -668,6 +668,16 @@
     },
     "Audio": {
       "header": "Lautstärke"
+    },
+    "EmailNotifiactions": {
+      "header": "Benachrichtigungen",
+      "checkboxHeader": "Hier kannst du auswählen zu welchen Anlässen wir dir eine E-Mail schicken dürfen:",
+      "news": "Neuigkeiten und Updates zu Tac-With-Bug",
+      "tournamentNews": "Neuigkeiten zu Turnieren",
+      "tournamentInvitations": "Einladungen von anderen Spielern zu Turnieren",
+      "sponsoring": "Updates über dein Sponsoring",
+      "messages": "Bei ungelesenen Nachrichten",
+      "friendRequests": "Anlässlich offener Freundschaftsanfragen"
     }
   },
   "Profile": {

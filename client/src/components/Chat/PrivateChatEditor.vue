@@ -14,7 +14,7 @@ import Button from 'primevue/button'
 import { useMessagesStore } from '@/store/messages'
 import { injectStrict, SocketKey } from '@/services/injections'
 
-const emits = defineEmits(['close'])
+const emits = defineEmits<{ close: [] }>()
 
 const socket = injectStrict(SocketKey)
 const messagesStore = useMessagesStore()

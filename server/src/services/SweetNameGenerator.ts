@@ -335,7 +335,7 @@ const maxIterations = 100
 
 function generateName() {
   const nounIndex = Math.floor(Math.random() * nouns.length)
-  const fittingAttr = attr.filter((a) => a[0] === nouns[nounIndex][0])
+  const fittingAttr = attr.filter((a) => a.startsWith(nouns[nounIndex][0]))
   const fittingAttrIndex = Math.floor(Math.random() * fittingAttr.length)
   return `${fittingAttr[fittingAttrIndex]} ${nouns[nounIndex]}`
 }

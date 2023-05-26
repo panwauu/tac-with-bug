@@ -37,6 +37,12 @@
       <AccordionTab :header="$t('Settings.Audio.header')">
         <SettingsAudioVolume />
       </AccordionTab>
+      <AccordionTab
+        :header="$t('Settings.EmailNotifiactions.header')"
+        :disabled="!isLoggedIn"
+      >
+        <SettingsEmailNotification v-if="isLoggedIn" />
+      </AccordionTab>
     </Accordion>
   </div>
 </template>
@@ -50,6 +56,7 @@ import SettingsProfilePicture from '@/components/SettingsView/SettingsProfilePic
 import SettingsMailUpdate from '@/components/SettingsView/SettingsMailUpdate.vue'
 import SettingsPasswordUpdate from '@/components/SettingsView/SettingsPasswordUpdate.vue'
 import SettingsDeleteUser from '@/components/SettingsView/SettingsDeleteUser.vue'
+import SettingsEmailNotification from '@/components/SettingsView/SettingsEmailNotification.vue'
 import LanguagePicker from '@/components/LanguagePicker.vue'
 import SettingsAudioVolume from '@/components/SettingsView/SettingsAudioVolume.vue'
 

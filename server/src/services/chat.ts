@@ -3,6 +3,7 @@ import type { ChatElement, ChatMessage } from '../sharedTypes/chat'
 
 import { err, ok, Result } from 'neverthrow'
 import { maxUsersInChat } from '../sharedDefinitions/chat'
+import { sendUnreadMessagesReminder } from '../communicationUtils/email'
 
 export async function sanitizeChatDatabase(pgPool: pg.Pool) {
   pgPool.query("DELETE FROM chat_messages WHERE current_timestamp - created > interval '1 year';")
@@ -158,4 +159,17 @@ export async function loadChatOverview(pgPool: pg.Pool, userid: number): Promise
       numberOfUnread: r.number_of_unread,
     }
   })
+}
+
+export async function notifyUsersOfMissedMessages(pgPool: pg.Pool) {
+  const res = await pgPool.query<{ username: string; email: string; locale: string }>(`
+  SELECT DISTINCT ON (users.username) users.username, users.email, users.locale FROM chat_messages_unread 
+  JOIN chat_messages ON chat_messages.id = chat_messages_unread.messageid 
+    AND current_timestamp - chat_messages.created > interval'1 day' AND current_timestamp - chat_messages.created < interval'2 day'
+  JOIN users_to_chats ON users_to_chats.id = chat_messages_unread.users_to_chats_id
+  JOIN users ON users.id = users_to_chats.userid;`)
+
+  for (const entry of res.rows) {
+    await sendUnreadMessagesReminder(entry)
+  }
 }

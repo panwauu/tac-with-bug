@@ -40,7 +40,7 @@ import { ref } from 'vue'
 import { username } from '@/services/useUser'
 import { useMessagesStore } from '@/store/messages'
 
-const emits = defineEmits(['close'])
+const emits = defineEmits<{ close: [] }>()
 
 const messagesStore = useMessagesStore()
 

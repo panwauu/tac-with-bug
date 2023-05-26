@@ -293,10 +293,10 @@ export const useMessagesStore = defineStore('messages', {
       }
     },
     removeGameChannels() {
-      if (this.channels.find((c) => c.id.substring(0, 2) === 'g-') != null) {
-        this.channels = this.channels.filter((c) => c.id.substring(0, 2) !== 'g-')
+      if (this.channels.find((c) => c.id.startsWith('g-')) != null) {
+        this.channels = this.channels.filter((c) => !c.id.startsWith('g-'))
       }
-      if (this.selectedChat.type === 'channel' && this.selectedChat.id.substring(0, 2) === 'g-') {
+      if (this.selectedChat.type === 'channel' && this.selectedChat.id.startsWith('g-')) {
         this.selectChat(true, 'general')
       }
     },
@@ -330,13 +330,13 @@ export const useMessagesStore = defineStore('messages', {
         this.addChannel(`g-${newRouteGameID}`)
       }
 
-      this.channels = this.channels.filter((c) => c.id.substring(0, 2) !== 'g-' || c.endDate == null || c.endDate > new Date().getTime())
+      this.channels = this.channels.filter((c) => !c.id.startsWith('g-') || c.endDate == null || c.endDate > new Date().getTime())
     },
     removeWaitingRoomChannels() {
-      if (this.channels.find((c) => c.id.substring(0, 2) === 'w-') != null) {
-        this.channels = this.channels.filter((c) => c.id.substring(0, 2) !== 'w-')
+      if (this.channels.find((c) => c.id.startsWith('w-')) != null) {
+        this.channels = this.channels.filter((c) => !c.id.startsWith('w-'))
       }
-      if (this.selectedChat.type === 'channel' && this.selectedChat.id.substring(0, 2) === 'w-') {
+      if (this.selectedChat.type === 'channel' && this.selectedChat.id.startsWith('w-')) {
         this.selectChat(true, 'general')
       }
     },
@@ -395,10 +395,10 @@ nextTick(() => {
 })
 
 export function formatChannelName(channelName: string, isChannel: boolean) {
-  if (isChannel && channelName.substring(0, 2) === 'g-') {
+  if (isChannel && channelName.startsWith('g-')) {
     return `${i18n.global.t('Chat.Channels.Game')} ${channelName.substring(2)}`
   }
-  if (isChannel && channelName.substring(0, 2) === 'w-') {
+  if (isChannel && channelName.startsWith('w-')) {
     return `${i18n.global.t('Chat.Channels.Waiting')} ${channelName.substring(2)}`
   }
   if (isChannel) {
