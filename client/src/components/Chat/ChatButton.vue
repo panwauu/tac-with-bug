@@ -33,7 +33,7 @@ import Button from 'primevue/button'
 
 const chatStore = useChatStore()
 const messagesStore = useMessagesStore()
-const emit = defineEmits(['openChat'])
+const emit = defineEmits<{ openChat: [] }>()
 
 const openChat = () => {
   emit('openChat')

@@ -47,7 +47,7 @@ import { injectStrict, SocketKey } from '@/services/injections'
 import type { PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
 
 const props = defineProps<{ tournament: PrivateTournament; visible: boolean; propTeamName: string | null }>()
-const emit = defineEmits<{ (eventName: 'update:visible', visible: boolean): void }>()
+const emit = defineEmits<{ 'update:visible': [visible: boolean] }>()
 
 watch(
   () => [props.visible, props.tournament],

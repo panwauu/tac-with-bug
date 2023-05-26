@@ -35,8 +35,8 @@ const emailCheck = ref<boolean | null>(false)
 const emailCheckTimeout = ref(undefined as number | undefined)
 
 const emit = defineEmits<{
-  (eventName: 'update:email', email: string): void
-  (eventName: 'update:valid', valid: boolean): void
+  'update:email': [email: string]
+  'update:valid': [valid: boolean]
 }>()
 const props = defineProps<{ email: string; valid: boolean }>()
 

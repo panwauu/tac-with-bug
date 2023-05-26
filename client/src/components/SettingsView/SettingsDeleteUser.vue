@@ -20,7 +20,7 @@ import { logout } from '@/services/useUser'
 import { injectStrict, SocketKey } from '@/services/injections'
 const toast = useToast()
 
-const emit = defineEmits(['settingoperationdone'])
+const emit = defineEmits<{ settingoperationdone: [] }>()
 const socket = injectStrict(SocketKey)
 
 const deleteUser = async () => {

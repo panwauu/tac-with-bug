@@ -76,7 +76,7 @@ import { i18n } from '@/services/i18n'
 import { user } from '@/services/useUser'
 
 const toast = useToast()
-const emit = defineEmits(['settingoperationdone'])
+const emit = defineEmits<{ settingoperationdone: [] }>()
 
 const cropperDialog = ref(false)
 interface CustomFile extends File {
