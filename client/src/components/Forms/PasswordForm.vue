@@ -52,8 +52,8 @@ import PasswordPrimevue from 'primevue/password'
 import Divider from 'primevue/divider'
 
 const emit = defineEmits<{
-  (eventName: 'update:password', password: string): void
-  (eventName: 'update:valid', valid: boolean): void
+  'update:password': [password: string]
+  'update:valid': [valid: boolean]
 }>()
 const props = defineProps<{ password: string; valid: boolean }>()
 

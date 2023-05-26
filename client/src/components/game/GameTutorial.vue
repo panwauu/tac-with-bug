@@ -155,7 +155,7 @@ import type { TutorialStepOutput } from '@/../../server/src/sharedTypes/typesTut
 import { useTutorialStore } from '@/store/tutorial'
 const tutorialStore = useTutorialStore()
 
-const emit = defineEmits(['goForward', 'goBackward', 'closeOverlay', 'openOverlay', 'quizEnded', 'reset'])
+const emit = defineEmits<{ goForward: []; goBackward: []; closeOverlay: []; openOverlay: []; quizEnded: []; reset: [] }>()
 
 const props = defineProps<{
   tutorialStepOutput: TutorialStepOutput | null

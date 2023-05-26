@@ -39,7 +39,7 @@ import { DefaultService as Service } from '@/generatedClient/index'
 import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
 
-const emit = defineEmits<{ (eventName: 'done'): void }>()
+const emit = defineEmits<{ done: [] }>()
 
 const toast = useToast()
 

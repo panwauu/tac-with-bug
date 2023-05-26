@@ -27,7 +27,7 @@ import { computed, ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index'
 
 const props = defineProps<{ username: string | null; userid: number | null; playersToAvoid?: string[] }>()
-const emit = defineEmits(['update:username', 'update:userid'])
+const emit = defineEmits<{ 'update:username': [username: string]; 'update:userid': [id: any] }>()
 
 const filteredPlayers = ref<{ username: string; id: number }[]>([])
 
@@ -35,7 +35,7 @@ const localUsername = computed({
   get(): string {
     return props.username ?? ''
   },
-  set(value: string): void {
+  set(value: string) {
     if (value == null) {
       return
     }

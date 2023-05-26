@@ -67,7 +67,7 @@ const settingsStore = useSettingsStore()
 const socket = injectStrict(SocketKey)
 const toast = useToast()
 
-const emit = defineEmits(['login'])
+const emit = defineEmits<{ login: [] }>()
 
 const username = ref('')
 const password = ref('')

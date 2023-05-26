@@ -28,7 +28,7 @@ import { i18n } from '@/services/i18n'
 import router from '@/router/index'
 import { isLoggedIn } from '@/services/useUser'
 
-const emit = defineEmits(['logout'])
+const emit = defineEmits<{ logout: [] }>()
 
 const menuRef = ref<null | Menu>(null)
 

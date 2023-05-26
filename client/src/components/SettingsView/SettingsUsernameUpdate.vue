@@ -47,7 +47,7 @@ import { logout as logoutUser } from '@/services/useUser'
 const toast = useToast()
 const socket = injectStrict(SocketKey)
 
-const emit = defineEmits(['settingoperationdone'])
+const emit = defineEmits<{ settingoperationdone: [] }>()
 
 const username = ref('')
 const validUsername = ref(false)

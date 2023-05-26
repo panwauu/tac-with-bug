@@ -69,7 +69,7 @@ import { isEmoji, useMessagesStore } from '@/store/messages'
 import { useStorage } from '@vueuse/core'
 
 const props = defineProps<{ miscState: MiscStateType }>()
-const emit = defineEmits(['close'])
+const emit = defineEmits<{ close: [] }>()
 
 const messagesStore = useMessagesStore()
 function sendEmoji(emoji: string) {

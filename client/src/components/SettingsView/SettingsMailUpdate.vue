@@ -40,7 +40,7 @@ import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
 
-const emit = defineEmits(['settingoperationdone'])
+const emit = defineEmits<{ settingoperationdone: [] }>()
 
 const email = ref('')
 const validEmail = ref(false)

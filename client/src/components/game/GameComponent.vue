@@ -214,7 +214,7 @@ import { i18n } from '@/services/i18n'
 import router from '@/router'
 import { useResizeObserver } from '@vueuse/core'
 
-const emit = defineEmits(['closeGame', 'update:modalVisible', 'update:modalState'])
+const emit = defineEmits<{ closeGame: []; 'update:modalVisible': [value: boolean]; 'update:modalState': [value: string] }>()
 
 const props = defineProps<{
   positionStyles: PositionStylesState

@@ -34,8 +34,8 @@ const nameCheck = ref<boolean | null>(false)
 const nameCheckTimeout = ref(undefined as number | undefined)
 
 const emit = defineEmits<{
-  (eventName: 'update:username', username: string): void
-  (eventName: 'update:valid', valid: boolean): void
+  'update:username': [username: string]
+  'update:valid': [valid: boolean]
 }>()
 const props = defineProps<{ username: string; valid: boolean }>()
 

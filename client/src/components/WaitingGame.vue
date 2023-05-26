@@ -171,10 +171,10 @@ import BallsImage from './assets/BallsImage.vue'
 const props = withDefaults(defineProps<{ game: WaitingGame; active?: boolean }>(), { active: false })
 
 const emit = defineEmits<{
-  (eventName: 'move-player', data: { gameID: number; username: string; steps: number }): void
-  (eventName: 'remove-player', username: string): void
-  (eventName: 'ready-player', gameID: number): void
-  (eventName: 'color-player', username: string, gameID: number, color: string): void
+  'move-player': [data: { gameID: number; username: string; steps: number }]
+  'remove-player': [username: string]
+  'ready-player': [gameID: number]
+  'color-player': [username: string, gameID: number, color: string]
 }>()
 
 const opRef = ref<OverlayPanel | null>(null)
