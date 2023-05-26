@@ -21,7 +21,7 @@ export class LeadersController extends Controller {
       return validationError(409, 'limit and offset as integer required')
     }
 
-    const startDateNormalized = new Date(startDate || 0)
+    const startDateNormalized = new Date(startDate ?? 0)
     const endDateNormalized = endDate === undefined ? new Date(Date.now()) : new Date(endDate)
     if (startDateNormalized >= endDateNormalized) {
       return validationError(409, 'startDate should be smaller than endDate')
@@ -47,7 +47,7 @@ export class LeadersController extends Controller {
       return validationError(409, 'limit and offset as integer required')
     }
 
-    const startDateNormalized = new Date(startDate || 0)
+    const startDateNormalized = new Date(startDate ?? 0)
     const endDateNormalized = endDate === undefined ? new Date(Date.now()) : new Date(endDate)
     if (startDateNormalized >= endDateNormalized) {
       return validationError(409, 'startDate should be smaller than endDate')
