@@ -5,7 +5,7 @@ import de from '../locales/de.json'
 import { locales, fallbackLocale } from '@/../../server/src/sharedDefinitions/locales'
 
 export function getLocaleFromBrowser(): string {
-  let browserLocales = navigator.languages === undefined ? [navigator.language] : navigator.languages
+  let browserLocales = navigator.languages ?? [navigator.language]
 
   if (!browserLocales) {
     return fallbackLocale
