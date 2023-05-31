@@ -3,10 +3,9 @@ import type express from 'express'
 import { Controller, Get, Post, Delete, Body, Route, Request, Security, Query, TsoaResponse, Res, SuccessResponse } from 'tsoa'
 
 import bcrypt from 'bcrypt'
-import { randomUUID } from 'crypto'
 import Joi from 'joi'
 
-import { sendActivation, sendNewPassword } from '../communicationUtils/email'
+import { sendActivation } from '../communicationUtils/email'
 import {
   validateUsername,
   validateEmail,
@@ -30,10 +29,14 @@ import {
   deleteUser,
   changeUsername,
   editUserDescription,
+  requestPasswordReset,
+  disablePasswordResetRequestsOfUser,
+  applyPasswordReset,
 } from '../services/user'
 import { signJWT } from '../helpers/jwtWrapper'
 import logger from '../helpers/logger'
 import { analyseUserAgentHeader } from '../helpers/userAnalysis'
+import { UserIdentifier } from '../sharedTypes/typesDBuser'
 
 interface UserCreateRequest {
   username: string
@@ -109,6 +112,7 @@ export class UserController extends Controller {
     analyseUserAgentHeader(request.app.locals.sqlClient, request.headers['user-agent'])
 
     await updateUsersLastLogin(request.app.locals.sqlClient, userToLogin.username)
+    await disablePasswordResetRequestsOfUser(request.app.locals.sqlClient, user.value.id)
 
     const token = signJWT(userToLogin.username, user.value.id)
     return {
@@ -228,23 +232,38 @@ export class UserController extends Controller {
   }
 
   /**
-   * Request a new password for user by username or email
+   * Request a password reset for user by username or email. User will recieve a reset token by mail
    */
-  @Post('/requestNewPassword')
-  public async requestNewPassword(
+  @Post('/requestPasswordReset')
+  public async requestPasswordReset(
     @Request() request: express.Request,
-    @Body() userIdentifier: { username: string; email?: string } | { username?: string; email: string },
-    @Res() identificationError: TsoaResponse<400, string>
+    @Body() userIdentifier: UserIdentifier,
+    @Res() identificationError: TsoaResponse<400, string>,
+    @Res() serverError: TsoaResponse<500, { message: string; details?: any }>
   ): Promise<void> {
     const user = await getUser(request.app.locals.sqlClient, userIdentifier)
-    if (user.isErr()) {
-      return identificationError(400, 'User not found')
-    }
+    if (user.isErr()) return identificationError(400, 'User not found')
 
-    const password = randomUUID().substring(0, 15)
-    await sendNewPassword({ user: user.value, password })
-    const hash = await bcrypt.hash(password, 10)
-    await changePassword(request.app.locals.sqlClient, user.value.id, hash)
+    const res = await requestPasswordReset(request.app.locals.sqlClient, user.value)
+    if (res.isErr()) return serverError(500, { message: res.error })
+  }
+
+  /**
+   * Request a new password for user by username or email
+   */
+  @Post('/applyPasswordReset')
+  public async applyPasswordReset(
+    @Request() request: express.Request,
+    @Body() body: { password: string; token: string },
+    @Res() validationError: TsoaResponse<409, string>
+  ): Promise<void> {
+    const passwordResult = validatePassword(body.password)
+    if (passwordResult.isErr()) return validationError(409, passwordResult.error)
+
+    const hash = await bcrypt.hash(body.password, 10)
+    const res = await applyPasswordReset(request.app.locals.sqlClient, body.token, hash)
+
+    if (res.isErr()) throw new Error(res.error)
   }
 
   /**

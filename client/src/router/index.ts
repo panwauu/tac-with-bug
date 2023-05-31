@@ -27,6 +27,7 @@ const FAQ = () => import('@/views/Home/FAQ.vue')
 const HallOfFame = () => import('@/views/Home/HallOfFame.vue')
 const PlayerSearch = () => import('@/views/Home/PlayerSearch.vue')
 const Advertisement = () => import('@/views/Home/AdvertisementView.vue')
+const ResetPassword = () => import('@/views/Home/ResetPassword.vue')
 
 const regexp = locales.join('|')
 const routes = [
@@ -164,6 +165,12 @@ const routes = [
         path: 'advert',
         name: 'Advertisement',
         component: Advertisement,
+      },
+      {
+        path: 'resetpassword/:username/:token',
+        name: 'ResetPassword',
+        props: true,
+        component: ResetPassword,
       },
       {
         path: '',

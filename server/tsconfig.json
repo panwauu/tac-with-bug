@@ -40,6 +40,7 @@
 
     "skipLibCheck": true
   },
-  "lib": ["es2015"]
+  "lib": ["es2015"],
+  "exclude": ["**/vitest.config.ts", "**/vite.config.ts"]
   //"include": ["src/**/*"]
 }

@@ -25,6 +25,13 @@ CREATE TABLE users (
   notification_settings BOOLEAN [] NOT NULL DEFAULT array_fill(TRUE, ARRAY [6]) CHECK (array_length(notification_settings, 1) = 6)
 );
 
+CREATE TABLE password_reset_requests (
+  token CHAR(64) NOT NULL PRIMARY KEY,
+  userid INT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  time_of_request timestamptz NOT NULL DEFAULT current_timestamp,
+  valid BOOLEAN NOT NULL DEFAULT TRUE
+);
+
 CREATE TABLE subscriptions (
   id SERIAL PRIMARY KEY,
   userid int NOT NULL REFERENCES users (id),

@@ -47,7 +47,7 @@ async function executeNewPassword() {
   }
 
   try {
-    await Service.requestNewPassword(data)
+    await Service.requestPasswordReset(data)
 
     toast.add({
       severity: 'success',
