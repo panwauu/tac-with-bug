@@ -962,5 +962,10 @@
   },
   "PlayersAutoComplete": {
     "placeholder": "игрок"
+  },
+  "NewPassword": {
+    "passwordResetSuccess-detail": "С этого момента вы можете использовать новый пароль для входа в систему. Наслаждайтесь игрой",
+    "passwordResetSuccess-summary": "пароль изменен",
+    "submitButton": "Изменить пароль"
   }
 }
