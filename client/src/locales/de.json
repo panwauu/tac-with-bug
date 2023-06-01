@@ -962,5 +962,10 @@
   },
   "PlayersAutoComplete": {
     "placeholder": "Spieler"
+  },
+  "NewPassword": {
+    "submitButton": "Neues Passwort festlegen",
+    "passwordResetSuccess-summary": "Neues Password festgelegt",
+    "passwordResetSuccess-detail": "Du kannst jetzt dein neues Password benutzen, um dich anzumelden. Viel Spaß beim Spielen"
   }
 }

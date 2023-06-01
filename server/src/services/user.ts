@@ -1,11 +1,13 @@
 import type pg from 'pg'
 import type { Friend } from '../sharedTypes/typesFriends'
-import { randomUUID } from 'crypto'
+import { randomUUID, randomBytes } from 'crypto'
 import type { UserIdentifier, User } from '../sharedTypes/typesDBuser'
 import { getSubscription, cancelSubscription, GetSubscriptionError, CancelSubscriptionError } from '../paypal/paypal'
 import { Result, err, ok } from 'neverthrow'
 import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
 import { deletePlayerFromTournament } from './tournamentsPrivate'
+import { sendPasswordReset } from '../communicationUtils/email'
+import logger from '../helpers/logger'
 
 export function resolveUserIdentifier(identifier: UserIdentifier, insertionIndex?: number): { key: string; sql: string; value: number | string } {
   if (identifier.id != null) {
@@ -57,6 +59,49 @@ export async function changeUsername(sqlClient: pg.Pool, userID: number, newUser
 export async function changePassword(sqlClient: pg.Pool, userID: number, passwordHash: string): Promise<void> {
   const res = await sqlClient.query('UPDATE users SET password = $1 WHERE id = $2', [passwordHash, userID])
   expectOneChangeInDatabase(res)
+}
+
+export async function disablePasswordResetRequestsOfUser(pgPool: pg.Pool, userid: number) {
+  await pgPool.query('UPDATE password_reset_requests SET valid=FALSE WHERE userid=$1;', [userid])
+  return true
+}
+
+export async function requestPasswordReset(pgPool: pg.Pool, user: User): Promise<Result<boolean, 'COULD_NOT_GENERATE_OR_SEND_TOKEN'>> {
+  const token = randomBytes(32).toString('hex')
+  try {
+    await pgPool.query('INSERT INTO password_reset_requests (token, userid) VALUES ($1, $2);', [token, user.id])
+    await sendPasswordReset({ user, token })
+    return ok(true)
+  } catch (error) {
+    logger.error(error)
+    return err('COULD_NOT_GENERATE_OR_SEND_TOKEN')
+  }
+}
+
+export type setNewPasswordError = 'CHANGE_REQUEST_NOT_FOUND' | 'CHANGE_REQUEST_NOT_VALID' | 'COULD_NOT_CHANGE_PASSWORD'
+export async function applyPasswordReset(pgPool: pg.Pool, token: string, passwordHash: string): Promise<Result<boolean, setNewPasswordError>> {
+  const res = await pgPool.query<{ userid: number; valid: boolean; age_in_s: number }>(
+    'SELECT userid, valid, ROUND(Extract(epoch FROM (current_timestamp - time_of_request))) as age_in_s FROM password_reset_requests WHERE token = $1;',
+    [token]
+  )
+
+  const request = res.rows.at(0)
+  if (request == null) return err('CHANGE_REQUEST_NOT_FOUND')
+  if (!request.valid) return err('CHANGE_REQUEST_NOT_VALID')
+
+  if (request.age_in_s > 15 * 60) {
+    await pgPool.query('UPDATE password_reset_requests SET valid=FALSE WHERE token=$1;', [token])
+    return err('CHANGE_REQUEST_NOT_VALID')
+  }
+
+  try {
+    await pgPool.query('UPDATE password_reset_requests SET valid=FALSE WHERE userid=$1;', [request.userid])
+    await changePassword(pgPool, request.userid, passwordHash)
+  } catch (error) {
+    return err('COULD_NOT_CHANGE_PASSWORD')
+  }
+
+  return ok(true)
 }
 
 export async function isUsernameFree(sqlClient: pg.Pool, username: string) {

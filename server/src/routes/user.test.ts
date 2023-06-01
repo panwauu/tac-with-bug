@@ -17,7 +17,7 @@ describe('Sign-Up', () => {
     locale: 'de',
   }
 
-  const spyNewPassword = vitest.spyOn(mail, 'sendNewPassword')
+  const spyNewPassword = vitest.spyOn(mail, 'sendPasswordReset')
   const spyActivation = vitest.spyOn(mail, 'sendActivation')
 
   afterEach(() => {
@@ -57,7 +57,7 @@ describe('Sign-Up', () => {
   test('Illegal passwords', async () => {
     const body = cloneDeep(validBody)
 
-    body.password = '1234567'
+    body.password = chance.string({ length: 7, pool: '1234' })
     let response = await testAgent.post('/gameApi/sign-up').send(body)
     expect(response.statusCode).toBe(409)
     expect(response.body).toStrictEqual('PASSWORD_TOO_SHORT')
@@ -334,38 +334,90 @@ describe('Sign-Up', () => {
     expect(response.statusCode).toBe(204)
   })
 
-  test('requestNewPassword', async () => {
-    let response = await testAgent.post('/gameApi/requestNewPassword')
-    expect(response.statusCode).toBe(422)
-    expect(response.body.message).toStrictEqual('Validation Failed')
+  test('requestPasswordReset should fail for invalid users', async () => {
+    spyNewPassword.mockReset()
 
-    response = await testAgent.post('/gameApi/requestNewPassword').send({ username: 'a' })
-    expect(response.statusCode).toBe(400)
-    expect(response.body).toBe('User not found')
+    const responseFailedValidation = await testAgent.post('/gameApi/requestPasswordReset')
+    expect(responseFailedValidation.statusCode).toBe(422)
+    expect(responseFailedValidation.body.message).toStrictEqual('Validation Failed')
 
-    response = await testAgent.post('/gameApi/requestNewPassword').send({ email: 'a@sadjfkjs.de' })
-    expect(response.statusCode).toBe(400)
-    expect(response.body).toBe('User not found')
+    const responseWrongUser = await testAgent.post('/gameApi/requestPasswordReset').send({ username: 'a' })
+    expect(responseWrongUser.statusCode).toBe(400)
+    expect(responseWrongUser.body).toBe('User not found')
+
+    const responseWrongEmail = await testAgent.post('/gameApi/requestPasswordReset').send({ email: 'a@sadjfkjs.de' })
+    expect(responseWrongEmail.statusCode).toBe(400)
+    expect(responseWrongEmail.body).toBe('User not found')
     expect(spyNewPassword).not.toHaveBeenCalled()
+  })
 
-    await testAgent.post('/gameApi/requestNewPassword').send({ email: validBody.email })
-    expect(spyNewPassword).toHaveBeenCalledTimes(1)
-    const newPW = spyNewPassword.mock.calls[0][0].password
+  async function requestPasswordResetHelper(req: { username: string } | { email: string }) {
+    spyNewPassword.mockReset()
 
-    response = await testAgent.post('/gameApi/login').send({ username: validBody.username, password: newPW })
+    const resetRes = await testAgent.post('/gameApi/requestPasswordReset').send(req)
+    expect(resetRes.status).toBe(204)
+    expect(spyNewPassword).toHaveBeenCalledOnce()
+    const token = spyNewPassword.mock.calls[0][0].token
+    expect(token).toHaveLength(64)
+    return token
+  }
+
+  test('Request for a password reset should work with email and should be disabled when loggin in with old password afterwards', async () => {
+    const token = await requestPasswordResetHelper({ username: validBody.username })
+    const validBeforeLogin = await testServer.pgPool.query<{ valid: boolean }>('SELECT valid FROM password_reset_requests WHERE token=$1;', [token])
+    expect(validBeforeLogin.rows[0].valid).toBe(true)
+
+    const response = await testAgent.post('/gameApi/login').send({ username: validBody.username, password: validBody.password })
     expect(response.statusCode).toBe(200)
+    const validAfterLogin = await testServer.pgPool.query<{ valid: boolean }>('SELECT valid FROM password_reset_requests WHERE token=$1;', [token])
+    expect(validAfterLogin.rows[0].valid).toBe(false)
+  })
 
-    await testAgent.post('/gameApi/requestNewPassword').send({ email: validBody.email.toUpperCase() })
-    expect(spyNewPassword).toHaveBeenCalledTimes(2)
-    const newPW2 = spyNewPassword.mock.calls[1][0].password
+  test('Request for new password should work with username and should be disabled when loggin in with old password', async () => {
+    const token = await requestPasswordResetHelper({ email: validBody.email })
+    const validBeforeLogin = await testServer.pgPool.query<{ valid: boolean }>('SELECT valid FROM password_reset_requests WHERE token=$1;', [token])
+    expect(validBeforeLogin.rows[0].valid).toBe(true)
 
-    response = await testAgent.post('/gameApi/login').send({ username: validBody.username, password: newPW2 })
+    const response = await testAgent.post('/gameApi/login').send({ username: validBody.username, password: validBody.password })
     expect(response.statusCode).toBe(200)
-    const authHeader = `Bearer ${response.body.token}`
+    const validAfterLogin = await testServer.pgPool.query<{ valid: boolean }>('SELECT valid FROM password_reset_requests WHERE token=$1;', [token])
+    expect(validAfterLogin.rows[0].valid).toBe(false)
+  })
 
-    // Reset Password
-    response = await testAgent.post('/gameApi/changePassword').set({ Authorization: authHeader }).send({ password_old: newPW2, password: validBody.password })
-    expect(response.statusCode).toBe(204)
+  test('Request for new password should fail for noncompliant password', async () => {
+    const response = await testAgent.post('/gameApi/applyPasswordReset').send({ token: 'a', password: 'a' })
+    expect(response.statusCode).toBe(409)
+  })
+
+  test('Request for new password should fail for invalid token', async () => {
+    const response = await testAgent.post('/gameApi/applyPasswordReset').send({ token: 'a', password: '12341234' })
+    expect(response.statusCode).toBe(500)
+  })
+
+  test('Should be able to change the password after a request and disable all other requests', async () => {
+    const token1 = await requestPasswordResetHelper({ username: validBody.username })
+    const token2 = await requestPasswordResetHelper({ username: validBody.username })
+    const newPassword = chance.string({ length: 12, pool: '1234' })
+
+    const response = await testAgent.post('/gameApi/applyPasswordReset').send({ token: token1, password: newPassword })
+    expect(response.status).toBe(204)
+
+    validBody.password = newPassword
+    const responseLogin = await testAgent.post('/gameApi/login').send({ username: validBody.username, password: validBody.password })
+    expect(responseLogin.statusCode).toBe(200)
+
+    const responseWithInvalid1 = await testAgent.post('/gameApi/applyPasswordReset').send({ token: token1, password: newPassword })
+    expect(responseWithInvalid1.status).toBe(500)
+    const responseWithInvalid2 = await testAgent.post('/gameApi/applyPasswordReset').send({ token: token2, password: newPassword })
+    expect(responseWithInvalid2.status).toBe(500)
+  })
+
+  test('Should not be able to change the password with old request', async () => {
+    const token = await requestPasswordResetHelper({ username: validBody.username })
+    await testServer.pgPool.query<{ valid: boolean }>(`UPDATE password_reset_requests SET time_of_request = current_timestamp - interval '16 minutes' WHERE token=$1;`, [token])
+
+    const response = await testAgent.post('/gameApi/applyPasswordReset').send({ token: token, password: validBody.password })
+    expect(response.status).toBe(500)
   })
 
   test('Change Profile Descripton', async () => {
@@ -388,6 +440,8 @@ describe('Sign-Up', () => {
   })
 
   test('Delete user', async () => {
+    await requestPasswordResetHelper({ username: validBody.username })
+
     let response = await testAgent.post('/gameApi/login').send({ username: validBody.username, password: validBody.password })
     expect(response.statusCode).toBe(200)
     const authHeader = `Bearer ${response.body.token}`

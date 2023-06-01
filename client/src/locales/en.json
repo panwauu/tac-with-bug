@@ -962,5 +962,10 @@
   },
   "PlayersAutoComplete": {
     "placeholder": "Player"
+  },
+  "NewPassword": {
+    "passwordResetSuccess-detail": "From now on you can use your new password to login. Enjoy playing",
+    "passwordResetSuccess-summary": "Password changed",
+    "submitButton": "Change password"
   }
 }
