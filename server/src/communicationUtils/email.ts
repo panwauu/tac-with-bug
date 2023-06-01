@@ -17,26 +17,19 @@ const mailTransporter = nodemailer.createTransport({
   },
 })
 
-const email =
-  process.env.NODE_ENV === 'test'
-    ? {
-        send: async (_: any) => {
-          return true
-        },
-      }
-    : new Email({
-        views: { root: path.join(__dirname, '..', '..', 'email') },
-        transport: mailTransporter,
-        message: {
-          from: `"Oskar von Tac-With-Bug" ${process.env.mailAddress}`,
-        },
-        i18n: {
-          locales: locales,
-          defaultLocale: fallbackLocale,
-          directory: path.join(__dirname, '..', '..', 'email', 'locales'),
-        },
-        send: process.env.NODE_ENV === 'production',
-      })
+const email = new Email({
+  views: { root: path.join(__dirname, '..', '..', 'email') },
+  transport: mailTransporter,
+  message: {
+    from: `"Oskar von Tac-With-Bug" ${process.env.mailAddress}`,
+  },
+  i18n: {
+    locales: locales,
+    defaultLocale: fallbackLocale,
+    directory: path.join(__dirname, '..', '..', 'email', 'locales'),
+  },
+  send: process.env.NODE_ENV === 'production',
+})
 
 export async function sendMail(receiverMail: string, subject: string, mailbody: string) {
   return email.send({
@@ -57,11 +50,12 @@ export async function sendActivation({ user, token }: { user: User; token: strin
   })
 }
 
-export async function sendNewPassword({ user, password }: { user: User; password: string }) {
+export async function sendPasswordReset({ user, token }: { user: User; token: string }) {
+  const link = `${process.env.BASE_URL}/#/${user.locale}/resetpassword/${user.username}/${token}`
   return email.send({
-    template: 'newPassword',
+    template: 'passwordReset',
     message: { to: user.email },
-    locals: { locale: user.locale, name: user.username, newPassword: password },
+    locals: { locale: user.locale, name: user.username, link },
   })
 }
 
