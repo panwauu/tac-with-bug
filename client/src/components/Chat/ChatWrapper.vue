@@ -129,6 +129,8 @@ const resize = ($event: { min: number; max: number; size: number }[]) => {
 }
 
 :not(.splitpanes--dragging) > .splitpanes__pane {
-  transition: height 0.2s ease-out, width 0.2s ease-out !important;
+  transition:
+    height 0.2s ease-out,
+    width 0.2s ease-out !important;
 }
 </style>
