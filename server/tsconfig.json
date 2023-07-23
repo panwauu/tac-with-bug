@@ -6,7 +6,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "types": ["vitest/globals" ],
-    "typeRoots": ["src/@types", "./node_modules/@types"],
+    "typeRoots": ["src/@types", "./node_modules/@types", "./node_modules"],
     "resolveJsonModule": true,
 
     /* Strict Type-Checking Options */

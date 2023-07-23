@@ -97,7 +97,9 @@ const cardNames = computed(() => {
 
 .ownCard {
   position: absolute;
-  transition: left 1s, margin 0.5s;
+  transition:
+    left 1s,
+    margin 0.5s;
   box-shadow: 0px 0px 10px -5px black;
 }
 

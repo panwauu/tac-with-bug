@@ -71,7 +71,9 @@ function closeMenuIfResponsive() {
 .chatBody {
   height: 100%;
   width: 100%;
-  transition: margin 0.3s ease 0s, width 0.3s ease 0s;
+  transition:
+    margin 0.3s ease 0s,
+    width 0.3s ease 0s;
   position: relative;
   background: var(--surface-e);
 }

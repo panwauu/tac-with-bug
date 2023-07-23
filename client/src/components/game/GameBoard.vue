@@ -38,7 +38,7 @@
           ball6: miscState.players.length === 6 && positionStyles.turned === false,
           ball6_turned: miscState.players.length === 6 && positionStyles.turned === true,
         }"
-        :style="(positionStyles.stylePositionBalls?.[rotatePosition(position)] as any)"
+        :style="positionStyles.stylePositionBalls?.[rotatePosition(position)] as any"
         droppable
         @click="dropSuccess(position)"
         @drop="dropSuccess(position)"
@@ -250,7 +250,9 @@ function brightnessValue() {
 
 .ball {
   transform: translate(-50%, -50%);
-  transition: all 1.2s ease-in-out, opacity 0s;
+  transition:
+    all 1.2s ease-in-out,
+    opacity 0s;
   /* 1.2s are also in JS (1200) for Tac Animation */
   transition-timing-function: ease-in-out;
   z-index: 110;
