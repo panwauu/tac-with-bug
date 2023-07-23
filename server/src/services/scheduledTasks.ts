@@ -42,7 +42,7 @@ export async function registerJobs(sqlClient: pg.Pool) {
       })
     )
     jobs.push(
-      schedule.scheduleJob({ rule: '0 12 * * * *', tz: 'Europe/Berlin' }, async () => {
+      schedule.scheduleJob({ rule: '0 0 12 * * *', tz: 'Europe/Berlin' }, async () => {
         await notifyUsersOfMissedMessages(sqlClient)
         await updateSubscriptions(sqlClient)
       })
