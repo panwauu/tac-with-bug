@@ -19,7 +19,7 @@
               <td v-if="fact[0] === 'mostLoved' || fact[0] === 'leastLoved'">
                 <BallsImage
                   style="height: 30px"
-                  :color="(fact[1] as string)"
+                  :color="fact[1] as string"
                 />
               </td>
               <td v-else>{{ fact[1] }}</td>

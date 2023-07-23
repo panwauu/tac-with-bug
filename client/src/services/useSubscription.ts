@@ -36,10 +36,13 @@ export function useSubscription(socket: GeneralSocketC): SubscriptionState {
       if (subscriptionState.validuntil != null) {
         const timeout = new Date(subscriptionState.validuntil).getTime() - Date.now()
         if (timeout < 2147483647) {
-          setTimeout(function () {
-            console.log('Trigger refresh because of validuntil off')
-            subscriptionState.getSubscription()
-          }, Math.max(0, timeout))
+          setTimeout(
+            function () {
+              console.log('Trigger refresh because of validuntil off')
+              subscriptionState.getSubscription()
+            },
+            Math.max(0, timeout)
+          )
         }
       }
     },

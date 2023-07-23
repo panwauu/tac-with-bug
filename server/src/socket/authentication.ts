@@ -31,6 +31,7 @@ export function registerAuthHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
 
 export async function logoutSocket(pgPool: pg.Pool, socket: GeneralSocketS) {
   await terminateSocket(pgPool, socket)
+  // @ts-ignore
   socket.data.userID = undefined
   await initializeSocket(pgPool, socket)
 }

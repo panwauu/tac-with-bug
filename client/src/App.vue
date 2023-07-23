@@ -116,7 +116,9 @@ onUnmounted(() => clearInterval(interval))
 }
 
 :not(.splitpanes--dragging) > .splitpanes__pane {
-  transition: height 0.2s ease-out, width 0.2s ease-out !important;
+  transition:
+    height 0.2s ease-out,
+    width 0.2s ease-out !important;
 }
 </style>
 
@@ -193,7 +195,9 @@ body {
 
 @font-face {
   font-family: 'tacfontregular';
-  src: url('./assets/TacFont/tacfont_semibold_1-webfont.woff2') format('woff2'), url('./assets/TacFont/tacfont_semibold_1-webfont.woff') format('woff');
+  src:
+    url('./assets/TacFont/tacfont_semibold_1-webfont.woff2') format('woff2'),
+    url('./assets/TacFont/tacfont_semibold_1-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
