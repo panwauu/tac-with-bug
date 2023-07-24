@@ -97,6 +97,8 @@ jobs:
               sha: context.sha,
               ref: "refs/tags/deployed"
             })
+      - name: Wait before validating the update
+        run: sleep 10
       - name: Sanity check of tac-with-bug
         uses: fjogeleit/http-request-action@master
         with:
