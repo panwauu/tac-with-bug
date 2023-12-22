@@ -42,7 +42,7 @@ describe('Game test suite via socket.io', () => {
   })
 
   describe('Test dealCards', () => {
-    let gameSocket: GameSocketC, interval: NodeJS.Timer
+    let gameSocket: GameSocketC, interval: NodeJS.Timeout
     const gameID = 2
 
     afterAll(async () => {
