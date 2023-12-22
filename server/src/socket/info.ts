@@ -1,5 +1,5 @@
-import { nsp as nspGame } from './game'
-import { nspGeneral } from './general'
+import { nsp as nspGame } from './game.js'
+import { nspGeneral } from './general.js'
 
 function emitServerConnections() {
   nspGeneral.emit('info:serverConnections', {

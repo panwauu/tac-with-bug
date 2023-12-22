@@ -2,14 +2,14 @@ import type pg from 'pg'
 
 import schedule from 'node-schedule'
 
-import logger from '../helpers/logger'
-import { endNotProperlyEndedGames, abortNotEndedGames, disableRematchOfOldGames, getGame } from '../services/game'
-import { getPublicTournament, startTournament, startTournamentRound, checkForceGameEnd } from './tournamentsPublic'
-import { startSignUpOnCondition, endSignUpOnCondition } from './tournamentsRegister'
-import type { PublicTournament } from '../sharedTypes/typesTournament'
-import { sendUpdatesOfGameToPlayers } from '../socket/game'
-import { updateSubscriptions } from '../paypal/paypal'
-import { notifyUsersOfMissedMessages } from './chat'
+import logger from '../helpers/logger.js'
+import { endNotProperlyEndedGames, abortNotEndedGames, disableRematchOfOldGames, getGame } from '../services/game.js'
+import { getPublicTournament, startTournament, startTournamentRound, checkForceGameEnd } from './tournamentsPublic.js'
+import { startSignUpOnCondition, endSignUpOnCondition } from './tournamentsRegister.js'
+import type { PublicTournament } from '../sharedTypes/typesTournament.js'
+import { sendUpdatesOfGameToPlayers } from '../socket/game.js'
+import { updateSubscriptions } from '../paypal/paypal.js'
+import { notifyUsersOfMissedMessages } from './chat.js'
 
 const jobs: schedule.Job[] = []
 

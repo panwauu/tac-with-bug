@@ -1,5 +1,5 @@
-import { EmailNotificationSettingsDecoder, EmailNotificationSettingsType } from '../services/settings'
-import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets'
+import { EmailNotificationSettingsDecoder, EmailNotificationSettingsType } from '../services/settings.js'
+import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets.js'
 
 describe('Settings-REST test', () => {
   let userWithCredentials: User

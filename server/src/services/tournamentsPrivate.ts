@@ -1,15 +1,21 @@
 import type pg from 'pg'
-import type * as tTournament from '../sharedTypes/typesTournament'
+import type * as tTournament from '../sharedTypes/typesTournament.js'
 
 import { ok, err, Result } from 'neverthrow'
-import { getUser, GetUserErrors } from './user'
-import { createGame } from './game'
-import { colors } from '../sharedDefinitions/colors'
-import type { GameForPlay } from '../sharedTypes/typesDBgame'
-import { evaluateGameWinnerAndReturnEndedFlag, EvaluateGameWinnerAndReturnEndedFlagError, updateScore, createTournamentDataKO, CreateTournamentDataKOError } from './tournamentKO'
-import { pushChangedPrivateTournament } from '../socket/tournamentPrivate'
-import { getSocketByUserID } from '../socket/general'
-import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
+import { getUser, GetUserErrors } from './user.js'
+import { createGame } from './game.js'
+import { colors } from '../sharedDefinitions/colors.js'
+import type { GameForPlay } from '../sharedTypes/typesDBgame.js'
+import {
+  evaluateGameWinnerAndReturnEndedFlag,
+  EvaluateGameWinnerAndReturnEndedFlagError,
+  updateScore,
+  createTournamentDataKO,
+  CreateTournamentDataKOError,
+} from './tournamentKO.js'
+import { pushChangedPrivateTournament } from '../socket/tournamentPrivate.js'
+import { getSocketByUserID } from '../socket/general.js'
+import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games.js'
 
 interface GetPrivateTournamentCondition {
   id?: number

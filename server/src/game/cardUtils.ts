@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
-import type * as tCard from '../sharedTypes/typesCard'
-import type { Game } from './game'
+import type * as tCard from '../sharedTypes/typesCard.js'
+import type { Game } from './game.js'
 
 export function initalizeCards(nPlayers: number, meisterVersion: boolean): tCard.CardsType {
   const cards: tCard.CardsType = {

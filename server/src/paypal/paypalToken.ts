@@ -1,5 +1,5 @@
 import axios from 'axios'
-import logger from '../helpers/logger'
+import logger from '../helpers/logger.js'
 
 let token: Promise<string> | null = null
 

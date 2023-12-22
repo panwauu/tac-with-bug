@@ -1,13 +1,13 @@
 import type { Socket as ServerSocket, Namespace } from 'socket.io'
 import type { Socket as ClientSocket } from 'socket.io-client'
-import type { CreateGameType, MovePlayerType, SwitchColorType, WaitingGame, StartGameType } from './typesWaiting'
-import type { SubscriptionExport } from './typesSubscription'
-import type { GameForOverview, GetGamesType, GetRunningGamesType, UpdateDataType, GameForPlay } from './typesDBgame'
-import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTournament, TournamentTableData, LastTournamentWinners } from './typesTournament'
-import type { MoveTextOrBall } from './typesBall'
-import type { Friend } from './typesFriends'
-import type { TutorialStepOutput } from './typesTutorial'
-import type { ChatElement, ChatMessage } from './chat'
+import type { CreateGameType, MovePlayerType, SwitchColorType, WaitingGame, StartGameType } from './typesWaiting.js'
+import type { SubscriptionExport } from './typesSubscription.js'
+import type { GameForOverview, GetGamesType, GetRunningGamesType, UpdateDataType, GameForPlay } from './typesDBgame.js'
+import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTournament, TournamentTableData, LastTournamentWinners } from './typesTournament.js'
+import type { MoveTextOrBall } from './typesBall.js'
+import type { Friend } from './typesFriends.js'
+import type { TutorialStepOutput } from './typesTutorial.js'
+import type { ChatElement, ChatMessage } from './chat.js'
 
 export type AckData<T> = { status: number; error?: any; data?: T }
 export type CallbackFunction<T> = (data: AckData<T>) => void

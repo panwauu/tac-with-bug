@@ -1,9 +1,9 @@
-import type * as tCard from '../sharedTypes/typesCard'
-import type * as tBall from '../sharedTypes/typesBall'
+import type * as tCard from '../sharedTypes/typesCard.js'
+import type * as tBall from '../sharedTypes/typesBall.js'
 
 import { cloneDeep } from 'lodash'
-import { moveOneStep } from './generateMovesUtils'
-import { ballHome, ballGoal } from './ballUtils'
+import { moveOneStep } from './generateMovesUtils.js'
+import { ballHome, ballGoal } from './ballUtils.js'
 
 export function performBallAction(
   card: tCard.PlayerCard,

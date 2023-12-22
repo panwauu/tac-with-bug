@@ -1,13 +1,13 @@
 import type express from 'express'
 import { Controller, Get, Post, Body, Route, Request, Security, Query, TsoaResponse, Res } from 'tsoa'
 
-import { createTournament } from '../services/tournamentsManualEditing'
-import { endSignupIfComplete } from '../services/tournamentsRegister'
-import { getDifferentName } from '../services/SweetNameGenerator'
-import type { PublicTournament } from '../sharedTypes/typesTournament'
-import { getPublicTournamentByID } from '../services/tournamentsPublic'
-import { registerJobsForOneTournament } from '../services/scheduledTasks'
-import { createTournamentDataKO } from '../services/tournamentKO'
+import { createTournament } from '../services/tournamentsManualEditing.js'
+import { endSignupIfComplete } from '../services/tournamentsRegister.js'
+import { getDifferentName } from '../services/SweetNameGenerator.js'
+import type { PublicTournament } from '../sharedTypes/typesTournament.js'
+import { getPublicTournamentByID } from '../services/tournamentsPublic.js'
+import { registerJobsForOneTournament } from '../services/scheduledTasks.js'
+import { createTournamentDataKO } from '../services/tournamentKO.js'
 
 @Route('/')
 export class TournamentsController extends Controller {

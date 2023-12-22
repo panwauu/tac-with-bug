@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client'
-import type { GameSocketC } from '../test/socket'
-import { connectSocket } from './handleSocket'
+import type { GameSocketC } from '../test/socket.js'
+import { connectSocket } from './handleSocket.js'
 
 export function initiateGameSocket(gameID: number | string, token: string): GameSocketC {
   const port = (global as any).testServer.httpServer.address().port

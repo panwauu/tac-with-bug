@@ -1,9 +1,9 @@
-import type { Game } from '../game/game'
-import type { BallsType } from './typesBall'
-import type { PlayerCard } from './typesCard'
-import type { GameStatistic } from './typesStatistic'
-import type { Player } from './typesPlayers'
-import type { Substitution } from './game'
+import type { Game } from '../game/game.js'
+import type { BallsType } from './typesBall.js'
+import type { PlayerCard } from './typesCard.js'
+import type { GameStatistic } from './typesStatistic.js'
+import type { Player } from './typesPlayers.js'
+import type { Substitution } from './game.js'
 
 interface GameGeneral {
   id: number

@@ -1,4 +1,4 @@
-import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets'
+import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets.js'
 
 describe('Platform PlayerStatistic Test Suite', () => {
   let userWithCredentials: User

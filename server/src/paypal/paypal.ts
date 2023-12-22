@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { ok, err, Result } from 'neverthrow'
 import type pg from 'pg'
-import { getEmailNotificationSettings } from '../services/settings'
-import { sendSubscriptionPaymentReminder } from '../communicationUtils/email'
-import logger from '../helpers/logger'
-import { getUser } from '../services/user'
-import { getToken, requestTokenFromPaypal } from './paypalToken'
+import { getEmailNotificationSettings } from '../services/settings.js'
+import { sendSubscriptionPaymentReminder } from '../communicationUtils/email.js'
+import logger from '../helpers/logger.js'
+import { getUser } from '../services/user.js'
+import { getToken, requestTokenFromPaypal } from './paypalToken.js'
 
 interface Subscription {
   id: number | null

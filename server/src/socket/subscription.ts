@@ -1,12 +1,12 @@
 import type pg from 'pg'
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
-import type { SubscriptionExport } from '../sharedTypes/typesSubscription'
-import logger from '../helpers/logger'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
+import type { SubscriptionExport } from '../sharedTypes/typesSubscription.js'
+import logger from '../helpers/logger.js'
 import Joi from 'joi'
 
-import { sendNewSubscription, sendCancelSubscription, sendSubscriptionError } from '../communicationUtils/email'
-import { SubscriptionDetails, getSubscription, cancelSubscription, newSubscription, getNSubscriptions, getInvalidSubscriptionDetails } from '../paypal/paypal'
-import { getUser } from '../services/user'
+import { sendNewSubscription, sendCancelSubscription, sendSubscriptionError } from '../communicationUtils/email.js'
+import { SubscriptionDetails, getSubscription, cancelSubscription, newSubscription, getNSubscriptions, getInvalidSubscriptionDetails } from '../paypal/paypal.js'
+import { getUser } from '../services/user.js'
 
 export function initializeSubscription(pgPool: pg.Pool, socket: GeneralSocketS) {
   onGet(pgPool, socket)

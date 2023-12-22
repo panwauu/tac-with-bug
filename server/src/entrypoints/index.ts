@@ -1,6 +1,6 @@
 import minimist from 'minimist'
-import logger from '../helpers/logger'
-import { TacServer, ServerOptions } from './server'
+import logger from '../helpers/logger.js'
+import { TacServer, ServerOptions } from './server.js'
 
 const argv = minimist(process.argv.slice(2))
 

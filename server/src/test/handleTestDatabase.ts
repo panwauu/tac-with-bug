@@ -1,8 +1,8 @@
 import path from 'path'
 import fs from 'fs'
-import logger from '../helpers/logger'
+import logger from '../helpers/logger.js'
 import intro from '../dbUtils/intro.json'
-import { initTestDatabaseClient } from '../dbUtils/initdBUtils'
+import { initTestDatabaseClient } from '../dbUtils/initdBUtils.js'
 
 export async function prepareTestDatabase(databaseName: string) {
   try {

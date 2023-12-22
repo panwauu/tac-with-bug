@@ -1,9 +1,9 @@
-import type { GameSocketC } from '../sharedTypes/GameNamespaceDefinition'
-import type { GeneralSocketC } from '../test/socket'
+import type { GameSocketC } from '../sharedTypes/GameNamespaceDefinition.js'
+import type { GeneralSocketC } from '../test/socket.js'
 
-import { registerGameSocket } from '../test/handleGameSocket'
-import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
-import { closeSockets, connectSocket } from '../test/handleSocket'
+import { registerGameSocket } from '../test/handleGameSocket.js'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets.js'
+import { closeSockets, connectSocket } from '../test/handleSocket.js'
 
 describe('Info sest suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[], socket: GeneralSocketC, gameSocket: GameSocketC

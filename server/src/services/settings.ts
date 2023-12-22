@@ -1,6 +1,6 @@
 import { ok, err, Result } from 'neverthrow'
 import type pg from 'pg'
-import logger from '../helpers/logger'
+import logger from '../helpers/logger.js'
 
 export const EmailNotificationSettingsDecoder = ['news', 'tournamentNews', 'tournamentInvitations', 'sponsoring', 'messages', 'friendRequests'] as const
 export type KeyOfEmailNotificationSettings = (typeof EmailNotificationSettingsDecoder)[number]

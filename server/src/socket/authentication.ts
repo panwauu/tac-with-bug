@@ -1,7 +1,7 @@
 import type pg from 'pg'
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
-import { verifyJWT } from '../helpers/jwtWrapper'
-import { initializeSocket, terminateSocket } from './general'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
+import { verifyJWT } from '../helpers/jwtWrapper.js'
+import { initializeSocket, terminateSocket } from './general.js'
 import Joi from 'joi'
 
 export function registerAuthHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {

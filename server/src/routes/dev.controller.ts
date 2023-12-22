@@ -1,8 +1,8 @@
 import type express from 'express'
 import { Controller, Get, Query, Route, Request, Security, TsoaResponse, Res, Tags } from 'tsoa'
 
-import { retrieveCapturedGame } from '../services/capture'
-import { getEmailsFromUsersForNews } from '../services/settings'
+import { retrieveCapturedGame } from '../services/capture.js'
+import { getEmailsFromUsersForNews } from '../services/settings.js'
 
 @Route('/')
 @Tags('Dev')

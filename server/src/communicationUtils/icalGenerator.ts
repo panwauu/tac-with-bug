@@ -1,5 +1,5 @@
 import ical, { ICalAlarmType } from 'ical-generator'
-import type { PublicTournament } from '../sharedTypes/typesTournament'
+import type { PublicTournament } from '../sharedTypes/typesTournament.js'
 
 export function generateIcal(tournament: PublicTournament) {
   const cal = ical()

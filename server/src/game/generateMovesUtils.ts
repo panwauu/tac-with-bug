@@ -1,8 +1,8 @@
-import type * as tCard from '../sharedTypes/typesCard'
-import type * as tBall from '../sharedTypes/typesBall'
+import type * as tCard from '../sharedTypes/typesCard.js'
+import type * as tBall from '../sharedTypes/typesBall.js'
 
-import { ballStart, ballGoal, ballPlayer } from './ballUtils'
-import { ballInLastGoalPosition, sevenReconstructPath } from './performMoveUtils'
+import { ballStart, ballGoal, ballPlayer } from './ballUtils.js'
+import { ballInLastGoalPosition, sevenReconstructPath } from './performMoveUtils.js'
 
 export function createCardWithMove(
   cardTitle: tCard.CardType,

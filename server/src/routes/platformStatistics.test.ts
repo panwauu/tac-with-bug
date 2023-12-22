@@ -1,6 +1,6 @@
-import { locales } from '../sharedDefinitions/locales'
-import { getPassedRatio, getPlatformStatistic } from '../services/platformStatistic'
-import type { DayDatasetType, HourDatasetType } from '../sharedTypes/typesPlatformStatistic'
+import { locales } from '../sharedDefinitions/locales.js'
+import { getPassedRatio, getPlatformStatistic } from '../services/platformStatistic.js'
+import type { DayDatasetType, HourDatasetType } from '../sharedTypes/typesPlatformStatistic.js'
 import { readFileSync } from 'fs'
 import path from 'path'
 

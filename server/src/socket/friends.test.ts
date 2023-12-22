@@ -1,7 +1,7 @@
-import type { Friend } from '../sharedTypes/typesFriends'
-import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
-import { closeSockets } from '../test/handleSocket'
-import type { GeneralSocketC } from '../test/socket'
+import type { Friend } from '../sharedTypes/typesFriends.js'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets.js'
+import { closeSockets } from '../test/handleSocket.js'
+import type { GeneralSocketC } from '../test/socket.js'
 
 describe('Friends test suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[]

@@ -1,9 +1,9 @@
-import logger from '../helpers/logger'
-import type * as tBall from '../sharedTypes/typesBall'
+import logger from '../helpers/logger.js'
+import type * as tBall from '../sharedTypes/typesBall.js'
 import type pg from 'pg'
-import type { Game } from '../game/game'
-import type { CardsType } from '../sharedTypes/typesCard'
-import { sanitizeGameCapture } from './gameCaptureSanitation'
+import type { Game } from '../game/game.js'
+import type { CardsType } from '../sharedTypes/typesCard.js'
+import { sanitizeGameCapture } from './gameCaptureSanitation.js'
 
 export interface CapturedType {
   action: tBall.MoveType | ['init', number, number, boolean, boolean] | 'reset'

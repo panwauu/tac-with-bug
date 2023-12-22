@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
 import fs from 'fs'
-import { Game } from '../game/game'
+import { Game } from '../game/game.js'
 
 //From File
 export function testCapturedMoves(testFileName: string, nPlayers?: number, nTeams?: number, meisterVersion?: boolean, coop?: boolean) {

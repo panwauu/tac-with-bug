@@ -1,12 +1,12 @@
 import type pg from 'pg'
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
 
 import Joi from 'joi'
-import logger from '../helpers/logger'
+import logger from '../helpers/logger.js'
 
-import { getGamesSummary, getGamesLazy, getRunningGames } from '../services/game'
-import { getUser } from '../services/user'
-import { nspGeneral } from './general'
+import { getGamesSummary, getGamesLazy, getRunningGames } from '../services/game.js'
+import { getUser } from '../services/user.js'
+import { nspGeneral } from './general.js'
 
 export async function emitRunningGamesUpdate(pgPool: pg.Pool, socket?: GeneralSocketS) {
   const games = await getRunningGames(pgPool)
