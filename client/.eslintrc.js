@@ -21,6 +21,7 @@ module.exports = {
     'sonarjs/no-duplicated-branches': 0,
     'vue/attribute-hyphenation': 0,
     'vue/v-on-event-hyphenation': 0,
+    'no-extra-semi': 0, // Conflict with prettier
     //'vue/max-attributes-per-line': 0, // Conflict with prettier
     //'vue/singleline-html-element-content-newline': 0, // Conflict with prettier
     //'vue/multiline-html-element-content-newline': 0, // Conflict with prettier

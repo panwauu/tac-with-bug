@@ -88,7 +88,7 @@ async function login() {
       throw new Error('Could not login Socket')
     }
 
-    (socket.auth as any).token = response.token
+    ;(socket.auth as any).token = response.token
     userLogin({ token: response.token, username: response.username })
     deleteProfilePics()
     settingsStore.setColorblind(response.colorBlindnessFlag, false)
