@@ -14,7 +14,7 @@ async function main() {
   {
     console.log('Sanitize Captured Games')
     const progressbar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic)
-    progressbar.start(idsRes.rowCount, 0)
+    progressbar.start(idsRes.rowCount ?? 0, 0)
     for (let i = 0; i < idsRes.rows.length; i++) {
       await sanitizeGameCapture(pgPool, idsRes.rows[i].id)
       progressbar.update(i)
@@ -25,7 +25,7 @@ async function main() {
   if (argv['d'] || argv['delete']) {
     console.log('Delete invalid captured steps')
     const progressbar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic)
-    progressbar.start(idsRes.rowCount, 0)
+    progressbar.start(idsRes.rowCount ?? 0, 0)
     for (let i = 0; i < idsRes.rows.length; i++) {
       await removeInvalidCapturedMoves(pgPool, idsRes.rows[i].id)
       progressbar.update(i)
