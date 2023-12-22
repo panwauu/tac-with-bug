@@ -4,12 +4,12 @@
       win === 'lost'
         ? $t('Profile.lIconSymbol')
         : win === 'won'
-        ? $t('Profile.wIconSymbol')
-        : win === 'coop'
-        ? $t('Profile.tIconSymbol')
-        : win === 'aborted'
-        ? $t('Profile.aIconSymbol')
-        : $t('Profile.rIconSymbol')
+          ? $t('Profile.wIconSymbol')
+          : win === 'coop'
+            ? $t('Profile.tIconSymbol')
+            : win === 'aborted'
+              ? $t('Profile.aIconSymbol')
+              : $t('Profile.rIconSymbol')
     }}
   </div>
 </template>
