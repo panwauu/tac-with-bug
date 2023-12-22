@@ -1,6 +1,6 @@
 import { ok, err, Result } from 'neverthrow'
 import type pg from 'pg'
-import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils/dbHelpers'
+import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils/dbHelpers.js'
 
 let tutorialLevels: number[] = []
 

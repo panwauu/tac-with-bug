@@ -1,5 +1,5 @@
-import { Game } from '../game/game'
-import { testCapturedMoves } from '../test/captureCompare'
+import { Game } from '../game/game.js'
+import { testCapturedMoves } from '../test/captureCompare.js'
 
 test('Test constructor throws - 4', () => {
   expect(() => {

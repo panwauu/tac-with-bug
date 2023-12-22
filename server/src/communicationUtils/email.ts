@@ -1,10 +1,10 @@
 import Email from 'email-templates'
 import path from 'path'
 import nodemailer from 'nodemailer'
-import type { User } from '../sharedTypes/typesDBuser'
-import type { PublicTournament } from '../sharedTypes/typesTournament'
+import type { User } from '../sharedTypes/typesDBuser.js'
+import type { PublicTournament } from '../sharedTypes/typesTournament.js'
 import type { ICalCalendar } from 'ical-generator'
-import { locales, fallbackLocale } from '../sharedDefinitions/locales'
+import { locales, fallbackLocale } from '../sharedDefinitions/locales.js'
 
 const mailTransporter = nodemailer.createTransport({
   host: 'sslout.de',

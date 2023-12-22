@@ -10,9 +10,9 @@ import {
   getPlayablePlayers,
   createCardWithMove,
   getSevenPositions,
-} from '../game/generateMovesUtils'
-import { ballGoal, ballHome, ballStart, initializeBalls } from '../game/ballUtils'
-import { initalizeCards, dealCards } from '../game/cardUtils'
+} from '../game/generateMovesUtils.js'
+import { ballGoal, ballHome, ballStart, initializeBalls } from '../game/ballUtils.js'
+import { initalizeCards, dealCards } from '../game/cardUtils.js'
 
 const nPlayers = 4
 const ballsSample = initializeBalls(4)

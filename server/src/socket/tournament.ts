@@ -1,10 +1,10 @@
 import type pg from 'pg'
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
 import Joi from 'joi'
 
-import logger from '../helpers/logger'
-import { getLastTournamentWinners, lazyLoadTournamentsTable } from '../services/tournaments'
-import { nspGeneral } from './general'
+import logger from '../helpers/logger.js'
+import { getLastTournamentWinners, lazyLoadTournamentsTable } from '../services/tournaments.js'
+import { nspGeneral } from './general.js'
 
 export function registerTournamentHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('tournament:loadTable', async (data, cb) => {

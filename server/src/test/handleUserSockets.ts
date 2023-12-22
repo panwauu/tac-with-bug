@@ -1,8 +1,8 @@
-import type { GeneralSocketC } from '../test/socket'
+import type { GeneralSocketC } from '../test/socket.js'
 import { io } from 'socket.io-client'
-import { connectSocket } from './handleSocket'
+import { connectSocket } from './handleSocket.js'
 import Chance from 'chance'
-import { sleep } from '../helpers/sleep'
+import { sleep } from '../helpers/sleep.js'
 const chance = new Chance()
 
 export interface User {

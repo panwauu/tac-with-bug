@@ -1,9 +1,9 @@
 import type pg from 'pg'
-import type { TutorialStepDefinition } from '../sharedTypes/typesTutorial'
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
-import { Game } from '../game/game'
-import { getPlayerUpdateFromGame } from '../game/serverOutput'
-import { getDefaultTutorialProgress, getTutorialProgress, resetTutorialProgress, setTutorialProgress } from '../services/tutorial'
+import type { TutorialStepDefinition } from '../sharedTypes/typesTutorial.js'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
+import { Game } from '../game/game.js'
+import { getPlayerUpdateFromGame } from '../game/serverOutput.js'
+import { getDefaultTutorialProgress, getTutorialProgress, resetTutorialProgress, setTutorialProgress } from '../services/tutorial.js'
 import Joi from 'joi'
 
 export async function initializeTutorial(pgPool: pg.Pool, socket: GeneralSocketS) {

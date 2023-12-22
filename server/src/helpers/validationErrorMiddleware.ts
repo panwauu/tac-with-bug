@@ -1,4 +1,4 @@
-import logger from './logger'
+import logger from './logger.js'
 import type express from 'express'
 import { ValidateError } from 'tsoa'
 

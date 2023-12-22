@@ -1,8 +1,8 @@
-import type * as tCard from '../sharedTypes/typesCard'
-import type * as tBall from '../sharedTypes/typesBall'
-import type * as tStatistic from '../sharedTypes/typesStatistic'
+import type * as tCard from '../sharedTypes/typesCard.js'
+import type * as tBall from '../sharedTypes/typesBall.js'
+import type * as tStatistic from '../sharedTypes/typesStatistic.js'
 
-import { ballPlayer } from './ballUtils'
+import { ballPlayer } from './ballUtils.js'
 
 export function initalizeStatistic(nPlayers: number): tStatistic.GameStatistic[] {
   const initStatistic: tStatistic.GameStatistic[] = []

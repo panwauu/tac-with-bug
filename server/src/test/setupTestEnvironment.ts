@@ -1,8 +1,8 @@
 import supertest from 'supertest'
-import { TacServer } from '../entrypoints/server'
+import { TacServer } from '../entrypoints/server.js'
 import './socket'
 import Chance from 'chance'
-import { prepareTestDatabase, dropTestDatabase } from './handleTestDatabase'
+import { prepareTestDatabase, dropTestDatabase } from './handleTestDatabase.js'
 const chance = Chance()
 
 beforeAll(async () => {

@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 import path from 'path'
-import { locales } from '../sharedDefinitions/locales'
+import { locales } from '../sharedDefinitions/locales.js'
 
 const pathToLocales = process.argv.slice(2)[0] ?? './locales'
 const absolutePathOfLocales = path.resolve(__dirname, pathToLocales)

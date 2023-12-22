@@ -1,13 +1,13 @@
 import { Result, ok, err } from 'neverthrow'
 import type pg from 'pg'
-import { getSocketByUserID, getSocketsInGame, nsp, sendUpdatesOfGameToPlayers } from '../socket/game'
-import type { GameForPlay } from '../sharedTypes/typesDBgame'
-import { getGame, updateGame } from './game'
-import { initalizeStatistic } from '../game/statistic'
-import { addJob } from './scheduledTasks'
+import { getSocketByUserID, getSocketsInGame, nsp, sendUpdatesOfGameToPlayers } from '../socket/game.js'
+import type { GameForPlay } from '../sharedTypes/typesDBgame.js'
+import { getGame, updateGame } from './game.js'
+import { initalizeStatistic } from '../game/statistic.js'
+import { addJob } from './scheduledTasks.js'
 import { scheduleJob } from 'node-schedule'
-import { getUser, GetUserErrors } from './user'
-import type { Substitution } from '../sharedTypes/game'
+import { getUser, GetUserErrors } from './user.js'
+import type { Substitution } from '../sharedTypes/game.js'
 
 const MAX_TIME_FOR_SUBSTITUTION = 60 * 1000
 

@@ -1,5 +1,5 @@
-import type { CapturedType } from './capture'
-import { sanitizeGameCapture } from './gameCaptureSanitation'
+import type { CapturedType } from './capture.js'
+import { sanitizeGameCapture } from './gameCaptureSanitation.js'
 import rawTestData from './gameCaptureSanitation.test.json'
 
 interface TestDataElement {

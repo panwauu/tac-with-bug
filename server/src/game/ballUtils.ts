@@ -1,6 +1,6 @@
-import type * as tBall from '../sharedTypes/typesBall'
+import type * as tBall from '../sharedTypes/typesBall.js'
 
-import { ballInLastGoalPosition } from './performMoveUtils'
+import { ballInLastGoalPosition } from './performMoveUtils.js'
 
 export function ballHome(nBall: number): number {
   //home: 0 + nPlayer * 4,

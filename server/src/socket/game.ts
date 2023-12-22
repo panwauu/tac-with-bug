@@ -1,14 +1,14 @@
 import type pg from 'pg'
-import type { GameForPlay } from '../sharedTypes/typesDBgame'
-import type { GameSocketS, GameNamespace } from '../sharedTypes/GameNamespaceDefinition'
+import type { GameForPlay } from '../sharedTypes/typesDBgame.js'
+import type { GameSocketS, GameNamespace } from '../sharedTypes/GameNamespaceDefinition.js'
 
-import logger from '../helpers/logger'
-import { getPlayerUpdateFromGame } from '../game/serverOutput'
-import { performMoveAndReturnGame, getGame } from '../services/game'
-import { gameSocketIOAuthentication } from '../helpers/authentication'
-import { initializeInfo } from './info'
-import { registerSubstitutionHandlers } from './gameSubstitution'
-import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/substitution'
+import logger from '../helpers/logger.js'
+import { getPlayerUpdateFromGame } from '../game/serverOutput.js'
+import { performMoveAndReturnGame, getGame } from '../services/game.js'
+import { gameSocketIOAuthentication } from '../helpers/authentication.js'
+import { initializeInfo } from './info.js'
+import { registerSubstitutionHandlers } from './gameSubstitution.js'
+import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/substitution.js'
 
 export let nsp: GameNamespace
 

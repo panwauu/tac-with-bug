@@ -1,12 +1,12 @@
 import type pg from 'pg'
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
-import logger from '../helpers/logger'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
+import logger from '../helpers/logger.js'
 import Joi from 'joi'
 
-import { addFriendshipRequest, confirmFriendshipRequest, cancelFriendship, getFriendships, getUser } from '../services/user'
-import { getSocketByUserID, isUserOnline } from './general'
-import { getEmailNotificationSettings } from '../services/settings'
-import { sendFriendRequestReminder } from '../communicationUtils/email'
+import { addFriendshipRequest, confirmFriendshipRequest, cancelFriendship, getFriendships, getUser } from '../services/user.js'
+import { getSocketByUserID, isUserOnline } from './general.js'
+import { getEmailNotificationSettings } from '../services/settings.js'
+import { sendFriendRequestReminder } from '../communicationUtils/email.js'
 
 async function updateFriendOfSocket(pgPool: pg.Pool, socketToUpdate: GeneralSocketS, userID?: number) {
   const friends = userID != null ? await getFriendships(pgPool, userID) : []

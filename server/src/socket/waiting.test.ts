@@ -1,10 +1,10 @@
-import { registerGameSocket } from '../test/handleGameSocket'
+import { registerGameSocket } from '../test/handleGameSocket.js'
 import Chance from 'chance'
-import type { Result } from '../sharedTypes/GeneralNamespaceDefinition'
-import { disableRematchOfOldGames, getGame } from '../services/game'
-import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
-import { closeSockets, connectSocket } from '../test/handleSocket'
-import type { GameSocketC, GeneralSocketC } from '../test/socket'
+import type { Result } from '../sharedTypes/GeneralNamespaceDefinition.js'
+import { disableRematchOfOldGames, getGame } from '../services/game.js'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets.js'
+import { closeSockets, connectSocket } from '../test/handleSocket.js'
+import type { GameSocketC, GeneralSocketC } from '../test/socket.js'
 const chance = new Chance()
 
 describe('Waiting game test suite via Socket.io', () => {

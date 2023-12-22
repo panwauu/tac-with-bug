@@ -1,9 +1,9 @@
 import { cloneDeep } from 'lodash'
 import { err, ok, Result } from 'neverthrow'
-import { ballPlayer } from '../game/ballUtils'
-import type { GameForPlay } from '../sharedTypes/typesDBgame'
-import type { KoBracket, PrivateTournament, PublicTournament, TournamentDataKO } from '../sharedTypes/typesTournament'
-import { shuffleArray } from '../game/cardUtils'
+import { ballPlayer } from '../game/ballUtils.js'
+import type { GameForPlay } from '../sharedTypes/typesDBgame.js'
+import type { KoBracket, PrivateTournament, PublicTournament, TournamentDataKO } from '../sharedTypes/typesTournament.js'
+import { shuffleArray } from '../game/cardUtils.js'
 
 export type CreateTournamentDataKOError = 'N_TEAMS_NOT_VALID_FOR_KO' | 'RANDOM_TEAM_CREATION_ERROR'
 export function createTournamentDataKO(nTeams: number, teamsPerMatch: 2 | 3): Result<TournamentDataKO, CreateTournamentDataKOError> {

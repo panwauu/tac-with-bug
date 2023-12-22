@@ -1,14 +1,14 @@
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
 import type pg from 'pg'
 import Joi from 'joi'
 
-import { changeColor, deleteWaitingGame, getWaitingGames, removePlayer, addPlayer, createWaitingGame, movePlayer, setPlayerReady, createRematchGame } from '../services/waiting'
-import { getGame, createGame } from '../services/game'
-import { emitGamesUpdate, emitRunningGamesUpdate } from './games'
-import { sendUpdatesOfGameToPlayers } from './game'
-import { getUser } from '../services/user'
-import { nspGeneral } from './general'
-import { transferLatestMessagesToOtherChannel } from '../services/channel'
+import { changeColor, deleteWaitingGame, getWaitingGames, removePlayer, addPlayer, createWaitingGame, movePlayer, setPlayerReady, createRematchGame } from '../services/waiting.js'
+import { getGame, createGame } from '../services/game.js'
+import { emitGamesUpdate, emitRunningGamesUpdate } from './games.js'
+import { sendUpdatesOfGameToPlayers } from './game.js'
+import { getUser } from '../services/user.js'
+import { nspGeneral } from './general.js'
+import { transferLatestMessagesToOtherChannel } from '../services/channel.js'
 
 export async function initializeWaiting(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.emit('waiting:getGames', await getWaitingGames(pgPool))

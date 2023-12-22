@@ -1,7 +1,7 @@
 import type express from 'express'
-import type { PlatformFunFacts, PlatformStats } from '../sharedTypes/typesPlatformStatistic'
+import type { PlatformFunFacts, PlatformStats } from '../sharedTypes/typesPlatformStatistic.js'
 import { Controller, Get, Route, Request, Res, TsoaResponse } from 'tsoa'
-import { getPlatformStatistic, getPlatformFunFacts } from '../services/platformStatistic'
+import { getPlatformStatistic, getPlatformFunFacts } from '../services/platformStatistic.js'
 
 @Route('/')
 export class PlatformStatisticController extends Controller {
