@@ -1,9 +1,9 @@
-import type { MoveTextOrBall } from '../../sharedTypes/typesBall.js'
+import type { MoveTextOrBall } from '../../sharedTypes/typesBall'
 
 import { cloneDeep } from 'lodash'
-import { Game } from '../../game/game.js'
-import { ballGoal, ballStart, getPositionsBetweenStarts } from '../../game/ballUtils.js'
-import { modulo, moduloOffset, reorderArray, rightShiftArray } from './helpers.js'
+import { Game } from '../../game/game'
+import { ballGoal, ballStart, getPositionsBetweenStarts } from '../../game/ballUtils'
+import { modulo, moduloOffset, reorderArray, rightShiftArray } from './helpers'
 
 function changePosition(gameInst: Game, position: number, playersShiftedBy: number) {
   const firstStartPosition = ballStart(0, gameInst.balls)

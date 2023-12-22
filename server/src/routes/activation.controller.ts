@@ -1,9 +1,9 @@
 import type express from 'express'
 
 import { Controller, Get, Post, Route, Request, Query, Path, TsoaResponse, Res } from 'tsoa'
-import { sendActivation } from '../communicationUtils/email.js'
-import { activateUser } from '../services/activation.js'
-import { getUser } from '../services/user.js'
+import { sendActivation } from '../communicationUtils/email'
+import { activateUser } from '../services/activation'
+import { getUser } from '../services/user'
 
 @Route('activation')
 export class ActivationController extends Controller {

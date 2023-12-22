@@ -1,10 +1,10 @@
-import type { GameSocketC } from '../test/socket.js'
-import type { Substitution } from '../sharedTypes/game.js'
+import type { GameSocketC } from '../test/socket'
+import type { Substitution } from '../sharedTypes/game'
 
-import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets.js'
-import { initiateGameSocket } from '../test/handleGameSocket.js'
-import { closeSockets, connectSocket, waitForEventOnSockets } from '../test/handleSocket.js'
-import { sleep } from '../helpers/sleep.js'
+import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets'
+import { initiateGameSocket } from '../test/handleGameSocket'
+import { closeSockets, connectSocket, waitForEventOnSockets } from '../test/handleSocket'
+import { sleep } from '../helpers/sleep'
 
 describe('Test substitution start conditions with socket.io', () => {
   let usersWithSocket: UserWithSocket

@@ -1,8 +1,8 @@
-import type * as dbGame from '../sharedTypes/typesDBgame.js'
-import type * as tCard from '../sharedTypes/typesCard.js'
-import type { Player } from '../sharedTypes/typesPlayers.js'
-import type { Game } from './game.js'
-import type { UpdateDataType } from '../sharedTypes/typesDBgame.js'
+import type * as dbGame from '../sharedTypes/typesDBgame'
+import type * as tCard from '../sharedTypes/typesCard'
+import type { Player } from '../sharedTypes/typesPlayers'
+import type { Game } from './game'
+import type { UpdateDataType } from '../sharedTypes/typesDBgame'
 
 export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: number): UpdateDataType {
   return {

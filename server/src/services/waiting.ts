@@ -1,13 +1,13 @@
-import type { WaitingGame } from '../sharedTypes/typesWaiting.js'
-import type { GameForPlay } from '../sharedTypes/typesDBgame.js'
+import type { WaitingGame } from '../sharedTypes/typesWaiting'
+import type { GameForPlay } from '../sharedTypes/typesDBgame'
 import type pg from 'pg'
 
 import { Result, ok, err } from 'neverthrow'
-import { colors } from '../sharedDefinitions/colors.js'
-import { disableRematchOfGame } from './game.js'
-import { isUserOnline } from '../socket/general.js'
-import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils/dbHelpers.js'
-import { getUser } from './user.js'
+import { colors } from '../sharedDefinitions/colors'
+import { disableRematchOfGame } from './game'
+import { isUserOnline } from '../socket/general'
+import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils/dbHelpers'
+import { getUser } from './user'
 
 export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number) {
   const res = await sqlClient.query(

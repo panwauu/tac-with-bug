@@ -1,12 +1,12 @@
 import type pg from 'pg'
-import logger from '../helpers/logger.js'
+import logger from '../helpers/logger'
 
-import type { GameSocketS } from '../sharedTypes/GameNamespaceDefinition.js'
+import type { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 import Joi from 'joi'
-import { getGame } from '../services/game.js'
-import { acceptSubstitution, checkSubstitutionConditions, checkSubstitutionsForTime, rejectSubstitution, startSubstitution } from '../services/substitution.js'
-import { getSocketsInGame, nsp, emitOnlinePlayersEvents } from './game.js'
-import { sleep } from '../helpers/sleep.js'
+import { getGame } from '../services/game'
+import { acceptSubstitution, checkSubstitutionConditions, checkSubstitutionsForTime, rejectSubstitution, startSubstitution } from '../services/substitution'
+import { getSocketsInGame, nsp, emitOnlinePlayersEvents } from './game'
+import { sleep } from '../helpers/sleep'
 
 export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocketS) {
   socket.on('substitution:offer', async (playerIndexToSubstitute, cb) => {

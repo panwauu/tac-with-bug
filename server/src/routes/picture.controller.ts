@@ -2,8 +2,8 @@ import type express from 'express'
 import { Controller, Get, Delete, Query, Route, Request, Security, Post, Res, TsoaResponse } from 'tsoa'
 
 import multer from 'multer'
-import { queryProfilePicture, loadProfilePictureToDB, selectRandomProfilePicture } from '../services/picture.js'
-import type { UserIdentifier } from '../sharedTypes/typesDBuser.js'
+import { queryProfilePicture, loadProfilePictureToDB, selectRandomProfilePicture } from '../services/picture'
+import type { UserIdentifier } from '../sharedTypes/typesDBuser'
 
 @Route('/')
 export class PictureController extends Controller {

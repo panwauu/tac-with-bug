@@ -1,8 +1,8 @@
 import { Controller, Get, Route, Request } from 'tsoa'
 import type express from 'express'
 
-import { getHofData } from '../services/hof.js'
-import type { HofData } from '../sharedTypes/typesHof.js'
+import { getHofData } from '../services/hof'
+import type { HofData } from '../sharedTypes/typesHof'
 
 const cacheTime = 24 * 60 * 60 * 1000 // One Day
 

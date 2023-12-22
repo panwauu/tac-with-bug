@@ -1,8 +1,8 @@
 import type pg from 'pg'
 import events from 'events'
-import type * as tTournament from '../sharedTypes/typesTournament.js'
+import type * as tTournament from '../sharedTypes/typesTournament'
 
-import { getPublicTournament } from './tournamentsPublic.js'
+import { getPublicTournament } from './tournamentsPublic'
 
 export const tournamentBus = new events.EventEmitter()
 

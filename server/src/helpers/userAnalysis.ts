@@ -1,7 +1,7 @@
 import type pg from 'pg'
 import { UAParser } from 'ua-parser-js'
 import stringify from 'json-stable-stringify'
-import logger from './logger.js'
+import logger from './logger'
 
 export function analyseUserAgentHeader(pgPool: pg.Pool, uaHeader: string | undefined) {
   if (uaHeader == null) {

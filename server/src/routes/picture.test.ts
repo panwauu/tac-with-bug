@@ -1,4 +1,4 @@
-import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets.js'
+import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets'
 
 async function getPicture(username: string) {
   const dbResBefore = await testServer.pgPool.query('SELECT * FROM users WHERE username = $1;', [username])

@@ -1,6 +1,6 @@
 import Chance from 'chance'
 const chance = new Chance()
-import { getDifferentName, isASweetName } from '../services/SweetNameGenerator.js'
+import { getDifferentName, isASweetName } from '../services/SweetNameGenerator'
 
 test('getDifferentName', () => {
   const name = getDifferentName([])

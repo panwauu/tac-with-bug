@@ -1,8 +1,8 @@
 import type pg from 'pg'
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 
-import { getSocketByUserID } from './general.js'
-import { addUserToChat, changeGroupName, createChat, getUsersInChat, insertChatMessage, leaveChat, loadChat, loadChatOverview, markChatAsRead } from '../services/chat.js'
+import { getSocketByUserID } from './general'
+import { addUserToChat, changeGroupName, createChat, getUsersInChat, insertChatMessage, leaveChat, loadChat, loadChatOverview, markChatAsRead } from '../services/chat'
 import Joi from 'joi'
 
 export function initializeChat(pgPool: pg.Pool, socket: GeneralSocketS) {

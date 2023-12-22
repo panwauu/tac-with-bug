@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io-client'
 import type { EventsMap, EventNames } from '@socket.io/component-emitter'
-import type { ReservedOrUserEventNames } from 'socket.io/dist/typed-events.js'
+import type { ReservedOrUserEventNames } from 'socket.io/dist/typed-events'
 
 type Head<T extends any[]> = T extends [...infer Head, any] ? Head : any[]
 type Last<T extends any[]> = T extends [...any, infer Last] ? Last : any
@@ -58,7 +58,7 @@ Socket.prototype.emitWithAck = CustomSocket.prototype.emitWithAck
 // @ts-ignore
 Socket.prototype.oncePromise = CustomSocket.prototype.oncePromise
 
-import type { ServerToClientEvents, ClientToServerEvents } from '../sharedTypes/GeneralNamespaceDefinition.js'
+import type { ServerToClientEvents, ClientToServerEvents } from '../sharedTypes/GeneralNamespaceDefinition'
 export type GeneralSocketC = CustomSocket<ServerToClientEvents, ClientToServerEvents>
-import type { ServerToClientEvents as StCEventsGame, ClientToServerEvents as CtSEventsGame } from '../sharedTypes/GameNamespaceDefinition.js'
+import type { ServerToClientEvents as StCEventsGame, ClientToServerEvents as CtSEventsGame } from '../sharedTypes/GameNamespaceDefinition'
 export type GameSocketC = CustomSocket<StCEventsGame, CtSEventsGame>

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "module": "NodeNext",
-    "target": "ESNext",
+    "module": "commonjs",
+    "target": "es2020",
     "sourceMap": true,
     "outDir": "./dist",
     "types": ["vitest/globals" ],
@@ -27,7 +27,7 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Module Resolution Options */
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "baseUrl": ".",
     "esModuleInterop": true,
 

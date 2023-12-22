@@ -1,15 +1,15 @@
-import type * as tCard from '../sharedTypes/typesCard.js'
-import type * as tBall from '../sharedTypes/typesBall.js'
-import type * as tStatistic from '../sharedTypes/typesStatistic.js'
-import type { GameData } from '../sharedTypes/game.js'
+import type * as tCard from '../sharedTypes/typesCard'
+import type * as tBall from '../sharedTypes/typesBall'
+import type * as tStatistic from '../sharedTypes/typesStatistic'
+import type { GameData } from '../sharedTypes/game'
 
 import { cloneDeep } from 'lodash'
-import logger from '../helpers/logger.js'
-import { initalizeCards, dealCards, discardCard, narrCardSwap, addCardToDiscardPile, removeCardFromPlayersHand, checkCardsAndDeal } from './cardUtils.js'
-import { createCardWithMove, initializeTeams } from './generateMovesUtils.js'
-import { performBallAction, getLastNonTacCard } from './performMoveUtils.js'
-import { initializeBalls, resetBalls, ballPlayer } from './ballUtils.js'
-import { initalizeStatistic, statisticAnalyseAction } from './statistic.js'
+import logger from '../helpers/logger'
+import { initalizeCards, dealCards, discardCard, narrCardSwap, addCardToDiscardPile, removeCardFromPlayersHand, checkCardsAndDeal } from './cardUtils'
+import { createCardWithMove, initializeTeams } from './generateMovesUtils'
+import { performBallAction, getLastNonTacCard } from './performMoveUtils'
+import { initializeBalls, resetBalls, ballPlayer } from './ballUtils'
+import { initalizeStatistic, statisticAnalyseAction } from './statistic'
 
 export class Game implements GameData {
   nPlayers: number

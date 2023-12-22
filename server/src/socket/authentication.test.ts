@@ -1,6 +1,6 @@
-import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets.js'
-import { closeSockets, connectSocket } from '../test/handleSocket.js'
-import type { GeneralSocketC } from '../test/socket.js'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { closeSockets, connectSocket } from '../test/handleSocket'
+import type { GeneralSocketC } from '../test/socket'
 
 describe('Authentication Test Suite via Socket.io', () => {
   let usersWithSockets: UserWithSocket[]

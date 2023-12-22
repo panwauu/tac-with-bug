@@ -1,7 +1,7 @@
 import type express from 'express'
 import { Controller, Get, Query, Route, Request, Security, Delete, Body, Res, TsoaResponse } from 'tsoa'
 
-import { getGame, abortGame } from '../services/game.js'
+import { getGame, abortGame } from '../services/game'
 
 @Route('/')
 export class GameController extends Controller {

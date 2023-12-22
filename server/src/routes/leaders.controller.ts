@@ -1,7 +1,7 @@
 import type express from 'express'
 import { Controller, Get, Query, Route, Request, TsoaResponse, Res } from 'tsoa'
 
-import { queryLeaderboardByWins, queryLeaderboardCoop, type LeaderBoardType, type CoopBoardType } from '../services/leaders.js'
+import { queryLeaderboardByWins, queryLeaderboardCoop, type LeaderBoardType, type CoopBoardType } from '../services/leaders'
 
 @Route('/')
 export class LeadersController extends Controller {

@@ -1,7 +1,7 @@
 import minimist from 'minimist'
 import cliProgress from 'cli-progress'
-import { initdBUtils } from '../dbUtils/initdBUtils.js'
-import { removeInvalidCapturedMoves, sanitizeGameCapture } from '../services/gameCaptureSanitation.js'
+import { initdBUtils } from '../dbUtils/initdBUtils'
+import { removeInvalidCapturedMoves, sanitizeGameCapture } from '../services/gameCaptureSanitation'
 
 main()
 

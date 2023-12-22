@@ -1,9 +1,9 @@
 import type express from 'express'
 import type pg from 'pg'
-import { verifyJWT } from './jwtWrapper.js'
+import { verifyJWT } from './jwtWrapper'
 import { Result, ok, err } from 'neverthrow'
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
-import type { GameSocketS } from '../sharedTypes/GameNamespaceDefinition.js'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
+import type { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 
 export function gameSocketIOAuthentication(socket: GameSocketS, next: any) {
   if (socket.handshake.auth.token == null || socket.handshake.auth.token === '') {

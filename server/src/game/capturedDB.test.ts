@@ -1,4 +1,4 @@
-import { repeatGame } from '../test/captureCompare.js'
+import { repeatGame } from '../test/captureCompare'
 
 describe('Test that all tests saved in savegames are running', () => {
   const nGames = 100,

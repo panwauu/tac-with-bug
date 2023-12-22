@@ -1,6 +1,6 @@
-import type * as tCard from './typesCard.js'
-import type * as tBall from './typesBall.js'
-import type * as tStatistic from './typesStatistic.js'
+import type * as tCard from './typesCard'
+import type * as tBall from './typesBall'
+import type * as tStatistic from './typesStatistic'
 
 export interface GameData {
   nPlayers: number

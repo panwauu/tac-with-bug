@@ -1,17 +1,17 @@
 import type pg from 'pg'
-import type { GeneralNamespace, GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
-import type * as tTournament from '../sharedTypes/typesTournament.js'
+import type { GeneralNamespace, GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
+import type * as tTournament from '../sharedTypes/typesTournament'
 import Joi from 'joi'
 
-import logger from '../helpers/logger.js'
-import { getPublicTournamentByID, getCurrentPublicTournament } from '../services/tournamentsPublic.js'
-import { tournamentBus } from '../services/tournaments.js'
-import { registerTeam, joinTeam, leaveTournament, activateUser } from '../services/tournamentsRegister.js'
-import { generateIcal } from '../communicationUtils/icalGenerator.js'
-import { sendTournamentInvitation, sendTournamentReminder } from '../communicationUtils/email.js'
-import { getUser } from '../services/user.js'
-import { nspGeneral as nsp } from './general.js'
-import { getEmailNotificationSettings } from '../services/settings.js'
+import logger from '../helpers/logger'
+import { getPublicTournamentByID, getCurrentPublicTournament } from '../services/tournamentsPublic'
+import { tournamentBus } from '../services/tournaments'
+import { registerTeam, joinTeam, leaveTournament, activateUser } from '../services/tournamentsRegister'
+import { generateIcal } from '../communicationUtils/icalGenerator'
+import { sendTournamentInvitation, sendTournamentReminder } from '../communicationUtils/email'
+import { getUser } from '../services/user'
+import { nspGeneral as nsp } from './general'
+import { getEmailNotificationSettings } from '../services/settings'
 
 export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('tournament:public:get', async (data, callback) => {

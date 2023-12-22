@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash'
-import * as mail from '../communicationUtils/email.js'
+import * as mail from '../communicationUtils/email'
 import Chance from 'chance'
 const chance = new Chance()
 
