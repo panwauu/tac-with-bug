@@ -163,7 +163,7 @@ const selectedPlan = ref(planModel[2])
 const button = ref<PayPalButtonsComponent | undefined>()
 const paypalScriptPromise = ref(
   loadScript({
-    'client-id': import.meta.env.VITE_PAYPAL_CLIENT_ID as string,
+    clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID as string,
     intent: 'subscription',
     vault: true,
   })

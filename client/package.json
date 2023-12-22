@@ -2,6 +2,7 @@
   "name": "vuetac",
   "version": "1.4.2",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build --emptyOutDir",
@@ -12,7 +13,7 @@
     "prettier:check": "prettier --config .prettierrc --check ."
   },
   "dependencies": {
-    "@paypal/paypal-js": "^5.1.6",
+    "@paypal/paypal-js": "^8.0.0",
     "@vueuse/core": "^10.1.2",
     "apexcharts": "^3.40.0",
     "chart.js": "^4.3.0",

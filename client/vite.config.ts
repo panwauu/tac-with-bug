@@ -1,12 +1,10 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import eslintPlugin from 'vite-plugin-eslint'
-import Checker from 'vite-plugin-checker'
 import path from 'path'
 import loadVersion from 'vite-plugin-package-version'
 
 export default defineConfig({
-  plugins: [vue(), eslintPlugin(), Checker({ vueTsc: true }), loadVersion()],
+  plugins: [vue(), loadVersion()],
   server: {
     port: 8080,
     proxy: {
