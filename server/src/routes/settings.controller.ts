@@ -5,10 +5,10 @@ import {
   EmailNotificationSettingsType,
   SetEmailNotificationSettingsError,
   setEmailNotificationSettings,
-} from '../services/settings.js'
+} from '../services/settings'
 import { Controller, Get, Post, Body, Route, Request, Security, TsoaResponse, Res } from 'tsoa'
 
-import { LocaleValidationErrors, validateLocale } from '../helpers/validationHelpers.js'
+import { LocaleValidationErrors, validateLocale } from '../helpers/validationHelpers'
 
 @Route('/')
 export class SettingsController extends Controller {

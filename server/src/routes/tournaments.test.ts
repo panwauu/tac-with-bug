@@ -1,4 +1,4 @@
-import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets.js'
+import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets'
 
 describe('Tournament API', () => {
   let userWithCredentials: User

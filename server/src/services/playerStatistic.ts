@@ -1,14 +1,14 @@
 import type pg from 'pg'
-import type * as tStatistic from '../sharedTypes/typesStatistic.js'
-import type * as tDBgame from '../sharedTypes/typesDBgame.js'
-import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic.js'
+import type * as tStatistic from '../sharedTypes/typesStatistic'
+import type * as tDBgame from '../sharedTypes/typesDBgame'
+import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
 
-import { initalizeStatistic } from '../game/statistic.js'
-import { getGames } from './game.js'
-import { ballPlayer } from '../game/ballUtils.js'
-import { isSubscribed } from '../paypal/paypal.js'
-import { getUser } from './user.js'
-import { isHofMember } from './hof.js'
+import { initalizeStatistic } from '../game/statistic'
+import { getGames } from './game'
+import { ballPlayer } from '../game/ballUtils'
+import { isSubscribed } from '../paypal/paypal'
+import { getUser } from './user'
+import { isHofMember } from './hof'
 
 const lastGamesHistoryLength = 10
 

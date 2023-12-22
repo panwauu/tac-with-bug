@@ -3,8 +3,8 @@ import type pg from 'pg'
 import * as EmailValidator from 'email-validator'
 import { Result, ok, err } from 'neverthrow'
 import bcrypt from 'bcrypt'
-import { isUsernameFree, isEmailFree } from '../services/user.js'
-import { locales } from '../sharedDefinitions/locales.js'
+import { isUsernameFree, isEmailFree } from '../services/user'
+import { locales } from '../sharedDefinitions/locales'
 
 export type UsernameValidationErrors = 'USERNAME_TOO_SHORT' | 'USERNAME_TOO_LONG' | 'USERNAME_INVALID_LETTERS' | 'USERNAME_NOT_AVAILABLE'
 export async function validateUsername(sqlClient: pg.Pool, username: string): Promise<Result<string, UsernameValidationErrors>> {

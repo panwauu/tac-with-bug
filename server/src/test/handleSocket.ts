@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io'
-import { sleep } from '../helpers/sleep.js'
-import type { GameSocketC, GameSocketS } from '../sharedTypes/GameNamespaceDefinition.js'
-import type { CustomSocket } from './socket.js'
+import { sleep } from '../helpers/sleep'
+import type { GameSocketC, GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
+import type { CustomSocket } from './socket'
 
 type SupportedSockets = Socket | CustomSocket<any, any> | GameSocketC | GameSocketS
 type SomeKindOfSocket = { socket: SupportedSockets } | SupportedSockets

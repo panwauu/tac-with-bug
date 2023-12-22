@@ -5,7 +5,7 @@ import { Controller, Get, Post, Delete, Body, Route, Request, Security, Query, T
 import bcrypt from 'bcrypt'
 import Joi from 'joi'
 
-import { sendActivation } from '../communicationUtils/email.js'
+import { sendActivation } from '../communicationUtils/email'
 import {
   validateUsername,
   validateEmail,
@@ -16,8 +16,8 @@ import {
   PasswordValidationErrors,
   LocaleValidationErrors,
   comparePasswords,
-} from '../helpers/validationHelpers.js'
-import { selectRandomProfilePicture } from '../services/picture.js'
+} from '../helpers/validationHelpers'
+import { selectRandomProfilePicture } from '../services/picture'
 import {
   getUser,
   isUsernameFree,
@@ -32,11 +32,11 @@ import {
   requestPasswordReset,
   disablePasswordResetRequestsOfUser,
   applyPasswordReset,
-} from '../services/user.js'
-import { signJWT } from '../helpers/jwtWrapper.js'
-import logger from '../helpers/logger.js'
-import { analyseUserAgentHeader } from '../helpers/userAnalysis.js'
-import { UserIdentifier } from '../sharedTypes/typesDBuser.js'
+} from '../services/user'
+import { signJWT } from '../helpers/jwtWrapper'
+import logger from '../helpers/logger'
+import { analyseUserAgentHeader } from '../helpers/userAnalysis'
+import { UserIdentifier } from '../sharedTypes/typesDBuser'
 
 interface UserCreateRequest {
   username: string

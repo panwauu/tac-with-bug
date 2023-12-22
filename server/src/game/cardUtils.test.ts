@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash'
-import { shuffleArray, createCardDeck, initalizeCards, dealCards, discardCard, narrCardSwap } from '../game/cardUtils.js'
+import { shuffleArray, createCardDeck, initalizeCards, dealCards, discardCard, narrCardSwap } from '../game/cardUtils'
 
 test('Init -> empty discard pile and empty hands', () => {
   const cards4 = initalizeCards(4, true)

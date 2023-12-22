@@ -1,7 +1,7 @@
-import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets.js'
-import { registerGameSocket, initiateGameSocket } from '../test/handleGameSocket.js'
-import { closeSockets, connectSocket } from '../test/handleSocket.js'
-import type { GameSocketC } from '../test/socket.js'
+import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets'
+import { registerGameSocket, initiateGameSocket } from '../test/handleGameSocket'
+import { closeSockets, connectSocket } from '../test/handleSocket'
+import type { GameSocketC } from '../test/socket'
 
 describe('Game test suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[]

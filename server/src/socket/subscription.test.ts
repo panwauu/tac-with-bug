@@ -1,7 +1,7 @@
-import { describeIf } from '../test/conditionalTests.js'
-import * as mail from '../communicationUtils/email.js'
-import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets.js'
-import { closeSockets } from '../test/handleSocket.js'
+import { describeIf } from '../test/conditionalTests'
+import * as mail from '../communicationUtils/email'
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { closeSockets } from '../test/handleSocket'
 
 const skipTests = process.env.paypal_Secret == null || process.env.paypal_Client_ID == null
 

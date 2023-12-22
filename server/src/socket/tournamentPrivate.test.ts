@@ -1,6 +1,6 @@
-import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets.js'
-import { closeSockets } from '../test/handleSocket.js'
-import type { GeneralSocketC } from '../test/socket.js'
+import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { closeSockets } from '../test/handleSocket'
+import type { GeneralSocketC } from '../test/socket'
 
 describe('Private tournament test suite via Socket.io', () => {
   let tournamentID: number, gameID: number, usersWithSockets: UserWithSocket[], unauthSocket: GeneralSocketC

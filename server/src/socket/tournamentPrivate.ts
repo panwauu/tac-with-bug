@@ -1,10 +1,10 @@
 import type pg from 'pg'
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
-import type * as tTournament from '../sharedTypes/typesTournament.js'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
+import type * as tTournament from '../sharedTypes/typesTournament'
 import Joi from 'joi'
 
-import logger from '../helpers/logger.js'
-import { getUser } from '../services/user.js'
+import logger from '../helpers/logger'
+import { getUser } from '../services/user'
 import {
   getPrivateTournament,
   abortPrivateTournament,
@@ -14,10 +14,10 @@ import {
   removePlayer,
   startPrivateTournament,
   startTournamentGame,
-} from '../services/tournamentsPrivate.js'
-import { nspGeneral } from './general.js'
-import { sendPrivateTournamentInvitation } from '../communicationUtils/email.js'
-import { getEmailNotificationSettings } from '../services/settings.js'
+} from '../services/tournamentsPrivate'
+import { nspGeneral } from './general'
+import { sendPrivateTournamentInvitation } from '../communicationUtils/email'
+import { getEmailNotificationSettings } from '../services/settings'
 
 export function registerTournamentPrivateHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('tournament:private:get', async (data, cb) => {

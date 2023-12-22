@@ -1,13 +1,13 @@
 import type pg from 'pg'
-import type { Friend } from '../sharedTypes/typesFriends.js'
+import type { Friend } from '../sharedTypes/typesFriends'
 import { randomUUID, randomBytes } from 'crypto'
-import type { UserIdentifier, User } from '../sharedTypes/typesDBuser.js'
-import { getSubscription, cancelSubscription, GetSubscriptionError, CancelSubscriptionError } from '../paypal/paypal.js'
+import type { UserIdentifier, User } from '../sharedTypes/typesDBuser'
+import { getSubscription, cancelSubscription, GetSubscriptionError, CancelSubscriptionError } from '../paypal/paypal'
 import { Result, err, ok } from 'neverthrow'
-import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers.js'
-import { deletePlayerFromTournament } from './tournamentsPrivate.js'
-import { sendPasswordReset } from '../communicationUtils/email.js'
-import logger from '../helpers/logger.js'
+import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
+import { deletePlayerFromTournament } from './tournamentsPrivate'
+import { sendPasswordReset } from '../communicationUtils/email'
+import logger from '../helpers/logger'
 
 export function resolveUserIdentifier(identifier: UserIdentifier, insertionIndex?: number): { key: string; sql: string; value: number | string } {
   if (identifier.id != null) {

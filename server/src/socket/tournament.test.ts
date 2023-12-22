@@ -1,5 +1,5 @@
-import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets.js'
-import { closeSockets } from '../test/handleSocket.js'
+import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
+import { closeSockets } from '../test/handleSocket'
 
 describe('Tournament test suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[]

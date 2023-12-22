@@ -7,23 +7,23 @@ import compression from 'compression'
 import helmet from 'helmet'
 
 import http from 'http'
-import sslRedirect from 'heroku-ssl-redirect'
+import sslRequire from 'heroku-ssl-redirect'
 
 import type pg from 'pg'
 import { Server } from 'socket.io'
-import { registerSocketNspGeneral } from '../socket/general.js'
-import { registerSocketNspGame } from '../socket/game.js'
+import { registerSocketNspGeneral } from '../socket/general'
+import { registerSocketNspGame } from '../socket/game'
 
-import { RegisterRoutes } from '../routes/routes.js'
-import { validationErrorMiddleware } from '../helpers/validationErrorMiddleware.js'
+import { RegisterRoutes } from '../routes/routes'
+import { validationErrorMiddleware } from '../helpers/validationErrorMiddleware'
 import swaggerUI from 'swagger-ui-express'
 import swaggerDoc from '../swagger.json'
 
-import { cancelAllJobs, registerJobs } from '../services/scheduledTasks.js'
+import { cancelAllJobs, registerJobs } from '../services/scheduledTasks'
 
-import { initdBUtils } from '../dbUtils/initdBUtils.js'
-import { loadTutorialLevels } from '../services/tutorial.js'
-import logger, { attachPostgresLogger } from '../helpers/logger.js'
+import { initdBUtils } from '../dbUtils/initdBUtils'
+import { loadTutorialLevels } from '../services/tutorial'
+import logger, { attachPostgresLogger } from '../helpers/logger'
 
 export type ServerOptions = {
   serveApp?: boolean
@@ -47,7 +47,7 @@ export class TacServer {
     this.app.use(compression())
     if (process.env.NODE_ENV === 'production') {
       this.app.use(helmet({ contentSecurityPolicy: false }))
-      this.app.use(sslRedirect.default())
+      this.app.use(sslRequire())
     }
 
     this.app.use('/gameApi/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc))

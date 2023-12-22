@@ -1,10 +1,10 @@
 import type pg from 'pg'
-import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition.js'
+import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 
 import Joi from 'joi'
-import { addChannelMessage, getChannelMessages } from '../services/channel.js'
-import { nspGeneral } from './general.js'
-import { isAdmin } from '../helpers/authentication.js'
+import { addChannelMessage, getChannelMessages } from '../services/channel'
+import { nspGeneral } from './general'
+import { isAdmin } from '../helpers/authentication'
 
 export function registerChannelHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('channel:sendMessage', async (data, cb) => {

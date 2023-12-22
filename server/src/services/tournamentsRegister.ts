@@ -1,9 +1,9 @@
 import { err, ok, Result } from 'neverthrow'
 import type pg from 'pg'
-import type * as tTournament from '../sharedTypes/typesTournament.js'
+import type * as tTournament from '../sharedTypes/typesTournament'
 
-import { tournamentBus } from './tournaments.js'
-import { getPublicTournamentByID, getPublicTournament, GetTournamentByIDError } from './tournamentsPublic.js'
+import { tournamentBus } from './tournaments'
+import { getPublicTournamentByID, getPublicTournament, GetTournamentByIDError } from './tournamentsPublic'
 
 function alreadyRegistered(tournament: tTournament.PublicTournament, userID: number) {
   return tournament.teams.some((t) => t.playerids.includes(userID)) || tournament.registerTeams.some((t) => t.playerids.includes(userID))

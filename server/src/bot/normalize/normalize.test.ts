@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
-import { Game } from '../../game/game.js'
-import { normalizeAction, normalizeGame, unnormalizeAction } from './normalize.js'
+import { Game } from '../../game/game'
+import { normalizeAction, normalizeGame, unnormalizeAction } from './normalize'
 
 describe('Test game normalization', () => {
   const definedGame = new Game(4, 2, true, false)

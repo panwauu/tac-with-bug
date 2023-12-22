@@ -5,8 +5,8 @@ import sharp from 'sharp'
 import { createAvatar } from '@dicebear/avatars'
 import * as style from '@dicebear/avatars-bottts-sprites'
 
-import { resolveUserIdentifier } from '../services/user.js'
-import type { UserIdentifier } from '../sharedTypes/typesDBuser.js'
+import { resolveUserIdentifier } from '../services/user'
+import type { UserIdentifier } from '../sharedTypes/typesDBuser'
 import { ok, err, Result } from 'neverthrow'
 
 const profilePictureSize = 160

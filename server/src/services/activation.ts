@@ -1,6 +1,6 @@
 import type pg from 'pg'
-import type { UserIdentifier } from '../sharedTypes/typesDBuser.js'
-import { resolveUserIdentifier } from './user.js'
+import type { UserIdentifier } from '../sharedTypes/typesDBuser'
+import { resolveUserIdentifier } from './user'
 
 export async function activateUser(sqlClient: pg.Pool, identifier: UserIdentifier) {
   const userIdentifier = resolveUserIdentifier(identifier)

@@ -25,12 +25,12 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 20.x
+      - name: Use Node.js 18.x
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         uses: actions/setup-node@v2
         with:
-          node-version: 20.x
+          node-version: 18.x
           cache: "npm"
           cache-dependency-path: |
             server/package-lock.json

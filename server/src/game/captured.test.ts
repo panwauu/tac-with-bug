@@ -1,4 +1,4 @@
-import { testCapturedMoves } from '../test/captureCompare.js'
+import { testCapturedMoves } from '../test/captureCompare'
 
 describe('Test suite with recorded games', () => {
   test('Placeholder', () => {

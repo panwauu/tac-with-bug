@@ -1,4 +1,4 @@
-import { leftShiftArray, modulo, moduloOffset, reorderArray, rightShiftArray } from './helpers.js'
+import { leftShiftArray, modulo, moduloOffset, reorderArray, rightShiftArray } from './helpers'
 
 describe('Test helper functions', () => {
   test('Modulo should not change numbers in range', () => {

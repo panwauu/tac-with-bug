@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
-import { moveBallToHouse, moveBallsBetweenPositionsToHouse, sevenReconstructPath, ballInLastGoalPosition } from '../game/performMoveUtils.js'
-import { ballHome, ballStart, ballGoal, initializeBalls } from '../game/ballUtils.js'
+import { moveBallToHouse, moveBallsBetweenPositionsToHouse, sevenReconstructPath, ballInLastGoalPosition } from '../game/performMoveUtils'
+import { ballHome, ballStart, ballGoal, initializeBalls } from '../game/ballUtils'
 
 const ballsSample = initializeBalls(4)
 

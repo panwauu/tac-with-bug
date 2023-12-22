@@ -1,4 +1,4 @@
-import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets.js'
+import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets'
 
 describe('Leaders Test Suite', () => {
   let userWithCredentials: User

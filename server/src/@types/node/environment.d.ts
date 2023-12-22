@@ -1,5 +1,5 @@
 import { SuperAgentTest } from 'supertest'
-import { TacServer } from '../entrypoints/server.js'
+import { TacServer } from '../entrypoints/server'
 
 export {}
 
