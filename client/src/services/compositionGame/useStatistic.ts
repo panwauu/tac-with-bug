@@ -122,7 +122,7 @@ function countSpecialCards(cards: any): number[] {
   const arr = [0, 0, 0]
   Object.keys(cards).forEach((key) => {
     if (key !== 'total') {
-      ;[0, 1, 2].forEach((i) => {
+      [0, 1, 2].forEach((i) => {
         arr[i] += cards[key][i]
       })
     }

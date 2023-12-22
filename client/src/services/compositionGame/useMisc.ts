@@ -73,7 +73,7 @@ export function useMisc(nPlayers?: number): MiscStateType {
       miscState.watchingData.watchingPlayerNames = data.watchingPlayerNames
     },
     setTimestamps: (created, lastPlayed) => {
-      ;(miscState.created = created), (miscState.lastPlayed = lastPlayed)
+      (miscState.created = created), (miscState.lastPlayed = lastPlayed)
     },
     setDeckInfo: (deckInfoInput) => {
       miscState.deckInfo = [
