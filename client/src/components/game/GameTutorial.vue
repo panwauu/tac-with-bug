@@ -219,7 +219,7 @@ const done = computed(() => {
 })
 
 const progress = computed(() => {
-  return Math.min(1, Math.max(0, props.tutorialStep / (tutorialStore.getProgress[props.tutorialID]?.length - 1 ?? Infinity)))
+  return Math.min(1, Math.max(0, props.tutorialStep / (tutorialStore.getProgress[props.tutorialID].length - 1)))
 })
 </script>
 

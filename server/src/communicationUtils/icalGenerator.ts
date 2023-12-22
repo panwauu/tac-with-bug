@@ -1,4 +1,4 @@
-import ical from 'ical-generator'
+import ical, { ICalAlarmType } from 'ical-generator'
 import type { PublicTournament } from '../sharedTypes/typesTournament'
 
 export function generateIcal(tournament: PublicTournament) {
@@ -16,8 +16,8 @@ export function generateIcal(tournament: PublicTournament) {
     }
 
     const event = cal.createEvent(eventObj)
-    event.createAlarm({ type: 'display', trigger: 24 * 60 * 60 })
-    event.createAlarm({ type: 'display', trigger: 60 * 15 })
+    event.createAlarm({ type: ICalAlarmType.display, trigger: 24 * 60 * 60 })
+    event.createAlarm({ type: ICalAlarmType.display, trigger: 60 * 15 })
   })
 
   return cal
