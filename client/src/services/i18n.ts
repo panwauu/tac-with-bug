@@ -61,9 +61,9 @@ export async function setLocaleAndLoadMessages(locale: string): Promise<void> {
 
 export function setI18nLanguage(locale: string): void {
   if (i18n.mode === 'legacy') {
-    (i18n.global as any).locale = locale
+    ;(i18n.global as any).locale = locale
   } else {
-    (i18n.global.locale as any).value = locale
+    ;(i18n.global.locale as any).value = locale
   }
   document?.querySelector('html')?.setAttribute('lang', locale)
 }

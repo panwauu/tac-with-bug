@@ -96,7 +96,7 @@ function addEmoji() {
 function swapEmojis(index: number, direction: number) {
   const secondIndex = index + direction
   if (secondIndex >= 0 && secondIndex < emojiList.value.length) {
-    [emojiList.value[index], emojiList.value[secondIndex]] = [emojiList.value[secondIndex], emojiList.value[index]]
+    ;[emojiList.value[index], emojiList.value[secondIndex]] = [emojiList.value[secondIndex], emojiList.value[index]]
   }
 }
 </script>
