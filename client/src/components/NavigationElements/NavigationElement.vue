@@ -15,12 +15,32 @@
       :model="userMenu"
       :popup="true"
       :baseZIndex="2000"
-    />
+    >
+      <template #item="{ item, props }">
+        <router-link
+          v-if="item.to"
+          v-slot="{ href, navigate }"
+          :to="item.to"
+          custom
+        >
+          <a
+            :href="href"
+            v-bind="props.action"
+            @click="navigate"
+          >
+            <span :class="item.icon" />
+            <span style="margin-left: 0.5rem">{{ item.label }}</span>
+          </a>
+        </router-link>
+      </template>
+    </Menu>
   </div>
 </template>
 
 <script setup lang="ts">
 import Menu from 'primevue/menu'
+import type { MenuItem } from 'primevue/menuitem'
+
 import Button from 'primevue/button'
 
 import { ref, onMounted, watch } from 'vue'
@@ -33,7 +53,7 @@ const emit = defineEmits<{ logout: [] }>()
 const menuRef = ref<null | Menu>(null)
 
 function returnMenu() {
-  const menu: any[] = [
+  const menu: MenuItem[] = [
     {
       label: i18n.global.t('Home.Landing'),
       icon: 'pi pi-home',
