@@ -13,7 +13,6 @@ describe('Waiting game test suite via Socket.io', () => {
 
     beforeAll(async () => {
       usersWithSockets = await getUsersWithSockets({ n: 1 })
-      await testServer.pgPool.query('UPDATE users SET freelicense=true WHERE id = $1;', [usersWithSockets[0].id])
     })
 
     afterAll(async () => {

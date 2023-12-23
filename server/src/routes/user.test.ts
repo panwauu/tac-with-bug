@@ -115,7 +115,6 @@ describe('Sign-Up', () => {
     expect(dbRes.rows[0].activated).toBe(false)
     expect(Date.now() - Date.parse(dbRes.rows[0].lastlogin)).toBeLessThan(10000)
     expect(Date.now() - Date.parse(dbRes.rows[0].registered)).toBeLessThan(10000)
-    expect(dbRes.rows[0].freelicense).toBeFalsy()
     expect(dbRes.rows[0].currentsubscription).toBeNull()
     expect(dbRes.rows[0].profilepic).not.toBeUndefined()
     expect(dbRes.rows[0].profilepic).not.toBeNull()

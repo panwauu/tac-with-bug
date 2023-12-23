@@ -6,7 +6,6 @@ import { reactive, onBeforeUnmount } from 'vue'
 export type SubscriptionState = {
   status: string | null
   validuntil: string | null
-  freelicense: boolean
   loading: boolean
   reset: () => void
   update: (data: SubscriptionExport) => void
@@ -20,19 +19,16 @@ export function useSubscription(socket: GeneralSocketC): SubscriptionState {
   const subscriptionState: SubscriptionState = reactive({
     status: null,
     validuntil: null,
-    freelicense: false,
     loading: true,
     reset: () => {
       subscriptionState.status = null
       subscriptionState.validuntil = null
-      subscriptionState.freelicense = false
       subscriptionState.loading = false
     },
     update: (data) => {
       subscriptionState.loading = false
       subscriptionState.status = data.status
       subscriptionState.validuntil = data.validuntil
-      subscriptionState.freelicense = data.freelicense
       if (subscriptionState.validuntil != null) {
         const timeout = new Date(subscriptionState.validuntil).getTime() - Date.now()
         if (timeout < 2147483647) {
@@ -65,7 +61,7 @@ export function useSubscription(socket: GeneralSocketC): SubscriptionState {
       if (subscriptionState.loading) {
         return false
       }
-      return subscriptionState.freelicense || (subscriptionState.status != null && subscriptionState.status !== 'cancelled')
+      return subscriptionState.status != null && subscriptionState.status !== 'cancelled'
     },
   })
 
