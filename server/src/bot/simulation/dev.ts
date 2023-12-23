@@ -3,8 +3,10 @@ import { CardType, PlayerCard } from '../../sharedTypes/typesCard'
 import { getCards } from '../../game/serverOutput'
 import { Game } from '../../game/game'
 
-import { Greedy } from '../bots/Greedy'
-//import { Raindom } from '../bots/Raindom'
+//import { Greedy } from '../bots/Greedy'
+import { CapturedType } from '../../services/capture'
+import fs from 'fs'
+import { Raindom } from '../bots/Raindom'
 
 export type AiInterface = {
   choose: (data: AiData) => MoveTextOrBall
@@ -83,9 +85,12 @@ export function getMovesFromCards(cards: PlayerCard[], gamePlayer: number): Move
     if (!card.possible) continue
 
     if (card.textAction != '') {
-      card.textAction.split('+').forEach((action) => {
-        moves.push([gamePlayer, cardIndex, action])
-      })
+      card.textAction
+        .split('+')
+        .filter((a) => a != null && a.length > 0)
+        .forEach((action) => {
+          moves.push([gamePlayer, cardIndex, action])
+        })
     }
 
     for (const ballIndex of Object.keys(card.ballActions)) {
@@ -98,24 +103,39 @@ export function getMovesFromCards(cards: PlayerCard[], gamePlayer: number): Move
   return moves
 }
 
-const nSimulations = 100
+const nSimulations = 1000
 const simulations = [] as {
   status: 'waiting' | 'running' | 'finished' | 'error'
   moves: MoveType[]
+  capture: string[]
+  captureLastMove?: MoveType
   simulationTime: number
 }[]
 
+export async function captureMove(action: MoveType | ['init', number, number, boolean, boolean], game: Game, simulation: any) {
+  const data: CapturedType = {
+    action: action,
+    balls: game.balls,
+    cards: game.cards,
+    activePlayer: game.activePlayer,
+  }
+  simulation.capture.push(JSON.stringify(data))
+}
+
 for (let simulationIndex = 0; simulationIndex < nSimulations; simulationIndex++) {
   const start = performance.now()
-  simulations.push({ status: 'running', moves: [], simulationTime: 0 })
+  simulations.push({ status: 'running', moves: [], simulationTime: 0, capture: [] })
 
-  const agents = [new Greedy(), new Greedy(), new Greedy(), new Greedy()]
-  simulations[simulationIndex].status = 'running'
   try {
+    const agents = [new Raindom(), new Raindom(), new Raindom(), new Raindom()]
     const game = new Game(4, 2, true, false)
+    captureMove(['init', game.nPlayers, game.teams.length, game.cards.meisterVersion, game.coop], game, simulations[simulationIndex])
 
     while (!game.gameEnded) {
-      if (game.cards.players.every((p) => p.length === 0)) game.performAction('dealCards', 0)
+      if (game.cards.players.every((p) => p.length === 0)) {
+        game.performAction('dealCards', 0)
+        captureMove('dealCards', game, simulations[simulationIndex])
+      }
       game.updateCardsWithMoves()
 
       let move: MoveTextOrBall | null = null
@@ -137,7 +157,9 @@ for (let simulationIndex = 0; simulationIndex < nSimulations; simulationIndex++)
         throw new Error('Wrong move selected')
       }
 
+      simulations[simulationIndex].captureLastMove = move
       game.performAction(move, move[0])
+      captureMove(move, game, simulations[simulationIndex])
       simulations[simulationIndex].moves.push(move)
     }
 
@@ -149,6 +171,12 @@ for (let simulationIndex = 0; simulationIndex < nSimulations; simulationIndex++)
     simulations[simulationIndex].simulationTime = performance.now() - start
   }
 }
+
+simulations
+  .filter((s) => s.status === 'error')
+  .forEach((s) => {
+    fs.writeFileSync(`simulation${Math.floor(Math.random() * 1e12) + 1}.txt`, s.capture.join('\n') + '\n' + JSON.stringify(s.captureLastMove))
+  })
 
 console.log(simulations.filter((s) => s.status === 'error').length / simulations.length)
 
