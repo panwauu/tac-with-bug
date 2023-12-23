@@ -16,7 +16,6 @@ CREATE TABLE users (
     AND jsonb_array_length(tutorial -> 0) = 11
   ),
   currentsubscription int,
-  freelicense boolean NOT NULL DEFAULT false,
   locale VARCHAR(2) NOT NULL DEFAULT 'de',
   color_blindness_flag BOOLEAN NOT NULL DEFAULT false,
   admin BOOLEAN NOT NULL DEFAULT FALSE,
