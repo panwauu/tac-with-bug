@@ -1,6 +1,5 @@
 {
   "Subscription": {
-    "freelicense": "You're lucky! You have been selected as an exceptional player and receive the full range of functions without payment.",
     "running": "You are an active supporter of Tac-With-Bug! Thank you for your help",
     "runningNextPayment": "The next payment is due on {time}.",
     "expiring": "You have ended your subscription. Your benefits end on {time}.",

@@ -5,18 +5,17 @@ import logger from '../helpers/logger'
 import Joi from 'joi'
 
 import { sendNewSubscription, sendCancelSubscription, sendSubscriptionError } from '../communicationUtils/email'
-import { SubscriptionDetails, getSubscription, cancelSubscription, newSubscription, getNSubscriptions, getInvalidSubscriptionDetails } from '../paypal/paypal'
+import { type Subscription, getSubscription, cancelSubscription, newSubscription, getNSubscriptions, getInvalidSubscriptionDetails } from '../paypal/paypal'
 import { getUser } from '../services/user'
 
 export function initializeSubscription(pgPool: pg.Pool, socket: GeneralSocketS) {
   onGet(pgPool, socket)
 }
 
-function emitSubscription(socket: GeneralSocketS, subscription: SubscriptionDetails) {
+function emitSubscription(socket: GeneralSocketS, subscription: Subscription) {
   const data: SubscriptionExport = {
     status: subscription.status,
     validuntil: subscription.validuntil,
-    freelicense: subscription.freelicense,
   }
   socket.emit('subscription:get', data)
 }

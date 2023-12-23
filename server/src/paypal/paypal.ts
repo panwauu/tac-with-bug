@@ -7,7 +7,7 @@ import logger from '../helpers/logger'
 import { getUser } from '../services/user'
 import { getToken, requestTokenFromPaypal } from './paypalToken'
 
-interface Subscription {
+export type Subscription = {
   id: number | null
   userid: number | null
   subscriptionid: string | null
@@ -19,18 +19,13 @@ function SQLusernameOrID(usernameORuserID: number | string) {
   return typeof usernameORuserID === 'string' ? 'username' : 'id'
 }
 
-export interface SubscriptionDetails extends Subscription {
-  freelicense: boolean
-}
-
-export function getInvalidSubscriptionDetails(): SubscriptionDetails {
+export function getInvalidSubscriptionDetails(): Subscription {
   return {
     id: null,
     userid: null,
     subscriptionid: null,
     status: null,
     validuntil: null,
-    freelicense: false,
   }
 }
 
@@ -40,11 +35,11 @@ export async function getNSubscriptions(sqlClient: pg.Pool) {
   })
 }
 
-async function getDBSubscription(sqlClient: pg.Pool, usernameORuserID: number | string): Promise<SubscriptionDetails> {
-  const query = `SELECT users.freelicense, subscriptions.id, subscriptions.userid, subscriptions.subscriptionid, subscriptions.status, subscriptions.validuntil FROM users
+async function getDBSubscription(sqlClient: pg.Pool, usernameORuserID: number | string): Promise<Subscription> {
+  const query = `SELECT subscriptions.id, subscriptions.userid, subscriptions.subscriptionid, subscriptions.status, subscriptions.validuntil FROM users
     LEFT JOIN subscriptions ON (users.currentsubscription = subscriptions.id) WHERE users.${SQLusernameOrID(usernameORuserID)} = $1
     UNION
-    SELECT freelicense, NULL as id, NULL as userid, NULL as subscriptionid, NULL as status, NULL as validuntil FROM users 
+    SELECT NULL as id, NULL as userid, NULL as subscriptionid, NULL as status, NULL as validuntil FROM users 
     WHERE ${SQLusernameOrID(usernameORuserID)}=$1 AND currentsubscription IS NULL;`
 
   return sqlClient.query(query, [usernameORuserID]).then((res) => {
@@ -113,11 +108,11 @@ export async function isSubscribed(sqlClient: pg.Pool, usernameORuserID: number 
   if (subscription.isErr()) {
     return err(subscription.error)
   }
-  return ok(subscription.value.freelicense || subscription.value.status === 'running' || subscription.value.status === 'expiring')
+  return ok(subscription.value.status === 'running' || subscription.value.status === 'expiring')
 }
 
 export type GetSubscriptionError = 'COULD_NOT_UPDATE_SUBSCRIPTION' | GetPaypalSubscriptionDetailsError
-export async function getSubscription(sqlClient: pg.Pool, usernameORuserID: number | string, checkPaypalFlag = true): Promise<Result<SubscriptionDetails, GetSubscriptionError>> {
+export async function getSubscription(sqlClient: pg.Pool, usernameORuserID: number | string, checkPaypalFlag = true): Promise<Result<Subscription, GetSubscriptionError>> {
   const subscription = await getDBSubscription(sqlClient, usernameORuserID)
   if (!checkPaypalFlag) {
     return ok(subscription)
