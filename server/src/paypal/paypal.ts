@@ -172,7 +172,7 @@ export type NewSubscriptionError =
   | GetPaypalSubscriptionDetailsError
 export async function newSubscription(sqlClient: pg.Pool, userID: number, subscriptionID: string): Promise<Result<null, NewSubscriptionError>> {
   const res = await sqlClient.query('SELECT * FROM subscriptions WHERE subscriptionid = $1;', [subscriptionID])
-  if (res.rowCount > 0) {
+  if (res.rowCount != null && res.rowCount > 0) {
     return err('SUBSCRIPTION_ALREADY_IN_DB')
   }
 

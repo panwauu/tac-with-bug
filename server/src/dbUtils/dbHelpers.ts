@@ -8,7 +8,7 @@ export function expectChangesInDatabase(res: pg.QueryResult<any>) {
 }
 
 export function expectOneChangeInDatabase(res: pg.QueryResult<any>) {
-  if (res.rowCount === 0) {
+  if (res.rowCount == null || res.rowCount === 0) {
     throw new Error('NO_CHANGE_TO_DATABASE_ERROR')
   }
   if (res.rowCount > 1) {
@@ -27,7 +27,7 @@ export function expectChangesToDatabase(res: pg.QueryResult<any>): Result<null, 
 }
 
 export function expectOneChangeToDatabase(res: pg.QueryResult<any>): Result<null, NotOneDatabaseChangeError> {
-  if (res.rowCount === 0 || res.rowCount > 1) {
+  if (res.rowCount == null || res.rowCount === 0 || res.rowCount > 1) {
     return err('NONE_OR_MORE_THAN_ONE_CHANGES_TO_DATABASE')
   }
   return ok(null)
