@@ -5,6 +5,10 @@ describe('Test suite with recorded games', () => {
     expect(true).toBe(true)
   })
 
+  test('Should not allow empty textActions', () => {
+    expect(testCapturedMoves('simulation180719539153').equal).toBe(false)
+  })
+
   test('Test with captured Game 101 -> At the end Teufel with abwerfen chosen', () => {
     expect(testCapturedMoves('101').equal).toBe(true)
   })

@@ -241,11 +241,11 @@ export class Game implements GameData {
     }
 
     if (this.tradeFlag) {
-      return this.tradeCards[move[0]] === ''
+      return move.length === 3 && move[2] === 'tauschen' && move[1] < this.cards.players[move[0]].length && this.tradeCards[move[0]] === ''
     }
 
     if (this.narrFlag.some((e) => e)) {
-      return !this.narrFlag[move[0]]
+      return move.length === 3 && move[2] === 'narr' && !this.narrFlag[move[0]]
     }
 
     if (move[0] !== this.activePlayer) {
@@ -265,6 +265,10 @@ export class Game implements GameData {
     }
 
     if (move.length === 3) {
+      if (move[2] === '') {
+        logger.info('textAction empty')
+        return false
+      }
       if (!card.textAction.includes(move[2])) {
         logger.info('textAction not allowed')
         return false

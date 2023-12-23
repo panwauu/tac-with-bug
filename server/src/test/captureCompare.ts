@@ -46,6 +46,9 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
         if (i === 1) {
           timeDummy = Infinity
         }
+        if (lineJSON.action[2] === '') {
+          console.log('Gotcha')
+        }
         if (!gameInst.checkMove(lineJSON.action)) {
           result.game = gameInst
           result.line = i
