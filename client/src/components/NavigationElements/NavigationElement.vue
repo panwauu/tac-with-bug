@@ -15,25 +15,7 @@
       :model="userMenu"
       :popup="true"
       :baseZIndex="2000"
-    >
-      <template #item="{ item, props }">
-        <router-link
-          v-if="item.to"
-          v-slot="{ href, navigate }"
-          :to="item.to"
-          custom
-        >
-          <a
-            :href="href"
-            v-bind="props.action"
-            @click="navigate"
-          >
-            <span :class="item.icon" />
-            <span style="margin-left: 0.5rem">{{ item.label }}</span>
-          </a>
-        </router-link>
-      </template>
-    </Menu>
+    />
   </div>
 </template>
 
@@ -57,47 +39,65 @@ function returnMenu() {
     {
       label: i18n.global.t('Home.Landing'),
       icon: 'pi pi-home',
-      to: { name: 'Landing' },
+      command: () => {
+        router.push({ name: 'Landing' })
+      },
     },
     {
       label: i18n.global.t('Home.PlayerSearch'),
       icon: 'pi pi-search',
-      to: { name: 'PlayerSearch' },
+      command: () => {
+        router.push({ name: 'PlayerSearch' })
+      },
     },
     {
       label: i18n.global.t('Home.Tournament'),
       icon: 'pi pi-sitemap',
-      to: { name: 'TournamentOverview' },
+      command: () => {
+        router.push({ name: 'TournamentOverview' })
+      },
     },
     {
       label: i18n.global.t('Home.Leaderboard'),
       icon: 'pi pi-thumbs-up',
-      to: { name: 'Leaders' },
+      command: () => {
+        router.push({ name: 'Leaders' })
+      },
     },
     {
       label: i18n.global.t('Home.TutorialOverview'),
       icon: 'pi pi-question-circle',
-      to: { name: 'TutorialOverview' },
+      command: () => {
+        router.push({ name: 'TutorialOverview' })
+      },
     },
     {
       label: i18n.global.t('Home.Subscription'),
       icon: 'pi pi-money-bill',
-      to: { name: 'Subscription' },
+      command: () => {
+        router.push({ name: 'Subscription' })
+      },
     },
     {
       label: i18n.global.t('Home.HOF'),
       icon: 'pi pi-star',
-      to: { name: 'HOF' },
+      command: () => {
+        router.push({ name: 'HOF' })
+      },
     },
     {
       label: i18n.global.t('Home.Settings'),
       icon: 'pi pi-cog',
-      to: { name: 'Settings' },
+      command: () => {
+        router.push({ name: 'Settings' })
+      },
     },
     {
       label: i18n.global.t('Home.Stats'),
       icon: 'pi pi-chart-line',
-      to: { name: 'Stats' },
+      command: () => {
+        router.push({ name: 'Stats' })
+      },
     },
   ]
 
@@ -105,9 +105,9 @@ function returnMenu() {
     menu.push({
       label: i18n.global.t('Home.signout'),
       icon: 'pi pi-sign-out',
-      to: { name: 'Landing' },
       command: () => {
         emit('logout')
+        router.push({ name: 'Landing' })
       },
     })
   }
