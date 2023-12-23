@@ -31,7 +31,25 @@
         <FriendButton :username="username" />
       </div>
     </div>
-    <TabMenu :model="items" />
+    <TabMenu :model="items">
+      <template #item="{ item, props }">
+        <router-link
+          v-if="item.to"
+          v-slot="{ href, navigate }"
+          :to="item.to"
+          custom
+        >
+          <a
+            :href="href"
+            v-bind="props.action"
+            @click="navigate"
+          >
+            <span :class="item.icon" />
+            <span style="margin-left: 0.5rem">{{ item.label }}</span>
+          </a>
+        </router-link>
+      </template>
+    </TabMenu>
     <router-view
       style="padding-top: 15px"
       :radarData="radarData"
@@ -42,6 +60,7 @@
 
 <script setup lang="ts">
 import TabMenu from 'primevue/tabmenu'
+import type { MenuItem } from 'primevue/menuitem'
 import FriendButton from '@/components/FriendButton.vue'
 import ProfilePicture from '@/components/ProfilePicture.vue'
 import Sponsor from '@/components/SubscriptionTag.vue'
@@ -97,7 +116,7 @@ async function updateData() {
   }
 }
 
-function createMenu(displayText: boolean) {
+function createMenu(displayText: boolean): MenuItem[] {
   return [
     { label: displayText ? i18n.global.t('Profile.menuOverview') : '', icon: 'pi pi-fw pi-home', to: { name: 'Profile' } },
     { label: displayText ? i18n.global.t('Profile.menuAchievements') : '', icon: 'pi pi-fw pi-flag', to: { name: 'Profile-Achievements' } },
