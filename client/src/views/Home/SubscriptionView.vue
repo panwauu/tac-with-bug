@@ -34,13 +34,6 @@
     </div>
     <p>{{ $t('Subscription.nSubscriptions') }}: {{ nSubscriptions }}</p>
     <div v-show="isLoggedIn">
-      <Message
-        v-if="subscriptionState.freelicense"
-        :closable="false"
-        severity="success"
-      >
-        {{ $t('Subscription.freelicense') }}
-      </Message>
       <div v-if="subscriptionState.status === 'expiring'">
         <Message
           :closable="false"

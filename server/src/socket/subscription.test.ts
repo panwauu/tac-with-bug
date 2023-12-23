@@ -38,7 +38,6 @@ describeIf(!skipTests, 'Test Suite via Socket.io', () => {
       const data = await promise
       expect(data.status).toBe(null)
       expect(data.validuntil).toBe(null)
-      expect(data.freelicense).toBe(false)
     })
 
     test('new subscription - wrong id type', async () => {
@@ -60,7 +59,6 @@ describeIf(!skipTests, 'Test Suite via Socket.io', () => {
         expect(val[0].status).toBe(200)
         expect(val[1].status).toBe('running')
         expect(val[1].validuntil).not.toBe(null)
-        expect(val[1].freelicense).toBe(false)
         expect(spyNewSubscription).toBeCalledTimes(1)
       })
     })
@@ -78,7 +76,6 @@ describeIf(!skipTests, 'Test Suite via Socket.io', () => {
       const data = await promise
       expect(data.status).toBe('running')
       expect(data.validuntil).not.toBe(null)
-      expect(data.freelicense).toBe(false)
     })
 
     test.todo('cancel subscription')

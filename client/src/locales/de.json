@@ -1,6 +1,5 @@
 {
   "Subscription": {
-    "freelicense": "Du hast Glück! Du wurdest als außergewöhnliche:r Spieler:in ausgewählt und erhältst den vollen Funktionsumfang auch ohne Zahlungen.",
     "running": "Du bist ein aktiver Unterstützer von Tac-With-Bug! Vielen Dank für deine Hilfe",
     "runningNextPayment": "Die nächste Zahlung ist am {time} fällig.",
     "expiring": "Du hast dein Abonnement beendet. Deine Vorteile enden am {time}.",
