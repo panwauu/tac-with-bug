@@ -158,7 +158,7 @@ const activeMenuItemIndex = ref(0)
 watch(
   () => router.currentRoute.value.fullPath,
   () => {
-    activeMenuItemIndex.value = items.value.findIndex((item) => router.currentRoute.value.name == item.to.name)
+    activeMenuItemIndex.value = items.value.findIndex((item) => router.currentRoute.value.name === item.to.name)
   },
   { immediate: true }
 )
