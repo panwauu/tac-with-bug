@@ -31,25 +31,10 @@
         <FriendButton :username="username" />
       </div>
     </div>
-    <TabMenu :model="items">
-      <template #item="{ item, props }">
-        <router-link
-          v-if="item.to"
-          v-slot="{ href, navigate }"
-          :to="item.to"
-          custom
-        >
-          <a
-            :href="href"
-            v-bind="props.action"
-            @click="navigate"
-          >
-            <span :class="item.icon" />
-            <span style="margin-left: 0.5rem">{{ item.label }}</span>
-          </a>
-        </router-link>
-      </template>
-    </TabMenu>
+    <TabMenu
+      :model="items"
+      :active-index="activeMenuItemIndex"
+    />
     <router-view
       style="padding-top: 15px"
       :radarData="radarData"
@@ -118,11 +103,46 @@ async function updateData() {
 
 function createMenu(displayText: boolean): MenuItem[] {
   return [
-    { label: displayText ? i18n.global.t('Profile.menuOverview') : '', icon: 'pi pi-fw pi-home', to: { name: 'Profile' } },
-    { label: displayText ? i18n.global.t('Profile.menuAchievements') : '', icon: 'pi pi-fw pi-flag', to: { name: 'Profile-Achievements' } },
-    { label: displayText ? i18n.global.t('Profile.menuGames') : '', icon: 'pi pi-fw pi-table', to: { name: 'Profile-Games' } },
-    { label: displayText ? i18n.global.t('Profile.menuFriends') : '', icon: 'pi pi-fw pi-users', to: { name: 'Profile-Friends' } },
-    { label: displayText ? i18n.global.t('Profile.menuSocials') : '', icon: 'pi pi-fw pi-sitemap', to: { name: 'Profile-Socials' } },
+    {
+      label: displayText ? i18n.global.t('Profile.menuOverview') : '',
+      icon: 'pi pi-fw pi-home',
+      to: { name: 'Profile' },
+      command: () => {
+        router.push({ name: 'Profile' })
+      },
+    },
+    {
+      label: displayText ? i18n.global.t('Profile.menuAchievements') : '',
+      icon: 'pi pi-fw pi-flag',
+      to: { name: 'Profile-Achievements' },
+      command: () => {
+        router.push({ name: 'Profile-Achievements' })
+      },
+    },
+    {
+      label: displayText ? i18n.global.t('Profile.menuGames') : '',
+      icon: 'pi pi-fw pi-table',
+      to: { name: 'Profile-Games' },
+      command: () => {
+        router.push({ name: 'Profile-Games' })
+      },
+    },
+    {
+      label: displayText ? i18n.global.t('Profile.menuFriends') : '',
+      icon: 'pi pi-fw pi-users',
+      to: { name: 'Profile-Friends' },
+      command: () => {
+        router.push({ name: 'Profile-Friends' })
+      },
+    },
+    {
+      label: displayText ? i18n.global.t('Profile.menuSocials') : '',
+      icon: 'pi pi-fw pi-sitemap',
+      to: { name: 'Profile-Socials' },
+      command: () => {
+        router.push({ name: 'Profile-Socials' })
+      },
+    },
   ]
 }
 
@@ -132,6 +152,16 @@ useResizeObserver(profileContainer, () => {
 function updateMenu() {
   items.value = createMenu(profileContainer.value?.getBoundingClientRect().width === undefined || profileContainer.value?.getBoundingClientRect().width > 550)
 }
+
+const activeMenuItemIndex = ref(0)
+
+watch(
+  () => router.currentRoute.value.fullPath,
+  () => {
+    activeMenuItemIndex.value = items.value.findIndex((item) => router.currentRoute.value.name == item.to.name)
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped>
