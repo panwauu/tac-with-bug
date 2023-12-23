@@ -74,7 +74,7 @@ function createCardsWithMovesForUnactivePlayer(playerCards: string[], textAction
   })
 }
 
-function getCards(game: Game, player: number): tCard.PlayerCard[] {
+export function getCards(game: Game, player: number): tCard.PlayerCard[] {
   if (player < 0 || player >= game.nPlayers) {
     return []
   }
