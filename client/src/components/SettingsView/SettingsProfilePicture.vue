@@ -85,7 +85,7 @@ interface CustomFile extends File {
 const uploadFile = ref<CustomFile | null>(null)
 const cropperRef = ref<VueCropperMethods | null>(null)
 
-const startCropper = (event: { file: File; files: File[] }) => {
+const startCropper = (event: any) => {
   cropperDialog.value = true
   uploadFile.value = event.files[0]
   event.files.splice(0, event.files.length)

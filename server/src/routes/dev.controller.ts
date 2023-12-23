@@ -1,10 +1,11 @@
 import type express from 'express'
-import { Controller, Get, Query, Route, Request, Security, TsoaResponse, Res } from 'tsoa'
+import { Controller, Get, Query, Route, Request, Security, TsoaResponse, Res, Tags } from 'tsoa'
 
 import { retrieveCapturedGame } from '../services/capture'
 import { getEmailsFromUsersForNews } from '../services/settings'
 
 @Route('/')
+@Tags('Dev')
 export class DevController extends Controller {
   /**
    * Get capture

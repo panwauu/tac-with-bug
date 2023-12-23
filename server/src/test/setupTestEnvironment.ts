@@ -23,7 +23,7 @@ beforeAll(async () => {
     },
   })
   await (global as any).testServer.listen(0)
-  ;(global as any).testAgent = supertest.agent((global as any).testServer.httpServer)
+  ;(global as any).testAgent = new supertest.agent((global as any).testServer.httpServer)
 })
 
 afterAll(async () => {
