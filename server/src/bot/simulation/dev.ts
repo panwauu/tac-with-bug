@@ -10,6 +10,13 @@ export type AiInterface = {
   choose: (data: AiData) => MoveTextOrBall
 }
 
+export type AdditionalInformation = {
+  hadOneOrThirteen: boolean[]
+  tradedCards: (CardType | null)[]
+  narrTradedCards: (CardType[] | null)[]
+  previouslyUsedCards: CardType[]
+}
+
 export type AiData = {
   nPlayers: number
   teams: number[][]
@@ -23,12 +30,11 @@ export type AiData = {
   teufelFlag: boolean
 
   tradeFlag: boolean
-  tradedCard: CardType
+  tradedCard: CardType | null
   tradeDirection: number
   hadOneOrThirteen: boolean[]
 
-  narrFlag: boolean[] // Should remove it in the future as we can include from traded cards
-  narrTradedCards: CardType[]
+  narrTradedCards: CardType[] | null
 
   cardsWithMoves: PlayerCard[]
   discardPile: CardType[]
@@ -38,41 +44,36 @@ export type AiData = {
 
   activePlayer: number
   sevenChosenPlayer: number | null
-  gameEnded: boolean
-  winningTeams: boolean[]
 }
 
-function getAiData(game: Game, gamePlayer: number): AiData {
+function getAiData(game: Game, gamePlayer: number, additionalInformation: AdditionalInformation): AiData {
   return {
     nPlayers: game.nPlayers,
     teams: game.teams,
     coop: game.coop,
     meisterVersion: game.cards.meisterVersion,
-    gamePlayer: gamePlayer,
+    gamePlayer: gamePlayer, // TODO: shift
 
-    balls: game.balls,
-    priorBalls: game.priorBalls,
+    balls: game.balls, // TODO: shift
+    priorBalls: game.priorBalls, // TODO: shift
 
     teufelFlag: game.teufelFlag,
 
     tradeFlag: game.tradeFlag,
-    tradedCard: '', // TODO
+    tradedCard: additionalInformation.tradedCards[gamePlayer],
     tradeDirection: game.tradeDirection,
-    hadOneOrThirteen: [], // TODO
+    hadOneOrThirteen: additionalInformation.hadOneOrThirteen, // TODO: shift
 
-    narrFlag: game.narrFlag, // TODO
-    narrTradedCards: [], // TODO
+    narrTradedCards: additionalInformation.narrTradedCards[gamePlayer], // TODO: shift
 
-    cardsWithMoves: getCards(game, gamePlayer),
+    cardsWithMoves: getCards(game, gamePlayer), // TODO: shift
     discardPile: game.cards.discardPile,
-    overallUsedCards: [], // TODO
+    overallUsedCards: [...additionalInformation.previouslyUsedCards, ...game.cards.discardPile],
 
-    dealingPlayer: game.cards.dealingPlayer,
+    dealingPlayer: game.cards.dealingPlayer, // TODO: shift
 
-    activePlayer: game.activePlayer,
-    sevenChosenPlayer: game.sevenChosenPlayer,
-    gameEnded: game.gameEnded,
-    winningTeams: game.winningTeams,
+    activePlayer: game.activePlayer, // TODO: shift
+    sevenChosenPlayer: game.sevenChosenPlayer, // TODO: shift
   }
 }
 
@@ -101,7 +102,7 @@ export function getMovesFromCards(cards: PlayerCard[], gamePlayer: number): Move
   return moves
 }
 
-const nSimulations = 1000
+const nSimulations = 100
 const simulations = [] as {
   status: 'waiting' | 'running' | 'finished' | 'error'
   moves: number
@@ -115,22 +116,37 @@ for (let simulationIndex = 0; simulationIndex < nSimulations; simulationIndex++)
   try {
     const agents = [new Greedy(), new Greedy(), new Greedy(), new Greedy()]
     const game = new Game(4, 2, true, false)
+    const additionalInformation: AdditionalInformation = {
+      hadOneOrThirteen: [],
+      tradedCards: [null, null, null, null],
+      narrTradedCards: [null, null, null, null],
+      previouslyUsedCards: [],
+    }
 
     while (!game.gameEnded) {
       if (game.cards.players.every((p) => p.length === 0)) {
+        additionalInformation.previouslyUsedCards = additionalInformation.previouslyUsedCards.concat(game.cards.discardPile)
+        if (game.cards.deck.length >= 98) {
+          additionalInformation.previouslyUsedCards = []
+        }
         game.performAction('dealCards', 0)
+        additionalInformation.tradedCards = game.cards.players.map(() => null)
+        additionalInformation.narrTradedCards = game.cards.players.map(() => null)
+        additionalInformation.hadOneOrThirteen = game.cards.players.map((p) => p.some((c) => c === '1' || c === '13'))
       }
       game.updateCardsWithMoves()
 
       let move: MoveTextOrBall | null = null
       for (let gamePlayer = 0; gamePlayer < game.nPlayers; gamePlayer++) {
         const cards = getCards(game, gamePlayer)
-        const moves = getMovesFromCards(cards, gamePlayer)
-        if (cards.length !== 0 && game.narrFlag.some((f) => f) && !game.narrFlag[gamePlayer]) moves.push([gamePlayer, 0, 'narr'])
+        if (cards.length !== 0 && game.narrFlag.some((f) => f) && !game.narrFlag[gamePlayer]) {
+          move = [gamePlayer, 0, 'narr']
+          additionalInformation.narrTradedCards[gamePlayer] = game.cards.players[gamePlayer]
+          break
+        }
+        if (cards.every((c) => !c.possible)) continue
 
-        if (moves.length === 0) continue
-
-        move = agents[gamePlayer].choose(getAiData(game, gamePlayer))
+        move = agents[gamePlayer].choose(getAiData(game, gamePlayer, additionalInformation))
         break
       }
 
@@ -141,6 +157,9 @@ for (let simulationIndex = 0; simulationIndex < nSimulations; simulationIndex++)
         throw new Error('Wrong move selected')
       }
 
+      if (move[2] === 'tauschen') {
+        additionalInformation.tradedCards[move[0]] = game.cards.players[move[0]][move[1]]
+      }
       game.performAction(move, move[0])
       simulations[simulationIndex].moves = simulations[simulationIndex].moves + 1
     }
