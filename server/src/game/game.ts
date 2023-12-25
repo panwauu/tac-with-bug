@@ -273,7 +273,7 @@ export class Game implements GameData {
         logger.info('textAction not allowed')
         return false
       }
-    } else if (!card.ballActions[move[2]].includes(move[3])) {
+    } else if (card.ballActions[move[2]] == null || !card.ballActions[move[2]].includes(move[3])) {
       return false
     }
 

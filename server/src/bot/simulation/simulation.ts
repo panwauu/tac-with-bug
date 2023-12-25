@@ -2,6 +2,8 @@ import { BallsType, MoveTextOrBall } from '../../sharedTypes/typesBall'
 import { CardType, PlayerCard } from '../../sharedTypes/typesCard'
 import { getCards } from '../../game/serverOutput'
 import { Game } from '../../game/game'
+import { modulo, rightShiftArray } from '../normalize/helpers'
+import { projectMoveToGamePlayer, rightShiftBalls, rightShiftCards } from '../normalize/normalize'
 
 export type AiInterface = {
   choose: (data: AiData) => MoveTextOrBall
@@ -44,33 +46,35 @@ export type AiData = {
 }
 
 function getAiData(game: Game, gamePlayer: number, additionalInformation: AdditionalInformation): AiData {
+  const rightShiftBy = modulo(-gamePlayer, game.nPlayers)
+
   return {
     nPlayers: game.nPlayers,
     teams: game.teams,
     coop: game.coop,
     meisterVersion: game.cards.meisterVersion,
-    gamePlayer: gamePlayer, // TODO: shift
+    gamePlayer: 0,
 
-    balls: game.balls, // TODO: shift
-    priorBalls: game.priorBalls, // TODO: shift
+    balls: rightShiftBalls(game, game.balls, rightShiftBy),
+    priorBalls: rightShiftBalls(game, game.priorBalls, rightShiftBy),
 
     teufelFlag: game.teufelFlag,
 
     tradeFlag: game.tradeFlag,
     tradedCard: additionalInformation.tradedCards[gamePlayer],
     tradeDirection: game.tradeDirection,
-    hadOneOrThirteen: additionalInformation.hadOneOrThirteen, // TODO: shift
+    hadOneOrThirteen: rightShiftArray(additionalInformation.hadOneOrThirteen, rightShiftBy),
 
-    narrTradedCards: additionalInformation.narrTradedCards[gamePlayer], // TODO: shift
+    narrTradedCards: additionalInformation.narrTradedCards[gamePlayer],
 
-    cardsWithMoves: getCards(game, gamePlayer), // TODO: shift
+    cardsWithMoves: rightShiftCards(game, getCards(game, gamePlayer), rightShiftBy),
     discardPile: game.cards.discardPile,
     overallUsedCards: [...additionalInformation.previouslyUsedCards, ...game.cards.discardPile],
 
-    dealingPlayer: game.cards.dealingPlayer, // TODO: shift
+    dealingPlayer: modulo(game.cards.dealingPlayer + game.nPlayers, game.nPlayers),
 
-    activePlayer: game.activePlayer, // TODO: shift
-    sevenChosenPlayer: game.sevenChosenPlayer, // TODO: shift
+    activePlayer: modulo(game.activePlayer + game.nPlayers, game.nPlayers),
+    sevenChosenPlayer: game.sevenChosenPlayer == null ? null : modulo(game.sevenChosenPlayer + game.nPlayers, game.nPlayers),
   }
 }
 
@@ -148,7 +152,13 @@ export function runSimulation(nSimulations: number, ais: AiInterface[], gamePara
           }
           if (cards.every((c) => !c.possible)) continue
 
-          move = agents[gamePlayer].choose(getAiData(game, gamePlayer, additionalInformation))
+          const aiData = getAiData(game, gamePlayer, additionalInformation)
+          const agentMove = agents[gamePlayer].choose(aiData)
+          move = projectMoveToGamePlayer(game, agentMove, gamePlayer)
+
+          if (!game.checkMove(move)) {
+            console.log('error')
+          }
           break
         }
 
