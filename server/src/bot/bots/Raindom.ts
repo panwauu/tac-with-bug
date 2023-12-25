@@ -2,7 +2,7 @@
 // I can do a lot of things, like:
 // - Just playing randomly
 
-import { AiData, AiInterface, getMovesFromCards } from '../simulation/dev'
+import { AiData, AiInterface, getMovesFromCards } from '../simulation/simulation'
 
 export class Raindom implements AiInterface {
   choose(data: AiData) {
