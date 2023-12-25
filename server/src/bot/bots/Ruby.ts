@@ -33,7 +33,7 @@ function killedEnemy(move: MoveTextOrBall, data: AiData): number {
   if (move.length === 3) return 0
   const ballToKill = data.balls.find((ball) => ball.position === move[3])
   if (ballToKill == null) return 0
-  return ballToKill.player % 2 != data.gamePlayer % 2 ? 1 : -1
+  return ballToKill.player % 2 !== data.gamePlayer % 2 ? 1 : -1
 }
 
 function movesToHouse(move: MoveTextOrBall, data: AiData): number {

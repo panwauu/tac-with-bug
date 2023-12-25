@@ -1,9 +1,10 @@
-import type { MoveTextOrBall } from '../../sharedTypes/typesBall'
+import type { BallActions, BallsType, MoveTextOrBall } from '../../sharedTypes/typesBall'
 
 import { cloneDeep } from 'lodash'
 import { Game } from '../../game/game'
 import { ballGoal, ballStart, getPositionsBetweenStarts } from '../../game/ballUtils'
 import { modulo, moduloOffset, reorderArray, rightShiftArray } from './helpers'
+import { PlayerCard } from 'src/sharedTypes/typesCard'
 
 function changePosition(gameInst: Game, position: number, playersShiftedBy: number) {
   const firstStartPosition = ballStart(0, gameInst.balls)
@@ -110,4 +111,43 @@ export function unnormalizeAction(normAction: MoveTextOrBall, norm: { game: Game
   }
   const ballIndex = norm.ballsNewOrder[normAction[2]]
   return [playerIndex, cardIndex, ballIndex, changePosition(norm.game, normAction[3], -1 * norm.playersShiftedBy)]
+}
+
+export function rightShiftBalls(game: Game, balls: BallsType, rightShiftBy: number) {
+  const shiftedBalls: BallsType = rightShiftArray(structuredClone(balls), rightShiftBy * 4)
+
+  for (let ballIndex = 0; ballIndex < shiftedBalls.length; ballIndex++) {
+    shiftedBalls[ballIndex].player = modulo(shiftedBalls[ballIndex].player + rightShiftBy, game.nPlayers)
+    shiftedBalls[ballIndex].position = changePosition(game, shiftedBalls[ballIndex].position, rightShiftBy)
+  }
+
+  return shiftedBalls
+}
+
+export function rightShiftCards(game: Game, cards: PlayerCard[], rightShiftBy: number) {
+  const shiftedCards: PlayerCard[] = structuredClone(cards)
+
+  for (const card of shiftedCards) {
+    const newBallActions: BallActions = {}
+    for (const ballIndex of Object.keys(card.ballActions)) {
+      const shiftedBallIndex = modulo(Number(ballIndex) + rightShiftBy * 4, game.nPlayers * 4)
+      newBallActions[shiftedBallIndex] = []
+      card.ballActions[Number(ballIndex)].forEach((action) => {
+        newBallActions[shiftedBallIndex].push(changePosition(game, action, rightShiftBy))
+      })
+    }
+    card.ballActions = newBallActions
+  }
+
+  return shiftedCards
+}
+
+export function projectMoveToGamePlayer(game: Game, move: MoveTextOrBall, gamePlayer: number): MoveTextOrBall {
+  const rightShiftBy = modulo(gamePlayer - move[0], game.nPlayers)
+
+  if (move.length === 3) {
+    return [gamePlayer, move[1], move[2]]
+  }
+
+  return [gamePlayer, move[1], modulo(move[2] + 4 * rightShiftBy, game.nPlayers * 4), changePosition(game, move[3], rightShiftBy)]
 }
