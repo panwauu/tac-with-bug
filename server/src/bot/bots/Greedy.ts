@@ -1,7 +1,7 @@
 // Hi, I'm greedy,
 // I care about nothing but about getting balls into the house
 
-import { AiData, AiInterface, getMovesFromCards } from '../simulation/dev'
+import { AiData, AiInterface, getMovesFromCards } from '../simulation/simulation'
 
 export class Greedy implements AiInterface {
   choose(data: AiData) {
