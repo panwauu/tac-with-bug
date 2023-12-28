@@ -37,7 +37,7 @@ export type AiData = {
 
   cardsWithMoves: PlayerCard[]
   discardPile: CardType[]
-  overallUsedCards: CardType[]
+  previouslyUsedCards: CardType[]
 
   dealingPlayer: number
 
@@ -45,7 +45,7 @@ export type AiData = {
   sevenChosenPlayer: number | null
 }
 
-function getAiData(game: Game, gamePlayer: number, additionalInformation: AdditionalInformation): AiData {
+export function getAiData(game: Game, gamePlayer: number, additionalInformation: AdditionalInformation): AiData {
   const rightShiftBy = modulo(-gamePlayer, game.nPlayers)
 
   return {
@@ -69,12 +69,12 @@ function getAiData(game: Game, gamePlayer: number, additionalInformation: Additi
 
     cardsWithMoves: rightShiftCards(game, getCards(game, gamePlayer), rightShiftBy),
     discardPile: game.cards.discardPile,
-    overallUsedCards: [...additionalInformation.previouslyUsedCards, ...game.cards.discardPile],
+    previouslyUsedCards: [...additionalInformation.previouslyUsedCards],
 
-    dealingPlayer: modulo(game.cards.dealingPlayer + game.nPlayers, game.nPlayers),
+    dealingPlayer: modulo(game.cards.dealingPlayer + rightShiftBy, game.nPlayers),
 
-    activePlayer: modulo(game.activePlayer + game.nPlayers, game.nPlayers),
-    sevenChosenPlayer: game.sevenChosenPlayer == null ? null : modulo(game.sevenChosenPlayer + game.nPlayers, game.nPlayers),
+    activePlayer: modulo(game.activePlayer + rightShiftBy, game.nPlayers),
+    sevenChosenPlayer: game.sevenChosenPlayer == null ? null : modulo(game.sevenChosenPlayer + rightShiftBy, game.nPlayers),
   }
 }
 
@@ -188,9 +188,10 @@ export function runSimulation(nSimulations: number, ais: AiInterface[], gamePara
 
   console.log({
     faultRate: simulations.filter((s) => s.status === 'error').length / simulations.length,
-    winRateTeam0: simulations.filter((s) => s.winner === 0).length / simulations.length,
-    winRateTeam1: simulations.filter((s) => s.winner === 1).length / simulations.length,
+    winRateTeam0: simulations.filter((s) => s.status === 'finished' && s.winner === 0).length / simulations.filter((s) => s.status === 'finished').length,
+    winRateTeam1: simulations.filter((s) => s.status === 'finished' && s.winner === 1).length / simulations.filter((s) => s.status === 'finished').length,
     averageMoves: simulations.map((s) => s.moves).reduce((a, b) => a + b, 0) / simulations.length,
+    timePerMove: simulations.map((s) => s.simulationTime / s.moves).reduce((a, b) => a + b, 0) / simulations.length,
   })
 
   return simulations
