@@ -58,12 +58,10 @@ export function previewMove(data: AiData, move: MoveTextOrBall): AiData {
   if (!game.gameEnded && game.cardsWithMoves.length > 0 && game.cardsWithMoves.every((c) => !c.possible)) throw new Error('No possible moves found')
 
   // convert back to data
-  return structuredClone(
-    getAiData(game, 0, {
-      hadOneOrThirteen: data.hadOneOrThirteen,
-      tradedCards: Array.from({ length: data.nPlayers }, (_, i) => (i === 0 ? data.tradedCard : null)),
-      narrTradedCards: Array.from({ length: data.nPlayers }, (_, i) => (i === 0 ? data.narrTradedCards : null)),
-      previouslyUsedCards: data.previouslyUsedCards,
-    })
-  )
+  return getAiData(game, 0, {
+    hadOneOrThirteen: data.hadOneOrThirteen,
+    tradedCards: Array.from({ length: data.nPlayers }, (_, i) => (i === 0 ? data.tradedCard : null)),
+    narrTradedCards: Array.from({ length: data.nPlayers }, (_, i) => (i === 0 ? data.narrTradedCards : null)),
+    previouslyUsedCards: data.previouslyUsedCards,
+  })
 }
