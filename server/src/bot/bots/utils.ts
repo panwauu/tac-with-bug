@@ -1,11 +1,13 @@
-import { ballStart, getPositionsBetweenStarts } from '../../game/ballUtils'
+import { ballGoal, ballStart, getPositionsBetweenStarts } from '../../game/ballUtils'
 import { BallsType } from 'src/sharedTypes/typesBall'
 
 function necessaryForwardMovesToEndOfGoal(position: number, ballIndex: number, balls: BallsType): number {
   if (position < ballStart(0, balls)) return maxMovesToEndOfGoal(balls)
-  return ballStart(ballIndex, balls) > position
-    ? ballStart(ballIndex, balls) - position + 4
-    : ballStart(ballIndex, balls) + (balls.length / 4) * getPositionsBetweenStarts(balls) - position + 4
+  if (position < ballGoal(0, balls))
+    return ballStart(ballIndex, balls) > position
+      ? ballStart(ballIndex, balls) - position + 4
+      : ballStart(ballIndex, balls) + (balls.length / 4) * getPositionsBetweenStarts(balls) - position + 4
+  return ballGoal(ballIndex, balls) + 3 - position
 }
 
 function maxMovesToEndOfGoal(balls: BallsType): number {
