@@ -30,7 +30,7 @@ function calculatePaths(data: AiData): EndNode[] {
 
   for (let i = 0; i < 3; i++) {
     const newNodes: EndNode[] = []
-    for (let node of nodes) {
+    for (const node of nodes) {
       newNodes.push(...expandNode(node))
     }
     nodes = newNodes
@@ -60,15 +60,14 @@ function expandNode(node: EndNode): EndNode[] {
     return [node]
   }
 
-  const result = moves.map((m) => {
+  return moves.map((m) => {
     const dataAfterMove = previewMove(node.state, m)
     return {
       state: dataAfterMove,
-      movesToGetThere: [...node?.movesToGetThere, m],
-      scoresPerState: [...node?.scoresPerState, calculateScoreOfState(dataAfterMove)],
+      movesToGetThere: [...node.movesToGetThere, m],
+      scoresPerState: [...node.scoresPerState, calculateScoreOfState(dataAfterMove)],
     }
   })
-  return result
 }
 
 function calculateScoreOfState(data: AiData): number {
