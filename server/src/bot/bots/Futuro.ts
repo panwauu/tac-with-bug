@@ -26,7 +26,7 @@ export class Futuro implements AiInterface {
 function calculatePaths(data: AiData): EndNode[] {
   let nodes: EndNode[] = [{ state: data, movesToGetThere: [], scoresPerState: [] }]
 
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 1; i++) {
     const newNodes: EndNode[] = []
     for (let node of nodes) {
       newNodes.push(...expandNode(node))
@@ -46,7 +46,7 @@ function expandNode(node: EndNode): EndNode[] {
   }
 
   let moves = getMovesFromCards(node.state.cardsWithMoves, node.state.gamePlayer)
-  moves = moves.filter((m) => !['tac', '7', 'teufel', 'narr'].includes(node.state.cardsWithMoves[m[0]].title))
+  moves = moves.filter((m) => !['tac', '7', 'teufel', 'narr'].includes(node.state.cardsWithMoves[m[0]].title)).filter((m) => m.length === 4)
   if (moves.some((m) => m.length === 3 && m[2] === 'tauschen')) {
     return []
   }

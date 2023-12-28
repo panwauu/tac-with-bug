@@ -4,4 +4,4 @@ import { Futuro } from '../bots/Futuro'
 import { Raindom } from '../bots/Raindom'
 import { runSimulation } from './simulation'
 
-runSimulation(10, [new Futuro(), new Raindom(), new Futuro(), new Raindom()])
+runSimulation(1, [new Futuro(), new Raindom(), new Futuro(), new Raindom()])

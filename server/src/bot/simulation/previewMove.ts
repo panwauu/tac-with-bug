@@ -48,14 +48,14 @@ export function previewMove(data: AiData, move: MoveTextOrBall): AiData {
 
   // Perform move
   if (!game.checkMove(move)) throw new Error('Invalid move')
-  game.performAction(move, 0)
+  game.performActionAfterStatistics(move)
 
   // Reset activePlayer to 0
   if (game.activePlayer !== 0) game.activePlayer = 0
 
   // Calculate cards with moves
   game.updateCardsWithMoves()
-  if (game.cardsWithMoves.length > 0 && game.cardsWithMoves.every((c) => !c.possible)) throw new Error('No possible moves found')
+  if (!game.gameEnded && game.cardsWithMoves.length > 0 && game.cardsWithMoves.every((c) => !c.possible)) throw new Error('No possible moves found')
 
   // convert back to data
   return getAiData(game, 0, {
