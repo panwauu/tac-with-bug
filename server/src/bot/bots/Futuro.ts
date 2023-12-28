@@ -14,7 +14,9 @@ export class Futuro implements AiInterface {
         const moves = getMovesFromCards(data.cardsWithMoves, data.gamePlayer)
         return moves[Math.floor(Math.random() * moves.length)]
       }
-      return nodes.sort((p1, p2) => calculateScoreOfNode(p2) - calculateScoreOfNode(p1))[0].movesToGetThere[0]
+      const sortedNodes = nodes.sort((p1, p2) => calculateScoreOfNode(p2) - calculateScoreOfNode(p1))
+
+      return sortedNodes[0].movesToGetThere[0]
     } catch (e) {
       console.error('Could not calculate paths', e)
     }
@@ -26,7 +28,7 @@ export class Futuro implements AiInterface {
 function calculatePaths(data: AiData): EndNode[] {
   let nodes: EndNode[] = [{ state: data, movesToGetThere: [], scoresPerState: [] }]
 
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 3; i++) {
     const newNodes: EndNode[] = []
     for (let node of nodes) {
       newNodes.push(...expandNode(node))
@@ -54,23 +56,22 @@ function expandNode(node: EndNode): EndNode[] {
     return [node]
   }
 
-  return moves.map((m) => {
-    return {
-      state: previewMove(node.state, m),
+  const result = moves.map((m) => {
+    const dataAfterMove = previewMove(node.state, m)
+    return structuredClone({
+      state: dataAfterMove,
       movesToGetThere: [...node?.movesToGetThere, m],
-      scoresPerState: [...node?.scoresPerState, calculateScoreOfState(node.state)],
-    }
+      scoresPerState: [...node?.scoresPerState, calculateScoreOfState(dataAfterMove)],
+    })
   })
+  return result
 }
 
 function calculateScoreOfState(data: AiData): number {
   // Sum of all teams for coop, difference of own team and enemy teams for non-coop
-  /*return data.coop
+  return data.coop
     ? data.teams.reduce((sum, team) => sum + calculatePointsOfTeamFromBalls(data.balls, team), 0)
     : data.teams.reduce((sum, team, i) => sum + (i === 0 ? 1 : -1) * calculatePointsOfTeamFromBalls(data.balls, team), 0)
-    */
-  // TODO: DEBUG
-  return calculatePointsOfTeamFromBalls(data.balls, data.teams[0])
 }
 
 function calculatePointsOfTeamFromBalls(balls: BallsType, team: number[]): number {
@@ -93,5 +94,5 @@ function calculatePointsOfTeamFromBalls(balls: BallsType, team: number[]): numbe
 type EndNode = { state: AiData; movesToGetThere: MoveTextOrBall[]; scoresPerState: number[] }
 
 function calculateScoreOfNode(node: EndNode) {
-  return node.scoresPerState.map((n, i) => n * (1 / 2) ** (node.movesToGetThere.length - i - 1)).reduce((sum, score) => sum + score, 0)
+  return node.scoresPerState.map((n, i) => n * Math.pow(0.5, node.movesToGetThere.length - i - 1)).reduce((sum, score) => sum + score, 0)
 }
