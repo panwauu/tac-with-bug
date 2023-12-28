@@ -43,6 +43,10 @@ function expandNode(node: EndNode): EndNode[] {
   // Ignore narr, teufel, tac
   // Problem with 7 or tacced 7?
 
+  // Perf. improvements:
+  // - ignore cards that are the same (two 13 -> evaluate only the first)
+  // - ignore ball selections from house that are the same (e.g. first move only use ball 0)
+
   if (node.state.teufelFlag) {
     return []
   }
@@ -58,11 +62,11 @@ function expandNode(node: EndNode): EndNode[] {
 
   const result = moves.map((m) => {
     const dataAfterMove = previewMove(node.state, m)
-    return structuredClone({
+    return {
       state: dataAfterMove,
       movesToGetThere: [...node?.movesToGetThere, m],
       scoresPerState: [...node?.scoresPerState, calculateScoreOfState(dataAfterMove)],
-    })
+    }
   })
   return result
 }

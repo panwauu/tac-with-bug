@@ -184,15 +184,31 @@ export function runSimulation(nSimulations: number, ais: AiInterface[], gamePara
     } finally {
       simulations[simulationIndex].simulationTime = performance.now() - start
     }
+
+    if (simulationIndex > 0 && simulationIndex % 1 === 0) {
+      logOutput(simulations)
+    }
   }
 
+  logOutput(simulations)
+
+  return simulations
+}
+
+function logOutput(
+  simulations: {
+    status: 'waiting' | 'running' | 'finished' | 'error'
+    moves: number
+    simulationTime: number
+    winner: number | null
+  }[]
+) {
   console.log({
+    progress: `${simulations.filter((s) => s.status === 'running' || s.status === 'waiting').length} / ${simulations.length}`,
     faultRate: simulations.filter((s) => s.status === 'error').length / simulations.length,
     winRateTeam0: simulations.filter((s) => s.status === 'finished' && s.winner === 0).length / simulations.filter((s) => s.status === 'finished').length,
     winRateTeam1: simulations.filter((s) => s.status === 'finished' && s.winner === 1).length / simulations.filter((s) => s.status === 'finished').length,
     averageMoves: simulations.map((s) => s.moves).reduce((a, b) => a + b, 0) / simulations.length,
     timePerMove: simulations.map((s) => s.simulationTime / s.moves).reduce((a, b) => a + b, 0) / simulations.length,
   })
-
-  return simulations
 }
