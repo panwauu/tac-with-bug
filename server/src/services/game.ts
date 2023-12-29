@@ -305,6 +305,10 @@ function gamesSort(sortField: string, sortOrder: number) {
 
 export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: MoveType, gamePlayer: number, gameID: number) {
   const game = await getGame(sqlClient, gameID)
+
+  console.log(game.game.activePlayer)
+  console.log(postMove)
+
   if (!game.game.checkMove(postMove) || (postMove !== 'dealCards' && postMove[0] !== gamePlayer)) {
     throw new Error('Player not allowed to play')
   }
