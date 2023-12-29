@@ -30,7 +30,7 @@ export class Futuro implements AiInterface {
         // Aussetzen or Narr: if last score is worse than current state
         const aussetzenMoveIndex = possibleInitialMoves.findIndex((m) => m.length === 3 && m[2].includes('aussetzen'))
         const narrMoveIndex = possibleInitialMoves.findIndex((m) => m.length === 3 && m[2].includes('narr'))
-        if (sortedNodes[0].scoresPerState.at(-1) ?? Infinity < calculateScoreOfState(data)) {
+        if ((sortedNodes[0].scoresPerState.at(-1) ?? Infinity) < calculateScoreOfState(data)) {
           if (aussetzenMoveIndex !== -1) return possibleInitialMoves[aussetzenMoveIndex]
           if (narrMoveIndex !== -1) return possibleInitialMoves[narrMoveIndex]
         }
