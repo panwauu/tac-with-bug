@@ -1,4 +1,4 @@
-import { initializeBalls } from 'src/game/ballUtils'
+import { initializeBalls } from '../../game/ballUtils'
 import { normalizedNecessaryForwardMovesToEndOfGoal } from './utils'
 
 describe('Test Bot Utils', () => {
