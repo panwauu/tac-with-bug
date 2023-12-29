@@ -2,7 +2,8 @@
 // I am a RUle-Based sYstem, hoping to be a good AI
 
 import { MoveTextOrBall } from '../../sharedTypes/typesBall'
-import { AiData, AiInterface, getMovesFromCards } from '../simulation/simulation'
+import { AiData } from '../simulation/output'
+import { AiInterface, getMovesFromCards } from '../simulation/simulation'
 import { ballInProximityOfHouse, normalizedNecessaryForwardMovesToEndOfGoal } from './utils'
 
 export class Ruby implements AiInterface {

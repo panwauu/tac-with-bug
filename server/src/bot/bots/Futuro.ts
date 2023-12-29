@@ -2,8 +2,9 @@
 // I care about nothing but about getting balls into the house
 
 import { BallsType, MoveText, MoveTextOrBall } from '../../sharedTypes/typesBall'
+import { AiData } from '../simulation/output'
 import { previewMove } from '../simulation/previewMove'
-import { AiData, AiInterface, getMovesFromCards } from '../simulation/simulation'
+import { AiInterface, getMovesFromCards } from '../simulation/simulation'
 import { ballInProximityOfHouse, movesBetweenTwoBallsInRing, normalizedNecessaryForwardMovesToEndOfGoal } from './utils'
 
 export class Futuro implements AiInterface {
