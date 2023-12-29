@@ -19,6 +19,65 @@ export let nsp: GameNamespace
 export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
   nsp = nspGame
 
+  const AICallback = async () => {
+    const gameIDs: number[] = []
+    for (const socket of nsp.sockets) {
+      if (socket[1].data.gameID != null && !gameIDs.includes(socket[1].data.gameID)) {
+        gameIDs.push(socket[1].data.gameID)
+      }
+    }
+
+    for (const gameID of gameIDs) {
+      const game = await getGame(pgPool, gameID)
+
+      let move: MoveTextOrBall | null = null
+      for (let i = 0; i < 15; i++) {
+        for (const gamePlayer of [1, 3]) {
+          console.log('Search for move for player ' + gamePlayer)
+          const cards = getCards(game.game, gamePlayer)
+          if (cards.length !== 0 && game.game.narrFlag.some((f) => f) && !game.game.narrFlag[gamePlayer]) {
+            move = [gamePlayer, 0, 'narr']
+            break
+          }
+          if (cards.every((c) => !c.possible)) {
+            console.log('No move found for gameplayer' + gamePlayer)
+            continue
+          }
+
+          const aiData = getAiData(game.game, gamePlayer, {
+            // TODO
+            hadOneOrThirteen: game.game.cards.players.map((p) => p.some((c) => c === '1' || c === '13')),
+            tradedCards: game.game.tradeFlag ? game.game.tradeCards.map((c) => (c === '' ? null : '1')) : ['', '', '', ''],
+            narrTradedCards: [null, null, null, null],
+            previouslyUsedCards: [],
+          })
+          const agentMove = new Futuro().choose(aiData)
+          move = projectMoveToGamePlayer(game.game, agentMove, gamePlayer)
+          break
+        }
+
+        console.log(game.game.activePlayer)
+        if (move != null) {
+          await new Promise((resolve) => setTimeout(resolve, 4000))
+          const game = await performMoveAndReturnGame(pgPool, move, move[0], gameID)
+          getSocketsInGame(nspGame, gameID).forEach((socketIterator) => {
+            socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
+          })
+          dealCardsIfNecessary(pgPool, nspGame, game.game.activePlayer, game)
+        } else {
+          break
+        }
+      }
+    }
+  }
+
+  const checks = async () => {
+    await AICallback()
+    setTimeout(checks, 200)
+  }
+
+  checks()
+
   nspGame.use(gameSocketIOAuthentication)
 
   nspGame.use(async (socket, next) => {
@@ -75,45 +134,6 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
         socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
       })
       await dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
-
-      let move: MoveTextOrBall | null = null
-      for (let i = 0; i < 15; i++) {
-        for (const gamePlayer of [1, 3]) {
-          console.log('Search for move for player ' + gamePlayer)
-          const cards = getCards(game.game, gamePlayer)
-          if (cards.length !== 0 && game.game.narrFlag.some((f) => f) && !game.game.narrFlag[gamePlayer]) {
-            move = [gamePlayer, 0, 'narr']
-            break
-          }
-          if (cards.every((c) => !c.possible)) {
-            console.log('No move found for gameplayer' + gamePlayer)
-            continue
-          }
-
-          const aiData = getAiData(game.game, gamePlayer, {
-            // TODO
-            hadOneOrThirteen: game.game.cards.players.map((p) => p.some((c) => c === '1' || c === '13')),
-            tradedCards: game.game.tradeFlag ? game.game.tradeCards.map((c) => (c === '' ? null : '1')) : ['', '', '', ''],
-            narrTradedCards: [null, null, null, null],
-            previouslyUsedCards: [],
-          })
-          const agentMove = new Futuro().choose(aiData)
-          move = projectMoveToGamePlayer(game.game, agentMove, gamePlayer)
-          break
-        }
-
-        console.log(game.game.activePlayer)
-        if (move != null) {
-          await new Promise((resolve) => setTimeout(resolve, 4000))
-          const game = await performMoveAndReturnGame(pgPool, move, move[0], socket.data.gameID)
-          getSocketsInGame(nspGame, socket.data.gameID).forEach((socketIterator) => {
-            socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
-          })
-          dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
-        } else {
-          break
-        }
-      }
     })
 
     registerSubstitutionHandlers(pgPool, socket)
