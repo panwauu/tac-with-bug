@@ -20,9 +20,9 @@ function changePosition(gameInst: Game, position: number, playersShiftedBy: numb
 export function rightShiftBalls(game: Game, balls: BallsType, rightShiftPlayersBy: number) {
   const shiftedBalls: BallsType = rightShiftArray(structuredClone(balls), rightShiftPlayersBy * 4)
 
-  for (let ballIndex = 0; ballIndex < shiftedBalls.length; ballIndex++) {
-    shiftedBalls[ballIndex].player = modulo(shiftedBalls[ballIndex].player + rightShiftPlayersBy, game.nPlayers)
-    shiftedBalls[ballIndex].position = changePosition(game, shiftedBalls[ballIndex].position, rightShiftPlayersBy)
+  for (const shiftedBall of shiftedBalls) {
+    shiftedBall.player = modulo(shiftedBall.player + rightShiftPlayersBy, game.nPlayers)
+    shiftedBall.position = changePosition(game, shiftedBall.position, rightShiftPlayersBy)
   }
 
   return shiftedBalls
