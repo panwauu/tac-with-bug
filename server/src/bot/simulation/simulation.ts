@@ -103,7 +103,7 @@ export function getMovesFromCards(cards: PlayerCard[], gamePlayer: number): Move
   return moves
 }
 
-const simulations = [] as {
+type SimulationResults = {
   status: 'waiting' | 'running' | 'finished' | 'error'
   moves: number
   simulationTime: number
@@ -115,9 +115,10 @@ export function runSimulation(nSimulations: number, ais: AiInterface[], gamePara
     throw new Error('Need more agents')
   }
 
+  const simulations = Array.from({ length: nSimulations }, () => ({ status: 'waiting', moves: 0, simulationTime: 0, winner: null })) as SimulationResults
+
   for (let simulationIndex = 0; simulationIndex < nSimulations; simulationIndex++) {
     const start = performance.now()
-    simulations.push({ status: 'running', moves: 0, simulationTime: 0, winner: null })
 
     try {
       const agents = ais // TODO fuck
@@ -185,7 +186,7 @@ export function runSimulation(nSimulations: number, ais: AiInterface[], gamePara
       simulations[simulationIndex].simulationTime = performance.now() - start
     }
 
-    if (simulationIndex > 0 && simulationIndex % 1 === 0) {
+    if (simulationIndex > 0 && (simulationIndex + 1) % 5 === 0) {
       logOutput(simulations)
     }
   }
@@ -195,20 +196,21 @@ export function runSimulation(nSimulations: number, ais: AiInterface[], gamePara
   return simulations
 }
 
-function logOutput(
-  simulations: {
-    status: 'waiting' | 'running' | 'finished' | 'error'
-    moves: number
-    simulationTime: number
-    winner: number | null
-  }[]
-) {
+function logOutput(simulations: SimulationResults) {
   console.log({
-    progress: `${simulations.filter((s) => s.status === 'running' || s.status === 'waiting').length} / ${simulations.length}`,
-    faultRate: simulations.filter((s) => s.status === 'error').length / simulations.length,
+    progress: `${simulations.filter((s) => s.status === 'finished' || s.status === 'error').length} / ${simulations.length}`,
+    faultRate: simulations.filter((s) => s.status === 'error').length / simulations.filter((s) => s.status === 'finished' || s.status === 'error').length,
     winRateTeam0: simulations.filter((s) => s.status === 'finished' && s.winner === 0).length / simulations.filter((s) => s.status === 'finished').length,
     winRateTeam1: simulations.filter((s) => s.status === 'finished' && s.winner === 1).length / simulations.filter((s) => s.status === 'finished').length,
-    averageMoves: simulations.map((s) => s.moves).reduce((a, b) => a + b, 0) / simulations.length,
-    timePerMove: simulations.map((s) => s.simulationTime / s.moves).reduce((a, b) => a + b, 0) / simulations.length,
+    averageMoves:
+      simulations
+        .filter((s) => s.status === 'finished')
+        .map((s) => s.moves)
+        .reduce((a, b) => a + b, 0) / simulations.filter((s) => s.status === 'finished').length,
+    timePerMove:
+      simulations
+        .filter((s) => s.status === 'finished')
+        .map((s) => s.simulationTime / s.moves)
+        .reduce((a, b) => a + b, 0) / simulations.filter((s) => s.status === 'finished').length,
   })
 }
