@@ -71,7 +71,7 @@ function expandNode(node: EndNode): EndNode[] {
   if ((node.movesToGetThere.length !== 0 && node.state.cardsWithMoves.length === 0) || node.state.cardsWithMoves.every((c) => !c.possible)) return [node]
 
   let moves = getMovesFromCards(node.state.cardsWithMoves, node.state.gamePlayer)
-    .filter((m) => node.state.cardsWithMoves[m[1]].title != 'tac' || node.movesToGetThere.length === 0)
+    .filter((m) => node.state.cardsWithMoves[m[1]].title !== 'tac' || node.movesToGetThere.length === 0)
     .filter((m) => !['teufel', 'narr'].includes(node.state.cardsWithMoves[m[0]].title))
 
   // Filter moves from the same card as they are redundant

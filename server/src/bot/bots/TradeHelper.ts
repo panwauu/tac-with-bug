@@ -1,4 +1,4 @@
-import { MoveText } from 'src/sharedTypes/typesBall'
+import { MoveText } from '../../sharedTypes/typesBall'
 import { AiData } from '../simulation/output'
 import { ballInProximityOfHouse, movesBetweenTwoBallsInRing } from './utils'
 
@@ -49,6 +49,7 @@ export function tradeBot(data: AiData): MoveText {
 
   // When partner has problems in house and i have 7 or 2/3 and it would help
   // TODO: Theroetically, we could have a better solution here and pass exactly the correct card
+  //       And we would consider that we limit ourselves
   if (data.balls.filter((b) => b.player === tradeToPlayer && b.state === 'goal').length > 0) {
     const cardSevenIndex = data.cardsWithMoves.findIndex((c) => c.title === '7')
     if (cardSevenIndex >= 0) return [data.gamePlayer, cardSevenIndex, 'tauschen']
