@@ -59,7 +59,9 @@ function tradeBot(data: AiData): MoveText {
   // When i have a card that allows partner to kill enemy in proximity of goal
   // TODO: Does not consider that there might be balls in between
   const partnerBallsInRing = data.balls.filter((b) => b.player === tradeToPlayer && (b.state === 'valid' || b.state === 'invalid'))
-  const enemyBallsInProximity = data.balls.filter((b, i) => !data.teams[0].includes(b.player) && ballInProximityOfHouse(b.position, i, data.balls))
+  const enemyBallsInProximity = data.balls.filter(
+    (b, i) => !data.teams[0].includes(b.player) && (b.state === 'valid' || b.state === 'invalid') && ballInProximityOfHouse(b.position, i, data.balls)
+  )
   if (partnerBallsInRing.length > 0 && enemyBallsInProximity.length > 0) {
     for (const ballToKill of enemyBallsInProximity) {
       for (const ballKiller of partnerBallsInRing) {
