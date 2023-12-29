@@ -11,6 +11,13 @@ function necessaryForwardMovesToEndOfGoal(position: number, ballIndex: number, b
   return ballGoal(ballIndex, balls) + 3 - position
 }
 
+export function movesBetweenTwoBallsInRing(positionFrom: number, positionTo: number, balls: BallsType): number {
+  if (positionFrom < ballStart(0, balls) || positionTo < ballStart(0, balls)) throw new Error('One of the balls is not in the ring')
+  if (positionFrom >= ballGoal(0, balls) || positionTo >= ballGoal(0, balls)) throw new Error('One of the balls is not in the ring')
+
+  return positionFrom < positionTo ? positionFrom - positionTo : positionFrom + (balls.length / 4) * getPositionsBetweenStarts(balls) - positionTo
+}
+
 function maxMovesToEndOfGoal(balls: BallsType): number {
   return (balls.length / 4) * getPositionsBetweenStarts(balls) + 4
 }

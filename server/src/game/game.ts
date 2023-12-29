@@ -241,7 +241,7 @@ export class Game implements GameData {
     }
 
     if (this.tradeFlag) {
-      return move.length === 3 && move[2] === 'tauschen' && move[1] < this.cards.players[move[0]].length && this.tradeCards[move[0]] === ''
+      return move.length === 3 && move[2] === 'tauschen' && move[1] >= 0 && move[1] < this.cards.players[move[0]].length && this.tradeCards[move[0]] === ''
     }
 
     if (this.narrFlag.some((e) => e)) {
