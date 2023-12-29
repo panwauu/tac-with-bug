@@ -47,7 +47,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
           const aiData = getAiData(game.game, gamePlayer, {
             // TODO
             hadOneOrThirteen: game.game.cards.players.map((p) => p.some((c) => c === '1' || c === '13')),
-            tradedCards: game.game.tradeFlag ? game.game.tradeCards.map((c) => (c === '' ? null : '1')) : ['', '', '', ''],
+            tradedCards: game.game.tradeFlag ? game.game.tradeCards.map((c) => (c === '' ? null : c)) : ['1', '1', '1', '1'],
             narrTradedCards: [null, null, null, null],
             previouslyUsedCards: [],
           })
@@ -56,7 +56,6 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
           break
         }
 
-        console.log(game.game.activePlayer)
         if (move != null) {
           await new Promise((resolve) => setTimeout(resolve, 4000))
           const game = await performMoveAndReturnGame(pgPool, move, move[0], gameID)
@@ -72,7 +71,12 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
   }
 
   const checks = async () => {
-    await AICallback()
+    console.log('AI callback')
+    try {
+      await AICallback()
+    } catch {
+      console.log('AI callback failed')
+    }
     setTimeout(checks, 200)
   }
 
