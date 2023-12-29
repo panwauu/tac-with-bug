@@ -52,8 +52,9 @@ function tradeBot(data: AiData): MoveText {
 
     const numberOfOwnBallsInProximity = data.balls.filter((b, i) => b.player === data.gamePlayer && ballInProximityOfHouse(b.position, i, data.balls)).length
     const numberOfPartnerBallsInProximity = data.balls.filter((b, i) => b.player === tradeToPlayer && ballInProximityOfHouse(b.position, i, data.balls)).length
-    if (numberOfOwnBallsInRing > 0 && numberOfOwnBallsInRing === numberOfPartnerBallsInRing && numberOfOwnBallsInProximity < numberOfPartnerBallsInProximity)
+    if (numberOfOwnBallsInRing > 0 && numberOfOwnBallsInRing === numberOfPartnerBallsInRing && numberOfOwnBallsInProximity < numberOfPartnerBallsInProximity) {
       return [data.gamePlayer, cardOneOrThirteenIndex, 'tauschen']
+    }
   }
 
   // When i have a card that allows partner to kill enemy in proximity of goal
@@ -107,7 +108,7 @@ function expandNode(node: EndNode): EndNode[] {
   if (node.state.teufelFlag) return []
   if (node.state.cardsWithMoves.some((c) => c.possible && c.textAction === 'tauschen')) return []
 
-  if ((node.movesToGetThere.length != 0 && node.state.cardsWithMoves.length === 0) || node.state.cardsWithMoves.every((c) => !c.possible)) return [node]
+  if ((node.movesToGetThere.length !== 0 && node.state.cardsWithMoves.length === 0) || node.state.cardsWithMoves.every((c) => !c.possible)) return [node]
 
   let moves = getMovesFromCards(node.state.cardsWithMoves, node.state.gamePlayer)
     .filter((m) => !['tac', '7', 'teufel', 'narr'].includes(node.state.cardsWithMoves[m[0]].title))
@@ -127,8 +128,9 @@ function expandNode(node: EndNode): EndNode[] {
         node.state.balls[m[2]].state === 'house' &&
         filteredMoves.some((fm) => fm.length === 4 && node.state.balls[fm[2]].state === 'house' && fm[1] === m[1] && fm[3] === m[3])
       )
-    )
+    ) {
       filteredMoves.push(m)
+    }
     return filteredMoves
   }, [] as MoveTextOrBall[])
 

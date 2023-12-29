@@ -79,7 +79,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
       let move: MoveTextOrBall | null = null
-      for (let gamePlayer of [1, 3]) {
+      for (const gamePlayer of [1, 3]) {
         console.log('Search for move for player ' + gamePlayer)
         const cards = getCards(game.game, gamePlayer)
         if (cards.length !== 0 && game.game.narrFlag.some((f) => f) && !game.game.narrFlag[gamePlayer]) {
