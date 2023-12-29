@@ -61,25 +61,25 @@ export class TacServer {
     registerSocketNspGeneral(this.io.of('/') as any, this.pgPool)
 
     // Handle production
-    if (process.env.NODE_ENV === 'production' || options?.serveApp) {
-      this.app.use(
-        express.static(path.join(__dirname, '../../public'), {
-          index: 'index.html',
-          maxAge: 31536000000,
-          cacheControl: true,
-          setHeaders: function (res, pathOfFile) {
-            if (path.basename(pathOfFile) === 'index.html') {
-              res.setHeader('Cache-Control', 'no-store, max-age=0')
-            }
-          },
-        })
-      )
-
-      // Handle SPA
-      this.app.all('*', (_, res) => {
-        res.redirect('/')
+    //if (process.env.NODE_ENV === 'production' || options?.serveApp) {
+    this.app.use(
+      express.static(path.join(__dirname, '../../public'), {
+        index: 'index.html',
+        maxAge: 31536000000,
+        cacheControl: true,
+        setHeaders: function (res, pathOfFile) {
+          if (path.basename(pathOfFile) === 'index.html') {
+            res.setHeader('Cache-Control', 'no-store, max-age=0')
+          }
+        },
       })
-    }
+    )
+
+    // Handle SPA
+    this.app.all('*', (_, res) => {
+      res.redirect('/')
+    })
+    //}
   }
 
   async listen(port?: number) {
@@ -87,7 +87,7 @@ export class TacServer {
     await loadTutorialLevels(this.pgPool)
 
     const portToListen = port ?? (process.env.PORT != null ? parseInt(process.env.PORT) : 3000)
-    this.httpServer.listen(portToListen)
+    this.httpServer.listen(portToListen, '0.0.0.0')
     logger.debug(`Listening on port: ${(this.httpServer.address() as any)?.port}`)
 
     return portToListen
