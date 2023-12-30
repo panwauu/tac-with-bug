@@ -38,6 +38,8 @@ export function previewMove(data: AiData, move: MoveTextOrBall): AiData {
         discardPile: data.discardPile,
         players: Array.from({ length: data.nPlayers }, (_, i) => (i === 0 ? data.cardsWithMoves.map((c) => c.title) : [])),
         meisterVersion: data.meisterVersion,
+        hadOneOrThirteen: data.hadOneOrThirteen,
+        previouslyPlayedCards: data.previouslyUsedCards,
       },
       cardsWithMoves: data.cardsWithMoves,
 

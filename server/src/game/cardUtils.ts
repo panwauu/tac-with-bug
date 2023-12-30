@@ -11,6 +11,8 @@ export function initalizeCards(nPlayers: number, meisterVersion: boolean): tCard
     discardPile: [],
     players: [],
     meisterVersion: meisterVersion,
+    hadOneOrThirteen: Array.from({ length: nPlayers }, () => false),
+    previouslyPlayedCards: [],
   }
 
   for (let nPlayer = 0; nPlayer < nPlayers; nPlayer++) {
@@ -74,20 +76,26 @@ export function dealCards(cards: tCard.CardsType): void {
     }
   }
 
+  if (cards.deck.length >= createCardDeck(nPlayers, cards.meisterVersion).length) {
+    cards.previouslyPlayedCards = []
+  }
+
   for (let p = 0; p < nPlayers; p++) {
     cards.players[p] = cards.deck.slice(0, nCardsPerPlayer)
     cards.deck.splice(0, nCardsPerPlayer)
   }
 
+  cards.previouslyPlayedCards = [...cards.previouslyPlayedCards, ...cards.discardPile]
+  cards.discardPile = []
+
   if (cards.deck.length === 0) {
     cards.deck = createCardDeck(nPlayers, cards.meisterVersion)
   }
 
-  cards.discardPile = []
-
   cards.dealingPlayer = (cards.dealingPlayer + 1) % nPlayers
 
   cards.discardedFlag = false
+  cards.hadOneOrThirteen = cards.players.map((p) => p.some((c) => c === '1' || c === '13'))
 }
 
 export function checkCardsAndDeal(game: Game) {

@@ -128,6 +128,12 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
           "1",
         ],
         "discardPlayer": 0,
+        "hadOneOrThirteen": [
+          true,
+          true,
+          true,
+          false,
+        ],
         "meisterVersion": true,
         "players": [
           [
@@ -158,6 +164,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
             "7",
           ],
         ],
+        "previouslyPlayedCards": [],
       },
       "cardsWithMoves": [
         {

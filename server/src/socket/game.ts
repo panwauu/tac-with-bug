@@ -80,7 +80,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
     setTimeout(checks, 200)
   }
 
-  checks()
+  if (process.env.NODE_ENV === 'development') checks()
 
   nspGame.use(gameSocketIOAuthentication)
 
