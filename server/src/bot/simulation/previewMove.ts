@@ -21,6 +21,7 @@ export function previewMove(data: AiData, move: MoveTextOrBall): AiData {
       tradeFlag: false,
       tradeCards: [],
       narrFlag: Array.from({ length: data.nPlayers }, () => false),
+      narrTradedCards: Array.from({ length: data.nPlayers }, (i) => (i === 0 ? data.narrTradedCards : null)),
       activePlayer: data.activePlayer,
       sevenChosenPlayer: data.sevenChosenPlayer,
 

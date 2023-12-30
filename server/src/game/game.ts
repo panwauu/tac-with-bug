@@ -23,6 +23,7 @@ export class Game implements GameData {
   tradeCards: tCard.CardType[]
   tradeDirection: number
   narrFlag: boolean[]
+  narrTradedCards: (tCard.CardType[] | null)[]
 
   balls: tBall.BallsType
   cards: tCard.CardsType
@@ -49,6 +50,7 @@ export class Game implements GameData {
       this.tradeCards = gameLoad.tradeCards
       this.tradeDirection = gameLoad.tradeDirection
       this.narrFlag = gameLoad.narrFlag || (nPlayers === 4 ? [false, false, false, false] : [false, false, false, false, false, false])
+      this.narrTradedCards = gameLoad.narrTradedCards ?? (nPlayers === 4 ? [null, null, null, null] : [null, null, null, null, null, null])
       this.balls = gameLoad.balls
       this.cards = gameLoad.cards
       if (this.cards.discardPlayer == null) {
@@ -104,6 +106,7 @@ export class Game implements GameData {
 
       this.tradeCards = nPlayers === 4 ? ['', '', '', ''] : ['', '', '', '', '', '']
       this.narrFlag = nPlayers === 4 ? [false, false, false, false] : [false, false, false, false, false, false]
+      this.narrTradedCards = nPlayers === 4 ? [null, null, null, null] : [null, null, null, null, null, null]
       this.substitutedPlayerIndices = []
     }
   }
@@ -131,6 +134,7 @@ export class Game implements GameData {
 
     // Reset Cards and Moves
     this.cards = initalizeCards(this.nPlayers, this.cards.meisterVersion)
+    this.narrTradedCards = this.narrTradedCards.map(() => null)
     dealCards(this.cards)
     this.activePlayer = this.cards.dealingPlayer
     this.cardsWithMoves = []
@@ -289,6 +293,7 @@ export class Game implements GameData {
   performAction(move: tBall.MoveType | 'dealCards', deltaTime: number): void {
     if (move === 'dealCards') {
       this.checkCards()
+      this.narrTradedCards = this.narrTradedCards.map(() => null)
       this.updateCardsWithMoves()
       return
     }
@@ -379,6 +384,7 @@ export class Game implements GameData {
 
   performNarrAction(move: tBall.MoveTextOrBall) {
     this.narrFlag[move[0]] = true
+    this.narrTradedCards[move[0]] = this.cards.players[move[0]]
     if (this.narrFlag.every((e) => e === true)) {
       this.narrFlag = this.narrFlag.map(() => false)
       narrCardSwap(this.cards)

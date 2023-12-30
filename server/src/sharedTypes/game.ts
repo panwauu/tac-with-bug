@@ -12,6 +12,7 @@ export interface GameData {
   tradeCards: tCard.CardType[]
   tradeDirection: number
   narrFlag: boolean[]
+  narrTradedCards: (tCard.CardType[] | null)[]
   balls: tBall.BallsType
   cards: tCard.CardsType
   teams: number[][]
