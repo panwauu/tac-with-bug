@@ -58,7 +58,7 @@ function playerShouldPlay(game: GameForPlay, playerIndexToSubstitute: number): b
 // Could be narr or trade
 function playerShouldTrade(game: GameForPlay, playerIndexToSubstitute: number): boolean {
   if (playerIndexToSubstitute >= game.nPlayers) return false
-  return (game.game.narrFlag.some((f) => f) && !game.game.narrFlag[playerIndexToSubstitute]) || (game.game.tradeFlag && game.game.tradeCards[playerIndexToSubstitute] === '')
+  return (game.game.narrFlag.some((f) => f) && !game.game.narrFlag[playerIndexToSubstitute]) || (game.game.tradeFlag && game.game.tradedCards[playerIndexToSubstitute] == null)
 }
 
 export async function startSubstitution(pgPool: pg.Pool, game: GameForPlay, substitutionPlayerID: number, playerIndexToSubstitute: number): Promise<Result<null, GetUserErrors>> {

@@ -54,8 +54,8 @@ function getPlayers(game: Game, names: (string | null)[]) {
     }
     if (game.tradeFlag) {
       player.tradeInformation = [
-        game.tradeFlag === true && (game.cards.players[i].includes('1') || game.cards.players[i].includes('13') || game.tradeCards[i] === '1' || game.tradeCards[i] === '13'),
-        game.tradeCards[i] !== '',
+        game.tradeFlag === true && (game.cards.players[i].includes('1') || game.cards.players[i].includes('13') || game.tradedCards[i] === '1' || game.tradedCards[i] === '13'),
+        game.tradedCards[i] != null,
       ]
     }
     players.push(player)
@@ -79,7 +79,7 @@ export function getCards(game: Game, player: number): tCard.PlayerCard[] {
     return []
   }
 
-  if (game.tradeFlag === true && game.tradeCards[player] === '') {
+  if (game.tradeFlag === true && game.tradedCards[player] == null) {
     return createCardsWithMovesForUnactivePlayer(game.cards.players[player], 'tauschen')
   }
 

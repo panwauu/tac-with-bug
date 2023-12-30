@@ -9,7 +9,7 @@ export interface GameData {
   aussetzenFlag: boolean
   teufelFlag: boolean
   tradeFlag: boolean
-  tradeCards: tCard.CardType[]
+  tradedCards: (tCard.CardType | null)[]
   tradeDirection: number
   narrFlag: boolean[]
   narrTradedCards: (tCard.CardType[] | null)[]

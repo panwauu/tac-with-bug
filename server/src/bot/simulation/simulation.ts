@@ -91,7 +91,7 @@ export function runSimulation(nSimulations: number, ais: AiInterface[], gamePara
           }
           if (cards.every((c) => !c.possible)) continue
 
-          const aiData = getAiData(game, gamePlayer, additionalInformation)
+          const aiData = getAiData(game, gamePlayer)
           const agentMove = agents[gamePlayer].choose(aiData)
           move = projectMoveToGamePlayer(game, agentMove, gamePlayer)
 
