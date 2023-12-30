@@ -54,6 +54,12 @@ export class Game implements GameData {
       if (this.cards.discardPlayer == null) {
         this.cards.discardPlayer = (gameLoad.activePlayer + gameLoad.nPlayers - 1) % gameLoad.nPlayers
       }
+      if (this.cards.hadOneOrThirteen == null) {
+        this.cards.hadOneOrThirteen = this.cards.players.map((p) => p.some((c) => c === '1' || c === '13'))
+      }
+      if (this.cards.previouslyPlayedCards == null) {
+        this.cards.previouslyPlayedCards = []
+      }
       this.teams = gameLoad.teams
       this.cardsWithMoves = gameLoad.cardsWithMoves
       this.activePlayer = gameLoad.activePlayer
