@@ -20,7 +20,7 @@ export class Game implements GameData {
   aussetzenFlag: boolean
   teufelFlag: boolean
   tradeFlag: boolean
-  tradeCards: tCard.CardType[]
+  tradedCards: (tCard.CardType | null)[]
   tradeDirection: number
   narrFlag: boolean[]
   narrTradedCards: (tCard.CardType[] | null)[]
@@ -47,7 +47,13 @@ export class Game implements GameData {
       this.aussetzenFlag = gameLoad.aussetzenFlag
       this.teufelFlag = gameLoad.teufelFlag
       this.tradeFlag = gameLoad.tradeFlag
-      this.tradeCards = gameLoad.tradeCards
+      this.tradedCards =
+        gameLoad.tradedCards ??
+        ((gameLoad as any).tradeCards != null
+          ? (gameLoad as any).tradeCards.map((c: string) => (c !== '' ? c : null))
+          : nPlayers === 4
+            ? [null, null, null, null]
+            : [null, null, null, null, null, null])
       this.tradeDirection = gameLoad.tradeDirection
       this.narrFlag = gameLoad.narrFlag ?? (nPlayers === 4 ? [false, false, false, false] : [false, false, false, false, false, false])
       this.narrTradedCards = gameLoad.narrTradedCards ?? (nPlayers === 4 ? [null, null, null, null] : [null, null, null, null, null, null])
@@ -104,7 +110,7 @@ export class Game implements GameData {
       this.cardsWithMoves = []
       this.sevenChosenPlayer = null
 
-      this.tradeCards = nPlayers === 4 ? ['', '', '', ''] : ['', '', '', '', '', '']
+      this.tradedCards = nPlayers === 4 ? [null, null, null, null] : [null, null, null, null, null, null]
       this.narrFlag = nPlayers === 4 ? [false, false, false, false] : [false, false, false, false, false, false]
       this.narrTradedCards = nPlayers === 4 ? [null, null, null, null] : [null, null, null, null, null, null]
       this.substitutedPlayerIndices = []
@@ -138,7 +144,7 @@ export class Game implements GameData {
     dealCards(this.cards)
     this.activePlayer = this.cards.dealingPlayer
     this.cardsWithMoves = []
-    this.tradeCards = this.nPlayers === 4 ? ['', '', '', ''] : ['', '', '', '', '', '']
+    this.tradedCards = this.nPlayers === 4 ? [null, null, null, null] : [null, null, null, null, null, null]
   }
 
   getJSON(): string {
@@ -251,7 +257,7 @@ export class Game implements GameData {
     }
 
     if (this.tradeFlag) {
-      return move.length === 3 && move[2] === 'tauschen' && move[1] >= 0 && move[1] < this.cards.players[move[0]].length && this.tradeCards[move[0]] === ''
+      return move.length === 3 && move[2] === 'tauschen' && move[1] >= 0 && move[1] < this.cards.players[move[0]].length && this.tradedCards[move[0]] == null
     }
 
     if (this.narrFlag.some((e) => e)) {
@@ -393,17 +399,16 @@ export class Game implements GameData {
   }
 
   performTradeCards(move: tBall.MoveTextOrBall) {
-    this.tradeCards[move[0]] = this.cards.players[move[0]][move[1]]
+    this.tradedCards[move[0]] = this.cards.players[move[0]][move[1]]
     this.cards.players[move[0]].splice(move[1], 1)
-    if (!this.tradeCards.some((card) => card === '')) {
+    if (!this.tradedCards.some((card) => card == null)) {
       this.teams.forEach((team) => {
         for (let i = 0; i < team.length; i++) {
-          this.cards.players[team[(i + this.tradeDirection + team.length) % team.length]].push(this.tradeCards[team[i]])
+          this.cards.players[team[(i + this.tradeDirection + team.length) % team.length]].push(this.tradedCards[team[i]] ?? '')
         }
       })
       this.tradeDirection = -1 * this.tradeDirection
       this.tradeFlag = false
-      this.tradeCards = this.nPlayers === 4 ? ['', '', '', ''] : ['', '', '', '', '', '']
       this.updateCardsWithMoves()
     }
   }

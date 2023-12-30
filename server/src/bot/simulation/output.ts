@@ -4,7 +4,6 @@ import { getCards } from '../../game/serverOutput'
 import { Game } from '../../game/game'
 import { modulo, rightShiftArray } from '../normalize/helpers'
 import { rightShiftBalls, rightShiftCards } from '../normalize/normalize'
-import { AdditionalInformation } from './simulation'
 
 export type AiData = {
   nPlayers: number
@@ -35,7 +34,7 @@ export type AiData = {
   sevenChosenPlayer: number | null
 }
 
-export function getAiData(game: Game, gamePlayer: number, additionalInformation: AdditionalInformation): AiData {
+export function getAiData(game: Game, gamePlayer: number): AiData {
   const rightShiftBy = modulo(-gamePlayer, game.nPlayers)
 
   return {
@@ -51,15 +50,15 @@ export function getAiData(game: Game, gamePlayer: number, additionalInformation:
     teufelFlag: game.teufelFlag,
 
     tradeFlag: game.tradeFlag,
-    tradedCard: additionalInformation.tradedCards[gamePlayer],
+    tradedCard: game.tradedCards[gamePlayer],
     tradeDirection: game.tradeDirection,
-    hadOneOrThirteen: rightShiftArray(additionalInformation.hadOneOrThirteen, rightShiftBy),
+    hadOneOrThirteen: rightShiftArray(game.cards.hadOneOrThirteen, rightShiftBy),
 
-    narrTradedCards: additionalInformation.narrTradedCards[gamePlayer],
+    narrTradedCards: game.narrTradedCards[gamePlayer],
 
     cardsWithMoves: rightShiftCards(game, getCards(game, gamePlayer), rightShiftBy),
     discardPile: game.cards.discardPile,
-    previouslyUsedCards: [...additionalInformation.previouslyUsedCards],
+    previouslyUsedCards: [...game.cards.previouslyPlayedCards],
 
     dealingPlayer: modulo(game.cards.dealingPlayer + rightShiftBy, game.nPlayers),
 

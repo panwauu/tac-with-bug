@@ -100,6 +100,7 @@ export function checkCardsAndDeal(game: Game) {
     game.aussetzenFlag = false
     game.priorBalls = cloneDeep(game.balls)
     dealCards(game.cards)
+    game.tradedCards = game.nPlayers === 4 ? [null, null, null, null] : [null, null, null, null, null, null]
     game.activePlayer = game.cards.dealingPlayer
   }
 }

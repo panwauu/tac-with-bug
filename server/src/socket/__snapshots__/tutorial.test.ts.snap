@@ -361,14 +361,14 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
         ],
       ],
       "teufelFlag": false,
-      "tradeCards": [
-        "",
-        "",
-        "",
-        "",
-      ],
       "tradeDirection": -1,
       "tradeFlag": false,
+      "tradedCards": [
+        null,
+        null,
+        null,
+        null,
+      ],
       "winningTeams": [
         false,
         false,
