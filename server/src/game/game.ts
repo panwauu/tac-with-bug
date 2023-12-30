@@ -49,7 +49,7 @@ export class Game implements GameData {
       this.tradeFlag = gameLoad.tradeFlag
       this.tradeCards = gameLoad.tradeCards
       this.tradeDirection = gameLoad.tradeDirection
-      this.narrFlag = gameLoad.narrFlag || (nPlayers === 4 ? [false, false, false, false] : [false, false, false, false, false, false])
+      this.narrFlag = gameLoad.narrFlag ?? (nPlayers === 4 ? [false, false, false, false] : [false, false, false, false, false, false])
       this.narrTradedCards = gameLoad.narrTradedCards ?? (nPlayers === 4 ? [null, null, null, null] : [null, null, null, null, null, null])
       this.balls = gameLoad.balls
       this.cards = gameLoad.cards
