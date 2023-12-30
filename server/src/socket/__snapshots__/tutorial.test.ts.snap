@@ -259,6 +259,12 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
         false,
         false,
       ],
+      "narrTradedCards": [
+        null,
+        null,
+        null,
+        null,
+      ],
       "priorBalls": [
         {
           "player": 0,
