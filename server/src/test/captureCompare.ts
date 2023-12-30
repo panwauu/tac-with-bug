@@ -30,6 +30,8 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
   const gameInst = new Game(nPlayers, nTeams, meisterVersion, coop)
   gameInst.activePlayer = lineInit.activePlayer
   gameInst.cards = cloneDeep(lineInit.cards)
+  gameInst.cards.hadOneOrThirteen = gameInst.cards.players.map((cards) => cards.some((c) => c === '1' || c === '13'))
+  gameInst.cards.previouslyPlayedCards = []
   if (!compareGameWithCaptured(gameInst, lineInit)) {
     console.log('Sanity-Check: failed')
     return result

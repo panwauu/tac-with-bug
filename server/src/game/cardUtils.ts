@@ -3,23 +3,17 @@ import type * as tCard from '../sharedTypes/typesCard'
 import type { Game } from './game'
 
 export function initalizeCards(nPlayers: number, meisterVersion: boolean): tCard.CardsType {
-  const cards: tCard.CardsType = {
+  return {
     dealingPlayer: Math.floor(Math.random() * nPlayers),
     discardPlayer: 0,
     discardedFlag: false,
     deck: createCardDeck(nPlayers, meisterVersion),
     discardPile: [],
-    players: [],
+    players: Array.from({ length: nPlayers }, () => []),
     meisterVersion: meisterVersion,
     hadOneOrThirteen: Array.from({ length: nPlayers }, () => false),
     previouslyPlayedCards: [],
   }
-
-  for (let nPlayer = 0; nPlayer < nPlayers; nPlayer++) {
-    cards.players.push([])
-  }
-
-  return cards
 }
 
 export function narrCardSwap(cards: tCard.CardsType): void {
