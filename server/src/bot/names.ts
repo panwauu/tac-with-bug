@@ -17,6 +17,11 @@ const names = [
   'Althea',
   'Alistair',
   'Alisa',
+  'KIara',
+  'Robert',
+  'Roberta',
 ]
 
-//export function getUniqueBotName()
+export function getBotName(gameID: number, playerIndex: number) {
+  return names[(gameID + playerIndex) % names.length]
+}

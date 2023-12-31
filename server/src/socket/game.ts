@@ -29,10 +29,13 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
 
     for (const gameID of gameIDs) {
       const game = await getGame(pgPool, gameID)
+      const res = await pgPool.query('SELECT bots FROM games WHERE id=$1;', [gameID])
+      const bots = res.rows[0].bots as (number | null)[]
+      const botIndices = bots.map((bot, i) => (bot != null ? i : null)).filter((i) => i != null) as number[]
 
       let move: MoveTextOrBall | null = null
       for (let i = 0; i < 15; i++) {
-        for (const gamePlayer of [1, 3]) {
+        for (const gamePlayer of botIndices) {
           console.log('Search for move for player ' + gamePlayer)
           const cards = getCards(game.game, gamePlayer)
           if (cards.length !== 0 && game.game.narrFlag.some((f) => f) && !game.game.narrFlag[gamePlayer]) {
@@ -65,7 +68,6 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
   }
 
   const checks = async () => {
-    console.log('AI callback')
     try {
       await AICallback()
     } catch {

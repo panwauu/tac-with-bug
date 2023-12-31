@@ -184,7 +184,16 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     if (game.value.ready.every((r, i) => r === true || i >= game.value.nPlayers || game.value.bots[i] != null)) {
       deleteWaitingGame(pgPool, data.gameID)
       // TODO: Add bots to game
-      const createdGame = await createGameAux(pgPool, game.value.nPlayers, game.value.playerIDs, game.value.nTeams, game.value.meister, game.value.nTeams === 1, game.value.balls)
+      const createdGame = await createGameAux(
+        pgPool,
+        game.value.nPlayers,
+        game.value.playerIDs,
+        game.value.bots,
+        game.value.nTeams,
+        game.value.meister,
+        game.value.nTeams === 1,
+        game.value.balls
+      )
       await transferLatestMessagesToOtherChannel(pgPool, `g-${createdGame.id}`, `w-${game.value.id}`)
       for (const [, value] of nspGeneral.sockets.entries()) {
         const userID = value.data.userID
@@ -240,14 +249,25 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   })
 }
 
-async function createGameAux(sqlClient: pg.Pool, nPlayers: number, playerIDs: number[], teams: number, meisterVersion: boolean, coop: boolean, colors: string[]) {
-  const playersOrdered: number[] = []
+async function createGameAux(
+  sqlClient: pg.Pool,
+  nPlayers: number,
+  playerIDs: (number | null)[],
+  bots: (number | null)[],
+  teams: number,
+  meisterVersion: boolean,
+  coop: boolean,
+  colors: string[]
+) {
+  const playersOrdered: (number | null)[] = []
+  const botsOrdered: (number | null)[] = []
   const colorsOrdered: string[] = []
   if (nPlayers === 4) {
     const order = [0, 2, 1, 3]
     order.forEach((pos) => {
       colorsOrdered.push(colors[pos])
       playersOrdered.push(playerIDs[pos])
+      botsOrdered.push(bots[pos])
     })
   } else {
     if (teams === 2) {
@@ -255,15 +275,18 @@ async function createGameAux(sqlClient: pg.Pool, nPlayers: number, playerIDs: nu
       order.forEach((pos) => {
         colorsOrdered.push(colors[pos])
         playersOrdered.push(playerIDs[pos])
+        botsOrdered.push(bots[pos])
       })
     } else {
       const order = [0, 2, 4, 1, 3, 5]
       order.forEach((pos) => {
         colorsOrdered.push(colors[pos])
         playersOrdered.push(playerIDs[pos])
+        botsOrdered.push(bots[pos])
       })
     }
   }
 
-  return createGame(sqlClient, teams, playersOrdered, meisterVersion, coop, colorsOrdered, undefined, undefined)
+  // TODO
+  return createGame(sqlClient, teams, playersOrdered, botsOrdered, meisterVersion, coop, colorsOrdered, undefined, undefined)
 }
