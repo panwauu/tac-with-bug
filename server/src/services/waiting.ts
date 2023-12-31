@@ -40,6 +40,7 @@ export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number
       private: row.private,
       admin: ['playername0', 'playername1', 'playername2', 'playername3', 'playername4', 'playername5'].map((e) => row[e])[adminIndex],
       adminID: row.adminplayer,
+      bots: row.bots,
       playerIDs: ['player0', 'player1', 'player2', 'player3', 'player4', 'player5'].map((e) => row[e]),
       players: ['playername0', 'playername1', 'playername2', 'playername3', 'playername4', 'playername5'].map((e) => row[e]),
       balls: ['balls0', 'balls1', 'balls2', 'balls3', 'balls4', 'balls5'].map((e) => row[e]),
@@ -66,6 +67,8 @@ export async function createWaitingGame(sqlClient: pg.Pool, nPlayers: 4 | 6, nTe
 
 export type CreateRematchError = 'PLAYER_ALREADY_IN_WAITING_GAME' | 'PLAYER_NOT_ONLINE' | 'REMATCH_NOT_OPEN'
 export async function createRematchGame(pgPool: pg.Pool, game: GameForPlay, userID: number): Promise<Result<number, CreateRematchError>> {
+  // TODO: BOTS
+
   if (!game.rematch_open) {
     return err('REMATCH_NOT_OPEN')
   }
@@ -153,6 +156,54 @@ export async function movePlayer(sqlClient: pg.Pool, waitingGameID: number, user
   return ok(null)
 }
 
+export type MoveBotError =
+  | 'BOT_INDEX_DOES_NOT_EXIST'
+  | 'PLAYER_NOT_ALLOWED_TO_MOVE'
+  | 'PLAYER_CANNOT_BE_MOVED_IN_DIRECTION'
+  | 'PLAYER_NOT_ALLOWED_TO_MOVING'
+  | GetWaitingGameError
+  | 'NONE_OR_MORE_THAN_ONE_CHANGES_TO_DATABASE'
+export async function moveBot(sqlClient: pg.Pool, waitingGameID: number, botIndexToMove: number, up: boolean, userIDMoving: number): Promise<Result<null, MoveBotError>> {
+  const game = await getWaitingGame(sqlClient, waitingGameID)
+  if (game.isErr()) {
+    return err(game.error)
+  }
+
+  if (game.value.bots[botIndexToMove] === null) {
+    return err('BOT_INDEX_DOES_NOT_EXIST')
+  }
+
+  if (game.value.adminID !== userIDMoving) {
+    return err('PLAYER_NOT_ALLOWED_TO_MOVE')
+  }
+
+  const secondIndex = botIndexToMove + (up ? 1 : -1)
+  if (secondIndex < 0 || secondIndex >= game.value.nPlayers) {
+    return err('PLAYER_CANNOT_BE_MOVED_IN_DIRECTION')
+  }
+
+  ;[game.value.bots[botIndexToMove], game.value.bots[secondIndex]] = [game.value.bots[secondIndex], game.value.bots[botIndexToMove]]
+
+  const playerFirst = `player${botIndexToMove}`
+  const playerSecond = `player${secondIndex}`
+  const ballsFirst = `balls${botIndexToMove}`
+  const ballsSecond = `balls${secondIndex}`
+
+  let readyToFalse = ''
+  ;[0, 1, 2, 3, 4, 5].forEach((n) => {
+    readyToFalse += `, ready${n}=false`
+  })
+
+  const query = `UPDATE waitinggames SET (${playerFirst}, ${playerSecond}, ${ballsFirst}, ${ballsSecond}) = 
+    (${playerSecond}, ${playerFirst}, ${ballsSecond}, ${ballsFirst}), bots = $2 ${readyToFalse} WHERE id=$1;`
+  const values = [waitingGameID, game.value.bots]
+  const dbRes = await sqlClient.query(query, values)
+  if (expectOneChangeToDatabase(dbRes).isErr()) {
+    return err('NONE_OR_MORE_THAN_ONE_CHANGES_TO_DATABASE')
+  }
+  return ok(null)
+}
+
 export type ChangeColorError =
   | 'PLAYER_NOT_FOUND_IN_WAITING_GAME'
   | 'PLAYER_NOT_ALLOWED_TO_CHANGE_COLOR'
@@ -161,6 +212,8 @@ export type ChangeColorError =
   | GetWaitingGameError
   | NotOneDatabaseChangeError
 export async function changeColor(sqlClient: pg.Pool, waitingGameID: number, usernameToChange: string, color: string, userID: number): Promise<Result<null, ChangeColorError>> {
+  // TODO: BOTS
+
   const game = await getWaitingGame(sqlClient, waitingGameID)
   if (game.isErr()) {
     return err(game.error)
@@ -234,6 +287,29 @@ export async function removePlayer(sqlClient: pg.Pool, usernameToRemove: string,
   return ok(null)
 }
 
+export type RemoveBotError = 'PLAYER_INDEX_IS_EMPTY' | 'COULD_NOT_REMOVE_BOT' | 'PLAYER_NOT_ALLOWED_TO_REMOVE' | GetWaitingGameError
+export async function removeBot(sqlClient: pg.Pool, waitingGameID: number, playerIndex: number, userIDRemoving: number): Promise<Result<null, RemoveBotError>> {
+  const game = await getWaitingGame(sqlClient, waitingGameID)
+  if (game.isErr()) {
+    return err(game.error)
+  }
+
+  if (userIDRemoving !== game.value.adminID) {
+    return err('PLAYER_NOT_ALLOWED_TO_REMOVE')
+  }
+
+  if (game.value.bots[playerIndex] == null) {
+    return err('PLAYER_INDEX_IS_EMPTY')
+  }
+
+  try {
+    await sqlClient.query(`UPDATE waitinggames SET bots[$1]=NULL, balls${playerIndex}=NULL WHERE id = $2;`, [playerIndex + 1, waitingGameID])
+  } catch {
+    return err('COULD_NOT_REMOVE_BOT')
+  }
+  return ok(null)
+}
+
 export type AddPlayerError = 'WAITING_GAME_IS_ALREADY_FULL' | 'COULD_NOT_FIND_COLOR_FOR_NEW_PLAYER' | 'COULD_NOT_ADD_PLAYER' | GetWaitingGameError
 export async function addPlayer(sqlClient: pg.Pool, waitingGameID: number, userID: number): Promise<Result<null, AddPlayerError>> {
   const game = await getWaitingGame(sqlClient, waitingGameID)
@@ -241,7 +317,7 @@ export async function addPlayer(sqlClient: pg.Pool, waitingGameID: number, userI
     return err(game.error)
   }
 
-  const insertIndex = game.value.players.findIndex((p) => p === null)
+  const insertIndex = game.value.players.findIndex((p, i) => p === null && game.value.bots[i] === null)
   if (insertIndex === -1) {
     return err('WAITING_GAME_IS_ALREADY_FULL')
   }
@@ -259,6 +335,46 @@ export async function addPlayer(sqlClient: pg.Pool, waitingGameID: number, userI
   return ok(null)
 }
 
+export type AddBotError =
+  | 'PLAYER_INDEX_ALREADY_FULL'
+  | 'COULD_NOT_FIND_COLOR_FOR_NEW_PLAYER'
+  | 'COULD_NOT_ADD_PLAYER'
+  | 'BOT_ID_INVALID'
+  | 'PLAYER_NOT_ALLOWED_TO_ADD'
+  | GetWaitingGameError
+export async function addBot(sqlClient: pg.Pool, waitingGameID: number, botID: number, playerIndex: number, userIDAdding: number): Promise<Result<null, AddBotError>> {
+  const game = await getWaitingGame(sqlClient, waitingGameID)
+  if (game.isErr()) {
+    return err(game.error)
+  }
+
+  if (userIDAdding !== game.value.adminID) {
+    return err('PLAYER_NOT_ALLOWED_TO_ADD')
+  }
+
+  if (game.value.bots[playerIndex] != null || game.value.playerIDs[playerIndex] != null) {
+    return err('PLAYER_INDEX_ALREADY_FULL')
+  }
+
+  // TODO: BOTS
+  if (botID != botID) {
+    return err('BOT_ID_INVALID')
+  }
+
+  const color = colors.find((c) => !game.value.balls.includes(c))
+  if (color === undefined) {
+    return err('COULD_NOT_FIND_COLOR_FOR_NEW_PLAYER')
+  }
+
+  try {
+    await sqlClient.query(`UPDATE waitinggames SET bots[$1]=$2, balls${playerIndex}=$3 WHERE id = $4;`, [playerIndex + 1, botID, color, waitingGameID])
+  } catch (errr) {
+    console.error(errr)
+    return err('COULD_NOT_ADD_PLAYER')
+  }
+  return ok(null)
+}
+
 export type SetPlayerReadyError = 'WAITING_GAME_IS_NOT_FULL' | 'PLAYER_NOT_FOUND_IN_WAITING_GAME' | GetWaitingGameError
 export async function setPlayerReady(sqlClient: pg.Pool, waitingGameID: number, userID: number): Promise<Result<WaitingGame, SetPlayerReadyError>> {
   const game = await getWaitingGame(sqlClient, waitingGameID)
@@ -266,7 +382,7 @@ export async function setPlayerReady(sqlClient: pg.Pool, waitingGameID: number, 
     return err(game.error)
   }
 
-  if (game.value.players.filter((p) => p != null).length !== game.value.nPlayers) {
+  if (game.value.players.filter((p) => p != null).length + game.value.bots.filter((b) => b != null).length !== game.value.nPlayers) {
     return err('WAITING_GAME_IS_NOT_FULL')
   }
 

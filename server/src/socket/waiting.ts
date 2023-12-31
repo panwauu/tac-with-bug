@@ -2,7 +2,20 @@ import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import type pg from 'pg'
 import Joi from 'joi'
 
-import { changeColor, deleteWaitingGame, getWaitingGames, removePlayer, addPlayer, createWaitingGame, movePlayer, setPlayerReady, createRematchGame } from '../services/waiting'
+import {
+  changeColor,
+  deleteWaitingGame,
+  getWaitingGames,
+  removePlayer,
+  addPlayer,
+  createWaitingGame,
+  movePlayer,
+  setPlayerReady,
+  createRematchGame,
+  addBot,
+  moveBot,
+  removeBot,
+} from '../services/waiting'
 import { getGame, createGame } from '../services/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from './games'
 import { sendUpdatesOfGameToPlayers } from './game'
@@ -52,6 +65,24 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     return cb?.({ status: 200 })
   })
 
+  socket.on('waiting:addBot', async (gameID, botID, playerIndex, cb) => {
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
+
+    const schema = Joi.object({
+      gameID: Joi.number().required().integer().positive(),
+      botID: Joi.number().required().integer().positive(),
+      playerIndex: Joi.number().required(),
+    })
+    const { error } = schema.validate({ gameID, botID, playerIndex })
+    if (error != null) return cb?.({ status: 500, error })
+
+    const addRes = await addBot(pgPool, gameID, botID, playerIndex, socket.data.userID)
+    if (addRes.isErr()) return cb?.({ status: 500, error: addRes.error })
+
+    emitGetGames()
+    return cb?.({ status: 200 })
+  })
+
   socket.on('waiting:createGame', async (data, cb) => {
     if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
@@ -91,6 +122,24 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     return cb?.({ status: 200 })
   })
 
+  socket.on('waiting:moveBot', async (data, cb) => {
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
+
+    const schema = Joi.object({
+      gameID: Joi.number().required().integer().positive(),
+      playerIndex: Joi.number().required().integer(),
+      steps: Joi.number().required().integer(),
+    })
+    const { error } = schema.validate(data)
+    if (error != null) return cb?.({ status: 500, error })
+
+    const res = await moveBot(pgPool, data.gameID, data.playerIndex, data.steps > 0, socket.data.userID)
+    if (res.isErr()) return cb?.({ status: 500, error: res.error })
+
+    emitGetGames()
+    return cb?.({ status: 200 })
+  })
+
   socket.on('waiting:removePlayer', async (username, cb) => {
     if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
@@ -99,6 +148,23 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     if (error != null) return cb?.({ status: 500, error })
 
     const res = await removePlayer(pgPool, username, socket.data.userID)
+    if (res.isErr()) return cb?.({ status: 500, error: res.error })
+
+    emitGetGames()
+    return cb?.({ status: 200 })
+  })
+
+  socket.on('waiting:removeBot', async (gameID, playerIndex, cb) => {
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
+
+    const schema = Joi.object({
+      gameID: Joi.number().required().integer().positive(),
+      playerIndex: Joi.number().required().integer(),
+    })
+    const { error } = schema.validate({ gameID, playerIndex })
+    if (error != null) return cb?.({ status: 500, error })
+
+    const res = await removeBot(pgPool, gameID, playerIndex, socket.data.userID)
     if (res.isErr()) return cb?.({ status: 500, error: res.error })
 
     emitGetGames()
@@ -115,8 +181,9 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     const game = await setPlayerReady(pgPool, data.gameID, socket.data.userID)
     if (game.isErr()) return cb?.({ status: 500, error: game.error })
 
-    if (game.value.ready.every((r, i) => r === true || i >= game.value.nPlayers)) {
+    if (game.value.ready.every((r, i) => r === true || i >= game.value.nPlayers || game.value.bots[i] != null)) {
       deleteWaitingGame(pgPool, data.gameID)
+      // TODO: Add bots to game
       const createdGame = await createGameAux(pgPool, game.value.nPlayers, game.value.playerIDs, game.value.nTeams, game.value.meister, game.value.nTeams === 1, game.value.balls)
       await transferLatestMessagesToOtherChannel(pgPool, `g-${createdGame.id}`, `w-${game.value.id}`)
       for (const [, value] of nspGeneral.sockets.entries()) {
@@ -137,6 +204,7 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   })
 
   socket.on('waiting:switchColor', async (data, cb) => {
+    // TODO
     if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({
@@ -154,6 +222,7 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   })
 
   socket.on('waiting:createRematch', async (data, cb) => {
+    // TODO
     if (socket.data.userID === undefined) return cb({ ok: false, error: 'UNAUTH' })
 
     const schema = Joi.object({ gameID: Joi.number().required().integer().positive() })
