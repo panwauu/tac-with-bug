@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Basic Options */
     "module": "commonjs",
-    "target": "es2020",
+    "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
     "types": ["vitest/globals" ],
