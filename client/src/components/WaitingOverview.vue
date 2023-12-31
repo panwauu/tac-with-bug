@@ -304,11 +304,12 @@ function setPlayerReady(gameID: number) {
   })
 }
 
-function setPlayerColor(usernameToChange: string, gameID: number, color: string) {
+function setPlayerColor(usernameToChange: string, gameID: number, color: string, botIndex: number | null) {
   socket.emitWithAck(5000, 'waiting:switchColor', {
-    gameID: gameID,
+    gameID,
     username: usernameToChange,
-    color: color,
+    color,
+    botIndex,
   })
 }
 </script>

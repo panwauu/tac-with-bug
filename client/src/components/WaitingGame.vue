@@ -88,7 +88,12 @@
             </div>
             <BallsImage
               v-if="activeAndNotNull(playerIndex(Number(teamIndex), index))"
-              :class="['playerBall', game.players[playerIndex(Number(teamIndex), index)] === username ? 'clickable' : '']"
+              :class="[
+                'playerBall',
+                game.players[playerIndex(Number(teamIndex), index)] === username || (game.bots[playerIndex(Number(teamIndex), index)] != null && game.admin === username)
+                  ? 'clickable'
+                  : '',
+              ]"
               :color="game.balls[playerIndex(Number(teamIndex), index)]"
               @click="toggle($event, playerIndex(Number(teamIndex), index))"
             />
@@ -101,6 +106,7 @@
           </div>
           <div v-else>
             <Button
+              v-if="active && game.admin === username"
               label="Add Bot"
               @click="() => emit('add-bot', { gameID: game.id, botID: 1, playerIndex: playerIndex(Number(teamIndex), index) })"
             />
@@ -189,7 +195,7 @@ const emit = defineEmits<{
   'remove-player': [username: string]
   'remove-bot': [data: { gameID: number; playerIndex: number }]
   'ready-player': [gameID: number]
-  'color-player': [username: string, gameID: number, color: string]
+  'color-player': [username: string, gameID: number, color: string, botIndex: number | null]
 }>()
 
 const opRef = ref<OverlayPanel | null>(null)
@@ -221,13 +227,13 @@ const activeAndSelfOrAdmin = (index: number) => {
 const movePlayerOrBot = (gameID: number, index: number, steps: number) => {
   if (props.game.players[index] != null) {
     emit('move-player', {
-      gameID: props.game.id,
+      gameID,
       username: props.game.players[index],
       steps: steps,
     })
   }
   if (props.game.bots[index] != null) {
-    emit('move-bot', { gameID: props.game.id, playerIndex: index, steps: steps })
+    emit('move-bot', { gameID, playerIndex: index, steps: steps })
   }
 }
 
@@ -244,15 +250,19 @@ const setPlayerReady = () => {
   emit('ready-player', props.game.id)
 }
 
+let playerIndexForColorChange: number | null = null
 const toggle = (event: Event, index: number) => {
+  playerIndexForColorChange = index
   if (activeAndSelf(index)) {
+    opRef.value?.toggle(event)
+  } else if (props.game.bots[index] != null && props.game.admin === username.value) {
     opRef.value?.toggle(event)
   }
 }
 
 const switchColor = (color: string) => {
   opRef.value?.hide()
-  emit('color-player', username.value ?? '', props.game.id, color)
+  emit('color-player', username.value ?? '', props.game.id, color, playerIndexForColorChange)
 }
 </script>
 

@@ -211,15 +211,20 @@ export type ChangeColorError =
   | 'COLOR_ALREADY_IN_USE'
   | GetWaitingGameError
   | NotOneDatabaseChangeError
-export async function changeColor(sqlClient: pg.Pool, waitingGameID: number, usernameToChange: string, color: string, userID: number): Promise<Result<null, ChangeColorError>> {
-  // TODO: BOTS
-
+export async function changeColor(
+  sqlClient: pg.Pool,
+  waitingGameID: number,
+  usernameToChange: string,
+  color: string,
+  userID: number,
+  botIndex: number | null
+): Promise<Result<null, ChangeColorError>> {
   const game = await getWaitingGame(sqlClient, waitingGameID)
   if (game.isErr()) {
     return err(game.error)
   }
 
-  const playerIndex = game.value.players.indexOf(usernameToChange)
+  const playerIndex = botIndex == null ? game.value.players.indexOf(usernameToChange) : botIndex
 
   if (playerIndex === -1) {
     return err('PLAYER_NOT_FOUND_IN_WAITING_GAME')
