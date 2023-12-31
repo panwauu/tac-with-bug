@@ -17,6 +17,7 @@ interface GameGeneral {
   privateTournamentId: number | null
   players: (string | null)[]
   playerIDs: (number | null)[]
+  bots: (number | null)[]
 }
 
 // Game from db
@@ -77,6 +78,7 @@ export type GetGamesType = {
 export type GetRunningGamesType = {
   id: number
   teams: string[][]
+  bots: boolean[][]
   created: number
   lastPlayed: number
 }

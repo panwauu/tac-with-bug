@@ -3,6 +3,7 @@ import type * as tCard from '../sharedTypes/typesCard'
 import type { Player } from '../sharedTypes/typesPlayers'
 import type { Game } from './game'
 import type { UpdateDataType } from '../sharedTypes/typesDBgame'
+import { getBotName } from '../bot/names'
 
 export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: number): UpdateDataType {
   return {
@@ -14,7 +15,7 @@ export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: nu
     priorBalls: game.game.priorBalls,
     cards: getCards(game.game, gamePlayer),
     ownCards: game.game.cards.players?.[gamePlayer] ?? [],
-    players: getPlayers(game.game, game.players),
+    players: getPlayers(game.game, game.players, game.bots, game.id),
     gameEnded: game.game.gameEnded,
     winningTeams: game.game.winningTeams,
     aussetzenFlag: game.game.aussetzenFlag,
@@ -40,17 +41,18 @@ export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: nu
   }
 }
 
-function getPlayers(game: Game, names: (string | null)[]) {
+function getPlayers(game: Game, names: (string | null)[], bots: (number | null)[], gameID: number) {
   const players: Player[] = []
   for (let i = 0; i < game.cards.players.length; i++) {
     const player: Player = {
-      name: names[i] ?? '',
+      name: names[i] ?? (bots[i] != null ? getBotName(gameID, i) : ''),
       remainingCards: game.cards.players[i].length,
       active: game.activePlayer === i,
       playerNumber: i,
       team: game.teams.findIndex((team) => team.includes(i)),
       narrFlag: [game.narrFlag.some((e) => e === true), game.narrFlag[i]],
       discarded: game.cards.discardPlayer === i,
+      bot: bots[i] != null,
     }
     if (game.tradeFlag) {
       player.tradeInformation = [

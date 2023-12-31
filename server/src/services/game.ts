@@ -12,6 +12,7 @@ import { sendUpdatesOfGameToPlayers } from '../socket/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { getSocketByUserID } from '../socket/general'
 import { getSubstitution } from './substitution'
+import { getBotName } from '../bot/names'
 
 function mergeElementsWithIndices<T>(elements: T[], indices: number[], minLength: number): (T | null)[] {
   return Array(Math.max(Math.max(...indices) + 1, minLength))
@@ -53,6 +54,7 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
       colors: dbGame.colors,
       rematch_open: dbGame.rematch_open,
       substitution: getSubstitution(dbGame.id),
+      bots: dbGame.bots,
     })
   })
 
@@ -95,6 +97,7 @@ export async function getRunningGames(pgPool: pg.Pool): Promise<tDBTypes.GetRunn
     return {
       id: g.id,
       teams: getTeamsFromGame(g),
+      bots: getTeamsBotsFromGame(g),
       created: g.created,
       lastPlayed: g.lastPlayed,
     }
@@ -141,14 +144,14 @@ export async function createGame(
 
   const playersQuery = playerIDs
     .map((id, i) => {
-      if (id == null) return null
-      return ` ($${2 + i}, $1, ${i}) `
+      return { playerID: id, playerIndex: i }
     })
-    .filter((s) => s != null)
+    .filter((data) => data.playerID != null)
+    .map((data, i) => {
+      return ` ($${2 + i}, $1, ${data.playerIndex}) `
+    })
     .join(',')
-  const userToGameQuery = `
-        INSERT INTO users_to_games (userid, gameid, player_index) VALUES ${playersQuery};`
-  console.log(userToGameQuery)
+  const userToGameQuery = `INSERT INTO users_to_games (userid, gameid, player_index) VALUES ${playersQuery};`
   await sqlClient.query(userToGameQuery, [createGameRes.rows[0].id, ...playerIDs.filter((id) => id != null)])
 
   return getGame(sqlClient, createGameRes.rows[0].id)
@@ -218,20 +221,38 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
           status: 'running',
           created: game.created,
           lastPlayed: game.lastPlayed,
-          players: game.players,
+          players: game.players.map((p, i) => p ?? getBotName(game.id, i)),
           playerIDs: game.playerIDs,
           publicTournamentId: game.publicTournamentId,
           privateTournamentId: game.privateTournamentId,
           nPlayer: game.playerIDs.indexOf(userID),
           teams: teams,
+          bots: game.bots,
         }
       }),
   }
 }
 
+function getTeamsBotsFromGame(game: tDBTypes.GameForPlay) {
+  const order = game.nPlayers === 4 ? [0, 2, 1, 3] : game.nTeams === 2 ? [0, 2, 4, 1, 3, 5] : [0, 3, 1, 4, 2, 5]
+  const orderedBots = order.map((i) => game.bots.map((p) => p != null)[i])
+
+  const teamsBots: boolean[][] = []
+  for (let team = 0; team < game.nTeams; team++) {
+    const arr: boolean[] = []
+    for (let iterator = 0; iterator < orderedBots.length / game.nTeams; iterator++) {
+      const bot = orderedBots[(team * orderedBots.length) / game.nTeams + iterator]
+      arr.push(bot)
+    }
+    teamsBots.push(arr)
+  }
+
+  return teamsBots
+}
+
 function getTeamsFromGame(game: tDBTypes.GameForPlay) {
   const order = game.nPlayers === 4 ? [0, 2, 1, 3] : game.nTeams === 2 ? [0, 2, 4, 1, 3, 5] : [0, 3, 1, 4, 2, 5]
-  const orderedPlayers = order.map((i) => game.players[i])
+  const orderedPlayers = order.map((i) => game.players.map((p, i) => p ?? getBotName(game.id, i))[i])
 
   const teams: string[][] = []
   for (let team = 0; team < game.nTeams; team++) {
@@ -276,12 +297,13 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
       status: getStatusForOverview(game, nPlayer),
       created: game.created,
       lastPlayed: game.lastPlayed,
-      players: game.players,
+      players: game.players.map((p, i) => p ?? getBotName(game.id, i)),
       playerIDs: game.playerIDs,
       publicTournamentId: game.publicTournamentId,
       privateTournamentId: game.privateTournamentId,
       nPlayer: nPlayer,
       teams: teams,
+      bots: game.bots,
     }
   })
 
