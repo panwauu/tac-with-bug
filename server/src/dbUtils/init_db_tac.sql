@@ -205,6 +205,7 @@ CREATE TABLE waitingGames (
   meister Boolean NOT NULL,
   private Boolean NOT NULL,
   adminPlayer INT NOT NULL REFERENCES users (id),
+  bots INT ARRAY[6] NOT NULL DEFAULT '{NULL,NULL,NULL,NULL,NULL,NULL}',
   player0 INT REFERENCES users (id) CHECK(
     player0 IS NULL
     OR (
@@ -274,6 +275,10 @@ CREATE TABLE waitingGames (
     )
     OR (
       balls0 IS NOT NULL
+      AND bots[1] IS NOT NULL
+    )
+    OR (
+      balls0 IS NOT NULL
       AND player0 IS NOT NULL
       AND balls0 != balls1
       AND balls0 != balls2
@@ -286,6 +291,10 @@ CREATE TABLE waitingGames (
     (
       balls1 IS NULL
       AND player1 IS NULL
+    )
+    OR (
+      balls1 IS NOT NULL
+      AND bots[2] IS NOT NULL
     )
     OR (
       balls1 IS NOT NULL
@@ -304,6 +313,10 @@ CREATE TABLE waitingGames (
     )
     OR (
       balls2 IS NOT NULL
+      AND bots[3] IS NOT NULL
+    )
+    OR (
+      balls2 IS NOT NULL
       AND player2 IS NOT NULL
       AND balls2 != balls0
       AND balls2 != balls1
@@ -316,6 +329,10 @@ CREATE TABLE waitingGames (
     (
       balls3 IS NULL
       AND player3 IS NULL
+    )
+    OR (
+      balls3 IS NOT NULL
+      AND bots[4] IS NOT NULL
     )
     OR (
       balls3 IS NOT NULL
@@ -334,6 +351,10 @@ CREATE TABLE waitingGames (
     )
     OR (
       balls4 IS NOT NULL
+      AND bots[5] IS NOT NULL
+    )
+    OR (
+      balls4 IS NOT NULL
       AND player4 IS NOT NULL
       AND balls4 != balls0
       AND balls4 != balls1
@@ -347,6 +368,10 @@ CREATE TABLE waitingGames (
     (
       balls5 IS NULL
       AND player5 IS NULL
+    )
+    OR (
+      balls5 IS NOT NULL
+      AND bots[6] IS NOT NULL
     )
     OR (
       balls5 IS NOT NULL

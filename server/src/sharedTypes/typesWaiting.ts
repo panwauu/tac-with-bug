@@ -11,6 +11,7 @@ export interface WaitingGame {
   playerIDs: number[]
   balls: string[]
   ready: boolean[]
+  bots: (number | null)[]
 }
 
 export type CreateGameType = {
@@ -21,6 +22,7 @@ export type CreateGameType = {
 }
 
 export type MovePlayerType = { gameID: number; username: string; steps: number }
+export type MoveBotType = { gameID: number; playerIndex: number; steps: number }
 
 export type SwitchColorType = {
   gameID: number

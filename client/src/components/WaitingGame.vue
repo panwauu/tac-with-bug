@@ -62,20 +62,26 @@
           class="playerSlot"
         >
           <div
-            v-if="game.players[playerIndex(Number(teamIndex), index)] != null"
+            v-if="game.players[playerIndex(Number(teamIndex), index)] != null || game.bots[playerIndex(Number(teamIndex), index)] != null"
             class="playerContainer"
           >
             <div
-              v-if="active && game.players.slice(0, game.nPlayers).every((p) => p != null)"
+              v-if="
+                active &&
+                game.players
+                  .slice(0, game.nPlayers)
+                  .filter((_, i) => game.bots[i] == null)
+                  .every((p) => p != null)
+              "
               class="readyIcon"
             >
               <i
-                v-if="game.ready[playerIndex(Number(teamIndex), index)]"
+                v-if="game.players[playerIndex(Number(teamIndex), index)] != null && game.ready[playerIndex(Number(teamIndex), index)]"
                 class="pi pi-check"
                 style="color: green"
               />
               <i
-                v-if="!game.ready[playerIndex(Number(teamIndex), index)]"
+                v-if="game.players[playerIndex(Number(teamIndex), index)] != null && !game.ready[playerIndex(Number(teamIndex), index)]"
                 class="pi pi-spin pi-spinner"
                 style="color: red"
               />
@@ -87,10 +93,16 @@
               @click="toggle($event, playerIndex(Number(teamIndex), index))"
             />
             <PlayerWithPicture
-              :username="game.players[playerIndex(Number(teamIndex), index)]"
+              :username="game.players[playerIndex(Number(teamIndex), index)] ?? '🤖'"
               :hideIfEmpty="true"
               :nameFirst="false"
               :clickable="active"
+            />
+          </div>
+          <div v-else>
+            <Button
+              label="Add Bot"
+              @click="() => emit('add-bot', { gameID: game.id, botID: 1, playerIndex: playerIndex(Number(teamIndex), index) })"
             />
           </div>
           <div class="playerControls">
@@ -102,20 +114,20 @@
                 icon="pi pi-angle-up"
                 class="p-button-rounded p-button-secondary p-button-sm p-button-text buttonUpDown"
                 :disabled="playerIndex(Number(teamIndex), index) <= 0"
-                @click="movePlayer(game.id, game.players[playerIndex(Number(teamIndex), index)], -1)"
+                @click="movePlayerOrBot(game.id, playerIndex(Number(teamIndex), index), -1)"
               />
               <Button
                 icon="pi pi-angle-down"
                 class="p-button-rounded p-button-secondary p-button-sm p-button-text buttonUpDown"
                 :disabled="playerIndex(Number(teamIndex), index) >= game.nPlayers - 1"
-                @click="movePlayer(game.id, game.players[playerIndex(Number(teamIndex), index)], 1)"
+                @click="movePlayerOrBot(game.id, playerIndex(Number(teamIndex), index), 1)"
               />
             </div>
             <Button
               v-if="activeAndSelfOrAdmin(playerIndex(Number(teamIndex), index))"
               icon="pi pi-times"
               class="p-button-rounded p-button-danger p-button-text"
-              @click="removePlayer(game.players[playerIndex(Number(teamIndex), index)])"
+              @click="removePlayerOrBot(playerIndex(Number(teamIndex), index))"
             />
           </div>
         </div>
@@ -144,7 +156,7 @@
         label="Bereit zum Starten?"
         icon="pi pi-caret-right"
         class="p-button-success"
-        :disabled="game.players.slice(0, game.nPlayers).some((p) => p === null) || game.ready.find((_, index) => game.players[index] === username)"
+        :disabled="game.players.slice(0, game.nPlayers).some((p, i) => p === null && game.bots[i] == null) || game.ready.find((_, index) => game.players[index] === username)"
         @click="setPlayerReady()"
       />
     </div>
@@ -171,8 +183,11 @@ import BallsImage from './assets/BallsImage.vue'
 const props = withDefaults(defineProps<{ game: WaitingGame; active?: boolean }>(), { active: false })
 
 const emit = defineEmits<{
+  'add-bot': [data: { gameID: number; botID: number; playerIndex: number }]
   'move-player': [data: { gameID: number; username: string; steps: number }]
+  'move-bot': [data: { gameID: number; playerIndex: number; steps: number }]
   'remove-player': [username: string]
+  'remove-bot': [data: { gameID: number; playerIndex: number }]
   'ready-player': [gameID: number]
   'color-player': [username: string, gameID: number, color: string]
 }>()
@@ -188,7 +203,7 @@ const playerIndex = (teamIndex: number, index: number) => {
 }
 
 const activeAndNotNull = (index: number) => {
-  return props.game.players[index] != null && props.active
+  return (props.game.players[index] != null || props.game.bots[index] != null) && props.active
 }
 
 const activeAndSelf = (index: number) => {
@@ -196,19 +211,33 @@ const activeAndSelf = (index: number) => {
 }
 
 const activeAndSelfOrAdmin = (index: number) => {
-  return props.game.players[index] != null && props.active && (props.game.players[index] === username.value || props.game.admin === username.value)
+  return (
+    props.active &&
+    ((props.game.players[index] != null && (props.game.players[index] === username.value || props.game.admin === username.value)) ||
+      (props.game.bots[index] != null && props.game.admin === username.value))
+  )
 }
 
-const movePlayer = (gameID: number, username: string, steps: number) => {
-  emit('move-player', {
-    gameID: gameID,
-    username: username,
-    steps: steps,
-  })
+const movePlayerOrBot = (gameID: number, index: number, steps: number) => {
+  if (props.game.players[index] != null) {
+    emit('move-player', {
+      gameID: props.game.id,
+      username: props.game.players[index],
+      steps: steps,
+    })
+  }
+  if (props.game.bots[index] != null) {
+    emit('move-bot', { gameID: props.game.id, playerIndex: index, steps: steps })
+  }
 }
 
 const removePlayer = (username: string) => {
   emit('remove-player', username)
+}
+
+const removePlayerOrBot = (index: number) => {
+  if (props.game.players[index] != null) emit('remove-player', props.game.players[index])
+  if (props.game.bots[index] != null) emit('remove-bot', { gameID: props.game.id, playerIndex: index })
 }
 
 const setPlayerReady = () => {
