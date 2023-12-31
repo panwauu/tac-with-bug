@@ -7,4 +7,5 @@ export interface Player {
   narrFlag: [boolean, boolean]
   tradeInformation?: [boolean, boolean]
   discarded: boolean
+  bot: boolean
 }
