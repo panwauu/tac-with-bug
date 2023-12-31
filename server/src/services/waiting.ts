@@ -357,7 +357,7 @@ export async function addBot(sqlClient: pg.Pool, waitingGameID: number, botID: n
   }
 
   // TODO: BOTS
-  if (botID != botID) {
+  if (botID !== botID) {
     return err('BOT_ID_INVALID')
   }
 
