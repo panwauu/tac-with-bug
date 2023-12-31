@@ -28,6 +28,7 @@ export type SwitchColorType = {
   gameID: number
   username: string
   color: string
+  botIndex: number | null
 }
 
 export type StartGameType = {

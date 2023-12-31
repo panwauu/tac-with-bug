@@ -74,11 +74,21 @@ describe('Waiting game test suite via Socket.io', () => {
     })
 
     test('Should not switch color with invalid data', async () => {
-      const resWrongColor = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, username: usersWithSockets[0].username, color: 'a' })
+      const resWrongColor = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', {
+        gameID: waitingGameID,
+        username: usersWithSockets[0].username,
+        color: 'a',
+        botIndex: null,
+      })
       expect(resWrongColor.status).toBe(500)
-      const sameColor = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, username: usersWithSockets[0].username, color: 'red' })
+      const sameColor = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', {
+        gameID: waitingGameID,
+        username: usersWithSockets[0].username,
+        color: 'red',
+        botIndex: null,
+      })
       expect(sameColor.status).toBe(500)
-      const resInvalidUser = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, username: 'a', color: 'blue' })
+      const resInvalidUser = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, username: 'a', color: 'blue', botIndex: null })
       expect(resInvalidUser.status).toBe(500)
     })
 
@@ -92,7 +102,7 @@ describe('Waiting game test suite via Socket.io', () => {
     })
 
     test('Should switch color', async () => {
-      const switching = { gameID: waitingGameID, username: usersWithSockets[0].username, color: 'blue' }
+      const switching = { gameID: waitingGameID, username: usersWithSockets[0].username, color: 'blue', botIndex: null }
       const promise = usersWithSockets[0].socket.oncePromise('waiting:getGames')
       await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:switchColor', switching)
       const game = (await promise)[0]
@@ -202,7 +212,12 @@ describe('Waiting game test suite via Socket.io', () => {
     })
 
     test('Non-admin should not be able to change other color', async () => {
-      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:switchColor', { gameID: waitingGameID, username: usersWithSockets[0].username, color: 'green' })
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:switchColor', {
+        gameID: waitingGameID,
+        username: usersWithSockets[0].username,
+        color: 'green',
+        botIndex: null,
+      })
       expect(res.status).toBe(500)
     })
 

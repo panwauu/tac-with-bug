@@ -213,18 +213,24 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   })
 
   socket.on('waiting:switchColor', async (data, cb) => {
-    // TODO
     if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
+    console.log(data)
+
     const schema = Joi.object({
-      gameID: Joi.number().required().integer().positive(),
+      gameID: Joi.number().required().integer(),
       username: Joi.string().required(),
       color: Joi.string().required(),
+      botIndex: Joi.number().integer().allow(null),
     })
     const { error } = schema.validate(data)
+    console.log(error)
     if (error != null) return cb?.({ status: 500, error })
 
-    const res = await changeColor(pgPool, data.gameID, data.username, data.color, socket.data.userID)
+    console.log('2')
+
+    const res = await changeColor(pgPool, data.gameID, data.username, data.color, socket.data.userID, data.botIndex)
+    console.log(res)
     if (res.isErr()) return cb?.({ status: 500, error: res.error })
     emitGetGames()
     return cb?.({ status: 200 })
