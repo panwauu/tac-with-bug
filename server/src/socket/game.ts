@@ -54,7 +54,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
         }
 
         if (move != null) {
-          await new Promise((resolve) => setTimeout(resolve, 4000))
+          await new Promise((resolve) => setTimeout(resolve, 2000))
           const game = await performMoveAndReturnGame(pgPool, move, move[0], gameID)
           getSocketsInGame(nspGame, gameID).forEach((socketIterator) => {
             socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
