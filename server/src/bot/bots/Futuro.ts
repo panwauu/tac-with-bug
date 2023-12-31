@@ -5,6 +5,7 @@ import { BallsType, MoveTextOrBall } from '../../sharedTypes/typesBall'
 import { AiData } from '../simulation/output'
 import { previewMove } from '../simulation/previewMove'
 import { AiInterface, getMovesFromCards } from '../simulation/simulation'
+import { discardBot } from './DiscardsBot'
 import { tradeBot } from './TradeHelper'
 import { ballInProximityOfHouse, normalizedNecessaryForwardMovesToEndOfGoal } from './utils'
 
@@ -12,6 +13,8 @@ export class Futuro implements AiInterface {
   choose(data: AiData) {
     try {
       if (data.tradedCard == null) return tradeBot(data)
+      const discardMove = discardBot(data)
+      if (discardMove != null) return discardMove
 
       const nodes = calculatePaths(data)
       if (nodes.length > 0) {
