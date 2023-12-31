@@ -104,7 +104,8 @@ export async function getRunningGames(pgPool: pg.Pool): Promise<tDBTypes.GetRunn
 export async function createGame(
   sqlClient: pg.Pool,
   teamsParam: number,
-  playerIDs: number[],
+  playerIDs: (number | null)[],
+  bots: (number | null)[],
   meisterVersion: boolean,
   coop: boolean,
   colors: string[],
@@ -118,10 +119,18 @@ export async function createGame(
     teams = 2
   }
 
+  if (
+    Array.from({ length: playerIDs.length })
+      .map((_, i) => i)
+      .some((i) => (playerIDs[i] == null && bots[i] == null) || (playerIDs[i] != null && bots[i] != null))
+  ) {
+    throw new Error(`Cannot create game missing players or bots; playerIDs: ${JSON.stringify(playerIDs)}, bots: ${JSON.stringify(bots)}`)
+  }
+
   const newGame = new Game(playerIDs.length, teams, meisterVersion, coop)
 
-  const values = [playerIDs.length, teams, newGame.getJSON(), publicTournamentId, JSON.stringify(colors.slice(0, playerIDs.length)), privateTournamentId]
-  const query = 'INSERT INTO games (n_players, n_teams, game, public_tournament_id, colors, private_tournament_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;'
+  const values = [playerIDs.length, teams, newGame.getJSON(), publicTournamentId, JSON.stringify(colors.slice(0, playerIDs.length)), privateTournamentId, bots]
+  const query = 'INSERT INTO games (n_players, n_teams, game, public_tournament_id, colors, private_tournament_id, bots) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;'
   const createGameRes = await sqlClient.query(query, values).then((res) => {
     captureMove(sqlClient, res.rows[0].id, ['init', playerIDs.length, teams, meisterVersion, coop], newGame)
     return res
@@ -130,11 +139,17 @@ export async function createGame(
     throw new Error('Could not create Game')
   }
 
+  const playersQuery = playerIDs
+    .map((id, i) => {
+      if (id == null) return null
+      return ` ($${2 + i}, $1, ${i}) `
+    })
+    .filter((s) => s != null)
+    .join(',')
   const userToGameQuery = `
-        INSERT INTO users_to_games (userid, gameid, player_index) VALUES 
-        ($2, $1, 0), ($3, $1, 1), ($4, $1, 2), ($5, $1, 3) 
-        ${playerIDs.length === 6 ? ', ($6, $1, 4), ($7, $1, 5)' : ''};`
-  await sqlClient.query(userToGameQuery, [createGameRes.rows[0].id, ...playerIDs])
+        INSERT INTO users_to_games (userid, gameid, player_index) VALUES ${playersQuery};`
+  console.log(userToGameQuery)
+  await sqlClient.query(userToGameQuery, [createGameRes.rows[0].id, ...playerIDs.filter((id) => id != null)])
 
   return getGame(sqlClient, createGameRes.rows[0].id)
 }

@@ -264,7 +264,17 @@ export async function startTournamentGame(
   const playeridsOrdered = order.map((i) => playerids[i])
 
   const colorsForGame = [...colors]
-  const createdGame = await createGame(pgPool, 2, playeridsOrdered, true, false, colorsForGame, undefined, tournament.id)
+  const createdGame = await createGame(
+    pgPool,
+    2,
+    playeridsOrdered,
+    playeridsOrdered.map(() => null),
+    true,
+    false,
+    colorsForGame,
+    undefined,
+    tournament.id
+  )
   tournament.data.brackets[tournamentRound][roundGame].gameID = createdGame.id
 
   await pgPool.query('UPDATE private_tournaments SET data=$1 WHERE id=$2;', [tournament.data, tournament.id])

@@ -161,6 +161,7 @@ CREATE TABLE games (
   ),
   created timestamptz NOT NULL DEFAULT current_timestamp,
   lastPlayed timestamptz NOT NULL DEFAULT current_timestamp,
+  bots INT ARRAY[6] NOT NULL DEFAULT '{NULL,NULL,NULL,NULL,NULL,NULL}',
   game jsonb NOT NULL,
   public_tournament_id INT REFERENCES tournaments(id),
   private_tournament_id INT REFERENCES private_tournaments(id),

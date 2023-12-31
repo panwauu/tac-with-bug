@@ -186,7 +186,17 @@ async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament
 
     const colorsForGame = [...colors]
     shuffleArray(colorsForGame)
-    const createdGame = await createGame(sqlClient, 2, playeridsOrdered, true, false, colorsForGame, tournament.id, undefined)
+    const createdGame = await createGame(
+      sqlClient,
+      2,
+      playeridsOrdered,
+      playerids.map(() => null),
+      true,
+      false,
+      colorsForGame,
+      tournament.id,
+      undefined
+    )
 
     createdGame.playerIDs.forEach((id) => {
       const socket = getSocketByUserID(id ?? -1)
