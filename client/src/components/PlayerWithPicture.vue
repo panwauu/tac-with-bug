@@ -11,12 +11,19 @@
       {{ username }}
     </div>
     <ProfilePicture
-      v-if="pictureVisible === true"
+      v-if="pictureVisible === true && !bot"
       :username="username !== '' ? username : $t('Chat.deletedPlayer')"
       :showCrown="showCrown"
       :online="online"
       class="autocompleteImage"
     />
+    <div
+      v-if="bot"
+      class="autocompleteImage"
+      style="line-height: 30px; padding-left: 4px"
+    >
+      🤖
+    </div>
   </div>
 </template>
 
@@ -34,6 +41,7 @@ const props = withDefaults(
     hideIfEmpty?: boolean
     showCrown?: boolean
     online?: boolean
+    bot?: boolean
   }>(),
   {
     nameFirst: true,
@@ -43,6 +51,7 @@ const props = withDefaults(
     hideIfEmpty: true,
     showCrown: true,
     online: undefined,
+    bot: false,
   }
 )
 

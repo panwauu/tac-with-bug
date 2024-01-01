@@ -76,7 +76,10 @@
               class="readyIcon"
             >
               <i
-                v-if="game.players[playerIndex(Number(teamIndex), index)] != null && game.ready[playerIndex(Number(teamIndex), index)]"
+                v-if="
+                  (game.players[playerIndex(Number(teamIndex), index)] != null && game.ready[playerIndex(Number(teamIndex), index)]) ||
+                  game.bots[playerIndex(Number(teamIndex), index)] != null
+                "
                 class="pi pi-check"
                 style="color: green"
               />
@@ -98,16 +101,17 @@
               @click="toggle($event, playerIndex(Number(teamIndex), index))"
             />
             <PlayerWithPicture
-              :username="game.players[playerIndex(Number(teamIndex), index)] ?? '🤖'"
+              :username="game.players[playerIndex(Number(teamIndex), index)] ?? 'Bot'"
               :hideIfEmpty="true"
               :nameFirst="false"
               :clickable="active"
+              :bot="game.bots[playerIndex(Number(teamIndex), index)] != null"
             />
           </div>
           <div v-else>
             <Button
               v-if="active && game.admin === username"
-              label="Add Bot"
+              label="+ Bot"
               @click="() => emit('add-bot', { gameID: game.id, botID: 1, playerIndex: playerIndex(Number(teamIndex), index) })"
             />
           </div>
