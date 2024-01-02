@@ -409,7 +409,8 @@
       "aborted": "Das Spiel wurde abgebrochen",
       "wonWith": "Du hast mit {players} gewonnen!",
       "lostWith": "Du hast mit {players} verloren!",
-      "playersConnector": "und"
+      "playersConnector": "und",
+      "endedForWatch": "haben das Spiel gewonnen!"
     },
     "Rematch": {
       "title": "Rückspiel",

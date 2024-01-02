@@ -9,7 +9,7 @@ import { isUserOnline } from '../socket/general'
 import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils/dbHelpers'
 import { getUser } from './user'
 import { validBotIds } from '../bot/bots/bots'
-import { switchBetweenTeamsOrderToGameOrder } from '../game/teamUtils'
+import { switchFromTeamsOrderToGameOrder } from '../game/teamUtils'
 
 export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number) {
   const res = await sqlClient.query(
@@ -414,8 +414,8 @@ export async function getPlayersOfWaitingGame(sqlClient: pg.Pool, waitingGameID:
 }
 
 export async function createGameFromWaitingGame(sqlClient: pg.Pool, game: WaitingGame) {
-  const playersOrdered = switchBetweenTeamsOrderToGameOrder(game.playerIDs, game.nPlayers, game.nTeams)
-  const botsOrdered = switchBetweenTeamsOrderToGameOrder(game.bots, game.nPlayers, game.nTeams)
-  const colorsOrdered = switchBetweenTeamsOrderToGameOrder(game.balls, game.nPlayers, game.nTeams)
+  const playersOrdered = switchFromTeamsOrderToGameOrder(game.playerIDs.slice(0, game.nPlayers), game.nPlayers, game.nTeams)
+  const botsOrdered = switchFromTeamsOrderToGameOrder(game.bots.slice(0, game.nPlayers), game.nPlayers, game.nTeams)
+  const colorsOrdered = switchFromTeamsOrderToGameOrder(game.balls.slice(0, game.nPlayers), game.nPlayers, game.nTeams)
   return createGame(sqlClient, game.nTeams, playersOrdered, botsOrdered, game.meister, game.nTeams === 1, colorsOrdered, undefined, undefined)
 }

@@ -409,7 +409,8 @@
       "aborted": "Игра была отменена",
       "wonWith": "Вы выиграли с {players}!",
       "lostWith": "Вы проиграли с {players}!",
-      "playersConnector": "и"
+      "playersConnector": "и",
+      "endedForWatch": "выиграли игру!"
     },
     "Rematch": {
       "title": "Возвратная нога",
