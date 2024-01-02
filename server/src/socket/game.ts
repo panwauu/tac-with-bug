@@ -12,7 +12,7 @@ import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/
 import { MoveTextOrBall } from '../sharedTypes/typesBall'
 import { getAiData } from '../bot/simulation/output'
 import { projectMoveToGamePlayer } from '../bot/normalize/normalize'
-import { getBotMove } from 'src/bot/bots/bots'
+import { getBotMove } from '../bot/bots/bots'
 
 export let nsp: GameNamespace
 

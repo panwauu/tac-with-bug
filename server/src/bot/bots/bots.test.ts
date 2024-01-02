@@ -1,20 +1,17 @@
 import { runSimulation } from '../simulation/simulation'
-import { Futuro } from './Futuro'
-import { Greedy } from './Greedy'
-import { Raindom } from './Raindom'
-import { Ruby } from './Ruby'
+import { Bot } from './bots'
 
 describe('Test bots', () => {
   test('Raindom should end a game', () => {
-    runSimulation(1, [new Raindom(), new Raindom(), new Raindom(), new Raindom()])
+    runSimulation(1, [Bot.Raindom, Bot.Raindom, Bot.Raindom, Bot.Raindom])
   })
   test('Greedy should end a game', () => {
-    runSimulation(1, [new Greedy(), new Greedy(), new Greedy(), new Greedy()])
+    runSimulation(1, [Bot.Greedy, Bot.Greedy, Bot.Greedy, Bot.Greedy])
   })
   test('Ruby should end a game', () => {
-    runSimulation(1, [new Ruby(), new Ruby(), new Ruby(), new Ruby()])
+    runSimulation(1, [Bot.Ruby, Bot.Ruby, Bot.Ruby, Bot.Ruby])
   })
   test('Futuro should end a game', () => {
-    runSimulation(1, [new Futuro(), new Futuro(), new Futuro(), new Futuro()])
+    runSimulation(1, [Bot.Futuro, Bot.Futuro, Bot.Futuro, Bot.Futuro])
   })
 })

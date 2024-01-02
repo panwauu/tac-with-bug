@@ -10,6 +10,7 @@ import { evaluateGameWinnerAndReturnEndedFlag, EvaluateGameWinnerAndReturnEndedF
 import { pushChangedPrivateTournament } from '../socket/tournamentPrivate'
 import { getSocketByUserID } from '../socket/general'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
+import { switchFromTeamsOrderToGameOrder } from '../game/teamUtils'
 
 interface GetPrivateTournamentCondition {
   id?: number
@@ -253,16 +254,7 @@ export async function startTournamentGame(
     playerids = playerids.concat(tournament.teams[t].playerids)
   })
 
-  // TODO: Use switchBetweenTeamsOrderToGameOrder
-  let order: number[] = []
-  if (tournament.playersPerTeam === 2 && tournament.teamsPerMatch === 3) {
-    order = [0, 3, 1, 4, 2, 5]
-  } else if (tournament.playersPerTeam === 3 && tournament.teamsPerMatch === 2) {
-    order = [0, 2, 4, 1, 3, 5]
-  } else {
-    order = [0, 2, 1, 3]
-  }
-  const playeridsOrdered = order.map((i) => playerids[i])
+  const playeridsOrdered = switchFromTeamsOrderToGameOrder(playerids, tournament.playersPerTeam * tournament.teamsPerMatch, tournament.teamsPerMatch)
 
   const colorsForGame = [...colors]
   const createdGame = await createGame(
