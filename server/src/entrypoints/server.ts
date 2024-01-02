@@ -87,7 +87,7 @@ export class TacServer {
     await loadTutorialLevels(this.pgPool)
 
     const portToListen = port ?? (process.env.PORT != null ? parseInt(process.env.PORT) : 3000)
-    this.httpServer.listen(portToListen, '0.0.0.0')
+    this.httpServer.listen(portToListen)
     logger.debug(`Listening on port: ${(this.httpServer.address() as any)?.port}`)
 
     return portToListen

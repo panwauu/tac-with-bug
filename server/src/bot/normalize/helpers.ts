@@ -22,5 +22,11 @@ export function reorderArray<T>(array: T[], order: number[], revertFlag?: boolea
     }
   }
 
-  return (revertFlag === true ? order.toReversed() : order).map((i) => array[i])
+  if (revertFlag === true) {
+    return Array.from(Array(array.length).keys())
+      .sort((a, b) => order[a] - order[b])
+      .map((i) => array[i])
+  }
+
+  return order.map((i) => array[i])
 }
