@@ -237,7 +237,6 @@ async function updateHandler(): Promise<void> {
     return
   }
 
-  console.log(props.updateData)
   props.miscState.setGamePlayer(props.updateData.gamePlayer)
 
   const tacFirstRevertState =
