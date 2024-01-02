@@ -18,7 +18,7 @@
       class="autocompleteImage"
     />
     <div
-      v-if="bot"
+      v-if="pictureVisible === true && bot"
       class="autocompleteImage"
       style="line-height: 30px; padding-left: 4px"
     >
