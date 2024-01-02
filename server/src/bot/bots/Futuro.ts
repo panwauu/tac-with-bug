@@ -1,6 +1,7 @@
 // Hi, I'm greedy,
 // I care about nothing but about getting balls into the house
 
+import { ballGoal } from '../../game/ballUtils'
 import { BallsType, MoveTextOrBall } from '../../sharedTypes/typesBall'
 import { AiData } from '../simulation/output'
 import { previewMove } from '../simulation/previewMove'
@@ -54,10 +55,10 @@ export class Futuro implements AiInterface {
   }
 }
 
-type EndNode = { state: AiData; movesToGetThere: MoveTextOrBall[]; scoresPerState: number[] }
+type EndNode = { state: AiData; movesToGetThere: MoveTextOrBall[]; scoresPerState: number[]; forbiddenBalls: number[] }
 
 function calculatePaths(data: AiData): EndNode[] {
-  let nodes: EndNode[] = [{ state: data, movesToGetThere: [], scoresPerState: [] }]
+  let nodes: EndNode[] = [{ state: data, movesToGetThere: [], scoresPerState: [], forbiddenBalls: [] }]
 
   for (let i = 0; i < movesIntoTheFuture; i++) {
     const newNodes: EndNode[] = []
@@ -79,6 +80,7 @@ function expandNode(node: EndNode): EndNode[] {
   let moves = getMovesFromCards(node.state.cardsWithMoves, node.state.gamePlayer)
     .filter((m) => node.state.cardsWithMoves[m[1]].title !== 'tac' || node.movesToGetThere.length === 0)
     .filter((m) => !['teufel', 'narr'].includes(node.state.cardsWithMoves[m[0]].title))
+    .filter((m) => m.length === 3 || node.state.cardsWithMoves[m[1]].title.includes('-') || !node.forbiddenBalls.includes(m[2]))
 
   // Filter moves from the same card as they are redundant
   const duplicatedCardIndices = node.state.cardsWithMoves
@@ -106,8 +108,18 @@ function expandNode(node: EndNode): EndNode[] {
       state: dataAfterMove,
       movesToGetThere: [...node.movesToGetThere, m],
       scoresPerState: [...node.scoresPerState, calculateScoreOfState(dataAfterMove)],
+      forbiddenBalls: getForbiddenMoves(node, m),
     }
   })
+}
+
+function getForbiddenMoves(node: EndNode, move: MoveTextOrBall) {
+  if (move.length === 3) return []
+  if (node.state.cardsWithMoves[move[1]].title.includes('-') && ballGoal(0, node.state.balls) <= move[3]) return [...node.forbiddenBalls]
+  if (node.state.cardsWithMoves[move[1]].title.includes('-') && ballGoal(0, node.state.balls) > move[3]) return [...node.forbiddenBalls, move[2]]
+  if (node.state.cardsWithMoves[move[1]].title === '7') return [move[2]]
+  if (node.state.cardsWithMoves[move[1]].title === '7' && ballGoal(0, node.state.balls) <= move[3]) return []
+  return []
 }
 
 function calculateScoreOfState(data: AiData): number {
