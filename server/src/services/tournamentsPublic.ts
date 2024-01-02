@@ -174,6 +174,7 @@ async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament
       playerids = playerids.concat(tournament.teams[t].playerids)
     })
 
+    // TODO: Use switchBetweenTeamsOrderToGameOrder
     let order: number[] = []
     if (tournament.playersPerTeam === 2 && tournament.teamsPerMatch === 3) {
       order = [0, 3, 1, 4, 2, 5]
