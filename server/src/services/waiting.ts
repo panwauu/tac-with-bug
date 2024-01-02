@@ -9,7 +9,7 @@ import { isUserOnline } from '../socket/general'
 import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils/dbHelpers'
 import { getUser } from './user'
 import { validBotIds } from '../bot/bots/bots'
-import { switchFromTeamsOrderToGameOrder } from '../game/teamUtils'
+import { switchFromGameOrderToTeamsOrder, switchFromTeamsOrderToGameOrder } from '../game/teamUtils'
 
 export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number) {
   const res = await sqlClient.query(
@@ -88,19 +88,19 @@ export async function createRematchGame(pgPool: pg.Pool, game: GameForPlay, user
     nTeams = 1
   }
 
-  const values: any[] = [userID, game.game.nPlayers, nTeams, game.game.cards.meisterVersion, game.id, game.bots]
+  const values: any[] = [userID, game.game.nPlayers, nTeams, game.game.cards.meisterVersion, game.id, switchFromGameOrderToTeamsOrder(game.bots, game.nPlayers, game.nTeams)]
 
   let ballsStr = ''
   let playersStr = ''
   let valStr = ''
-  game.colors.forEach((color, i) => {
+  switchFromGameOrderToTeamsOrder(game.colors, game.nPlayers, game.nTeams).forEach((color, i) => {
     if (color != null) {
       ballsStr += `, balls${i}`
       values.push(color)
       valStr += `, $${values.length}`
     }
   })
-  game.playerIDs.forEach((id, i) => {
+  switchFromGameOrderToTeamsOrder(game.playerIDs, game.nPlayers, game.nTeams).forEach((id, i) => {
     if (id != null) {
       playersStr += `, player${i}`
       values.push(id)
