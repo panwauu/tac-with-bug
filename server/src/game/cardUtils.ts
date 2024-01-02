@@ -72,6 +72,8 @@ export function dealCards(cards: tCard.CardsType): void {
 
   if (cards.deck.length >= createCardDeck(nPlayers, cards.meisterVersion).length) {
     cards.previouslyPlayedCards = []
+  } else {
+    cards.previouslyPlayedCards = [...cards.previouslyPlayedCards, ...cards.discardPile]
   }
 
   for (let p = 0; p < nPlayers; p++) {
@@ -79,7 +81,6 @@ export function dealCards(cards: tCard.CardsType): void {
     cards.deck.splice(0, nCardsPerPlayer)
   }
 
-  cards.previouslyPlayedCards = [...cards.previouslyPlayedCards, ...cards.discardPile]
   cards.discardPile = []
 
   if (cards.deck.length === 0) {

@@ -101,18 +101,25 @@
               @click="toggle($event, playerIndex(Number(teamIndex), index))"
             />
             <PlayerWithPicture
-              :username="game.players[playerIndex(Number(teamIndex), index)] ?? 'Bot'"
+              :username="game.players[playerIndex(Number(teamIndex), index)] ?? $t('Waiting.bot')"
               :hideIfEmpty="true"
               :nameFirst="false"
               :clickable="active"
               :bot="game.bots[playerIndex(Number(teamIndex), index)] != null"
             />
+            <div
+              v-if="game.adminID === game.playerIDs[playerIndex(Number(teamIndex), index)]"
+              style="margin-left: 5px"
+            >
+              {{ `(${$t('Waiting.adminBadge')})` }}
+            </div>
           </div>
           <div v-else>
             <Button
               v-if="active && game.admin === username"
-              label="+ Bot"
-              @click="() => emit('add-bot', { gameID: game.id, botID: 1, playerIndex: playerIndex(Number(teamIndex), index) })"
+              severity="secondary"
+              :label="`+ ${$t('Waiting.bot')}`"
+              @click="() => emit('add-bot', { gameID: game.id, botID: 0, playerIndex: playerIndex(Number(teamIndex), index) })"
             />
           </div>
           <div class="playerControls">

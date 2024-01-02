@@ -15,8 +15,9 @@ import {
   addBot,
   moveBot,
   removeBot,
+  createGameFromWaitingGame,
 } from '../services/waiting'
-import { getGame, createGame } from '../services/game'
+import { getGame } from '../services/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from './games'
 import { sendUpdatesOfGameToPlayers } from './game'
 import { getUser } from '../services/user'
@@ -70,7 +71,7 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
 
     const schema = Joi.object({
       gameID: Joi.number().required().integer().positive(),
-      botID: Joi.number().required().integer().positive(),
+      botID: Joi.number().required().integer(),
       playerIndex: Joi.number().required(),
     })
     const { error } = schema.validate({ gameID, botID, playerIndex })
@@ -183,17 +184,7 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
 
     if (game.value.ready.every((r, i) => r === true || i >= game.value.nPlayers || game.value.bots[i] != null)) {
       deleteWaitingGame(pgPool, data.gameID)
-      // TODO: Add bots to game
-      const createdGame = await createGameAux(
-        pgPool,
-        game.value.nPlayers,
-        game.value.playerIDs,
-        game.value.bots,
-        game.value.nTeams,
-        game.value.meister,
-        game.value.nTeams === 1,
-        game.value.balls
-      )
+      const createdGame = await createGameFromWaitingGame(pgPool, game.value)
       await transferLatestMessagesToOtherChannel(pgPool, `g-${createdGame.id}`, `w-${game.value.id}`)
       for (const [, value] of nspGeneral.sockets.entries()) {
         const userID = value.data.userID
@@ -215,29 +206,22 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
   socket.on('waiting:switchColor', async (data, cb) => {
     if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
-    console.log(data)
-
     const schema = Joi.object({
       gameID: Joi.number().required().integer(),
-      username: Joi.string().required(),
+      username: Joi.string().required().allow(''),
       color: Joi.string().required(),
       botIndex: Joi.number().integer().allow(null),
     })
     const { error } = schema.validate(data)
-    console.log(error)
     if (error != null) return cb?.({ status: 500, error })
 
-    console.log('2')
-
     const res = await changeColor(pgPool, data.gameID, data.username, data.color, socket.data.userID, data.botIndex)
-    console.log(res)
     if (res.isErr()) return cb?.({ status: 500, error: res.error })
     emitGetGames()
     return cb?.({ status: 200 })
   })
 
   socket.on('waiting:createRematch', async (data, cb) => {
-    // TODO
     if (socket.data.userID === undefined) return cb({ ok: false, error: 'UNAUTH' })
 
     const schema = Joi.object({ gameID: Joi.number().required().integer().positive() })
@@ -253,46 +237,4 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     emitGetGames()
     return cb({ ok: true, value: null })
   })
-}
-
-async function createGameAux(
-  sqlClient: pg.Pool,
-  nPlayers: number,
-  playerIDs: (number | null)[],
-  bots: (number | null)[],
-  teams: number,
-  meisterVersion: boolean,
-  coop: boolean,
-  colors: string[]
-) {
-  const playersOrdered: (number | null)[] = []
-  const botsOrdered: (number | null)[] = []
-  const colorsOrdered: string[] = []
-  if (nPlayers === 4) {
-    const order = [0, 2, 1, 3]
-    order.forEach((pos) => {
-      colorsOrdered.push(colors[pos])
-      playersOrdered.push(playerIDs[pos])
-      botsOrdered.push(bots[pos])
-    })
-  } else {
-    if (teams === 2) {
-      const order = [0, 3, 1, 4, 2, 5]
-      order.forEach((pos) => {
-        colorsOrdered.push(colors[pos])
-        playersOrdered.push(playerIDs[pos])
-        botsOrdered.push(bots[pos])
-      })
-    } else {
-      const order = [0, 2, 4, 1, 3, 5]
-      order.forEach((pos) => {
-        colorsOrdered.push(colors[pos])
-        playersOrdered.push(playerIDs[pos])
-        botsOrdered.push(bots[pos])
-      })
-    }
-  }
-
-  // TODO
-  return createGame(sqlClient, teams, playersOrdered, botsOrdered, meisterVersion, coop, colorsOrdered, undefined, undefined)
 }

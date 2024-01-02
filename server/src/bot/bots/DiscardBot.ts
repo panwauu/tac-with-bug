@@ -1,19 +1,19 @@
-import { CardType } from 'src/sharedTypes/typesCard'
+import { CardType } from '../../sharedTypes/typesCard'
 import { MoveTextOrBall } from '../../sharedTypes/typesBall'
 import { AiData } from '../simulation/output'
 import { getMovesFromCards } from '../simulation/simulation'
 
 // Most valuable first, if not in array then it is discarded first
-const orderedMostValuableCards = ['tac', 'trickser', 'teufel', '1', '13', '4']
+const orderedMostValuableCards = ['tac', 'trickser', 'teufel', '1', '13', '4', '7']
 
-function getDiscardScore(card: CardType): number {
+export function getDiscardScore(card: CardType): number {
   const index = orderedMostValuableCards.indexOf(card)
   return index === -1 ? orderedMostValuableCards.length : index
 }
 
 export function discardBot(data: AiData): MoveTextOrBall | null {
   const moves = getMovesFromCards(data.cardsWithMoves, data.gamePlayer)
-  if (moves.some((m) => m[2] != 'abwerfen' || m.length === 4)) {
+  if (moves.some((m) => m[2] !== 'abwerfen' || m.length === 4)) {
     return null
   }
 

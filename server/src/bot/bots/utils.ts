@@ -1,4 +1,3 @@
-import { CardType } from '../../sharedTypes/typesCard'
 import { ballGoal, ballStart, getPositionsBetweenStarts } from '../../game/ballUtils'
 import { BallsType } from '../../sharedTypes/typesBall'
 
@@ -12,23 +11,6 @@ function necessaryForwardMovesToEndOfGoal(position: number, ballIndex: number, b
   return ballGoal(ballIndex, balls) + 3 - position
 }
 
-// Uff: WTF
-// Problem: If ball is in goal the moves in between are not trivial
-// Problem: Consider backward moves
-export function necessaryCardToMoveToPosition(ballIndex: number, positionTo: number, balls: BallsType): CardType[] | null {
-  ballIndex
-  positionTo
-  balls
-  return null
-}
-
-export function movesBetweenTwoBallsInRing(positionFrom: number, positionTo: number, balls: BallsType): number {
-  if (positionFrom < ballStart(0, balls) || positionTo < ballStart(0, balls)) throw new Error('One of the balls is not in the ring')
-  if (positionFrom >= ballGoal(0, balls) || positionTo >= ballGoal(0, balls)) throw new Error('One of the balls is not in the ring')
-
-  return positionFrom < positionTo ? positionFrom - positionTo : positionFrom + (balls.length / 4) * getPositionsBetweenStarts(balls) - positionTo
-}
-
 function maxMovesToEndOfGoal(balls: BallsType): number {
   return (balls.length / 4) * getPositionsBetweenStarts(balls) + 4
 }
@@ -38,7 +20,21 @@ export function normalizedNecessaryForwardMovesToEndOfGoal(position: number, bal
 }
 
 export function ballInProximityOfHouse(position: number, ballIndex: number, balls: BallsType): number {
-  if (position <= ballStart(ballIndex, balls) + 3 && position > ballStart(ballIndex, balls)) return 1
-  if (necessaryForwardMovesToEndOfGoal(position, ballIndex, balls) <= 13 + 3) return 1
+  if (ballInBackwardProximity(position, ballIndex, balls) || ballInForward7Proximity(position, ballIndex, balls) || ballInForwardProximity(position, ballIndex, balls)) return 1
   return 0
+}
+
+// Ball could be moved into goal with a 7 assuming no other balls
+export function ballInForward7Proximity(position: number, ballIndex: number, balls: BallsType): boolean {
+  return necessaryForwardMovesToEndOfGoal(position, ballIndex, balls) <= 7 + 3
+}
+
+// Ball could be moved into goal with a forward moving card assuming no other balls
+export function ballInForwardProximity(position: number, ballIndex: number, balls: BallsType): boolean {
+  return necessaryForwardMovesToEndOfGoal(position, ballIndex, balls) <= 13 + 3
+}
+
+// Ball could be moved into goal with -4 assuming no other balls
+export function ballInBackwardProximity(position: number, ballIndex: number, balls: BallsType): boolean {
+  return position <= ballStart(ballIndex, balls) + 3 && position >= ballStart(ballIndex, balls) && balls[ballIndex].state === 'valid'
 }
