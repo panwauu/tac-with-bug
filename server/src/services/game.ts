@@ -31,8 +31,8 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
     array_agg(users.id ORDER BY users_to_games.player_index) as playerids, 
     array_agg(users_to_games.player_index ORDER BY users_to_games.player_index) as player_indices
   FROM games 
-    JOIN users_to_games ON games.id = users_to_games.gameid 
-    JOIN users ON users_to_games.userid = users.id 
+    LEFT OUTER JOIN users_to_games ON games.id = users_to_games.gameid 
+    LEFT OUTER JOIN users ON users_to_games.userid = users.id 
   WHERE games.id = ANY($1::int[]) GROUP BY games.id ORDER BY games.id;`
   const dbRes = await sqlClient.query(query, [gameIDs])
 
@@ -67,7 +67,7 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
 export async function getGame(sqlClient: pg.Pool, gameID: number) {
   const gameArray = await queryGamesByID(sqlClient, [gameID])
   if (gameArray.length !== 1) {
-    throw new Error('GameID does not exist')
+    throw new Error(`GameID ${gameID} does not exist`)
   }
   return gameArray[0]
 }
@@ -100,12 +100,12 @@ export async function getRunningGames(pgPool: pg.Pool): Promise<tDBTypes.GetRunn
     return {
       id: g.id,
       teams: convertGameOrderToArrayPerTeam(
-        g.players.map((p, i) => p ?? getBotName(g.id, i)),
+        g.players.slice(0, g.nPlayers).map((p, i) => p ?? getBotName(g.id, i)),
         g.nPlayers,
         g.nTeams
       ),
       bots: convertGameOrderToArrayPerTeam(
-        g.bots.map((b) => b != null),
+        g.bots.slice(0, g.nPlayers).map((b) => b != null),
         g.nPlayers,
         g.nTeams
       ),
@@ -222,7 +222,7 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
       .filter((g) => g.running && g.playerIDs.findIndex((id) => id === userID) < g.nPlayers)
       .map((game) => {
         const teams = convertGameOrderToArrayPerTeam(
-          game.players.map((p, i) => p ?? getBotName(game.id, i)),
+          game.players.slice(0, game.nPlayers).map((p, i) => p ?? getBotName(game.id, i)),
           game.nPlayers,
           game.nTeams
         )
@@ -264,7 +264,7 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
 
   const games: tDBTypes.GameForOverview[] = gamesFromDB.map((game) => {
     const teams = convertGameOrderToArrayPerTeam(
-      game.players.map((p, i) => p ?? getBotName(game.id, i)),
+      game.players.slice(0, game.nPlayers).map((p, i) => p ?? getBotName(game.id, i)),
       game.nPlayers,
       game.nTeams
     )
@@ -375,23 +375,28 @@ export async function endNotProperlyEndedGames(sqlClient: pg.Pool) {
   dbRes.rows
     .map((e) => e.id)
     .forEach(async (id) => {
-      const game = await getGame(sqlClient, id)
-      if (game.game.winningTeams.some((e) => e === true)) {
-        game.game.gameEnded = true
-        logger.info(`Spiel beendet durch Automat: ID=${id}`)
-        await updateGame(sqlClient, id, game.game.getJSON(), false, false, false)
-        if (game.privateTournamentId != null) {
-          updatePrivateTournamentFromGame(sqlClient, game)
+      try {
+        const game = await getGame(sqlClient, id)
+        if (game.game.winningTeams.some((e) => e === true)) {
+          game.game.gameEnded = true
+          logger.info(`Spiel beendet durch Automat: ID=${id}`)
+          await updateGame(sqlClient, id, game.game.getJSON(), false, false, false)
+          if (game.privateTournamentId != null) {
+            updatePrivateTournamentFromGame(sqlClient, game)
+          }
+          if (game.publicTournamentId != null) {
+            updatePublicTournamentFromGame(sqlClient, game)
+          }
+          game.playerIDs.forEach((id) => {
+            const socket = getSocketByUserID(id ?? -1)
+            socket != null && emitGamesUpdate(sqlClient, socket)
+          })
+          emitRunningGamesUpdate(sqlClient)
+          sendUpdatesOfGameToPlayers(game)
         }
-        if (game.publicTournamentId != null) {
-          updatePublicTournamentFromGame(sqlClient, game)
-        }
-        game.playerIDs.forEach((id) => {
-          const socket = getSocketByUserID(id ?? -1)
-          socket != null && emitGamesUpdate(sqlClient, socket)
-        })
-        emitRunningGamesUpdate(sqlClient)
-        sendUpdatesOfGameToPlayers(game)
+      } catch (err) {
+        console.error(err)
+        console.error('Error in endNotProperlyEndedGames')
       }
     })
 }
