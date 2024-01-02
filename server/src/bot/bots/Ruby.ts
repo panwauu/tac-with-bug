@@ -10,7 +10,7 @@ export class Ruby implements AiInterface {
   choose(data: AiData) {
     const moves = getMovesFromCards(data.cardsWithMoves, data.gamePlayer)
 
-    return moves.sort((m1, m2) => -getScoreFromMove(m1, data) + getScoreFromMove(m2, data))[0]
+    return moves.toSorted((m1, m2) => -getScoreFromMove(m1, data) + getScoreFromMove(m2, data))[0]
   }
 }
 

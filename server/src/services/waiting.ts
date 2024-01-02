@@ -222,7 +222,7 @@ export async function changeColor(
     return err(game.error)
   }
 
-  const playerIndex = botIndex == null ? game.value.players.indexOf(usernameToChange) : botIndex
+  const playerIndex = botIndex ?? game.value.players.indexOf(usernameToChange)
 
   if (playerIndex === -1) {
     return err('PLAYER_NOT_FOUND_IN_WAITING_GAME')
