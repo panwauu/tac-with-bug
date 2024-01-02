@@ -1,7 +1,4 @@
-import { Futuro } from '../bots/Futuro'
-import { Ruby } from '../bots/Ruby'
-//import { Greedy } from '../bots/Greedy'
-//import { Raindom } from '../bots/Raindom'
+import { Bot } from '../bots/bots'
 import { runSimulation } from './simulation'
 
-runSimulation(1, [new Futuro(), new Ruby(), new Futuro(), new Ruby()])
+runSimulation(1, [Bot.Futuro, Bot.Greedy, Bot.Futuro, Bot.Greedy])

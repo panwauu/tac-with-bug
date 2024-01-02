@@ -4,6 +4,7 @@ import { getCards } from '../../game/serverOutput'
 import { Game } from '../../game/game'
 import { projectMoveToGamePlayer } from '../normalize/normalize'
 import { AiData, getAiData } from './output'
+import { Bot, getBotMove } from '../bots/bots'
 
 export type AiInterface = {
   choose: (data: AiData) => MoveTextOrBall
@@ -48,8 +49,8 @@ type SimulationResults = {
   winner: number | null
 }[]
 
-export function runSimulation(nSimulations: number, ais: AiInterface[], gameParameters?: { nPlayers: number; nTeams: number; coop: boolean; meisterVersion: boolean }) {
-  if (ais.length !== (gameParameters?.nPlayers ?? 4)) {
+export function runSimulation(nSimulations: number, bots: Bot[], gameParameters?: { nPlayers: number; nTeams: number; coop: boolean; meisterVersion: boolean }) {
+  if (bots.length !== (gameParameters?.nPlayers ?? 4)) {
     throw new Error('Need more agents')
   }
 
@@ -59,7 +60,6 @@ export function runSimulation(nSimulations: number, ais: AiInterface[], gamePara
     const start = performance.now()
 
     try {
-      const agents = ais // TODO fuck
       const game = new Game(gameParameters?.nPlayers ?? 4, gameParameters?.nTeams ?? 2, gameParameters?.meisterVersion ?? true, gameParameters?.coop ?? false)
       const additionalInformation: AdditionalInformation = {
         hadOneOrThirteen: [],
@@ -92,7 +92,7 @@ export function runSimulation(nSimulations: number, ais: AiInterface[], gamePara
           if (cards.every((c) => !c.possible)) continue
 
           const aiData = getAiData(game, gamePlayer)
-          const agentMove = agents[gamePlayer].choose(aiData)
+          const agentMove = getBotMove(bots[gamePlayer], aiData)
           move = projectMoveToGamePlayer(game, agentMove, gamePlayer)
 
           if (!game.checkMove(move)) {

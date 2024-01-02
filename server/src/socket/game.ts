@@ -11,8 +11,8 @@ import { registerSubstitutionHandlers } from './gameSubstitution'
 import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/substitution'
 import { MoveTextOrBall } from '../sharedTypes/typesBall'
 import { getAiData } from '../bot/simulation/output'
-import { Futuro } from '../bot/bots/Futuro'
 import { projectMoveToGamePlayer } from '../bot/normalize/normalize'
+import { getBotMove } from 'src/bot/bots/bots'
 
 export let nsp: GameNamespace
 
@@ -30,8 +30,8 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
     for (const gameID of gameIDs) {
       const game = await getGame(pgPool, gameID)
       const res = await pgPool.query('SELECT bots FROM games WHERE id=$1;', [gameID])
-      const bots = res.rows[0].bots as (number | null)[]
-      const botIndices = bots.map((bot, i) => (bot != null ? i : null)).filter((i) => i != null) as number[]
+      const gameBots = res.rows[0].bots as (number | null)[]
+      const botIndices = gameBots.map((bot, i) => (bot != null ? i : null)).filter((i) => i != null) as number[]
 
       let move: MoveTextOrBall | null = null
       for (let i = 0; i < 15; i++) {
@@ -46,13 +46,12 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
           }
 
           const aiData = getAiData(game.game, gamePlayer)
-          const agentMove = new Futuro().choose(aiData)
+          const agentMove = getBotMove(gameBots[gamePlayer] ?? 0, aiData)
           move = projectMoveToGamePlayer(game.game, agentMove, gamePlayer)
           break
         }
 
         if (move != null) {
-          await new Promise((resolve) => setTimeout(resolve, 2000))
           const game = await performMoveAndReturnGame(pgPool, move, move[0], gameID)
           getSocketsInGame(nspGame, gameID).forEach((socketIterator) => {
             socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
