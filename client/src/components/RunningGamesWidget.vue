@@ -26,8 +26,8 @@
               class="player"
               :clickable="false"
               :nameFirst="false"
-              :username="slotProps.data.teams[teamIndex][playerIndex]"
-              :bot="slotProps.data.bots[teamIndex][playerIndex]"
+              :username="slotProps.data.teams[teamIndex][playerIndex] ?? ''"
+              :bot="slotProps.data.bots[teamIndex][playerIndex] ?? false"
             />
           </div>
         </template>

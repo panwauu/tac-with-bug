@@ -275,7 +275,7 @@ function joinGame(game: WaitingGameType) {
 }
 
 function addBot(data: { gameID: number; botID: number; playerIndex: number }) {
-  socket.emitWithAck(5000, 'waiting:addBot', data.gameID, data.botID, data.playerIndex).then((r) => console.log(r))
+  socket.emitWithAck(5000, 'waiting:addBot', data.gameID, data.botID, data.playerIndex)
 }
 
 function movePlayer(data: { gameID: number; username: string; steps: number }) {
@@ -283,7 +283,7 @@ function movePlayer(data: { gameID: number; username: string; steps: number }) {
 }
 
 function moveBot(data: { gameID: number; playerIndex: number; steps: number }) {
-  socket.emitWithAck(5000, 'waiting:moveBot', data).then((d) => console.log(d))
+  socket.emitWithAck(5000, 'waiting:moveBot', data)
 }
 
 function removePlayer(usernameToRemove: string) {
