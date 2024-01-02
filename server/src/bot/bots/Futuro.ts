@@ -9,6 +9,9 @@ import { discardBot } from './DiscardBot'
 import { tradeBot } from './TradeBot'
 import { ballInBackwardProximity, ballInForward7Proximity, ballInForwardProximity, ballInProximityOfHouse, normalizedNecessaryForwardMovesToEndOfGoal } from './utils'
 
+const cutOfNodes = 100
+const movesIntoTheFuture = 6
+
 export class Futuro implements AiInterface {
   choose(data: AiData) {
     try {
@@ -56,12 +59,12 @@ type EndNode = { state: AiData; movesToGetThere: MoveTextOrBall[]; scoresPerStat
 function calculatePaths(data: AiData): EndNode[] {
   let nodes: EndNode[] = [{ state: data, movesToGetThere: [], scoresPerState: [] }]
 
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < movesIntoTheFuture; i++) {
     const newNodes: EndNode[] = []
     for (const node of nodes) {
       newNodes.push(...expandNode(node))
     }
-    nodes = newNodes.toSorted((p1, p2) => calculateScoreOfNode(p2) - calculateScoreOfNode(p1)).slice(0, 1000)
+    nodes = newNodes.toSorted((p1, p2) => calculateScoreOfNode(p2) - calculateScoreOfNode(p1)).slice(0, cutOfNodes)
   }
   return nodes
 }

@@ -3,23 +3,23 @@ import type { GameForPlay } from '../sharedTypes/typesDBgame'
 import type { GameSocketS, GameNamespace } from '../sharedTypes/GameNamespaceDefinition'
 
 import logger from '../helpers/logger'
-import { getPlayerUpdateFromGame } from '../game/serverOutput'
+import { getCards, getPlayerUpdateFromGame } from '../game/serverOutput'
 import { performMoveAndReturnGame, getGame } from '../services/game'
 import { gameSocketIOAuthentication } from '../helpers/authentication'
 import { initializeInfo } from './info'
 import { registerSubstitutionHandlers } from './gameSubstitution'
 import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/substitution'
-//import { MoveTextOrBall } from '../sharedTypes/typesBall'
-//import { getAiData } from '../bot/simulation/output'
-//import { projectMoveToGamePlayer } from '../bot/normalize/normalize'
-//import { getBotMove } from '../bot/bots/bots'
+import { MoveTextOrBall } from '../sharedTypes/typesBall'
+import { getAiData } from '../bot/simulation/output'
+import { projectMoveToGamePlayer } from '../bot/normalize/normalize'
+import { getBotMove } from '../bot/bots/bots'
 
 export let nsp: GameNamespace
 
 export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
   nsp = nspGame
 
-  /*const AICallback = async () => {
+  const AICallback = async () => {
     const gameIDs: number[] = []
     for (const socket of nsp.sockets) {
       if (socket[1].data.gameID != null && !gameIDs.includes(socket[1].data.gameID)) {
@@ -35,6 +35,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
 
       let move: MoveTextOrBall | null = null
       for (let i = 0; i < 15; i++) {
+        const start = performance.now()
         for (const gamePlayer of botIndices) {
           const cards = getCards(game.game, gamePlayer)
           if (cards.length !== 0 && game.game.narrFlag.some((f) => f) && !game.game.narrFlag[gamePlayer]) {
@@ -57,6 +58,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
             socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
           })
           dealCardsIfNecessary(pgPool, nspGame, game.game.activePlayer, game)
+          console.log(`AI took ${performance.now() - start}ms`)
         } else {
           break
         }
@@ -73,7 +75,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
     setTimeout(checks, 200)
   }
 
-  if (process.env.NODE_ENV === 'development') checks()*/
+  if (process.env.NODE_ENV === 'development') checks()
 
   nspGame.use(gameSocketIOAuthentication)
 
