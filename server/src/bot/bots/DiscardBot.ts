@@ -17,5 +17,5 @@ export function discardBot(data: AiData): MoveTextOrBall | null {
     return null
   }
 
-  return moves.sort((a, b) => getDiscardScore(data.cardsWithMoves[b[1]].title) - getDiscardScore(data.cardsWithMoves[a[1]].title))[0]
+  return moves.toSorted((a, b) => getDiscardScore(data.cardsWithMoves[b[1]].title) - getDiscardScore(data.cardsWithMoves[a[1]].title))[0]
 }

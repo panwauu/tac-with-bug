@@ -28,7 +28,7 @@ export class Futuro implements AiInterface {
           return possibleInitialMoves[teufelMoveIndex]
         }
 
-        const sortedNodes = nodes.sort((p1, p2) => calculateScoreOfNode(p2) - calculateScoreOfNode(p1))
+        const sortedNodes = nodes.toSorted((p1, p2) => calculateScoreOfNode(p2) - calculateScoreOfNode(p1))
 
         // Aussetzen or Narr: if last score is worse than current state
         const aussetzenMoveIndex = possibleInitialMoves.findIndex((m) => m.length === 3 && m[2].includes('aussetzen'))
@@ -61,7 +61,7 @@ function calculatePaths(data: AiData): EndNode[] {
     for (const node of nodes) {
       newNodes.push(...expandNode(node))
     }
-    nodes = newNodes.sort((p1, p2) => calculateScoreOfNode(p2) - calculateScoreOfNode(p1)).slice(0, 1000)
+    nodes = newNodes.toSorted((p1, p2) => calculateScoreOfNode(p2) - calculateScoreOfNode(p1)).slice(0, 1000)
   }
   return nodes
 }
