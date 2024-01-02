@@ -4,8 +4,11 @@
       <WaitingGame
         :game="game"
         :active="true"
+        @add-bot="addBot"
         @move-player="movePlayer"
+        @move-bot="moveBot"
         @remove-player="removePlayer"
+        @remove-bot="removeBot"
         @ready-player="setPlayerReady"
         @color-player="setPlayerColor"
       />
@@ -93,8 +96,17 @@ async function createRematch() {
   toast.add({ severity: 'error', summary, detail, life: 5000 })
 }
 
+function addBot(data: { gameID: number; botID: number; playerIndex: number }) {
+  console.log('addBot')
+  socket.emitWithAck(5000, 'waiting:addBot', data.gameID, data.botID, data.playerIndex).then((r) => console.log(r))
+}
+
 function movePlayer(data: { gameID: number; username: string; steps: number }) {
   socket.emitWithAck(5000, 'waiting:movePlayer', data)
+}
+
+function moveBot(data: { gameID: number; playerIndex: number; steps: number }) {
+  socket.emitWithAck(5000, 'waiting:moveBot', data).then((d) => console.log(d))
 }
 
 function removePlayer(username: string) {
@@ -103,11 +115,20 @@ function removePlayer(username: string) {
   }
 }
 
+function removeBot(data: { gameID: number; playerIndex: number }) {
+  socket.emitWithAck(5000, 'waiting:removeBot', data.gameID, data.playerIndex)
+}
+
 function setPlayerReady(gameID: number) {
   socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: gameID })
 }
 
-function setPlayerColor(username: string, gameID: number, color: string) {
-  socket.emitWithAck(5000, 'waiting:switchColor', { gameID: gameID, username: username, color: color })
+function setPlayerColor(usernameToChange: string, gameID: number, color: string, botIndex: number | null) {
+  socket.emitWithAck(5000, 'waiting:switchColor', {
+    gameID,
+    username: usernameToChange,
+    color,
+    botIndex,
+  })
 }
 </script>

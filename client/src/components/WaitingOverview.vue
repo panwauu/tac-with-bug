@@ -275,7 +275,6 @@ function joinGame(game: WaitingGameType) {
 }
 
 function addBot(data: { gameID: number; botID: number; playerIndex: number }) {
-  console.log('addBot')
   socket.emitWithAck(5000, 'waiting:addBot', data.gameID, data.botID, data.playerIndex).then((r) => console.log(r))
 }
 

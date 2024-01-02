@@ -13,6 +13,7 @@ import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { getSocketByUserID } from '../socket/general'
 import { getSubstitution } from './substitution'
 import { getBotName } from '../bot/names'
+import { convertGameOrderToArrayPerTeam } from '../game/teamUtils'
 
 function mergeElementsWithIndices<T>(elements: T[], indices: number[], minLength: number): (T | null)[] {
   return Array(Math.max(Math.max(...indices) + 1, minLength))
@@ -48,7 +49,9 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
       lastPlayed: Date.parse(dbGame.lastplayed),
       publicTournamentId: dbGame.public_tournament_id,
       privateTournamentId: dbGame.private_tournament_id,
-      players: mergeElementsWithIndices(dbGame.players, dbGame.player_indices, dbGame.game.nPlayers),
+      players: mergeElementsWithIndices(dbGame.players as string[], dbGame.player_indices, dbGame.game.nPlayers).map(
+        (p, i) => p ?? (dbGame.bots[i] != null ? getBotName(dbGame.id, i) : null)
+      ),
       playerIDs: mergeElementsWithIndices(dbGame.playerids, dbGame.player_indices, dbGame.game.nPlayers),
       game: new Game(0, 0, false, false, dbGame.game),
       colors: dbGame.colors,
@@ -96,8 +99,16 @@ export async function getRunningGames(pgPool: pg.Pool): Promise<tDBTypes.GetRunn
   return games.map((g) => {
     return {
       id: g.id,
-      teams: getTeamsFromGame(g),
-      bots: getTeamsBotsFromGame(g),
+      teams: convertGameOrderToArrayPerTeam(
+        g.players.map((p, i) => p ?? getBotName(g.id, i)),
+        g.nPlayers,
+        g.nTeams
+      ),
+      bots: convertGameOrderToArrayPerTeam(
+        g.bots.map((b) => b != null),
+        g.nPlayers,
+        g.nTeams
+      ),
       created: g.created,
       lastPlayed: g.lastPlayed,
     }
@@ -210,7 +221,11 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
     runningGames: games
       .filter((g) => g.running && g.playerIDs.findIndex((id) => id === userID) < g.nPlayers)
       .map((game) => {
-        const teams = getTeamsFromGame(game)
+        const teams = convertGameOrderToArrayPerTeam(
+          game.players.map((p, i) => p ?? getBotName(game.id, i)),
+          game.nPlayers,
+          game.nTeams
+        )
 
         return {
           id: game.id,
@@ -221,7 +236,7 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
           status: 'running',
           created: game.created,
           lastPlayed: game.lastPlayed,
-          players: game.players.map((p, i) => p ?? getBotName(game.id, i)),
+          players: game.players,
           playerIDs: game.playerIDs,
           publicTournamentId: game.publicTournamentId,
           privateTournamentId: game.privateTournamentId,
@@ -231,42 +246,6 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
         }
       }),
   }
-}
-
-function getTeamsBotsFromGame(game: tDBTypes.GameForPlay) {
-  const order = game.nPlayers === 4 ? [0, 2, 1, 3] : game.nTeams === 2 ? [0, 2, 4, 1, 3, 5] : [0, 3, 1, 4, 2, 5]
-  const orderedBots = order.map((i) => game.bots.map((p) => p != null)[i])
-
-  const teamsBots: boolean[][] = []
-  for (let team = 0; team < game.nTeams; team++) {
-    const arr: boolean[] = []
-    for (let iterator = 0; iterator < orderedBots.length / game.nTeams; iterator++) {
-      const bot = orderedBots[(team * orderedBots.length) / game.nTeams + iterator]
-      arr.push(bot)
-    }
-    teamsBots.push(arr)
-  }
-
-  return teamsBots
-}
-
-function getTeamsFromGame(game: tDBTypes.GameForPlay) {
-  const order = game.nPlayers === 4 ? [0, 2, 1, 3] : game.nTeams === 2 ? [0, 2, 4, 1, 3, 5] : [0, 3, 1, 4, 2, 5]
-  const orderedPlayers = order.map((i) => game.players.map((p, i) => p ?? getBotName(game.id, i))[i])
-
-  const teams: string[][] = []
-  for (let team = 0; team < game.nTeams; team++) {
-    const arr: string[] = []
-    for (let iterator = 0; iterator < orderedPlayers.length / game.nTeams; iterator++) {
-      const player = orderedPlayers[(team * orderedPlayers.length) / game.nTeams + iterator]
-      if (player != null) {
-        arr.push(player)
-      }
-    }
-    teams.push(arr)
-  }
-
-  return teams
 }
 
 export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: number, limit: number, sortField: string | undefined, sortOrder: number | undefined) {
@@ -284,7 +263,11 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
   const gamesFromDB = await queryGamesByID(sqlClient, idList)
 
   const games: tDBTypes.GameForOverview[] = gamesFromDB.map((game) => {
-    const teams = getTeamsFromGame(game)
+    const teams = convertGameOrderToArrayPerTeam(
+      game.players.map((p, i) => p ?? getBotName(game.id, i)),
+      game.nPlayers,
+      game.nTeams
+    )
 
     const nPlayer = game.playerIDs.indexOf(userID)
 
@@ -297,7 +280,7 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
       status: getStatusForOverview(game, nPlayer),
       created: game.created,
       lastPlayed: game.lastPlayed,
-      players: game.players.map((p, i) => p ?? getBotName(game.id, i)),
+      players: game.players,
       playerIDs: game.playerIDs,
       publicTournamentId: game.publicTournamentId,
       privateTournamentId: game.privateTournamentId,
@@ -342,9 +325,6 @@ function gamesSort(sortField: string, sortOrder: number) {
 
 export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: MoveType, gamePlayer: number, gameID: number) {
   const game = await getGame(sqlClient, gameID)
-
-  console.log(game.game.activePlayer)
-  console.log(postMove)
 
   if (!game.game.checkMove(postMove) || (postMove !== 'dealCards' && postMove[0] !== gamePlayer)) {
     throw new Error('Player not allowed to play')

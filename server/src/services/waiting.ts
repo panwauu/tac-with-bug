@@ -4,10 +4,12 @@ import type pg from 'pg'
 
 import { Result, ok, err } from 'neverthrow'
 import { colors } from '../sharedDefinitions/colors'
-import { disableRematchOfGame } from './game'
+import { createGame, disableRematchOfGame } from './game'
 import { isUserOnline } from '../socket/general'
 import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils/dbHelpers'
 import { getUser } from './user'
+import { validBotIds } from '../bot/bots/bots'
+import { switchBetweenTeamsOrderToGameOrder } from '../game/teamUtils'
 
 export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number) {
   const res = await sqlClient.query(
@@ -67,15 +69,14 @@ export async function createWaitingGame(sqlClient: pg.Pool, nPlayers: 4 | 6, nTe
 
 export type CreateRematchError = 'PLAYER_ALREADY_IN_WAITING_GAME' | 'PLAYER_NOT_ONLINE' | 'REMATCH_NOT_OPEN'
 export async function createRematchGame(pgPool: pg.Pool, game: GameForPlay, userID: number): Promise<Result<number, CreateRematchError>> {
-  // TODO: BOTS
-
   if (!game.rematch_open) {
     return err('REMATCH_NOT_OPEN')
   }
+
   const waitingGames = await getWaitingGames(pgPool)
   await disableRematchOfGame(pgPool, game.id)
   game.rematch_open = false
-  if (waitingGames.some((g) => g.players.some((waitingPlayer: string) => game.players.includes(waitingPlayer)))) {
+  if (waitingGames.some((g) => g.playerIDs.some((waitingPlayerID) => waitingPlayerID != null && game.playerIDs.includes(waitingPlayerID)))) {
     return err('PLAYER_ALREADY_IN_WAITING_GAME')
   }
   if (game.playerIDs.some((id) => id != null && !isUserOnline(id))) {
@@ -87,25 +88,28 @@ export async function createRematchGame(pgPool: pg.Pool, game: GameForPlay, user
     nTeams = 1
   }
 
-  const values: any[] = [userID, game.game.nPlayers, nTeams, game.game.cards.meisterVersion, game.id]
+  const values: any[] = [userID, game.game.nPlayers, nTeams, game.game.cards.meisterVersion, game.id, game.bots]
 
   let ballsStr = ''
   let playersStr = ''
   let valStr = ''
-  let selectStr = ''
-  game.game.teams.forEach((team, tI) => {
-    team.forEach((playerIndex, pI) => {
-      const i = tI * game.game.teams[0].length + pI
-      valStr += `, $${6 + i}`
+  game.colors.forEach((color, i) => {
+    if (color != null) {
       ballsStr += `, balls${i}`
+      values.push(color)
+      valStr += `, $${values.length}`
+    }
+  })
+  game.playerIDs.forEach((id, i) => {
+    if (id != null) {
       playersStr += `, player${i}`
-      selectStr += `, (SELECT id FROM users WHERE username = '${game.players[playerIndex]}') `
-      values.push(game.colors[playerIndex])
-    })
+      values.push(id)
+      valStr += `, $${values.length}`
+    }
   })
 
-  const query = `INSERT INTO waitinggames (private, adminplayer, nPlayers, nTeams, meister, gameid ${ballsStr} ${playersStr}) 
-    VALUES (true, $1, $2, $3, $4, $5 ${valStr} ${selectStr}) RETURNING id;`
+  const query = `INSERT INTO waitinggames (private, adminplayer, nPlayers, nTeams, meister, gameid, bots ${ballsStr} ${playersStr}) 
+    VALUES (true, $1, $2, $3, $4, $5, $6 ${valStr}) RETURNING id;`
   const createRes = await pgPool.query<{ id: number }>(query, values)
   return ok(createRes.rows[0].id)
 }
@@ -136,24 +140,7 @@ export async function movePlayer(sqlClient: pg.Pool, waitingGameID: number, user
     return err('PLAYER_CANNOT_BE_MOVED_IN_DIRECTION')
   }
 
-  const playerFirst = `player${playerIndex}`
-  const playerSecond = `player${secondIndex}`
-  const ballsFirst = `balls${playerIndex}`
-  const ballsSecond = `balls${secondIndex}`
-
-  let readyToFalse = ''
-  ;[0, 1, 2, 3, 4, 5].forEach((n) => {
-    readyToFalse += `, ready${n}=false`
-  })
-
-  const query = `UPDATE waitinggames SET (${playerFirst}, ${playerSecond}, ${ballsFirst}, ${ballsSecond}) = 
-    (${playerSecond}, ${playerFirst}, ${ballsSecond}, ${ballsFirst}) ${readyToFalse} WHERE id=$1;`
-  const values = [waitingGameID]
-  const dbRes = await sqlClient.query(query, values)
-  if (expectOneChangeToDatabase(dbRes).isErr()) {
-    return err('NONE_OR_MORE_THAN_ONE_CHANGES_TO_DATABASE')
-  }
-  return ok(null)
+  return executeMovePlayerOrBot(sqlClient, waitingGameID, game.value, playerIndex, secondIndex)
 }
 
 export type MoveBotError =
@@ -182,12 +169,23 @@ export async function moveBot(sqlClient: pg.Pool, waitingGameID: number, botInde
     return err('PLAYER_CANNOT_BE_MOVED_IN_DIRECTION')
   }
 
-  ;[game.value.bots[botIndexToMove], game.value.bots[secondIndex]] = [game.value.bots[secondIndex], game.value.bots[botIndexToMove]]
+  return executeMovePlayerOrBot(sqlClient, waitingGameID, game.value, botIndexToMove, secondIndex)
+}
 
-  const playerFirst = `player${botIndexToMove}`
-  const playerSecond = `player${secondIndex}`
-  const ballsFirst = `balls${botIndexToMove}`
-  const ballsSecond = `balls${secondIndex}`
+async function executeMovePlayerOrBot(
+  sqlClient: pg.Pool,
+  waitingGameID: number,
+  game: WaitingGame,
+  indexOne: number,
+  indexTwo: number
+): Promise<Result<null, NotOneDatabaseChangeError>> {
+  const playerFirst = `player${indexOne}`
+  const playerSecond = `player${indexTwo}`
+  const ballsFirst = `balls${indexOne}`
+  const ballsSecond = `balls${indexTwo}`
+
+  const newBotsArray = structuredClone(game.bots)
+  ;[newBotsArray[indexOne], newBotsArray[indexTwo]] = [newBotsArray[indexTwo], newBotsArray[indexOne]]
 
   let readyToFalse = ''
   ;[0, 1, 2, 3, 4, 5].forEach((n) => {
@@ -196,7 +194,7 @@ export async function moveBot(sqlClient: pg.Pool, waitingGameID: number, botInde
 
   const query = `UPDATE waitinggames SET (${playerFirst}, ${playerSecond}, ${ballsFirst}, ${ballsSecond}) = 
     (${playerSecond}, ${playerFirst}, ${ballsSecond}, ${ballsFirst}), bots = $2 ${readyToFalse} WHERE id=$1;`
-  const values = [waitingGameID, game.value.bots]
+  const values = [waitingGameID, newBotsArray]
   const dbRes = await sqlClient.query(query, values)
   if (expectOneChangeToDatabase(dbRes).isErr()) {
     return err('NONE_OR_MORE_THAN_ONE_CHANGES_TO_DATABASE')
@@ -308,7 +306,10 @@ export async function removeBot(sqlClient: pg.Pool, waitingGameID: number, playe
   }
 
   try {
-    await sqlClient.query(`UPDATE waitinggames SET bots[$1]=NULL, balls${playerIndex}=NULL WHERE id = $2;`, [playerIndex + 1, waitingGameID])
+    await sqlClient.query(
+      `UPDATE waitinggames SET bots[$1]=NULL, balls${playerIndex}=NULL, ready0=false, ready1=false, ready2=false, ready3=false, ready4=false, ready5=false WHERE id = $2;`,
+      [playerIndex + 1, waitingGameID]
+    )
   } catch {
     return err('COULD_NOT_REMOVE_BOT')
   }
@@ -361,8 +362,7 @@ export async function addBot(sqlClient: pg.Pool, waitingGameID: number, botID: n
     return err('PLAYER_INDEX_ALREADY_FULL')
   }
 
-  // TODO: BOTS
-  if (botID !== botID) {
+  if (!validBotIds.includes(botID)) {
     return err('BOT_ID_INVALID')
   }
 
@@ -411,4 +411,11 @@ export async function getPlayersOfWaitingGame(sqlClient: pg.Pool, waitingGameID:
   return sqlClient.query(query, [waitingGameID]).then((res) => {
     return res.rowCount === 0 ? [] : Object.values(res.rows[0])
   })
+}
+
+export async function createGameFromWaitingGame(sqlClient: pg.Pool, game: WaitingGame) {
+  const playersOrdered = switchBetweenTeamsOrderToGameOrder(game.playerIDs, game.nPlayers, game.nTeams)
+  const botsOrdered = switchBetweenTeamsOrderToGameOrder(game.bots, game.nPlayers, game.nTeams)
+  const colorsOrdered = switchBetweenTeamsOrderToGameOrder(game.balls, game.nPlayers, game.nTeams)
+  return createGame(sqlClient, game.nTeams, playersOrdered, botsOrdered, game.meister, game.nTeams === 1, colorsOrdered, undefined, undefined)
 }

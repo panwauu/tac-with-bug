@@ -5,9 +5,9 @@ import { BallsType, MoveTextOrBall } from '../../sharedTypes/typesBall'
 import { AiData } from '../simulation/output'
 import { previewMove } from '../simulation/previewMove'
 import { AiInterface, getMovesFromCards } from '../simulation/simulation'
-import { discardBot } from './DiscardsBot'
-import { tradeBot } from './TradeHelper'
-import { ballInProximityOfHouse, normalizedNecessaryForwardMovesToEndOfGoal } from './utils'
+import { discardBot } from './DiscardBot'
+import { tradeBot } from './TradeBot'
+import { ballInBackwardProximity, ballInForward7Proximity, ballInForwardProximity, ballInProximityOfHouse, normalizedNecessaryForwardMovesToEndOfGoal } from './utils'
 
 export class Futuro implements AiInterface {
   choose(data: AiData) {
@@ -125,7 +125,9 @@ function calculatePointsOfTeamFromBalls(balls: BallsType, team: number[]): numbe
   balls.forEach((b, i) => {
     if (team.includes(b.player)) {
       if (b.state === 'goal' || b.state === 'locked') score += 1000
-      if (b.state === 'valid' && ballInProximityOfHouse(b.position, i, balls)) score += 10
+      if (ballInForward7Proximity(b.position, i, balls)) score += 11
+      if (ballInForwardProximity(b.position, i, balls)) score += 10
+      if (ballInBackwardProximity(b.position, i, balls)) score += 9
       if (b.state === 'locked') score += 5
       if (b.state === 'invalid' || b.state === 'valid') score += 1
       score += normalizedNecessaryForwardMovesToEndOfGoal(b.position, i, balls)

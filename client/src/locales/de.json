@@ -532,13 +532,15 @@
       "privateTrueName": "Privat",
       "privateFalseName": "Öffentlich"
     },
+    "adminBadge": "Admin",
     "joinRandomGameButton": "Bestem Spiel beitreten",
     "removePlayerConfirmSelf": "Sicher, dass du diesen Warteraum verlassen möchtest?",
     "removePlayerConfirmOther": "Sicher, dass du einen Spieler aus dem Warteraum entlassen möchtest?",
     "switchGameConfirm": "Sicher, dass du den Warteraum wechseln möchtest?",
     "switchGameConfirmPrivate": "Dieser Raum wurde als geschlossene Runde erstellt. Sicher, dass du den Warteraum wechseln möchtest?",
     "joinGamePrivate": "Dieser Raum wurde als geschlossene Runde erstellt. Bist du sicher, dass du in dieser Runde willkommen bist?",
-    "leaveRematch": "Bist du dir sicher, dass du dieses Rematch verlassen möchtest?"
+    "leaveRematch": "Bist du dir sicher, dass du dieses Rematch verlassen möchtest?",
+    "bot": "Bot"
   },
   "Login": {
     "username": "Benutzername",
