@@ -15,7 +15,7 @@ export function switchBetweenTeamsOrderToGameOrder<T>(array: T[], nPlayers: numb
  */
 export function convertGameOrderToArrayPerTeam<T>(array: T[], nPlayers: number, nTeams: number): T[][] {
   const orderedArray = switchBetweenTeamsOrderToGameOrder(array, nPlayers, nTeams)
-  const correctedNTeams = nTeams != 1 ? nTeams : nPlayers === 4 ? 2 : 3
+  const correctedNTeams = nTeams !== 1 ? nTeams : nPlayers === 4 ? 2 : 3
 
   const orderedByTeams: T[][] = []
   for (let team = 0; team < correctedNTeams; team++) {
