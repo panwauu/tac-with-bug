@@ -119,7 +119,7 @@
               v-if="active && game.admin === username"
               severity="secondary"
               :label="`+ ${$t('Waiting.bot')}`"
-              @click="() => emit('add-bot', { gameID: game.id, botID: 0, playerIndex: playerIndex(Number(teamIndex), index) })"
+              @click="() => emit('add-bot', { gameID: game.id, botID: 3, playerIndex: playerIndex(Number(teamIndex), index) })"
             />
           </div>
           <div class="playerControls">
