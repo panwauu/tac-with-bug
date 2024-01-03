@@ -5,6 +5,8 @@ import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets'
 import { initiateGameSocket } from '../test/handleGameSocket'
 import { closeSockets, connectSocket, waitForEventOnSockets } from '../test/handleSocket'
 import { sleep } from '../helpers/sleep'
+import { getBotName } from 'src/bot/names'
+import { getGame } from 'src/services/game'
 
 describe('Test substitution start conditions with socket.io', () => {
   let usersWithSocket: UserWithSocket
@@ -41,33 +43,30 @@ describe('Test substitution start conditions with socket.io', () => {
   })
 
   test.each(testCases)('Substitution from game %s of the player %s should result in status %s', async (_, playerIndexToSubstitute, expectedStatus) => {
-    const offerRes = await gameSocket.emitWithAck(5000, 'substitution:offer', playerIndexToSubstitute)
+    const offerRes = await gameSocket.emitWithAck(5000, 'substitution:start', playerIndexToSubstitute, null)
     expect(offerRes.status).toBe(expectedStatus)
   })
 })
 
-const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
-  afterOffer: {
-    acceptedByIndex: [],
-    substitutionUserID: 5,
-    substitutionUsername: 'UserE',
-    playerIndexToSubstitute: 2,
-  },
-  afterAccept1: {
-    acceptedByIndex: [0],
-    substitutionUserID: 5,
-    substitutionUsername: 'UserE',
-    playerIndexToSubstitute: 2,
-  },
-  afterAccept2: {
-    acceptedByIndex: [0, 1],
-    substitutionUserID: 5,
-    substitutionUsername: 'UserE',
-    playerIndexToSubstitute: 2,
-  },
-}
+describe('Test game substitution of player by player', () => {
+  const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
+    afterOffer: {
+      acceptedByIndex: [],
+      substitute: { substitutionUserID: 5, substitutionUsername: 'UserE', botIndex: null, botUsername: null },
+      playerIndexToSubstitute: 2,
+    },
+    afterAccept1: {
+      acceptedByIndex: [0],
+      substitute: { substitutionUserID: 5, substitutionUsername: 'UserE', botIndex: null, botUsername: null },
+      playerIndexToSubstitute: 2,
+    },
+    afterAccept2: {
+      acceptedByIndex: [0, 1],
+      substitute: { substitutionUserID: 5, substitutionUsername: 'UserE', botIndex: null, botUsername: null },
+      playerIndexToSubstitute: 2,
+    },
+  }
 
-describe('Game test suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[]
   const gameSockets: GameSocketC[] = []
   const gameID = 1
@@ -92,7 +91,7 @@ describe('Game test suite via socket.io', () => {
   test('Should start substitution sucessfully', async () => {
     const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
 
-    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:offer', 2)
+    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:start', 2, null)
     expect(offerRes.status).toBe(200)
 
     const updateData = await Promise.all(updateGamePromise)
@@ -104,7 +103,7 @@ describe('Game test suite via socket.io', () => {
   })
 
   test('Should not start substitution if already running', async () => {
-    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:offer', 2)
+    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:start', 2, null)
     expect(offerRes.status).toBe(500)
   })
 
@@ -134,7 +133,7 @@ describe('Game test suite via socket.io', () => {
   test('Should start substitution sucessfully again', async () => {
     const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
 
-    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:offer', 2)
+    const offerRes = await gameSockets[4].emitWithAck(5000, 'substitution:start', 2, null)
     expect(offerRes.status).toBe(200)
 
     const updateData = await Promise.all(updateGamePromise)
@@ -216,5 +215,187 @@ describe('Game test suite via socket.io', () => {
       expect(onlinePlayer.nWatchingPlayers).toEqual(1)
       expect(onlinePlayer.watchingPlayerNames).toEqual(expect.arrayContaining(['UserF']))
     }
+  })
+})
+
+describe('Test game substitution of player by bot', () => {
+  const gameID = 2
+  const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
+    afterStart: {
+      acceptedByIndex: [0],
+      substitute: { substitutionUserID: null, substitutionUsername: null, botIndex: 3, botUsername: getBotName(gameID, 2) },
+      playerIndexToSubstitute: 2,
+    },
+    afterAccept2: {
+      acceptedByIndex: [0, 1],
+      substitute: { substitutionUserID: null, substitutionUsername: null, botIndex: 3, botUsername: getBotName(gameID, 2) },
+      playerIndexToSubstitute: 2,
+    },
+  }
+
+  let usersWithSockets: UserWithSocket[]
+  const gameSockets: GameSocketC[] = []
+
+  beforeAll(async () => {
+    usersWithSockets = await getUsersWithSockets({ ids: [1, 2, 3, 4] })
+    for (const user of usersWithSockets) {
+      gameSockets.push(initiateGameSocket(gameID, user.token))
+    }
+    await Promise.all(
+      gameSockets.map((s) => {
+        return connectSocket(s)
+      })
+    )
+    await sleep(1000)
+  })
+
+  afterAll(async () => {
+    await closeSockets([...gameSockets, ...usersWithSockets.map((uWS) => uWS.socket)])
+  })
+
+  test('Should start substitution sucessfully', async () => {
+    const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
+
+    const offerRes = await gameSockets[0].emitWithAck(5000, 'substitution:start', 2, 3)
+    console.log(offerRes)
+    expect(offerRes.status).toBe(200)
+
+    const updateData = await Promise.all(updateGamePromise)
+    for (const update of updateData) {
+      expect(update.substitutedPlayerIndices).toStrictEqual([])
+      expect(update.substitution).toMatchObject(substitutionStates.afterStart)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+    }
+  })
+
+  test('Should be accepted by player 2', async () => {
+    const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
+
+    const acceptRes = await gameSockets[1].emitWithAck(5000, 'substitution:answer', { accept: true })
+    expect(acceptRes.status).toBe(200)
+
+    const updateData = await Promise.all(updateGamePromise)
+    for (const update of updateData) {
+      expect(update.substitutedPlayerIndices).toStrictEqual([])
+      expect(update.substitution).toMatchObject(substitutionStates.afterAccept2)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+    }
+  })
+
+  test('Should be accepted by player 3 and performed', async () => {
+    const updateGamePromise = waitForEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'update')
+
+    const acceptRes = await gameSockets[3].emitWithAck(5000, 'substitution:answer', { accept: true })
+    expect(acceptRes.status).toBe(200)
+
+    const updateData = await Promise.all(updateGamePromise)
+    for (const update of updateData) {
+      expect(update.substitutedPlayerIndices).toStrictEqual([2])
+      expect(update.substitution).toBeNull()
+    }
+
+    expect(gameSockets[2].disconnected).toBe(true)
+
+    const onlinePlayersPromise = waitForEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'game:online-players')
+    const onlinePlayers = await Promise.all(onlinePlayersPromise)
+    for (const onlinePlayer of onlinePlayers) {
+      expect(onlinePlayer.onlineGamePlayers).toEqual(expect.arrayContaining([0, 1, 3]))
+    }
+
+    const game = await getGame(testServer.pgPool, gameID)
+    expect(game.bots).toEqual([null, null, 3, null, null, null])
+    expect(game.playerIDs).toEqual([1, 2, null, 4, 3])
+    expect(game.game.statistic.length).toBe(5)
+  })
+})
+
+describe('Test game substitution of bot by player', () => {
+  const gameID = 13
+  const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
+    afterStart: {
+      acceptedByIndex: [],
+      substitute: { substitutionUserID: 3, substitutionUsername: 'UserC', botIndex: null, botUsername: null },
+      playerIndexToSubstitute: 2,
+    },
+    afterAccept1: {
+      acceptedByIndex: [0],
+      substitute: { substitutionUserID: 3, substitutionUsername: 'UserC', botIndex: null, botUsername: null },
+      playerIndexToSubstitute: 2,
+    },
+  }
+
+  let usersWithSockets: UserWithSocket[]
+  const gameSockets: GameSocketC[] = []
+
+  beforeAll(async () => {
+    usersWithSockets = await getUsersWithSockets({ ids: [1, 2, 3] })
+    for (const user of usersWithSockets) {
+      gameSockets.push(initiateGameSocket(gameID, user.token))
+    }
+    await Promise.all(
+      gameSockets.map((s) => {
+        return connectSocket(s)
+      })
+    )
+    await sleep(1000)
+  })
+
+  afterAll(async () => {
+    await closeSockets([...gameSockets, ...usersWithSockets.map((uWS) => uWS.socket)])
+  })
+
+  test('Should start substitution sucessfully', async () => {
+    const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
+
+    const offerRes = await gameSockets[2].emitWithAck(5000, 'substitution:start', 2, null)
+    expect(offerRes.status).toBe(200)
+
+    const updateData = await Promise.all(updateGamePromise)
+    for (const update of updateData) {
+      expect(update.substitutedPlayerIndices).toStrictEqual([])
+      expect(update.substitution).toMatchObject(substitutionStates.afterStart)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+    }
+  })
+
+  test('Should be accepted by player 1', async () => {
+    const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
+
+    const acceptRes = await gameSockets[0].emitWithAck(5000, 'substitution:answer', { accept: true })
+    expect(acceptRes.status).toBe(200)
+
+    const updateData = await Promise.all(updateGamePromise)
+    for (const update of updateData) {
+      expect(update.substitutedPlayerIndices).toStrictEqual([])
+      expect(update.substitution).toMatchObject(substitutionStates.afterAccept1)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+    }
+  })
+
+  test('Should be accepted by player2 and performed', async () => {
+    const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
+    const changePlayerPromise = waitForEventOnSockets([gameSockets[2]], 'substitution:changeGamePlayer')
+
+    const acceptRes = await gameSockets[1].emitWithAck(5000, 'substitution:answer', { accept: true })
+    expect(acceptRes.status).toBe(200)
+
+    const updateData = await Promise.all(updateGamePromise)
+    for (const update of updateData) {
+      expect(update.substitutedPlayerIndices).toStrictEqual([])
+      expect(update.substitution).toBeNull()
+    }
+
+    expect(await changePlayerPromise[0]).toBe(2)
+
+    const onlinePlayersPromise = waitForEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'game:online-players')
+    const onlinePlayers = await Promise.all(onlinePlayersPromise)
+    for (const onlinePlayer of onlinePlayers) {
+      expect(onlinePlayer.onlineGamePlayers).toEqual(expect.arrayContaining([0, 1, 2]))
+    }
+
+    const game = await getGame(testServer.pgPool, gameID)
+    expect(game.bots).toEqual([null, null, null, 3, null, null])
+    expect(game.playerIDs).toEqual([1, 2, 3, null])
+    expect(game.game.statistic.length).toBe(4)
   })
 })

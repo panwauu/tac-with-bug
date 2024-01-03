@@ -228,13 +228,18 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     const { error } = schema.validate(data)
     if (error != null) return cb({ ok: false, error })
 
-    const game = await getGame(pgPool, data.gameID)
-    const rematchResult = await createRematchGame(pgPool, game, socket.data.userID)
-    sendUpdatesOfGameToPlayers(game)
-    if (rematchResult.isErr()) return cb({ ok: false, error: rematchResult.error })
+    try {
+      const game = await getGame(pgPool, data.gameID)
 
-    await transferLatestMessagesToOtherChannel(pgPool, `w-${rematchResult.value}`, `g-${game.id}`)
-    emitGetGames()
-    return cb({ ok: true, value: null })
+      const rematchResult = await createRematchGame(pgPool, game, socket.data.userID)
+      sendUpdatesOfGameToPlayers(game)
+      if (rematchResult.isErr()) return cb({ ok: false, error: rematchResult.error })
+
+      await transferLatestMessagesToOtherChannel(pgPool, `w-${rematchResult.value}`, `g-${game.id}`)
+      emitGetGames()
+      return cb({ ok: true, value: null })
+    } catch (e: any) {
+      return cb({ ok: false, error: e.message })
+    }
   })
 }

@@ -168,9 +168,9 @@ export async function createGame(
   return getGame(sqlClient, createGameRes.rows[0].id)
 }
 
-export async function updateGame(sqlClient: pg.Pool, gameID: number, gameJSON: string, running: boolean, setTimeFlag: boolean, openRematchFlag: boolean) {
-  const query = `UPDATE games SET game = $1, ${setTimeFlag ? 'lastPlayed = current_timestamp,' : ''} running = $3, rematch_open = $4 WHERE id = $2;`
-  const values = [gameJSON, gameID, running, openRematchFlag]
+export async function updateGame(sqlClient: pg.Pool, gameID: number, gameJSON: string, running: boolean, setTimeFlag: boolean, openRematchFlag: boolean, bots: (number | null)[]) {
+  const query = `UPDATE games SET game = $1, ${setTimeFlag ? 'lastPlayed = current_timestamp,' : ''} running = $3, rematch_open = $4, bots = $5 WHERE id = $2;`
+  const values = [gameJSON, gameID, running, openRematchFlag, bots]
   return sqlClient.query(query, values)
 }
 
@@ -345,7 +345,8 @@ export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: Mov
     game.game.getJSON(),
     game.running,
     !(game.game.tradeFlag && game.game.statistic.filter((s) => s.cards.total[2] > 0).length > 1),
-    game.rematch_open
+    game.rematch_open,
+    game.bots
   )
   await captureMove(sqlClient, gameID, postMove, game.game)
 
@@ -380,7 +381,7 @@ export async function endNotProperlyEndedGames(sqlClient: pg.Pool) {
         if (game.game.winningTeams.some((e) => e === true)) {
           game.game.gameEnded = true
           logger.info(`Spiel beendet durch Automat: ID=${id}`)
-          await updateGame(sqlClient, id, game.game.getJSON(), false, false, false)
+          await updateGame(sqlClient, id, game.game.getJSON(), false, false, false, game.bots)
           if (game.privateTournamentId != null) {
             updatePrivateTournamentFromGame(sqlClient, game)
           }

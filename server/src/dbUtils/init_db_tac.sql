@@ -161,7 +161,58 @@ CREATE TABLE games (
   ),
   created timestamptz NOT NULL DEFAULT current_timestamp,
   lastPlayed timestamptz NOT NULL DEFAULT current_timestamp,
-  bots INT ARRAY [6] NOT NULL DEFAULT '{NULL,NULL,NULL,NULL,NULL,NULL}',
+  bots INT ARRAY [6] NOT NULL DEFAULT '{NULL,NULL,NULL,NULL,NULL,NULL}' CHECK (
+    (
+      (
+        bots [1] IS NOT NULL
+        AND public_tournament_id IS NULL
+        AND private_tournament_id IS NULL
+      )
+      OR bots [1] IS NULL
+    )
+    AND (
+      (
+        bots [2] IS NOT NULL
+        AND public_tournament_id IS NULL
+        AND private_tournament_id IS NULL
+      )
+      OR bots [2] IS NULL
+    )
+    AND (
+      (
+        bots [3] IS NOT NULL
+        AND public_tournament_id IS NULL
+        AND private_tournament_id IS NULL
+      )
+      OR bots [3] IS NULL
+    )
+    AND (
+      (
+        bots [4] IS NOT NULL
+        AND public_tournament_id IS NULL
+        AND private_tournament_id IS NULL
+      )
+      OR bots [4] IS NULL
+    )
+    AND (
+      (
+        bots [5] IS NOT NULL
+        AND public_tournament_id IS NULL
+        AND private_tournament_id IS NULL
+        AND n_players = 6
+      )
+      OR bots [5] IS NULL
+    )
+    AND (
+      (
+        bots [6] IS NOT NULL
+        AND public_tournament_id IS NULL
+        AND private_tournament_id IS NULL
+        AND n_players = 6
+      )
+      OR bots [6] IS NULL
+    )
+  ),
   game jsonb NOT NULL,
   public_tournament_id INT REFERENCES tournaments(id),
   private_tournament_id INT REFERENCES private_tournaments(id),
