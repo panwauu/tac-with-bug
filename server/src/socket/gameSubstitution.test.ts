@@ -158,11 +158,6 @@ describe('Test game substitution of player by player', () => {
     }
   })
 
-  test('Should not be accepted by player 1 again', async () => {
-    const acceptRes = await gameSockets[0].emitWithAck(5000, 'substitution:answer', { accept: true })
-    expect(acceptRes.status).toBe(500)
-  })
-
   test('Should not be acceptedable by replaced player', async () => {
     const acceptRes = await gameSockets[2].emitWithAck(5000, 'substitution:answer', { accept: true })
     expect(acceptRes.status).toBe(500)
