@@ -1,4 +1,4 @@
-import { Game } from 'src/game/game'
+import { Game } from '../../game/game'
 import { getAiData } from '../simulation/output'
 import { Futuro } from './Futuro'
 

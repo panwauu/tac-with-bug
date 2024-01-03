@@ -5,8 +5,8 @@ import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets'
 import { initiateGameSocket } from '../test/handleGameSocket'
 import { closeSockets, connectSocket, waitForEventOnSockets } from '../test/handleSocket'
 import { sleep } from '../helpers/sleep'
-import { getBotName } from 'src/bot/names'
-import { getGame } from 'src/services/game'
+import { getBotName } from '../bot/names'
+import { getGame } from '../services/game'
 
 describe('Test substitution start conditions with socket.io', () => {
   let usersWithSocket: UserWithSocket

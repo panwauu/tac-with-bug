@@ -23,8 +23,8 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
     try {
       await CallBot(pgPool, nspGame)
     } catch (err) {
-      console.error(err)
-      console.error('AI callback failed')
+      logger.error(err)
+      logger.error('AI callback failed')
     }
     setTimeout(getBotMoveCyclic, 200)
   }
@@ -183,7 +183,7 @@ async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
 
       const agentMove = getBotMove(game.bots[gamePlayer] ?? 3, getAiData(game.game, gamePlayer))
       move = projectMoveToGamePlayer(game.game, agentMove, gamePlayer)
-      console.log(`Bot took ${performance.now() - start}ms`)
+      logger.info(`Bot took ${performance.now() - start}ms`)
       break
     }
 
