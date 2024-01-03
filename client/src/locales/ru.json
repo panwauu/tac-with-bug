@@ -397,7 +397,8 @@
         "acceptButton": "принимать векселя",
         "rejectButton": "отклонить изменение",
         "endOfferButton": "отозвать переводной вексель",
-        "placeholderSubstituted": "Выбрать игрока"
+        "placeholderSubstituted": "Выбрать игрока",
+        "noPlayerToSubstitute": "Замена невозможна"
       },
       "SubstitutedPlayersHeader": "Замененные игроки:"
     },
