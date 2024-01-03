@@ -63,7 +63,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
 
     const game = await getGame(pgPool, socket.data.gameID)
     socket.emit('update', getPlayerUpdateFromGame(game, socket.data.gamePlayer))
-    dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
+    await dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
 
     emitOnlinePlayersEvents(pgPool, nspGame, socket.data.gameID)
 
@@ -152,7 +152,7 @@ export function sendUpdatesOfGameToPlayers(game: GameForPlay) {
 }
 
 const BOT_TIME_TO_WAIT = 4000 as const
-const BOT_TIME_TO_WAIT_7 = 1000 as const
+const BOT_TIME_TO_WAIT_7 = 1500 as const
 
 async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
   const gameIDs: number[] = []
