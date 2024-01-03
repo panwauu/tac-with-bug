@@ -30,6 +30,11 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
           game.players.at(game.substitution?.playerIndexToSubstitute ?? 0) ?? ''
         )
       )
+
+    await acceptSubstitution(pgPool, game, socket.data.userID)
+    await emitOnlinePlayersEvents(pgPool, nsp, game.id)
+    sleep(1000).then(() => emitOnlinePlayersEvents(pgPool, nsp, game.id))
+
     return cb({ status: 200 })
   })
 

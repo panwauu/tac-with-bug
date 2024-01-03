@@ -144,34 +144,19 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
     return err('PLAYER_NOT_IN_GAME')
   }
 
-  if (game.substitution.acceptedByIndex.includes(playerIndex)) {
-    return err('SUBSTITUTION_ALREADY_ACCEPTED')
-  }
-
   if (game.substitution.playerIndexToSubstitute === playerIndex) {
     return err('CANNOT_ACCEPT_OWN_SUBSTITUTION')
   }
 
-  game.substitution.acceptedByIndex.push(playerIndex)
+  if (!game.substitution.acceptedByIndex.includes(playerIndex)) {
+    game.substitution.acceptedByIndex.push(playerIndex)
+  }
 
   const substitutionOfPlayer = game.playerIDs.at(game.substitution.playerIndexToSubstitute) != null
   const substitutionByPlayer = game.substitution.substitute.substitutionUserID != null
   const substitutionFullyAccepted =
     game.substitution.acceptedByIndex.length >= game.playerIDs.slice(0, game.nPlayers).filter((id) => id != null).length - (substitutionOfPlayer ? 1 : 0)
   if (substitutionFullyAccepted) {
-    // substitution of player
-    //   -> add to subsitutedPlayerIndices
-    //   -> change in db
-    //   -> copy to new statistic
-    // substitution of bot
-    //   -> remove in botIDs
-    //   -> reset statistic
-
-    // substitution by player
-    //   -> add to game in db
-    // substitution by bot
-    //   -> add to botIDs
-
     if (substitutionOfPlayer) {
       const playerIndexAdditional = game.game.statistic.length
 
