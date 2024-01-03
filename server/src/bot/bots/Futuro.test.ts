@@ -244,4 +244,17 @@ describe('test Futuro bot', () => {
     const move = new Futuro().choose(getAiData(game, 0))
     expect(move?.[1]).toBe(1)
   })
+
+  test('Should trade 1 even if it could be used to lock balls', () => {
+    const game = new Game(4, 2, true, false)
+    game.cards.players[0] = ['1', '1', '10', '12', '9']
+    game.balls[0].position = 81
+    game.balls[0].state = 'goal'
+    game.balls[1].position = 82
+    game.balls[1].state = 'goal'
+    game.updateCardsWithMoves()
+
+    const move = new Futuro().choose(getAiData(game, 0))
+    expect([0, 1]).toContain(move?.[1])
+  })
 })

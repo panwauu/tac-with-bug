@@ -393,12 +393,11 @@
       },
       "Substitution": {
         "explanation": "Player substitution helps keep the game going when one player is unresponsive. A spectator can offer to be a substitute and all other players must agree to the change. For this, the active player must not have played for one minute and a spectator must not have played in this game.",
-        "offerButton": "Offer substitution",
-        "currentHeading": "Current substitution:",
+        "offerButton": "Start substitution",
         "acceptButton": "Accept substitution",
         "rejectButton": "Reject substitution",
         "endOfferButton": "Withdraw substitution",
-        "currentlyNone": "There is currently no substitution"
+        "placeholderSubstituted": "Choose player"
       },
       "SubstitutedPlayersHeader": "Substituted players:"
     },
