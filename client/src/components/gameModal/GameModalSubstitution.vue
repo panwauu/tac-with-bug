@@ -15,7 +15,7 @@
     <template v-if="updateData?.substitution != null">
       <div style="display: flex; align-items: center; margin-bottom: 10px">
         <PlayerWithPicture
-          :username="updateData.substitution.substitutionUsername"
+          :username="updateData.substitution.substitute.substitutionUsername ?? ''"
           :clickable="false"
           :nameFirst="false"
         />
@@ -67,7 +67,7 @@
         @click="answerSubstitution(false)"
       />
       <Button
-        v-if="updateData.substitution.substitutionUsername === username"
+        v-if="updateData.substitution.substitute.substitutionUsername === username"
         class="p-button-danger"
         :label="$t('Game.GameModal.Substitution.endOfferButton')"
         @click="answerSubstitution(false)"
@@ -113,7 +113,7 @@ const toast = useToast()
 async function startSubstitution() {
   if (gameSocket == null || playerIndexPossibleToSubstitute.value == null) return
 
-  const res = await gameSocket.emitWithAck(2000, 'substitution:offer', playerIndexPossibleToSubstitute.value)
+  const res = await gameSocket.emitWithAck(2000, 'substitution:start', playerIndexPossibleToSubstitute.value, null)
   if (res.status !== 200) {
     toast.add({
       severity: 'error',
