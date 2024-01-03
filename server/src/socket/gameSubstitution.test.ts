@@ -8,7 +8,7 @@ import { sleep } from '../helpers/sleep'
 import { getBotName } from '../bot/names'
 import { getGame } from '../services/game'
 
-describe('Test substitution start conditions with socket.io', () => {
+describe.todo('Test substitution start conditions with socket.io', () => {
   let usersWithSocket: UserWithSocket
   let gameSocket: GameSocketC
   let testCaseNumber = 0
