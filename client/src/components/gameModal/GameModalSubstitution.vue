@@ -29,6 +29,7 @@
       class="substitutionPlayer"
       :options="possibleToSubstitute"
       :placeholder="$t('Game.GameModal.Substitution.placeholderSubstituted')"
+      :emptyFilterMessage="$t('Game.GameModal.Substitution.noPlayerToSubstitute')"
       :disabled="substitutionRunning"
     >
       <template #value="slotProps">

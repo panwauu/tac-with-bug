@@ -397,7 +397,8 @@
         "acceptButton": "Accept substitution",
         "rejectButton": "Reject substitution",
         "endOfferButton": "Withdraw substitution",
-        "placeholderSubstituted": "Choose player"
+        "placeholderSubstituted": "Choose player",
+        "noPlayerToSubstitute": "No substitution possible"
       },
       "SubstitutedPlayersHeader": "Substituted players:"
     },

@@ -397,7 +397,8 @@
         "endOfferButton": "Wechsel zurückziehen",
         "rejectButton": "Wechsel ablehnen",
         "acceptButton": "Wechsel akzeptieren",
-        "placeholderSubstituted": "Spieler wählen"
+        "placeholderSubstituted": "Spieler wählen",
+        "noPlayerToSubstitute": "Kein Wechsel möglich"
       },
       "SubstitutedPlayersHeader": "Ausgewechselte Spieler:"
     },
