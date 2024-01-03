@@ -1,10 +1,10 @@
-// Hi, I'm greedy,
-// I care about nothing but about getting balls into the house
+// Hi, I'm futuro,
+// I look into the future and plan my moves accordingly
 
 import { ballGoal } from '../../game/ballUtils'
-import { BallsType, MoveTextOrBall } from '../../sharedTypes/typesBall'
-import { AiData } from '../simulation/output'
-import { previewMove } from '../simulation/previewMove'
+import { BallsType, MoveText, MoveTextOrBall } from '../../sharedTypes/typesBall'
+import { AiData, getAiData } from '../simulation/output'
+import { convertDataToGameAsIf0WasActive, previewMove } from '../simulation/previewMove'
 import { AiInterface, getMovesFromCards } from '../simulation/simulation'
 import { discardBot } from './DiscardBot'
 import { tradeBot } from './TradeBot'
@@ -16,11 +16,36 @@ const movesIntoTheFuture = 6
 export class Futuro implements AiInterface {
   choose(data: AiData) {
     try {
-      if (data.tradedCard == null) return tradeBot(data)
+      if (data.tradedCard == null) {
+        const dataAsIf0WereActive = getAiData(convertDataToGameAsIf0WasActive(data), 0)
+        const nodes = calculatePaths(dataAsIf0WereActive, 3)
+        const preferedNode = nodes.toSorted((p1, p2) => calculateScoreOfNode(p2) - calculateScoreOfNode(p1)).at(0)
+        if (preferedNode != null) {
+          if (playingOnLastBall(data) && preferedNode.state.balls.filter((b) => b.state === 'locked').length === preferedNode.state.teams[0].length * 4) {
+            if (partnerPlayingFirst(data) && preferedNode.usedCardIndices.length >= 1) {
+              return [0, preferedNode.usedCardIndices[0], 'tauschen'] as MoveText
+            } else if (!partnerPlayingFirst(data) && preferedNode.usedCardIndices.length >= 2) {
+              return [0, preferedNode.usedCardIndices[1], 'tauschen'] as MoveText
+            }
+          }
+
+          const scoreBefore = calculateScoreOfState(data)
+          const lastMoveIndexWithMoveBallIntoGoal = preferedNode.scoresPerState.findLastIndex(
+            (score, i) => score > (i === 0 ? scoreBefore : preferedNode.scoresPerState[i - 1]) + 999
+          )
+          if (lastMoveIndexWithMoveBallIntoGoal !== -1) {
+            return tradeBot(
+              data,
+              preferedNode.usedCardIndices.slice(0, lastMoveIndexWithMoveBallIntoGoal + 1).filter((i) => i !== -1)
+            )
+          }
+        }
+        return tradeBot(data, [])
+      }
       const discardMove = discardBot(data)
       if (discardMove != null) return discardMove
 
-      const nodes = calculatePaths(data)
+      const nodes = calculatePaths(data, movesIntoTheFuture)
       if (nodes.length > 0) {
         // Teufel: always if next player is close to goal
         const possibleInitialMoves = getMovesFromCards(data.cardsWithMoves, data.gamePlayer)
@@ -55,12 +80,12 @@ export class Futuro implements AiInterface {
   }
 }
 
-type EndNode = { state: AiData; movesToGetThere: MoveTextOrBall[]; scoresPerState: number[]; forbiddenBalls: number[] }
+type EndNode = { state: AiData; movesToGetThere: MoveTextOrBall[]; scoresPerState: number[]; forbiddenBalls: number[]; usedCardIndices: number[] }
 
-function calculatePaths(data: AiData): EndNode[] {
-  let nodes: EndNode[] = [{ state: data, movesToGetThere: [], scoresPerState: [], forbiddenBalls: [] }]
+function calculatePaths(data: AiData, numberOfSteps: number): EndNode[] {
+  let nodes: EndNode[] = [{ state: data, movesToGetThere: [], scoresPerState: [], forbiddenBalls: [], usedCardIndices: [] }]
 
-  for (let i = 0; i < movesIntoTheFuture; i++) {
+  for (let i = 0; i < numberOfSteps; i++) {
     const newNodes: EndNode[] = []
     for (const node of nodes) {
       newNodes.push(...expandNode(node))
@@ -79,8 +104,8 @@ function expandNode(node: EndNode): EndNode[] {
 
   let moves = getMovesFromCards(node.state.cardsWithMoves, node.state.gamePlayer)
     .filter((m) => node.state.cardsWithMoves[m[1]].title !== 'tac' || node.movesToGetThere.length === 0)
-    .filter((m) => !['teufel', 'narr'].includes(node.state.cardsWithMoves[m[0]].title))
-    .filter((m) => m.length === 3 || node.state.cardsWithMoves[m[1]].title.includes('-') || !node.forbiddenBalls.includes(m[2]))
+    .filter((m) => !['teufel', 'narr'].includes(node.state.cardsWithMoves[m[0]].title) && m[2] !== 'teufel' && m[2] !== 'teufel')
+    .filter((m) => m.length === 3 || !node.state.cardsWithMoves[m[1]].title.includes('-') || !node.forbiddenBalls.includes(m[2]))
 
   // Filter moves from the same card as they are redundant
   const duplicatedCardIndices = node.state.cardsWithMoves
@@ -109,15 +134,21 @@ function expandNode(node: EndNode): EndNode[] {
       movesToGetThere: [...node.movesToGetThere, m],
       scoresPerState: [...node.scoresPerState, calculateScoreOfState(dataAfterMove)],
       forbiddenBalls: getForbiddenMoves(node, m),
+      usedCardIndices: [...node.usedCardIndices, getUsedCardIndex(node, m)],
     }
   })
+}
+
+function getUsedCardIndex(node: EndNode, m: MoveTextOrBall) {
+  if (node.state.cardsWithMoves[m[1]].title.includes('-')) return -1
+  return [0, 1, 2, 3, 4, 5, 6, 7, 8].filter((i) => !node.usedCardIndices.includes(i)).at(m[1]) ?? -2
 }
 
 function getForbiddenMoves(node: EndNode, move: MoveTextOrBall) {
   if (move.length === 3) return []
   if (node.state.cardsWithMoves[move[1]].title.includes('-') && ballGoal(0, node.state.balls) <= move[3]) return [...node.forbiddenBalls]
   if (node.state.cardsWithMoves[move[1]].title.includes('-') && ballGoal(0, node.state.balls) > move[3]) return [...node.forbiddenBalls, move[2]]
-  if (node.state.cardsWithMoves[move[1]].title === '7') return [move[2]]
+  if (node.state.cardsWithMoves[move[1]].title === '7' && ballGoal(0, node.state.balls) > move[3]) return [move[2]]
   if (node.state.cardsWithMoves[move[1]].title === '7' && ballGoal(0, node.state.balls) <= move[3]) return []
   return []
 }
@@ -154,4 +185,13 @@ function calculatePointsOfTeamFromBalls(balls: BallsType, team: number[]): numbe
 
 function calculateScoreOfNode(node: EndNode) {
   return node.scoresPerState.reduce((sum, score) => sum + score / node.scoresPerState.length, 0)
+}
+
+function playingOnLastBall(data: AiData) {
+  return data.balls.filter((b) => data.teams[0].includes(b.player) && b.state === 'locked').length >= data.balls.filter((b) => data.teams[0].includes(b.player)).length - 1
+}
+
+function partnerPlayingFirst(data: AiData) {
+  const tradeToPlayer = (data.tradeDirection === 1 ? data.teams[0].at(1) : data.teams[0].at(-1)) ?? 2
+  return data.activePlayer > data.gamePlayer && data.activePlayer <= tradeToPlayer
 }

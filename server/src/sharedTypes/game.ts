@@ -26,8 +26,19 @@ export interface GameData {
 }
 
 export type Substitution = {
-  substitutionUserID: number
-  substitutionUsername: string
+  substitute:
+    | {
+        substitutionUserID: number
+        substitutionUsername: string
+        botIndex: null
+        botUsername: null
+      }
+    | {
+        substitutionUserID: null
+        substitutionUsername: null
+        botIndex: number
+        botUsername: string
+      }
   playerIndexToSubstitute: number
   acceptedByIndex: number[]
   startDate: number

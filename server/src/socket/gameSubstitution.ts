@@ -4,12 +4,12 @@ import logger from '../helpers/logger'
 import type { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
 import Joi from 'joi'
 import { getGame } from '../services/game'
-import { acceptSubstitution, checkSubstitutionConditions, checkSubstitutionsForTime, rejectSubstitution, startSubstitution } from '../services/substitution'
+import { acceptSubstitution, checkSubstitutionsForTime, rejectSubstitution, startSubstitution } from '../services/substitution'
 import { getSocketsInGame, nsp, emitOnlinePlayersEvents } from './game'
 import { sleep } from '../helpers/sleep'
 
 export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocketS) {
-  socket.on('substitution:offer', async (playerIndexToSubstitute, cb) => {
+  socket.on('substitution:start', async (playerIndexToSubstitute, substituteByBotID, cb) => {
     if (socket.data.gameID == null || socket.data.gamePlayer == null || socket.data.userID == null) {
       socket.disconnect()
       return cb({ status: 500 })
@@ -18,14 +18,18 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
     await checkSubstitutionsForTime(pgPool)
     const game = await getGame(pgPool, socket.data.gameID)
 
-    if (!checkSubstitutionConditions(game, playerIndexToSubstitute, socket.data.userID)) {
-      return cb({ status: 500, error: 'Substitution not allowed' })
-    }
+    const res = await startSubstitution(pgPool, game, socket.data.userID, playerIndexToSubstitute, substituteByBotID)
+    if (res.isErr()) return cb({ status: 500, error: res.error })
 
-    await startSubstitution(pgPool, game, socket.data.userID, playerIndexToSubstitute)
     getSocketsInGame(nsp, socket.data.gameID)
       .filter((s) => s.id !== socket.id)
-      .forEach((s) => s.emit('toast:substitution-offer', game.substitution?.substitutionUsername ?? ''))
+      .forEach((s) =>
+        s.emit(
+          'toast:substitution-started',
+          game.substitution?.substitute.substitutionUsername ?? game.substitution?.substitute.botUsername ?? '',
+          game.players.at(game.substitution?.playerIndexToSubstitute ?? 0) ?? ''
+        )
+      )
     return cb({ status: 200 })
   })
 
@@ -54,7 +58,7 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
       } else {
         const rejectRes = await rejectSubstitution(game, socket.data.userID)
         if (rejectRes.isErr()) {
-          return cb({ status: 500 })
+          return cb({ status: 500, error: rejectRes.error })
         }
         getSocketsInGame(nsp, socket.data.gameID)
           .filter((s) => s.id !== socket.id)

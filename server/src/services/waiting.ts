@@ -88,19 +88,26 @@ export async function createRematchGame(pgPool: pg.Pool, game: GameForPlay, user
     nTeams = 1
   }
 
-  const values: any[] = [userID, game.game.nPlayers, nTeams, game.game.cards.meisterVersion, game.id, switchFromGameOrderToTeamsOrder(game.bots, game.nPlayers, game.nTeams)]
+  const values: any[] = [
+    userID,
+    game.game.nPlayers,
+    nTeams,
+    game.game.cards.meisterVersion,
+    game.id,
+    switchFromGameOrderToTeamsOrder(game.bots.slice(0, game.nPlayers), game.nPlayers, game.nTeams),
+  ]
 
   let ballsStr = ''
   let playersStr = ''
   let valStr = ''
-  switchFromGameOrderToTeamsOrder(game.colors, game.nPlayers, game.nTeams).forEach((color, i) => {
+  switchFromGameOrderToTeamsOrder(game.colors.slice(0, game.nPlayers), game.nPlayers, game.nTeams).forEach((color, i) => {
     if (color != null) {
       ballsStr += `, balls${i}`
       values.push(color)
       valStr += `, $${values.length}`
     }
   })
-  switchFromGameOrderToTeamsOrder(game.playerIDs, game.nPlayers, game.nTeams).forEach((id, i) => {
+  switchFromGameOrderToTeamsOrder(game.playerIDs.slice(0, game.nPlayers), game.nPlayers, game.nTeams).forEach((id, i) => {
     if (id != null) {
       playersStr += `, player${i}`
       values.push(id)

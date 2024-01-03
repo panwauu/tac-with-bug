@@ -63,3 +63,51 @@ export function previewMove(data: AiData, move: MoveTextOrBall): AiData {
   // convert back to data
   return getAiData(game, 0)
 }
+
+export function convertDataToGameAsIf0WasActive(data: AiData) {
+  const game = new Game(
+    data.nPlayers,
+    data.teams.length,
+    data.meisterVersion,
+    data.coop,
+    structuredClone({
+      nPlayers: data.nPlayers,
+      coop: data.coop,
+      teams: data.teams,
+
+      tradeDirection: data.tradeDirection,
+      aussetzenFlag: false,
+      teufelFlag: data.teufelFlag,
+      tradeFlag: false,
+      tradedCards: Array.from({ length: data.nPlayers }, (i) => (i === 0 ? data.tradedCard : null)),
+      narrFlag: Array.from({ length: data.nPlayers }, () => false),
+      narrTradedCards: Array.from({ length: data.nPlayers }, (i) => (i === 0 ? data.narrTradedCards : null)),
+      activePlayer: 0,
+      sevenChosenPlayer: data.sevenChosenPlayer,
+
+      balls: data.balls,
+      priorBalls: data.priorBalls,
+
+      gameEnded: false,
+      winningTeams: Array.from({ length: data.teams.length }, () => false),
+
+      cards: {
+        dealingPlayer: 0,
+        discardPlayer: 0,
+        discardedFlag: false,
+        deck: [],
+        discardPile: data.discardPile,
+        players: Array.from({ length: data.nPlayers }, (_, i) => (i === 0 ? data.cardsWithMoves.map((c) => c.title) : [])),
+        meisterVersion: data.meisterVersion,
+        hadOneOrThirteen: data.hadOneOrThirteen,
+        previouslyPlayedCards: data.previouslyUsedCards,
+      },
+      cardsWithMoves: data.cardsWithMoves,
+
+      statistic: initalizeStatistic(data.nPlayers),
+      substitutedPlayerIndices: [],
+    })
+  )
+  game.updateCardsWithMoves()
+  return game
+}

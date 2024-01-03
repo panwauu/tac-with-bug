@@ -10,7 +10,7 @@ describe('TradeBot', () => {
     game.cards.players[0] = ['1', '2']
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect(move?.[1]).toBe(1)
   })
 
@@ -21,7 +21,7 @@ describe('TradeBot', () => {
     game.cards.players[0] = ['1', '2', '7']
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect(move?.[1]).toBe(1)
   })
 
@@ -32,7 +32,7 @@ describe('TradeBot', () => {
     game.cards.players[0] = ['7', '2', '3', '5']
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect(move?.[1]).toBe(3)
   })
 
@@ -45,7 +45,7 @@ describe('TradeBot', () => {
     game.cards.players[0] = ['1', '7']
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect(move?.[1]).toBe(1)
   })
 
@@ -58,7 +58,7 @@ describe('TradeBot', () => {
     game.cards.players[0] = ['1', '2']
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect(move?.[1]).toBe(1)
   })
 
@@ -71,7 +71,7 @@ describe('TradeBot', () => {
     game.cards.players[0] = ['13', '12']
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect(move?.[1]).toBe(1)
   })
 
@@ -80,7 +80,7 @@ describe('TradeBot', () => {
     game.cards.players[0] = ['13', '13', '2', '3', '3']
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect([0, 1]).toContain(move?.[1])
   })
 
@@ -91,7 +91,7 @@ describe('TradeBot', () => {
     game.cards.hadOneOrThirteen[2] = false
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect([0, 1]).toContain(move?.[1])
   })
 
@@ -104,7 +104,7 @@ describe('TradeBot', () => {
     game.balls[0].state = 'valid'
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect(move?.[1]).toBe(1)
   })
 
@@ -119,7 +119,7 @@ describe('TradeBot', () => {
     game.balls[8].state = 'valid'
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect(move?.[1]).toBe(1)
   })
 
@@ -132,7 +132,7 @@ describe('TradeBot', () => {
     game.balls[12].state = 'valid'
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect(move?.[1]).toBe(4)
   })
 
@@ -143,35 +143,23 @@ describe('TradeBot', () => {
     game.balls[8].state = 'goal'
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [])
     expect(move?.[1]).toBe(1)
   })
 
-  test.todo('Should not trade card to clean up house if it is needed to move own ball into house', () => {
+  test('Should not trade card to move into house if blacklisted', () => {
     const game = new Game(4, 2, true, false)
-    game.cards.players[0] = ['2', '9', '12', '10']
-    game.balls[8].position = 88
-    game.balls[8].state = 'goal'
-    game.balls[0].position = 16
-    game.balls[0].state = 'valid'
+    game.cards.players[0] = ['2', '9', '12', '8', '10']
+    game.balls[8].position = 48
+    game.balls[8].state = 'valid'
+    game.balls[9].position = 55
+    game.balls[9].state = 'valid'
+    game.balls[12].position = 63
+    game.balls[12].state = 'valid'
     game.updateCardsWithMoves()
 
-    const move = tradeBot(getAiData(game, 0))
+    const move = tradeBot(getAiData(game, 0), [0, 2, 4])
     expect(move?.[1]).not.toBe(0)
-  })
-
-  test.todo('Should not trade card that could help partner move into goal in the future if it is needed to own move ball into house', () => {
-    const game = new Game(4, 2, true, false)
-    game.cards.players[0] = ['2', '9', '12', '10']
-    game.balls[8].position = 63
-    game.balls[8].state = 'goal'
-    game.balls[4].position = 64
-    game.balls[4].state = 'valid'
-    game.balls[0].position = 16
-    game.balls[0].state = 'valid'
-    game.updateCardsWithMoves()
-
-    const move = tradeBot(getAiData(game, 0))
-    expect(move?.[1]).not.toBe(0)
+    expect(move?.[1]).toBe(3)
   })
 })

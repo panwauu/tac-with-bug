@@ -8,26 +8,39 @@ import { getDiscardScore } from './DiscardBot'
 import { getMovesFromCards } from '../simulation/simulation'
 import { getCards } from '../../game/serverOutput'
 
-export function tradeBot(data: AiData): MoveText {
+export function tradeBot(data: AiData, disallowedCards: number[]): MoveText {
   const tradeToPlayer = data.tradeDirection === 1 ? data.teams[0].at(1) : data.teams[0].at(-1)
   if (tradeToPlayer == null) throw new Error('Trade to player is null')
 
+  let dataWithPossibleMoves = data
+  if (disallowedCards.length !== 0) {
+    dataWithPossibleMoves = structuredClone(data)
+    disallowedCards.sort((a, b) => b - a).forEach((cardIndex) => dataWithPossibleMoves.cardsWithMoves.splice(cardIndex, 1))
+  }
+
   // 1) When i have a card that allows partner to go into goal
-  // 2) When i have a card that allows partner to go into goal if another person moves their balls  // TODO: AVOID TRADING CARD NEEDED BY MYSELF
-  // 3) When partner has no 1/13 and                                                                // TODO: AVOID TRADING CARD NEEDED BY MYSELF
+  // 2) When i have a card that allows partner to go into goal if another person moves their balls
+  // 3) When partner has no 1/13 and
   //    i have >=2 or
   //    i have more balls in the ring
   //    we have the some number but he has more in proximity
-  // 4) When i have a card that allows partner to kill enemy in proximity of goal                   // TODO: AVOID TRADING CARD NEEDED BY MYSELF
-  // 5) When partner has to clean up his balls in the goal and i have a usefull card                // TODO: AVOID TRADING CARD NEEDED BY MYSELF
+  // 4) When i have a card that allows partner to kill enemy in proximity of goal
+  // 5) When partner has to clean up his balls in the goal and i have a usefull card
 
-  return (
-    tradeCardToMoveIntoGoal(data, tradeToPlayer, false) ??
-    tradeCardToMoveIntoGoal(data, tradeToPlayer, true) ??
-    tradeOneOrThirteen(data, tradeToPlayer) ??
-    tradeKillEnemy(data, tradeToPlayer) ??
-    tradeCleanUpCard(data, tradeToPlayer) ?? [data.gamePlayer, 0, 'tauschen']
-  )
+  const move =
+    tradeCardToMoveIntoGoal(dataWithPossibleMoves, tradeToPlayer, false) ??
+    tradeCardToMoveIntoGoal(dataWithPossibleMoves, tradeToPlayer, true) ??
+    tradeOneOrThirteen(dataWithPossibleMoves, tradeToPlayer) ??
+    tradeKillEnemy(dataWithPossibleMoves, tradeToPlayer) ??
+    tradeCleanUpCard(dataWithPossibleMoves, tradeToPlayer)
+
+  if (move != null) {
+    const allowedCardIndices = data.cardsWithMoves.map((_, i) => i).filter((i) => !disallowedCards.includes(i))
+    return [move[0], allowedCardIndices[move[1]], move[2]]
+  }
+
+  const firstAllowedCardIndex = data.cardsWithMoves.findIndex((_, i) => !disallowedCards.includes(i))
+  return [data.gamePlayer, firstAllowedCardIndex === -1 ? 0 : firstAllowedCardIndex, 'tauschen']
 }
 
 function getPossibleMovesOfPartner(data: AiData, tradeToPlayer: number, ignoreOtherBalls: boolean) {
