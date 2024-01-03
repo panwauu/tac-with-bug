@@ -10,6 +10,7 @@ import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils
 import { getUser } from './user'
 import { validBotIds } from '../bot/bots/bots'
 import { switchFromGameOrderToTeamsOrder, switchFromTeamsOrderToGameOrder } from '../game/teamUtils'
+import logger from '../helpers/logger'
 
 export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number) {
   const res = await sqlClient.query(
@@ -381,7 +382,7 @@ export async function addBot(sqlClient: pg.Pool, waitingGameID: number, botID: n
   try {
     await sqlClient.query(`UPDATE waitinggames SET bots[$1]=$2, balls${playerIndex}=$3 WHERE id = $4;`, [playerIndex + 1, botID, color, waitingGameID])
   } catch (errr) {
-    console.error(errr)
+    logger.error(errr)
     return err('COULD_NOT_ADD_PLAYER')
   }
   return ok(null)

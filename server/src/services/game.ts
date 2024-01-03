@@ -396,8 +396,8 @@ export async function endNotProperlyEndedGames(sqlClient: pg.Pool) {
           sendUpdatesOfGameToPlayers(game)
         }
       } catch (err) {
-        console.error(err)
-        console.error('Error in endNotProperlyEndedGames')
+        logger.error(err)
+        logger.error('Error in endNotProperlyEndedGames')
       }
     })
 }
