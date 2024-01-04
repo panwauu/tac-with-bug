@@ -24,7 +24,7 @@ function setSubstitution(gameID: number, substitution: Substitution | null) {
 }
 
 export function endSubstitutionIfRunning(game: GameForPlay) {
-  if (game.substitution != null && game.substitution.substitute.substitutionUserID != null) {
+  if (game.substitution?.substitute.substitutionUserID != null) {
     setSubstitution(game.id, null)
     game.substitution = null
   }

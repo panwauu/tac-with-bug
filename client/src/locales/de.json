@@ -479,7 +479,7 @@
     },
     "Toast": {
       "substitution-offer-summary": "Wechselanfrage",
-      "substitution-offer-detail": "Der Spieler {username} hat sich für einen Wechsel angeboten. Alle Spieler im Spiel müssen diesen rechtzeitig annehmen, um den Wechsel durchzuführen.",
+      "substitution-offer-detail": "Ein Austausch von {usernameToSubstitute} durch {username} wurde gestartet. Alle Spieler im Spiel müssen diesen rechtzeitig annehmen, um den Wechsel durchzuführen.",
       "substitution-done-summary": "Wechsel durchgeführt",
       "substitution-done-detail": "Der Spielerwechsel wurde durchgeführt. {replacedUsername} wurde durch {username} ersetzt. Viel Spaß weiter beim spielen.",
       "substitution-stopped-summary": "Wechsel gescheitert",

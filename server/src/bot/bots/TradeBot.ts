@@ -15,7 +15,7 @@ export function tradeBot(data: AiData, disallowedCards: number[]): MoveText {
   let dataWithPossibleMoves = data
   if (disallowedCards.length !== 0) {
     dataWithPossibleMoves = structuredClone(data)
-    disallowedCards.sort((a, b) => b - a).forEach((cardIndex) => dataWithPossibleMoves.cardsWithMoves.splice(cardIndex, 1))
+    disallowedCards.toSorted((a, b) => b - a).forEach((cardIndex) => dataWithPossibleMoves.cardsWithMoves.splice(cardIndex, 1))
   }
 
   // 1) When i have a card that allows partner to go into goal

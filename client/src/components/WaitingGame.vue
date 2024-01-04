@@ -264,9 +264,7 @@ const setPlayerReady = () => {
 let playerIndexForColorChange: number | null = null
 const toggle = (event: Event, index: number) => {
   playerIndexForColorChange = index
-  if (activeAndSelf(index)) {
-    opRef.value?.toggle(event)
-  } else if (props.game.bots[index] != null && props.game.admin === username.value) {
+  if (activeAndSelf(index) || (props.game.bots[index] != null && props.game.admin === username.value)) {
     opRef.value?.toggle(event)
   }
 }
