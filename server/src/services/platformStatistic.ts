@@ -339,12 +339,18 @@ async function getBotWins(pgPool: pg.Pool) {
     SUM(won::int)::INT as won
   FROM (
     SELECT
-      (SELECT (t2.winningteams->(teamIndex::INTEGER - 1))::BOOLEAN FROM jsonb_array_elements("teams") with ordinality as t1(team, teamIndex) WHERE (team->0)::INTEGER = t2.playerIndex OR (team->1)::INTEGER = t2.playerIndex OR (team->2)::INTEGER = t2.playerIndex) as won
+      (
+        SELECT (t2.winningteams->(teamIndex::INTEGER - 1))::BOOLEAN 
+        FROM jsonb_array_elements("teams") with ordinality as t1(team, teamIndex) 
+        WHERE (team->0)::INTEGER = t2.playerIndex OR (team->1)::INTEGER = t2.playerIndex OR (team->2)::INTEGER = t2.playerIndex
+      ) as won
     FROM (
       SELECT game->'teams' as teams, game->'winningTeams' as winningteams, playerIndex, created
       FROM games 
       CROSS JOIN LATERAL unnest(ARRAY[0,1,2,3,4,5]) as playerIndex 
-      WHERE playerindex < n_players AND bots[playerIndex + 1] IS NOT NULL AND running IS FALSE AND (game->'gameEnded')::BOOLEAN AND (game->'substitutedPlayerIndices' IS NULL OR jsonb_array_length(game->'substitutedPlayerIndices') = 0)
+      WHERE 
+        playerindex < n_players AND bots[playerIndex + 1] IS NOT NULL AND running IS FALSE AND (game->'gameEnded')::BOOLEAN 
+        AND (game->'substitutedPlayerIndices' IS NULL OR jsonb_array_length(game->'substitutedPlayerIndices') = 0)
     ) as t2 
   ) as t3;`)
 
