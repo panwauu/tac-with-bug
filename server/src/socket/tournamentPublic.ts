@@ -204,25 +204,25 @@ export function pushChangedPublicTournament(tournament: tTournament.PublicTourna
 }
 
 export function registerTournamentBus() {
-  tournamentBus.on('signUp-failed', async (data: { playerids: number[]; tournamentTitle: string }) => {
+  tournamentBus.on('signUp-failed', (data: { playerids: number[]; tournamentTitle: string }) => {
     getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUp-failed', { tournamentTitle: data.tournamentTitle }))
   })
-  tournamentBus.on('signUpEnded-you-partizipate', async (data: { playerids: number[]; tournamentTitle: string }) => {
+  tournamentBus.on('signUpEnded-you-partizipate', (data: { playerids: number[]; tournamentTitle: string }) => {
     getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUpEnded-you-partizipate', { tournamentTitle: data.tournamentTitle }))
   })
-  tournamentBus.on('signUpEnded-you-wont-partizipate', async (data: { playerids: number[]; tournamentTitle: string }) => {
+  tournamentBus.on('signUpEnded-you-wont-partizipate', (data: { playerids: number[]; tournamentTitle: string }) => {
     getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: data.tournamentTitle }))
   })
-  tournamentBus.on('started', async (data: { tournamentTitle: string }) => {
+  tournamentBus.on('started', (data: { tournamentTitle: string }) => {
     nsp.emit('tournament:toast:started', { tournamentTitle: data.tournamentTitle })
   })
-  tournamentBus.on('round-started', async (data: { tournamentTitle: string; roundsToFinal: number }) => {
+  tournamentBus.on('round-started', (data: { tournamentTitle: string; roundsToFinal: number }) => {
     nsp.emit('tournament:toast:round-started', { tournamentTitle: data.tournamentTitle, roundsToFinal: data.roundsToFinal })
   })
-  tournamentBus.on('round-ended', async (data: { tournamentTitle: string; roundsToFinal: number }) => {
+  tournamentBus.on('round-ended', (data: { tournamentTitle: string; roundsToFinal: number }) => {
     nsp.emit('tournament:toast:round-ended', { tournamentTitle: data.tournamentTitle, roundsToFinal: data.roundsToFinal })
   })
-  tournamentBus.on('ended', async (data: { tournamentTitle: string; winner: tTournament.Team }) => {
+  tournamentBus.on('ended', (data: { tournamentTitle: string; winner: tTournament.Team }) => {
     nsp.emit('tournament:toast:ended', { tournamentTitle: data.tournamentTitle, winner: data.winner })
   })
 }
@@ -234,7 +234,7 @@ function getSocketsOfPlayerIDs(nsp: GeneralNamespace, userIDs: number[]) {
 async function sendMailToUnactivatedPlayer(sqlClient: pg.Pool, players: string[], teamName: string, username: string) {
   const playersForMail = players.filter((p) => p !== username)
 
-  playersForMail.forEach(async (player) => {
+  for (const player of playersForMail) {
     const user = await getUser(sqlClient, { username: player })
     if (user.isErr()) throw new Error(user.error)
 
@@ -244,7 +244,7 @@ async function sendMailToUnactivatedPlayer(sqlClient: pg.Pool, players: string[]
     if (settings.value.tournamentInvitations) {
       sendTournamentInvitation({ user: user.value, invitingPlayer: username, tournamentTitle: '', teamName })
     }
-  })
+  }
 }
 
 export async function sendInvitationToAll(sqlClient: pg.Pool, tournament: tTournament.PublicTournament) {

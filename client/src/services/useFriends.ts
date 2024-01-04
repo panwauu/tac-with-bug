@@ -38,7 +38,7 @@ export function userFriends(socket: GeneralSocketC): FriendsState {
       friendsState.friends = []
     },
     setFriends: (friends) => {
-      friendsState.friends = friends.sort((a) => {
+      friendsState.friends = friends.toSorted((a) => {
         return a.status !== 'done' ? -1 : 1
       })
     },

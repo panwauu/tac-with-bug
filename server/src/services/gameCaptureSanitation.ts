@@ -22,7 +22,7 @@ export async function sanitizeGameCapture(pgPool: pg.Pool, gameID: number, check
 }
 
 function removeLinesFromGameCapture(game: CapturedType[], linesToRemove: number[]) {
-  ;[...new Set(linesToRemove)].sort((a, b) => b - a).forEach((i) => game.splice(i, 1))
+  ;[...new Set(linesToRemove)].toSorted((a, b) => b - a).forEach((i) => game.splice(i, 1))
 }
 
 function removeDuplicateRows(game: CapturedType[], checkOnlyLastLine?: boolean): boolean {
