@@ -61,12 +61,11 @@ gameSocket.on('toast:substitution-done', substitutionDoneToast)
 gameSocket.on('toast:substitution-stopped', substitutionStoppedToast)
 
 function substitutionOfferToast(username: string, usernameToSubstitute: string) {
-  usernameToSubstitute
   toast.add({
     severity: 'warn',
     life: 5000,
     summary: i18n.global.t('Game.Toast.substitution-offer-summary'),
-    detail: i18n.global.t('Game.Toast.substitution-offer-detail', { username }),
+    detail: i18n.global.t('Game.Toast.substitution-offer-detail', { username, usernameToSubstitute }),
   })
 }
 

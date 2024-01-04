@@ -479,7 +479,7 @@
     },
     "Toast": {
       "substitution-offer-summary": "запрос на обмен",
-      "substitution-offer-detail": "Игрок {username} предложил перевод. Все игроки в игре должны принять это вовремя, чтобы совершить переключение.",
+      "substitution-offer-detail": "Началась замена {usernameToSubstitute} на {username}. Все игроки в игре должны принять это вовремя, чтобы переключиться.",
       "substitution-done-summary": "выполненное изменение",
       "substitution-done-detail": "Произведена смена игрока. {replacedUsername} заменено на {username}. Получайте удовольствие, играя.",
       "substitution-stopped-summary": "Ошибка изменения",

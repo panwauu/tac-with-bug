@@ -479,7 +479,7 @@
     },
     "Toast": {
       "substitution-offer-summary": "Substitution request",
-      "substitution-offer-detail": "The player {username} has offered to be transferred. \nAll players in the game must accept it in time to make the switch.",
+      "substitution-offer-detail": "A substitution of {usernameToSubstitute} by {username} was startet. All players in the game must accept it in time to make the switch.",
       "substitution-done-summary": "Substitution performed",
       "substitution-done-detail": "The player substitution has been carried out. {replacedUsername} has been replaced with {username}. Have fun playing.",
       "substitution-stopped-summary": "Substitution failed",

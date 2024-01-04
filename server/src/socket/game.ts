@@ -13,20 +13,24 @@ import { MoveTextOrBall } from '../sharedTypes/typesBall'
 import { getAiData } from '../bot/simulation/output'
 import { projectMoveToGamePlayer } from '../bot/normalize/normalize'
 import { getBotMove } from '../bot/bots/bots'
+import { sleep } from '../helpers/sleep'
 
 export let nsp: GameNamespace
 
 export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
   nsp = nspGame
 
+  const runBots = true
   const getBotMoveCyclic = async () => {
-    try {
-      await CallBot(pgPool, nspGame)
-    } catch (err) {
-      logger.error(err)
-      logger.error('AI callback failed')
+    while (runBots) {
+      try {
+        await CallBot(pgPool, nspGame)
+      } catch (err) {
+        logger.error(err)
+        logger.error('AI callback failed')
+      }
+      await sleep(200)
     }
-    setTimeout(getBotMoveCyclic, 200)
   }
 
   if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') getBotMoveCyclic()
@@ -152,6 +156,7 @@ export function sendUpdatesOfGameToPlayers(game: GameForPlay) {
 }
 
 const BOT_TIME_TO_WAIT = 4000 as const
+const BOT_TIME_TO_WAIT_NARR = 0 as const
 const BOT_TIME_TO_WAIT_7 = 1500 as const
 
 async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
@@ -164,8 +169,16 @@ async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
 
   for (const gameID of gameIDs) {
     const game = await getGame(pgPool, gameID)
-    if (Date.now() - game.lastPlayed < BOT_TIME_TO_WAIT_7) continue
-    if (Date.now() - game.lastPlayed < BOT_TIME_TO_WAIT && !game.game.cardsWithMoves.some((c) => c.title.includes('-'))) continue
+    if (
+      !game.running ||
+      !(
+        Date.now() - game.lastPlayed > BOT_TIME_TO_WAIT ||
+        (Date.now() - game.lastPlayed > BOT_TIME_TO_WAIT_7 && game.game.cardsWithMoves.some((c) => c.title.includes('-'))) ||
+        (Date.now() - game.lastPlayed > BOT_TIME_TO_WAIT_NARR && game.game.cardsWithMoves.every((c) => c.textAction === 'narr'))
+      )
+    ) {
+      continue
+    }
 
     const start = performance.now()
 

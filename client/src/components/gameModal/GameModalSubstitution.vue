@@ -181,12 +181,7 @@ async function answerSubstitution(accept: boolean) {
 const substitutionRunning = computed(() => props.updateData?.substitution != null)
 
 const inGeneralSubstitutionPossible = computed(
-  () =>
-    props.updateData != null &&
-    props.updateData.running &&
-    props.updateData.substitution == null &&
-    props.updateData.publicTournamentId == null &&
-    props.updateData.privateTournamentId == null
+  () => props.updateData?.running && props.updateData.substitution == null && props.updateData.publicTournamentId == null && props.updateData.privateTournamentId == null
 )
 const playerCanBeSubstituted = computed(() => Date.now() - 60 * 1000 > (props.updateData?.lastPlayed ?? Infinity))
 const botCanBeSubstituted = computed(() => !newPlayer.value.bot)
@@ -197,16 +192,15 @@ const startSubstitutionPossible = computed(
     ((playerCanBeSubstituted.value && !selectedToSubstitute.value.bot) || (botCanBeSubstituted.value && selectedToSubstitute.value.bot))
 )
 
-const newPlayer = computed(() =>
-  props.updateData?.substitution != null
-    ? {
-        username: props.updateData.substitution.substitute.substitutionUsername ?? props.updateData.substitution.substitute.botUsername,
-        bot: props.updateData.substitution.substitute.botIndex != null,
-      }
-    : props.updateData?.gamePlayer === -1
-      ? { username: username.value ?? '', bot: false }
-      : { username: i18n.global.t('Waiting.bot'), bot: true }
-)
+const newPlayer = computed(() => {
+  if (props.updateData?.substitution != null) {
+    return {
+      username: props.updateData.substitution.substitute.substitutionUsername ?? props.updateData.substitution.substitute.botUsername,
+      bot: props.updateData.substitution.substitute.botIndex != null,
+    }
+  }
+  return props.updateData?.gamePlayer === -1 ? { username: username.value ?? '', bot: false } : { username: i18n.global.t('Waiting.bot'), bot: true }
+})
 
 const selectedToSubstitute = ref<{ playerIndex: number; username: string; bot: boolean } | null>(null)
 const possibleToSubstitute = computed(() => {
