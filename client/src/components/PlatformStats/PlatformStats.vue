@@ -28,6 +28,10 @@
   <div class="chart-container">
     <UserAgentStats :data="data?.userAgentDataset" />
   </div>
+  <h1>{{ $t('Stats.headerBotWinshare') }}</h1>
+  <div class="chart-container">
+    <BotStats :data="data?.botDataset" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -37,6 +41,7 @@ import LocaleStats from './LocaleStats.vue'
 import StatsByHour from './StatsByHour.vue'
 import StatsByDay from './StatsByDay.vue'
 import UserAgentStats from './UserAgentStats.vue'
+import BotStats from './BotStats.vue'
 
 import type { PlatformStats } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 import { ref } from 'vue'
