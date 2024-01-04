@@ -284,7 +284,7 @@ function getUserNetworkFromGamesNodes(games: tDBgame.GameForPlay[]): tStatistic.
     }
   }
 
-  return nodes.sort((n) => n.data.score).slice(0, nodesLimit)
+  return nodes.toSorted((n) => n.data.score).slice(0, nodesLimit)
 }
 
 function getUserNetworkFromGamesEdges(games: tDBgame.GameForPlay[], nodes: tStatistic.UserNetworkNode[], edges: tStatistic.UserNetworkEdge[], playerInd: number, gamesInd: number) {

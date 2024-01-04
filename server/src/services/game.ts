@@ -290,7 +290,7 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
     }
   })
 
-  return { games: games.sort(gamesSort(orderColumn, sortOrder ?? 1)), nEntries }
+  return { games: games.toSorted(gamesSort(orderColumn, sortOrder ?? 1)), nEntries }
 }
 
 function getStatusForOverview(game: tDBTypes.GameForPlay, playerIndex: number) {
@@ -371,42 +371,40 @@ export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: Mov
 }
 
 export async function endNotProperlyEndedGames(sqlClient: pg.Pool) {
-  const dbRes = await sqlClient.query("SELECT id FROM games WHERE running=TRUE AND lastplayed < NOW() - INTERVAL '5 minutes';")
+  const dbRes = await sqlClient.query<{ id: number }>("SELECT id FROM games WHERE running=TRUE AND lastplayed < NOW() - INTERVAL '5 minutes';")
 
-  dbRes.rows
-    .map((e) => e.id)
-    .forEach(async (id) => {
-      try {
-        const game = await getGame(sqlClient, id)
-        if (game.game.winningTeams.some((e) => e === true)) {
-          game.game.gameEnded = true
-          logger.info(`Spiel beendet durch Automat: ID=${id}`)
-          await updateGame(sqlClient, id, game.game.getJSON(), false, false, false, game.bots)
-          if (game.privateTournamentId != null) {
-            updatePrivateTournamentFromGame(sqlClient, game)
-          }
-          if (game.publicTournamentId != null) {
-            updatePublicTournamentFromGame(sqlClient, game)
-          }
-          game.playerIDs.forEach((id) => {
-            const socket = getSocketByUserID(id ?? -1)
-            socket != null && emitGamesUpdate(sqlClient, socket)
-          })
-          emitRunningGamesUpdate(sqlClient)
-          sendUpdatesOfGameToPlayers(game)
+  for (const id of dbRes.rows.map((e) => e.id)) {
+    try {
+      const game = await getGame(sqlClient, id)
+      if (game.game.winningTeams.some((e) => e === true)) {
+        game.game.gameEnded = true
+        logger.info(`Spiel beendet durch Automat: ID=${id}`)
+        await updateGame(sqlClient, id, game.game.getJSON(), false, false, false, game.bots)
+        if (game.privateTournamentId != null) {
+          updatePrivateTournamentFromGame(sqlClient, game)
         }
-      } catch (err) {
-        logger.error(err)
-        logger.error('Error in endNotProperlyEndedGames')
+        if (game.publicTournamentId != null) {
+          updatePublicTournamentFromGame(sqlClient, game)
+        }
+        game.playerIDs.forEach((id) => {
+          const socket = getSocketByUserID(id ?? -1)
+          socket != null && emitGamesUpdate(sqlClient, socket)
+        })
+        emitRunningGamesUpdate(sqlClient)
+        sendUpdatesOfGameToPlayers(game)
       }
-    })
+    } catch (err) {
+      logger.error(err)
+      logger.error('Error in endNotProperlyEndedGames')
+    }
+  }
 }
 
 export async function abortNotEndedGames(sqlClient: pg.Pool) {
-  const dbRes = await sqlClient.query("SELECT id FROM games WHERE running=TRUE AND lastplayed < NOW() - INTERVAL '2 hours';")
-  dbRes.rows.forEach(async (row) => {
-    await abortGame(sqlClient, row.id)
-  })
+  const dbRes = await sqlClient.query<{ id: number }>("SELECT id FROM games WHERE running=TRUE AND lastplayed < NOW() - INTERVAL '2 hours';")
+  for (const id of dbRes.rows.map((e) => e.id)) {
+    await abortGame(sqlClient, id)
+  }
 }
 
 export async function disableRematchOfGame(pgPool: pg.Pool, id: number) {

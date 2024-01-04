@@ -23,7 +23,7 @@ export const useServerInfoStore = defineStore('serverInfo', {
         this.authenticatedUsers = data.authenticated
       })
       this.$state.socket.on('games:getRunningGames', (games) => {
-        this.runningGames = games.sort((a, b) => {
+        this.runningGames = games.toSorted((a, b) => {
           return b.created - a.created
         })
       })
