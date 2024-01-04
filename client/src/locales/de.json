@@ -69,7 +69,12 @@
       "tablet": "Tablet",
       "desktop": "Desktop",
       "others": "Andere"
-    }
+    },
+    "BotWinshare": {
+      "lost": "Verloren",
+      "won": "Gewonnen"
+    },
+    "headerBotWinshare": "Ergebnisse der Bots"
   },
   "Home": {
     "Spielersuche": "Spielersuche",

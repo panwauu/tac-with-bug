@@ -282,8 +282,9 @@ export async function getPlatformStatistic(pgPool: pg.Pool): Promise<PlatformSta
   const activityHeatmap = createHeatmapDataset(gameRes.rows)
   const localeDataset = await createLocaleDataset(pgPool)
   const userAgentDataset = await getUserAgentAnalysis(pgPool)
+  const botDataset = await getBotWins(pgPool)
 
-  return { weekDataset, dayDataset, hourDataset, activityHeatmap, localeDataset, userAgentDataset }
+  return { weekDataset, dayDataset, hourDataset, activityHeatmap, localeDataset, userAgentDataset, botDataset }
 }
 
 function getYearAndNumberOfWeek(date: Date): [number, number] {
@@ -329,4 +330,23 @@ async function getUserAgentAnalysis(pgPool: pg.Pool): Promise<UserAgentAnalysisD
   }
 
   return { deviceTypes, browserNames, osNames }
+}
+
+async function getBotWins(pgPool: pg.Pool) {
+  const res = await pgPool.query<{ total: number; won: number }>(`
+  SELECT 
+    COUNT(*)::INT as total,
+    SUM(won::int)::INT as won
+  FROM (
+    SELECT
+      (SELECT (t2.winningteams->(teamIndex::INTEGER - 1))::BOOLEAN FROM jsonb_array_elements("teams") with ordinality as t1(team, teamIndex) WHERE (team->0)::INTEGER = t2.playerIndex OR (team->1)::INTEGER = t2.playerIndex OR (team->2)::INTEGER = t2.playerIndex) as won
+    FROM (
+      SELECT game->'teams' as teams, game->'winningTeams' as winningteams, playerIndex, created
+      FROM games 
+      CROSS JOIN LATERAL unnest(ARRAY[0,1,2,3,4,5]) as playerIndex 
+      WHERE playerindex < n_players AND bots[playerIndex + 1] IS NOT NULL AND running IS FALSE AND (game->'gameEnded')::BOOLEAN AND (game->'substitutedPlayerIndices' IS NULL OR jsonb_array_length(game->'substitutedPlayerIndices') = 0)
+    ) as t2 
+  ) as t3;`)
+
+  return res.rows[0]
 }
