@@ -26,7 +26,7 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
       .forEach((s) =>
         s.emit(
           'toast:substitution-started',
-          game.substitution?.substitute.substitutionUsername ?? game.substitution?.substitute.botUsername ?? '',
+          game.substitution?.substitute.username ?? game.substitution?.substitute.botUsername ?? '',
           game.players.at(game.substitution?.playerIndexToSubstitute ?? 0) ?? ''
         )
       )

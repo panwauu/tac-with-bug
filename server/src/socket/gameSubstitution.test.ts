@@ -52,17 +52,17 @@ describe('Test game substitution of player by player', () => {
   const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
     afterOffer: {
       acceptedByIndex: [],
-      substitute: { substitutionUserID: 5, substitutionUsername: 'UserE', botIndex: null, botUsername: null },
+      substitute: { userID: 5, username: 'UserE', botID: null, botUsername: null },
       playerIndexToSubstitute: 2,
     },
     afterAccept1: {
       acceptedByIndex: [0],
-      substitute: { substitutionUserID: 5, substitutionUsername: 'UserE', botIndex: null, botUsername: null },
+      substitute: { userID: 5, username: 'UserE', botID: null, botUsername: null },
       playerIndexToSubstitute: 2,
     },
     afterAccept2: {
       acceptedByIndex: [0, 1],
-      substitute: { substitutionUserID: 5, substitutionUsername: 'UserE', botIndex: null, botUsername: null },
+      substitute: { userID: 5, username: 'UserE', botID: null, botUsername: null },
       playerIndexToSubstitute: 2,
     },
   }
@@ -218,12 +218,12 @@ describe('Test game substitution of player by bot', () => {
   const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
     afterStart: {
       acceptedByIndex: [0],
-      substitute: { substitutionUserID: null, substitutionUsername: null, botIndex: 3, botUsername: getBotName(gameID, 2) },
+      substitute: { userID: null, username: null, botID: 3, botUsername: getBotName(gameID, 2) },
       playerIndexToSubstitute: 2,
     },
     afterAccept2: {
       acceptedByIndex: [0, 1],
-      substitute: { substitutionUserID: null, substitutionUsername: null, botIndex: 3, botUsername: getBotName(gameID, 2) },
+      substitute: { userID: null, username: null, botID: 3, botUsername: getBotName(gameID, 2) },
       playerIndexToSubstitute: 2,
     },
   }
@@ -309,12 +309,12 @@ describe('Test game substitution of bot by player', () => {
   const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
     afterStart: {
       acceptedByIndex: [],
-      substitute: { substitutionUserID: 3, substitutionUsername: 'UserC', botIndex: null, botUsername: null },
+      substitute: { userID: 3, username: 'UserC', botID: null, botUsername: null },
       playerIndexToSubstitute: 2,
     },
     afterAccept1: {
       acceptedByIndex: [0],
-      substitute: { substitutionUserID: 3, substitutionUsername: 'UserC', botIndex: null, botUsername: null },
+      substitute: { userID: 3, username: 'UserC', botID: null, botUsername: null },
       playerIndexToSubstitute: 2,
     },
   }

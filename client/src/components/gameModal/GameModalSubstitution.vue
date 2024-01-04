@@ -29,7 +29,7 @@
       class="substitutionPlayer"
       :options="possibleToSubstitute"
       :placeholder="$t('Game.GameModal.Substitution.placeholderSubstituted')"
-      :emptyFilterMessage="$t('Game.GameModal.Substitution.noPlayerToSubstitute')"
+      :emptyMessage="$t('Game.GameModal.Substitution.noPlayerToSubstitute')"
       :disabled="substitutionRunning"
     >
       <template #value="slotProps">
@@ -105,7 +105,7 @@
         @click="answerSubstitution(false)"
       />
       <Button
-        v-if="updateData.substitution.substitute.substitutionUsername === username"
+        v-if="updateData.substitution.substitute.username === username"
         class="p-button-danger"
         :label="$t('Game.GameModal.Substitution.endOfferButton')"
         @click="answerSubstitution(false)"
@@ -195,8 +195,8 @@ const startSubstitutionPossible = computed(
 const newPlayer = computed(() => {
   if (props.updateData?.substitution != null) {
     return {
-      username: props.updateData.substitution.substitute.substitutionUsername ?? props.updateData.substitution.substitute.botUsername,
-      bot: props.updateData.substitution.substitute.botIndex != null,
+      username: props.updateData.substitution.substitute.username ?? props.updateData.substitution.substitute.botUsername,
+      bot: props.updateData.substitution.substitute.botID != null,
     }
   }
   return props.updateData?.gamePlayer === -1 ? { username: username.value ?? '', bot: false } : { username: i18n.global.t('Waiting.bot'), bot: true }
@@ -209,8 +209,8 @@ const possibleToSubstitute = computed(() => {
     return [
       {
         playerIndex: props.updateData.substitution.playerIndexToSubstitute,
-        username: props.updateData.substitution.substitute.substitutionUsername ?? props.updateData.substitution.substitute.botUsername,
-        bot: props.updateData.substitution.substitute.botIndex != null,
+        username: props.updateData.substitution.substitute.username ?? props.updateData.substitution.substitute.botUsername,
+        bot: props.updateData.substitution.substitute.botID != null,
       },
     ]
   }
