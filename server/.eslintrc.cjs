@@ -18,6 +18,7 @@ module.exports = {
     'no-duplicate-imports': 'error',
 
     // Enable in the future?
+    'no-shadow': ['warn'],
     'no-param-reassign': ['off', { props: true }],
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/ban-ts-comment': 0,

@@ -12,6 +12,7 @@ module.exports = {
     'no-duplicate-imports': 'error',
 
     /* Maybe remove in future */
+    'no-shadow': ['warn'],
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/ban-ts-comment': 0,
     '@typescript-eslint/no-extra-semi': 0,

@@ -24,7 +24,7 @@ function setSubstitution(gameID: number, substitution: Substitution | null) {
 }
 
 export function endSubstitutionIfRunning(game: GameForPlay) {
-  if (game.substitution?.substitute.substitutionUserID != null) {
+  if (game.substitution?.substitute.userID != null) {
     setSubstitution(game.id, null)
     game.substitution = null
   }
@@ -32,7 +32,7 @@ export function endSubstitutionIfRunning(game: GameForPlay) {
 
 export async function endSubstitutionsByUserID(pgPool: pg.Pool, userID: number) {
   for (const [key, substitution] of currentSubstitutions) {
-    if (substitution.substitute.substitutionUserID === userID) {
+    if (substitution.substitute.userID === userID) {
       setSubstitution(key, null)
       const game = await getGame(pgPool, key)
       sendUpdatesOfGameToPlayers(game)
@@ -107,15 +107,15 @@ export async function startSubstitution(
     substitute:
       substitutionBotId === null
         ? {
-            substitutionUserID: substitutionPlayerID,
-            substitutionUsername: user.value.username,
-            botIndex: null,
+            userID: substitutionPlayerID,
+            username: user.value.username,
+            botID: null,
             botUsername: null,
           }
         : {
-            substitutionUserID: null,
-            substitutionUsername: null,
-            botIndex: substitutionBotId,
+            userID: null,
+            username: null,
+            botID: substitutionBotId,
             botUsername: getBotName(game.id, playerIndexToSubstitute),
           },
     playerIndexToSubstitute: playerIndexToSubstitute,
@@ -153,7 +153,7 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
   }
 
   const substitutionOfPlayer = game.playerIDs.at(game.substitution.playerIndexToSubstitute) != null
-  const substitutionByPlayer = game.substitution.substitute.substitutionUserID != null
+  const substitutionByPlayer = game.substitution.substitute.userID != null
   const substitutionFullyAccepted =
     game.substitution.acceptedByIndex.length >= game.playerIDs.slice(0, game.nPlayers).filter((id) => id != null).length - (substitutionOfPlayer ? 1 : 0)
   if (substitutionFullyAccepted) {
@@ -180,16 +180,16 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
     if (substitutionByPlayer) {
       await pgPool.query('INSERT INTO users_to_games (player_index, userid, gameid) VALUES ($1, $2, $3);', [
         game.substitution.playerIndexToSubstitute,
-        game.substitution.substitute.substitutionUserID,
+        game.substitution.substitute.userID,
         game.id,
       ])
     } else {
-      game.bots[game.substitution.playerIndexToSubstitute] = game.substitution.substitute.botIndex
+      game.bots[game.substitution.playerIndexToSubstitute] = game.substitution.substitute.botID
     }
 
     getSocketByUserID(game.playerIDs[game.substitution.playerIndexToSubstitute] ?? -1)?.disconnect()
-    if (game.substitution.substitute.substitutionUserID != null) {
-      const newSocket = getSocketByUserID(game.substitution.substitute.substitutionUserID)
+    if (game.substitution.substitute.userID != null) {
+      const newSocket = getSocketByUserID(game.substitution.substitute.userID)
       if (newSocket != null) {
         newSocket.data.gamePlayer = game.substitution.playerIndexToSubstitute
         newSocket.emit('substitution:changeGamePlayer', game.substitution.playerIndexToSubstitute)
@@ -198,7 +198,7 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
     getSocketsInGame(nsp, game.id).forEach((s) =>
       s.emit(
         'toast:substitution-done',
-        game.substitution?.substitute?.substitutionUsername ?? game.substitution?.substitute?.botUsername ?? '',
+        game.substitution?.substitute?.username ?? game.substitution?.substitute?.botUsername ?? '',
         game.players[game.substitution?.playerIndexToSubstitute ?? 0] ?? ''
       )
     )
@@ -221,7 +221,7 @@ export async function rejectSubstitution(game: GameForPlay, userID: number): Pro
   }
 
   const playerIndex = game.playerIDs.findIndex((id) => id === userID)
-  if ((playerIndex < 0 || playerIndex >= game.nPlayers) && userID !== game.substitution.substitute.substitutionUserID) {
+  if ((playerIndex < 0 || playerIndex >= game.nPlayers) && userID !== game.substitution.substitute.userID) {
     return err('PLAYER_NOT_IN_GAME_AND_NOT_SUBSTITUTION')
   }
 
