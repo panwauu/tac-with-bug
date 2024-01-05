@@ -349,7 +349,9 @@ async function getBotWins(pgPool: pg.Pool) {
       FROM games 
       CROSS JOIN LATERAL unnest(ARRAY[0,1,2,3,4,5]) as playerIndex 
       WHERE 
-        playerindex < n_players AND bots[playerIndex + 1] IS NOT NULL AND running IS FALSE AND (game->'gameEnded')::BOOLEAN 
+        playerindex < n_players AND bots[playerIndex + 1] IS NOT NULL 
+        AND running IS FALSE AND (game->'gameEnded')::BOOLEAN
+        AND (game->'coop')::BOOLEAN = FALSE
         AND (game->'substitutedPlayerIndices' IS NULL OR jsonb_array_length(game->'substitutedPlayerIndices') = 0)
     ) as t2 
   ) as t3;`)
