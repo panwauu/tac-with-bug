@@ -69,7 +69,12 @@
       "tablet": "Tablet",
       "desktop": "Desktop",
       "others": "Andere"
-    }
+    },
+    "BotWinshare": {
+      "lost": "Verloren",
+      "won": "Gewonnen"
+    },
+    "headerBotWinshare": "Ergebnisse der Bots"
   },
   "Home": {
     "Spielersuche": "Spielersuche",
@@ -393,12 +398,12 @@
       },
       "Substitution": {
         "explanation": "Der Spielerwechsel hilft das Spiel fortzusetzen, wenn ein Spieler nicht mehr reagiert. Ein Zuschauer kann sich als Auswechselspieler anbieten und alle anderen Spieler müssen dem Wechsel zustimmen. Dafür muss der aktive Spieler seit einer Minute nicht gespielt haben und der Auswechselspieler darf noch nicht in diesem Spiel gespielt haben. Es funktioniert auch wenn ein einzelner Spieler seine Karten nicht getauscht oder weitergegeben hat.",
-        "offerButton": "Wechsel anbieten",
-        "currentlyNone": "Aktuell gibt es keinen Wechsel",
+        "offerButton": "Wechsel starten",
         "endOfferButton": "Wechsel zurückziehen",
         "rejectButton": "Wechsel ablehnen",
         "acceptButton": "Wechsel akzeptieren",
-        "currentHeading": "Aktueller Wechsel:"
+        "placeholderSubstituted": "Spieler wählen",
+        "noPlayerToSubstitute": "Kein Wechsel möglich"
       },
       "SubstitutedPlayersHeader": "Ausgewechselte Spieler:"
     },
@@ -409,7 +414,8 @@
       "aborted": "Das Spiel wurde abgebrochen",
       "wonWith": "Du hast mit {players} gewonnen!",
       "lostWith": "Du hast mit {players} verloren!",
-      "playersConnector": "und"
+      "playersConnector": "und",
+      "endedForWatch": "haben das Spiel gewonnen!"
     },
     "Rematch": {
       "title": "Rückspiel",
@@ -478,7 +484,7 @@
     },
     "Toast": {
       "substitution-offer-summary": "Wechselanfrage",
-      "substitution-offer-detail": "Der Spieler {username} hat sich für einen Wechsel angeboten. Alle Spieler im Spiel müssen diesen rechtzeitig annehmen, um den Wechsel durchzuführen.",
+      "substitution-offer-detail": "Ein Austausch von {usernameToSubstitute} durch {username} wurde gestartet. Alle Spieler im Spiel müssen diesen rechtzeitig annehmen, um den Wechsel durchzuführen.",
       "substitution-done-summary": "Wechsel durchgeführt",
       "substitution-done-detail": "Der Spielerwechsel wurde durchgeführt. {replacedUsername} wurde durch {username} ersetzt. Viel Spaß weiter beim spielen.",
       "substitution-stopped-summary": "Wechsel gescheitert",
@@ -532,13 +538,15 @@
       "privateTrueName": "Privat",
       "privateFalseName": "Öffentlich"
     },
+    "adminBadge": "Admin",
     "joinRandomGameButton": "Bestem Spiel beitreten",
     "removePlayerConfirmSelf": "Sicher, dass du diesen Warteraum verlassen möchtest?",
     "removePlayerConfirmOther": "Sicher, dass du einen Spieler aus dem Warteraum entlassen möchtest?",
     "switchGameConfirm": "Sicher, dass du den Warteraum wechseln möchtest?",
     "switchGameConfirmPrivate": "Dieser Raum wurde als geschlossene Runde erstellt. Sicher, dass du den Warteraum wechseln möchtest?",
     "joinGamePrivate": "Dieser Raum wurde als geschlossene Runde erstellt. Bist du sicher, dass du in dieser Runde willkommen bist?",
-    "leaveRematch": "Bist du dir sicher, dass du dieses Rematch verlassen möchtest?"
+    "leaveRematch": "Bist du dir sicher, dass du dieses Rematch verlassen möchtest?",
+    "bot": "Bot"
   },
   "Login": {
     "username": "Benutzername",

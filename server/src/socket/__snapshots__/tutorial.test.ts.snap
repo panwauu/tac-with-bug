@@ -3,6 +3,14 @@
 exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be able to be performed 1`] = `
 {
   "game": {
+    "bots": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ],
     "colors": [
       "red",
       "green",
@@ -128,6 +136,12 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
           "1",
         ],
         "discardPlayer": 0,
+        "hadOneOrThirteen": [
+          true,
+          true,
+          true,
+          false,
+        ],
         "meisterVersion": true,
         "players": [
           [
@@ -158,6 +172,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
             "7",
           ],
         ],
+        "previouslyPlayedCards": [],
       },
       "cardsWithMoves": [
         {
@@ -251,6 +266,12 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
         false,
         false,
         false,
+      ],
+      "narrTradedCards": [
+        null,
+        null,
+        null,
+        null,
       ],
       "priorBalls": [
         {
@@ -348,14 +369,14 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
         ],
       ],
       "teufelFlag": false,
-      "tradeCards": [
-        "",
-        "",
-        "",
-        "",
-      ],
       "tradeDirection": -1,
       "tradeFlag": false,
+      "tradedCards": [
+        null,
+        null,
+        null,
+        null,
+      ],
       "winningTeams": [
         false,
         false,
@@ -525,6 +546,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
     "players": [
       {
         "active": false,
+        "bot": false,
         "discarded": true,
         "name": "Du",
         "narrFlag": [
@@ -537,6 +559,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
       },
       {
         "active": true,
+        "bot": false,
         "discarded": false,
         "name": "-Kai-",
         "narrFlag": [
@@ -549,6 +572,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
       },
       {
         "active": false,
+        "bot": false,
         "discarded": false,
         "name": "-Oskar-",
         "narrFlag": [
@@ -561,6 +585,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
       },
       {
         "active": false,
+        "bot": false,
         "discarded": false,
         "name": "-Sophia-",
         "narrFlag": [
@@ -682,6 +707,14 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
 {
   "config": {},
   "game": {
+    "bots": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ],
     "colors": [
       "red",
       "green",
@@ -1154,6 +1187,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
     "players": [
       {
         "active": true,
+        "bot": false,
         "discarded": false,
         "name": "Du",
         "narrFlag": [
@@ -1166,6 +1200,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       },
       {
         "active": false,
+        "bot": false,
         "discarded": false,
         "name": "-Kai-",
         "narrFlag": [
@@ -1178,6 +1213,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       },
       {
         "active": false,
+        "bot": false,
         "discarded": false,
         "name": "-Oskar-",
         "narrFlag": [
@@ -1190,6 +1226,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       },
       {
         "active": false,
+        "bot": false,
         "discarded": false,
         "name": "-Sophia-",
         "narrFlag": [
@@ -1310,6 +1347,14 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
 {
   "config": {},
   "game": {
+    "bots": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ],
     "colors": [
       "red",
       "green",
@@ -1784,6 +1829,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
     "players": [
       {
         "active": true,
+        "bot": false,
         "discarded": false,
         "name": "Du",
         "narrFlag": [
@@ -1796,6 +1842,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       },
       {
         "active": false,
+        "bot": false,
         "discarded": false,
         "name": "-Kai-",
         "narrFlag": [
@@ -1808,6 +1855,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       },
       {
         "active": false,
+        "bot": false,
         "discarded": false,
         "name": "-Oskar-",
         "narrFlag": [
@@ -1820,6 +1868,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       },
       {
         "active": false,
+        "bot": false,
         "discarded": false,
         "name": "-Sophia-",
         "narrFlag": [

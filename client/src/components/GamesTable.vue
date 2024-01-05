@@ -94,6 +94,7 @@
             :clickable="false"
             :nameFirst="false"
             :username="player"
+            :bot="slotProps.data.bots[slotProps.data.players.indexOf(player)] != null"
           />
         </div>
       </template>

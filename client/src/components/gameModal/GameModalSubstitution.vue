@@ -4,31 +4,69 @@
       {{ $t('Game.GameModal.Substitution.explanation') }}
     </div>
 
+    <PlayerWithPicture
+      class="p-dropdown substitutionPlayer dropdown-imitation"
+      :username="newPlayer.username"
+      :bot="newPlayer.bot"
+      :name-first="false"
+      :clickable="false"
+    />
+    <i
+      class="pi pi-arrows-v"
+      style="font-size: 2rem; padding: 10px"
+    ></i>
+    <PlayerWithPicture
+      v-if="substitutionRunning"
+      class="p-dropdown substitutionPlayer dropdown-imitation"
+      :username="updateData?.players[updateData?.substitution?.playerIndexToSubstitute ?? 0].name ?? ''"
+      :bot="updateData?.players[updateData?.substitution?.playerIndexToSubstitute ?? 0].bot ?? true"
+      :name-first="false"
+      :clickable="false"
+    />
+    <Dropdown
+      v-if="!substitutionRunning"
+      v-model="selectedToSubstitute"
+      class="substitutionPlayer"
+      :options="possibleToSubstitute"
+      :placeholder="$t('Game.GameModal.Substitution.placeholderSubstituted')"
+      :emptyMessage="$t('Game.GameModal.Substitution.noPlayerToSubstitute')"
+      :disabled="substitutionRunning"
+    >
+      <template #value="slotProps">
+        <PlayerWithPicture
+          v-if="slotProps.value != null"
+          :username="slotProps.value.username"
+          :bot="slotProps.value.bot"
+          :name-first="false"
+          :clickable="false"
+        />
+        <div
+          v-else
+          style="height: 30px; display: flex; align-items: center"
+        >
+          {{ slotProps.placeholder }}
+        </div>
+      </template>
+      <template #option="slotProps">
+        <PlayerWithPicture
+          :username="slotProps.option.username"
+          :bot="slotProps.option.bot"
+          :name-first="false"
+          :clickable="false"
+        />
+      </template>
+    </Dropdown>
+
     <Button
-      :disabled="playerIndexPossibleToSubstitute == null"
+      v-if="substitutionRunning === false"
+      :disabled="startSubstitutionPossible === false"
       :label="$t('Game.GameModal.Substitution.offerButton')"
+      style="margin-top: 15px"
       class="p-button-success"
       @click="startSubstitution"
     />
 
-    <h3>{{ $t('Game.GameModal.Substitution.currentHeading') }}</h3>
-    <template v-if="updateData?.substitution != null">
-      <div style="display: flex; align-items: center; margin-bottom: 10px">
-        <PlayerWithPicture
-          :username="updateData.substitution.substitutionUsername"
-          :clickable="false"
-          :nameFirst="false"
-        />
-        <i
-          class="pi pi-arrows-h"
-          style="margin: 0 10px"
-          aria-hidden="true"
-        ></i>
-        <PlayerWithPicture
-          :username="updateData.players[updateData?.substitution.playerIndexToSubstitute].name"
-          :clickable="false"
-        />
-      </div>
+    <template v-if="substitutionRunning && updateData?.substitution != null">
       <CountdownTimer
         mode="down"
         :initialMilliseconds="60 * 1000 + updateData.substitution.startDate - Date.now()"
@@ -37,7 +75,7 @@
       />
       <div style="margin: 15px 0">
         <div
-          v-for="player in updateData.players.filter((_, i) => i != updateData?.substitution?.playerIndexToSubstitute)"
+          v-for="player in updateData.players.filter((p, i) => i != updateData?.substitution?.playerIndexToSubstitute && p.bot === false)"
           :key="`substitution_player_${player.name}`"
           style="display: flex; align-items: center"
         >
@@ -67,13 +105,12 @@
         @click="answerSubstitution(false)"
       />
       <Button
-        v-if="updateData.substitution.substitutionUsername === username"
+        v-if="updateData.substitution.substitute.username === username"
         class="p-button-danger"
         :label="$t('Game.GameModal.Substitution.endOfferButton')"
         @click="answerSubstitution(false)"
       />
     </template>
-    <div v-else>{{ $t('Game.GameModal.Substitution.currentlyNone') }}</div>
 
     <template v-if="updateData != null && updateData.playernames.length > updateData.players.length">
       <h3>{{ $t('Game.GameModal.SubstitutedPlayersHeader') }}</h3>
@@ -95,13 +132,14 @@
 
 <script setup lang="ts">
 import Button from 'primevue/button'
+import Dropdown from 'primevue/dropdown'
 import PlayerWithPicture from '../PlayerWithPicture.vue'
 import CountdownTimer from '../CountdownTimer.vue'
 import BallsImage from '../assets/BallsImage.vue'
 
 import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 import { GameSocketKey } from '@/services/injections'
-import { inject, onBeforeUnmount, ref } from 'vue'
+import { inject, ref, computed, watch } from 'vue'
 import { username } from '@/services/useUser'
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n'
@@ -111,9 +149,10 @@ const gameSocket = inject(GameSocketKey)
 const toast = useToast()
 
 async function startSubstitution() {
-  if (gameSocket == null || playerIndexPossibleToSubstitute.value == null) return
+  if (gameSocket == null || startSubstitutionPossible.value === false || selectedToSubstitute.value == null) return
 
-  const res = await gameSocket.emitWithAck(2000, 'substitution:offer', playerIndexPossibleToSubstitute.value)
+  const selfInGame = props.updateData?.players.findIndex((p) => p.name === username.value) !== -1
+  const res = await gameSocket.emitWithAck(2000, 'substitution:start', selectedToSubstitute.value.playerIndex, selfInGame ? 3 : null)
   if (res.status !== 200) {
     toast.add({
       severity: 'error',
@@ -139,46 +178,86 @@ async function answerSubstitution(accept: boolean) {
   }
 }
 
-const playerIndexPossibleToSubstitute = ref<number | undefined>(undefined)
+const substitutionRunning = computed(() => props.updateData?.substitution != null)
 
-function updateSubstitutionPossible() {
-  if (
-    props.updateData == null ||
-    !props.updateData.running ||
-    props.updateData.gamePlayer !== -1 ||
-    username.value == null ||
-    props.updateData.substitution != null ||
-    props.updateData.publicTournamentId != null ||
-    props.updateData.privateTournamentId != null ||
-    Date.now() - 60 * 1000 <= props.updateData.lastPlayed
-  ) {
-    playerIndexPossibleToSubstitute.value = undefined
-    return
+const inGeneralSubstitutionPossible = computed(
+  () => props.updateData?.running && props.updateData.substitution == null && props.updateData.publicTournamentId == null && props.updateData.privateTournamentId == null
+)
+const playerCanBeSubstituted = computed(() => Date.now() - 60 * 1000 > (props.updateData?.lastPlayed ?? Infinity))
+const botCanBeSubstituted = computed(() => !newPlayer.value.bot)
+const startSubstitutionPossible = computed(
+  () =>
+    inGeneralSubstitutionPossible.value &&
+    selectedToSubstitute.value != null &&
+    ((playerCanBeSubstituted.value && !selectedToSubstitute.value.bot) || (botCanBeSubstituted.value && selectedToSubstitute.value.bot))
+)
+
+const newPlayer = computed(() => {
+  if (props.updateData?.substitution != null) {
+    return {
+      username: props.updateData.substitution.substitute.username ?? props.updateData.substitution.substitute.botUsername,
+      bot: props.updateData.substitution.substitute.botID != null,
+    }
   }
-
-  if (props.updateData.players[0].narrFlag[0]) {
-    // narr
-    const potentialPlayernumbers = props.updateData.players.filter((p) => !p.narrFlag[1]).map((p) => p.playerNumber)
-    playerIndexPossibleToSubstitute.value = potentialPlayernumbers.length === 1 ? potentialPlayernumbers[0] : undefined
-  } else if (props.updateData.players[0].tradeInformation != null) {
-    // trade
-    const potentialPlayernumbers = props.updateData.players.filter((p) => p?.tradeInformation?.[1] === false).map((p) => p.playerNumber)
-    playerIndexPossibleToSubstitute.value = potentialPlayernumbers.length === 1 ? potentialPlayernumbers[0] : undefined
-  } else {
-    // ordinary move
-    const activePlayer = props.updateData.players.findIndex((p) => p.active)
-    playerIndexPossibleToSubstitute.value = activePlayer === -1 ? undefined : activePlayer
-  }
-}
-updateSubstitutionPossible()
-
-const interval = window.setInterval(() => {
-  updateSubstitutionPossible()
-}, 500)
-
-onBeforeUnmount(() => {
-  window.clearInterval(interval)
+  return props.updateData?.gamePlayer === -1 ? { username: username.value ?? '', bot: false } : { username: i18n.global.t('Waiting.bot'), bot: true }
 })
+
+const selectedToSubstitute = ref<{ playerIndex: number; username: string; bot: boolean } | null>(null)
+const possibleToSubstitute = computed(() => {
+  if (props.updateData == null) return []
+  if (props.updateData.substitution != null) {
+    return [
+      {
+        playerIndex: props.updateData.substitution.playerIndexToSubstitute,
+        username: props.updateData.substitution.substitute.username ?? props.updateData.substitution.substitute.botUsername,
+        bot: props.updateData.substitution.substitute.botID != null,
+      },
+    ]
+  }
+
+  return [
+    ...props.updateData.players
+      .map((p) => ({ playerIndex: p.playerNumber, username: p.name, bot: p.bot }))
+      .filter((e) => e.bot && inGeneralSubstitutionPossible.value && botCanBeSubstituted.value),
+    ...props.updateData.players
+      .filter(
+        (p) => inGeneralSubstitutionPossible.value && playerCanBeSubstituted.value && props.updateData?.players[0].narrFlag[0] && !p.narrFlag[1] && p.name !== username.value
+      )
+      .map((p) => ({ playerIndex: p.playerNumber, username: p.name, bot: p.bot })),
+    ...props.updateData.players
+      .filter(
+        (p) =>
+          inGeneralSubstitutionPossible.value &&
+          playerCanBeSubstituted.value &&
+          !props.updateData?.players[0].narrFlag[0] &&
+          props.updateData?.players[0].tradeInformation != null &&
+          p?.tradeInformation?.[1] === false &&
+          p.name !== username.value
+      )
+      .map((p) => ({ playerIndex: p.playerNumber, username: p.name, bot: p.bot })),
+    ...props.updateData.players
+      .filter(
+        (p) =>
+          inGeneralSubstitutionPossible.value &&
+          playerCanBeSubstituted.value &&
+          !props.updateData?.players[0].narrFlag[0] &&
+          props.updateData?.players[0].tradeInformation == null &&
+          p.active &&
+          p.name !== username.value
+      )
+      .map((p) => ({ playerIndex: p.playerNumber, username: p.name, bot: p.bot })),
+  ]
+})
+
+watch(
+  () => possibleToSubstitute.value,
+  (value) => {
+    if (!value.some((c) => c.username === selectedToSubstitute.value?.username)) {
+      selectedToSubstitute.value = null
+    }
+  },
+  { deep: true }
+)
 </script>
 
 <style scoped>
@@ -195,5 +274,14 @@ onBeforeUnmount(() => {
 .substitutedPlayerElement {
   display: flex;
   margin-bottom: 5px;
+}
+
+.dropdown-imitation {
+  padding: 8px;
+  height: 46px;
+}
+
+.substitutionPlayer {
+  width: 300px;
 }
 </style>

@@ -1,6 +1,6 @@
 import type { Socket as ServerSocket, Namespace } from 'socket.io'
 import type { Socket as ClientSocket } from 'socket.io-client'
-import type { CreateGameType, MovePlayerType, SwitchColorType, WaitingGame, StartGameType } from './typesWaiting'
+import type { CreateGameType, MovePlayerType, SwitchColorType, WaitingGame, StartGameType, MoveBotType } from './typesWaiting'
 import type { SubscriptionExport } from './typesSubscription'
 import type { GameForOverview, GetGamesType, GetRunningGamesType, UpdateDataType, GameForPlay } from './typesDBgame'
 import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTournament, TournamentTableData, LastTournamentWinners } from './typesTournament'
@@ -85,9 +85,12 @@ export interface ClientToServerEvents extends Record<string, any> {
   // waiting
   'waiting:getGames': () => void
   'waiting:joinGame': (gameID: number, cb: CallbackFunction<undefined>) => void
+  'waiting:addBot': (gameID: number, botID: number, playerIndex: number, cb: CallbackFunction<undefined>) => void
   'waiting:createGame': (data: CreateGameType, cb: CallbackFunction<undefined>) => void
   'waiting:movePlayer': (data: MovePlayerType, cb: CallbackFunction<undefined>) => void
+  'waiting:moveBot': (data: MoveBotType, cb: CallbackFunction<undefined>) => void
   'waiting:removePlayer': (username: string, cb: CallbackFunction<undefined>) => void
+  'waiting:removeBot': (gameID: number, playerIndex: number, cb: CallbackFunction<undefined>) => void
   'waiting:readyPlayer': (data: { gameID: number }, cb: CallbackFunction<undefined>) => void
   'waiting:switchColor': (data: SwitchColorType, cb: CallbackFunction<undefined>) => void
   'waiting:createRematch': (data: { gameID: number }, cb: Cb<null, any>) => void

@@ -40,7 +40,7 @@ describe('Test helper functions', () => {
 
   test('Left and right shift should neutralize', () => {
     const n = 1
-    const array = [1, 2, 3, 4, 5] //Array(10).fill(0).map(() => Math.random())
+    const array = [1, 2, 3, 4, 5]
     expect(leftShiftArray(rightShiftArray(array, n), n)).toEqual(array)
   })
 

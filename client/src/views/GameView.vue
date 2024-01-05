@@ -56,16 +56,16 @@ gameSocket.on('game:online-players', miscState.setOnlinePlayers)
 gameSocket.on('update', updateHandler)
 gameSocket.on('reconnect_failed', closeGame)
 gameSocket.on('disconnect', closeGame)
-gameSocket.on('toast:substitution-offer', substitutionOfferToast)
+gameSocket.on('toast:substitution-started', substitutionOfferToast)
 gameSocket.on('toast:substitution-done', substitutionDoneToast)
 gameSocket.on('toast:substitution-stopped', substitutionStoppedToast)
 
-function substitutionOfferToast(username: string) {
+function substitutionOfferToast(username: string, usernameToSubstitute: string) {
   toast.add({
     severity: 'warn',
     life: 5000,
     summary: i18n.global.t('Game.Toast.substitution-offer-summary'),
-    detail: i18n.global.t('Game.Toast.substitution-offer-detail', { username }),
+    detail: i18n.global.t('Game.Toast.substitution-offer-detail', { username, usernameToSubstitute }),
   })
 }
 
@@ -119,7 +119,7 @@ onUnmounted(() => {
   gameSocket.off('update', updateHandler)
   gameSocket.off('reconnect_failed', closeGame)
   gameSocket.off('disconnect', closeGame)
-  gameSocket.off('toast:substitution-offer', substitutionOfferToast)
+  gameSocket.off('toast:substitution-started', substitutionOfferToast)
   gameSocket.off('toast:substitution-done', substitutionDoneToast)
   gameSocket.off('toast:substitution-stopped', substitutionStoppedToast)
   gameSocket.disconnect()

@@ -13,6 +13,7 @@ import { updateTournamentWinners } from '../socket/tournament'
 import { getSocketByUserID } from '../socket/general'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { tournamentBus } from './tournaments'
+import { switchFromTeamsOrderToGameOrder } from '../game/teamUtils'
 
 interface GetTournamentCondition {
   id?: number
@@ -174,19 +175,21 @@ async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament
       playerids = playerids.concat(tournament.teams[t].playerids)
     })
 
-    let order: number[] = []
-    if (tournament.playersPerTeam === 2 && tournament.teamsPerMatch === 3) {
-      order = [0, 3, 1, 4, 2, 5]
-    } else if (tournament.playersPerTeam === 3 && tournament.teamsPerMatch === 2) {
-      order = [0, 2, 4, 1, 3, 5]
-    } else {
-      order = [0, 2, 1, 3]
-    }
-    const playeridsOrdered = order.map((i) => playerids[i])
+    const playeridsOrdered = switchFromTeamsOrderToGameOrder(playerids, tournament.playersPerTeam * tournament.teamsPerMatch, tournament.teamsPerMatch)
 
     const colorsForGame = [...colors]
     shuffleArray(colorsForGame)
-    const createdGame = await createGame(sqlClient, 2, playeridsOrdered, true, false, colorsForGame, tournament.id, undefined)
+    const createdGame = await createGame(
+      sqlClient,
+      2,
+      playeridsOrdered,
+      playerids.map(() => null),
+      true,
+      false,
+      colorsForGame,
+      tournament.id,
+      undefined
+    )
 
     createdGame.playerIDs.forEach((id) => {
       const socket = getSocketByUserID(id ?? -1)

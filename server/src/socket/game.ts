@@ -3,17 +3,37 @@ import type { GameForPlay } from '../sharedTypes/typesDBgame'
 import type { GameSocketS, GameNamespace } from '../sharedTypes/GameNamespaceDefinition'
 
 import logger from '../helpers/logger'
-import { getPlayerUpdateFromGame } from '../game/serverOutput'
+import { getCards, getPlayerUpdateFromGame } from '../game/serverOutput'
 import { performMoveAndReturnGame, getGame } from '../services/game'
 import { gameSocketIOAuthentication } from '../helpers/authentication'
 import { initializeInfo } from './info'
 import { registerSubstitutionHandlers } from './gameSubstitution'
 import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/substitution'
+import { MoveTextOrBall } from '../sharedTypes/typesBall'
+import { getAiData } from '../bot/simulation/output'
+import { projectMoveToGamePlayer } from '../bot/normalize/normalize'
+import { getBotMove } from '../bot/bots/bots'
+import { sleep } from '../helpers/sleep'
 
 export let nsp: GameNamespace
 
 export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
   nsp = nspGame
+
+  const runBots = true
+  const getBotMoveCyclic = async () => {
+    while (runBots) {
+      try {
+        await CallBot(pgPool, nspGame)
+      } catch (err) {
+        logger.error(err)
+        logger.error('AI callback failed')
+      }
+      await sleep(200)
+    }
+  }
+
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') getBotMoveCyclic()
 
   nspGame.use(gameSocketIOAuthentication)
 
@@ -47,7 +67,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
 
     const game = await getGame(pgPool, socket.data.gameID)
     socket.emit('update', getPlayerUpdateFromGame(game, socket.data.gamePlayer))
-    dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
+    await dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
 
     emitOnlinePlayersEvents(pgPool, nspGame, socket.data.gameID)
 
@@ -70,7 +90,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
       getSocketsInGame(nspGame, socket.data.gameID).forEach((socketIterator) => {
         socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
       })
-      dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
+      await dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
     })
 
     registerSubstitutionHandlers(pgPool, socket)
@@ -133,4 +153,59 @@ export function sendUpdatesOfGameToPlayers(game: GameForPlay) {
   getSocketsInGame(nsp, game.id).forEach((socket) => {
     socket.emit('update', getPlayerUpdateFromGame(game, socket.data.gamePlayer ?? -1))
   })
+}
+
+const BOT_TIME_TO_WAIT = 4000 as const
+const BOT_TIME_TO_WAIT_NARR = 0 as const
+const BOT_TIME_TO_WAIT_7 = 1500 as const
+
+async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
+  const gameIDs: number[] = []
+  for (const socket of nsp.sockets) {
+    if (socket[1].data.gameID != null && !gameIDs.includes(socket[1].data.gameID)) {
+      gameIDs.push(socket[1].data.gameID)
+    }
+  }
+
+  for (const gameID of gameIDs) {
+    const game = await getGame(pgPool, gameID)
+    if (
+      !game.running ||
+      !(
+        Date.now() - game.lastPlayed > BOT_TIME_TO_WAIT ||
+        (Date.now() - game.lastPlayed > BOT_TIME_TO_WAIT_7 && game.game.cardsWithMoves.some((c) => c.title.includes('-'))) ||
+        (Date.now() - game.lastPlayed > BOT_TIME_TO_WAIT_NARR && game.game.cardsWithMoves.every((c) => c.textAction === 'narr'))
+      )
+    ) {
+      continue
+    }
+
+    const start = performance.now()
+
+    let move: MoveTextOrBall | null = null
+    const botIndices = game.bots.map((bot, i) => (bot != null ? i : null)).filter((i) => i != null) as number[]
+    for (const gamePlayer of botIndices) {
+      const cards = getCards(game.game, gamePlayer)
+      if (cards.length !== 0 && game.game.narrFlag.some((f) => f) && !game.game.narrFlag[gamePlayer]) {
+        move = [gamePlayer, 0, 'narr']
+        break
+      }
+      if (cards.every((c) => !c.possible)) {
+        continue
+      }
+
+      const agentMove = getBotMove(game.bots[gamePlayer] ?? 3, getAiData(game.game, gamePlayer))
+      move = projectMoveToGamePlayer(game.game, agentMove, gamePlayer)
+      logger.info(`Bot took ${performance.now() - start}ms`)
+      break
+    }
+
+    if (move != null) {
+      const game = await performMoveAndReturnGame(pgPool, move, move[0], gameID)
+      getSocketsInGame(nspGame, gameID).forEach((socketIterator) => {
+        socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
+      })
+      await dealCardsIfNecessary(pgPool, nspGame, game.game.activePlayer, game)
+    }
+  }
 }

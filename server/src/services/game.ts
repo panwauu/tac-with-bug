@@ -12,6 +12,8 @@ import { sendUpdatesOfGameToPlayers } from '../socket/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { getSocketByUserID } from '../socket/general'
 import { getSubstitution } from './substitution'
+import { getBotName } from '../bot/names'
+import { convertGameOrderToArrayPerTeam } from '../game/teamUtils'
 
 function mergeElementsWithIndices<T>(elements: T[], indices: number[], minLength: number): (T | null)[] {
   return Array(Math.max(Math.max(...indices) + 1, minLength))
@@ -29,8 +31,8 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
     array_agg(users.id ORDER BY users_to_games.player_index) as playerids, 
     array_agg(users_to_games.player_index ORDER BY users_to_games.player_index) as player_indices
   FROM games 
-    JOIN users_to_games ON games.id = users_to_games.gameid 
-    JOIN users ON users_to_games.userid = users.id 
+    LEFT OUTER JOIN users_to_games ON games.id = users_to_games.gameid 
+    LEFT OUTER JOIN users ON users_to_games.userid = users.id 
   WHERE games.id = ANY($1::int[]) GROUP BY games.id ORDER BY games.id;`
   const dbRes = await sqlClient.query(query, [gameIDs])
 
@@ -47,12 +49,15 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
       lastPlayed: Date.parse(dbGame.lastplayed),
       publicTournamentId: dbGame.public_tournament_id,
       privateTournamentId: dbGame.private_tournament_id,
-      players: mergeElementsWithIndices(dbGame.players, dbGame.player_indices, dbGame.game.nPlayers),
+      players: mergeElementsWithIndices(dbGame.players as string[], dbGame.player_indices, dbGame.game.nPlayers).map(
+        (p, i) => p ?? (dbGame.bots[i] != null ? getBotName(dbGame.id, i) : null)
+      ),
       playerIDs: mergeElementsWithIndices(dbGame.playerids, dbGame.player_indices, dbGame.game.nPlayers),
       game: new Game(0, 0, false, false, dbGame.game),
       colors: dbGame.colors,
       rematch_open: dbGame.rematch_open,
       substitution: getSubstitution(dbGame.id),
+      bots: dbGame.bots,
     })
   })
 
@@ -62,7 +67,7 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
 export async function getGame(sqlClient: pg.Pool, gameID: number) {
   const gameArray = await queryGamesByID(sqlClient, [gameID])
   if (gameArray.length !== 1) {
-    throw new Error('GameID does not exist')
+    throw new Error(`GameID ${gameID} does not exist`)
   }
   return gameArray[0]
 }
@@ -94,7 +99,16 @@ export async function getRunningGames(pgPool: pg.Pool): Promise<tDBTypes.GetRunn
   return games.map((g) => {
     return {
       id: g.id,
-      teams: getTeamsFromGame(g),
+      teams: convertGameOrderToArrayPerTeam(
+        g.players.slice(0, g.nPlayers).map((p, i) => p ?? getBotName(g.id, i)),
+        g.nPlayers,
+        g.nTeams
+      ),
+      bots: convertGameOrderToArrayPerTeam(
+        g.bots.slice(0, g.nPlayers).map((b) => b != null),
+        g.nPlayers,
+        g.nTeams
+      ),
       created: g.created,
       lastPlayed: g.lastPlayed,
     }
@@ -104,7 +118,8 @@ export async function getRunningGames(pgPool: pg.Pool): Promise<tDBTypes.GetRunn
 export async function createGame(
   sqlClient: pg.Pool,
   teamsParam: number,
-  playerIDs: number[],
+  playerIDs: (number | null)[],
+  bots: (number | null)[],
   meisterVersion: boolean,
   coop: boolean,
   colors: string[],
@@ -118,10 +133,18 @@ export async function createGame(
     teams = 2
   }
 
+  if (
+    Array.from({ length: playerIDs.length })
+      .map((_, i) => i)
+      .some((i) => (playerIDs[i] == null && bots[i] == null) || (playerIDs[i] != null && bots[i] != null))
+  ) {
+    throw new Error(`Cannot create game missing players or bots; playerIDs: ${JSON.stringify(playerIDs)}, bots: ${JSON.stringify(bots)}`)
+  }
+
   const newGame = new Game(playerIDs.length, teams, meisterVersion, coop)
 
-  const values = [playerIDs.length, teams, newGame.getJSON(), publicTournamentId, JSON.stringify(colors.slice(0, playerIDs.length)), privateTournamentId]
-  const query = 'INSERT INTO games (n_players, n_teams, game, public_tournament_id, colors, private_tournament_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;'
+  const values = [playerIDs.length, teams, newGame.getJSON(), publicTournamentId, JSON.stringify(colors.slice(0, playerIDs.length)), privateTournamentId, bots]
+  const query = 'INSERT INTO games (n_players, n_teams, game, public_tournament_id, colors, private_tournament_id, bots) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;'
   const createGameRes = await sqlClient.query(query, values).then((res) => {
     captureMove(sqlClient, res.rows[0].id, ['init', playerIDs.length, teams, meisterVersion, coop], newGame)
     return res
@@ -130,18 +153,24 @@ export async function createGame(
     throw new Error('Could not create Game')
   }
 
-  const userToGameQuery = `
-        INSERT INTO users_to_games (userid, gameid, player_index) VALUES 
-        ($2, $1, 0), ($3, $1, 1), ($4, $1, 2), ($5, $1, 3) 
-        ${playerIDs.length === 6 ? ', ($6, $1, 4), ($7, $1, 5)' : ''};`
-  await sqlClient.query(userToGameQuery, [createGameRes.rows[0].id, ...playerIDs])
+  const playersQuery = playerIDs
+    .map((id, i) => {
+      return { playerID: id, playerIndex: i }
+    })
+    .filter((data) => data.playerID != null)
+    .map((data, i) => {
+      return ` ($${2 + i}, $1, ${data.playerIndex}) `
+    })
+    .join(',')
+  const userToGameQuery = `INSERT INTO users_to_games (userid, gameid, player_index) VALUES ${playersQuery};`
+  await sqlClient.query(userToGameQuery, [createGameRes.rows[0].id, ...playerIDs.filter((id) => id != null)])
 
   return getGame(sqlClient, createGameRes.rows[0].id)
 }
 
-export async function updateGame(sqlClient: pg.Pool, gameID: number, gameJSON: string, running: boolean, setTimeFlag: boolean, openRematchFlag: boolean) {
-  const query = `UPDATE games SET game = $1, ${setTimeFlag ? 'lastPlayed = current_timestamp,' : ''} running = $3, rematch_open = $4 WHERE id = $2;`
-  const values = [gameJSON, gameID, running, openRematchFlag]
+export async function updateGame(sqlClient: pg.Pool, gameID: number, gameJSON: string, running: boolean, setTimeFlag: boolean, openRematchFlag: boolean, bots: (number | null)[]) {
+  const query = `UPDATE games SET game = $1, ${setTimeFlag ? 'lastPlayed = current_timestamp,' : ''} running = $3, rematch_open = $4, bots = $5 WHERE id = $2;`
+  const values = [gameJSON, gameID, running, openRematchFlag, bots]
   return sqlClient.query(query, values)
 }
 
@@ -192,7 +221,11 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
     runningGames: games
       .filter((g) => g.running && g.playerIDs.findIndex((id) => id === userID) < g.nPlayers)
       .map((game) => {
-        const teams = getTeamsFromGame(game)
+        const teams = convertGameOrderToArrayPerTeam(
+          game.players.slice(0, game.nPlayers).map((p, i) => p ?? getBotName(game.id, i)),
+          game.nPlayers,
+          game.nTeams
+        )
 
         return {
           id: game.id,
@@ -209,28 +242,10 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
           privateTournamentId: game.privateTournamentId,
           nPlayer: game.playerIDs.indexOf(userID),
           teams: teams,
+          bots: game.bots,
         }
       }),
   }
-}
-
-function getTeamsFromGame(game: tDBTypes.GameForPlay) {
-  const order = game.nPlayers === 4 ? [0, 2, 1, 3] : game.nTeams === 2 ? [0, 2, 4, 1, 3, 5] : [0, 3, 1, 4, 2, 5]
-  const orderedPlayers = order.map((i) => game.players[i])
-
-  const teams: string[][] = []
-  for (let team = 0; team < game.nTeams; team++) {
-    const arr: string[] = []
-    for (let iterator = 0; iterator < orderedPlayers.length / game.nTeams; iterator++) {
-      const player = orderedPlayers[(team * orderedPlayers.length) / game.nTeams + iterator]
-      if (player != null) {
-        arr.push(player)
-      }
-    }
-    teams.push(arr)
-  }
-
-  return teams
 }
 
 export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: number, limit: number, sortField: string | undefined, sortOrder: number | undefined) {
@@ -248,7 +263,11 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
   const gamesFromDB = await queryGamesByID(sqlClient, idList)
 
   const games: tDBTypes.GameForOverview[] = gamesFromDB.map((game) => {
-    const teams = getTeamsFromGame(game)
+    const teams = convertGameOrderToArrayPerTeam(
+      game.players.slice(0, game.nPlayers).map((p, i) => p ?? getBotName(game.id, i)),
+      game.nPlayers,
+      game.nTeams
+    )
 
     const nPlayer = game.playerIDs.indexOf(userID)
 
@@ -267,10 +286,11 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
       privateTournamentId: game.privateTournamentId,
       nPlayer: nPlayer,
       teams: teams,
+      bots: game.bots,
     }
   })
 
-  return { games: games.sort(gamesSort(orderColumn, sortOrder ?? 1)), nEntries }
+  return { games: games.toSorted(gamesSort(orderColumn, sortOrder ?? 1)), nEntries }
 }
 
 function getStatusForOverview(game: tDBTypes.GameForPlay, playerIndex: number) {
@@ -305,6 +325,7 @@ function gamesSort(sortField: string, sortOrder: number) {
 
 export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: MoveType, gamePlayer: number, gameID: number) {
   const game = await getGame(sqlClient, gameID)
+
   if (!game.game.checkMove(postMove) || (postMove !== 'dealCards' && postMove[0] !== gamePlayer)) {
     throw new Error('Player not allowed to play')
   }
@@ -324,7 +345,8 @@ export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: Mov
     game.game.getJSON(),
     game.running,
     !(game.game.tradeFlag && game.game.statistic.filter((s) => s.cards.total[2] > 0).length > 1),
-    game.rematch_open
+    game.rematch_open,
+    game.bots
   )
   await captureMove(sqlClient, gameID, postMove, game.game)
 
@@ -349,16 +371,15 @@ export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: Mov
 }
 
 export async function endNotProperlyEndedGames(sqlClient: pg.Pool) {
-  const dbRes = await sqlClient.query("SELECT id FROM games WHERE running=TRUE AND lastplayed < NOW() - INTERVAL '5 minutes';")
+  const dbRes = await sqlClient.query<{ id: number }>("SELECT id FROM games WHERE running=TRUE AND lastplayed < NOW() - INTERVAL '5 minutes';")
 
-  dbRes.rows
-    .map((e) => e.id)
-    .forEach(async (id) => {
+  for (const id of dbRes.rows.map((e) => e.id)) {
+    try {
       const game = await getGame(sqlClient, id)
       if (game.game.winningTeams.some((e) => e === true)) {
         game.game.gameEnded = true
         logger.info(`Spiel beendet durch Automat: ID=${id}`)
-        await updateGame(sqlClient, id, game.game.getJSON(), false, false, false)
+        await updateGame(sqlClient, id, game.game.getJSON(), false, false, false, game.bots)
         if (game.privateTournamentId != null) {
           updatePrivateTournamentFromGame(sqlClient, game)
         }
@@ -372,14 +393,18 @@ export async function endNotProperlyEndedGames(sqlClient: pg.Pool) {
         emitRunningGamesUpdate(sqlClient)
         sendUpdatesOfGameToPlayers(game)
       }
-    })
+    } catch (err) {
+      logger.error(err)
+      logger.error('Error in endNotProperlyEndedGames')
+    }
+  }
 }
 
 export async function abortNotEndedGames(sqlClient: pg.Pool) {
-  const dbRes = await sqlClient.query("SELECT id FROM games WHERE running=TRUE AND lastplayed < NOW() - INTERVAL '2 hours';")
-  dbRes.rows.forEach(async (row) => {
-    await abortGame(sqlClient, row.id)
-  })
+  const dbRes = await sqlClient.query<{ id: number }>("SELECT id FROM games WHERE running=TRUE AND lastplayed < NOW() - INTERVAL '2 hours';")
+  for (const id of dbRes.rows.map((e) => e.id)) {
+    await abortGame(sqlClient, id)
+  }
 }
 
 export async function disableRematchOfGame(pgPool: pg.Pool, id: number) {

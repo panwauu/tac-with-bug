@@ -14,7 +14,7 @@ export function leftShiftArray<T>(array: T[], shiftBy: number): T[] {
 
 export function reorderArray<T>(array: T[], order: number[], revertFlag?: boolean) {
   if (array.length !== order.length) {
-    throw new Error('Order has to be the same length as the error to be ordered')
+    throw new Error('Order has to be the same length as the array to be ordered')
   }
   for (let i = 0; i < array.length; i++) {
     if (order.find((o) => o === i) === undefined) {
@@ -22,12 +22,11 @@ export function reorderArray<T>(array: T[], order: number[], revertFlag?: boolea
     }
   }
 
-  const returnArray: T[] = []
   if (revertFlag === true) {
-    const revertedOrder = Array.from(Array(array.length).keys()).sort((a, b) => order[a] - order[b])
-    revertedOrder.forEach((o) => returnArray.push(array[o]))
-  } else {
-    order.forEach((o) => returnArray.push(array[o]))
+    return Array.from(Array(array.length).keys())
+      .sort((a, b) => order[a] - order[b])
+      .map((i) => array[i])
   }
-  return returnArray
+
+  return order.map((i) => array[i])
 }

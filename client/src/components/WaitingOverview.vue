@@ -161,8 +161,11 @@
       class="activeGame"
       :game="waitingStore.ownGame"
       :active="true"
+      @add-bot="addBot"
       @move-player="movePlayer"
+      @move-bot="moveBot"
       @remove-player="removePlayer"
+      @remove-bot="removeBot"
       @ready-player="setPlayerReady"
       @color-player="setPlayerColor"
     />
@@ -271,8 +274,16 @@ function joinGame(game: WaitingGameType) {
   socket.emitWithAck(5000, 'waiting:joinGame', game.id)
 }
 
+function addBot(data: { gameID: number; botID: number; playerIndex: number }) {
+  socket.emitWithAck(5000, 'waiting:addBot', data.gameID, data.botID, data.playerIndex)
+}
+
 function movePlayer(data: { gameID: number; username: string; steps: number }) {
   socket.emitWithAck(5000, 'waiting:movePlayer', data)
+}
+
+function moveBot(data: { gameID: number; playerIndex: number; steps: number }) {
+  socket.emitWithAck(5000, 'waiting:moveBot', data)
 }
 
 function removePlayer(usernameToRemove: string) {
@@ -282,17 +293,22 @@ function removePlayer(usernameToRemove: string) {
   }
 }
 
+function removeBot(data: { gameID: number; playerIndex: number }) {
+  socket.emitWithAck(5000, 'waiting:removeBot', data.gameID, data.playerIndex)
+}
+
 function setPlayerReady(gameID: number) {
   socket.emitWithAck(5000, 'waiting:readyPlayer', {
     gameID: gameID,
   })
 }
 
-function setPlayerColor(usernameToChange: string, gameID: number, color: string) {
+function setPlayerColor(usernameToChange: string, gameID: number, color: string, botIndex: number | null) {
   socket.emitWithAck(5000, 'waiting:switchColor', {
-    gameID: gameID,
+    gameID,
     username: usernameToChange,
-    color: color,
+    color,
+    botIndex,
   })
 }
 </script>

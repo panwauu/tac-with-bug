@@ -9,9 +9,10 @@ export interface GameData {
   aussetzenFlag: boolean
   teufelFlag: boolean
   tradeFlag: boolean
-  tradeCards: tCard.CardType[]
+  tradedCards: (tCard.CardType | null)[]
   tradeDirection: number
   narrFlag: boolean[]
+  narrTradedCards: (tCard.CardType[] | null)[]
   balls: tBall.BallsType
   cards: tCard.CardsType
   teams: number[][]
@@ -25,8 +26,19 @@ export interface GameData {
 }
 
 export type Substitution = {
-  substitutionUserID: number
-  substitutionUsername: string
+  substitute:
+    | {
+        userID: number
+        username: string
+        botID: null
+        botUsername: null
+      }
+    | {
+        userID: null
+        username: null
+        botID: number
+        botUsername: string
+      }
   playerIndexToSubstitute: number
   acceptedByIndex: number[]
   startDate: number

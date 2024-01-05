@@ -28,7 +28,7 @@ export const useMessagesStore = defineStore('messages', {
         label: 'recent',
         icon: 'pi pi-clock',
         children: state.chats
-          .sort((a, b) => Date.parse(b.lastMessage) - Date.parse(a.lastMessage))
+          .toSorted((a, b) => Date.parse(b.lastMessage) - Date.parse(a.lastMessage))
           .slice(0, 5)
           .map((o) => {
             return {
