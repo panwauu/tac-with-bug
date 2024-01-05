@@ -2,8 +2,22 @@ import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import type pg from 'pg'
 import Joi from 'joi'
 
-import { changeColor, deleteWaitingGame, getWaitingGames, removePlayer, addPlayer, createWaitingGame, movePlayer, setPlayerReady, createRematchGame } from '../services/waiting'
-import { getGame, createGame } from '../services/game'
+import {
+  changeColor,
+  deleteWaitingGame,
+  getWaitingGames,
+  removePlayer,
+  addPlayer,
+  createWaitingGame,
+  movePlayer,
+  setPlayerReady,
+  createRematchGame,
+  addBot,
+  moveBot,
+  removeBot,
+  createGameFromWaitingGame,
+} from '../services/waiting'
+import { getGame } from '../services/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from './games'
 import { sendUpdatesOfGameToPlayers } from './game'
 import { getUser } from '../services/user'
@@ -52,6 +66,24 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     return cb?.({ status: 200 })
   })
 
+  socket.on('waiting:addBot', async (gameID, botID, playerIndex, cb) => {
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
+
+    const schema = Joi.object({
+      gameID: Joi.number().required().integer().positive(),
+      botID: Joi.number().required().integer(),
+      playerIndex: Joi.number().required(),
+    })
+    const { error } = schema.validate({ gameID, botID, playerIndex })
+    if (error != null) return cb?.({ status: 500, error })
+
+    const addRes = await addBot(pgPool, gameID, botID, playerIndex, socket.data.userID)
+    if (addRes.isErr()) return cb?.({ status: 500, error: addRes.error })
+
+    emitGetGames()
+    return cb?.({ status: 200 })
+  })
+
   socket.on('waiting:createGame', async (data, cb) => {
     if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
@@ -91,6 +123,24 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     return cb?.({ status: 200 })
   })
 
+  socket.on('waiting:moveBot', async (data, cb) => {
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
+
+    const schema = Joi.object({
+      gameID: Joi.number().required().integer().positive(),
+      playerIndex: Joi.number().required().integer(),
+      steps: Joi.number().required().integer(),
+    })
+    const { error } = schema.validate(data)
+    if (error != null) return cb?.({ status: 500, error })
+
+    const res = await moveBot(pgPool, data.gameID, data.playerIndex, data.steps > 0, socket.data.userID)
+    if (res.isErr()) return cb?.({ status: 500, error: res.error })
+
+    emitGetGames()
+    return cb?.({ status: 200 })
+  })
+
   socket.on('waiting:removePlayer', async (username, cb) => {
     if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
@@ -99,6 +149,23 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     if (error != null) return cb?.({ status: 500, error })
 
     const res = await removePlayer(pgPool, username, socket.data.userID)
+    if (res.isErr()) return cb?.({ status: 500, error: res.error })
+
+    emitGetGames()
+    return cb?.({ status: 200 })
+  })
+
+  socket.on('waiting:removeBot', async (gameID, playerIndex, cb) => {
+    if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
+
+    const schema = Joi.object({
+      gameID: Joi.number().required().integer().positive(),
+      playerIndex: Joi.number().required().integer(),
+    })
+    const { error } = schema.validate({ gameID, playerIndex })
+    if (error != null) return cb?.({ status: 500, error })
+
+    const res = await removeBot(pgPool, gameID, playerIndex, socket.data.userID)
     if (res.isErr()) return cb?.({ status: 500, error: res.error })
 
     emitGetGames()
@@ -115,9 +182,9 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     const game = await setPlayerReady(pgPool, data.gameID, socket.data.userID)
     if (game.isErr()) return cb?.({ status: 500, error: game.error })
 
-    if (game.value.ready.every((r, i) => r === true || i >= game.value.nPlayers)) {
+    if (game.value.ready.every((r, i) => r === true || i >= game.value.nPlayers || game.value.bots[i] != null)) {
       deleteWaitingGame(pgPool, data.gameID)
-      const createdGame = await createGameAux(pgPool, game.value.nPlayers, game.value.playerIDs, game.value.nTeams, game.value.meister, game.value.nTeams === 1, game.value.balls)
+      const createdGame = await createGameFromWaitingGame(pgPool, game.value)
       await transferLatestMessagesToOtherChannel(pgPool, `g-${createdGame.id}`, `w-${game.value.id}`)
       for (const [, value] of nspGeneral.sockets.entries()) {
         const userID = value.data.userID
@@ -140,14 +207,15 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     if (socket.data.userID === undefined) return cb?.({ status: 500, error: 'UNAUTH' })
 
     const schema = Joi.object({
-      gameID: Joi.number().required().integer().positive(),
-      username: Joi.string().required(),
+      gameID: Joi.number().required().integer(),
+      username: Joi.string().required().allow(''),
       color: Joi.string().required(),
+      botIndex: Joi.number().integer().allow(null),
     })
     const { error } = schema.validate(data)
     if (error != null) return cb?.({ status: 500, error })
 
-    const res = await changeColor(pgPool, data.gameID, data.username, data.color, socket.data.userID)
+    const res = await changeColor(pgPool, data.gameID, data.username, data.color, socket.data.userID, data.botIndex)
     if (res.isErr()) return cb?.({ status: 500, error: res.error })
     emitGetGames()
     return cb?.({ status: 200 })
@@ -160,41 +228,18 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     const { error } = schema.validate(data)
     if (error != null) return cb({ ok: false, error })
 
-    const game = await getGame(pgPool, data.gameID)
-    const rematchResult = await createRematchGame(pgPool, game, socket.data.userID)
-    sendUpdatesOfGameToPlayers(game)
-    if (rematchResult.isErr()) return cb({ ok: false, error: rematchResult.error })
+    try {
+      const game = await getGame(pgPool, data.gameID)
 
-    await transferLatestMessagesToOtherChannel(pgPool, `w-${rematchResult.value}`, `g-${game.id}`)
-    emitGetGames()
-    return cb({ ok: true, value: null })
-  })
-}
+      const rematchResult = await createRematchGame(pgPool, game, socket.data.userID)
+      sendUpdatesOfGameToPlayers(game)
+      if (rematchResult.isErr()) return cb({ ok: false, error: rematchResult.error })
 
-async function createGameAux(sqlClient: pg.Pool, nPlayers: number, playerIDs: number[], teams: number, meisterVersion: boolean, coop: boolean, colors: string[]) {
-  const playersOrdered: number[] = []
-  const colorsOrdered: string[] = []
-  if (nPlayers === 4) {
-    const order = [0, 2, 1, 3]
-    order.forEach((pos) => {
-      colorsOrdered.push(colors[pos])
-      playersOrdered.push(playerIDs[pos])
-    })
-  } else {
-    if (teams === 2) {
-      const order = [0, 3, 1, 4, 2, 5]
-      order.forEach((pos) => {
-        colorsOrdered.push(colors[pos])
-        playersOrdered.push(playerIDs[pos])
-      })
-    } else {
-      const order = [0, 2, 4, 1, 3, 5]
-      order.forEach((pos) => {
-        colorsOrdered.push(colors[pos])
-        playersOrdered.push(playerIDs[pos])
-      })
+      await transferLatestMessagesToOtherChannel(pgPool, `w-${rematchResult.value}`, `g-${game.id}`)
+      emitGetGames()
+      return cb({ ok: true, value: null })
+    } catch (e: any) {
+      return cb({ ok: false, error: e.message })
     }
-  }
-
-  return createGame(sqlClient, teams, playersOrdered, meisterVersion, coop, colorsOrdered, undefined, undefined)
+  })
 }

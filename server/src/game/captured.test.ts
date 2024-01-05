@@ -5,6 +5,49 @@ describe('Test suite with recorded games', () => {
     expect(true).toBe(true)
   })
 
+  test('Should not allow empty textActions', () => {
+    expect(testCapturedMoves('simulation180719539153').equal).toBe(false)
+  })
+
+  test('Test conservation of previoslyUsedCards', () => {
+    const resultBeforeSecondDeal = testCapturedMoves('9791-beforeSecondDeal')
+    const resultAfterSecondDeal = testCapturedMoves('9791-afterSecondDeal')
+    const resultAfterFirstShuffle = testCapturedMoves('9791-afterFirstShuffle')
+    const resultAfterSecondShuffle = testCapturedMoves('9791-afterSecondShuffle')
+
+    expect(resultBeforeSecondDeal.equal).toBe(true)
+    expect(resultAfterSecondDeal.equal).toBe(true)
+    expect(resultAfterFirstShuffle.equal).toBe(true)
+    expect(resultAfterSecondShuffle.equal).toBe(true)
+
+    expect(resultBeforeSecondDeal.game?.cards.previouslyPlayedCards.length).toBe(20)
+    expect(resultAfterSecondDeal.game?.cards.previouslyPlayedCards.length).toBe(40)
+    expect(resultAfterSecondDeal.game?.cards.previouslyPlayedCards.slice(20)).toEqual(resultBeforeSecondDeal.game?.cards.discardPile)
+    expect(resultAfterFirstShuffle.game?.cards.previouslyPlayedCards.length).toBe(0)
+    expect(resultAfterSecondShuffle.game?.cards.previouslyPlayedCards.length).toBe(0)
+  })
+
+  test('Test hadOneOrThirteen, tradedCards and narrTradedCards', () => {
+    const resultsAfterNarr = testCapturedMoves('9791-afterNarr')
+    const resultsAfterSecondDeal = testCapturedMoves('9791-afterSecondDeal')
+
+    expect(resultsAfterNarr.equal).toBe(true)
+    expect(resultsAfterSecondDeal.equal).toBe(true)
+
+    expect(resultsAfterNarr.game?.cards.hadOneOrThirteen).toEqual([true, false, true, false])
+    expect(resultsAfterNarr.game?.tradedCards).toEqual(['2', 'trickser', '3', '9'])
+    expect(resultsAfterNarr.game?.narrTradedCards).toEqual([
+      ['6', '2', '1', 'trickser', '3'],
+      ['3', '7', '5', '7', '9'],
+      ['10', '13', 'teufel', '1', '2'],
+      ['10', '3', '4', 'trickser'],
+    ])
+
+    expect(resultsAfterSecondDeal.game?.cards.hadOneOrThirteen).toEqual([false, true, true, true])
+    expect(resultsAfterSecondDeal.game?.tradedCards).toEqual([null, null, null, null])
+    expect(resultsAfterSecondDeal.game?.narrTradedCards).toEqual([null, null, null, null])
+  })
+
   test('Test with captured Game 101 -> At the end Teufel with abwerfen chosen', () => {
     expect(testCapturedMoves('101').equal).toBe(true)
   })

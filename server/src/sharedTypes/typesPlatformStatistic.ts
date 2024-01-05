@@ -5,6 +5,7 @@ export interface PlatformStats {
   activityHeatmap: ActivityHeatmap
   localeDataset: LocaleDataset
   userAgentDataset: UserAgentAnalysisData
+  botDataset: { total: number; won: number }
 }
 
 export type HourDatasetType = number[][]
@@ -41,3 +42,5 @@ export interface UserAgentAnalysisData {
   browserNames: Record<string, number>
   osNames: Record<string, number>
 }
+
+export type BotDataset = { total: number; won: number }

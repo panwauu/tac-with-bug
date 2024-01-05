@@ -21,12 +21,13 @@
         <template #body="slotProps">
           <div class="playerContainer">
             <PlayerWithPicture
-              v-for="player in slotProps.data.teams[teamIndex]?.filter((p: string | null) => p != null)"
-              :key="'Team-' + teamIndex + '-Player-' + player"
+              v-for="(_, playerIndex) in slotProps.data.teams[teamIndex]"
+              :key="`Team-${teamIndex}-Player-${playerIndex}`"
               class="player"
               :clickable="false"
               :nameFirst="false"
-              :username="player"
+              :username="slotProps.data.teams[teamIndex][playerIndex] ?? ''"
+              :bot="slotProps.data.bots[teamIndex][playerIndex] ?? false"
             />
           </div>
         </template>

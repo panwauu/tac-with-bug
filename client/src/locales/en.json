@@ -69,7 +69,12 @@
       "desktop": "Desktop",
       "others": "Others"
     },
-    "headerUserAgent": "Technical Devices of the Players"
+    "headerUserAgent": "Technical Devices of the Players",
+    "BotWinshare": {
+      "lost": "Lost",
+      "won": "Won"
+    },
+    "headerBotWinshare": "Results of bots"
   },
   "Home": {
     "Spielersuche": "Search Users",
@@ -393,12 +398,12 @@
       },
       "Substitution": {
         "explanation": "Player substitution helps keep the game going when one player is unresponsive. A spectator can offer to be a substitute and all other players must agree to the change. For this, the active player must not have played for one minute and a spectator must not have played in this game.",
-        "offerButton": "Offer substitution",
-        "currentHeading": "Current substitution:",
+        "offerButton": "Start substitution",
         "acceptButton": "Accept substitution",
         "rejectButton": "Reject substitution",
         "endOfferButton": "Withdraw substitution",
-        "currentlyNone": "There is currently no substitution"
+        "placeholderSubstituted": "Choose player",
+        "noPlayerToSubstitute": "No substitution possible"
       },
       "SubstitutedPlayersHeader": "Substituted players:"
     },
@@ -409,7 +414,8 @@
       "aborted": "The game was canceled",
       "wonWith": "You won with {players}!",
       "lostWith": "You lost with {players}!",
-      "playersConnector": "and"
+      "playersConnector": "and",
+      "endedForWatch": "did win!"
     },
     "Rematch": {
       "title": "Return leg",
@@ -478,7 +484,7 @@
     },
     "Toast": {
       "substitution-offer-summary": "Substitution request",
-      "substitution-offer-detail": "The player {username} has offered to be transferred. \nAll players in the game must accept it in time to make the switch.",
+      "substitution-offer-detail": "A substitution of {usernameToSubstitute} by {username} was startet. All players in the game must accept it in time to make the switch.",
       "substitution-done-summary": "Substitution performed",
       "substitution-done-detail": "The player substitution has been carried out. {replacedUsername} has been replaced with {username}. Have fun playing.",
       "substitution-stopped-summary": "Substitution failed",
@@ -538,7 +544,9 @@
     "switchGameConfirm": "Are you sure you want to change the waiting room?",
     "switchGameConfirmPrivate": "This room was created as a closed round. Are you sure you want to change the waiting room?",
     "joinGamePrivate": "This room was created as a closed round. Are you sure you are welcome in this round?",
-    "leaveRematch": "Are you sure you want to leave this rematch?"
+    "leaveRematch": "Are you sure you want to leave this rematch?",
+    "adminBadge": "Admin",
+    "bot": "Bot"
   },
   "Login": {
     "username": "Username",

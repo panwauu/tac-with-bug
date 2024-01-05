@@ -69,7 +69,12 @@
       "desktop": "рабочий стол",
       "others": "Другой"
     },
-    "headerUserAgent": "Технические устройства пользователей"
+    "headerUserAgent": "Технические устройства пользователей",
+    "BotWinshare": {
+      "lost": "Потерянный",
+      "won": "Выиграл"
+    },
+    "headerBotWinshare": "Результаты ботов"
   },
   "Home": {
     "Spielersuche": "Поиск игрока",
@@ -394,11 +399,11 @@
       "Substitution": {
         "explanation": "Замена игрока помогает продолжить игру, когда один из игроков не отвечает. Зритель может предложить замену, и все остальные игроки должны согласиться на замену. Для этого активный игрок не должен был играть в течение одной минуты и зритель не должен был играть в эту игру.",
         "offerButton": "предложить изменение",
-        "currentHeading": "Текущее изменение:",
         "acceptButton": "принимать векселя",
         "rejectButton": "отклонить изменение",
         "endOfferButton": "отозвать переводной вексель",
-        "currentlyNone": "В настоящее время нет изменений"
+        "placeholderSubstituted": "Выбрать игрока",
+        "noPlayerToSubstitute": "Замена невозможна"
       },
       "SubstitutedPlayersHeader": "Замененные игроки:"
     },
@@ -409,7 +414,8 @@
       "aborted": "Игра была отменена",
       "wonWith": "Вы выиграли с {players}!",
       "lostWith": "Вы проиграли с {players}!",
-      "playersConnector": "и"
+      "playersConnector": "и",
+      "endedForWatch": "выиграли игру!"
     },
     "Rematch": {
       "title": "Возвратная нога",
@@ -478,7 +484,7 @@
     },
     "Toast": {
       "substitution-offer-summary": "запрос на обмен",
-      "substitution-offer-detail": "Игрок {username} предложил перевод. Все игроки в игре должны принять это вовремя, чтобы совершить переключение.",
+      "substitution-offer-detail": "Началась замена {usernameToSubstitute} на {username}. Все игроки в игре должны принять это вовремя, чтобы переключиться.",
       "substitution-done-summary": "выполненное изменение",
       "substitution-done-detail": "Произведена смена игрока. {replacedUsername} заменено на {username}. Получайте удовольствие, играя.",
       "substitution-stopped-summary": "Ошибка изменения",
@@ -538,7 +544,9 @@
     "switchGameConfirm": "Вы уверены, что хотите сменить комнату?",
     "switchGameConfirmPrivate": "Эта комната была создана как закрытый тур. Вы уверены, что хотите сменить зал ожидания?",
     "joinGamePrivate": "Эта комната была создана как закрытый тур. Вы уверены, что вас ждут в этом раунде?",
-    "leaveRematch": "Вы уверены, что хотите покинуть этот матч-реванш?"
+    "leaveRematch": "Вы уверены, что хотите покинуть этот матч-реванш?",
+    "adminBadge": "Админ",
+    "bot": "бот"
   },
   "Login": {
     "username": "Имя пользователя",

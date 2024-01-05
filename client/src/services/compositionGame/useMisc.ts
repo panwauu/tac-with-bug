@@ -91,7 +91,7 @@ export function useMisc(nPlayers?: number): MiscStateType {
         miscState.gameRunning = true
       }
 
-      if (gameEnded === true) {
+      if (gameEnded === true && gamePlayer > 0) {
         if (coopCounter !== -1) {
           miscState.gameEndedText = i18n.global.t('Game.EndedOverlay.wonInX', { X: coopCounter })
         } else {
@@ -100,8 +100,12 @@ export function useMisc(nPlayers?: number): MiscStateType {
             players: teamPlayers.join(` ${i18n.global.t('Game.EndedOverlay.playersConnector')} `),
           })
         }
-      } else if (!running) {
+      } else if (!running && gamePlayer > 0) {
         miscState.gameEndedText = i18n.global.t('Game.EndedOverlay.aborted')
+      } else if (gamePlayer === -1) {
+        miscState.gameEndedText = `${winningTeams.map((win, teamIndex) =>
+          win ? players.filter((p) => p.team === teamIndex).join(` ${i18n.global.t('Game.EndedOverlay.playersConnector')} `) : ''
+        )} ${i18n.global.t('Game.EndedOverlay.endedForWatch')}`
       } else {
         miscState.gameEndedText = ''
       }

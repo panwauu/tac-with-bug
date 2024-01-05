@@ -49,6 +49,7 @@
       />
     </div>
     <ProfilePicture
+      v-if="player.bot === false"
       :username="String(player.name)"
       :class="`posAbsolute playerPicture ${miscState.players.length === 6 ? `playerPicture6${positionStyles.turned ? 'turned' : ''}` : ''} ${
         index === miscState.gamePlayer && !miscState.viewerMode && $route.name === 'Game' ? 'clickable' : ''
@@ -57,6 +58,17 @@
       :online="Boolean(miscState.onlineGamePlayers.includes(index))"
       @click="toggle($event, Number(index))"
     />
+    <div
+      v-if="player.bot === true"
+      :class="`posAbsolute playerPicture ${miscState.players.length === 6 ? `playerPicture6${positionStyles.turned ? 'turned' : ''}` : ''} ${
+        index === miscState.gamePlayer && !miscState.viewerMode && $route.name === 'Game' ? 'clickable' : ''
+      }`"
+      class="botPicture"
+      :style="positionStyles.stylePositionPictures?.[rotateIndex(Number(index))]"
+      @click="toggle($event, Number(index))"
+    >
+      🤖
+    </div>
   </div>
 
   <OverlayPanel
@@ -206,5 +218,12 @@ function toggle(event: Event, index: number) {
 .list-leave-to {
   opacity: 0;
   transform: none;
+}
+
+.botPicture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5vmin;
 }
 </style>
