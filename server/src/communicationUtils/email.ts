@@ -7,7 +7,7 @@ import type { ICalCalendar } from 'ical-generator'
 import { locales, fallbackLocale } from '../sharedDefinitions/locales'
 
 const mailTransporter = nodemailer.createTransport({
-  host: 'sslout.de',
+  host: 'webmail.your-server.de',
   port: 465,
   secure: true,
   pool: true,
@@ -28,7 +28,7 @@ const email = new Email({
     defaultLocale: fallbackLocale,
     directory: path.join(__dirname, '..', '..', 'email', 'locales'),
   },
-  send: process.env.NODE_ENV === 'production',
+  send: true, //process.env.NODE_ENV === 'production',
 })
 
 export async function sendMail(receiverMail: string, subject: string, mailbody: string) {
