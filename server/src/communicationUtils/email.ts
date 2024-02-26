@@ -7,7 +7,7 @@ import type { ICalCalendar } from 'ical-generator'
 import { locales, fallbackLocale } from '../sharedDefinitions/locales'
 
 const mailTransporter = nodemailer.createTransport({
-  host: 'sslout.de',
+  host: 'webmail.your-server.de',
   port: 465,
   secure: true,
   pool: true,
