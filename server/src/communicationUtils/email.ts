@@ -28,7 +28,7 @@ const email = new Email({
     defaultLocale: fallbackLocale,
     directory: path.join(__dirname, '..', '..', 'email', 'locales'),
   },
-  send: true, //process.env.NODE_ENV === 'production',
+  send: process.env.NODE_ENV === 'production',
 })
 
 export async function sendMail(receiverMail: string, subject: string, mailbody: string) {
