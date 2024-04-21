@@ -9,7 +9,7 @@ export interface Sound {
 }
 
 const storageResult = localStorage.getItem('soundvolume')
-const volume = storageResult != null ? parseInt(storageResult) : 100
+const volume = storageResult != null && !Number.isNaN(parseInt(storageResult)) ? parseInt(storageResult) : 100
 
 import notiSound from '../assets/sounds/noti.mp3'
 import wonSound from '../assets/sounds/won.mp3'
@@ -22,9 +22,10 @@ export const sound = reactive<Sound>({
     lost: new Audio(lostSound),
   },
   volume: volume,
-  $play(sound: string) {
+  $play(soundName: string) {
     this.$stop()
-    this.audios?.[sound].play()
+    if (sound.volume === 0) return
+    this.audios[soundName]?.play()
   },
   $volume(inputVolume: number) {
     sound.volume = Math.max(0, Math.min(100, Math.round(inputVolume)))
@@ -33,7 +34,7 @@ export const sound = reactive<Sound>({
   },
   $stop() {
     Object.values(this.audios).forEach((a) => {
-      a.pause()
+      if (!a.paused) a.pause()
       a.currentTime = 0
     })
   },
