@@ -170,6 +170,7 @@ export interface ServerToClientEvents {
 
 interface SocketData {
   userID: number
+  blockedByModeration: boolean
 }
 
 export type GeneralSocketS = ServerSocket<ClientToServerEvents, ServerToClientEvents, any, SocketData>

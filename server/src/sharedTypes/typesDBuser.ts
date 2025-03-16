@@ -29,4 +29,5 @@ export interface User {
   userDescription: string
   gameDefaultPositions: [number, number]
   admin: boolean
+  blockedByModerationUntil: string | null
 }
