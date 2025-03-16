@@ -40,6 +40,8 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
     const { error } = schema.validate(data)
     if (error != null) return cb?.({ status: 500, error })
 
+    if (socket.data.blockedByModeration === true) return cb({ status: 400, error: 'BlockedByModeration' })
+
     try {
       const user = await getUser(pgPool, { id: socket.data.userID })
       if (user.isErr()) return cb?.({ status: 500, error: user.error })
