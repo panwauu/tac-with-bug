@@ -21,6 +21,8 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
     const { error } = schema.validate(data)
     if (error != null) return cb({ status: 500, error })
 
+    if (socket.data.blockedByModeration) return cb({ status: 400, error: 'BlockedByModeration' })
+
     const res = await createChat(pgPool, data.userids.concat(socket.data.userID), data.title)
     if (res.isErr()) {
       return cb({ status: 500, error: res.error })
@@ -39,6 +41,8 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
     const { error } = schema.validate(data)
     if (error != null) return cb({ status: 500, error })
 
+    if (socket.data.blockedByModeration) return cb({ status: 400, error: 'BlockedByModeration' })
+
     const res = await addUserToChat(pgPool, data.userid, data.chatid)
     if (res.isErr()) {
       return cb({ status: 500, error: res.error })
@@ -55,6 +59,8 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
     const schema = Joi.object({ title: Joi.string().required().min(2), chatid: Joi.number().required().min(0) })
     const { error } = schema.validate(data)
     if (error != null) return cb({ status: 500, error })
+
+    if (socket.data.blockedByModeration) return cb({ status: 400, error: 'BlockedByModeration' })
 
     const res = await changeGroupName(pgPool, data.chatid, data.title)
     if (res.isErr()) {
@@ -105,6 +111,8 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
     const schema = Joi.object({ chatid: Joi.number().required().min(0), body: Joi.string().required().min(1).max(500) })
     const { error } = schema.validate(data)
     if (error != null) return cb({ status: 500, error })
+
+    if (socket.data.blockedByModeration === true) return cb({ status: 400, error: 'BlockedByModeration' })
 
     const res = await insertChatMessage(pgPool, socket.data.userID, data.chatid, data.body)
     if (res.isErr()) {

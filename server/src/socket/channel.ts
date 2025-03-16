@@ -22,6 +22,8 @@ export function registerChannelHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
       if (admin.isErr() || admin.value === false) return cb({ status: 500 })
     }
 
+    if (socket.data.blockedByModeration === true) return cb({ status: 400, error: 'BlockedByModeration' })
+
     await addChannelMessage(pgPool, socket.data.userID, data.body.trim(), data.channel)
     const messages = await getChannelMessages(pgPool, data.channel)
     nspGeneral.emit('channel:update', { channel: data.channel, messages })
