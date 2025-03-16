@@ -36,6 +36,9 @@ jobs:
       - name: Install pg-diff
         run: |
           npm install -g pg-diff-cli
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
       - name: Heroku login credentials
         run: |
           cat > ~/.netrc <<EOF
