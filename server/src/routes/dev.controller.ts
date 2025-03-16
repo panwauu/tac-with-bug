@@ -1,8 +1,13 @@
 import type express from 'express'
-import { Controller, Get, Query, Route, Request, Security, TsoaResponse, Res, Tags } from 'tsoa'
+import { Controller, Get, Query, Route, Request, Security, TsoaResponse, Res, Tags, Post, Body, Queries } from 'tsoa'
 
 import { retrieveCapturedGame } from '../services/capture'
 import { getEmailsFromUsersForNews } from '../services/settings'
+import { editUserDescription, getUser } from '../services/user'
+import { selectRandomProfilePicture } from '../services/picture'
+import { getModerationData, setModerationData } from '../services/moderation'
+import { ModerationData } from '../sharedTypes/typesDBuser'
+import Joi from 'joi'
 
 @Route('/')
 @Tags('Dev')
@@ -49,5 +54,54 @@ export class DevController extends Controller {
     } catch (err) {
       return serverError(500, (err as any)?.message)
     }
+  }
+
+  /**
+   * Get moderation data (blocking of users)
+   */
+  @Security('jwt', ['admin'])
+  @Get('/moderation')
+  public async getModeration(@Request() request: express.Request, @Queries() queries: { userid?: number; email?: string }): Promise<ModerationData[]> {
+    const userIdentifier = queries.userid != null ? { id: queries.userid } : queries.email != null ? { email: queries.email } : undefined
+    const moderationData = await getModerationData(request.app.locals.sqlClient, userIdentifier)
+    return moderationData
+  }
+
+  /**
+   * Post moderation data (blocking of users)
+   * customUntil is optional and should be in ISO format. Default value is +60 days.
+   */
+  @Security('jwt', ['admin'])
+  @Post('/moderation')
+  public async addModerationData(
+    @Request() request: express.Request,
+    @Body() data: { username: string; reason: string; customUntil?: string },
+    @Res() serverError: TsoaResponse<500, { message: string; details?: any }>
+  ) {
+    const schema = Joi.object({ username: Joi.string().required(), reason: Joi.string().required(), customUntil: Joi.string().isoDate().optional() })
+    const { error } = schema.validate(data)
+    if (error != null) {
+      return serverError(500, error)
+    }
+
+    const user = await getUser(request.app.locals.sqlClient, { username: data.username })
+    if (user.isErr()) {
+      return serverError(500, { message: 'User not found', details: user.error })
+    }
+
+    // Reset profile picture
+    await selectRandomProfilePicture(request.app.locals.sqlClient, user.value.id)
+
+    // Reset description
+    await editUserDescription(request.app.locals.sqlClient, user.value.id, '')
+
+    // Add moderation data
+    const date = data.customUntil ?? new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 60).toISOString()
+    const res = await setModerationData(request.app.locals.sqlClient, user.value.id, user.value.email, data.reason, date)
+    if (res.isErr()) {
+      return serverError(500, { message: 'Could not insert moderation data', details: res.error })
+    }
+
+    return res.value
   }
 }

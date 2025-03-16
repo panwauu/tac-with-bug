@@ -31,3 +31,11 @@ export interface User {
   admin: boolean
   blockedByModerationUntil: string | null
 }
+
+export interface ModerationData {
+  id: number
+  email: string | null
+  userid: number | null
+  blockeduntil: string
+  reason: string | null
+}
