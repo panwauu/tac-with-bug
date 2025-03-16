@@ -284,6 +284,14 @@ export class UserController extends Controller {
         return validationError(409, error)
       }
 
+      const user = await getUser(request.app.locals.sqlClient, { id: request.userData.userID })
+      if (user.isErr()) {
+        return serverError(500, { message: 'Internal Server Error', details: 'User not found' })
+      }
+      if (user.value.blockedByModerationUntil != null) {
+        return serverError(500, { message: 'User blocked by moderation', details: 'User blocked by moderation' })
+      }
+
       await editUserDescription(request.app.locals.sqlClient, request.userData.userID, requestBody.userDescription)
       return
     } catch (err: any) {
