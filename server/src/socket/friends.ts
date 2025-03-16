@@ -24,6 +24,8 @@ export function registerFriendsHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     const { error } = Joi.string().required().validate(username)
     if (error != null) return callback({ status: 422, error: error })
 
+    if (socket.data.blockedByModeration === true) return callback({ status: 400, error: 'BlockedByModeration' })
+
     try {
       const userToRequest = await getUser(pgPool, { username: username })
       if (userToRequest.isErr()) return callback({ status: 500, error: userToRequest.error })
