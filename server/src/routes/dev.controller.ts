@@ -63,8 +63,7 @@ export class DevController extends Controller {
   @Get('/moderation')
   public async getModeration(@Request() request: express.Request, @Queries() queries: { userid?: number; email?: string }): Promise<ModerationData[]> {
     const userIdentifier = queries.userid != null ? { id: queries.userid } : queries.email != null ? { email: queries.email } : undefined
-    const moderationData = await getModerationData(request.app.locals.sqlClient, userIdentifier)
-    return moderationData
+    return getModerationData(request.app.locals.sqlClient, userIdentifier)
   }
 
   /**
