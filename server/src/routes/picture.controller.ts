@@ -4,6 +4,7 @@ import { Controller, Get, Delete, Query, Route, Request, Security, Post, Res, Ts
 import multer from 'multer'
 import { queryProfilePicture, loadProfilePictureToDB, selectRandomProfilePicture } from '../services/picture'
 import type { UserIdentifier } from '../sharedTypes/typesDBuser'
+import { getUser } from '../services/user'
 
 @Route('/')
 export class PictureController extends Controller {
@@ -38,6 +39,15 @@ export class PictureController extends Controller {
     if (request.file?.buffer === undefined) {
       return serverError(500, { message: 'Internal Server Error' })
     }
+
+    const user = await getUser(request.app.locals.sqlClient, { id: request.userData.userID })
+    if (user.isErr()) {
+      return serverError(500, { message: 'Internal Server Error', details: 'User not found' })
+    }
+    if (user.value.blockedByModerationUntil != null) {
+      return serverError(500, { message: 'User blocked by moderation', details: 'User blocked by moderation' })
+    }
+
     await loadProfilePictureToDB(request.app.locals.sqlClient, request.userData.userID, request.file.buffer)
   }
 
