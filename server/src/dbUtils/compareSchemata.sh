@@ -24,7 +24,9 @@ psql -h localhost -U postgres -d postgres -c 'CREATE DATABASE tac_test_schema;'
 
 psql -h localhost -U postgres -d tac_server_schema -f './server_schema.sql'
 psql -h localhost -U postgres -d tac_server_schema -f './changes.sql'
+psql -h localhost -U postgres -d tac_server_schema -c 'COMMENT ON SCHEMA public IS NULL;'
 psql -h localhost -U postgres -d tac_test_schema -f './init_db_tac.sql'
+psql -h localhost -U postgres -d tac_test_schema -c 'COMMENT ON SCHEMA public IS NULL;'
 
 ### Perform diff
 pgDiffResult=$(pg-diff -f 'pg-diff.config.json' -p '.' -c 'development' compare_script)
