@@ -1,11 +1,14 @@
-import { describeIf } from '../test/conditionalTests'
 import * as mail from '../communicationUtils/email'
 import { getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
 
 const skipTests = process.env.paypal_Secret == null || process.env.paypal_Client_ID == null
 
-describeIf(!skipTests, 'Test Suite via Socket.io', () => {
+describe('Test Suite via Socket.io', () => {
+  if (skipTests) {
+    return
+  }
+
   let userWithSocket: UserWithSocket
   const subscriptionID = 'I-K2P36MWMH55P'
 
