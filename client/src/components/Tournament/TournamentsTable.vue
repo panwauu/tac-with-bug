@@ -15,23 +15,23 @@
     >
       <Column
         field="title"
-        :header="$t('Tournament.TournamentsTable.title')"
+        :header="t('Tournament.TournamentsTable.title')"
       />
       <Column
         field="type"
-        :header="$t('Tournament.TournamentTable.type')"
+        :header="t('Tournament.TournamentTable.type')"
       >
         <template #body="slotProps">
           <Tag
             :icon="`pi pi-eye${slotProps.data.type === 'public' ? '' : '-slash'}`"
             :severity="slotProps.data.type === 'public' ? 'success' : undefined"
-            :value="$t(`Tournament.TournamentTable.${slotProps.data.type}`).toUpperCase()"
+            :value="t(`Tournament.TournamentTable.${slotProps.data.type}`).toUpperCase()"
           />
         </template>
       </Column>
       <Column
         field="date"
-        :header="$t('Tournament.TournamentsTable.date')"
+        :header="t('Tournament.TournamentsTable.date')"
       >
         <template #body="slotProps">
           <div>{{ createDateString(slotProps.data.date) }}</div>
@@ -39,7 +39,7 @@
       </Column>
       <Column
         field="status"
-        :header="$t('Tournament.TournamentTable.status')"
+        :header="t('Tournament.TournamentTable.status')"
       >
         <template #body="slotProps">
           <TournamentStatusBadge :status="slotProps.data.status" />
@@ -55,6 +55,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'

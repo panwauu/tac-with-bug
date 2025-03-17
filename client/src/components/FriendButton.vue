@@ -2,21 +2,21 @@
   <Button
     v-if="username !== loggedInUser && friendShipStatus === 'none' && !settingsStore.isBlockedByModeration"
     class="p-button-sm p-button-outlined p-button-success"
-    :label="$t('Friends.FriendButton.requestFriend')"
+    :label="t('Friends.FriendButton.requestFriend')"
     icon="pi pi-user-plus"
     @click="friendsState.request(username)"
   />
   <Button
     v-if="username !== loggedInUser && friendShipStatus === 'done'"
     class="p-button-sm p-button-outlined p-button-danger"
-    :label="$t('Friends.FriendButton.cancelFriendship')"
+    :label="t('Friends.FriendButton.cancelFriendship')"
     icon="pi pi-user-minus"
     @click="friendsState.cancel(username)"
   />
   <Button
     v-if="username !== loggedInUser && friendShipStatus === 'to'"
     class="p-button-sm p-button-outlined p-button-danger"
-    :label="$t('Friends.FriendButton.withdrawRequest')"
+    :label="t('Friends.FriendButton.withdrawRequest')"
     icon="pi pi-user-minus"
     @click="friendsState.withdraw(username)"
   />
@@ -25,7 +25,7 @@
     class="p-buttonset"
   >
     <Button
-      :label="$t('Friends.FriendButton.acceptRequest')"
+      :label="t('Friends.FriendButton.acceptRequest')"
       icon="pi pi-user-plus"
       class="p-button-sm p-button-outlined p-button-success"
       @click="friendsState.confirm(username)"
@@ -39,6 +39,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 
 import { computed } from 'vue'

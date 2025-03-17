@@ -13,9 +13,10 @@ import type { WeekDatasetType } from '@/../../server/src/sharedTypes/typesPlatfo
 
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'
-import { i18n } from '@/services/i18n'
 import { getGraphColors } from '@/services/graphColors'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const weekChart = ref<any | null>(null)
 const props = defineProps<{ data?: WeekDatasetType }>()
 watch(
@@ -47,7 +48,7 @@ function updateWeekChart() {
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: getGraphColors({ elementNumber: i === 0 ? 2 : 0, alpha: 1 }),
-      label: i === 0 ? i18n.global.t('Stats.newUsers') : i18n.global.t('Stats.games'),
+      label: i === 0 ? t('Stats.newUsers') : t('Stats.games'),
       fill: true,
     })
 
@@ -80,7 +81,7 @@ function updateWeekChart() {
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: getGraphColors({ elementNumber: 1, alpha: 1 }),
-      label: i18n.global.t('Stats.activeUsers'),
+      label: t('Stats.activeUsers'),
       fill: true,
     })
     .concat(weekChartData.value.datasets.slice(2, 4))

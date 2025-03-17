@@ -1,11 +1,11 @@
 <template>
   <div class="p-card tournamentPage">
     <Button
-      v-if="$route.name !== 'TournamentOverview'"
-      :label="$t('Tournament.backButton')"
+      v-if="router.currentRoute.value.name !== 'TournamentOverview'"
+      :label="t('Tournament.backButton')"
       icon="pi pi-backward"
       class="p-button-rounded p-button-sm p-button-text p-button-secondary buttonBack"
-      @click="$router.push({ name: 'TournamentOverview' })"
+      @click="router.push({ name: 'TournamentOverview' })"
     />
     <router-view />
   </div>
@@ -13,6 +13,10 @@
 
 <script setup lang="ts">
 import Button from 'primevue/button'
+import { useI18n } from 'vue-i18n'
+import router from '@/router'
+
+const { t } = useI18n()
 </script>
 
 <style scoped>

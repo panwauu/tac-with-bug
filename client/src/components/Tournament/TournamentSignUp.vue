@@ -2,7 +2,7 @@
   <div v-if="tournament.status === 'signUp' && isLoggedIn">
     <Button
       style="margin: 20px"
-      :label="$t('Tournament.SignUp.openModalButton')"
+      :label="t('Tournament.SignUp.openModalButton')"
       :disabled="alreadyRegistered || settingsStore.isBlockedByModeration"
       @click="startTeamSignUp"
     />
@@ -10,7 +10,7 @@
 
   <Dialog
     v-model:visible="displaySignUpTeam"
-    :header="$t('Tournament.SignUp.title')"
+    :header="t('Tournament.SignUp.title')"
     :modal="true"
     :dismissableMask="true"
     style="max-width: 500px"
@@ -28,12 +28,12 @@
           style="width: 100%"
           :class="validTeamName ? '' : 'p-invalid'"
         />
-        <label for="signUpTeamName">{{ $t('Tournament.SignUp.teamNamePlaceholder') }}</label>
+        <label for="signUpTeamName">{{ t('Tournament.SignUp.teamNamePlaceholder') }}</label>
         <div
           v-if="!validTeamName"
           style="max-width: 400px; font-size: 12px"
         >
-          {{ $t('Tournament.SignUp.invalidTeamName') }}
+          {{ t('Tournament.SignUp.invalidTeamName') }}
         </div>
       </span>
       <SelectButton
@@ -52,7 +52,7 @@
         :playersToAvoid="playersAlreadyInTournament"
       />
       <Button
-        :label="$t('Tournament.SignUp.submitButton')"
+        :label="t('Tournament.SignUp.submitButton')"
         :disabled="
           signUpAlone === null || (signUpAlone?.value === true && signUpPartner === '') || signUpTeamName === '' || !validTeamName || settingsStore.isBlockedByModeration
         "
@@ -64,6 +64,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import SelectButton from 'primevue/selectbutton'
 import Dialog from 'primevue/dialog'
@@ -73,7 +76,6 @@ import PlayersAutoComplete from '@/components/PlayersAutoComplete.vue'
 import type { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 
 import { computed, ref } from 'vue'
-import { i18n } from '@/services/i18n'
 import { DefaultService as Service } from '@/generatedClient/index'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { isLoggedIn, username } from '@/services/useUser'
@@ -86,11 +88,11 @@ const socket = injectStrict(SocketKey)
 
 const signUpAloneModel = ref([
   {
-    name: i18n.global.t('Tournament.SignUp.selectButtonWithPartner'),
+    name: t('Tournament.SignUp.selectButtonWithPartner'),
     value: true,
   },
   {
-    name: i18n.global.t('Tournament.SignUp.selectButtonAlone'),
+    name: t('Tournament.SignUp.selectButtonAlone'),
     value: false,
   },
 ])
@@ -111,7 +113,7 @@ function signUpTeam() {
     return
   }
 
-  if (confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
+  if (confirm(t('Tournament.signUpConfirmationText'))) {
     socket.emitWithAck(5000, 'tournament:public:registerTeam', {
       name: signUpTeamName.value,
       players: signUpPartner.value !== '' ? [username.value, signUpPartner.value] : [username.value],
@@ -129,8 +131,8 @@ const blanks = /^[ ]+$/
 
 const alreadyRegistered = computed(() => {
   return (
-    props.tournament.teams.some((t) => username.value != null && t.players.includes(username.value)) ||
-    props.tournament.registerTeams.some((t) => username.value != null && t.players.includes(username.value))
+    props.tournament.teams.some((team) => username.value != null && team.players.includes(username.value)) ||
+    props.tournament.registerTeams.some((team) => username.value != null && team.players.includes(username.value))
   )
 })
 
@@ -141,19 +143,19 @@ const validTeamName = computed(() => {
       signUpTeamName.value.length >= 5 &&
       signUpTeamName.value.match(letters) != null &&
       signUpTeamName.value.match(blanks) === null &&
-      !props.tournament.registerTeams.some((t) => t.name === signUpTeamName.value))
+      !props.tournament.registerTeams.some((team) => team.name === signUpTeamName.value))
   )
 })
 
 const playersAlreadyInTournament = computed(() => {
   const result: string[] = []
-  props.tournament.teams.forEach((t) => {
-    t.players.forEach((p) => {
+  props.tournament.teams.forEach((team) => {
+    team.players.forEach((p) => {
       result.push(p)
     })
   })
-  props.tournament.registerTeams.forEach((t) => {
-    t.players.forEach((p) => {
+  props.tournament.registerTeams.forEach((team) => {
+    team.players.forEach((p) => {
       result.push(p)
     })
   })

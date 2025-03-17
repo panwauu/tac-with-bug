@@ -3,11 +3,14 @@
     :class="['tag', clickable ? 'clickable' : '']"
     @click="toSubscription()"
   >
-    {{ sponsorsOnly ? $t('Subscription.Tag.sponsorsOnly') : $t('Subscription.Tag.sponsor') }}
+    {{ sponsorsOnly ? t('Subscription.Tag.sponsorsOnly') : t('Subscription.Tag.sponsor') }}
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import router from '@/router/index'
 
 const props = withDefaults(defineProps<{ clickable?: boolean; sponsorsOnly?: boolean }>(), { clickable: true, sponsorsOnly: true })

@@ -12,9 +12,10 @@
         />
         <div class="playerCardElement">
           {{
-            $tc('Profile.NetworkGraph.togetherWith', selectedUser.data[0], {
+            t('Profile.NetworkGraph.togetherWith', {
               username: username,
               nGames: selectedUser.data[0],
+              count: selectedUser.data[0],
             })
           }}
         </div>
@@ -23,16 +24,18 @@
           style="padding-left: 10px"
         >
           {{
-            $t('Profile.NetworkGraph.wonOf', {
+            t('Profile.NetworkGraph.wonOf', {
               nGames: selectedUser.data[1],
+              count: selectedUser.data[1],
             })
           }}
         </div>
         <div class="playerCardElement">
           {{
-            $tc('Profile.NetworkGraph.playedAgainst', selectedUser.data[2], {
+            t('Profile.NetworkGraph.playedAgainst', {
               username: username,
               nGames: selectedUser.data[2],
+              count: selectedUser.data[2],
             })
           }}
         </div>
@@ -41,15 +44,17 @@
           style="padding-left: 10px"
         >
           {{
-            $t('Profile.NetworkGraph.wonOf', {
+            t('Profile.NetworkGraph.wonOf', {
               nGames: selectedUser.data[2] - selectedUser.data[3],
+              count: selectedUser.data[2] - selectedUser.data[3],
             })
           }}
         </div>
         <div class="playerCardElement">
           {{
-            $tc('Profile.NetworkGraph.team', selectedUser.data[4] - selectedUser.data[2] - selectedUser.data[0], {
+            t('Profile.NetworkGraph.team', {
               nGames: selectedUser.data[4] - selectedUser.data[2] - selectedUser.data[0],
+              count: selectedUser.data[4] - selectedUser.data[2] - selectedUser.data[0],
             })
           }}
         </div>
@@ -81,6 +86,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 

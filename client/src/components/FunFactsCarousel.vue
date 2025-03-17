@@ -10,12 +10,12 @@
           class="carousel-element"
           :class="{ 'p-card': usePCardStyle, 'custom-card': !usePCardStyle }"
         >
-          <table :aria-label="$t('Advertisement.FunFacts.tableDescription')">
+          <table :aria-label="t('Advertisement.FunFacts.tableDescription')">
             <tr
               v-for="fact in Object.entries(slotProps.data)"
               :key="`Funfact-${fact[0]}`"
             >
-              <th style="padding-right: 10px">{{ $t(`Advertisement.FunFacts.${fact[0]}`) }}</th>
+              <th style="padding-right: 10px">{{ t(`Advertisement.FunFacts.${fact[0]}`) }}</th>
               <td v-if="fact[0] === 'mostLoved' || fact[0] === 'leastLoved'">
                 <BallsImage
                   style="height: 30px"
@@ -32,6 +32,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Carousel from 'primevue/carousel'
 import { reactive, computed } from 'vue'
 import { DefaultService as Service } from '@/generatedClient'

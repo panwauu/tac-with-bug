@@ -12,8 +12,9 @@
 import type { ActivityHeatmap } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 import VueApexCharts from 'vue3-apexcharts'
 import { ref, watch } from 'vue'
-import { i18n } from '@/services/i18n'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const props = defineProps<{ data?: ActivityHeatmap }>()
 watch(
   () => props.data,
@@ -84,31 +85,31 @@ const activityHeatmapOptions = {
 
 const activityHeatmapSeries = ref([
   {
-    name: i18n.global.t('Stats.sunday'),
+    name: t('Stats.sunday'),
     data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
   {
-    name: i18n.global.t('Stats.saturday'),
+    name: t('Stats.saturday'),
     data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
   {
-    name: i18n.global.t('Stats.friday'),
+    name: t('Stats.friday'),
     data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
   {
-    name: i18n.global.t('Stats.thursday'),
+    name: t('Stats.thursday'),
     data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
   {
-    name: i18n.global.t('Stats.wednesday'),
+    name: t('Stats.wednesday'),
     data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
   {
-    name: i18n.global.t('Stats.tuesday'),
+    name: t('Stats.tuesday'),
     data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
   {
-    name: i18n.global.t('Stats.monday'),
+    name: t('Stats.monday'),
     data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
 ])

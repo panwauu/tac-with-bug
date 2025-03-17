@@ -1,7 +1,7 @@
 <template>
   <div class="p-card tutorialPage">
-    <h2>{{ $t('Tutorial.tutorialHeader') }}</h2>
-    <div style="margin-bottom: 15px">{{ $t('Tutorial.moreTutorialsInFuture') }}</div>
+    <h2>{{ t('Tutorial.tutorialHeader') }}</h2>
+    <div style="margin-bottom: 15px">{{ t('Tutorial.moreTutorialsInFuture') }}</div>
     <Accordion>
       <AccordionTab
         v-for="(tutorialProgress, tutorialID) in tutorialStore.getProgress"
@@ -9,7 +9,7 @@
       >
         <template #header>
           <div class="HeaderTemplate">
-            <div>{{ $t(`Tutorial.${tutorialID}.title`) }}</div>
+            <div>{{ t(`Tutorial.${tutorialID}.title`) }}</div>
             <div class="rightHeader">
               <div>{{ tutorialProgress.filter((d) => d === true).length }}/{{ tutorialProgress.length }}</div>
               <div class="checkbox">
@@ -21,11 +21,11 @@
             </div>
           </div>
         </template>
-        <div style="margin: 5px">{{ $t(`Tutorial.${tutorialID}.time`) }}</div>
-        <div style="margin: 5px">{{ $t(`Tutorial.${tutorialID}.description`) }}</div>
+        <div style="margin: 5px">{{ t(`Tutorial.${tutorialID}.time`) }}</div>
+        <div style="margin: 5px">{{ t(`Tutorial.${tutorialID}.description`) }}</div>
         <Button
           style="margin: 5px"
-          :label="$t(`Tutorial.ButtonStartOverwiew.${getStartButton(tutorialProgress)}`)"
+          :label="t(`Tutorial.ButtonStartOverwiew.${getStartButton(tutorialProgress)}`)"
           @click="clickStartButton(tutorialID, tutorialProgress)"
         />
         <template
@@ -38,7 +38,7 @@
             @click="startTutorial(tutorialID, tutorialStep)"
           >
             <div>{{ tutorialStep + 1 }}.</div>
-            <div>{{ $t(`Tutorial.${tutorialID}.${tutorialStep}.title`) }}</div>
+            <div>{{ t(`Tutorial.${tutorialID}.${tutorialStep}.title`) }}</div>
             <div class="checkbox">
               <div
                 v-if="stepIsDone === true"
@@ -50,8 +50,8 @@
       </AccordionTab>
     </Accordion>
 
-    <h2 style="margin-top: 35px">{{ $t('Tutorial.replayHeader') }}</h2>
-    <div style="margin-bottom: 15px">{{ $t('Tutorial.replaysInFuture') }}</div>
+    <h2 style="margin-top: 35px">{{ t('Tutorial.replayHeader') }}</h2>
+    <div style="margin-bottom: 15px">{{ t('Tutorial.replaysInFuture') }}</div>
   </div>
 </template>
 
@@ -64,6 +64,9 @@ import Divider from 'primevue/divider'
 import router from '@/router/index'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { useTutorialStore } from '@/store/tutorial'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const socket = injectStrict(SocketKey)
 const tutorialStore = useTutorialStore()

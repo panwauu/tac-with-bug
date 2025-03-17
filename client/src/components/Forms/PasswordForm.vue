@@ -7,21 +7,21 @@
         type="password"
         name="password"
         style="width: 100%"
-        :promptLabel="$t('Login.SignUp.passwordChoose')"
-        :weakLabel="$t('Login.SignUp.passwordWeak')"
-        :mediumLabel="$t('Login.SignUp.passwordMedium')"
-        :strongLabel="$t('Login.SignUp.passwordStrong')"
+        :promptLabel="t('Login.SignUp.passwordChoose')"
+        :weakLabel="t('Login.SignUp.passwordWeak')"
+        :mediumLabel="t('Login.SignUp.passwordMedium')"
+        :strongLabel="t('Login.SignUp.passwordStrong')"
         :class="validPassword || password === '' ? '' : 'p-invalid'"
       >
         <template #footer>
           <Divider />
           <ul style="line-height: 1.5">
-            <li :class="passwordTooShort ? 'p-error' : ''">{{ $t('Login.SignUp.passwordMinLetters') }}</li>
-            <li :class="passwordTooLong ? 'p-error' : ''">{{ $t('Login.SignUp.passwordMaxLetters') }}</li>
+            <li :class="passwordTooShort ? 'p-error' : ''">{{ t('Login.SignUp.passwordMinLetters') }}</li>
+            <li :class="passwordTooLong ? 'p-error' : ''">{{ t('Login.SignUp.passwordMaxLetters') }}</li>
           </ul>
         </template>
       </PasswordPrimevue>
-      <label for="SUpassword">{{ $t('Login.password') }}</label>
+      <label for="SUpassword">{{ t('Login.password') }}</label>
     </span>
 
     <span class="p-float-label floatingTextInput">
@@ -33,18 +33,21 @@
         style="width: 100%"
         :class="validPasswordRepeat || password === '' ? '' : 'p-invalid'"
       />
-      <label for="SUpasswordRepeat">{{ $t('Login.passwordRepeat') }}</label>
+      <label for="SUpasswordRepeat">{{ t('Login.passwordRepeat') }}</label>
       <small
         v-if="!validPasswordRepeat && password !== '' && passwordRepeat !== ''"
         class="p-error"
       >
-        {{ $t('Login.SignUp.passwordUnequal') }}
+        {{ t('Login.SignUp.passwordUnequal') }}
       </small>
     </span>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import InputText from 'primevue/inputtext'
 
 import { computed, ref, watch } from 'vue'

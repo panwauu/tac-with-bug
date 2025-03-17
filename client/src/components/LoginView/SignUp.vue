@@ -20,7 +20,7 @@
       <Button
         type="submit"
         :icon="'pi ' + (loading ? 'pi-spin pi-spinner' : 'pi-sign-in')"
-        :label="$t('Login.SignUp.button')"
+        :label="t('Login.SignUp.button')"
         class="signUpButton"
         :disabled="!validUsername || !validEmail || !validPassword || loading"
       />
@@ -38,6 +38,9 @@ import { ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index'
 import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const emit = defineEmits<{ done: [] }>()
 
@@ -67,8 +70,8 @@ async function signUp() {
     await Service.signUpUser(credentials)
     toast.add({
       severity: 'success',
-      summary: i18n.global.t('Login.SignUp.successMsg'),
-      detail: i18n.global.t('Login.SignUp.successMsgDetail'),
+      summary: t('Login.SignUp.successMsg'),
+      detail: t('Login.SignUp.successMsgDetail'),
       life: 10000,
     })
 
@@ -79,8 +82,8 @@ async function signUp() {
   } catch {
     toast.add({
       severity: 'error',
-      detail: i18n.global.t('Login.SignUp.errorMsg'),
-      summary: i18n.global.t('Login.SignUp.errorMsg'),
+      detail: t('Login.SignUp.errorMsg'),
+      summary: t('Login.SignUp.errorMsg'),
       life: 5000,
     })
   } finally {

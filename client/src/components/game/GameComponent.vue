@@ -79,11 +79,11 @@
           class="instructions p-card"
         >
           <Tag
-            :value="$t('Game.viewerModeTag')"
+            :value="t('Game.viewerModeTag')"
             icon="pi pi-eye"
             style="margin: 20px"
           />
-          <div>{{ $t('Game.viewerModeText') }}</div>
+          <div>{{ t('Game.viewerModeText') }}</div>
         </div>
         <div class="cardsContainer">
           <OwnCards
@@ -126,11 +126,11 @@
         <div class="endedText">{{ miscState.gameEndedText }}</div>
         <Button
           class="endedButton"
-          :label="$t('Game.EndedOverlay.backButton')"
-          @click="$router.push({ name: 'Landing' })"
+          :label="t('Game.EndedOverlay.backButton')"
+          @click="router.push({ name: 'Landing' })"
         />
         <Fieldset
-          :legend="$t('Game.EndedOverlay.statistic')"
+          :legend="t('Game.EndedOverlay.statistic')"
           :toggleable="true"
           :collapsed="true"
         >
@@ -144,7 +144,7 @@
         </Fieldset>
         <Fieldset
           v-if="miscState.tournamentID === null"
-          :legend="$t('Game.Rematch.title')"
+          :legend="t('Game.Rematch.title')"
           :toggleable="true"
           :collapsed="false"
         >
@@ -158,7 +158,7 @@
 
     <Dialog
       v-model:visible="modalVisibleLocal"
-      :header="$t(`Game.GameModal.title.${modalStateLocal}`)"
+      :header="t(`Game.GameModal.title.${modalStateLocal}`)"
       :modal="true"
       :dismissableMask="true"
     >
@@ -184,6 +184,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import Tag from 'primevue/tag'
 import Menubar from 'primevue/menubar'
@@ -210,7 +213,6 @@ import type { StatisticStateType } from '@/services/compositionGame/useStatistic
 import type { PerformMoveAction } from '@/services/compositionGame/usePerformMove'
 import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
-import { i18n } from '@/services/i18n'
 import router from '@/router'
 import { useResizeObserver } from '@vueuse/core'
 
@@ -307,28 +309,28 @@ const portraitMenu = ref(getMenu(true))
 function getMenu(displayText: boolean) {
   return [
     {
-      label: displayText ? i18n.global.t('Game.GameModal.title.statistic') : '',
+      label: displayText ? t('Game.GameModal.title.statistic') : '',
       icon: 'pi pi-chart-bar',
       command: () => {
         openModal('statistic')
       },
     },
     {
-      label: displayText ? i18n.global.t('Game.GameModal.title.settings') : '',
+      label: displayText ? t('Game.GameModal.title.settings') : '',
       icon: 'pi pi-cog',
       command: () => {
         openModal('settings')
       },
     },
     {
-      label: displayText ? i18n.global.t('Game.GameModal.title.assistance') : '',
+      label: displayText ? t('Game.GameModal.title.assistance') : '',
       icon: 'pi pi-question',
       command: () => {
         openModal('assistance')
       },
     },
     {
-      label: displayText ? i18n.global.t('Game.GameModal.title.substitution') : '',
+      label: displayText ? t('Game.GameModal.title.substitution') : '',
       icon: 'pi pi-arrows-h',
       command: () => {
         openModal('substitution')

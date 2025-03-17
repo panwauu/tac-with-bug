@@ -27,7 +27,7 @@
           v-model="userDescription"
           :username="username"
         />
-        <p class="registered">{{ $t('Profile.registeredOn') }} {{ registeredOn.toLocaleDateString() }}</p>
+        <p class="registered">{{ t('Profile.registeredOn') }} {{ registeredOn.toLocaleDateString() }}</p>
         <BlockedByModerationMessage
           v-if="userBlockedUntil != null"
           :blockedByModerationUntil="userBlockedUntil"
@@ -49,6 +49,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import TabMenu from 'primevue/tabmenu'
 import type { MenuItem } from 'primevue/menuitem'
 import FriendButton from '@/components/FriendButton.vue'
@@ -62,7 +65,6 @@ import { watch, ref } from 'vue'
 import { HofReason, DefaultService as Service } from '@/generatedClient/index'
 import router from '@/router/index'
 import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue'
-import { i18n } from '@/services/i18n'
 import { useResizeObserver } from '@vueuse/core'
 import BlockedByModerationMessage from '@/components/BlockedByModerationMessage.vue'
 
@@ -112,7 +114,7 @@ async function updateData() {
 function createMenu(displayText: boolean): MenuItem[] {
   return [
     {
-      label: displayText ? i18n.global.t('Profile.menuOverview') : '',
+      label: displayText ? t('Profile.menuOverview') : '',
       icon: 'pi pi-fw pi-home',
       to: { name: 'Profile' },
       command: () => {
@@ -120,7 +122,7 @@ function createMenu(displayText: boolean): MenuItem[] {
       },
     },
     {
-      label: displayText ? i18n.global.t('Profile.menuAchievements') : '',
+      label: displayText ? t('Profile.menuAchievements') : '',
       icon: 'pi pi-fw pi-flag',
       to: { name: 'Profile-Achievements' },
       command: () => {
@@ -128,7 +130,7 @@ function createMenu(displayText: boolean): MenuItem[] {
       },
     },
     {
-      label: displayText ? i18n.global.t('Profile.menuGames') : '',
+      label: displayText ? t('Profile.menuGames') : '',
       icon: 'pi pi-fw pi-table',
       to: { name: 'Profile-Games' },
       command: () => {
@@ -136,7 +138,7 @@ function createMenu(displayText: boolean): MenuItem[] {
       },
     },
     {
-      label: displayText ? i18n.global.t('Profile.menuFriends') : '',
+      label: displayText ? t('Profile.menuFriends') : '',
       icon: 'pi pi-fw pi-users',
       to: { name: 'Profile-Friends' },
       command: () => {
@@ -144,7 +146,7 @@ function createMenu(displayText: boolean): MenuItem[] {
       },
     },
     {
-      label: displayText ? i18n.global.t('Profile.menuSocials') : '',
+      label: displayText ? t('Profile.menuSocials') : '',
       icon: 'pi pi-fw pi-sitemap',
       to: { name: 'Profile-Socials' },
       command: () => {

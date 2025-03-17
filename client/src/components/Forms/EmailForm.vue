@@ -18,17 +18,19 @@
       style="width: 100%"
       :class="localValid || localEmail === '' ? '' : 'p-invalid'"
     />
-    <label for="SUemail">{{ $t('Login.email') }}</label>
+    <label for="SUemail">{{ t('Login.email') }}</label>
     <small class="p-error">{{ emailErrorLabel }}</small>
   </span>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import InputText from 'primevue/inputtext'
 
 import { ref, computed, watch } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index'
-import { i18n } from '@/services/i18n'
 import * as EmailValidator from 'email-validator'
 
 const emailCheck = ref<boolean | null>(false)
@@ -74,9 +76,9 @@ const validMail = computed(() => EmailValidator.validate(localEmail.value))
 const emailErrorLabel = computed(() => {
   if (localEmail.value !== '') {
     if (!validMail.value) {
-      return i18n.global.t('Login.SignUp.emailInvalid')
+      return t('Login.SignUp.emailInvalid')
     } else if (emailCheck.value === false) {
-      return i18n.global.t('Login.SignUp.emailNotAvailable')
+      return t('Login.SignUp.emailNotAvailable')
     }
   }
   return ''

@@ -39,10 +39,11 @@ import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
 import type { PublicTournament, RegisterTeam } from '@/../../server/src/sharedTypes/typesTournament'
 import { computed } from 'vue'
-import { i18n } from '@/services/i18n'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { username } from '@/services/useUser'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const socket = injectStrict(SocketKey)
 const props = defineProps<{ tournament: PublicTournament; team: RegisterTeam }>()
 
@@ -58,7 +59,7 @@ const alreadyRegistered = computed(() => {
 })
 
 function joinTeam(team: RegisterTeam, tournamentID: number) {
-  if (!(teamActivated(team) || alreadyRegistered.value) && confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
+  if (!(teamActivated(team) || alreadyRegistered.value) && confirm(t('Tournament.signUpConfirmationText'))) {
     socket.emitWithAck(5000, 'tournament:public:joinTeam', {
       tournamentID: tournamentID,
       teamName: team.name,
@@ -71,7 +72,7 @@ function leaveTournament() {
 }
 
 function activateUser() {
-  if (confirm(i18n.global.t('Tournament.signUpConfirmationText'))) {
+  if (confirm(t('Tournament.signUpConfirmationText'))) {
     socket.emitWithAck(5000, 'tournament:public:activateUser', { tournamentID: props.tournament.id })
   }
 }

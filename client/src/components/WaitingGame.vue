@@ -5,7 +5,7 @@
         severity="success"
         class="status-badge"
       >
-        {{ active ? $t('Waiting.Icons.players', { X: game.nPlayers }) : game.nPlayers }}
+        {{ active ? t('Waiting.Icons.players', { X: game.nPlayers }) : game.nPlayers }}
         <PlayersTwo
           v-if="game.nPlayers === 4"
           class="Symbol SymbolMargin"
@@ -19,7 +19,7 @@
         severity="danger"
         class="status-badge"
       >
-        {{ active ? $tc('Waiting.Icons.teams', game.nTeams, { X: game.nTeams }) : game.nTeams }}
+        {{ active ? t('Waiting.Icons.teams', { count: game.nTeams, X: game.nTeams }) : game.nTeams }}
         <Teams
           :nTeams="game.nTeams"
           class="Symbol SymbolMargin"
@@ -29,7 +29,7 @@
         severity="warning"
         class="status-badge"
       >
-        {{ active ? $t(`Waiting.Icons.${game.meister ? 'meister' : 'normal'}`) : '' }}
+        {{ active ? t(`Waiting.Icons.${game.meister ? 'meister' : 'normal'}`) : '' }}
         <Brain
           v-if="game.meister"
           :color="'primary'"
@@ -42,7 +42,7 @@
         />
       </Tag>
       <Tag class="status-badge">
-        {{ active ? $t(`Waiting.Icons.${game.private ? 'private' : 'public'}`) : '' }}
+        {{ active ? t(`Waiting.Icons.${game.private ? 'private' : 'public'}`) : '' }}
         <i
           :class="`pi pi-lock${game.private ? '' : '-open'} Symbol ${active ? 'SymbolMargin' : ''}`"
           aria-hidden="true"
@@ -101,7 +101,7 @@
               @click="toggle($event, playerIndex(Number(teamIndex), index))"
             />
             <PlayerWithPicture
-              :username="game.players[playerIndex(Number(teamIndex), index)] ?? $t('Waiting.bot')"
+              :username="game.players[playerIndex(Number(teamIndex), index)] ?? t('Waiting.bot')"
               :hideIfEmpty="true"
               :nameFirst="false"
               :clickable="active"
@@ -111,14 +111,14 @@
               v-if="game.adminID === game.playerIDs[playerIndex(Number(teamIndex), index)]"
               style="margin-left: 5px"
             >
-              {{ `(${$t('Waiting.adminBadge')})` }}
+              {{ `(${t('Waiting.adminBadge')})` }}
             </div>
           </div>
           <div v-else>
             <Button
               v-if="active && game.admin === username"
               severity="secondary"
-              :label="`+ ${$t('Waiting.bot')}`"
+              :label="`+ ${t('Waiting.bot')}`"
               @click="() => emit('add-bot', { gameID: game.id, botID: 3, playerIndex: playerIndex(Number(teamIndex), index) })"
             />
           </div>
@@ -181,6 +181,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button'
 import OverlayPanel from 'primevue/overlaypanel'
 import PlayerWithPicture from './PlayerWithPicture.vue'
@@ -208,6 +209,8 @@ const emit = defineEmits<{
   'ready-player': [gameID: number]
   'color-player': [username: string, gameID: number, color: string, botIndex: number | null]
 }>()
+
+const { t } = useI18n()
 
 const opRef = ref<OverlayPanel | null>(null)
 

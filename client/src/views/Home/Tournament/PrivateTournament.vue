@@ -16,10 +16,10 @@
     <TournamentStatusBadge :status="tournament.status" />
     <table
       class="tournamentInfoTable"
-      :aria-label="$t('Tournament.Private.tableDescription')"
+      :aria-label="t('Tournament.Private.tableDescription')"
     >
       <tr>
-        <th>{{ $t('Tournament.Private.admin') }}</th>
+        <th>{{ t('Tournament.Private.admin') }}</th>
         <td>
           <PlayerWithPicture
             :username="tournament.adminPlayer"
@@ -28,22 +28,22 @@
         </td>
       </tr>
       <tr>
-        <th>{{ $t('Tournament.Private.playersPerGame') }}</th>
+        <th>{{ t('Tournament.Private.playersPerGame') }}</th>
         <td>{{ tournament.playersPerTeam }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Tournament.Private.teamsPerGame') }}</th>
+        <th>{{ t('Tournament.Private.teamsPerGame') }}</th>
         <td>{{ tournament.teamsPerMatch }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Tournament.Private.playersPerTournament') }}</th>
+        <th>{{ t('Tournament.Private.playersPerTournament') }}</th>
         <td>{{ tournament.nTeams }}</td>
       </tr>
     </table>
     <Button
       v-if="tournament.adminPlayer === username && ['planned', 'running'].includes(tournament.status)"
       icon="pi pi-times"
-      :label="$t('Tournament.Private.abortButton')"
+      :label="t('Tournament.Private.abortButton')"
       class="p-button-warning"
       @click="abortTournament"
     />
@@ -55,7 +55,7 @@
       :tournament="tournament"
     />
     <div v-if="tournament.status === 'aborted' && tournament.teams.length === 0">
-      <h4>{{ $t('Tournament.Private.abortedPlayersList') }}</h4>
+      <h4>{{ t('Tournament.Private.abortedPlayersList') }}</h4>
       <PlayerWithPicture
         v-for="registeredUsername in tournament.registerTeams.map((t) => t.players).flat()"
         :key="`Player-${registeredUsername}`"
@@ -66,18 +66,18 @@
 
     <Dialog
       v-model:visible="displayExplanation"
-      :header="$t('Tournament.helpModal.title')"
+      :header="t('Tournament.helpModal.title')"
       :modal="true"
       :dismissableMask="true"
     >
-      <h3>{{ $t('Tournament.Private.HelpModal.privateHeader') }}</h3>
-      <p>{{ $t('Tournament.Private.HelpModal.privateContent') }}</p>
-      <h3>{{ $t('Tournament.Private.HelpModal.planningHeader') }}</h3>
+      <h3>{{ t('Tournament.Private.HelpModal.privateHeader') }}</h3>
+      <p>{{ t('Tournament.Private.HelpModal.privateContent') }}</p>
+      <h3>{{ t('Tournament.Private.HelpModal.planningHeader') }}</h3>
       <TournamentStatusBadge status="planned" />
-      <p>{{ $t('Tournament.Private.HelpModal.planningContent') }}</p>
-      <h3>{{ $t('Tournament.Private.HelpModal.runningHeader') }}</h3>
+      <p>{{ t('Tournament.Private.HelpModal.planningContent') }}</p>
+      <h3>{{ t('Tournament.Private.HelpModal.runningHeader') }}</h3>
       <TournamentStatusBadge status="running" />
-      <p>{{ $t('Tournament.Private.HelpModal.runningContent') }}</p>
+      <p>{{ t('Tournament.Private.HelpModal.runningContent') }}</p>
     </Dialog>
   </div>
 </template>
@@ -96,8 +96,10 @@ import { ref, computed, watch, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import router from '@/router'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from '@/services/i18n'
 import { username } from '@/services/useUser'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{ id: string; locale: string }>()
 
@@ -111,14 +113,14 @@ async function abortTournament() {
     return
   }
 
-  if (confirm(i18n.global.t('Tournament.Private.confirmAbort'))) {
+  if (confirm(t('Tournament.Private.confirmAbort'))) {
     const res = await socket.emitWithAck(1000, 'tournament:private:abort', { tournamentID: tournament.value.id })
     if (res.error != null) {
       console.error(res.error)
       toast.add({
         severity: 'error',
-        detail: i18n.global.t('Toast.GenericError.detail'),
-        summary: i18n.global.t('Toast.GenericError.summary'),
+        detail: t('Toast.GenericError.detail'),
+        summary: t('Toast.GenericError.summary'),
         life: 10000,
       })
     }

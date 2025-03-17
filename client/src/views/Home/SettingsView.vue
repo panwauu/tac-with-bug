@@ -2,43 +2,43 @@
   <div class="p-card settingsPage">
     <Accordion v-model:activeIndex="activeIndex">
       <AccordionTab
-        :header="$t('Settings.ChangeUsername.header')"
+        :header="t('Settings.ChangeUsername.header')"
         :disabled="!isLoggedIn"
       >
         <SettingsUsernameUpdate @settingoperationdone="activeIndex = undefined" />
       </AccordionTab>
       <AccordionTab
-        :header="$t('Settings.ChangeMail.header')"
+        :header="t('Settings.ChangeMail.header')"
         :disabled="!isLoggedIn"
       >
         <SettingsMailUpdate @settingoperationdone="activeIndex = undefined" />
       </AccordionTab>
       <AccordionTab
-        :header="$t('Settings.ChangePassword.header')"
+        :header="t('Settings.ChangePassword.header')"
         :disabled="!isLoggedIn"
       >
         <SettingsPasswordUpdate @settingoperationdone="activeIndex = undefined" />
       </AccordionTab>
       <AccordionTab
-        :header="$t('Settings.UploadProfilePicture.header')"
+        :header="t('Settings.UploadProfilePicture.header')"
         :disabled="!isLoggedIn"
       >
         <SettingsProfilePicture @settingoperationdone="activeIndex = undefined" />
       </AccordionTab>
       <AccordionTab
-        :header="$t('Settings.DeleteProfile.header')"
+        :header="t('Settings.DeleteProfile.header')"
         :disabled="!isLoggedIn"
       >
         <SettingsDeleteUser @settingoperationdone="activeIndex = undefined" />
       </AccordionTab>
-      <AccordionTab :header="$t('Settings.Language.header')">
+      <AccordionTab :header="t('Settings.Language.header')">
         <LanguagePicker :uploadFlag="isLoggedIn" />
       </AccordionTab>
-      <AccordionTab :header="$t('Settings.Audio.header')">
+      <AccordionTab :header="t('Settings.Audio.header')">
         <SettingsAudioVolume />
       </AccordionTab>
       <AccordionTab
-        :header="$t('Settings.EmailNotifiactions.header')"
+        :header="t('Settings.EmailNotifiactions.header')"
         :disabled="!isLoggedIn"
       >
         <SettingsEmailNotification v-if="isLoggedIn" />
@@ -62,6 +62,9 @@ import SettingsAudioVolume from '@/components/SettingsView/SettingsAudioVolume.v
 
 import { ref } from 'vue'
 import { isLoggedIn } from '@/services/useUser'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const activeIndex = ref<number | undefined>()
 </script>

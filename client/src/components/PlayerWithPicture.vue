@@ -12,7 +12,7 @@
     </div>
     <ProfilePicture
       v-if="pictureVisible === true && !bot"
-      :username="username !== '' ? username : $t('Chat.deletedPlayer')"
+      :username="username !== '' ? username : t('Chat.deletedPlayer')"
       :showCrown="showCrown"
       :online="online"
       class="autocompleteImage"
@@ -28,6 +28,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import ProfilePicture from './ProfilePicture.vue'
 import router from '@/router/index'
 

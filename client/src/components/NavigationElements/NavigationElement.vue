@@ -26,10 +26,11 @@ import type { MenuItem } from 'primevue/menuitem'
 import Button from 'primevue/button'
 
 import { ref, onMounted, watch } from 'vue'
-import { i18n } from '@/services/i18n'
 import router from '@/router/index'
 import { isLoggedIn } from '@/services/useUser'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const emit = defineEmits<{ logout: [] }>()
 
 const menuRef = ref<null | Menu>(null)
@@ -37,63 +38,63 @@ const menuRef = ref<null | Menu>(null)
 function returnMenu() {
   const menu: MenuItem[] = [
     {
-      label: i18n.global.t('Home.Landing'),
+      label: t('Home.Landing'),
       icon: 'pi pi-home',
       command: () => {
         router.push({ name: 'Landing' })
       },
     },
     {
-      label: i18n.global.t('Home.PlayerSearch'),
+      label: t('Home.PlayerSearch'),
       icon: 'pi pi-search',
       command: () => {
         router.push({ name: 'PlayerSearch' })
       },
     },
     {
-      label: i18n.global.t('Home.Tournament'),
+      label: t('Home.Tournament'),
       icon: 'pi pi-sitemap',
       command: () => {
         router.push({ name: 'TournamentOverview' })
       },
     },
     {
-      label: i18n.global.t('Home.Leaderboard'),
+      label: t('Home.Leaderboard'),
       icon: 'pi pi-thumbs-up',
       command: () => {
         router.push({ name: 'Leaders' })
       },
     },
     {
-      label: i18n.global.t('Home.TutorialOverview'),
+      label: t('Home.TutorialOverview'),
       icon: 'pi pi-question-circle',
       command: () => {
         router.push({ name: 'TutorialOverview' })
       },
     },
     {
-      label: i18n.global.t('Home.Subscription'),
+      label: t('Home.Subscription'),
       icon: 'pi pi-money-bill',
       command: () => {
         router.push({ name: 'Subscription' })
       },
     },
     {
-      label: i18n.global.t('Home.HOF'),
+      label: t('Home.HOF'),
       icon: 'pi pi-star',
       command: () => {
         router.push({ name: 'HOF' })
       },
     },
     {
-      label: i18n.global.t('Home.Settings'),
+      label: t('Home.Settings'),
       icon: 'pi pi-cog',
       command: () => {
         router.push({ name: 'Settings' })
       },
     },
     {
-      label: i18n.global.t('Home.Stats'),
+      label: t('Home.Stats'),
       icon: 'pi pi-chart-line',
       command: () => {
         router.push({ name: 'Stats' })
@@ -103,7 +104,7 @@ function returnMenu() {
 
   if (isLoggedIn.value) {
     menu.push({
-      label: i18n.global.t('Home.signout'),
+      label: t('Home.signout'),
       icon: 'pi pi-sign-out',
       command: () => {
         emit('logout')

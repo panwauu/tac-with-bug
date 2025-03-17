@@ -14,8 +14,9 @@ import type { BotDataset } from '@/../../server/src/sharedTypes/typesPlatformSta
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'
 import { getGraphColors } from '@/services/graphColors'
-import { i18n } from '@/services/i18n'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const botWinshareChart = ref<any | null>(null)
 const props = defineProps<{ data?: BotDataset }>()
 watch(
@@ -31,7 +32,7 @@ function updateUserAgentChart() {
     return
   }
 
-  botWinshareChartData.value.labels = [i18n.global.t('Stats.BotWinshare.lost'), i18n.global.t('Stats.BotWinshare.won')]
+  botWinshareChartData.value.labels = [t('Stats.BotWinshare.lost'), t('Stats.BotWinshare.won')]
   botWinshareChartData.value.datasets = [
     {
       data: [props.data.total - props.data.won, props.data.won],

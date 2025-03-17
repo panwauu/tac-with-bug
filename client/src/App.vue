@@ -23,9 +23,11 @@ import { logout } from '@/services/useUser'
 import { userFriends } from '@/services/useFriends'
 import { DefaultService as Service } from './generatedClient'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from './services/i18n'
 import router from './router'
 import { initTournamentWinners } from './services/useTournamentWinners'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 const toast = useToast()
 
 const socket = injectStrict(SocketKey)
@@ -39,8 +41,8 @@ socket.on('logged_out', async () => {
   toast.add({
     severity: 'warn',
     life: 10000,
-    summary: i18n.global.t('Connection.ServerSideLogoutSummary'),
-    detail: i18n.global.t('Connection.ServerSideLogoutDetail'),
+    summary: t('Connection.ServerSideLogoutSummary'),
+    detail: t('Connection.ServerSideLogoutDetail'),
   })
   await logout(socket)
 })
@@ -71,8 +73,8 @@ function activateUser(userID: number, token: string) {
     .then(() => {
       toast.add({
         severity: 'success',
-        summary: i18n.global.t('Login.SignIn.activationSuccessMsg'),
-        detail: i18n.global.t('Login.SignIn.activationSuccessDetails'),
+        summary: t('Login.SignIn.activationSuccessMsg'),
+        detail: t('Login.SignIn.activationSuccessDetails'),
         life: 10000,
       })
       return router.push({ name: 'Landing' })
@@ -80,7 +82,7 @@ function activateUser(userID: number, token: string) {
     .catch(() =>
       toast.add({
         severity: 'error',
-        summary: i18n.global.t('Login.SignIn.activationErrorMsg'),
+        summary: t('Login.SignIn.activationErrorMsg'),
         life: 10000,
       })
     )

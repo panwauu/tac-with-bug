@@ -3,7 +3,7 @@
     style="position: relative"
     class="notifications-container"
   >
-    <p>{{ $t('Settings.EmailNotifiactions.checkboxHeader') }}</p>
+    <p>{{ t('Settings.EmailNotifiactions.checkboxHeader') }}</p>
     <div>
       <div
         v-for="category of checkboxCategories"
@@ -20,7 +20,7 @@
           :for="category.key"
           class="checkbox-label"
         >
-          {{ $t(`Settings.EmailNotifiactions.${category.key}`) }}
+          {{ t(`Settings.EmailNotifiactions.${category.key}`) }}
         </label>
       </div>
     </div>
@@ -35,6 +35,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Checkbox from 'primevue/checkbox'
 import ProgressSpinner from 'primevue/progressspinner'
 import { DefaultService, Record_KeyOfEmailNotificationSettings_boolean_ } from '@/generatedClient/index'

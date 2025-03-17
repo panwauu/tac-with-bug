@@ -2,19 +2,22 @@
   <div :class="[win, 'gamesHistoryBadge']">
     {{
       win === 'lost'
-        ? $t('Profile.lIconSymbol')
+        ? t('Profile.lIconSymbol')
         : win === 'won'
-          ? $t('Profile.wIconSymbol')
+          ? t('Profile.wIconSymbol')
           : win === 'coop'
-            ? $t('Profile.tIconSymbol')
+            ? t('Profile.tIconSymbol')
             : win === 'aborted'
-              ? $t('Profile.aIconSymbol')
-              : $t('Profile.rIconSymbol')
+              ? t('Profile.aIconSymbol')
+              : t('Profile.rIconSymbol')
     }}
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 defineProps<{ win: string }>()
 </script>
 

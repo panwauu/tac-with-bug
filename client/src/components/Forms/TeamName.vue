@@ -9,23 +9,26 @@
       :class="localTeamName === '' || validName ? '' : 'p-invalid'"
       :disabled="disabled"
     />
-    <label for="signUpTeamName">{{ $t('Tournament.SignUp.teamNamePlaceholder') }}</label>
+    <label for="signUpTeamName">{{ t('Tournament.SignUp.teamNamePlaceholder') }}</label>
     <small
       v-if="!(localTeamName === '' || validTeamName) && !disabled"
       class="p-error"
     >
-      {{ $t('Tournament.SignUp.invalidTeamName') }}
+      {{ t('Tournament.SignUp.invalidTeamName') }}
     </small>
     <small
       v-if="!(localTeamName === '' || newName) && !disabled"
       class="p-error"
     >
-      {{ $t('Tournament.SignUp.notNewTeamName') }}
+      {{ t('Tournament.SignUp.notNewTeamName') }}
     </small>
   </span>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import InputText from 'primevue/inputtext'
 
 import { computed, watch } from 'vue'
@@ -52,7 +55,7 @@ const validTeamName = computed(() => {
 })
 
 const newName = computed(() => {
-  return !props.existingTeamNames.some((t) => t === localTeamName.value)
+  return !props.existingTeamNames.some((team) => team === localTeamName.value)
 })
 
 const validName = computed(() => {

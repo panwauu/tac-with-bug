@@ -6,7 +6,7 @@
     field="username"
     appendTo="body"
     :inputStyle="{ width: '100%' }"
-    :placeholder="$t('PlayersAutoComplete.placeholder')"
+    :placeholder="t('PlayersAutoComplete.placeholder')"
     @complete="searchPlayers()"
   >
     <template #item="slotProps">
@@ -20,6 +20,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import PlayerWithPicture from './PlayerWithPicture.vue'
 import AutoComplete from 'primevue/autocomplete'
 

@@ -9,7 +9,7 @@
     >
       <div class="bracket">
         <h4>
-          {{ $t(`Tournament.Brackets.bracketList${tournament.data.brackets.length - 1 - Number(listIndex)}`) }}
+          {{ t(`Tournament.Brackets.bracketList${tournament.data.brackets.length - 1 - Number(listIndex)}`) }}
         </h4>
         <div class="bracket-list-wrapper">
           <div
@@ -40,9 +40,9 @@
                 <Button
                   v-if="match.gameID !== -1 && match.winner === -1"
                   icon="pi pi-eye"
-                  :label="$t('Game.toViewerButton')"
+                  :label="t('Game.toViewerButton')"
                   @click="
-                    $router.push({
+                    router.push({
                       name: 'Game',
                       query: {
                         gameID: match.gameID,
@@ -118,7 +118,7 @@
                       v-if="teamIndex === -1"
                       class="bracket-match-team-placeholder"
                     >
-                      {{ $t('Tournament.Brackets.bracketTBDTeam') }}
+                      {{ t('Tournament.Brackets.bracketTBDTeam') }}
                     </div>
                   </div>
                 </div>
@@ -154,8 +154,10 @@ import type { PrivateTournament, PublicTournament } from '@/../../server/src/sha
 import { username } from '@/services/useUser'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from '@/services/i18n'
+import { useI18n } from 'vue-i18n'
+import router from '@/router'
 
+const { t } = useI18n()
 const props = defineProps<{ tournament: PrivateTournament | PublicTournament }>()
 const socket = injectStrict(SocketKey)
 const toast = useToast()
@@ -170,8 +172,8 @@ async function startGame(tournamentRound: number, roundGame: number) {
     console.error(res.error)
     toast.add({
       severity: 'error',
-      detail: i18n.global.t('Toast.GenericError.detail'),
-      summary: i18n.global.t('Toast.GenericError.summary'),
+      detail: t('Toast.GenericError.detail'),
+      summary: t('Toast.GenericError.summary'),
       life: 10000,
     })
   }

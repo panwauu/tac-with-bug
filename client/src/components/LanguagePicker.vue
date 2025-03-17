@@ -20,7 +20,7 @@
             v-if="displayText"
             class="text"
           >
-            {{ $t(`Settings.Language.${slotProps.value}`) }}
+            {{ t(`Settings.Language.${slotProps.value}`) }}
           </div>
         </div>
       </template>
@@ -35,7 +35,7 @@
             v-if="displayText"
             class="text"
           >
-            {{ $t(`Settings.Language.${slotProps.option}`) }}
+            {{ t(`Settings.Language.${slotProps.option}`) }}
           </div>
         </div>
       </template>
@@ -44,6 +44,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Dropdown from 'primevue/dropdown'
 
 import { ref } from 'vue'

@@ -17,12 +17,12 @@
         name="password"
         style="width: 100%"
       />
-      <label for="SUpasswordMail">{{ $t('Settings.ChangeMail.password') }}</label>
+      <label for="SUpasswordMail">{{ t('Settings.ChangeMail.password') }}</label>
     </span>
     <Button
       type="submit"
       icon="pi pi-refresh"
-      :label="$t('Settings.ChangeMail.button')"
+      :label="t('Settings.ChangeMail.button')"
       style="margin-top: 20px"
       :disabled="!validEmail || password === ''"
     />
@@ -30,13 +30,15 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 
 import EmailForm from '../Forms/EmailForm.vue'
 import { DefaultService as Service } from '@/generatedClient/index'
 import { ref } from 'vue'
-import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
 
@@ -53,24 +55,24 @@ const requestMailUpdate = async () => {
     email.value = ''
     toast.add({
       severity: 'success',
-      summary: i18n.global.t('Settings.ChangeMail.toastSummarySuccess'),
-      detail: i18n.global.t('Settings.ChangeMail.successMsg'),
+      summary: t('Settings.ChangeMail.toastSummarySuccess'),
+      detail: t('Settings.ChangeMail.successMsg'),
       life: 2000,
     })
     emit('settingoperationdone')
   } catch (err: any) {
     let errorText = ''
     if (err?.body?.message === 'Password is incorrect!') {
-      errorText = i18n.global.t('Settings.ChangeMail.errorMsgPwd')
+      errorText = t('Settings.ChangeMail.errorMsgPwd')
     } else if (err?.body?.message === 'Email not available') {
-      errorText = i18n.global.t('Settings.ChangeMail.errorMsgEmail')
+      errorText = t('Settings.ChangeMail.errorMsgEmail')
     } else {
-      errorText = i18n.global.t('Settings.ChangeMail.errorMsgGeneral')
+      errorText = t('Settings.ChangeMail.errorMsgGeneral')
     }
 
     toast.add({
       severity: 'error',
-      summary: i18n.global.t('Settings.ChangeMail.toastSummaryFailure'),
+      summary: t('Settings.ChangeMail.toastSummaryFailure'),
       detail: errorText,
       life: 2000,
     })

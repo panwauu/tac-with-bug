@@ -3,7 +3,7 @@
     <DataTable :value="friendsForTable">
       <Column
         field="username"
-        :header="$t('Profile.Friends.username')"
+        :header="t('Profile.Friends.username')"
       >
         <template #body="slotProps">
           <PlayerWithPicture
@@ -15,7 +15,7 @@
       </Column>
       <Column
         field="date"
-        :header="$t('Profile.Friends.friendssince')"
+        :header="t('Profile.Friends.friendssince')"
       >
         <template #body="slotProps">{{ new Date(slotProps.data.date).toLocaleDateString() }}</template>
       </Column>
@@ -32,6 +32,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'

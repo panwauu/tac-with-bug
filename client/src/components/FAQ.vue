@@ -1,6 +1,6 @@
 <template>
   <div class="faqContainer">
-    <h1>{{ $t('FAQ.title') }}</h1>
+    <h1>{{ t('FAQ.title') }}</h1>
     <div>
       <ol>
         <li
@@ -8,31 +8,31 @@
           :key="`BlockLink${i}`"
           class="outlineListElement"
         >
-          {{ $t(`FAQ.${block.header}`) }}
+          {{ t(`FAQ.${block.header}`) }}
         </li>
-        <li class="outlineListElement">{{ $t('FAQ.techStack.header') }}</li>
+        <li class="outlineListElement">{{ t('FAQ.techStack.header') }}</li>
       </ol>
     </div>
     <template
       v-for="(block, i) in faq"
       :key="`Block${i}`"
     >
-      <h2>{{ $t(`FAQ.${block.header}`) }}</h2>
+      <h2>{{ t(`FAQ.${block.header}`) }}</h2>
       <Accordion>
         <AccordionTab
           v-for="(qa, qaI) in block.data"
           :key="`Block${i}QA${qaI}`"
-          :header="$t(`FAQ.${qa.q}`)"
+          :header="t(`FAQ.${qa.q}`)"
         >
-          <p v-html="$t(`FAQ.${qa.a}`, qa.par ?? {})" />
+          <p v-html="t(`FAQ.${qa.a}`, qa.par ?? {})" />
         </AccordionTab>
       </Accordion>
     </template>
 
-    <h2>{{ $t('FAQ.techStack.header') }}</h2>
+    <h2>{{ t('FAQ.techStack.header') }}</h2>
     <Accordion>
-      <AccordionTab :header="$t('FAQ.techStack.header')">
-        <p>{{ $t('FAQ.techStack.description') }}</p>
+      <AccordionTab :header="t('FAQ.techStack.header')">
+        <p>{{ t('FAQ.techStack.description') }}</p>
         <div style="display: flex; flex-wrap: wrap; justify-content: center">
           <a
             target="_blank"
@@ -141,6 +141,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
 

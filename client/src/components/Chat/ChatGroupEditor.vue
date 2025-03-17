@@ -28,7 +28,7 @@
         v-model:userid="userIdToAdd"
       />
       <Button
-        :label="$t('Chat.GroupChatEditor.addPlayer')"
+        :label="t('Chat.GroupChatEditor.addPlayer')"
         style="margin-top: 10px"
         :disabled="userIdToAdd < 0 || userToAdd == ''"
         @click="addUser"
@@ -36,7 +36,7 @@
     </template>
     <Divider />
     <Button
-      :label="$t('Chat.GroupChatEditor.leaveButton')"
+      :label="t('Chat.GroupChatEditor.leaveButton')"
       class="p-button-danger"
       @click="leaveChat"
     />
@@ -49,15 +49,17 @@ import Button from 'primevue/button'
 import Divider from 'primevue/divider'
 import PlayerWithPicture from '../PlayerWithPicture.vue'
 import PlayersAutoComplete from '../PlayersAutoComplete.vue'
+import BlockedByModerationMessage from '../BlockedByModerationMessage.vue'
 
 import { ref } from 'vue'
 import { useMessagesStore } from '@/store/messages'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { useSettingsStore } from '@/store/settings'
-import BlockedByModerationMessage from '../BlockedByModerationMessage.vue'
+import { useI18n } from 'vue-i18n'
 
 const emits = defineEmits<{ close: [] }>()
 
+const { t } = useI18n()
 const socket = injectStrict(SocketKey)
 const messagesStore = useMessagesStore()
 const settingsStore = useSettingsStore()

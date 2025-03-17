@@ -13,18 +13,19 @@
 import type { GamesDistributionData } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
 import { ref, onMounted, watch } from 'vue'
 import Chart from 'primevue/chart'
-import { i18n } from '@/services/i18n'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const props = defineProps<{ data: GamesDistributionData; username: string }>()
 const userGamesDoughnutChart = ref<null | Chart>()
 
 const chartData = ref({
   labels: [
-    i18n.global.t('Profile.DistributionGraph.4er'),
-    i18n.global.t('Profile.DistributionGraph.6er'),
-    i18n.global.t('Profile.DistributionGraph.team'),
-    i18n.global.t('Profile.DistributionGraph.aborted'),
-    i18n.global.t('Profile.DistributionGraph.running'),
+    t('Profile.DistributionGraph.4er'),
+    t('Profile.DistributionGraph.6er'),
+    t('Profile.DistributionGraph.team'),
+    t('Profile.DistributionGraph.aborted'),
+    t('Profile.DistributionGraph.running'),
   ],
   datasets: [
     {
@@ -32,11 +33,11 @@ const chartData = ref({
       backgroundColor: ['#36459a', '#8893d1', '#d1d5ed', '#FBC02D', '#0288D1'],
       hoverBackgroundColor: ['#36459a', '#8893d1', '#d1d5ed', '#FBC02D', '#0288D1'],
       labels: [
-        i18n.global.t('Profile.DistributionGraph.4er'),
-        i18n.global.t('Profile.DistributionGraph.6er'),
-        i18n.global.t('Profile.DistributionGraph.team'),
-        i18n.global.t('Profile.DistributionGraph.aborted'),
-        i18n.global.t('Profile.DistributionGraph.running'),
+        t('Profile.DistributionGraph.4er'),
+        t('Profile.DistributionGraph.6er'),
+        t('Profile.DistributionGraph.team'),
+        t('Profile.DistributionGraph.aborted'),
+        t('Profile.DistributionGraph.running'),
       ],
     },
     {
@@ -44,12 +45,12 @@ const chartData = ref({
       backgroundColor: ['#689F38', '#D32F2F', '#689F38', '#D32F2F', '#689F38', '#D32F2F', '#00000000'],
       hoverBackgroundColor: ['#689F38', '#D32F2F', '#689F38', '#D32F2F', '#689F38', '#D32F2F', '#00000000'],
       labels: [
-        `${i18n.global.t('Profile.DistributionGraph.4er')} ${i18n.global.t('Profile.DistributionGraph.won')}`,
-        `${i18n.global.t('Profile.DistributionGraph.4er')} ${i18n.global.t('Profile.DistributionGraph.lost')}`,
-        `${i18n.global.t('Profile.DistributionGraph.6er')} ${i18n.global.t('Profile.DistributionGraph.won')}`,
-        `${i18n.global.t('Profile.DistributionGraph.6er')} ${i18n.global.t('Profile.DistributionGraph.lost')}`,
-        i18n.global.t('Profile.DistributionGraph.teamEnded'),
-        i18n.global.t('Profile.DistributionGraph.teamAborted'),
+        `${t('Profile.DistributionGraph.4er')} ${t('Profile.DistributionGraph.won')}`,
+        `${t('Profile.DistributionGraph.4er')} ${t('Profile.DistributionGraph.lost')}`,
+        `${t('Profile.DistributionGraph.6er')} ${t('Profile.DistributionGraph.won')}`,
+        `${t('Profile.DistributionGraph.6er')} ${t('Profile.DistributionGraph.lost')}`,
+        t('Profile.DistributionGraph.teamEnded'),
+        t('Profile.DistributionGraph.teamAborted'),
       ],
     },
   ],

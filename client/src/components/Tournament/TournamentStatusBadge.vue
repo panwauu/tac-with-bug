@@ -1,11 +1,14 @@
 <template>
   <Tag
     :severity="statusSeverity"
-    :value="$t(`Tournament.StatusBadge.${status}`)"
+    :value="t(`Tournament.StatusBadge.${status}`)"
   />
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Tag from 'primevue/tag'
 
 import type { PublicTournament, PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'

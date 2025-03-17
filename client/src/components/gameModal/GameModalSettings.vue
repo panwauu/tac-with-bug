@@ -1,15 +1,15 @@
 <template>
   <div>
-    <h3>{{ $t(`Game.GameModal.Settings.audioVolume`) }}</h3>
+    <h3>{{ t(`Game.GameModal.Settings.audioVolume`) }}</h3>
     <SettingsAudioVolume />
-    <h3>{{ $t(`Game.GameModal.Settings.colorBlindness`) }}</h3>
+    <h3>{{ t(`Game.GameModal.Settings.colorBlindness`) }}</h3>
     <SelectButton
       v-model="localColorBlindness"
       :options="colorBlindnessOptions"
       optionLabel="name"
       optionValue="value"
     />
-    <h3>{{ $t(`Game.GameModal.Settings.position`) }}</h3>
+    <h3>{{ t(`Game.GameModal.Settings.position`) }}</h3>
     <div class="positionContainer">
       <div class="p-field-radiobutton">
         <RadioButton
@@ -19,7 +19,7 @@
           class="positionCheckBox"
         />
         <label for="position_-1">
-          {{ $t(`Game.GameModal.Settings.checkBoxAbsolute`) }}
+          {{ t(`Game.GameModal.Settings.checkBoxAbsolute`) }}
         </label>
       </div>
       <div
@@ -34,7 +34,7 @@
           class="positionCheckBox"
         />
         <label :for="`position_${index}`">
-          {{ $t(`Game.GameModal.Settings.checkBox${nPlayers}_${index - 1}`) }}
+          {{ t(`Game.GameModal.Settings.checkBox${nPlayers}_${index - 1}`) }}
         </label>
       </div>
     </div>
@@ -42,13 +42,15 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import SelectButton from 'primevue/selectbutton'
 import RadioButton from 'primevue/radiobutton'
 import SettingsAudioVolume from '../SettingsView/SettingsAudioVolume.vue'
 
 import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { computed } from 'vue'
-import { i18n } from '@/services/i18n'
 
 import { useSettingsStore } from '@/store/settings'
 const settingsStore = useSettingsStore()
@@ -66,11 +68,11 @@ const position = computed<number>({
 
 const colorBlindnessOptions = [
   {
-    name: i18n.global.t('Game.GameModal.Settings.colorBlindnessOn'),
+    name: t('Game.GameModal.Settings.colorBlindnessOn'),
     value: true,
   },
   {
-    name: i18n.global.t('Game.GameModal.Settings.colorBlindnessOff'),
+    name: t('Game.GameModal.Settings.colorBlindnessOff'),
     value: false,
   },
 ]

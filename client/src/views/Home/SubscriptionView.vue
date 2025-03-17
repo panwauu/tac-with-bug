@@ -6,12 +6,12 @@
         style="width: 50%; border-radius: 5px"
         alt="Foto von Oskar"
       />
-      <h2>{{ $t('Subscription.aboutMeHeader') }}</h2>
-      <p>{{ $t('Subscription.aboutMe1') }}</p>
-      <p>{{ $t('Subscription.aboutMe2') }}</p>
+      <h2>{{ t('Subscription.aboutMeHeader') }}</h2>
+      <p>{{ t('Subscription.aboutMe1') }}</p>
+      <p>{{ t('Subscription.aboutMe2') }}</p>
       <div class="FeaturesAndPrice">
         <div class="PriceTag">
-          <strong>{{ $t('Subscription.price') }}</strong>
+          <strong>{{ t('Subscription.price') }}</strong>
         </div>
         <div class="Features">
           <SubscriptionTag
@@ -21,18 +21,18 @@
           <div class="FeatureElement">
             <YinYang class="FeatureIcon" />
             <div class="FeatureText">
-              <strong>{{ $t('Subscription.featureKarma1') }}</strong>
-              {{ $t('Subscription.featureKarma2') }}
+              <strong>{{ t('Subscription.featureKarma1') }}</strong>
+              {{ t('Subscription.featureKarma2') }}
             </div>
           </div>
           <div class="FeatureElement">
             <Luck class="FeatureIcon" />
-            <div class="FeatureText">{{ $t('Subscription.featureLuck') }}</div>
+            <div class="FeatureText">{{ t('Subscription.featureLuck') }}</div>
           </div>
         </div>
       </div>
     </div>
-    <p>{{ $t('Subscription.nSubscriptions') }}: {{ nSubscriptions }}</p>
+    <p>{{ t('Subscription.nSubscriptions') }}: {{ nSubscriptions }}</p>
     <div v-show="isLoggedIn">
       <div v-if="subscriptionState.status === 'expiring'">
         <Message
@@ -40,7 +40,7 @@
           severity="warn"
         >
           {{
-            $t('Subscription.expiring', {
+            t('Subscription.expiring', {
               time: new Date(subscriptionState.validuntil ?? 0).toLocaleDateString(),
             })
           }}
@@ -52,18 +52,18 @@
           :closable="false"
           severity="success"
         >
-          {{ $t('Subscription.running') }}
+          {{ t('Subscription.running') }}
         </Message>
         <div>
           {{
-            $t('Subscription.runningNextPayment', {
+            t('Subscription.runningNextPayment', {
               time: new Date(subscriptionState.validuntil ?? 0).toLocaleDateString(),
             })
           }}
         </div>
         <CountdownTimer :endDate="subscriptionState.validuntil ?? undefined" />
         <Button
-          :label="$t('Subscription.Cancel.button')"
+          :label="t('Subscription.Cancel.button')"
           @click="cancelSubscription()"
         />
       </div>
@@ -72,8 +72,8 @@
           (subscriptionState.status === null || subscriptionState.status === 'cancelled' || subscriptionState.status === 'expiring') && subscriptionState.loading === false
         "
       >
-        <h3>{{ $t('Subscription.becomingSponsor') }}</h3>
-        <div>{{ $t('Subscription.paymentPerTime') }}</div>
+        <h3>{{ t('Subscription.becomingSponsor') }}</h3>
+        <div>{{ t('Subscription.paymentPerTime') }}</div>
         <SelectButton
           v-model="selectedPlan"
           :options="planModel"
@@ -84,14 +84,14 @@
           :severity="paypalPercentageSeverity"
           class="paypalPercentage"
         >
-          {{ paypalPercentage + $t('Subscription.paypalFeeDisclaimer') }}
+          {{ paypalPercentage + t('Subscription.paypalFeeDisclaimer') }}
         </Message>
         <div class="paypal-button-wrapper">
           <div id="paypal-button-container" />
         </div>
       </div>
     </div>
-    <h3>{{ $t('Subscription.headerAdditionalPay') }}</h3>
+    <h3>{{ t('Subscription.headerAdditionalPay') }}</h3>
     <a
       class="p-button p-component p-button-label"
       style="color: var(--primary-color-text); text-decoration: none; margin-bottom: 20px"
@@ -99,7 +99,7 @@
       rel="noopener noreferrer"
       href="https://www.paypal.com/paypalme/TacWithBug"
     >
-      {{ $t('Subscription.buttonAdditionalPay') }}
+      {{ t('Subscription.buttonAdditionalPay') }}
       <i
         class="pi pi-paypal"
         style="margin-left: 5px"
@@ -107,16 +107,16 @@
       />
     </a>
     <div style="margin-top: 10px">
-      <div class="disclaimer">{{ $t('Subscription.disclaimer1') }}</div>
-      <div class="disclaimer">{{ $t('Subscription.disclaimer2') }}</div>
+      <div class="disclaimer">{{ t('Subscription.disclaimer1') }}</div>
+      <div class="disclaimer">{{ t('Subscription.disclaimer2') }}</div>
       <div class="disclaimer">
-        {{ $t('Subscription.disclaimer3') }}
+        {{ t('Subscription.disclaimer3') }}
         <a
           target="_blank"
           rel="noopener noreferrer"
           href="https://www.urbandictionary.com/define.php?term=r%2Fwhoosh"
         >
-          {{ $t('Subscription.disclaimer3Link') }}
+          {{ t('Subscription.disclaimer3Link') }}
         </a>
       </div>
     </div>
@@ -135,11 +135,13 @@ import Message from 'primevue/message'
 import { loadScript, PayPalButtonsComponent } from '@paypal/paypal-js'
 import { ref, onMounted, computed, onUnmounted, watch } from 'vue'
 import router from '@/router/index'
-import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
 import { useSubscription } from '@/services/useSubscription'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { isLoggedIn } from '@/services/useUser'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 const toast = useToast()
 
 const socket = injectStrict(SocketKey)
@@ -147,9 +149,9 @@ const subscriptionState = useSubscription(socket)
 
 const nSubscriptions = ref(0)
 const planModel = [
-  { name: i18n.global.t('Subscription.buttonPlanMonthly'), value: 'MONTHLY' },
-  { name: i18n.global.t('Subscription.buttonPlanQuaterly'), value: 'QUATERLY' },
-  { name: i18n.global.t('Subscription.buttonPlanYearly'), value: 'YEARLY' },
+  { name: t('Subscription.buttonPlanMonthly'), value: 'MONTHLY' },
+  { name: t('Subscription.buttonPlanQuaterly'), value: 'QUATERLY' },
+  { name: t('Subscription.buttonPlanYearly'), value: 'YEARLY' },
 ]
 const selectedPlan = ref(planModel[2])
 
@@ -185,14 +187,14 @@ function saveNSubscriptions(data: number) {
 }
 
 function cancelSubscription() {
-  if (confirm(i18n.global.t('Subscription.Cancel.confirm'))) {
+  if (confirm(t('Subscription.Cancel.confirm'))) {
     subscriptionState
       .cancelSubscription()
       .then(() => {
         toast.add({
           severity: 'success',
-          summary: i18n.global.t('Subscription.Cancel.successSummary'),
-          detail: i18n.global.t('Subscription.Cancel.successDetail'),
+          summary: t('Subscription.Cancel.successSummary'),
+          detail: t('Subscription.Cancel.successDetail'),
           life: 5000,
         })
       })
@@ -200,8 +202,8 @@ function cancelSubscription() {
         console.log(err)
         toast.add({
           severity: 'error',
-          summary: i18n.global.t('Subscription.Cancel.errorSummary'),
-          detail: i18n.global.t('Subscription.Cancel.errorDetail'),
+          summary: t('Subscription.Cancel.errorSummary'),
+          detail: t('Subscription.Cancel.errorDetail'),
           life: 5000,
         })
       })
@@ -231,8 +233,8 @@ function renderButton() {
           console.error('error from the onError callback', err)
           toast.add({
             severity: 'success',
-            summary: i18n.global.t('Subscription.New.bookingErrorSummary'),
-            detail: i18n.global.t('Subscription.New.bookingErrorDetail'),
+            summary: t('Subscription.New.bookingErrorSummary'),
+            detail: t('Subscription.New.bookingErrorDetail'),
             life: 5000,
           })
           socket.emit('subscription:nSubscriptions')
@@ -244,8 +246,8 @@ function renderButton() {
             .then(() => {
               toast.add({
                 severity: 'success',
-                summary: i18n.global.t('Subscription.New.successSummary'),
-                detail: i18n.global.t('Subscription.New.successDetail'),
+                summary: t('Subscription.New.successSummary'),
+                detail: t('Subscription.New.successDetail'),
                 life: 5000,
               })
               socket.emit('subscription:nSubscriptions')
@@ -254,8 +256,8 @@ function renderButton() {
               console.error(err)
               toast.add({
                 severity: 'error',
-                summary: i18n.global.t('Subscription.New.errorSummary'),
-                detail: i18n.global.t('Subscription.New.errorDetail'),
+                summary: t('Subscription.New.errorSummary'),
+                detail: t('Subscription.New.errorDetail'),
                 life: 5000,
               })
               socket.emit('subscription:nSubscriptions')

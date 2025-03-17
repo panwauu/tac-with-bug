@@ -1,16 +1,16 @@
 <template>
-  <h2>{{ $t('Landing.Waiting.title') }}</h2>
-  <p>{{ $t('Landing.Waiting.description') }}</p>
+  <h2>{{ t('Landing.Waiting.title') }}</h2>
+  <p>{{ t('Landing.Waiting.description') }}</p>
   <Accordion
     :multiple="false"
     :activeIndex="activeIndex"
     :disabled="!isLoggedIn"
   >
     <AccordionTab
-      :header="$t('Landing.Waiting.openGames', { n: gamesSummary.runningGames.length })"
+      :header="t('Landing.Waiting.openGames', { n: gamesSummary.runningGames.length })"
       :disabled="gamesSummary.runningGames.length === 0"
     >
-      <p v-if="gamesSummary.runningGames.length === 0 && username != null">{{ $t('Landing.Waiting.noGamesGoToWaiting') }}</p>
+      <p v-if="gamesSummary.runningGames.length === 0 && username != null">{{ t('Landing.Waiting.noGamesGoToWaiting') }}</p>
       <GamesTable
         v-else
         :loading="false"
@@ -21,13 +21,13 @@
         @rowSelect="startGame"
       />
     </AccordionTab>
-    <AccordionTab :header="$t('Landing.Waiting.waitingRoomsHeader')">
+    <AccordionTab :header="t('Landing.Waiting.waitingRoomsHeader')">
       <Message
         v-if="gamesSummary.runningGames.length !== 0"
         severity="error"
         :closable="false"
       >
-        {{ $t('Landing.Waiting.openGamesWarning', { openGames: gamesSummary.runningGames.length }) }}
+        {{ t('Landing.Waiting.openGamesWarning', { openGames: gamesSummary.runningGames.length }) }}
       </Message>
       <WaitingOverview />
     </AccordionTab>
@@ -35,6 +35,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
 import WaitingOverview from '@/components/WaitingOverview.vue'

@@ -1,11 +1,14 @@
 <template>
   <div v-if="tournament.status === 'signUpWaiting' || tournament.status === 'signUp' || tournament.status === 'signUpEnded' || tournament.status === 'running'">
-    <div>{{ $t(`Tournament.CountdownTimer.${counterKey}`) }}</div>
+    <div>{{ t(`Tournament.CountdownTimer.${counterKey}`) }}</div>
     <CountdownTimer :endDate="deadlineForCounter" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import type { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { computed } from 'vue'
 import CountdownTimer from '@/components/CountdownTimer.vue'

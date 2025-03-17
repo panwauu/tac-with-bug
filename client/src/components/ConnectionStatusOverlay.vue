@@ -13,7 +13,7 @@
         />
       </template>
       <template v-else-if="reconnecting">
-        <h1 class="reconnectionText">{{ $t('GameView.socketReconnectingOverlay') }}</h1>
+        <h1 class="reconnectionText">{{ t('GameView.socketReconnectingOverlay') }}</h1>
         <ProgressBar
           :value="reconnectionProgress"
           class="reconnectionProgress"
@@ -21,11 +21,11 @@
         />
       </template>
       <template v-else>
-        <h1 class="reconnectionText">{{ $t('GameView.socketDisconnectedOverlay') }}</h1>
+        <h1 class="reconnectionText">{{ t('GameView.socketDisconnectedOverlay') }}</h1>
         <Button
-          :label="$t('GameView.refreshPageButton')"
+          :label="t('GameView.refreshPageButton')"
           class="refreshButton"
-          @click="$router.go(0)"
+          @click="router.go(0)"
         />
       </template>
     </div>
@@ -38,7 +38,10 @@ import ProgressBar from 'primevue/progressbar'
 
 import { ref, onUnmounted, computed } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
+import { useI18n } from 'vue-i18n'
+import router from '@/router'
 
+const { t } = useI18n()
 const socket = injectStrict(SocketKey)
 
 const loading = ref(true)

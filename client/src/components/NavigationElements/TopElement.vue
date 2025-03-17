@@ -25,7 +25,7 @@
           v-badge.danger="friendsState.numberOpenRequests"
           class="pi pi-user"
           style="font-size: 1.4rem; margin-right: 5px; cursor: pointer"
-          @click="$router.push({ name: 'Profile-Friends', params: { username: username, locale: $route.params.locale } })"
+          @click="router.push({ name: 'Profile-Friends', params: { username: username, locale: router.currentRoute.value.params.locale } })"
         />
       </template>
       <NavigationElement @logout="$emit('logout')" />

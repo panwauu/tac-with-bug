@@ -81,7 +81,7 @@
                     :username="message.sender"
                     class="chatUserPicture"
                   />
-                  <div class="chatUsername">{{ message.sender ?? $t('Chat.deletedPlayer') }}</div>
+                  <div class="chatUsername">{{ message.sender ?? t('Chat.deletedPlayer') }}</div>
                 </div>
                 <div class="chatMessageBody">{{ message.body }}</div>
                 <div class="chatMessageFooter">
@@ -126,12 +126,12 @@
             :autoResize="true"
             :rows="1"
             aria-label="chat text input"
-            :placeholder="$t('Chat.textPlaceholder')"
+            :placeholder="t('Chat.textPlaceholder')"
             @keydown="textAreaKeydown($event)"
           />
           <Button
             type="submit"
-            :label="$t('Chat.submitButton')"
+            :label="t('Chat.submitButton')"
             :disabled="inputMessage === '' || inputMessage.length > 500"
           />
         </div>
@@ -146,7 +146,7 @@
         :closable="false"
         style="margin: 0"
       >
-        {{ $t('Chat.mayNotUseOverlay') }}
+        {{ t('Chat.mayNotUseOverlay') }}
       </Message>
       <Message
         v-if="messagesStore.selectedChat.type === 'channel' && messagesStore.selectedChat.id === 'news' && !settingsStore.admin"
@@ -155,7 +155,7 @@
         :closable="false"
         style="margin: 0"
       >
-        {{ $t('Chat.onlyAdminsOverlay') }}
+        {{ t('Chat.onlyAdminsOverlay') }}
       </Message>
     </div>
 
@@ -179,6 +179,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
 import ProfilePicture from '../ProfilePicture.vue'
@@ -194,10 +195,11 @@ import { useChatStore } from '@/store/chat'
 import { useMessagesStore, formatChannelName } from '@/store/messages'
 import { isLoggedIn, username } from '@/services/useUser'
 import { ref } from 'vue'
-import { i18n, currentLocale } from '@/services/i18n'
+import { currentLocale } from '@/services/i18n'
 import { useSettingsStore } from '@/store/settings'
 import type { ChatMessage } from '../../../../server/src/sharedTypes/chat'
 
+const { t } = useI18n()
 const chatStore = useChatStore()
 const messagesStore = useMessagesStore()
 const settingsStore = useSettingsStore()
@@ -215,9 +217,9 @@ function displaySenderAndTime(
 function beautifyDate(timestamp: string): string {
   const date = new Date(timestamp)
   if (new Date().toDateString() === date.toDateString()) {
-    return i18n.global.t('Chat.Dates.today')
+    return t('Chat.Dates.today')
   } else if (new Date(new Date().getTime() - 1000 * 60 * 60 * 24).toDateString() === date.toDateString()) {
-    return i18n.global.t('Chat.Dates.yesterday')
+    return t('Chat.Dates.yesterday')
   } else if (new Date().getTime() - date.getTime() < 1000 * 60 * 60 * 24 * 7) {
     return date.toLocaleString(currentLocale.value, { weekday: 'long' })
   }

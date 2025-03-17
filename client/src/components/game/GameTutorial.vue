@@ -2,7 +2,7 @@
   <Button
     v-if="!display"
     icon="pi pi-info"
-    :label="$t('Tutorial.openTutorial')"
+    :label="t('Tutorial.openTutorial')"
     style="position: absolute; left: 5px; bottom: 5px"
     @click="$emit('openOverlay')"
   />
@@ -12,7 +12,7 @@
   >
     <Button
       icon="pi pi-undo"
-      :label="$t('Tutorial.stopTutorial')"
+      :label="t('Tutorial.stopTutorial')"
       style="position: absolute; left: 5px; top: 5px"
       @click="abortTutorial"
     />
@@ -52,7 +52,7 @@
             v-if="!loading"
             style="flex: 1 1 auto; margin: 5px"
           >
-            {{ $t(`Tutorial.${tutorialID}.title`) }}
+            {{ t(`Tutorial.${tutorialID}.title`) }}
           </h3>
         </div>
         <div
@@ -64,18 +64,18 @@
             severity="error"
             :closable="false"
           >
-            {{ $t('Tutorial.quizWrongAnswer') }}
+            {{ t('Tutorial.quizWrongAnswer') }}
           </Message>
           <Message
             v-if="done && tutorialStepOutput?.goal != null"
             severity="success"
             :closable="false"
           >
-            {{ $t(`Tutorial.Encouragement.${Math.floor(Math.random() * 10)}`) }}
-            {{ $t(`Tutorial.nextQuestion`) }}
+            {{ t(`Tutorial.Encouragement.${Math.floor(Math.random() * 10)}`) }}
+            {{ t(`Tutorial.nextQuestion`) }}
           </Message>
           <template v-else>
-            {{ $t(`Tutorial.${tutorialID}.${tutorialStep}.detail`) }}
+            {{ t(`Tutorial.${tutorialID}.${tutorialStep}.detail`) }}
             <div
               v-if="tutorialStepOutput?.goal?.quiz != null"
               class="quizcontainer"
@@ -96,7 +96,7 @@
                   :for="`radio - ${String(i)} `"
                   style="margin-left: 10px"
                 >
-                  {{ $t(`Tutorial.${tutorialID}.${tutorialStep}.answer-${tutorialStepOutput?.goal?.quiz?.order?.[i]}`) }}
+                  {{ t(`Tutorial.${tutorialID}.${tutorialStep}.answer-${tutorialStepOutput?.goal?.quiz?.order?.[i]}`) }}
                 </label>
               </div>
             </div>
@@ -109,7 +109,7 @@
           <Button
             v-if="reset"
             icon="pi pi-undo"
-            :label="$t('Tutorial.resetButton')"
+            :label="t('Tutorial.resetButton')"
             style="margin: 10px"
             @click="$emit('reset')"
           />
@@ -117,7 +117,7 @@
             v-if="toGame"
             :disabled="done"
             icon="pi pi-play"
-            :label="$t('Tutorial.toGameButton')"
+            :label="t('Tutorial.toGameButton')"
             style="margin: 10px"
             @click="$emit('closeOverlay')"
           />
@@ -125,7 +125,7 @@
             v-if="tutorialStepOutput?.goal?.quiz != null"
             :disabled="done || quizSelected === null"
             icon="pi pi-play"
-            :label="$t('Tutorial.quizSubmitButton')"
+            :label="t('Tutorial.quizSubmitButton')"
             style="margin: 10px"
             @click="answerQuiz()"
           />
@@ -142,6 +142,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import RadioButton from 'primevue/radiobutton'
 import Skeleton from 'primevue/skeleton'

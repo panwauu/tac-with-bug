@@ -1,5 +1,5 @@
 <template>
-  <p>{{ $t('Settings.ChangeUsername.disclaimerRememberUsername') }}</p>
+  <p>{{ t('Settings.ChangeUsername.disclaimerRememberUsername') }}</p>
   <form @submit.prevent="requestUsernameUpdate()">
     <UsernameForm
       v-model:username="username"
@@ -19,13 +19,13 @@
         style="width: 100%"
       />
       <label for="setUsernamePassword">
-        {{ $t('Settings.ChangeMail.password') }}
+        {{ t('Settings.ChangeMail.password') }}
       </label>
     </span>
     <Button
       type="submit"
       icon="pi pi-refresh"
-      :label="$t('Settings.ChangeUsername.button')"
+      :label="t('Settings.ChangeUsername.button')"
       style="margin-top: 20px"
       :disabled="!validUsername || password === ''"
     />
@@ -33,6 +33,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 
@@ -41,7 +44,6 @@ import { DefaultService as Service } from '@/generatedClient/index'
 import { ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { injectStrict, SocketKey } from '@/services/injections'
-import { i18n } from '@/services/i18n'
 import { logout as logoutUser } from '@/services/useUser'
 
 const toast = useToast()
@@ -60,8 +62,8 @@ const requestUsernameUpdate = async () => {
     username.value = ''
     toast.add({
       severity: 'success',
-      summary: i18n.global.t('Settings.ChangeUsername.toastSummarySuccess'),
-      detail: i18n.global.t('Settings.ChangeUsername.successMsg'),
+      summary: t('Settings.ChangeUsername.toastSummarySuccess'),
+      detail: t('Settings.ChangeUsername.successMsg'),
       life: 8000,
     })
     emit('settingoperationdone')
@@ -69,16 +71,16 @@ const requestUsernameUpdate = async () => {
   } catch (err: any) {
     let errorText = ''
     if (err?.body?.message === 'Password is incorrect!') {
-      errorText = i18n.global.t('Settings.ChangeUsername.errorMsgPwd')
+      errorText = t('Settings.ChangeUsername.errorMsgPwd')
     } else if (err?.body?.message === 'Username not available') {
-      errorText = i18n.global.t('Settings.ChangeUsername.errorMsgUsername')
+      errorText = t('Settings.ChangeUsername.errorMsgUsername')
     } else {
-      errorText = i18n.global.t('Settings.ChangeUsername.errorMsgGeneral')
+      errorText = t('Settings.ChangeUsername.errorMsgGeneral')
     }
 
     toast.add({
       severity: 'error',
-      summary: i18n.global.t('Settings.ChangeUsername.toastSummaryFailure'),
+      summary: t('Settings.ChangeUsername.toastSummaryFailure'),
       detail: errorText,
       life: 2000,
     })

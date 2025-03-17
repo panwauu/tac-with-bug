@@ -17,13 +17,13 @@
     :baseZIndex="1000"
   >
     <TabView v-model:activeIndex="activeIndex">
-      <TabPanel :header="$t('Login.signIn')">
+      <TabPanel :header="t('Login.signIn')">
         <LoginView @login="login" />
       </TabPanel>
-      <TabPanel :header="$t('Login.signUp')">
+      <TabPanel :header="t('Login.signUp')">
         <SignUp />
       </TabPanel>
-      <TabPanel :header="$t('Login.password')">
+      <TabPanel :header="t('Login.password')">
         <NewPassword />
       </TabPanel>
     </TabView>
@@ -31,6 +31,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import OverlayPanel from 'primevue/overlaypanel'
 import TabView from 'primevue/tabview'

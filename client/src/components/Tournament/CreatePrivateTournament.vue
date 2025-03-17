@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
     <div class="tournamentCreationElement">
-      <label>{{ $t('Tournament.CreatePrivate.tournamentName') }}</label>
+      <label>{{ t('Tournament.CreatePrivate.tournamentName') }}</label>
       <InputText
         v-model="title"
         mode="decimal"
@@ -12,12 +12,12 @@
         v-if="!titleValid"
         class="p-error"
       >
-        {{ $t('Tournament.CreatePrivate.tournamentNameInvalid') }}
+        {{ t('Tournament.CreatePrivate.tournamentNameInvalid') }}
       </small>
     </div>
 
     <div class="tournamentCreationElement">
-      <label style="margin-bottom: 10px">{{ $t('Tournament.CreatePrivate.playersAndTeams') }}</label>
+      <label style="margin-bottom: 10px">{{ t('Tournament.CreatePrivate.playersAndTeams') }}</label>
       <div style="display: flex; flex-direction: column; align-items: flex-start">
         <div class="field-radiobutton">
           <RadioButton
@@ -27,7 +27,7 @@
             value="4p"
             class="radioButton"
           />
-          <label for="city1">{{ $t('Tournament.CreatePrivate.4p') }}</label>
+          <label for="city1">{{ t('Tournament.CreatePrivate.4p') }}</label>
         </div>
         <div class="field-radiobutton">
           <RadioButton
@@ -37,7 +37,7 @@
             value="6p2t"
             class="radioButton"
           />
-          <label for="city2">{{ $t('Tournament.CreatePrivate.6p2t') }}</label>
+          <label for="city2">{{ t('Tournament.CreatePrivate.6p2t') }}</label>
         </div>
         <div class="field-radiobutton">
           <RadioButton
@@ -47,13 +47,13 @@
             value="6p3t"
             class="radioButton"
           />
-          <label for="city3">{{ $t('Tournament.CreatePrivate.6p3t') }}</label>
+          <label for="city3">{{ t('Tournament.CreatePrivate.6p3t') }}</label>
         </div>
       </div>
     </div>
 
     <div class="tournamentCreationElement">
-      <label style="margin-bottom: 10px">{{ $t('Tournament.CreatePrivate.nTeams') }} {{ Math.pow(playersAndTeamsSettings === '6p3t' ? 3 : 2, nRounds) }}</label>
+      <label style="margin-bottom: 10px">{{ t('Tournament.CreatePrivate.nTeams') }} {{ Math.pow(playersAndTeamsSettings === '6p3t' ? 3 : 2, nRounds) }}</label>
       <Slider
         v-model="nRounds"
         :min="2"
@@ -75,6 +75,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Slider from 'primevue/slider'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
@@ -84,7 +87,6 @@ import { ref, computed } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import router from '@/router'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from '@/services/i18n'
 import { useSettingsStore } from '@/store/settings'
 import BlockedByModerationMessage from '../BlockedByModerationMessage.vue'
 const toast = useToast()
@@ -110,8 +112,8 @@ async function createPrivateTournament() {
     console.error('Tournament not created')
     toast.add({
       severity: 'success',
-      summary: i18n.global.t('Toast.GenericError.summary'),
-      detail: i18n.global.t('Toast.GenericError.detail'),
+      summary: t('Toast.GenericError.summary'),
+      detail: t('Toast.GenericError.detail'),
       life: 5000,
     })
     return
@@ -119,8 +121,8 @@ async function createPrivateTournament() {
 
   toast.add({
     severity: 'success',
-    summary: i18n.global.t('Tournament.CreatePrivate.createdSummary'),
-    detail: i18n.global.t('Tournament.CreatePrivate.createdDetail'),
+    summary: t('Tournament.CreatePrivate.createdSummary'),
+    detail: t('Tournament.CreatePrivate.createdDetail'),
     life: 5000,
   })
   return router.push({ name: 'PrivateTournament', params: { id: res.data.id } })

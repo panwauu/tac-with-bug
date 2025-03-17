@@ -6,12 +6,12 @@
       :sticky="true"
     >
       <div>
-        {{ $t(`Login.SignIn.errorMsgEmail`) }}
+        {{ t(`Login.SignIn.errorMsgEmail`) }}
         <a
           href="#"
           @click="newActivationMessage()"
         >
-          {{ $t('Login.SignIn.errorMsgEmailLink') }}
+          {{ t('Login.SignIn.errorMsgEmailLink') }}
         </a>
       </div>
     </Message>
@@ -24,7 +24,7 @@
           name="username"
           style="width: 100%"
         />
-        <label for="LIusername">{{ $t('Login.username') }}</label>
+        <label for="LIusername">{{ t('Login.username') }}</label>
       </span>
       <span class="p-float-label floatingTextInput loginInputElement">
         <InputText
@@ -34,12 +34,12 @@
           name="password"
           style="width: 100%"
         />
-        <label for="LIpassword">{{ $t('Login.password') }}</label>
+        <label for="LIpassword">{{ t('Login.password') }}</label>
       </span>
       <Button
         type="submit"
         :icon="'pi ' + (loading ? 'pi-spin pi-spinner' : 'pi-sign-in')"
-        :label="$t('Login.signIn')"
+        :label="t('Login.signIn')"
         class="loginInputElement loginButton"
         :disabled="password === '' || username === '' || loading"
       />
@@ -48,6 +48,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import Message from 'primevue/message'
 import InputText from 'primevue/inputtext'
@@ -56,7 +59,6 @@ import { ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index'
 import { login as userLogin } from '@/services/useUser'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from '@/services/i18n'
 import router from '@/router'
 import { injectStrict, SocketKey } from '@/services/injections'
 
@@ -116,8 +118,8 @@ async function login() {
 
     toast.add({
       severity: 'error',
-      summary: i18n.global.t('Login.SignIn.errorHeader'),
-      detail: i18n.global.t(`Login.SignIn.${errorMsg}`),
+      summary: t('Login.SignIn.errorHeader'),
+      detail: t(`Login.SignIn.${errorMsg}`),
       life: 2500,
     })
   } finally {
@@ -130,8 +132,8 @@ function newActivationMessage() {
   Service.requestNewActivationMail(username.value)
   toast.add({
     severity: 'success',
-    summary: i18n.global.t('Login.SignIn.newActivationSummary'),
-    detail: i18n.global.t('Login.SignIn.newActivationDetail'),
+    summary: t('Login.SignIn.newActivationSummary'),
+    detail: t('Login.SignIn.newActivationDetail'),
     life: 5000,
   })
 }

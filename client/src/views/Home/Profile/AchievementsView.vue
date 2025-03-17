@@ -6,9 +6,9 @@
     >
       <Column
         field="title"
-        :header="$t('Profile.TournamentParticipations.tournamentTitle')"
+        :header="t('Profile.TournamentParticipations.tournamentTitle')"
       />
-      <Column :header="$t('Profile.TournamentParticipations.tournamentResult')">
+      <Column :header="t('Profile.TournamentParticipations.tournamentResult')">
         <template #body="slotProps">
           <div v-if="slotProps.data.placement != null">
             <div style="width: 35px">
@@ -33,6 +33,9 @@ import { watch, ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient'
 import type { TournamentParticipation } from '@/../../server/src/sharedTypes/typesTournament'
 import router from '@/router'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{ username: string }>()
 

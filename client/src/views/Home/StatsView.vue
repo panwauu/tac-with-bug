@@ -1,6 +1,6 @@
 <template>
   <div class="p-card stats">
-    <h1>{{ $t('Stats.headerTable') }}</h1>
+    <h1>{{ t('Stats.headerTable') }}</h1>
     <FunFactsCarousel :usePCardStyle="false" />
     <PlatformStats />
   </div>
@@ -9,6 +9,9 @@
 <script setup lang="ts">
 import FunFactsCarousel from '@/components/FunFactsCarousel.vue'
 import PlatformStats from '@/components/PlatformStats/PlatformStats.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 </script>
 
 <style scoped>

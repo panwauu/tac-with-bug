@@ -8,7 +8,7 @@
     </div>
     <div
       class="landingPageElement tutorialWidget clickable p-card"
-      @click="$router.push({ name: 'TutorialOverview' })"
+      @click="router.push({ name: 'TutorialOverview' })"
     >
       <TutorialWidget />
     </div>
@@ -23,6 +23,7 @@ import TournamentWidget from '@/components/Tournament/TournamentWidget.vue'
 import RunningGamesWidget from '@/components/RunningGamesWidget.vue'
 import WaitingWidget from '@/components/WaitingWidget.vue'
 import TutorialWidget from '@/components/TutorialWidget.vue'
+import router from '@/router'
 </script>
 
 <style scoped>

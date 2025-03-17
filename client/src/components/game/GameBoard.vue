@@ -54,7 +54,7 @@
           class="p-button-danger textActionButton"
           @click="performTextAction(textAction)"
         >
-          {{ $t(`Game.CardActionButton.${textAction}`) }}
+          {{ t(`Game.CardActionButton.${textAction}`) }}
         </Button>
       </div>
 
@@ -131,6 +131,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import Tag from 'primevue/tag'
 import TradeArrow from '@/components/icons/TradeArrow.vue'

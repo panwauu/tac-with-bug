@@ -13,7 +13,7 @@
             style="margin-right: 5px"
             aria-hidden="true"
           />
-          <div>{{ $t(`Chat.ChatCreator.${slotProps.option.value}`) }}</div>
+          <div>{{ t(`Chat.ChatCreator.${slotProps.option.value}`) }}</div>
         </div>
       </template>
     </SelectButton>
@@ -24,7 +24,7 @@
       :playersToAvoid="username == null ? [] : [username]"
     />
     <Button
-      :label="$t('Chat.ChatCreator.startButton')"
+      :label="t('Chat.ChatCreator.startButton')"
       :disabled="selectedPlayerUsername == '' || chatOptionSelected == null"
       @click="startChat"
     />
@@ -39,7 +39,9 @@ import PlayersAutoComplete from '../PlayersAutoComplete.vue'
 import { ref } from 'vue'
 import { username } from '@/services/useUser'
 import { useMessagesStore } from '@/store/messages'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const emits = defineEmits<{ close: [] }>()
 
 const messagesStore = useMessagesStore()

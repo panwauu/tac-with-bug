@@ -13,9 +13,10 @@ import type { DayDatasetType } from '@/../../server/src/sharedTypes/typesPlatfor
 
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'
-import { i18n } from '@/services/i18n'
 import { getGraphColors } from '@/services/graphColors'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const dayChart = ref<any | null>(null)
 const props = defineProps<{ data?: DayDatasetType }>()
 watch(
@@ -65,7 +66,7 @@ const dayChartData = ref({
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: getGraphColors({ alpha: 1, elementNumber: 0 }),
-      label: i18n.global.t('Stats.users'),
+      label: t('Stats.users'),
     },
     {
       data: [0, 0, 0, 0, 0, 0, 0],
@@ -75,18 +76,10 @@ const dayChartData = ref({
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: getGraphColors({ alpha: 1, elementNumber: 1 }),
-      label: i18n.global.t('Stats.games'),
+      label: t('Stats.games'),
     },
   ],
-  labels: [
-    i18n.global.t('Stats.monday'),
-    i18n.global.t('Stats.tuesday'),
-    i18n.global.t('Stats.wednesday'),
-    i18n.global.t('Stats.thursday'),
-    i18n.global.t('Stats.friday'),
-    i18n.global.t('Stats.saturday'),
-    i18n.global.t('Stats.sunday'),
-  ],
+  labels: [t('Stats.monday'), t('Stats.tuesday'), t('Stats.wednesday'), t('Stats.thursday'), t('Stats.friday'), t('Stats.saturday'), t('Stats.sunday')],
 })
 
 function updateDayChart() {

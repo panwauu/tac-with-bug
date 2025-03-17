@@ -2,46 +2,53 @@
   <div class="bottomMenu">
     <div
       class="bottomMenuElement clickable"
-      @click="$router.push({ name: 'Impressum' })"
+      @click="router.push({ name: 'Impressum' })"
     >
       <i
         class="pi pi-id-card icon"
         aria-hidden="true"
       />
-      {{ $t('Home.Impressum') }}
+      {{ t('Home.Impressum') }}
     </div>
     <div
       class="bottomMenuElement clickable"
-      @click="$router.push({ name: 'Copyright' })"
+      @click="router.push({ name: 'Copyright' })"
     >
       <i
         class="pi pi-file icon"
         aria-hidden="true"
       />
-      {{ $t('Home.Copyright') }}
+      {{ t('Home.Copyright') }}
     </div>
     <div
       class="bottomMenuElement clickable"
-      @click="$router.push({ name: 'Datenschutz' })"
+      @click="router.push({ name: 'Datenschutz' })"
     >
       <i
         class="pi pi-book icon"
         aria-hidden="true"
       />
-      {{ $t('Home.Datenschutz') }}
+      {{ t('Home.Datenschutz') }}
     </div>
     <div
       class="bottomMenuElement clickable"
-      @click="$router.push({ name: 'FAQ' })"
+      @click="router.push({ name: 'FAQ' })"
     >
       <i
         class="pi pi-book icon"
         aria-hidden="true"
       />
-      {{ $t('Home.FAQ') }}
+      {{ t('Home.FAQ') }}
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import router from '@/router'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+</script>
 
 <style scoped>
 .bottomMenu {

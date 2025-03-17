@@ -6,15 +6,15 @@
     </div>
     <h1>Hall of Fame</h1>
     <p>
-      {{ $t('HOF.verlag1') }}
+      {{ t('HOF.verlag1') }}
       <a
         target="_blank"
         rel="noopener noreferrer"
         href="https://shop.spiel-tac.de/"
       >
-        {{ $t('HOF.verlagLink') }}
+        {{ t('HOF.verlagLink') }}
       </a>
-      {{ $t('HOF.verlag2') }}
+      {{ t('HOF.verlag2') }}
     </p>
     <div class="playersContainer">
       <PlayerWithPicture
@@ -25,7 +25,7 @@
         class="player"
       />
     </div>
-    <p>{{ $t('HOF.spende') }}</p>
+    <p>{{ t('HOF.spende') }}</p>
     <div class="playersContainer">
       <PlayerWithPicture
         v-for="p in hofData.spende"
@@ -35,7 +35,7 @@
         class="player"
       />
     </div>
-    <p>{{ $t('HOF.lang') }}</p>
+    <p>{{ t('HOF.lang') }}</p>
     <div class="playersContainer">
       <PlayerWithPicture
         v-for="p in hofData.translation"
@@ -45,7 +45,7 @@
         class="player"
       />
     </div>
-    <p>{{ $t('HOF.privat') }}</p>
+    <p>{{ t('HOF.privat') }}</p>
     <div class="playersContainer">
       <PlayerWithPicture
         v-for="p in hofData.family"
@@ -59,6 +59,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import { reactive } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'

@@ -6,7 +6,7 @@
       aria-label="Playersearch"
       :suggestions="filteredPlayers"
       appendTo="body"
-      :placeholder="$t('Home.Spielersuche')"
+      :placeholder="t('Home.Spielersuche')"
       @complete="searchPlayers()"
       @item-select="searchSubmitFromAutoComplete()"
       @keyup.enter="searchSubmitFromAutoComplete()"
@@ -22,6 +22,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import AutoComplete from 'primevue/autocomplete'
 

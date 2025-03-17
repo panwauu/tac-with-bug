@@ -6,7 +6,7 @@
   >
     <Divider v-if="index !== 0" />
     <div style="display: flex; justify-content: space-between">
-      <div>{{ $t(`Tutorial.${index}.title`) }}</div>
+      <div>{{ t(`Tutorial.${index}.title`) }}</div>
       <div>{{ data[0] }}/{{ data[1] }}</div>
     </div>
     <ProgressBar
@@ -17,6 +17,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import ProgressBar from 'primevue/progressbar'
 import Divider from 'primevue/divider'
 

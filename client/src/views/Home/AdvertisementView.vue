@@ -14,7 +14,7 @@
       <div style="display: flex; flex-direction: column; align-items: center; padding: 10px; flex: 0 1 600px; max-width: 100%">
         <TwbLogo style="width: 250px" />
         <p>
-          {{ $t(`Advertisement.description1`) }}
+          {{ t(`Advertisement.description1`) }}
           <a
             class="tacLogo"
             href="https://shop.spiel-tac.de/"
@@ -23,25 +23,25 @@
           >
             TAC
           </a>
-          {{ $t(`Advertisement.description2`) }}
+          {{ t(`Advertisement.description2`) }}
         </p>
         <FunFactsCarousel />
         <div style="display: flex; justify-content: space-around; width: 100%; flex-wrap: wrap">
           <Button
             class="advertButton"
-            :label="$t('Advertisement.tutorialButton')"
+            :label="t('Advertisement.tutorialButton')"
             icon="pi pi-question-circle"
-            @click="$router.push({ name: 'TutorialOverview' })"
+            @click="router.push({ name: 'TutorialOverview' })"
           />
           <Button
             class="advertButton"
-            :label="$t('Advertisement.gamesButton')"
+            :label="t('Advertisement.gamesButton')"
             icon="pi pi-table"
-            @click="$router.push({ name: 'Landing' })"
+            @click="router.push({ name: 'Landing' })"
           />
           <Button
             class="advertButton"
-            :label="$t('Advertisement.signUpButton')"
+            :label="t('Advertisement.signUpButton')"
             :disabled="isLoggedIn"
             icon="pi pi-sign-in"
             @click="clickNewAccount"
@@ -59,6 +59,10 @@ import { ref } from 'vue'
 import { isLoggedIn } from '@/services/useUser'
 import { useResizeObserver } from '@vueuse/core'
 import FunFactsCarousel from '@/components/FunFactsCarousel.vue'
+import router from '@/router'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 async function clickNewAccount() {
   await new Promise((resolve) => setTimeout(() => resolve(null), 100))

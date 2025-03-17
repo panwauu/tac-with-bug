@@ -41,7 +41,7 @@
             style="font-size: 20px; margin-left: 7px; margin-right: 5px"
             :class="messageStore.getRecentChats.icon"
           />
-          <div>{{ $t(`Chat.MenuOptions.${messageStore.getRecentChats.label}`) }}</div>
+          <div>{{ t(`Chat.MenuOptions.${messageStore.getRecentChats.label}`) }}</div>
         </div>
         <div class="chatMenuBodyElements">
           <div
@@ -61,7 +61,7 @@
       </div>
       <Button
         v-if="isLoggedIn && !settingsStore.isBlockedByModeration"
-        :label="$t('Chat.startNewChatButton')"
+        :label="t('Chat.startNewChatButton')"
         icon="pi pi-plus"
         style="margin: 15px auto"
         @click="toggle"
@@ -84,7 +84,7 @@
             :class="menuItem.icon"
             aria-hidden="true"
           />
-          <div>{{ $t(`Chat.MenuOptions.${menuItem.label}`) }}</div>
+          <div>{{ t(`Chat.MenuOptions.${menuItem.label}`) }}</div>
         </div>
         <div class="chatMenuBodyElements">
           <div
@@ -118,6 +118,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import ChatPositions from '../icons/ChatPositions.vue'
 import Badge from 'primevue/badge'
 import Button from 'primevue/button'

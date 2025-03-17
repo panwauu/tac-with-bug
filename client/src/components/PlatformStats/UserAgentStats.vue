@@ -28,8 +28,9 @@ import type { UserAgentAnalysisData } from '@/../../server/src/sharedTypes/types
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'
 import { getGraphColors } from '@/services/graphColors'
-import { i18n } from '@/services/i18n'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const userAgentChat = ref<any | null>(null)
 const userAgentDeviceChat = ref<any | null>(null)
 const userAgentOsChat = ref<any | null>(null)
@@ -47,7 +48,7 @@ function updateUserAgentChart() {
     return
   }
 
-  const browserData = groupAndSortData(props.data.browserNames, 0.02, i18n.global.t('Stats.others'))
+  const browserData = groupAndSortData(props.data.browserNames, 0.02, t('Stats.others'))
   browserChartData.value.labels = browserData.map((e) => e[0])
   browserChartData.value.datasets = [
     {
@@ -58,7 +59,7 @@ function updateUserAgentChart() {
   userAgentChat.value?.refresh()
 
   const deviceData = groupAndSortData(props.data.deviceTypes, 0.01, 'others')
-  deviceChartData.value.labels = deviceData.map((e) => i18n.global.t(`Stats.DeviceTypes.${e[0]}`))
+  deviceChartData.value.labels = deviceData.map((e) => t(`Stats.DeviceTypes.${e[0]}`))
   deviceChartData.value.datasets = [
     {
       data: deviceData.map((e) => e[1]),
@@ -67,7 +68,7 @@ function updateUserAgentChart() {
   ]
   userAgentDeviceChat.value?.refresh()
 
-  const osData = groupAndSortData(props.data.osNames, 0.02, i18n.global.t('Stats.others'))
+  const osData = groupAndSortData(props.data.osNames, 0.02, t('Stats.others'))
   osChartData.value.labels = osData.map((e) => e[0])
   osChartData.value.datasets = [
     {

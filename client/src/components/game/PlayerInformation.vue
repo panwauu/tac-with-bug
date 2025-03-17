@@ -52,7 +52,7 @@
       v-if="player.bot === false"
       :username="String(player.name)"
       :class="`posAbsolute playerPicture ${miscState.players.length === 6 ? `playerPicture6${positionStyles.turned ? 'turned' : ''}` : ''} ${
-        index === miscState.gamePlayer && !miscState.viewerMode && $route.name === 'Game' ? 'clickable' : ''
+        index === miscState.gamePlayer && !miscState.viewerMode && router.currentRoute.value.name === 'Game' ? 'clickable' : ''
       }`"
       :style="positionStyles.stylePositionPictures?.[rotateIndex(Number(index))]"
       :online="Boolean(miscState.onlineGamePlayers.includes(index))"
@@ -61,7 +61,7 @@
     <div
       v-if="player.bot === true"
       :class="`posAbsolute playerPicture ${miscState.players.length === 6 ? `playerPicture6${positionStyles.turned ? 'turned' : ''}` : ''} ${
-        index === miscState.gamePlayer && !miscState.viewerMode && $route.name === 'Game' ? 'clickable' : ''
+        index === miscState.gamePlayer && !miscState.viewerMode && router.currentRoute.value.name === 'Game' ? 'clickable' : ''
       }`"
       class="botPicture"
       :style="positionStyles.stylePositionPictures?.[rotateIndex(Number(index))]"

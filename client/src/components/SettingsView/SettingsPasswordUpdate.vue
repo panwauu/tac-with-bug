@@ -12,7 +12,7 @@
           name="password"
           style="width: 100%"
         />
-        <label for="changePWpassword">{{ $t('Settings.ChangePassword.currentPassword') }}</label>
+        <label for="changePWpassword">{{ t('Settings.ChangePassword.currentPassword') }}</label>
       </span>
     </div>
 
@@ -25,7 +25,7 @@
     <Button
       type="submit"
       icon="pi pi-refresh"
-      :label="$t('Settings.ChangePassword.button')"
+      :label="t('Settings.ChangePassword.button')"
       style="margin-top: 20px"
       :disabled="!validNewPassword || password === ''"
     />
@@ -33,13 +33,15 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 
 import PasswordForm from '../Forms/PasswordForm.vue'
 import { DefaultService as Service } from '@/generatedClient/index'
 import { ref } from 'vue'
-import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
 
@@ -57,22 +59,22 @@ const requestPasswordUpdate = async () => {
     newPassword.value = ''
     toast.add({
       severity: 'success',
-      summary: i18n.global.t('Settings.ChangePassword.toastSummarySuccess'),
-      detail: i18n.global.t('Settings.ChangePassword.successMsg'),
+      summary: t('Settings.ChangePassword.toastSummarySuccess'),
+      detail: t('Settings.ChangePassword.successMsg'),
       life: 2000,
     })
     emit('settingoperationdone')
   } catch (err: any) {
     let errorText = ''
     if (!err?.body?.message) {
-      errorText = i18n.global.t('Settings.ChangePassword.errorMsgGeneral')
+      errorText = t('Settings.ChangePassword.errorMsgGeneral')
     } else {
-      errorText = i18n.global.t('Settings.ChangePassword.errorMsgPwd')
+      errorText = t('Settings.ChangePassword.errorMsgPwd')
     }
 
     toast.add({
       severity: 'error',
-      summary: i18n.global.t('Settings.ChangePassword.toastSummaryFailure'),
+      summary: t('Settings.ChangePassword.toastSummaryFailure'),
       detail: errorText,
       life: 2000,
     })

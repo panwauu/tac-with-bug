@@ -1,9 +1,9 @@
 <template>
   <div v-if="!settingsStore.isBlockedByModeration">
-    <p>{{ $t('Settings.UploadProfilePicture.privacyDisclaimer') }}</p>
+    <p>{{ t('Settings.UploadProfilePicture.privacyDisclaimer') }}</p>
     <FileUpload
       class="SettingsButton"
-      :chooseLabel="$t('Settings.UploadProfilePicture.ChooseFile')"
+      :chooseLabel="t('Settings.UploadProfilePicture.ChooseFile')"
       mode="basic"
       name="PictureUpload"
       accept="image/*"
@@ -16,7 +16,7 @@
       class="SettingsButton"
       type="button"
       icon="pi pi-trash"
-      :label="$t('Settings.UploadProfilePicture.DeletePicture')"
+      :label="t('Settings.UploadProfilePicture.DeletePicture')"
       @click="deleteImage()"
     />
   </div>
@@ -25,7 +25,7 @@
   </div>
   <Dialog
     v-model:visible="cropperDialog"
-    :header="$t('Settings.UploadProfilePicture.Modal.header')"
+    :header="t('Settings.UploadProfilePicture.Modal.header')"
     :modal="true"
     :closeOnEscape="true"
     :dismissableMask="true"
@@ -40,7 +40,7 @@
       />
       <div class="cropperControls">
         <Button
-          :label="$t('Settings.UploadProfilePicture.Modal.reset')"
+          :label="t('Settings.UploadProfilePicture.Modal.reset')"
           class="p-button-secondary p-button-text"
           @click="reset"
         />
@@ -56,7 +56,7 @@
         />
         <Button
           icon="pi pi-upload"
-          :label="$t('Settings.UploadProfilePicture.Modal.submit')"
+          :label="t('Settings.UploadProfilePicture.Modal.submit')"
           class="p-button-secondary p-button-text"
           @click="submit"
         />
@@ -66,6 +66,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import VueCropper, { VueCropperMethods } from 'vue-cropperjs'
@@ -75,7 +78,6 @@ import { deleteProfilePic, requestProfilePic } from '../../services/useProfilePi
 import { DefaultService as Service } from '@/generatedClient/index'
 import { ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from '@/services/i18n'
 import { user } from '@/services/useUser'
 import { useSettingsStore } from '@/store/settings'
 import BlockedByModerationMessage from '../BlockedByModerationMessage.vue'
@@ -122,16 +124,16 @@ const submit = async () => {
         requestProfilePic(user.username ?? '')
         toast.add({
           severity: 'success',
-          summary: i18n.global.t('Settings.UploadProfilePicture.toastSummarySuccessUpload'),
-          detail: i18n.global.t('Settings.UploadProfilePicture.successMsgUpload'),
+          summary: t('Settings.UploadProfilePicture.toastSummarySuccessUpload'),
+          detail: t('Settings.UploadProfilePicture.successMsgUpload'),
           life: 2000,
         })
         emit('settingoperationdone')
       } else {
         toast.add({
           severity: 'error',
-          summary: i18n.global.t('Settings.UploadProfilePicture.toastSummaryFailureUpload'),
-          detail: i18n.global.t('Settings.UploadProfilePicture.errorMsgUpload'),
+          summary: t('Settings.UploadProfilePicture.toastSummaryFailureUpload'),
+          detail: t('Settings.UploadProfilePicture.errorMsgUpload'),
           life: 2000,
         })
       }
@@ -150,8 +152,8 @@ const deleteImage = async () => {
     requestProfilePic(user.username ?? '')
     toast.add({
       severity: 'success',
-      summary: i18n.global.t('Settings.UploadProfilePicture.toastSummarySuccessDelete'),
-      detail: i18n.global.t('Settings.UploadProfilePicture.successMsgDelete'),
+      summary: t('Settings.UploadProfilePicture.toastSummarySuccessDelete'),
+      detail: t('Settings.UploadProfilePicture.successMsgDelete'),
       life: 2000,
     })
     emit('settingoperationdone')
@@ -159,8 +161,8 @@ const deleteImage = async () => {
     console.log(err)
     toast.add({
       severity: 'error',
-      summary: i18n.global.t('Settings.UploadProfilePicture.toastSummaryFailureDelete'),
-      detail: i18n.global.t('Settings.UploadProfilePicture.errorMsgDelete'),
+      summary: t('Settings.UploadProfilePicture.toastSummaryFailureDelete'),
+      detail: t('Settings.UploadProfilePicture.errorMsgDelete'),
       life: 2000,
     })
   }

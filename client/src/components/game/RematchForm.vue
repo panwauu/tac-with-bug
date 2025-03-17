@@ -20,11 +20,11 @@
         :mode="'down'"
         largestUnit="hours"
       />
-      <div style="padding-bottom: 15px">{{ $t('Game.Rematch.description') }}</div>
-      <p v-if="!miscState.rematch_open">{{ $t('Game.Rematch.rematchNotAllowed') }}</p>
+      <div style="padding-bottom: 15px">{{ t('Game.Rematch.description') }}</div>
+      <p v-if="!miscState.rematch_open">{{ t('Game.Rematch.rematchNotAllowed') }}</p>
       <Button
         :disabled="!miscState.rematch_open"
-        :label="$t('Game.Rematch.startButton')"
+        :label="t('Game.Rematch.startButton')"
         @click="createRematch()"
       />
     </template>
@@ -32,6 +32,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import WaitingGame from '@/components/WaitingGame.vue'
 import CountdownTimer from '../CountdownTimer.vue'
@@ -39,7 +42,6 @@ import CountdownTimer from '../CountdownTimer.vue'
 import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
 import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { computed, onUnmounted } from 'vue'
-import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
 import router from '@/router/index'
 import { injectStrict, SocketKey } from '@/services/injections'
@@ -80,16 +82,16 @@ async function createRematch() {
     return
   }
 
-  let summary = i18n.global.t('Game.Rematch.errorGeneralSummary')
-  let detail = i18n.global.t('Game.Rematch.errorGeneralDetail')
+  let summary = t('Game.Rematch.errorGeneralSummary')
+  let detail = t('Game.Rematch.errorGeneralDetail')
   switch (res.error) {
     case 'PLAYER_ALREADY_IN_WAITING_GAME':
-      summary = i18n.global.t('Game.Rematch.errorAlreadyInWaitingSummary')
-      detail = i18n.global.t('Game.Rematch.errorAlreadyInWaitingDetail')
+      summary = t('Game.Rematch.errorAlreadyInWaitingSummary')
+      detail = t('Game.Rematch.errorAlreadyInWaitingDetail')
       break
     case 'PLAYER_NOT_ONLINE':
-      summary = i18n.global.t('Game.Rematch.errorNotOnlineSummary')
-      detail = i18n.global.t('Game.Rematch.errorNotOnlineDetail')
+      summary = t('Game.Rematch.errorNotOnlineSummary')
+      detail = t('Game.Rematch.errorNotOnlineDetail')
       break
   }
 
@@ -109,7 +111,7 @@ function moveBot(data: { gameID: number; playerIndex: number; steps: number }) {
 }
 
 function removePlayer(username: string) {
-  if (confirm(i18n.global.t('Waiting.leaveRematch'))) {
+  if (confirm(t('Waiting.leaveRematch'))) {
     socket.emitWithAck(5000, 'waiting:removePlayer', username)
   }
 }

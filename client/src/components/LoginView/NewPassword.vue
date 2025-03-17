@@ -9,13 +9,13 @@
           name="username"
           class="inputElement"
         />
-        <label for="NPusername">{{ $t('Login.emailOrUsername') }}</label>
+        <label for="NPusername">{{ t('Login.emailOrUsername') }}</label>
       </span>
       <Button
         type="submit"
         class="loginInputElement"
         :icon="'pi ' + (loading ? 'pi-spin pi-spinner' : 'pi-question')"
-        :label="$t('Login.RequestNewPassword.button')"
+        :label="t('Login.RequestNewPassword.button')"
         :disabled="usernameOrEmail === '' || loading === true"
       />
     </form>
@@ -23,13 +23,15 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 
 import { ref } from 'vue'
 import * as EmailValidator from 'email-validator'
 import { DefaultService as Service } from '@/generatedClient/index'
-import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
@@ -51,7 +53,7 @@ async function executeNewPassword() {
 
     toast.add({
       severity: 'success',
-      summary: i18n.global.t('Login.RequestNewPassword.successMsg'),
+      summary: t('Login.RequestNewPassword.successMsg'),
       life: 5000,
     })
     usernameOrEmail.value = ''
@@ -60,7 +62,7 @@ async function executeNewPassword() {
   } catch (err) {
     toast.add({
       severity: 'error',
-      summary: i18n.global.t('Login.RequestNewPassword.errorMsg'),
+      summary: t('Login.RequestNewPassword.errorMsg'),
       life: 5000,
     })
   }

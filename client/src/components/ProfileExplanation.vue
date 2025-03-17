@@ -7,22 +7,22 @@
   />
   <Dialog
     v-model:visible="displayExplanation"
-    :header="$t('Profile.expHeader')"
+    :header="t('Profile.expHeader')"
     :modal="true"
     :dismissableMask="true"
   >
-    <table :aria-label="$t('Profile.expHeader')">
+    <table :aria-label="t('Profile.expHeader')">
       <tr>
-        <th>{{ $t('Profile.mostFrequent') + ':' }}</th>
-        <td>{{ $t('Profile.mostFrequentExp') }}</td>
+        <th>{{ t('Profile.mostFrequent') + ':' }}</th>
+        <td>{{ t('Profile.mostFrequentExp') }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Profile.bestPlayer') + ':' }}</th>
-        <td>{{ $t('Profile.bestPlayerExp') }}</td>
+        <th>{{ t('Profile.bestPlayer') + ':' }}</th>
+        <td>{{ t('Profile.bestPlayerExp') }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Profile.worstPlayer') + ':' }}</th>
-        <td>{{ $t('Profile.worstPlayerExp') }}</td>
+        <th>{{ t('Profile.worstPlayer') + ':' }}</th>
+        <td>{{ t('Profile.worstPlayerExp') }}</td>
       </tr>
       <tr>
         <th>
@@ -31,7 +31,7 @@
             style="margin: 2px auto"
           />
         </th>
-        <td>{{ $t('Profile.wIconExp') }}</td>
+        <td>{{ t('Profile.wIconExp') }}</td>
       </tr>
       <tr>
         <th>
@@ -40,7 +40,7 @@
             style="margin: 2px auto"
           />
         </th>
-        <td>{{ $t('Profile.lIconExp') }}</td>
+        <td>{{ t('Profile.lIconExp') }}</td>
       </tr>
       <tr>
         <th>
@@ -49,7 +49,7 @@
             style="margin: 2px auto"
           />
         </th>
-        <td>{{ $t('Profile.tIconExp') }}</td>
+        <td>{{ t('Profile.tIconExp') }}</td>
       </tr>
       <tr>
         <th>
@@ -58,7 +58,7 @@
             style="margin: 2px auto"
           />
         </th>
-        <td>{{ $t('Profile.aIconExp') }}</td>
+        <td>{{ t('Profile.aIconExp') }}</td>
       </tr>
       <tr>
         <th>
@@ -67,41 +67,44 @@
             style="margin: 2px auto"
           />
         </th>
-        <td>{{ $t('Profile.rIconExp') }}</td>
+        <td>{{ t('Profile.rIconExp') }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Profile.success') + ':' }}</th>
-        <td>{{ $t('Profile.successExp') }}</td>
+        <th>{{ t('Profile.success') + ':' }}</th>
+        <td>{{ t('Profile.successExp') }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Profile.generosity') + ':' }}</th>
-        <td>{{ $t('Profile.generosityExp') }}</td>
+        <th>{{ t('Profile.generosity') + ':' }}</th>
+        <td>{{ t('Profile.generosityExp') }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Profile.aggression') + ':' }}</th>
-        <td>{{ $t('Profile.aggressionExp') }}</td>
+        <th>{{ t('Profile.aggression') + ':' }}</th>
+        <td>{{ t('Profile.aggressionExp') }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Profile.decision') + ':' }}</th>
-        <td>{{ $t('Profile.decisionExp') }}</td>
+        <th>{{ t('Profile.decision') + ':' }}</th>
+        <td>{{ t('Profile.decisionExp') }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Profile.resentment') + ':' }}</th>
-        <td>{{ $t('Profile.resentmentExp') }}</td>
+        <th>{{ t('Profile.resentment') + ':' }}</th>
+        <td>{{ t('Profile.resentmentExp') }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Profile.usage') + ':' }}</th>
-        <td>{{ $t('Profile.usageExp') }}</td>
+        <th>{{ t('Profile.usage') + ':' }}</th>
+        <td>{{ t('Profile.usageExp') }}</td>
       </tr>
       <tr>
-        <th>{{ $t('Profile.abortionrate') + ':' }}</th>
-        <td>{{ $t('Profile.abortionrateExp') }}</td>
+        <th>{{ t('Profile.abortionrate') + ':' }}</th>
+        <td>{{ t('Profile.abortionrateExp') }}</td>
       </tr>
     </table>
   </Dialog>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import GamesHistoryBadge from '@/components/icons/GamesHistoryBadge.vue'

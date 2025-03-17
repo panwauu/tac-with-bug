@@ -10,7 +10,7 @@
       >
         <div class="timerElement">
           <div>{{ numbers[i] }}</div>
-          <div v-if="detail">{{ $tc(`CountdownTimer.${element}`, numbers[i]) }}</div>
+          <div v-if="detail">{{ t(`CountdownTimer.${element}`, numbers[i]) }}</div>
         </div>
         <div v-if="detail === false && i < elements.length - 1">:</div>
       </template>
@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 
 type UnitKey = 'days' | 'hours' | 'minutes' | 'seconds'
 
@@ -40,6 +41,8 @@ const props = withDefaults(
     smallestUnit: 'seconds',
   }
 )
+
+const { t } = useI18n()
 
 const possibleElements: UnitKey[] = ['days', 'hours', 'minutes', 'seconds']
 const indexOfLargestElement = possibleElements.findIndex((e) => e === props.largestUnit)

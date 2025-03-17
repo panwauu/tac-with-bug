@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
     <div class="instruction-text">
-      {{ $t('Game.GameModal.Substitution.explanation') }}
+      {{ t('Game.GameModal.Substitution.explanation') }}
     </div>
 
     <PlayerWithPicture
@@ -28,8 +28,8 @@
       v-model="selectedToSubstitute"
       class="substitutionPlayer"
       :options="possibleToSubstitute"
-      :placeholder="$t('Game.GameModal.Substitution.placeholderSubstituted')"
-      :emptyMessage="$t('Game.GameModal.Substitution.noPlayerToSubstitute')"
+      :placeholder="t('Game.GameModal.Substitution.placeholderSubstituted')"
+      :emptyMessage="t('Game.GameModal.Substitution.noPlayerToSubstitute')"
       :disabled="substitutionRunning"
     >
       <template #value="slotProps">
@@ -60,7 +60,7 @@
     <Button
       v-if="substitutionRunning === false"
       :disabled="startSubstitutionPossible === false"
-      :label="$t('Game.GameModal.Substitution.offerButton')"
+      :label="t('Game.GameModal.Substitution.offerButton')"
       style="margin-top: 15px"
       class="p-button-success"
       @click="startSubstitution"
@@ -95,25 +95,25 @@
         v-if="updateData.gamePlayer != -1 && updateData.gamePlayer != updateData.substitution.playerIndexToSubstitute"
         :disabled="updateData.substitution.acceptedByIndex.includes(updateData.gamePlayer)"
         class="p-button-success"
-        :label="$t('Game.GameModal.Substitution.acceptButton')"
+        :label="t('Game.GameModal.Substitution.acceptButton')"
         @click="answerSubstitution(true)"
       />
       <Button
         v-if="updateData.gamePlayer != -1"
         class="p-button-danger"
-        :label="$t('Game.GameModal.Substitution.rejectButton')"
+        :label="t('Game.GameModal.Substitution.rejectButton')"
         @click="answerSubstitution(false)"
       />
       <Button
         v-if="updateData.substitution.substitute.username === username"
         class="p-button-danger"
-        :label="$t('Game.GameModal.Substitution.endOfferButton')"
+        :label="t('Game.GameModal.Substitution.endOfferButton')"
         @click="answerSubstitution(false)"
       />
     </template>
 
     <template v-if="updateData != null && updateData.playernames.length > updateData.players.length">
-      <h3>{{ $t('Game.GameModal.SubstitutedPlayersHeader') }}</h3>
+      <h3>{{ t('Game.GameModal.SubstitutedPlayersHeader') }}</h3>
       <div
         v-for="(substitutedUsername, substitutionIndex) in updateData.playernames.filter((_, i) => i >= (updateData?.players.length ?? 0))"
         :key="`substitutedUser_${substitutedUsername}`"
@@ -142,7 +142,9 @@ import { GameSocketKey } from '@/services/injections'
 import { inject, ref, computed, watch } from 'vue'
 import { username } from '@/services/useUser'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from '@/services/i18n'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{ updateData: UpdateDataType | null }>()
 const gameSocket = inject(GameSocketKey)
@@ -156,8 +158,8 @@ async function startSubstitution() {
   if (res.status !== 200) {
     toast.add({
       severity: 'error',
-      summary: i18n.global.t('Toast.GenericError.summary'),
-      detail: i18n.global.t('Toast.GenericError.detail'),
+      summary: t('Toast.GenericError.summary'),
+      detail: t('Toast.GenericError.detail'),
       life: 3000,
     })
   }
@@ -171,8 +173,8 @@ async function answerSubstitution(accept: boolean) {
   if (res.status !== 200) {
     toast.add({
       severity: 'error',
-      summary: i18n.global.t('Toast.GenericError.summary'),
-      detail: i18n.global.t('Toast.GenericError.detail'),
+      summary: t('Toast.GenericError.summary'),
+      detail: t('Toast.GenericError.detail'),
       life: 3000,
     })
   }
@@ -199,7 +201,7 @@ const newPlayer = computed(() => {
       bot: props.updateData.substitution.substitute.botID != null,
     }
   }
-  return props.updateData?.gamePlayer === -1 ? { username: username.value ?? '', bot: false } : { username: i18n.global.t('Waiting.bot'), bot: true }
+  return props.updateData?.gamePlayer === -1 ? { username: username.value ?? '', bot: false } : { username: t('Waiting.bot'), bot: true }
 })
 
 const selectedToSubstitute = ref<{ playerIndex: number; username: string; bot: boolean } | null>(null)

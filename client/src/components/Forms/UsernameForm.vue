@@ -18,17 +18,19 @@
       style="width: 100%"
       :class="localValid || localUsername === '' ? '' : 'p-invalid'"
     />
-    <label for="SUusername">{{ $t('Login.username') }}</label>
+    <label for="SUusername">{{ t('Login.username') }}</label>
     <small class="p-error">{{ usernameErrorLabel }}</small>
   </span>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import InputText from 'primevue/inputtext'
 
 import { ref, computed, watch } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index'
-import { i18n } from '@/services/i18n'
 
 const nameCheck = ref<boolean | null>(false)
 const nameCheckTimeout = ref(undefined as number | undefined)
@@ -76,13 +78,13 @@ const usernameWrongCharacters = computed(() => !localUsername.value.match(/^[A-Z
 const usernameErrorLabel = computed(() => {
   if (localUsername.value !== '') {
     if (usernameWrongCharacters.value) {
-      return i18n.global.t('Login.SignUp.usernameWrongChar')
+      return t('Login.SignUp.usernameWrongChar')
     } else if (usernameTooShort.value) {
-      return i18n.global.t('Login.SignUp.usernameTooShort')
+      return t('Login.SignUp.usernameTooShort')
     } else if (usernameTooLong.value) {
-      return i18n.global.t('Login.SignUp.usernameTooLong')
+      return t('Login.SignUp.usernameTooLong')
     } else if (nameCheck.value === false) {
-      return i18n.global.t('Login.SignUp.usernameNotAvailable')
+      return t('Login.SignUp.usernameNotAvailable')
     }
   }
   return ''

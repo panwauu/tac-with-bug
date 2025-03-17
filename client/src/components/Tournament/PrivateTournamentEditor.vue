@@ -1,5 +1,5 @@
 <template>
-  <h2>{{ $t('Tournament.EditPrivate.header') }}</h2>
+  <h2>{{ t('Tournament.EditPrivate.header') }}</h2>
   <div style="display: flex; flex-direction: column; align-items: center">
     <div
       v-for="team in tournament.registerTeams"
@@ -44,7 +44,7 @@
       v-if="tournament.registerTeams.length < tournament.nTeams && tournament.adminPlayer === username"
       type="button"
       icon="pi pi-plus"
-      :label="$t('Tournament.EditPrivate.addTeamButton')"
+      :label="t('Tournament.EditPrivate.addTeamButton')"
       @click="open()"
     />
     <div v-if="tournament.registerTeams.length < tournament.nTeams && tournament.adminPlayer !== username">...</div>
@@ -53,12 +53,12 @@
       :closable="false"
       severity="error"
     >
-      {{ $t('Tournament.EditPrivate.notCompleteMessage') }}
+      {{ t('Tournament.EditPrivate.notCompleteMessage') }}
     </Message>
     <Button
       v-if="tournament.adminPlayer === username"
       :disabled="!readyToStart"
-      :label="$t('Tournament.EditPrivate.startButton')"
+      :label="t('Tournament.EditPrivate.startButton')"
       icon="pi pi-play"
       class="p-button-success"
       @click="startTournament"
@@ -72,6 +72,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import Message from 'primevue/message'
 import PlayerWithPicture from '../PlayerWithPicture.vue'
@@ -82,7 +85,6 @@ import { injectStrict, SocketKey } from '@/services/injections'
 import type { PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
 import { username } from '@/services/useUser'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from '@/services/i18n'
 const toast = useToast()
 
 const props = defineProps<{ tournament: PrivateTournament }>()
@@ -100,7 +102,7 @@ function open(teamName?: string) {
 const readyToStart = computed(() => {
   return (
     props.tournament.registerTeams.length === props.tournament.nTeams &&
-    !props.tournament.registerTeams.some((t) => t.players.length !== props.tournament.playersPerTeam || t.activated.some((a) => !a))
+    !props.tournament.registerTeams.some((team) => team.players.length !== props.tournament.playersPerTeam || team.activated.some((a) => !a))
   )
 })
 
@@ -110,8 +112,8 @@ async function activatePlayer() {
     console.error(res.error)
     toast.add({
       severity: 'error',
-      detail: i18n.global.t('Toast.GenericError.detail'),
-      summary: i18n.global.t('Toast.GenericError.summary'),
+      detail: t('Toast.GenericError.detail'),
+      summary: t('Toast.GenericError.summary'),
       life: 10000,
     })
   }
@@ -124,8 +126,8 @@ async function removePlayer(usernameToRemove: string) {
       console.error(res.error)
       toast.add({
         severity: 'error',
-        detail: i18n.global.t('Toast.GenericError.detail'),
-        summary: i18n.global.t('Toast.GenericError.summary'),
+        detail: t('Toast.GenericError.detail'),
+        summary: t('Toast.GenericError.summary'),
         life: 10000,
       })
       return
@@ -136,8 +138,8 @@ async function removePlayer(usernameToRemove: string) {
       console.error(res.error)
       toast.add({
         severity: 'error',
-        detail: i18n.global.t('Toast.GenericError.detail'),
-        summary: i18n.global.t('Toast.GenericError.summary'),
+        detail: t('Toast.GenericError.detail'),
+        summary: t('Toast.GenericError.summary'),
         life: 10000,
       })
       return
@@ -151,8 +153,8 @@ async function startTournament() {
     console.error(res.error)
     toast.add({
       severity: 'error',
-      detail: i18n.global.t('Toast.GenericError.detail'),
-      summary: i18n.global.t('Toast.GenericError.summary'),
+      detail: t('Toast.GenericError.detail'),
+      summary: t('Toast.GenericError.summary'),
       life: 10000,
     })
   }

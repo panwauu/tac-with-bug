@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
     <Button
-      :label="$t('Chat.GroupChatEditor.leaveButton')"
+      :label="t('Chat.GroupChatEditor.leaveButton')"
       class="p-button-danger"
       @click="leaveChat"
     />
@@ -10,9 +10,11 @@
 
 <script setup lang="ts">
 import Button from 'primevue/button'
-
+import { useI18n } from 'vue-i18n'
 import { useMessagesStore } from '@/store/messages'
 import { injectStrict, SocketKey } from '@/services/injections'
+
+const { t } = useI18n()
 
 const emits = defineEmits<{ close: [] }>()
 

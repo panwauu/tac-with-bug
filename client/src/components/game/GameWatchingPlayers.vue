@@ -21,9 +21,9 @@
           :nameFirst="false"
           style="margin: 5px 25px 5px 5px"
         />
-        <div v-if="watchingPlayers.length === 0 && nWatching === 0">{{ $t('Game.WatchingPlayers.nooneWatching') }}</div>
+        <div v-if="watchingPlayers.length === 0 && nWatching === 0">{{ t('Game.WatchingPlayers.nooneWatching') }}</div>
         <div v-if="nWatching - watchingPlayers.length > 0">
-          {{ $tc('Game.WatchingPlayers.anonymousWatching', nWatching - watchingPlayers.length, { n: nWatching - watchingPlayers.length }) }}
+          {{ t('Game.WatchingPlayers.anonymousWatching', { count: nWatching - watchingPlayers.length, n: nWatching - watchingPlayers.length }) }}
         </div>
       </div>
     </OverlayPanel>
@@ -36,8 +36,9 @@ import OverlayPanel from 'primevue/overlaypanel'
 import PlayerWithPicture from '../PlayerWithPicture.vue'
 
 import { ref, computed } from 'vue'
-import { i18n } from '@/services/i18n'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const props = defineProps<{ displayText: boolean; nWatching: number; watchingPlayers: string[] }>()
 
 const watchingPlayersRef = ref<OverlayPanel | null>(null)
@@ -47,7 +48,7 @@ function toggle(event: any) {
 
 const buttonLabel = computed(() => {
   if (props.displayText) {
-    return (i18n.global as any).tc('Game.WatchingPlayers.buttonLabel', props.nWatching, { n: props.nWatching })
+    return t('Game.WatchingPlayers.buttonLabel', { count: props.nWatching, n: props.nWatching })
   }
   return props.nWatching.toString()
 })

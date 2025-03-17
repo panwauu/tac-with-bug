@@ -8,7 +8,7 @@
       :nWatching="miscState.watchingData.nWatchingPlayers"
       :watchingPlayers="miscState.watchingData.watchingPlayerNames"
     />
-    <div style="text-align: center">{{ $t('Game.Statistic.time') }}</div>
+    <div style="text-align: center">{{ t('Game.Statistic.time') }}</div>
     <CountdownTimer
       :endDate="miscState.gameRunning ? new Date(miscState.created).toISOString() : undefined"
       :initialMilliseconds="Number(miscState.created) - Number(miscState.lastPlayed)"
@@ -17,7 +17,7 @@
     />
     <div>
       <TabView>
-        <TabPanel :header="$t('Game.Statistic.Cards.title')">
+        <TabPanel :header="t('Game.Statistic.Cards.title')">
           <div class="chart-container">
             <Chart
               type="bar"
@@ -26,7 +26,7 @@
             />
           </div>
         </TabPanel>
-        <TabPanel :header="$t('Game.Statistic.Actions.title')">
+        <TabPanel :header="t('Game.Statistic.Actions.title')">
           <div class="chart-container">
             <Chart
               type="bar"
@@ -36,7 +36,7 @@
           </div>
         </TabPanel>
         <TabPanel
-          :header="$t('Game.Statistic.CardsTable.title')"
+          :header="t('Game.Statistic.CardsTable.title')"
           :disabled="miscState.gameRunning"
         >
           <div
@@ -46,7 +46,7 @@
             <DataTable :value="statisticState.cardsTable">
               <Column
                 field="card"
-                :header="$t('Game.Statistic.CardsTable.card')"
+                :header="t('Game.Statistic.CardsTable.card')"
               >
                 <template #body="slotProps">
                   <div :class="`tac ${redText(slotProps.data.card) ? 'red' : ''}`">{{ cardName(slotProps.data.card) }}</div>
@@ -67,6 +67,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import Chart from 'primevue/chart'
@@ -78,7 +81,6 @@ import GameWatchingPlayers from './GameWatchingPlayers.vue'
 import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import type { StatisticStateType } from '@/services/compositionGame/useStatistic'
 import { computed } from 'vue'
-import { i18n } from '@/services/i18n'
 import type { UpdateDataType } from '../../../../server/src/sharedTypes/typesDBgame'
 
 const props = defineProps<{
@@ -101,7 +103,7 @@ function redText(title: string) {
 
 function cardName(title: string) {
   if (['narr', 'krieger', 'tac', 'engel', 'trickser', 'teufel'].includes(title)) {
-    return i18n.global.t(`Game.Statistic.CardsTable.${title}`)
+    return t(`Game.Statistic.CardsTable.${title}`)
   }
   return title
 }

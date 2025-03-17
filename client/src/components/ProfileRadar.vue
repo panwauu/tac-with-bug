@@ -13,9 +13,10 @@
 import { ref, watch, onMounted } from 'vue'
 import Chart from 'primevue/chart'
 import { DefaultService as Service } from '@/generatedClient/index'
-import { i18n } from '@/services/i18n'
 import { username as loggedInUsername } from '@/services/useUser'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   data: number[]
   username: string
@@ -25,13 +26,13 @@ const profileRadarChart = ref<any | null>(null)
 
 const chartData = ref({
   labels: [
-    i18n.global.t('Profile.success'),
-    i18n.global.t('Profile.generosity'),
-    i18n.global.t('Profile.aggression'),
-    i18n.global.t('Profile.decision'),
-    i18n.global.t('Profile.resentment'),
-    i18n.global.t('Profile.usage'),
-    i18n.global.t('Profile.abortionrate'),
+    t('Profile.success'),
+    t('Profile.generosity'),
+    t('Profile.aggression'),
+    t('Profile.decision'),
+    t('Profile.resentment'),
+    t('Profile.usage'),
+    t('Profile.abortionrate'),
   ],
   datasets: [] as any[],
 })

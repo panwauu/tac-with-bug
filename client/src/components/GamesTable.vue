@@ -20,24 +20,24 @@
     @page="$emit('page', $event)"
     @sort="$emit('sort', $event)"
   >
-    <template #empty>{{ $t('Games.tableNoGames') }}</template>
-    <template #loading>{{ $t('Games.tableLoading') }}</template>
+    <template #empty>{{ t('Games.tableNoGames') }}</template>
+    <template #loading>{{ t('Games.tableLoading') }}</template>
     <ColumnGroup type="header">
       <Row>
         <Column
-          :header="$t('Games.columnTitles.created')"
+          :header="t('Games.columnTitles.created')"
           :rowspan="2"
           :sortable="true"
           sortField="created"
         />
         <Column
-          :header="$t('Games.columnTitles.status')"
+          :header="t('Games.columnTitles.status')"
           :rowspan="1"
           sortField="status"
         />
         <Column :colspan="3">
           <template #header>
-            <div class="teams-header">{{ $t('Games.columnTitles.teams') }}</div>
+            <div class="teams-header">{{ t('Games.columnTitles.teams') }}</div>
           </template>
         </Column>
         <Column :rowspan="2" />
@@ -45,15 +45,15 @@
       <Row>
         <Column />
         <Column
-          :header="$t('Games.columnTitles.team') + ' 1'"
+          :header="t('Games.columnTitles.team') + ' 1'"
           field="nTeams"
         />
         <Column
-          :header="$t('Games.columnTitles.team') + ' 2'"
+          :header="t('Games.columnTitles.team') + ' 2'"
           field="nTeams"
         />
         <Column
-          :header="$t('Games.columnTitles.team') + ' 3'"
+          :header="t('Games.columnTitles.team') + ' 3'"
           field="nTeams"
         />
       </Row>
@@ -72,7 +72,7 @@
         <div style="width: 100%; height: 100%; display: flex; justify-content: flex-start; align-items: center">
           <Tag
             :severity="statusToSeverity(slotProps.data.status)"
-            :value="$t(`Games.stati.${slotProps.data.status}`).toUpperCase()"
+            :value="t(`Games.stati.${slotProps.data.status}`).toUpperCase()"
           />
         </div>
       </template>
@@ -115,6 +115,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'

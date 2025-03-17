@@ -17,7 +17,6 @@
 
 <script setup lang="ts">
 import GameComponent from '@/components/game/GameComponent.vue'
-
 import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref, onMounted, onUnmounted, provide } from 'vue'
 import { registerGameSocket } from '@/services/registerSockets'
@@ -34,8 +33,9 @@ import { audioHandler } from '@/services/compositionGame/audioHandler'
 import router from '@/router/index'
 import { GameSocketKey } from '@/services/injections'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from '@/services/i18n'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const toast = useToast()
 const gameSocket = registerGameSocket()
 provide(GameSocketKey, gameSocket)
@@ -64,8 +64,8 @@ function substitutionOfferToast(username: string, usernameToSubstitute: string) 
   toast.add({
     severity: 'warn',
     life: 5000,
-    summary: i18n.global.t('Game.Toast.substitution-offer-summary'),
-    detail: i18n.global.t('Game.Toast.substitution-offer-detail', { username, usernameToSubstitute }),
+    summary: t('Game.Toast.substitution-offer-summary'),
+    detail: t('Game.Toast.substitution-offer-detail', { username, usernameToSubstitute }),
   })
 }
 
@@ -73,8 +73,8 @@ function substitutionDoneToast(username: string, replacedUsername: string) {
   toast.add({
     severity: 'success',
     life: 5000,
-    summary: i18n.global.t('Game.Toast.substitution-done-summary'),
-    detail: i18n.global.t('Game.Toast.substitution-done-detail', { username, replacedUsername }),
+    summary: t('Game.Toast.substitution-done-summary'),
+    detail: t('Game.Toast.substitution-done-detail', { username, replacedUsername }),
   })
 }
 
@@ -82,8 +82,8 @@ function substitutionStoppedToast() {
   toast.add({
     severity: 'error',
     life: 5000,
-    summary: i18n.global.t('Game.Toast.substitution-stopped-summary'),
-    detail: i18n.global.t('Game.Toast.substitution-stopped-detail'),
+    summary: t('Game.Toast.substitution-stopped-summary'),
+    detail: t('Game.Toast.substitution-stopped-detail'),
   })
 }
 
@@ -107,8 +107,8 @@ function updateSubstitutionTimeout(updateData: UpdateDataType) {
     toast.add({
       severity: 'warn',
       life: 10000,
-      summary: i18n.global.t('Game.Toast.substitution-possible-summary'),
-      detail: i18n.global.t('Game.Toast.substitution-possible-detail'),
+      summary: t('Game.Toast.substitution-possible-summary'),
+      detail: t('Game.Toast.substitution-possible-detail'),
     })
   }, timeout)
 }

@@ -27,18 +27,18 @@
 
     <Dialog
       v-model:visible="displayExplanation"
-      :header="$t('Tournament.helpModal.title')"
+      :header="t('Tournament.helpModal.title')"
       :modal="true"
       :dismissableMask="true"
     >
-      <h3>{{ $t('Tournament.helpModal.signUpHeader') }}</h3>
-      <p>{{ $t('Tournament.helpModal.signUpContent') }}</p>
-      <h3>{{ $t('Tournament.helpModal.gameTimeHeader') }}</h3>
-      <p>{{ $t('Tournament.helpModal.gameTimeContent') }}</p>
-      <h3>{{ $t('Tournament.helpModal.tournamentProcessHeader') }}</h3>
-      <p>{{ $t('Tournament.helpModal.tournamentProcessContent') }}</p>
-      <h3>{{ $t('Tournament.helpModal.winnerHeader') }}</h3>
-      <p>{{ $t('Tournament.helpModal.winnerContent') }}</p>
+      <h3>{{ t('Tournament.helpModal.signUpHeader') }}</h3>
+      <p>{{ t('Tournament.helpModal.signUpContent') }}</p>
+      <h3>{{ t('Tournament.helpModal.gameTimeHeader') }}</h3>
+      <p>{{ t('Tournament.helpModal.gameTimeContent') }}</p>
+      <h3>{{ t('Tournament.helpModal.tournamentProcessHeader') }}</h3>
+      <p>{{ t('Tournament.helpModal.tournamentProcessContent') }}</p>
+      <h3>{{ t('Tournament.helpModal.winnerHeader') }}</h3>
+      <p>{{ t('Tournament.helpModal.winnerContent') }}</p>
     </Dialog>
   </div>
 </template>
@@ -58,6 +58,9 @@ import type { PublicTournament } from '@/../../../server/src/sharedTypes/typesTo
 import { ref, computed, watch, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import router from '@/router'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{ id: string; locale: string }>()
 

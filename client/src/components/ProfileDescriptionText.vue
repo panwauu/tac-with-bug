@@ -3,7 +3,7 @@
     v-if="username !== loggedInUsername"
     class="userDescription"
   >
-    {{ userDescription || $t('Profile.DescriptionEditor.placeholder') }}
+    {{ userDescription || t('Profile.DescriptionEditor.placeholder') }}
   </div>
   <div
     v-else
@@ -13,14 +13,14 @@
       v-model="userDescription"
       :autoResize="true"
       style="width: 100%"
-      :placeholder="$t('Profile.DescriptionEditor.editPlaceholder')"
+      :placeholder="t('Profile.DescriptionEditor.editPlaceholder')"
       :disabled="!editing"
     />
     <small
       v-if="editing && descriptionTooLong"
       class="p-error"
     >
-      {{ $t('Profile.DescriptionEditor.descriptionTooLong') }}
+      {{ t('Profile.DescriptionEditor.descriptionTooLong') }}
     </small>
     <div
       v-if="!settingsStore.isBlockedByModeration"
@@ -54,6 +54,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
 
@@ -61,7 +64,6 @@ import { ref, watch, computed } from 'vue'
 import { username as loggedInUsername } from '@/services/useUser'
 import { DefaultService as Service } from '@/generatedClient'
 import { useToast } from 'primevue/usetoast'
-import { i18n } from '@/services/i18n'
 import { useSettingsStore } from '@/store/settings'
 
 const emits = defineEmits<{ 'update:modelValue': [modelValue: string] }>()
@@ -100,8 +102,8 @@ function submitEdit() {
       resetValueAndEndEditing()
       toast.add({
         severity: 'error',
-        summary: i18n.global.t('Toast.GenericError.summary'),
-        detail: i18n.global.t('Toast.GenericError.detail'),
+        summary: t('Toast.GenericError.summary'),
+        detail: t('Toast.GenericError.detail'),
         life: 3000,
       })
     })

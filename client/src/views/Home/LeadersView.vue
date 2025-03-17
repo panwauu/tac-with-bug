@@ -23,11 +23,11 @@
         >
           <Column
             field="index"
-            :header="$t('Leaders.rank')"
+            :header="t('Leaders.rank')"
           />
           <Column
             field="username"
-            :header="$t('Leaders.name')"
+            :header="t('Leaders.name')"
           >
             <template #body="slotProps">
               <PlayerWithPicture
@@ -38,11 +38,11 @@
           </Column>
           <Column
             field="winshare"
-            :header="$t('Leaders.winshare')"
+            :header="t('Leaders.winshare')"
           />
           <Column
             field="wins"
-            :header="$t('Leaders.wins')"
+            :header="t('Leaders.wins')"
           />
         </DataTable>
       </TabPanel>
@@ -61,11 +61,11 @@
         >
           <Column
             field="index"
-            :header="$t('Leaders.rank')"
+            :header="t('Leaders.rank')"
           />
           <Column
             field="team"
-            :header="$t('Leaders.teams')"
+            :header="t('Leaders.teams')"
           >
             <template #body="slotProps">
               <div class="teamContainer">
@@ -89,11 +89,11 @@
           </Column>
           <Column
             field="count"
-            :header="$t('Leaders.cards')"
+            :header="t('Leaders.cards')"
           />
           <Column
             field="lastplayed"
-            :header="$t('Leaders.date')"
+            :header="t('Leaders.date')"
           >
             <template #body="slotProps">
               <div>{{ createDateString(slotProps.data.lastplayed) }}</div>
@@ -116,11 +116,11 @@
         >
           <Column
             field="index"
-            :header="$t('Leaders.rank')"
+            :header="t('Leaders.rank')"
           />
           <Column
             field="team"
-            :header="$t('Leaders.teams')"
+            :header="t('Leaders.teams')"
           >
             <template #body="slotProps">
               <div class="teamContainer">
@@ -144,11 +144,11 @@
           </Column>
           <Column
             field="count"
-            :header="$t('Leaders.cards')"
+            :header="t('Leaders.cards')"
           />
           <Column
             field="lastplayed"
-            :header="$t('Leaders.teams')"
+            :header="t('Leaders.teams')"
           >
             <template #body="slotProps">
               <div>{{ createDateString(slotProps.data.lastplayed) }}</div>
@@ -161,6 +161,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import DataTable from 'primevue/datatable'
@@ -170,7 +173,6 @@ import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
 import { ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index'
-import { i18n } from '@/services/i18n'
 
 const rows = ref(10)
 const totalNumber = ref(0)
@@ -208,19 +210,19 @@ const dataCoop6 = ref(
 const loadingCoop6 = ref(false)
 
 const dateOptions = [
-  { name: i18n.global.t('Leaders.Time.alltime'), startDate: 0, endDate: null },
+  { name: t('Leaders.Time.alltime'), startDate: 0, endDate: null },
   {
-    name: i18n.global.t('Leaders.Time.thisYear'),
+    name: t('Leaders.Time.thisYear'),
     startDate: new Date(new Date().getUTCFullYear(), 0, 1).getTime(),
     endDate: null,
   },
   {
-    name: i18n.global.t('Leaders.Time.thisMonth'),
+    name: t('Leaders.Time.thisMonth'),
     startDate: new Date(new Date().getUTCFullYear(), new Date().getUTCMonth(), 1).getTime(),
     endDate: null,
   },
   {
-    name: i18n.global.t('Leaders.Time.thisWeek'),
+    name: t('Leaders.Time.thisWeek'),
     startDate: getMonday().getTime(),
     endDate: null,
   },

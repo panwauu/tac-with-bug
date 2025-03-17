@@ -6,7 +6,7 @@
       :dismissableMask="true"
     >
       <template #header>
-        <h3>{{ $t('Waiting.WaitingGameCreator.title') }}</h3>
+        <h3>{{ t('Waiting.WaitingGameCreator.title') }}</h3>
       </template>
 
       <div class="filterButtons">
@@ -39,7 +39,7 @@
       <template #footer>
         <Button
           class="submitButton"
-          :label="$t('Waiting.WaitingGameCreator.submitButton')"
+          :label="t('Waiting.WaitingGameCreator.submitButton')"
           icon="pi pi-plus"
           :disabled="!validOptions()"
           @click="createGame()"
@@ -50,12 +50,14 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import SelectButton from 'primevue/selectbutton'
 
 import { computed, ref } from 'vue'
-import { i18n } from '@/services/i18n'
 import { injectStrict, SocketKey } from '@/services/injections'
 
 const props = defineProps<{ visible: boolean }>()
@@ -73,25 +75,25 @@ const localVisible = computed({
 })
 
 const playersModel = [
-  { name: i18n.global.t('Waiting.WaitingGameCreator.player4Name'), value: 4 },
-  { name: i18n.global.t('Waiting.WaitingGameCreator.player6Name'), value: 6 },
+  { name: t('Waiting.WaitingGameCreator.player4Name'), value: 4 },
+  { name: t('Waiting.WaitingGameCreator.player6Name'), value: 6 },
 ]
 const selectedPlayers = ref(playersModel[0])
 
 const teamsModel = [
-  { name: i18n.global.t('Waiting.WaitingGameCreator.teams1Name'), value: 1 },
-  { name: i18n.global.t('Waiting.WaitingGameCreator.teams2Name'), value: 2 },
-  { name: i18n.global.t('Waiting.WaitingGameCreator.teams3Name'), value: 3 },
+  { name: t('Waiting.WaitingGameCreator.teams1Name'), value: 1 },
+  { name: t('Waiting.WaitingGameCreator.teams2Name'), value: 2 },
+  { name: t('Waiting.WaitingGameCreator.teams3Name'), value: 3 },
 ]
 const selectedTeams = ref(teamsModel[1])
 
 const meisterModel = [
   {
-    name: i18n.global.t('Waiting.WaitingGameCreator.meisterTrueName'),
+    name: t('Waiting.WaitingGameCreator.meisterTrueName'),
     value: true,
   },
   {
-    name: i18n.global.t('Waiting.WaitingGameCreator.meisterFalseName'),
+    name: t('Waiting.WaitingGameCreator.meisterFalseName'),
     value: false,
   },
 ]
@@ -99,11 +101,11 @@ const selectedMeister = ref(meisterModel[0])
 
 const privateModel = [
   {
-    name: i18n.global.t('Waiting.WaitingGameCreator.privateTrueName'),
+    name: t('Waiting.WaitingGameCreator.privateTrueName'),
     value: true,
   },
   {
-    name: i18n.global.t('Waiting.WaitingGameCreator.privateFalseName'),
+    name: t('Waiting.WaitingGameCreator.privateFalseName'),
     value: false,
   },
 ]

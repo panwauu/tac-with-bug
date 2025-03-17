@@ -1,6 +1,6 @@
 <template>
-  <h2>{{ $t('RunningGamesWidget.Header') }}</h2>
-  <p>{{ $t('RunningGamesWidget.Description') }}</p>
+  <h2>{{ t('RunningGamesWidget.Header') }}</h2>
+  <p>{{ t('RunningGamesWidget.Description') }}</p>
   <div class="gamesTableContainer">
     <DataTable
       v-model:selection="selectedGame"
@@ -12,11 +12,11 @@
       :autoLayout="true"
       @rowSelect="rowSelect()"
     >
-      <template #empty>{{ $t('RunningGamesWidget.emptyTable') }}</template>
+      <template #empty>{{ t('RunningGamesWidget.emptyTable') }}</template>
       <Column
         v-for="teamIndex in [0, 1, 2]"
         :key="'team-' + teamIndex"
-        :header="$t('Games.columnTitles.team') + ' ' + (teamIndex + 1).toString()"
+        :header="t('Games.columnTitles.team') + ' ' + (teamIndex + 1).toString()"
       >
         <template #body="slotProps">
           <div class="playerContainer">
@@ -37,6 +37,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import PlayerWithPicture from './PlayerWithPicture.vue'

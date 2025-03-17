@@ -2,7 +2,7 @@
   <div style="display: flex; flex-wrap: wrap; justify-content: center">
     <Tag
       :value="
-        $t('Landing.Waiting.playersWaiting', {
+        t('Landing.Waiting.playersWaiting', {
           X: infoStore.totalUsers - infoStore.inGameUsers,
         })
       "
@@ -10,7 +10,7 @@
       style="margin: 5px"
     />
     <Tag
-      :value="$t('Landing.Waiting.openRooms', { X: waitingStore.rooms })"
+      :value="t('Landing.Waiting.openRooms', { X: waitingStore.rooms })"
       severity="success"
       style="margin: 5px"
     />
@@ -72,7 +72,7 @@
               class="svgToIcon"
               style="margin-right: 5px"
             />
-            <div>{{ $t('Waiting.WaitingGameCreator.meisterTrueName') }}</div>
+            <div>{{ t('Waiting.WaitingGameCreator.meisterTrueName') }}</div>
           </div>
           <div
             v-else
@@ -82,7 +82,7 @@
               class="svgToIcon"
               style="margin-right: 5px"
             />
-            <div>{{ $t('Waiting.WaitingGameCreator.meisterFalseName') }}</div>
+            <div>{{ t('Waiting.WaitingGameCreator.meisterFalseName') }}</div>
           </div>
         </template>
       </Dropdown>
@@ -130,7 +130,7 @@
               style="margin-right: 5px"
               aria-hidden="true"
             />
-            <div>{{ $t('Waiting.WaitingGameCreator.privateTrueName') }}</div>
+            <div>{{ t('Waiting.WaitingGameCreator.privateTrueName') }}</div>
           </div>
           <div
             v-else
@@ -141,14 +141,14 @@
               style="margin-right: 5px"
               aria-hidden="true"
             />
-            <div>{{ $t('Waiting.WaitingGameCreator.privateFalseName') }}</div>
+            <div>{{ t('Waiting.WaitingGameCreator.privateFalseName') }}</div>
           </div>
         </template>
       </Dropdown>
     </div>
     <Button
       v-if="isLoggedIn"
-      :label="$t('Waiting.WaitingGameCreator.startButton')"
+      :label="t('Waiting.WaitingGameCreator.startButton')"
       icon="pi pi-plus"
       :disabled="waitingStore.ownGame != null"
       @click="gameCreatorVisible = true"
@@ -179,7 +179,7 @@
       :class="[waitingStore.ownGame != null ? 'inactiveGame' : '']"
       @click="joinGame(game)"
     />
-    <p v-if="filteredWaitingGames.length === 0 && waitingStore.ownGame === null">{{ $t('Waiting.noRoomsPlaceholder') }}</p>
+    <p v-if="filteredWaitingGames.length === 0 && waitingStore.ownGame === null">{{ t('Waiting.noRoomsPlaceholder') }}</p>
   </div>
 
   <WaitingGameCreator
@@ -189,6 +189,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import Button from 'primevue/button'
 import Tag from 'primevue/tag'
 import Dropdown from 'primevue/dropdown'
@@ -198,7 +201,6 @@ import Brain from '@/components/icons/BrainSymbol.vue'
 import Heart from '@/components/icons/HeartSymbol.vue'
 
 import { ref, computed, onUnmounted } from 'vue'
-import { i18n } from '@/services/i18n'
 import router from '@/router/index'
 import { injectStrict, SocketKey } from '@/services/injections'
 import type { StartGameType, WaitingGame as WaitingGameType } from '@/../../server/src/sharedTypes/typesWaiting'
@@ -211,17 +213,17 @@ const socket = injectStrict(SocketKey)
 
 const waitingStore = useWaitingStore()
 
-i18n.global.t('Waiting.WaitingGameCreator.teams1Name')
+t('Waiting.WaitingGameCreator.teams1Name')
 const nPlayersOptions = [
-  { name: i18n.global.t('Waiting.WaitingGameCreator.player4Name'), value: 4 },
-  { name: i18n.global.t('Waiting.WaitingGameCreator.player6Name'), value: 6 },
+  { name: t('Waiting.WaitingGameCreator.player4Name'), value: 4 },
+  { name: t('Waiting.WaitingGameCreator.player6Name'), value: 6 },
 ]
 const nPlayersSelection = ref<(typeof nPlayersOptions)[0] | null>(null)
 
 const nTeamsOptions = [
-  { name: i18n.global.t('Waiting.WaitingGameCreator.teams1Name'), value: 1 },
-  { name: i18n.global.t('Waiting.WaitingGameCreator.teams2Name'), value: 2 },
-  { name: i18n.global.t('Waiting.WaitingGameCreator.teams3Name'), value: 3 },
+  { name: t('Waiting.WaitingGameCreator.teams1Name'), value: 1 },
+  { name: t('Waiting.WaitingGameCreator.teams2Name'), value: 2 },
+  { name: t('Waiting.WaitingGameCreator.teams3Name'), value: 3 },
 ]
 const nTeamsSelection = ref<(typeof nTeamsOptions)[0] | null>(null)
 
@@ -265,8 +267,8 @@ function joinGame(game: WaitingGameType) {
   }
 
   if (
-    (waitingStore.ownGame === null && game.private === true && !confirm(i18n.global.t('Waiting.joinGamePrivate'))) ||
-    (waitingStore.ownGame != null && game.private === false && !confirm(i18n.global.t('Waiting.switchGameConfirm')))
+    (waitingStore.ownGame === null && game.private === true && !confirm(t('Waiting.joinGamePrivate'))) ||
+    (waitingStore.ownGame != null && game.private === false && !confirm(t('Waiting.switchGameConfirm')))
   ) {
     return
   }
@@ -287,7 +289,7 @@ function moveBot(data: { gameID: number; playerIndex: number; steps: number }) {
 }
 
 function removePlayer(usernameToRemove: string) {
-  const confirmText = i18n.global.t(usernameToRemove === username.value ? 'Waiting.removePlayerConfirmSelf' : 'Waiting.removePlayerConfirmOther')
+  const confirmText = t(usernameToRemove === username.value ? 'Waiting.removePlayerConfirmSelf' : 'Waiting.removePlayerConfirmOther')
   if (confirm(confirmText)) {
     socket.emitWithAck(5000, 'waiting:removePlayer', usernameToRemove)
   }

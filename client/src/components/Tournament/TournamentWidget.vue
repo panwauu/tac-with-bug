@@ -1,12 +1,12 @@
 <template>
-  <h2>{{ $t('Landing.Tournament.title') }}</h2>
+  <h2>{{ t('Landing.Tournament.title') }}</h2>
   <div
     v-if="tournament != null"
     class="clickable"
     @click="
       () => {
         if (tournament?.id != null) {
-          $router.push({ name: 'PublicTournament', params: { id: tournament.id } })
+          router.push({ name: 'PublicTournament', params: { id: tournament.id } })
         }
       }
     "
@@ -19,8 +19,8 @@
       style="margin-top: 15px"
     />
   </div>
-  <div v-if="tournament == null">{{ $t('Landing.Tournament.noActiveTournament') }}</div>
-  <div class="LastWinnersHeading">{{ $t('Landing.Tournament.lastWinners') }}</div>
+  <div v-if="tournament == null">{{ t('Landing.Tournament.noActiveTournament') }}</div>
+  <div class="LastWinnersHeading">{{ t('Landing.Tournament.lastWinners') }}</div>
   <div
     v-for="team in winners"
     :key="`LandingWinnersTeam-${team.teamName}`"
@@ -45,6 +45,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 import TournamentStatusBadge from '@/components/Tournament/TournamentStatusBadge.vue'
 import TournamentTimer from '@/components/Tournament/TournamentTimer.vue'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
@@ -54,6 +57,7 @@ import type { PublicTournament } from '@/../../server/src/sharedTypes/typesTourn
 import { ref, onUnmounted } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { getWinners } from '@/services/useTournamentWinners'
+import router from '@/router'
 
 const socket = injectStrict(SocketKey)
 

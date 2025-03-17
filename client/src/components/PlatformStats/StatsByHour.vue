@@ -13,9 +13,10 @@ import type { HourDatasetType } from '@/../../server/src/sharedTypes/typesPlatfo
 
 import { ref, watch } from 'vue'
 import Chart from 'primevue/chart'
-import { i18n } from '@/services/i18n'
 import { getGraphColors } from '@/services/graphColors'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const hourChart = ref<any | null>(null)
 const props = defineProps<{ data?: HourDatasetType }>()
 watch(
@@ -78,7 +79,7 @@ function updateHourChart() {
     pointBorderColor: '#fff',
     pointHoverBackgroundColor: '#fff',
     pointHoverBorderColor: getGraphColors({ alpha: 1, elementNumber: 0 }),
-    label: i18n.global.t('Stats.users'),
+    label: t('Stats.users'),
     fill: true,
   })
   hourChartData.value.datasets.push({
@@ -89,7 +90,7 @@ function updateHourChart() {
     pointBorderColor: '#fff',
     pointHoverBackgroundColor: '#fff',
     pointHoverBorderColor: getGraphColors({ alpha: 1, elementNumber: 1 }),
-    label: i18n.global.t('Stats.games'),
+    label: t('Stats.games'),
     fill: true,
   })
   hourChart.value?.refresh()

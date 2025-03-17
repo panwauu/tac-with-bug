@@ -9,14 +9,14 @@
         style="width: 100%"
         :disabled="true"
       />
-      <label for="SUusername">{{ $t('Login.username') }}</label>
+      <label for="SUusername">{{ t('Login.username') }}</label>
     </span>
     <PasswordForm
       v-model:valid="valid"
       v-model:password="password"
     />
     <Button
-      :label="$t('NewPassword.submitButton')"
+      :label="t('NewPassword.submitButton')"
       :disabled="!valid || loading"
       :icon="'pi ' + (loading ? 'pi-spin pi-spinner' : 'pi-refresh')"
       type="submit"
@@ -34,7 +34,9 @@ import InputText from 'primevue/inputtext'
 import { ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { DefaultService } from '@/generatedClient'
-import { i18n } from '@/services/i18n'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const toast = useToast()
 const props = defineProps<{ token: string; username: string }>()
@@ -51,16 +53,16 @@ async function submitNewPassword() {
     loading.value = false
     toast.add({
       severity: 'success',
-      detail: i18n.global.t('NewPassword.passwordResetSuccess-detail'),
-      summary: i18n.global.t('NewPassword.passwordResetSuccess-summary'),
+      detail: t('NewPassword.passwordResetSuccess-detail'),
+      summary: t('NewPassword.passwordResetSuccess-summary'),
       life: 10000,
     })
   } catch (err) {
     loading.value = false
     toast.add({
       severity: 'error',
-      detail: i18n.global.t('Toast.GenericError.detail'),
-      summary: i18n.global.t('Toast.GenericError.summary'),
+      detail: t('Toast.GenericError.detail'),
+      summary: t('Toast.GenericError.summary'),
       life: 10000,
     })
   }

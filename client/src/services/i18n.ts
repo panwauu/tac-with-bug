@@ -38,6 +38,7 @@ export const i18n = createI18n({
   messages: { de: de },
   fallbackLocale: fallbackLocale,
   locale: getLocaleFromBrowser(),
+  allowComposition: true,
 })
 
 export const currentLocale = computed<string>(() => {
