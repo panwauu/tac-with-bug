@@ -20,6 +20,7 @@ export async function getModerationData(sqlClient: pg.Pool, identifier?: UserIde
       userid: row.userid,
       blockeduntil: row.blockeduntil,
       reason: row.reason,
+      insertedByUserId: row.insertedbyuserid,
     }
   })
 }
@@ -29,9 +30,16 @@ export async function setModerationData(
   userID: number,
   email: string,
   reason: string,
-  validUntil: string
+  validUntil: string,
+  insertedByUserId: number
 ): Promise<Result<ModerationData, 'COULD_NOT_INSERT'>> {
-  const result = await sqlClient.query(`INSERT INTO moderation (userid, email, blockeduntil, reason) VALUES ($1, $2, $3, $4) RETURNING *;`, [userID, email, validUntil, reason])
+  const result = await sqlClient.query(`INSERT INTO moderation (userid, email, blockeduntil, reason, insertedbyuserid) VALUES ($1, $2, $3, $4, $5) RETURNING *;`, [
+    userID,
+    email,
+    validUntil,
+    reason,
+    insertedByUserId,
+  ])
 
   if (result.rowCount !== 1) {
     return err('COULD_NOT_INSERT')
@@ -43,6 +51,7 @@ export async function setModerationData(
     userid: result.rows[0].userid,
     blockeduntil: result.rows[0].blockeduntil,
     reason: result.rows[0].reason,
+    insertedByUserId: result.rows[0].insertedbyuserid,
   })
 }
 
@@ -56,6 +65,7 @@ export async function resetModerationDataOfUser(sqlClient: pg.Pool, userID: numb
       userid: row.userid,
       blockeduntil: row.blockeduntil,
       reason: row.reason,
+      insertedByUserId: row.insertedbyuserid,
     }
   })
 }

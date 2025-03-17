@@ -96,7 +96,7 @@ export class DevController extends Controller {
 
     // Add moderation data
     const date = data.customUntil ?? new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 60).toISOString()
-    const res = await setModerationData(request.app.locals.sqlClient, user.value.id, user.value.email, data.reason, date)
+    const res = await setModerationData(request.app.locals.sqlClient, user.value.id, user.value.email, data.reason, date, request.userData.userID)
     if (res.isErr()) {
       return serverError(500, { message: 'Could not insert moderation data', details: res.error })
     }

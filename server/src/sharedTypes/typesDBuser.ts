@@ -38,4 +38,5 @@ export interface ModerationData {
   userid: number | null
   blockeduntil: string
   reason: string | null
+  insertedByUserId: number
 }
