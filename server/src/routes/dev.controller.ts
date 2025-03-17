@@ -10,11 +10,11 @@ import { ModerationData } from '../sharedTypes/typesDBuser'
 import Joi from 'joi'
 
 @Route('/')
-@Tags('Dev')
 export class DevController extends Controller {
   /**
    * Get capture
    */
+  @Tags('Dev')
   @Security('jwt', ['admin'])
   @Get('/retrieveCapture')
   public async retrieveCapturedGame(@Request() request: express.Request, @Query() gameID: number): Promise<string> {
@@ -46,6 +46,7 @@ export class DevController extends Controller {
     }
     */
 
+  @Tags('Dev')
   @Security('jwt', ['admin'])
   @Get('/getEmailsFromUsersForNews')
   public async getEmailsFromUsersForNews(@Request() request: express.Request, @Query() type: 'news' | 'tournamentNews', @Res() serverError: TsoaResponse<500, string>) {
@@ -59,6 +60,7 @@ export class DevController extends Controller {
   /**
    * Get moderation data (blocking of users)
    */
+  @Tags('Moderation')
   @Security('jwt', ['admin'])
   @Get('/moderation')
   public async getModeration(@Request() request: express.Request, @Queries() queries: { userid?: number; email?: string }): Promise<ModerationData[]> {
@@ -70,6 +72,7 @@ export class DevController extends Controller {
    * Post moderation data (blocking of users)
    * customUntil is optional and should be in ISO format. Default value is +60 days.
    */
+  @Tags('Moderation')
   @Security('jwt', ['admin'])
   @Post('/moderation')
   public async addModerationData(
@@ -108,6 +111,7 @@ export class DevController extends Controller {
    * Unblock the user. The entries will not be deleted, but the until date will be set to now.
    * Sets all moderation elements of a user that are not expired to expire now.
    */
+  @Tags('Moderation')
   @Security('jwt', ['admin'])
   @Delete('/moderation')
   public async deleteModerationData(
