@@ -4,11 +4,7 @@ import { closeSockets } from '../test/handleSocket'
 
 const skipTests = process.env.paypal_Secret == null || process.env.paypal_Client_ID == null
 
-describe('Test Suite via Socket.io', () => {
-  if (skipTests) {
-    return
-  }
-
+describe.skipIf(skipTests)('Test Suite via Socket.io', () => {
   let userWithSocket: UserWithSocket
   const subscriptionID = 'I-K2P36MWMH55P'
 
