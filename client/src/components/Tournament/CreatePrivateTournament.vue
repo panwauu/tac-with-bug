@@ -64,8 +64,12 @@
 
     <Button
       label="Turnier erstellen"
-      :disabled="!titleValid"
+      :disabled="!titleValid || settingsStore.isBlockedByModeration"
       @click="createPrivateTournament()"
+    />
+    <BlockedByModerationMessage
+      v-if="settingsStore.isBlockedByModeration"
+      :blockedByModerationUntil="settingsStore.blockedByModerationUntil ?? ''"
     />
   </div>
 </template>
@@ -81,8 +85,11 @@ import { injectStrict, SocketKey } from '@/services/injections'
 import router from '@/router'
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n'
+import { useSettingsStore } from '@/store/settings'
+import BlockedByModerationMessage from '../BlockedByModerationMessage.vue'
 const toast = useToast()
 
+const settingsStore = useSettingsStore()
 const socket = injectStrict(SocketKey)
 
 const title = ref('')

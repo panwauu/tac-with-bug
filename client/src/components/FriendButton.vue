@@ -1,6 +1,6 @@
 <template>
   <Button
-    v-if="username !== loggedInUser && friendShipStatus === 'none'"
+    v-if="username !== loggedInUser && friendShipStatus === 'none' && !settingsStore.isBlockedByModeration"
     class="p-button-sm p-button-outlined p-button-success"
     :label="$t('Friends.FriendButton.requestFriend')"
     icon="pi pi-user-plus"
@@ -44,7 +44,9 @@ import Button from 'primevue/button'
 import { computed } from 'vue'
 import { FriendsStateKey, injectStrict } from '@/services/injections'
 import { username as loggedInUser } from '@/services/useUser'
+import { useSettingsStore } from '@/store/settings'
 
+const settingsStore = useSettingsStore()
 const props = defineProps<{ username: string }>()
 const friendsState = injectStrict(FriendsStateKey)
 

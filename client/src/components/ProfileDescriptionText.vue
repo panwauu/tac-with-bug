@@ -22,7 +22,10 @@
     >
       {{ $t('Profile.DescriptionEditor.descriptionTooLong') }}
     </small>
-    <div class="editButton">
+    <div
+      v-if="!settingsStore.isBlockedByModeration"
+      class="editButton"
+    >
       <Button
         v-show="!editing"
         icon="pi pi-pencil"
@@ -59,10 +62,12 @@ import { username as loggedInUsername } from '@/services/useUser'
 import { DefaultService as Service } from '@/generatedClient'
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n'
+import { useSettingsStore } from '@/store/settings'
 
 const emits = defineEmits<{ 'update:modelValue': [modelValue: string] }>()
 const props = defineProps<{ username: string; modelValue: string }>()
 
+const settingsStore = useSettingsStore()
 const toast = useToast()
 const editing = ref(false)
 const userDescription = ref(props.modelValue)

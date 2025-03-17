@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!settingsStore.isBlockedByModeration">
     <p>{{ $t('Settings.UploadProfilePicture.privacyDisclaimer') }}</p>
     <FileUpload
       class="SettingsButton"
@@ -19,6 +19,9 @@
       :label="$t('Settings.UploadProfilePicture.DeletePicture')"
       @click="deleteImage()"
     />
+  </div>
+  <div v-else>
+    <BlockedByModerationMessage :blockedByModerationUntil="settingsStore.blockedByModerationUntil ?? ''" />
   </div>
   <Dialog
     v-model:visible="cropperDialog"
@@ -74,7 +77,10 @@ import { ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n'
 import { user } from '@/services/useUser'
+import { useSettingsStore } from '@/store/settings'
+import BlockedByModerationMessage from '../BlockedByModerationMessage.vue'
 
+const settingsStore = useSettingsStore()
 const toast = useToast()
 const emit = defineEmits<{ settingoperationdone: [] }>()
 

@@ -29,8 +29,12 @@
         class="element"
         icon="pi pi-user-plus"
         :label="props.propTeamName != null ? 'Spieler hinzufügen' : 'Team anlegen'"
-        :disabled="!(validTeamName || props.propTeamName != null) || playerName == null"
+        :disabled="!(validTeamName || props.propTeamName != null) || playerName == null || settingsStore.isBlockedByModeration"
         @click="submitNewTeam"
+      />
+      <BlockedByModerationMessage
+        v-if="settingsStore.isBlockedByModeration"
+        :blockedByModerationUntil="settingsStore.blockedByModerationUntil ?? ''"
       />
     </div>
   </Dialog>
@@ -45,9 +49,12 @@ import PlayersAutoComplete from '../PlayersAutoComplete.vue'
 import { ref, computed, watch } from 'vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import type { PrivateTournament } from '@/../../server/src/sharedTypes/typesTournament'
+import { useSettingsStore } from '@/store/settings'
+import BlockedByModerationMessage from '../BlockedByModerationMessage.vue'
 
 const props = defineProps<{ tournament: PrivateTournament; visible: boolean; propTeamName: string | null }>()
 const emit = defineEmits<{ 'update:visible': [visible: boolean] }>()
+const settingsStore = useSettingsStore()
 
 watch(
   () => [props.visible, props.tournament],

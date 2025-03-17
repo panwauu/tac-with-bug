@@ -60,7 +60,7 @@
         </div>
       </div>
       <Button
-        v-if="isLoggedIn"
+        v-if="isLoggedIn && !settingsStore.isBlockedByModeration"
         :label="$t('Chat.startNewChatButton')"
         icon="pi pi-plus"
         style="margin: 15px auto"
@@ -128,9 +128,11 @@ import { useChatStore } from '@/store/chat'
 import { useMessagesStore, formatChannelName } from '@/store/messages'
 import { ref } from 'vue'
 import { isLoggedIn } from '@/services/useUser'
+import { useSettingsStore } from '@/store/settings'
 
 const chatStore = useChatStore()
 const messageStore = useMessagesStore()
+const settingsStore = useSettingsStore()
 
 const overlayPanelRef = ref<OverlayPanel | null>()
 function toggle(event: any) {

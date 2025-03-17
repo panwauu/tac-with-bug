@@ -3,7 +3,7 @@
     <Button
       style="margin: 20px"
       :label="$t('Tournament.SignUp.openModalButton')"
-      :disabled="alreadyRegistered"
+      :disabled="alreadyRegistered || settingsStore.isBlockedByModeration"
       @click="startTeamSignUp"
     />
   </div>
@@ -53,7 +53,9 @@
       />
       <Button
         :label="$t('Tournament.SignUp.submitButton')"
-        :disabled="signUpAlone === null || (signUpAlone?.value === true && signUpPartner === '') || signUpTeamName === '' || !validTeamName"
+        :disabled="
+          signUpAlone === null || (signUpAlone?.value === true && signUpPartner === '') || signUpTeamName === '' || !validTeamName || settingsStore.isBlockedByModeration
+        "
         style="margin-top: 20px"
         @click="signUpTeam()"
       />
@@ -75,9 +77,11 @@ import { i18n } from '@/services/i18n'
 import { DefaultService as Service } from '@/generatedClient/index'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { isLoggedIn, username } from '@/services/useUser'
+import { useSettingsStore } from '@/store/settings'
 
 const props = defineProps<{ tournament: PublicTournament }>()
 
+const settingsStore = useSettingsStore()
 const socket = injectStrict(SocketKey)
 
 const signUpAloneModel = ref([

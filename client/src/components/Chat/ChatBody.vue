@@ -117,6 +117,7 @@
         @submit.prevent="submitChatInput"
       >
         <div
+          v-if="!settingsStore.isBlockedByModeration"
           class="p-inputgroup"
           style="width: 100%"
         >
@@ -133,6 +134,9 @@
             :label="$t('Chat.submitButton')"
             :disabled="inputMessage === '' || inputMessage.length > 500"
           />
+        </div>
+        <div v-else>
+          <BlockedByModerationMessage :blockedByModerationUntil="settingsStore.blockedByModerationUntil ?? ''" />
         </div>
       </form>
       <Message
@@ -183,6 +187,7 @@ import ChatGroupEditor from './ChatGroupEditor.vue'
 import PrivateChatEditor from './PrivateChatEditor.vue'
 import Message from 'primevue/message'
 import Badge from 'primevue/badge'
+import BlockedByModerationMessage from '@/components/BlockedByModerationMessage.vue'
 
 import { useScroll } from '@vueuse/core'
 import { useChatStore } from '@/store/chat'

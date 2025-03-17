@@ -1,6 +1,9 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
-    <div class="p-inputgroup">
+    <div
+      v-if="!settingsStore.isBlockedByModeration"
+      class="p-inputgroup"
+    >
       <InputText v-model="groupTitle" />
       <Button
         icon="pi pi-check"
@@ -9,23 +12,28 @@
         @click="changeTitle"
       />
     </div>
+    <div v-else>
+      <BlockedByModerationMessage :blockedByModerationUntil="settingsStore.blockedByModerationUntil ?? ''" />
+    </div>
     <Divider />
     <PlayerWithPicture
       v-for="username in messagesStore.getCurrentChat?.players"
       :key="username"
       :username="username"
     />
-    <Divider />
-    <PlayersAutoComplete
-      v-model:username="userToAdd"
-      v-model:userid="userIdToAdd"
-    />
-    <Button
-      :label="$t('Chat.GroupChatEditor.addPlayer')"
-      style="margin-top: 10px"
-      :disabled="userIdToAdd < 0 || userToAdd == ''"
-      @click="addUser"
-    />
+    <template v-if="!settingsStore.isBlockedByModeration">
+      <Divider />
+      <PlayersAutoComplete
+        v-model:username="userToAdd"
+        v-model:userid="userIdToAdd"
+      />
+      <Button
+        :label="$t('Chat.GroupChatEditor.addPlayer')"
+        style="margin-top: 10px"
+        :disabled="userIdToAdd < 0 || userToAdd == ''"
+        @click="addUser"
+      />
+    </template>
     <Divider />
     <Button
       :label="$t('Chat.GroupChatEditor.leaveButton')"
@@ -45,11 +53,14 @@ import PlayersAutoComplete from '../PlayersAutoComplete.vue'
 import { ref } from 'vue'
 import { useMessagesStore } from '@/store/messages'
 import { injectStrict, SocketKey } from '@/services/injections'
+import { useSettingsStore } from '@/store/settings'
+import BlockedByModerationMessage from '../BlockedByModerationMessage.vue'
 
 const emits = defineEmits<{ close: [] }>()
 
 const socket = injectStrict(SocketKey)
 const messagesStore = useMessagesStore()
+const settingsStore = useSettingsStore()
 
 const groupTitle = ref(messagesStore.getCurrentChat?.groupTitle ?? '')
 
