@@ -45,3 +45,17 @@ export async function setModerationData(
     reason: result.rows[0].reason,
   })
 }
+
+export async function resetModerationDataOfUser(sqlClient: pg.Pool, userID: number): Promise<ModerationData[]> {
+  const res = await sqlClient.query(`UPDATE moderation SET blockeduntil = NOW() WHERE userid=$1 AND blockeduntil > NOW() RETURNING *;`, [userID])
+
+  return res.rows.map((row) => {
+    return {
+      id: row.id,
+      email: row.email,
+      userid: row.userid,
+      blockeduntil: row.blockeduntil,
+      reason: row.reason,
+    }
+  })
+}

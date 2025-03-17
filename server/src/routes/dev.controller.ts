@@ -1,11 +1,11 @@
 import type express from 'express'
-import { Controller, Get, Query, Route, Request, Security, TsoaResponse, Res, Tags, Post, Body, Queries } from 'tsoa'
+import { Controller, Get, Query, Route, Request, Security, TsoaResponse, Res, Tags, Post, Body, Queries, Delete } from 'tsoa'
 
 import { retrieveCapturedGame } from '../services/capture'
 import { getEmailsFromUsersForNews } from '../services/settings'
 import { editUserDescription, getUser } from '../services/user'
 import { selectRandomProfilePicture } from '../services/picture'
-import { getModerationData, setModerationData } from '../services/moderation'
+import { getModerationData, resetModerationDataOfUser, setModerationData } from '../services/moderation'
 import { ModerationData } from '../sharedTypes/typesDBuser'
 import Joi from 'joi'
 
@@ -102,5 +102,30 @@ export class DevController extends Controller {
     }
 
     return res.value
+  }
+
+  /**
+   * Unblock the user. The entries will not be deleted, but the until date will be set to now.
+   * Sets all moderation elements of a user that are not expired to expire now.
+   */
+  @Security('jwt', ['admin'])
+  @Delete('/moderation')
+  public async deleteModerationData(
+    @Request() request: express.Request,
+    @Body() data: { username: string },
+    @Res() serverError: TsoaResponse<500, { message: string; details?: any }>
+  ) {
+    const schema = Joi.object({ username: Joi.string().required() })
+    const { error } = schema.validate(data)
+    if (error != null) {
+      return serverError(500, error)
+    }
+
+    const user = await getUser(request.app.locals.sqlClient, { username: data.username })
+    if (user.isErr()) {
+      return serverError(500, { message: 'User not found', details: user.error })
+    }
+
+    return resetModerationDataOfUser(request.app.locals.sqlClient, user.value.id)
   }
 }
