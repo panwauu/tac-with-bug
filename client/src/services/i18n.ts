@@ -12,8 +12,6 @@ export function getLocaleFromBrowser(): string {
   }
 
   browserLocales = browserLocales.map((locale) => {
-    console.log(locale)
-    console.log(locale.trim().split(/[-_]/)[0])
     return locale.trim().split(/[-_]/)[0]
   })
 
