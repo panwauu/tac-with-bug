@@ -1,6 +1,6 @@
 import type express from 'express'
 
-import { Controller, Get, Post, Delete, Body, Route, Request, Security, Query, TsoaResponse, Res, SuccessResponse, Tags } from 'tsoa'
+import { Controller, Get, Post, Delete, Body, Route, Request, Security, Query, TsoaResponse, Res, SuccessResponse } from 'tsoa'
 
 import bcrypt from 'bcrypt'
 import Joi from 'joi'
@@ -45,7 +45,6 @@ interface UserCreateRequest {
   password: string
 }
 
-@Tags('User')
 @Route('/')
 export class UserController extends Controller {
   /**
@@ -90,7 +89,6 @@ export class UserController extends Controller {
   /**
    * Login a user into the platform
    */
-  @Tags('Authentication')
   @Post('/login')
   public async loginUser(
     @Request() request: express.Request,

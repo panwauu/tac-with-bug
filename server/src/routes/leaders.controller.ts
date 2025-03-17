@@ -1,9 +1,8 @@
 import type express from 'express'
-import { Controller, Get, Query, Route, Request, TsoaResponse, Res, Tags } from 'tsoa'
+import { Controller, Get, Query, Route, Request, TsoaResponse, Res } from 'tsoa'
 
 import { queryLeaderboardByWins, queryLeaderboardCoop, type LeaderBoardType, type CoopBoardType } from '../services/leaders'
 
-@Tags('Statistics')
 @Route('/')
 export class LeadersController extends Controller {
   /**

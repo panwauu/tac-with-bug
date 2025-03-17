@@ -6,11 +6,10 @@ import {
   SetEmailNotificationSettingsError,
   setEmailNotificationSettings,
 } from '../services/settings'
-import { Controller, Get, Post, Body, Route, Request, Security, TsoaResponse, Res, Tags } from 'tsoa'
+import { Controller, Get, Post, Body, Route, Request, Security, TsoaResponse, Res } from 'tsoa'
 
 import { LocaleValidationErrors, validateLocale } from '../helpers/validationHelpers'
 
-@Tags('User')
 @Route('/')
 export class SettingsController extends Controller {
   /**

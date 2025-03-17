@@ -1,11 +1,10 @@
 import type express from 'express'
 
-import { Controller, Get, Post, Route, Request, Query, Path, TsoaResponse, Res, Tags } from 'tsoa'
+import { Controller, Get, Post, Route, Request, Query, Path, TsoaResponse, Res } from 'tsoa'
 import { sendActivation } from '../communicationUtils/email'
 import { activateUser } from '../services/activation'
 import { getUser } from '../services/user'
 
-@Tags('User')
 @Route('activation')
 export class ActivationController extends Controller {
   /**

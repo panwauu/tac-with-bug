@@ -1,5 +1,5 @@
 import type express from 'express'
-import { Controller, Get, Post, Body, Route, Request, Security, Query, TsoaResponse, Res, Tags } from 'tsoa'
+import { Controller, Get, Post, Body, Route, Request, Security, Query, TsoaResponse, Res } from 'tsoa'
 
 import { createTournament } from '../services/tournamentsManualEditing'
 import { endSignupIfComplete } from '../services/tournamentsRegister'
@@ -9,7 +9,6 @@ import { getPublicTournamentByID } from '../services/tournamentsPublic'
 import { registerJobsForOneTournament } from '../services/scheduledTasks'
 import { createTournamentDataKO } from '../services/tournamentKO'
 
-@Tags('Tournament')
 @Route('/')
 export class TournamentsController extends Controller {
   /**
