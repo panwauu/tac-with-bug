@@ -55,14 +55,3 @@ export default defineConfigWithVueTs(
     },
   }
 )
-
-/*
-module.exports = {
-  root: true,
-  env: {
-    es2021: true,
-  },
-  plugins: ['sonarjs'],
-  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:sonarjs/recommended', '@vue/typescript/recommended'],
-}
-*/
