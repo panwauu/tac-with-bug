@@ -974,5 +974,9 @@
     "passwordResetSuccess-detail": "From now on you can use your new password to login. Enjoy playing",
     "passwordResetSuccess-summary": "Password changed",
     "submitButton": "Change password"
+  },
+  "Moderation": {
+    "you-are-blocked-explanation": "You were blocked by a moderator due to offensive behavior. \nYou cannot write messages, change a profile picture, add a description and create any invitations to tournaments or tournament teams yourself.",
+    "you-are-blocked-message": "You were blocked from moderation until {0}."
   }
 }

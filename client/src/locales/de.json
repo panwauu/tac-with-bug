@@ -974,5 +974,9 @@
     "submitButton": "Neues Passwort festlegen",
     "passwordResetSuccess-summary": "Neues Password festgelegt",
     "passwordResetSuccess-detail": "Du kannst jetzt dein neues Password benutzen, um dich anzumelden. Viel Spaß beim Spielen"
+  },
+  "Moderation": {
+    "you-are-blocked-message": "Du wurdest von der Moderation bis zum {0} blockiert.",
+    "you-are-blocked-explanation": "Du wurdest von einem Moderator aufgrund von anstößigen Verhalten blockiert. Du kannst keine Nachrichten schreiben, kein Profilbild ändern, keine Beschreibung hinzufügen und selbst keine Einladungen zu Turnieren oder Turnierteams erstellen."
   }
 }
