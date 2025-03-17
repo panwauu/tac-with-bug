@@ -370,7 +370,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
       await endSignUpOnCondition(testServer.pgPool)
 
       const tournament = await getPublicTournamentByID(testServer.pgPool, tournamentID)
-      tournament.isOk() ? expect(tournament.value.status).toBe('signUpFailed') : expect(tournament.error).toBe(null)
+      if (tournament.isOk()) expect(tournament.value.status).toBe('signUpFailed')
+      else expect(tournament.error).toBe(null)
     })
   })
 
