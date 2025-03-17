@@ -4,6 +4,7 @@ import { verifyJWT } from './jwtWrapper'
 import { Result, ok, err } from 'neverthrow'
 import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import type { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
+import { getUser } from 'src/services/user'
 
 export function gameSocketIOAuthentication(socket: GameSocketS, next: any) {
   if (socket.handshake.auth.token == null || socket.handshake.auth.token === '') {
@@ -19,7 +20,7 @@ export function gameSocketIOAuthentication(socket: GameSocketS, next: any) {
   return next(new Error('Token in game authentication could not be verified'))
 }
 
-export function generalSocketIOAuthentication(socket: GeneralSocketS, next: any) {
+export async function generalSocketIOAuthentication(socket: GeneralSocketS, next: any, pgPool: pg.Pool) {
   if (socket.handshake.auth.token == null) {
     return next()
   }
@@ -31,6 +32,14 @@ export function generalSocketIOAuthentication(socket: GeneralSocketS, next: any)
   } else {
     socket.emit('logged_out')
   }
+
+  const user = await getUser(pgPool, { id: socket.data.userID })
+  if (user.isOk()) {
+    socket.data.blockedByModeration = user.value.blockedByModerationUntil != null
+  } else {
+    socket.emit('logged_out')
+  }
+
   return next()
 }
 

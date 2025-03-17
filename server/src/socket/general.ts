@@ -20,7 +20,7 @@ export let nspGeneral: GeneralNamespace
 export function registerSocketNspGeneral(nsp: GeneralNamespace, pgPool: pg.Pool) {
   nspGeneral = nsp
 
-  nsp.use(generalSocketIOAuthentication)
+  nsp.use((socket, next) => generalSocketIOAuthentication(socket, next, pgPool))
 
   registerTournamentBus()
 

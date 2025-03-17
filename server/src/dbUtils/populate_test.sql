@@ -74,3 +74,13 @@ INSERT INTO users_to_games (userid, gameid, player_index) VALUES
     (1, 11, 0),(3, 11, 1),(2, 11, 2),(4, 11, 3),
     (1, 12, 0),(3, 12, 1),(2, 12, 2),(4, 12, 3),
     (1, 13, 0),(2, 13, 1);
+
+-- moderation: old entries for first users, new entry for user 15 and 16
+INSERT INTO moderation (userid, email, reason, insertedbyuserid, blockeduntil) VALUES
+    (1, NULL, '', 1, '1928-01-29 21:34:00+00'),
+    (NULL, 'user.b@fake-mail.de', '', 1, '1928-01-29 21:34:00+00'),
+    (2, NULL, '', 1, '1928-01-29 21:34:00+00'),
+    (3, NULL, '', 1, '1928-01-29 21:34:00+00'),
+    (4, NULL, '', 1, '1928-01-29 21:34:00+00'),
+    (NULL, 'user.o@fake-mail.de', '', 1, '2100-01-29 21:34:00+00'),
+    (16, NULL, '', 1, '2100-01-29 21:34:00+00');

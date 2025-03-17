@@ -1,4 +1,5 @@
-import { registerUserAndReturnCredentials, unregisterUser, User } from '../test/handleUserSockets'
+import { closeSockets } from 'src/test/handleSocket'
+import { getUserWithSocket, registerUserAndReturnCredentials, unregisterUser, User, UserWithSocket } from '../test/handleUserSockets'
 
 async function getPicture(username: string) {
   const dbResBefore = await testServer.pgPool.query('SELECT * FROM users WHERE username = $1;', [username])
@@ -7,13 +8,16 @@ async function getPicture(username: string) {
 
 describe('Profile Picture', () => {
   let userWithCredentials: User
+  let blockedUserWithCredetials: UserWithSocket
 
   beforeAll(async () => {
     userWithCredentials = await registerUserAndReturnCredentials()
+    blockedUserWithCredetials = await getUserWithSocket(15)
   })
 
   afterAll(async () => {
     await unregisterUser(userWithCredentials)
+    await closeSockets([blockedUserWithCredetials])
   })
 
   test('Change profile picture', async () => {
@@ -27,6 +31,14 @@ describe('Profile Picture', () => {
 
     const picAfter = await getPicture(userWithCredentials.username)
     expect(picBefore).not.toEqual(picAfter)
+  })
+
+  test('Should not upload image if blockedbymoderation', async () => {
+    let response = await testAgent
+      .post('/gameApi/uploadProfilePicture')
+      .set({ Authorization: blockedUserWithCredetials.authHeader })
+      .attach('profilePic', './src/routes/picture.test.image.jpg')
+    expect(response.statusCode).toBe(500)
   })
 
   test('Upload profile picture', async () => {

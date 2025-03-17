@@ -4,14 +4,16 @@ import type { GeneralSocketC } from '../test/socket'
 
 describe('Channel test suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[], socket: GeneralSocketC
+  let blockedUsersWithSockets: UserWithSocket[]
 
   beforeAll(async () => {
     usersWithSockets = await getUsersWithSockets({ n: 2 })
+    blockedUsersWithSockets = await getUsersWithSockets({ ids: [15] })
     socket = await getUnauthenticatedSocket()
   })
 
   afterAll(async () => {
-    await closeSockets([...usersWithSockets, socket])
+    await closeSockets([...usersWithSockets, ...blockedUsersWithSockets, socket])
   })
 
   describe('Test channel communication', () => {
@@ -42,8 +44,13 @@ describe('Channel test suite via socket.io', () => {
       expect(resWithoutBody.status).toBe(500)
     })
 
+    test('Should not send to the general channel if blockedbymoderation', async () => {
+      const promiseSend = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'channel:sendMessage', { channel: 'general', body: 'test' })
+      expect(promiseSend.status).not.toBe(200)
+    })
+
     test('Should send to the general channel and send update to all', async () => {
-      const promises = usersWithSockets.map((uWS) => {
+      const promises = [...usersWithSockets, ...blockedUsersWithSockets].map((uWS) => {
         return uWS.socket.oncePromise('channel:update')
       })
       const promiseSend = await usersWithSockets[0].socket.emitWithAck(5000, 'channel:sendMessage', { channel: 'general', body: 'test' })

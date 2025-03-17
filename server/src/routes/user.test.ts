@@ -1,6 +1,8 @@
 import { cloneDeep } from 'lodash'
 import * as mail from '../communicationUtils/email'
 import Chance from 'chance'
+import { getUserWithSocket, UserWithSocket } from 'src/test/handleUserSockets'
+import { closeSockets } from 'src/test/handleSocket'
 const chance = new Chance()
 
 describe('Sign-Up', () => {
@@ -20,8 +22,18 @@ describe('Sign-Up', () => {
   const spyNewPassword = vitest.spyOn(mail, 'sendPasswordReset')
   const spyActivation = vitest.spyOn(mail, 'sendActivation')
 
+  let blockedUserWithCredetials: UserWithSocket
+
+  beforeAll(async () => {
+    blockedUserWithCredetials = await getUserWithSocket(15)
+  })
+
   afterEach(() => {
     vitest.clearAllMocks()
+  })
+
+  afterAll(async () => {
+    await closeSockets([blockedUserWithCredetials])
   })
 
   test('Empty Request', async () => {
@@ -419,7 +431,12 @@ describe('Sign-Up', () => {
     expect(response.status).toBe(500)
   })
 
-  test('Change Profile Descripton', async () => {
+  test('Should not change Profile Description if blockedbymoderation', async () => {
+    const editRes = await testAgent.post('/gameApi/editUserDescription').set({ Authorization: blockedUserWithCredetials.authHeader }).send({ userDescription: 'testString' })
+    expect(editRes.statusCode).toBe(500)
+  })
+
+  test('Change Profile Description', async () => {
     const loginRes = await testAgent.post('/gameApi/login').send({ username: validBody.username, password: validBody.password })
     expect(loginRes.statusCode).toBe(200)
     const authHeader = `Bearer ${loginRes.body.token}`

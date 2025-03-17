@@ -44,7 +44,7 @@ async function getUser(id: number): Promise<User> {
   }
 }
 
-async function getUserWithSocket(id: number): Promise<UserWithSocket> {
+export async function getUserWithSocket(id: number): Promise<UserWithSocket> {
   const user = await getUser(id)
 
   const port = (global as any).testServer.httpServer.address().port
@@ -55,7 +55,7 @@ async function getUserWithSocket(id: number): Promise<UserWithSocket> {
 }
 
 export async function getUsersWithSockets(data: { ids: number[] } | { n: number }): Promise<UserWithSocket[]> {
-  const availableIDs = [1, 2, 3, 4, 5, 6, 7, 8]
+  const availableIDs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
   if ('ids' in data && (!data.ids.every((id) => availableIDs.includes(id)) || new Set(data.ids).size !== data.ids.length)) {
     throw new Error('Cannot get test users')
   }

@@ -6,15 +6,17 @@ const chance = Chance()
 
 describe('Test Suite via Socket.io', () => {
   let usersWithSockets: UserWithSocket[]
+  let blockedUsersWithSockets: UserWithSocket[]
   let unauthenticatedSocket: GeneralSocketC
 
   beforeAll(async () => {
     usersWithSockets = await getUsersWithSockets({ n: 3 })
+    blockedUsersWithSockets = await getUsersWithSockets({ ids: [15, 16] })
     unauthenticatedSocket = await getUnauthenticatedSocket()
   })
 
   afterAll(async () => {
-    await closeSockets([...usersWithSockets, unauthenticatedSocket])
+    await closeSockets([...usersWithSockets, ...blockedUsersWithSockets, unauthenticatedSocket])
   })
 
   describe('Test peer to peer chat', () => {
@@ -38,9 +40,9 @@ describe('Test Suite via Socket.io', () => {
     })
 
     test('Should create a new chat', async () => {
-      const promisesChatOverview = [usersWithSockets[0].socket.oncePromise('chat:overview:update'), usersWithSockets[1].socket.oncePromise('chat:overview:update')]
+      const promisesChatOverview = [usersWithSockets[0].socket.oncePromise('chat:overview:update'), blockedUsersWithSockets[0].socket.oncePromise('chat:overview:update')]
 
-      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:startChat', { userids: [usersWithSockets[1].id], title: null })
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:startChat', { userids: [blockedUsersWithSockets[0].id], title: null })
       expect(res.status).toBe(200)
       expect(typeof res.data?.chatid).toEqual('number')
       chatid = res.data?.chatid ?? -1
@@ -54,8 +56,16 @@ describe('Test Suite via Socket.io', () => {
       })
     })
 
+    test('Should not create a new chat if blockedbymoderation', async () => {
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:startChat', { userids: [usersWithSockets[0].id], title: null })
+      expect(res.status).not.toBe(200)
+
+      const res2 = await blockedUsersWithSockets[1].socket.emitWithAck(5000, 'chat:startChat', { userids: [usersWithSockets[0].id], title: null })
+      expect(res2.status).not.toBe(200)
+    })
+
     test('Should not create the same chat again', async () => {
-      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:startChat', { userids: [usersWithSockets[1].id], title: null })
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:startChat', { userids: [blockedUsersWithSockets[0].id], title: null })
       expect(res.status).toBe(500)
     })
 
@@ -76,9 +86,14 @@ describe('Test Suite via Socket.io', () => {
       expect(resWithTooLongBody.status).toBe(500)
     })
 
+    test('Should not send a message if blockedbymoderation', async () => {
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:sendMessage', { chatid: chatid, body: 'test' })
+      expect(res.status).not.toBe(200)
+    })
+
     test('Should send a message', async () => {
-      const promisesChatUpdate = [usersWithSockets[0].socket.oncePromise('chat:singleChat:update'), usersWithSockets[1].socket.oncePromise('chat:singleChat:update')]
-      const promisesChatOverview = [usersWithSockets[0].socket.oncePromise('chat:overview:update'), usersWithSockets[1].socket.oncePromise('chat:overview:update')]
+      const promisesChatUpdate = [usersWithSockets[0].socket.oncePromise('chat:singleChat:update'), blockedUsersWithSockets[0].socket.oncePromise('chat:singleChat:update')]
+      const promisesChatOverview = [usersWithSockets[0].socket.oncePromise('chat:overview:update'), blockedUsersWithSockets[0].socket.oncePromise('chat:overview:update')]
 
       const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:sendMessage', { chatid: chatid, body: 'test' })
       expect(res.status).toBe(200)
@@ -101,14 +116,14 @@ describe('Test Suite via Socket.io', () => {
     })
 
     test('Should not mark messages as read if wrong id', async () => {
-      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'chat:markAsRead', {} as any)
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:markAsRead', {} as any)
       expect(res.status).toBe(500)
     })
 
     test('Should mark messages as read', async () => {
-      const promiseChatOverview = usersWithSockets[1].socket.oncePromise('chat:overview:update')
+      const promiseChatOverview = blockedUsersWithSockets[0].socket.oncePromise('chat:overview:update')
 
-      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'chat:markAsRead', { chatid: chatid })
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:markAsRead', { chatid: chatid })
       expect(res.status).toBe(200)
 
       const resultChatOverview = await promiseChatOverview
@@ -118,7 +133,7 @@ describe('Test Suite via Socket.io', () => {
     })
 
     test('Should load the chat overview', async () => {
-      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'chat:overview:load')
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:overview:load')
       expect(res.status).toBe(200)
       expect(res.data?.length).toBe(1)
       expect(res.data?.[0].chatid).toBe(chatid)
@@ -126,10 +141,10 @@ describe('Test Suite via Socket.io', () => {
     })
 
     test('Should not load chat if wrong id', async () => {
-      const resNoId = await usersWithSockets[1].socket.emitWithAck(5000, 'chat:singleChat:load', {} as any)
+      const resNoId = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:singleChat:load', {} as any)
       expect(resNoId.status).toBe(500)
 
-      const resWrongId = await usersWithSockets[1].socket.emitWithAck(5000, 'chat:singleChat:load', { chatid: 1000000 })
+      const resWrongId = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:singleChat:load', { chatid: 1000000 })
       expect(resWrongId.status).toBe(500)
     })
 
@@ -139,7 +154,7 @@ describe('Test Suite via Socket.io', () => {
     })
 
     test('Should load one chat', async () => {
-      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'chat:singleChat:load', { chatid })
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:singleChat:load', { chatid })
       expect(res.status).toBe(200)
       expect(res.data?.chatid).toBe(chatid)
       expect(res.data?.messages.length).toBe(1)
@@ -158,17 +173,17 @@ describe('Test Suite via Socket.io', () => {
     })
 
     test('User should not be able to leave chat with invalid id', async () => {
-      const resNoID = await usersWithSockets[1].socket.emitWithAck(5000, 'chat:leaveChat', {} as any)
+      const resNoID = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:leaveChat', {} as any)
       expect(resNoID.status).toBe(500)
 
-      const resInvalidID = await usersWithSockets[1].socket.emitWithAck(5000, 'chat:leaveChat', { chatid: 100000 })
+      const resInvalidID = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:leaveChat', { chatid: 100000 })
       expect(resInvalidID.status).toBe(500)
     })
 
     test('User should be able to leave chat', async () => {
-      const promisesChatOverview = [usersWithSockets[0].socket.oncePromise('chat:overview:update'), usersWithSockets[1].socket.oncePromise('chat:overview:update')]
+      const promisesChatOverview = [usersWithSockets[0].socket.oncePromise('chat:overview:update'), blockedUsersWithSockets[0].socket.oncePromise('chat:overview:update')]
 
-      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'chat:leaveChat', { chatid })
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:leaveChat', { chatid })
       expect(res.status).toBe(200)
 
       const resultsChatOverview = await Promise.all(promisesChatOverview)
@@ -188,10 +203,15 @@ describe('Test Suite via Socket.io', () => {
       expect(promiseOne.status).toBe(500)
     })
 
-    test('Should create a new chat', async () => {
-      const promisesChatOverview = [usersWithSockets[0].socket.oncePromise('chat:overview:update'), usersWithSockets[1].socket.oncePromise('chat:overview:update')]
+    test('Should not create a new chat if blockedbymoderation', async () => {
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:startChat', { userids: [usersWithSockets[1].id], title: 'testGroup' })
+      expect(res.status).not.toBe(200)
+    })
 
-      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:startChat', { userids: [usersWithSockets[1].id], title: 'testGroup' })
+    test('Should create a new chat', async () => {
+      const promisesChatOverview = [usersWithSockets[0].socket.oncePromise('chat:overview:update'), blockedUsersWithSockets[0].socket.oncePromise('chat:overview:update')]
+
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:startChat', { userids: [blockedUsersWithSockets[0].id], title: 'testGroup' })
       expect(res.status).toBe(200)
       expect(typeof res.data?.chatid).toEqual('number')
       chatid = res.data?.chatid ?? -1
@@ -220,8 +240,13 @@ describe('Test Suite via Socket.io', () => {
       expect(resInvalidPlayer.status).toBe(500)
     })
 
+    test('Should not change title if blockedbymoderation', async () => {
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:changeTitle', { chatid, title: 'groupChatChanged' })
+      expect(res.status).not.toBe(200)
+    })
+
     test('Should change title', async () => {
-      const promisesChatOverview = [usersWithSockets[0].socket.oncePromise('chat:overview:update'), usersWithSockets[1].socket.oncePromise('chat:overview:update')]
+      const promisesChatOverview = [usersWithSockets[0].socket.oncePromise('chat:overview:update'), blockedUsersWithSockets[0].socket.oncePromise('chat:overview:update')]
 
       const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:changeTitle', { chatid, title: 'groupChatChanged' })
       expect(res.status).toBe(200)
@@ -249,8 +274,13 @@ describe('Test Suite via Socket.io', () => {
       expect(resInvalidID.status).toBe(500)
     })
 
+    test('Should not add player if blockedbymoderation', async () => {
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:addUser', { chatid, userid: usersWithSockets[2].id })
+      expect(res.status).not.toBe(200)
+    })
+
     test('Should add player', async () => {
-      const promisesChatOverview = usersWithSockets.map((uWS) => uWS.socket.oncePromise('chat:overview:update'))
+      const promisesChatOverview = [usersWithSockets[0], usersWithSockets[2], blockedUsersWithSockets[0]].map((uWS) => uWS.socket.oncePromise('chat:overview:update'))
 
       const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:addUser', { chatid, userid: usersWithSockets[2].id })
       expect(res.status).toBe(200)
@@ -262,7 +292,7 @@ describe('Test Suite via Socket.io', () => {
         expect(resultChatOverview[chatIndexInOverview].chatid).toBe(chatid)
         expect(resultChatOverview[chatIndexInOverview].groupTitle).toBe('groupChatChanged')
         expect(resultChatOverview[chatIndexInOverview].players.sort()).toEqual(
-          usersWithSockets
+          [usersWithSockets[0], usersWithSockets[2], blockedUsersWithSockets[0]]
             .map((uWS) => uWS.username)
             .filter((_, i) => i !== promiseIndex)
             .sort()
@@ -270,9 +300,14 @@ describe('Test Suite via Socket.io', () => {
       })
     })
 
+    test('Should not send a message if blockedbymoderation', async () => {
+      const res = await blockedUsersWithSockets[0].socket.emitWithAck(5000, 'chat:sendMessage', { chatid: chatid, body: 'test' })
+      expect(res.status).not.toBe(200)
+    })
+
     test('Should send a message', async () => {
-      const promisesChatUpdate = usersWithSockets.map((uWS) => uWS.socket.oncePromise('chat:singleChat:update'))
-      const promisesChatOverview = usersWithSockets.map((uWS) => uWS.socket.oncePromise('chat:overview:update'))
+      const promisesChatUpdate = [usersWithSockets[0], usersWithSockets[2], blockedUsersWithSockets[0]].map((uWS) => uWS.socket.oncePromise('chat:singleChat:update'))
+      const promisesChatOverview = [usersWithSockets[0], usersWithSockets[2], blockedUsersWithSockets[0]].map((uWS) => uWS.socket.oncePromise('chat:overview:update'))
 
       const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:sendMessage', { chatid: chatid, body: 'test' })
       expect(res.status).toBe(200)
