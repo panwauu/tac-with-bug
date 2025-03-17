@@ -1,12 +1,13 @@
 import type express from 'express'
 import type { TournamentParticipation } from '../sharedTypes/typesTournament'
 import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
-import { Controller, Get, Query, Route, Request } from 'tsoa'
+import { Controller, Get, Query, Route, Request, Tags } from 'tsoa'
 
 import type { UserNetworkApiResponse } from '../sharedTypes/typesStatistic'
 import { getUserNetworkData, getDataForProfilePage } from '../services/playerStatistic'
 import { getTournamentParticipations } from '../services/tournaments'
 
+@Tags('Statistics')
 @Route('/profile')
 export class PlayerStatisticController extends Controller {
   /**
