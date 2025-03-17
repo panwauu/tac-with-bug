@@ -1,4 +1,4 @@
-import { closeSockets } from 'src/test/handleSocket'
+import { closeSockets } from '../test/handleSocket'
 import { getUserWithSocket, registerUserAndReturnCredentials, unregisterUser, User, UserWithSocket } from '../test/handleUserSockets'
 
 async function getPicture(username: string) {

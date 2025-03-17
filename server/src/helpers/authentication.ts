@@ -4,7 +4,7 @@ import { verifyJWT } from './jwtWrapper'
 import { Result, ok, err } from 'neverthrow'
 import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import type { GameSocketS } from '../sharedTypes/GameNamespaceDefinition'
-import { getUser } from 'src/services/user'
+import { getUser } from '../services/user'
 
 export function gameSocketIOAuthentication(socket: GameSocketS, next: any) {
   if (socket.handshake.auth.token == null || socket.handshake.auth.token === '') {

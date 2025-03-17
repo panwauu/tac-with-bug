@@ -79,3 +79,12 @@ npm run start:dev
 cd client
 npm run dev
 ```
+
+# Moderation
+
+Go to [the swagger documentation](https://tac-with-bug.herokuapp.com/gameapi/api-docs/). Then:
+
+1. Find login endpoint and login
+2. Copy the token and paste it in the "Authorize" field (top of page)
+3. Use the endpoints tagged as DEV
+

@@ -1,8 +1,8 @@
 import { cloneDeep } from 'lodash'
 import * as mail from '../communicationUtils/email'
 import Chance from 'chance'
-import { getUserWithSocket, UserWithSocket } from 'src/test/handleUserSockets'
-import { closeSockets } from 'src/test/handleSocket'
+import { getUserWithSocket, UserWithSocket } from '../test/handleUserSockets'
+import { closeSockets } from '../test/handleSocket'
 const chance = new Chance()
 
 describe('Sign-Up', () => {
