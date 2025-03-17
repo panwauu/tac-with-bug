@@ -288,7 +288,7 @@
       "inRoom": "Du bist Teil eines Raums",
       "inNoRoom": "Du bist in keinem Warteraum",
       "playersWaiting": "{X} Spieler auf der Suche",
-      "openRooms": "{X} offene Warteräume",
+      "openRooms": "{X} offene Warteräume | {X} offener Warteraum | {X} offene Warteräume",
       "noGamesGoToWaiting": "Du hast keine laufenden Spiele. Erstelle einen Warteraum!",
       "description": "Hier kannst du deine laufenden Spiele fortsetzen und Mitspieler für eine neue Runde finden.",
       "waitingRoomsHeader": "Neues Spiel vereinbaren",

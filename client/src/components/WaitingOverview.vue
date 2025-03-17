@@ -10,7 +10,7 @@
       style="margin: 5px"
     />
     <Tag
-      :value="t('Landing.Waiting.openRooms', { X: waitingStore.rooms })"
+      :value="t('Landing.Waiting.openRooms', { count: waitingStore.rooms, X: waitingStore.rooms })"
       severity="success"
       style="margin: 5px"
     />
