@@ -94,7 +94,16 @@ export class UserController extends Controller {
     @Request() request: express.Request,
     @Body() userToLogin: { username: string; password: string },
     @Res() authorizationError: TsoaResponse<401, { message: string; error: string }>
-  ): Promise<{ message: string; token: string; username: string; locale: string; colorBlindnessFlag: boolean; gameDefaultPositions: number[]; admin: boolean }> {
+  ): Promise<{
+    message: string
+    token: string
+    username: string
+    locale: string
+    colorBlindnessFlag: boolean
+    gameDefaultPositions: number[]
+    admin: boolean
+    blockedByModerationUntil: string | null
+  }> {
     const user = await getUser(request.app.locals.sqlClient, { username: userToLogin.username })
     if (user.isErr()) {
       return authorizationError(401, { message: 'Username is incorrect!', error: 'user' })
@@ -123,6 +132,7 @@ export class UserController extends Controller {
       colorBlindnessFlag: user.value.colorBlindnessFlag,
       gameDefaultPositions: user.value.gameDefaultPositions,
       admin: user.value.admin,
+      blockedByModerationUntil: user.value.blockedByModerationUntil,
     }
   }
 

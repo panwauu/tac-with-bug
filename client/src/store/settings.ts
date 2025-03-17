@@ -9,8 +9,19 @@ export const useSettingsStore = defineStore('settings', {
     admin: useStorage<boolean>('TacSettingsAdmin', false, localStorage),
     colorblind: useStorage('TacSettingsColorblind', false, localStorage),
     defaultPositions: useStorage<[number, number]>('TacSettingsDefaultPositions', [1, 0], localStorage),
+    blockedByModerationUntil: useStorage<string | null>('TacSettingsBlockedByModerationUntil', null, localStorage),
   }),
-  getters: {},
+  getters: {
+    isBlockedByModeration(): boolean {
+      return this.blockedByModerationUntil !== null && new Date(this.blockedByModerationUntil) > new Date()
+    },
+    isBlockedByModerationUntil(): Date | null {
+      if (this.blockedByModerationUntil === null) {
+        return null
+      }
+      return new Date(this.blockedByModerationUntil)
+    },
+  },
   actions: {
     setAdmin(admin: boolean): void {
       this.admin = admin
@@ -32,6 +43,9 @@ export const useSettingsStore = defineStore('settings', {
         Service.setGameDefaultPositions({ gameDefaultPositions: positions })
       }
       this.defaultPositions = positions
+    },
+    setBlockedByModerationUntil(date: string | null): void {
+      this.blockedByModerationUntil = date
     },
   },
 })
