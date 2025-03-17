@@ -28,6 +28,11 @@
           :username="username"
         />
         <p class="registered">{{ $t('Profile.registeredOn') }} {{ registeredOn.toLocaleDateString() }}</p>
+        <BlockedByModerationMessage
+          v-if="userBlockedUntil != null"
+          :blockedByModerationUntil="userBlockedUntil"
+          :secondPerson="true"
+        />
         <FriendButton :username="username" />
       </div>
     </div>
@@ -59,6 +64,7 @@ import router from '@/router/index'
 import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue'
 import { i18n } from '@/services/i18n'
 import { useResizeObserver } from '@vueuse/core'
+import BlockedByModerationMessage from '@/components/BlockedByModerationMessage.vue'
 
 const props = defineProps<{ username: string }>()
 
@@ -79,6 +85,7 @@ const hofReasons = ref<HofReason[]>([])
 const items = ref(createMenu(true))
 const profileContainer = ref<null | HTMLElement>(null)
 const registeredOn = ref<Date>(new Date(0))
+const userBlockedUntil = ref<string | null>(null)
 
 updateData()
 watch(
@@ -95,6 +102,7 @@ async function updateData() {
     hofReasons.value = usernameStats.hof
     userDescription.value = usernameStats.userDescription
     registeredOn.value = new Date(usernameStats.registered)
+    userBlockedUntil.value = usernameStats.blockedByModerationUntil
   } catch (err) {
     console.log(err)
     router.push({ name: 'Landing' })

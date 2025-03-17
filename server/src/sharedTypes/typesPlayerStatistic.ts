@@ -14,6 +14,7 @@ export interface PlayerFrontendStatistic {
   hof: HofReason[]
   userDescription: string
   registered: string
+  blockedByModerationUntil: string | null
 }
 
 export interface GamesDistributionData {

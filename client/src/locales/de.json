@@ -977,6 +977,8 @@
   },
   "Moderation": {
     "you-are-blocked-message": "Du wurdest von der Moderation bis zum {0} blockiert.",
-    "you-are-blocked-explanation": "Du wurdest von einem Moderator aufgrund von anstößigen Verhalten blockiert. Du kannst keine Nachrichten schreiben, kein Profilbild ändern, keine Beschreibung hinzufügen und selbst keine Einladungen zu Turnieren oder Turnierteams erstellen."
+    "you-are-blocked-explanation": "Du wurdest von einem Moderator aufgrund von anstößigen Verhalten blockiert. Du kannst keine Nachrichten schreiben, kein Profilbild ändern, keine Beschreibung hinzufügen und selbst keine Einladungen zu Turnieren oder Turnierteams erstellen.",
+    "he-is-blocked-message": "Dieser Spieler wurde von der Moderation bis zum {0} blockiert.",
+    "he-was-blocked-explanation": "Dieser Spieler wurde von einem Moderator aufgrund von anstößigen Verhaltens blockiert. Er kannst keine Nachrichten schreiben, kein Profilbild ändern, keine Beschreibung hinzufügen und selbst keine Einladungen zu Turnieren oder Turnierteams erstellen."
   }
 }

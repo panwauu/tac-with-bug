@@ -977,6 +977,8 @@
   },
   "Moderation": {
     "you-are-blocked-explanation": "You were blocked by a moderator due to offensive behavior. \nYou cannot write messages, change a profile picture, add a description and create any invitations to tournaments or tournament teams yourself.",
-    "you-are-blocked-message": "You were blocked from moderation until {0}."
+    "you-are-blocked-message": "You were blocked from moderation until {0}.",
+    "he-is-blocked-message": "This player was blocked from the moderation until {0}.",
+    "he-was-blocked-explanation": "This player was blocked by a moderator due to offensive behavior. \nHe cannot write messages, change no profile picture, do not add a description and do not create any invitations to tournaments or tournament teams."
   }
 }

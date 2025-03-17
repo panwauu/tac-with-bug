@@ -10,16 +10,20 @@
         style: 'font-size: small',
       },
     }"
-    :title="$t('Moderation.you-are-blocked-explanation')"
+    :title="secondPerson === true ? $t('Moderation.he-was-blocked-explanation') : $t('Moderation.you-are-blocked-explanation')"
   >
-    {{ $t('Moderation.you-are-blocked-message', [new Date(blockedByModerationUntil).toLocaleDateString()]) }}
+    {{
+      secondPerson === true
+        ? $t('Moderation.he-is-blocked-message', [new Date(blockedByModerationUntil).toLocaleDateString()])
+        : $t('Moderation.you-are-blocked-message', [new Date(blockedByModerationUntil).toLocaleDateString()])
+    }}
   </Message>
 </template>
 
 <script setup lang="ts">
 import Message from 'primevue/message'
 
-defineProps<{ blockedByModerationUntil: string }>()
+defineProps<{ blockedByModerationUntil: string; secondPerson?: boolean | null }>()
 </script>
 
 <style scoped></style>

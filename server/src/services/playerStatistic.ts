@@ -209,6 +209,7 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
     hof: await isHofMember(sqlClient, username),
     userDescription: user.value.userDescription,
     registered: user.value.registered,
+    blockedByModerationUntil: user.value.blockedByModerationUntil,
   }
 }
 
