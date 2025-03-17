@@ -34,7 +34,7 @@ describe('Profile Picture', () => {
   })
 
   test('Should not upload image if blockedbymoderation', async () => {
-    let response = await testAgent
+    const response = await testAgent
       .post('/gameApi/uploadProfilePicture')
       .set({ Authorization: blockedUserWithCredetials.authHeader })
       .attach('profilePic', './src/routes/picture.test.image.jpg')
