@@ -1,6 +1,6 @@
 <template>
   <h2>{{ t('Tournament.Overview.header') }}</h2>
-  <Accordion :activeIndex="0">
+  <Accordion :active-index="0">
     <AccordionTab :header="t('Tournament.Overview.tournaments')">
       <TournamentsTable />
     </AccordionTab>

@@ -4,7 +4,7 @@
       v-model="selectedDate"
       class="timeSelect"
       :options="dateOptions"
-      optionLabel="name"
+      option-label="name"
       @click="changeTimeFrame()"
     />
     <TabView>
@@ -12,11 +12,11 @@
         <DataTable
           v-model:first="first"
           :value="data"
-          :autoLayout="true"
+          :auto-layout="true"
           :loading="loading"
           :paginator="true"
-          :pageLinkSize="3"
-          :totalRecords="totalNumber"
+          :page-link-size="3"
+          :total-records="totalNumber"
           :rows="rows"
           :lazy="true"
           @page="onPage()"
@@ -31,7 +31,7 @@
           >
             <template #body="slotProps">
               <PlayerWithPicture
-                :nameFirst="false"
+                :name-first="false"
                 :username="slotProps.data.username"
               />
             </template>
@@ -50,11 +50,11 @@
         <DataTable
           v-model:first="firstCoop4"
           :value="dataCoop4"
-          :autoLayout="true"
+          :auto-layout="true"
           :loading="loading"
           :paginator="true"
-          :pageLinkSize="3"
-          :totalRecords="totalNumberCoop4"
+          :page-link-size="3"
+          :total-records="totalNumberCoop4"
           :rows="rows"
           :lazy="true"
           @page="onPageCoop(4)"
@@ -75,12 +75,12 @@
                   class="team"
                 >
                   <PlayerWithPicture
-                    :nameFirst="false"
+                    :name-first="false"
                     :username="slotProps.data.team[2 * teamIndex - 2]"
                   />
                   <PlayerWithPicture
                     v-if="slotProps.data.team[2 * teamIndex - 1] != null"
-                    :nameFirst="false"
+                    :name-first="false"
                     :username="slotProps.data.team[2 * teamIndex - 1]"
                   />
                 </div>
@@ -105,11 +105,11 @@
         <DataTable
           v-model:first="firstCoop6"
           :value="dataCoop6"
-          :autoLayout="true"
+          :auto-layout="true"
           :loading="loading"
           :paginator="true"
-          :pageLinkSize="3"
-          :totalRecords="totalNumberCoop6"
+          :page-link-size="3"
+          :total-records="totalNumberCoop6"
           :rows="rows"
           :lazy="true"
           @page="onPageCoop(6)"
@@ -130,12 +130,12 @@
                   class="team"
                 >
                   <PlayerWithPicture
-                    :nameFirst="false"
+                    :name-first="false"
                     :username="slotProps.data.team[2 * teamIndex - 2]"
                   />
                   <PlayerWithPicture
                     v-if="slotProps.data.team[2 * teamIndex - 1] != null"
-                    :nameFirst="false"
+                    :name-first="false"
                     :username="slotProps.data.team[2 * teamIndex - 1]"
                   />
                 </div>

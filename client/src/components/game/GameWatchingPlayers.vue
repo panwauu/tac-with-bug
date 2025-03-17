@@ -9,8 +9,8 @@
     />
     <OverlayPanel
       ref="watchingPlayersRef"
-      appendTo="body"
-      :showCloseIcon="true"
+      append-to="body"
+      :show-close-icon="true"
     >
       <div style="max-height: 300px; overflow-y: auto">
         <PlayerWithPicture
@@ -18,7 +18,7 @@
           :key="`watchingPlayers-${player}`"
           :username="player"
           :clickable="false"
-          :nameFirst="false"
+          :name-first="false"
           style="margin: 5px 25px 5px 5px"
         />
         <div v-if="watchingPlayers.length === 0 && nWatching === 0">{{ t('Game.WatchingPlayers.nooneWatching') }}</div>

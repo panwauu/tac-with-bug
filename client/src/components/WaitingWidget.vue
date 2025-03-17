@@ -3,7 +3,7 @@
   <p>{{ t('Landing.Waiting.description') }}</p>
   <Accordion
     :multiple="false"
-    :activeIndex="activeIndex"
+    :active-index="activeIndex"
     :disabled="!isLoggedIn"
   >
     <AccordionTab
@@ -14,11 +14,11 @@
       <GamesTable
         v-else
         :loading="false"
-        :nEntries="gamesSummary.runningGames.length"
+        :n-entries="gamesSummary.runningGames.length"
         :games="gamesSummary.runningGames"
         :username="username ?? ''"
         :paginator="false"
-        @rowSelect="startGame"
+        @row-select="startGame"
       />
     </AccordionTab>
     <AccordionTab :header="t('Landing.Waiting.waitingRoomsHeader')">

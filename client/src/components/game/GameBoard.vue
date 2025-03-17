@@ -5,7 +5,7 @@
   >
     <BoardImage
       class="imgGameBoard"
-      :nPlayers="miscState.nPlayers"
+      :n-players="miscState.nPlayers"
       :turned="positionStyles.turned ?? false"
       :style="`filter: brightness(${brightnessValue()});`"
       draggable="false"
@@ -59,22 +59,22 @@
       </div>
 
       <DiscardPile
-        :miscState="miscState"
-        :positionStyles="positionStyles"
-        :discardPileState="discardPileState"
+        :misc-state="miscState"
+        :position-styles="positionStyles"
+        :discard-pile-state="discardPileState"
       />
       <PlayerInformation
-        :miscState="miscState"
-        :positionStyles="positionStyles"
+        :misc-state="miscState"
+        :position-styles="positionStyles"
       />
       <CardDeck
-        :miscState="miscState"
-        :positionStyles="positionStyles"
+        :misc-state="miscState"
+        :position-styles="positionStyles"
       />
 
       <EmojiIllustration
-        :miscState="miscState"
-        :positionStyles="positionStyles"
+        :misc-state="miscState"
+        :position-styles="positionStyles"
       />
 
       <div

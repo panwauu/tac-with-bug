@@ -1,17 +1,17 @@
 <template>
   <GameComponent
-    v-model:modalVisible="modalVisible"
-    v-model:modalState="modalState"
-    :positionStyles="positionStyles"
-    :miscState="miscState"
-    :statisticState="statisticState"
-    :discardPileState="discardPileState"
-    :ballsState="ballsState"
-    :performMove="performMoveAndEmit"
-    :cardsState="cardsState"
-    :instructionsState="instructionsState"
-    :updateData="updateData"
-    @closeGame="closeGame()"
+    v-model:modal-visible="modalVisible"
+    v-model:modal-state="modalState"
+    :position-styles="positionStyles"
+    :misc-state="miscState"
+    :statistic-state="statisticState"
+    :discard-pile-state="discardPileState"
+    :balls-state="ballsState"
+    :perform-move="performMoveAndEmit"
+    :cards-state="cardsState"
+    :instructions-state="instructionsState"
+    :update-data="updateData"
+    @close-game="closeGame()"
   />
 </template>
 

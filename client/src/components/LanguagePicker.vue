@@ -3,7 +3,7 @@
     <Dropdown
       v-model="selectedLocale"
       :options="locales"
-      optionLabel="name"
+      option-label="name"
       @change="setLocale"
     >
       <template #value="slotProps">
@@ -13,7 +13,7 @@
         >
           <LocaleIcons
             v-if="displayFlag"
-            :countryCode="slotProps.value"
+            :country-code="slotProps.value"
             class="flag"
           />
           <div
@@ -28,7 +28,7 @@
         <div class="country-item">
           <LocaleIcons
             v-if="displayFlag"
-            :countryCode="slotProps.option"
+            :country-code="slotProps.option"
             class="flag"
           />
           <div

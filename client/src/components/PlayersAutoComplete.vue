@@ -1,17 +1,17 @@
 <template>
   <AutoComplete
     v-model="localUsername"
-    forceSelection
+    force-selection
     :suggestions="filteredPlayers"
     field="username"
-    appendTo="body"
-    :inputStyle="{ width: '100%' }"
+    append-to="body"
+    :input-style="{ width: '100%' }"
     :placeholder="t('PlayersAutoComplete.placeholder')"
     @complete="searchPlayers()"
   >
     <template #item="slotProps">
       <PlayerWithPicture
-        :nameFirst="false"
+        :name-first="false"
         :clickable="false"
         :username="slotProps.item.username"
       />

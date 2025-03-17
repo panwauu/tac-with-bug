@@ -13,7 +13,7 @@
       />
     </div>
     <div v-else>
-      <BlockedByModerationMessage :blockedByModerationUntil="settingsStore.blockedByModerationUntil ?? ''" />
+      <BlockedByModerationMessage :blocked-by-moderation-until="settingsStore.blockedByModerationUntil ?? ''" />
     </div>
     <Divider />
     <PlayerWithPicture
@@ -96,5 +96,3 @@ async function leaveChat() {
   emits('close')
 }
 </script>
-
-<script scoped></script>

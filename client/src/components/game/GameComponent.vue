@@ -68,9 +68,9 @@
             />
             <GameWatchingPlayers
               aria-label="Watching Players"
-              :displayText="false"
-              :nWatching="miscState.watchingData.nWatchingPlayers"
-              :watchingPlayers="miscState.watchingData.watchingPlayerNames"
+              :display-text="false"
+              :n-watching="miscState.watchingData.nWatchingPlayers"
+              :watching-players="miscState.watchingData.watchingPlayerNames"
             />
           </div>
         </div>
@@ -87,13 +87,13 @@
         </div>
         <div class="cardsContainer">
           <OwnCards
-            :cardsState="cardsState"
-            :miscState="miscState"
+            :cards-state="cardsState"
+            :misc-state="miscState"
             :own="true"
           />
           <OwnCards
-            :cardsState="cardsState"
-            :miscState="miscState"
+            :cards-state="cardsState"
+            :misc-state="miscState"
             :own="false"
           />
         </div>
@@ -110,12 +110,12 @@
         </div>
       </div>
       <GameBoard
-        :positionStyles="positionStyles"
-        :miscState="miscState"
-        :ballsState="ballsState"
-        :cardsState="cardsState"
-        :discardPileState="discardPileState"
-        :performMove="performMove"
+        :position-styles="positionStyles"
+        :misc-state="miscState"
+        :balls-state="ballsState"
+        :cards-state="cardsState"
+        :discard-pile-state="discardPileState"
+        :perform-move="performMove"
       />
     </div>
     <div
@@ -137,9 +137,9 @@
           <GameStatistic
             v-if="statisticState != null"
             class="statistic"
-            :statisticState="statisticState"
-            :miscState="miscState"
-            :updateData="updateData"
+            :statistic-state="statisticState"
+            :misc-state="miscState"
+            :update-data="updateData"
           />
         </Fieldset>
         <Fieldset
@@ -149,8 +149,8 @@
           :collapsed="false"
         >
           <RematchForm
-            :miscState="miscState"
-            :positionStyles="positionStyles"
+            :misc-state="miscState"
+            :position-styles="positionStyles"
           />
         </Fieldset>
       </div>
@@ -160,24 +160,24 @@
       v-model:visible="modalVisibleLocal"
       :header="t(`Game.GameModal.title.${modalStateLocal}`)"
       :modal="true"
-      :dismissableMask="true"
+      :dismissable-mask="true"
     >
       <GameStatistic
         v-if="modalStateLocal === 'statistic' && statisticState != null"
         class="statistic"
-        :statisticState="statisticState"
-        :miscState="miscState"
-        :updateData="updateData"
+        :statistic-state="statisticState"
+        :misc-state="miscState"
+        :update-data="updateData"
       />
       <GameModalSettings
         v-if="modalStateLocal === 'settings'"
-        :nPlayers="miscState.nPlayers"
-        :miscState="miscState"
+        :n-players="miscState.nPlayers"
+        :misc-state="miscState"
       />
       <GameModalAssistance v-if="modalStateLocal === 'assistance'" />
       <GameModalSubstitution
         v-if="modalStateLocal === 'substitution'"
-        :updateData="updateData"
+        :update-data="updateData"
       />
     </Dialog>
   </div>

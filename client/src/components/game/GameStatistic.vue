@@ -4,16 +4,16 @@
       v-if="miscState.gameEndedText === ''"
       aria-label="Watching Players"
       class="watchingButton"
-      :displayText="true"
-      :nWatching="miscState.watchingData.nWatchingPlayers"
-      :watchingPlayers="miscState.watchingData.watchingPlayerNames"
+      :display-text="true"
+      :n-watching="miscState.watchingData.nWatchingPlayers"
+      :watching-players="miscState.watchingData.watchingPlayerNames"
     />
     <div style="text-align: center">{{ t('Game.Statistic.time') }}</div>
     <CountdownTimer
-      :endDate="miscState.gameRunning ? new Date(miscState.created).toISOString() : undefined"
-      :initialMilliseconds="Number(miscState.created) - Number(miscState.lastPlayed)"
+      :end-date="miscState.gameRunning ? new Date(miscState.created).toISOString() : undefined"
+      :initial-milliseconds="Number(miscState.created) - Number(miscState.lastPlayed)"
       :mode="miscState.gameRunning ? 'up' : 'static'"
-      largestUnit="hours"
+      largest-unit="hours"
     />
     <div>
       <TabView>

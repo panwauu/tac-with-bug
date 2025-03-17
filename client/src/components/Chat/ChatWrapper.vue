@@ -34,7 +34,7 @@
       <ChatInterface class="p-card paneChat" />
     </pane>
   </splitpanes>
-  <ChatButton @openChat="chatStore.openChat()" />
+  <ChatButton @open-chat="chatStore.openChat()" />
   <transition name="chatOverlay">
     <div
       v-if="chatStore.displayChat && chatStore.chatPosition === 'overlay'"

@@ -36,8 +36,8 @@
           v-for="p in team.players"
           :key="`LandingWinnersTeam-${team.teamName}-player-${p}`"
           :username="p"
-          :nameFirst="false"
-          :showCrown="false"
+          :name-first="false"
+          :show-crown="false"
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="p-card settingsPage">
-    <Accordion v-model:activeIndex="activeIndex">
+    <Accordion v-model:active-index="activeIndex">
       <AccordionTab
         :header="t('Settings.ChangeUsername.header')"
         :disabled="!isLoggedIn"
@@ -32,7 +32,7 @@
         <SettingsDeleteUser @settingoperationdone="activeIndex = undefined" />
       </AccordionTab>
       <AccordionTab :header="t('Settings.Language.header')">
-        <LanguagePicker :uploadFlag="isLoggedIn" />
+        <LanguagePicker :upload-flag="isLoggedIn" />
       </AccordionTab>
       <AccordionTab :header="t('Settings.Audio.header')">
         <SettingsAudioVolume />

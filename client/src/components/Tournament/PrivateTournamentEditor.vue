@@ -14,7 +14,7 @@
       >
         <PlayerWithPicture
           :username="player"
-          :nameFirst="false"
+          :name-first="false"
           :class="{ unactivatedPlayer: !team.activated[playerIndex] }"
         />
         <div>
@@ -66,7 +66,7 @@
     <PrivateTournamentEditorDialog
       v-model:visible="showDialog"
       :tournament="tournament"
-      :propTeamName="diaglogTeamName"
+      :prop-team-name="diaglogTeamName"
     />
   </div>
 </template>

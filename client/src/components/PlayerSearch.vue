@@ -5,7 +5,7 @@
       v-model="selectedPlayer"
       aria-label="Playersearch"
       :suggestions="filteredPlayers"
-      appendTo="body"
+      append-to="body"
       :placeholder="t('Home.Spielersuche')"
       @complete="searchPlayers()"
       @item-select="searchSubmitFromAutoComplete()"

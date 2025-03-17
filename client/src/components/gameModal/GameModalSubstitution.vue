@@ -29,7 +29,7 @@
       class="substitutionPlayer"
       :options="possibleToSubstitute"
       :placeholder="t('Game.GameModal.Substitution.placeholderSubstituted')"
-      :emptyMessage="t('Game.GameModal.Substitution.noPlayerToSubstitute')"
+      :empty-message="t('Game.GameModal.Substitution.noPlayerToSubstitute')"
       :disabled="substitutionRunning"
     >
       <template #value="slotProps">
@@ -69,8 +69,8 @@
     <template v-if="substitutionRunning && updateData?.substitution != null">
       <CountdownTimer
         mode="down"
-        :initialMilliseconds="60 * 1000 + updateData.substitution.startDate - Date.now()"
-        largestUnit="seconds"
+        :initial-milliseconds="60 * 1000 + updateData.substitution.startDate - Date.now()"
+        largest-unit="seconds"
         style="min-width: 150px"
       />
       <div style="margin: 15px 0">
@@ -87,7 +87,7 @@
           <PlayerWithPicture
             :username="player.name"
             :clickable="false"
-            :nameFirst="false"
+            :name-first="false"
           />
         </div>
       </div>
@@ -121,7 +121,7 @@
       >
         <PlayerWithPicture
           :username="substitutedUsername ?? ''"
-          :nameFirst="false"
+          :name-first="false"
           style="margin-right: 15px"
         />
         <BallsImage :color="updateData.colors[updateData.substitutedPlayerIndices[substitutionIndex]]" />

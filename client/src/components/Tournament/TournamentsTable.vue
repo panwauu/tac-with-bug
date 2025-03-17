@@ -7,10 +7,10 @@
       :lazy="true"
       :paginator="true"
       :rows="rowsInTable"
-      selectionMode="multiple"
-      :totalRecords="totalTournaments"
-      :autoLayout="true"
-      @rowSelect="selectTournament()"
+      selection-mode="multiple"
+      :total-records="totalTournaments"
+      :auto-layout="true"
+      @row-select="selectTournament()"
       @page="getHistory($event.first)"
     >
       <Column

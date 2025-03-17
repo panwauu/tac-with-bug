@@ -1,9 +1,9 @@
 <template>
   <div class="graphContainer">
     <NetworkUserGraph
-      :networkData="networkData"
+      :network-data="networkData"
       :username="username"
-      :peopleData="peopleData"
+      :people-data="peopleData"
       :loading="loading"
       style="width: 100%"
     />

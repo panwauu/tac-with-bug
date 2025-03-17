@@ -22,8 +22,8 @@
       <Dropdown
         v-model="nPlayersSelection"
         :options="nPlayersOptions"
-        optionLabel="name"
-        :showClear="true"
+        option-label="name"
+        :show-clear="true"
         placeholder="4/6"
         style="width: 110px"
       />
@@ -31,8 +31,8 @@
       <Dropdown
         v-model="nTeamsSelection"
         :options="nTeamsOptions"
-        optionLabel="name"
-        :showClear="true"
+        option-label="name"
+        :show-clear="true"
         placeholder="1 2 3"
         style="width: 110px"
       />
@@ -41,8 +41,8 @@
       <Dropdown
         v-model="meisterSelection"
         :options="meisterOptions"
-        optionLabel="name"
-        :showClear="true"
+        option-label="name"
+        :show-clear="true"
         style="width: 110px"
       >
         <template #value="slotProps">
@@ -90,8 +90,8 @@
       <Dropdown
         v-model="privateSelection"
         :options="privateOptions"
-        optionLabel="name"
-        :showClear="true"
+        option-label="name"
+        :show-clear="true"
         style="width: 110px"
       >
         <template #value="slotProps">

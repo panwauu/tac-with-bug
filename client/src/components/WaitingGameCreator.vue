@@ -3,7 +3,7 @@
     <Dialog
       v-model:visible="localVisible"
       :modal="true"
-      :dismissableMask="true"
+      :dismissable-mask="true"
     >
       <template #header>
         <h3>{{ t('Waiting.WaitingGameCreator.title') }}</h3>
@@ -14,25 +14,25 @@
           v-model="selectedPlayers"
           class="filterButton"
           :options="playersModel"
-          optionLabel="name"
+          option-label="name"
         />
         <SelectButton
           v-model="selectedTeams"
           class="filterButton"
           :options="teamsModel"
-          optionLabel="name"
+          option-label="name"
         />
         <SelectButton
           v-model="selectedMeister"
           class="filterButton"
           :options="meisterModel"
-          optionLabel="name"
+          option-label="name"
         />
         <SelectButton
           v-model="selectedPrivate"
           class="filterButton"
           :options="privateModel"
-          optionLabel="name"
+          option-label="name"
         />
       </div>
 

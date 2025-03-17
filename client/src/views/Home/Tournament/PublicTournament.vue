@@ -29,7 +29,7 @@
       v-model:visible="displayExplanation"
       :header="t('Tournament.helpModal.title')"
       :modal="true"
-      :dismissableMask="true"
+      :dismissable-mask="true"
     >
       <h3>{{ t('Tournament.helpModal.signUpHeader') }}</h3>
       <p>{{ t('Tournament.helpModal.signUpContent') }}</p>

@@ -21,7 +21,7 @@
         v-for="p in hofData.verlag"
         :key="`Verlag-${p}`"
         :username="p"
-        :nameFirst="false"
+        :name-first="false"
         class="player"
       />
     </div>
@@ -31,7 +31,7 @@
         v-for="p in hofData.spende"
         :key="`Spende-${p}`"
         :username="p"
-        :nameFirst="false"
+        :name-first="false"
         class="player"
       />
     </div>
@@ -41,7 +41,7 @@
         v-for="p in hofData.translation"
         :key="`Lang-${p}`"
         :username="p"
-        :nameFirst="false"
+        :name-first="false"
         class="player"
       />
     </div>
@@ -51,7 +51,7 @@
         v-for="p in hofData.family"
         :key="`Privat-${p}`"
         :username="p"
-        :nameFirst="false"
+        :name-first="false"
         class="player"
       />
     </div>

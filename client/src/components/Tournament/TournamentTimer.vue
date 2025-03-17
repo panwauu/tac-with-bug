@@ -1,7 +1,7 @@
 <template>
   <div v-if="tournament.status === 'signUpWaiting' || tournament.status === 'signUp' || tournament.status === 'signUpEnded' || tournament.status === 'running'">
     <div>{{ t(`Tournament.CountdownTimer.${counterKey}`) }}</div>
-    <CountdownTimer :endDate="deadlineForCounter" />
+    <CountdownTimer :end-date="deadlineForCounter" />
   </div>
 </template>
 

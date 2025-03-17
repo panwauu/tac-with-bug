@@ -14,7 +14,7 @@
       ref="menuRef"
       :model="userMenu"
       :popup="true"
-      :baseZIndex="2000"
+      :base-z-index="2000"
     />
   </div>
 </template>

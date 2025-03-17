@@ -21,7 +21,7 @@
       >
         {{ active ? t('Waiting.Icons.teams', { count: game.nTeams, X: game.nTeams }) : game.nTeams }}
         <Teams
-          :nTeams="game.nTeams"
+          :n-teams="game.nTeams"
           class="Symbol SymbolMargin"
         />
       </Tag>
@@ -102,8 +102,8 @@
             />
             <PlayerWithPicture
               :username="game.players[playerIndex(Number(teamIndex), index)] ?? t('Waiting.bot')"
-              :hideIfEmpty="true"
-              :nameFirst="false"
+              :hide-if-empty="true"
+              :name-first="false"
               :clickable="active"
               :bot="game.bots[playerIndex(Number(teamIndex), index)] != null"
             />
@@ -251,8 +251,8 @@ const movePlayerOrBot = (gameID: number, index: number, steps: number) => {
   }
 }
 
-const removePlayer = (username: string) => {
-  emit('remove-player', username)
+const removePlayer = (usernameToRemove: string) => {
+  emit('remove-player', usernameToRemove)
 }
 
 const removePlayerOrBot = (index: number) => {

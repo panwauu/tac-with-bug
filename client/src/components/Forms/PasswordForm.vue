@@ -7,10 +7,10 @@
         type="password"
         name="password"
         style="width: 100%"
-        :promptLabel="t('Login.SignUp.passwordChoose')"
-        :weakLabel="t('Login.SignUp.passwordWeak')"
-        :mediumLabel="t('Login.SignUp.passwordMedium')"
-        :strongLabel="t('Login.SignUp.passwordStrong')"
+        :prompt-label="t('Login.SignUp.passwordChoose')"
+        :weak-label="t('Login.SignUp.passwordWeak')"
+        :medium-label="t('Login.SignUp.passwordMedium')"
+        :strong-label="t('Login.SignUp.passwordStrong')"
         :class="validPassword || password === '' ? '' : 'p-invalid'"
       >
         <template #footer>

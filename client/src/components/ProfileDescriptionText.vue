@@ -11,7 +11,7 @@
   >
     <Textarea
       v-model="userDescription"
-      :autoResize="true"
+      :auto-resize="true"
       style="width: 100%"
       :placeholder="t('Profile.DescriptionEditor.editPlaceholder')"
       :disabled="!editing"

@@ -3,11 +3,11 @@
     ref="adaptTeamDialog"
     v-model:visible="localVisible"
     :modal="true"
-    :dismissableMask="true"
-    :closeOnEscape="true"
+    :dismissable-mask="true"
+    :close-on-escape="true"
     :header="props.propTeamName != null ? 'Spieler zu Team hinzufügen' : 'Neues Team anlegen'"
-    appendTo="body"
-    :showCloseIcon="true"
+    append-to="body"
+    :show-close-icon="true"
     :breakpoints="{ '640px': '100vw' }"
     :style="{ width: '450px' }"
   >
@@ -17,13 +17,13 @@
         v-model:valid="validTeamName"
         class="element inputElement"
         :disabled="props.propTeamName != null"
-        :existingTeamNames="existingTeamNames"
+        :existing-team-names="existingTeamNames"
       />
       <PlayersAutoComplete
         v-model:username="playerName"
         :userid="-1"
         class="element inputElement"
-        :playersToAvoid="playersAlreadyInTournament"
+        :players-to-avoid="playersAlreadyInTournament"
       />
       <Button
         class="element"
@@ -34,7 +34,7 @@
       />
       <BlockedByModerationMessage
         v-if="settingsStore.isBlockedByModeration"
-        :blockedByModerationUntil="settingsStore.blockedByModerationUntil ?? ''"
+        :blocked-by-moderation-until="settingsStore.blockedByModerationUntil ?? ''"
       />
     </div>
   </Dialog>

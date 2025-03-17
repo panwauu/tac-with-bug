@@ -1,6 +1,6 @@
 <template>
   <Accordion
-    :activeIndex="['signUp', 'signUpWaiting'].includes(tournament.status) ? 0 : undefined"
+    :active-index="['signUp', 'signUpWaiting'].includes(tournament.status) ? 0 : undefined"
     style="margin: 20px"
   >
     <AccordionTab :header="t('Tournament.deadlinesHeader')">

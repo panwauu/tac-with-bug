@@ -8,7 +8,7 @@
       >
         <PlayerWithPicture
           :username="selectedUser.name"
-          :nameFirst="false"
+          :name-first="false"
         />
         <div class="playerCardElement">
           {{

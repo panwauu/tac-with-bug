@@ -8,7 +8,7 @@
         <template #body="slotProps">
           <PlayerWithPicture
             :username="slotProps.data.username"
-            :nameFirst="false"
+            :name-first="false"
             :online="props.username === user.username ? onlineFriends.includes(slotProps.data.username) : undefined"
           />
         </template>

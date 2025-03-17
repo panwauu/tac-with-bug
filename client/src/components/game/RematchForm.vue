@@ -16,9 +16,9 @@
     <template v-else>
       <CountdownTimer
         v-if="miscState.rematch_open"
-        :initialMilliseconds="miscState.lastPlayed + 1000 * 60 * 3 - Date.now()"
+        :initial-milliseconds="miscState.lastPlayed + 1000 * 60 * 3 - Date.now()"
         :mode="'down'"
-        largestUnit="hours"
+        largest-unit="hours"
       />
       <div style="padding-bottom: 15px">{{ t('Game.Rematch.description') }}</div>
       <p v-if="!miscState.rematch_open">{{ t('Game.Rematch.rematchNotAllowed') }}</p>

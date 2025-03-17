@@ -5,18 +5,18 @@
     :value="games"
     :lazy="true"
     data-key="id"
-    :selectionMode="username === loggedInUser ? 'multiple' : undefined"
+    :selection-mode="username === loggedInUser ? 'multiple' : undefined"
     class="p-datatable-sm gamesTable p-card"
-    sortField="created"
-    :sortOrder="-1"
+    sort-field="created"
+    :sort-order="-1"
     :paginator="paginator ?? true"
     :rows="10"
-    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-    :rowsPerPageOptions="[10, 20, 50]"
-    :autoLayout="true"
-    :totalRecords="nEntries"
+    paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+    :rows-per-page-options="[10, 20, 50]"
+    :auto-layout="true"
+    :total-records="nEntries"
     :loading="loading"
-    @rowSelect="rowSelect()"
+    @row-select="rowSelect()"
     @page="$emit('page', $event)"
     @sort="$emit('sort', $event)"
   >
@@ -28,12 +28,12 @@
           :header="t('Games.columnTitles.created')"
           :rowspan="2"
           :sortable="true"
-          sortField="created"
+          sort-field="created"
         />
         <Column
           :header="t('Games.columnTitles.status')"
           :rowspan="1"
-          sortField="status"
+          sort-field="status"
         />
         <Column :colspan="3">
           <template #header>
@@ -66,7 +66,7 @@
     <Column
       field="status"
       :sortable="true"
-      filterMatchMode="in"
+      filter-match-mode="in"
     >
       <template #body="slotProps">
         <div style="width: 100%; height: 100%; display: flex; justify-content: flex-start; align-items: center">
@@ -80,8 +80,8 @@
     <Column
       v-for="teamIndex in [0, 1, 2]"
       :key="'team-' + teamIndex"
-      filterField="teams"
-      filterMatchMode="in"
+      filter-field="teams"
+      filter-match-mode="in"
     >
       <template #body="slotProps">
         <div
@@ -92,7 +92,7 @@
           <PlayerWithPicture
             v-if="player != null"
             :clickable="false"
-            :nameFirst="false"
+            :name-first="false"
             :username="player"
             :bot="slotProps.data.bots[slotProps.data.players.indexOf(player)] != null"
           />

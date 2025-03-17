@@ -11,7 +11,7 @@
     </div>
     <ProgressBar
       :value="Math.round((data[0] / data[1]) * 100)"
-      :showValue="false"
+      :show-value="false"
     />
   </div>
 </template>

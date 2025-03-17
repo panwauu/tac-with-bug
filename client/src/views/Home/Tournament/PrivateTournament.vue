@@ -23,7 +23,7 @@
         <td>
           <PlayerWithPicture
             :username="tournament.adminPlayer"
-            :nameFirst="true"
+            :name-first="true"
           />
         </td>
       </tr>
@@ -60,7 +60,7 @@
         v-for="registeredUsername in tournament.registerTeams.map((t) => t.players).flat()"
         :key="`Player-${registeredUsername}`"
         :username="registeredUsername"
-        :nameFirst="false"
+        :name-first="false"
       />
     </div>
 
@@ -68,7 +68,7 @@
       v-model:visible="displayExplanation"
       :header="t('Tournament.helpModal.title')"
       :modal="true"
-      :dismissableMask="true"
+      :dismissable-mask="true"
     >
       <h3>{{ t('Tournament.Private.HelpModal.privateHeader') }}</h3>
       <p>{{ t('Tournament.Private.HelpModal.privateContent') }}</p>

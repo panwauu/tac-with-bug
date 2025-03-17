@@ -1,7 +1,7 @@
 <template>
   <div class="p-card stats">
     <h1>{{ t('Stats.headerTable') }}</h1>
-    <FunFactsCarousel :usePCardStyle="false" />
+    <FunFactsCarousel :use-p-card-style="false" />
     <PlatformStats />
   </div>
 </template>

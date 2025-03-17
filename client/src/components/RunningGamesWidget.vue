@@ -5,12 +5,12 @@
     <DataTable
       v-model:selection="selectedGame"
       :value="infoStore.runningGames"
-      :selectionMode="'multiple'"
+      :selection-mode="'multiple'"
       class="p-datatable-sm gamesTable"
       :scrollable="true"
-      scrollHeight="flex"
-      :autoLayout="true"
-      @rowSelect="rowSelect()"
+      scroll-height="flex"
+      :auto-layout="true"
+      @row-select="rowSelect()"
     >
       <template #empty>{{ t('RunningGamesWidget.emptyTable') }}</template>
       <Column
@@ -25,7 +25,7 @@
               :key="`Team-${teamIndex}-Player-${playerIndex}`"
               class="player"
               :clickable="false"
-              :nameFirst="false"
+              :name-first="false"
               :username="slotProps.data.teams[teamIndex][playerIndex] ?? ''"
               :bot="slotProps.data.bots[teamIndex][playerIndex] ?? false"
             />

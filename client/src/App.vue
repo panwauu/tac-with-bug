@@ -1,7 +1,7 @@
 <template>
   <Toast
     style="max-width: 90vw"
-    :baseZIndex="2500"
+    :base-z-index="2500"
   />
   <ChatWrapper>
     <router-view class="RouterView" />

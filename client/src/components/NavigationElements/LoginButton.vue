@@ -4,19 +4,19 @@
     id="topElementLoginButton"
     :label="'Login'"
     icon="pi pi-sign-in"
-    icon-Pos="right"
+    icon-pos="right"
     class="p-button-sm"
     @click="toggle"
   />
   <OverlayPanel
     ref="loginOverlayRef"
-    appendTo="body"
-    :showCloseIcon="true"
+    append-to="body"
+    :show-close-icon="true"
     :breakpoints="{ '640px': '100vw' }"
     :style="{ width: '450px' }"
-    :baseZIndex="1000"
+    :base-z-index="1000"
   >
-    <TabView v-model:activeIndex="activeIndex">
+    <TabView v-model:active-index="activeIndex">
       <TabPanel :header="t('Login.signIn')">
         <LoginView @login="login" />
       </TabPanel>

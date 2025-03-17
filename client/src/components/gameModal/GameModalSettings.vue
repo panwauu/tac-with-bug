@@ -6,8 +6,8 @@
     <SelectButton
       v-model="localColorBlindness"
       :options="colorBlindnessOptions"
-      optionLabel="name"
-      optionValue="value"
+      option-label="name"
+      option-value="value"
     />
     <h3>{{ t(`Game.GameModal.Settings.position`) }}</h3>
     <div class="positionContainer">

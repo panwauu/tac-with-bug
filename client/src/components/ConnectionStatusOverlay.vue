@@ -17,7 +17,7 @@
         <ProgressBar
           :value="reconnectionProgress"
           class="reconnectionProgress"
-          :showValue="false"
+          :show-value="false"
         />
       </template>
       <template v-else>

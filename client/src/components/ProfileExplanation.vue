@@ -9,7 +9,7 @@
     v-model:visible="displayExplanation"
     :header="t('Profile.expHeader')"
     :modal="true"
-    :dismissableMask="true"
+    :dismissable-mask="true"
   >
     <table :aria-label="t('Profile.expHeader')">
       <tbody>

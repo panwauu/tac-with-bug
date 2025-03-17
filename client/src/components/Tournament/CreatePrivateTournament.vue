@@ -5,7 +5,7 @@
       <InputText
         v-model="title"
         mode="decimal"
-        :useGrouping="false"
+        :use-grouping="false"
         :class="{ 'p-invalid': !titleValid }"
       />
       <small
@@ -69,7 +69,7 @@
     />
     <BlockedByModerationMessage
       v-if="settingsStore.isBlockedByModeration"
-      :blockedByModerationUntil="settingsStore.blockedByModerationUntil ?? ''"
+      :blocked-by-moderation-until="settingsStore.blockedByModerationUntil ?? ''"
     />
   </div>
 </template>

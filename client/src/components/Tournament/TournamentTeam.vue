@@ -11,7 +11,7 @@
         :style="`margin-right: ${i === 0 ? '20' : '0'}px`"
       >
         <PlayerWithPicture
-          :nameFirst="false"
+          :name-first="false"
           :username="player"
           :class="[team.activated[i] ? '' : 'notActivatedPlayer']"
           :clickable="teamActivated(team) || alreadyRegistered"
@@ -53,8 +53,8 @@ function teamActivated(team: RegisterTeam) {
 
 const alreadyRegistered = computed(() => {
   return (
-    props.tournament.teams.some((t) => username.value != null && t.players.includes(username.value)) ||
-    props.tournament.registerTeams.some((t) => username.value != null && t.players.includes(username.value))
+    props.tournament.teams.some((team) => username.value != null && team.players.includes(username.value)) ||
+    props.tournament.registerTeams.some((team) => username.value != null && team.players.includes(username.value))
   )
 })
 

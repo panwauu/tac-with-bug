@@ -26,7 +26,7 @@
       <div style="padding: 20px; flex-grow: 1">
         <ProgressBar
           :value="progress * 100"
-          :showValue="false"
+          :show-value="false"
           style="margin: 15px; height: 0.5rem"
         />
 

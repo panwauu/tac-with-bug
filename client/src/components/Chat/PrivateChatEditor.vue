@@ -31,5 +31,3 @@ async function leaveChat() {
   emits('close')
 }
 </script>
-
-<script scoped></script>

@@ -21,7 +21,7 @@
       v-model:username="selectedPlayerUsername"
       v-model:userid="selectedPlayerUserid"
       style="margin: 10px"
-      :playersToAvoid="username == null ? [] : [username]"
+      :players-to-avoid="username == null ? [] : [username]"
     />
     <Button
       :label="t('Chat.ChatCreator.startButton')"
@@ -67,5 +67,3 @@ function startChat() {
   emits('close')
 }
 </script>
-
-<script scoped></script>

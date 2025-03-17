@@ -13,7 +13,7 @@
     <ProfilePicture
       v-if="pictureVisible === true && !bot"
       :username="username !== '' ? username : t('Chat.deletedPlayer')"
-      :showCrown="showCrown"
+      :show-crown="showCrown"
       :online="online"
       class="autocompleteImage"
     />

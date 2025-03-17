@@ -13,7 +13,7 @@
         <Sponsor
           v-if="isSubscribed"
           :clickable="true"
-          :sponsorsOnly="false"
+          :sponsors-only="false"
           class="sponsorOverPicture"
         />
         <HofBadge
@@ -30,8 +30,8 @@
         <p class="registered">{{ t('Profile.registeredOn') }} {{ registeredOn.toLocaleDateString() }}</p>
         <BlockedByModerationMessage
           v-if="userBlockedUntil != null"
-          :blockedByModerationUntil="userBlockedUntil"
-          :secondPerson="true"
+          :blocked-by-moderation-until="userBlockedUntil"
+          :second-person="true"
         />
         <FriendButton :username="username" />
       </div>
@@ -42,8 +42,8 @@
     />
     <router-view
       style="padding-top: 15px"
-      :radarData="radarData"
-      :gamesDistributionData="gamesDistributionData"
+      :radar-data="radarData"
+      :games-distribution-data="gamesDistributionData"
     />
   </div>
 </template>

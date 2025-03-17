@@ -3,13 +3,13 @@
     <p>{{ t('Settings.UploadProfilePicture.privacyDisclaimer') }}</p>
     <FileUpload
       class="SettingsButton"
-      :chooseLabel="t('Settings.UploadProfilePicture.ChooseFile')"
+      :choose-label="t('Settings.UploadProfilePicture.ChooseFile')"
       mode="basic"
       name="PictureUpload"
       accept="image/*"
       :auto="true"
-      :customUpload="true"
-      :maxFileSize="8000000"
+      :custom-upload="true"
+      :max-file-size="8000000"
       @uploader="startCropper($event)"
     />
     <Button
@@ -21,14 +21,14 @@
     />
   </div>
   <div v-else>
-    <BlockedByModerationMessage :blockedByModerationUntil="settingsStore.blockedByModerationUntil ?? ''" />
+    <BlockedByModerationMessage :blocked-by-moderation-until="settingsStore.blockedByModerationUntil ?? ''" />
   </div>
   <Dialog
     v-model:visible="cropperDialog"
     :header="t('Settings.UploadProfilePicture.Modal.header')"
     :modal="true"
-    :closeOnEscape="true"
-    :dismissableMask="true"
+    :close-on-escape="true"
+    :dismissable-mask="true"
   >
     <div class="cropper">
       <VueCropper
@@ -36,7 +36,7 @@
         class="cropperImage"
         :src="uploadFile?.objectURL"
         alt="Source Image"
-        :aspectRatio="1"
+        :aspect-ratio="1"
       />
       <div class="cropperControls">
         <Button

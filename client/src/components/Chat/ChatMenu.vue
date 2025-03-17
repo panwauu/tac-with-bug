@@ -107,10 +107,10 @@
 
     <OverlayPanel
       ref="overlayPanelRef"
-      :showCloseIcon="true"
+      :show-close-icon="true"
       :dismissable="true"
-      appendTo="body"
-      :baseZIndex="1000"
+      append-to="body"
+      :base-z-index="1000"
     >
       <ChatCreatorOverlay @close="closeOverlay" />
     </OverlayPanel>

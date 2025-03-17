@@ -99,12 +99,12 @@
                     >
                       <PlayerWithPicture
                         v-if="tournament.teams[teamIndex]?.players[0] != null"
-                        :nameFirst="false"
+                        :name-first="false"
                         :username="tournament.teams[teamIndex].players[0]"
                       />
                       <PlayerWithPicture
                         v-if="tournament.teams[teamIndex]?.players[1] != null"
-                        :nameFirst="false"
+                        :name-first="false"
                         :username="tournament.teams[teamIndex].players[1]"
                       />
                     </div>

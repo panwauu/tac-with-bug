@@ -76,7 +76,7 @@
     style="max-width: 300px"
   >
     <EmojiSelector
-      :miscState="miscState"
+      :misc-state="miscState"
       @close="opRef?.hide()"
     />
   </OverlayPanel>

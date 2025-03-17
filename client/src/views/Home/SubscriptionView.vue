@@ -16,7 +16,7 @@
         <div class="Features">
           <SubscriptionTag
             :clickable="false"
-            :sponsorsOnly="false"
+            :sponsors-only="false"
           />
           <div class="FeatureElement">
             <YinYang class="FeatureIcon" />
@@ -45,7 +45,7 @@
             })
           }}
         </Message>
-        <CountdownTimer :endDate="subscriptionState.validuntil ?? undefined" />
+        <CountdownTimer :end-date="subscriptionState.validuntil ?? undefined" />
       </div>
       <div v-if="subscriptionState.status === 'running'">
         <Message
@@ -61,7 +61,7 @@
             })
           }}
         </div>
-        <CountdownTimer :endDate="subscriptionState.validuntil ?? undefined" />
+        <CountdownTimer :end-date="subscriptionState.validuntil ?? undefined" />
         <Button
           :label="t('Subscription.Cancel.button')"
           @click="cancelSubscription()"
@@ -77,7 +77,7 @@
         <SelectButton
           v-model="selectedPlan"
           :options="planModel"
-          optionLabel="name"
+          option-label="name"
         />
         <Message
           :closable="false"

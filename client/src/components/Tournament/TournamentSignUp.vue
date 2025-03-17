@@ -12,7 +12,7 @@
     v-model:visible="displaySignUpTeam"
     :header="t('Tournament.SignUp.title')"
     :modal="true"
-    :dismissableMask="true"
+    :dismissable-mask="true"
     style="max-width: 500px"
     @hide="generateNewName"
   >
@@ -40,7 +40,7 @@
         v-model="signUpAlone"
         class="filterButton"
         :options="signUpAloneModel"
-        optionLabel="name"
+        option-label="name"
       />
       <PlayersAutoComplete
         v-model:username="signUpPartner"
@@ -49,7 +49,7 @@
           teamSignUpPlayerSelect: true,
           teamSignUpPlayerSelectActive: signUpAlone != null && signUpAlone?.value === true,
         }"
-        :playersToAvoid="playersAlreadyInTournament"
+        :players-to-avoid="playersAlreadyInTournament"
       />
       <Button
         :label="t('Tournament.SignUp.submitButton')"

@@ -123,7 +123,7 @@
         >
           <Textarea
             v-model="inputMessage"
-            :autoResize="true"
+            :auto-resize="true"
             :rows="1"
             aria-label="chat text input"
             :placeholder="t('Chat.textPlaceholder')"
@@ -136,7 +136,7 @@
           />
         </div>
         <div v-else>
-          <BlockedByModerationMessage :blockedByModerationUntil="settingsStore.blockedByModerationUntil ?? ''" />
+          <BlockedByModerationMessage :blocked-by-moderation-until="settingsStore.blockedByModerationUntil ?? ''" />
         </div>
       </form>
       <Message
@@ -161,10 +161,10 @@
 
     <OverlayPanel
       ref="overlayPanelRef"
-      :showCloseIcon="true"
+      :show-close-icon="true"
       :dismissable="true"
-      appendTo="body"
-      :baseZIndex="1000"
+      append-to="body"
+      :base-z-index="1000"
     >
       <ChatGroupEditor
         v-if="messagesStore.getCurrentChat?.groupChat"

@@ -1,13 +1,13 @@
 <template>
   <GamesTable
     :loading="loading"
-    :nEntries="nEntries"
+    :n-entries="nEntries"
     :games="games"
     :username="username"
     :paginator="true"
     @page="onPageOrSort"
     @sort="onPageOrSort"
-    @rowSelect="startGame"
+    @row-select="startGame"
     @reload="reload"
   />
 </template>
