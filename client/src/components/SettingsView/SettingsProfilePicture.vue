@@ -71,7 +71,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
-import VueCropper, { VueCropperMethods } from 'vue-cropperjs'
+import VueCropper, { type VueCropperMethods } from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 import FileUpload from 'primevue/fileupload'
 import { deleteProfilePic, requestProfilePic } from '../../services/useProfilePicture'

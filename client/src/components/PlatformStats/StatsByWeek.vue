@@ -56,8 +56,8 @@ function updateWeekChart() {
     weekChartData.value.datasets.push({
       data: weekData
         .map((x: any) => x[i + 1])
-        .map((x: any, i: number) => {
-          return i + 1 === weekData.length ? val : i + 2 < weekData.length ? null : x
+        .map((x: any, weekDataIndex: number) => {
+          return weekDataIndex + 1 === weekData.length ? val : weekDataIndex + 2 < weekData.length ? null : x
         }),
       backgroundColor: getGraphColors({ elementNumber: i === 0 ? 2 : 0, alpha: 0 }),
       borderColor: getGraphColors({ elementNumber: i === 0 ? 2 : 0, alpha: 1 }),

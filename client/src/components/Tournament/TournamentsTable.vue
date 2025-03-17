@@ -93,6 +93,7 @@ async function getHistory(first: number) {
     totalTournaments.value = res.data.total
     loading.value = false
   } catch (err) {
+    console.error(err)
     router.push({ name: 'Landing' })
   }
 }

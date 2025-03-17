@@ -40,7 +40,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import Checkbox from 'primevue/checkbox'
 import ProgressSpinner from 'primevue/progressspinner'
-import { DefaultService, Record_KeyOfEmailNotificationSettings_boolean_ } from '@/generatedClient/index'
+import { DefaultService, type Record_KeyOfEmailNotificationSettings_boolean_ } from '@/generatedClient/index'
 import { computed, ref } from 'vue'
 
 const notificationSettings = ref<Record_KeyOfEmailNotificationSettings_boolean_ | null>(null)

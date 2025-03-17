@@ -1,6 +1,6 @@
 import type { GameSocketC, GeneralSocketC } from '@/services/socket'
 import type { GamesSummary } from './useGamesSummary'
-import { InjectionKey, inject } from 'vue'
+import { type InjectionKey, inject } from 'vue'
 import type { FriendsState } from './useFriends'
 
 export const SocketKey: InjectionKey<GeneralSocketC> = Symbol('socket')

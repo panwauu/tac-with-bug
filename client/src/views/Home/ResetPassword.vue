@@ -58,6 +58,7 @@ async function submitNewPassword() {
       life: 10000,
     })
   } catch (err) {
+    console.error(err)
     loading.value = false
     toast.add({
       severity: 'error',

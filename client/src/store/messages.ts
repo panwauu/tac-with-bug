@@ -381,8 +381,12 @@ nextTick(() => {
   watch(
     () => serverInfoStore.runningGames,
     (newGames, oldGames) => {
-      const newGamesOfPlayer = newGames.filter((g) => username.value != null && g.teams.flat().includes(username.value) && !oldGames.map((g) => g.id).includes(g.id))
-      const removedGamesOfPlayer = oldGames.filter((g) => username.value != null && g.teams.flat().includes(username.value) && !newGames.map((g) => g.id).includes(g.id))
+      const newGamesOfPlayer = newGames.filter(
+        (g) => username.value != null && g.teams.flat().includes(username.value) && !oldGames.map((oldGame) => oldGame.id).includes(g.id)
+      )
+      const removedGamesOfPlayer = oldGames.filter(
+        (g) => username.value != null && g.teams.flat().includes(username.value) && !newGames.map((newGame) => newGame.id).includes(g.id)
+      )
       messagesStore.updateGameChannels(
         newGamesOfPlayer.map((g) => g.id),
         removedGamesOfPlayer.map((g) => g.id),

@@ -62,7 +62,7 @@ import HofBadge from '@/components/icons/HofBadge.vue'
 
 import type { GamesDistributionData as GamesDistributionDataType } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
 import { watch, ref } from 'vue'
-import { HofReason, DefaultService as Service } from '@/generatedClient/index'
+import { type HofReason, DefaultService as Service } from '@/generatedClient/index'
 import router from '@/router/index'
 import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue'
 import { useResizeObserver } from '@vueuse/core'

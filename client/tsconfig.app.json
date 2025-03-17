@@ -3,33 +3,21 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "exclude": ["src/**/__tests__/*", "node_modules", "../server"],
   "compilerOptions": {
+    // Basic Information
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext", "dom", "dom.iterable"],
     "paths": {
       "@/*": ["./src/*"]
     },
-
-    /* Basic Options */
-    /*
-    "target": "esnext",
-    "module": "esnext",
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
     "resolveJsonModule": true,
     "types": ["vite/client"],
     "typeRoots": ["./node_modules/@types", "./node_modules", "@types"],
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
-    */
 
-    /* Strict Type-Checking Options */
+    // Strict Type-Checking Options
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -39,13 +27,13 @@
     "noImplicitThis": true,
     "alwaysStrict": true,
 
-    /* Additional Checks */
+    // Additional Checks
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Advanced Options */
+    // Advanced Options
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   }

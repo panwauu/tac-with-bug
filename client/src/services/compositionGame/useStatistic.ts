@@ -1,4 +1,4 @@
-import { reactive, computed, ComputedRef } from 'vue'
+import { reactive, computed, type ComputedRef } from 'vue'
 import type { UnwrapNestedRefs } from '@/../node_modules/@vue/reactivity/dist/reactivity'
 import { i18n } from '@/services/i18n'
 

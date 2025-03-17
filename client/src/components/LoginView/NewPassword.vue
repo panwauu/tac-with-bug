@@ -60,6 +60,7 @@ async function executeNewPassword() {
     loading.value = false
     emit('done')
   } catch (err) {
+    console.error(err)
     toast.add({
       severity: 'error',
       summary: t('Login.RequestNewPassword.errorMsg'),

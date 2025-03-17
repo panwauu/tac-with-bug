@@ -1,7 +1,7 @@
 import type { Friend } from '@/../../server/src/sharedTypes/typesFriends'
 import type { GeneralSocketC } from '@/services/socket'
 import type { UnwrapNestedRefs } from '@/../node_modules/@vue/reactivity/dist/reactivity'
-import { reactive, onBeforeUnmount, computed, ComputedRef } from 'vue'
+import { reactive, onBeforeUnmount, computed, type ComputedRef } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { i18n } from '@/services/i18n'
 

@@ -39,6 +39,7 @@ const deleteUser = async () => {
         logout(socket)
       }, 2000)
     } catch (err) {
+      console.error(err)
       toast.add({
         severity: 'error',
         summary: t('Settings.DeleteProfile.errorTitle'),

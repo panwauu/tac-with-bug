@@ -132,7 +132,7 @@ import Luck from '@/components/icons/LuckSymbol.vue'
 import SelectButton from 'primevue/selectbutton'
 import Message from 'primevue/message'
 
-import { loadScript, PayPalButtonsComponent } from '@paypal/paypal-js'
+import { loadScript, type PayPalButtonsComponent } from '@paypal/paypal-js'
 import { ref, onMounted, computed, onUnmounted, watch } from 'vue'
 import router from '@/router/index'
 import { useToast } from 'primevue/usetoast'

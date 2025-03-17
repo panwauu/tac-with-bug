@@ -83,6 +83,7 @@ export const useTutorialStore = defineStore('tutorial', {
             validateProgress(progressFromStorage, res.data.progress)
             this.progress = progressFromStorage
           } catch (err) {
+            console.error(err)
             this.clearStorage()
             router.push({ name: 'Landing' })
             return
@@ -105,6 +106,7 @@ export const useTutorialStore = defineStore('tutorial', {
             validateProgress(progressFromStorage, progress)
             this.progress = progressFromStorage
           } catch (err) {
+            console.error(err)
             this.clearStorage()
             router.push({ name: 'Landing' })
             return
