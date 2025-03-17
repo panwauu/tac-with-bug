@@ -37,7 +37,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import Carousel from 'primevue/carousel'
 import { reactive, computed } from 'vue'
-import { DefaultService as Service } from '@/generatedClient'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import BallsImage from './assets/BallsImage.vue'
 
 withDefaults(defineProps<{ usePCardStyle?: boolean }>(), { usePCardStyle: true })

@@ -76,7 +76,7 @@ import PlayersAutoComplete from '@/components/PlayersAutoComplete.vue'
 import type { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 
 import { computed, ref } from 'vue'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { isLoggedIn, username } from '@/services/useUser'
 import { useSettingsStore } from '@/store/settings'

@@ -33,7 +33,7 @@ import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import { ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
-import { DefaultService } from '@/generatedClient'
+import { DefaultService } from '@/generatedClient/index.ts'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

@@ -30,7 +30,7 @@ const { t } = useI18n()
 import InputText from 'primevue/inputtext'
 
 import { ref, computed, watch } from 'vue'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 
 const nameCheck = ref<boolean | null>(false)
 const nameCheckTimeout = ref(undefined as number | undefined)

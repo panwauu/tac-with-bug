@@ -172,7 +172,7 @@ import SelectButton from 'primevue/selectbutton'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
 import { ref } from 'vue'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 
 const rows = ref(10)
 const totalNumber = ref(0)

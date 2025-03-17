@@ -28,7 +28,7 @@ const { t } = useI18n()
 import Button from 'primevue/button'
 import AutoComplete from 'primevue/autocomplete'
 
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { ref } from 'vue'
 import router from '@/router/index'
 

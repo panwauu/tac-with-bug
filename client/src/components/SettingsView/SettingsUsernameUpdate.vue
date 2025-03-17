@@ -40,7 +40,7 @@ import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 
 import UsernameForm from '../Forms/UsernameForm.vue'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { injectStrict, SocketKey } from '@/services/injections'

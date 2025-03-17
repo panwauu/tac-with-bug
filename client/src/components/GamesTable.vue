@@ -129,7 +129,7 @@ import Button from 'primevue/button'
 import type { GameForOverview } from '@/../../server/src/sharedTypes/typesDBgame'
 import { ref } from 'vue'
 import { username as loggedInUser } from '@/services/useUser'
-import { DefaultService as Service } from '@/generatedClient'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 
 const emit = defineEmits<{
   sort: [events: any]

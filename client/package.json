@@ -54,7 +54,7 @@
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-package-version": "^1.0.2",
     "vite-plugin-vue-devtools": "^7.7.2",
-    "vue-tsc": "^3.0.0-alpha.2"
+    "vue-tsc": "^2.2.8"
   },
   "browserslist": [
     "> 1%",

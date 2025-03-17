@@ -56,7 +56,7 @@ import Message from 'primevue/message'
 import InputText from 'primevue/inputtext'
 
 import { ref } from 'vue'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { login as userLogin } from '@/services/useUser'
 import { useToast } from 'primevue/usetoast'
 import router from '@/router'

@@ -1,6 +1,6 @@
 import router from '@/router'
 import { reactive, computed, readonly } from 'vue'
-import { OpenAPI } from '../generatedClient/index'
+import { OpenAPI } from '@/generatedClient/index.ts'
 import type { GeneralSocketC } from './socket'
 
 interface User {

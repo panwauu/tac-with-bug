@@ -31,7 +31,7 @@ import InputText from 'primevue/inputtext'
 
 import { ref } from 'vue'
 import * as EmailValidator from 'email-validator'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()

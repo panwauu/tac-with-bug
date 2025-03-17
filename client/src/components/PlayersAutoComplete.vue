@@ -27,7 +27,7 @@ import PlayerWithPicture from './PlayerWithPicture.vue'
 import AutoComplete from 'primevue/autocomplete'
 
 import { computed, ref } from 'vue'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 
 const props = defineProps<{ username: string | null; userid: number | null; playersToAvoid?: string[] }>()
 const emit = defineEmits<{ 'update:username': [username: string]; 'update:userid': [id: any] }>()

@@ -35,7 +35,7 @@ import EmailForm from '../Forms/EmailForm.vue'
 import PasswordForm from '../Forms/PasswordForm.vue'
 
 import { ref } from 'vue'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { i18n } from '@/services/i18n'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'

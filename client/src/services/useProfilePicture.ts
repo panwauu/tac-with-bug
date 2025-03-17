@@ -1,5 +1,5 @@
 import { reactive } from 'vue'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { isLoggedIn } from './useUser'
 
 interface ProfileStateType {

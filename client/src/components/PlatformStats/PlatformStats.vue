@@ -48,7 +48,7 @@ import BotStats from './BotStats.vue'
 
 import type { PlatformStats } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 import { ref } from 'vue'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 
 const data = ref<PlatformStats | null>(null)
 Service.getPlatformStats().then((res) => {

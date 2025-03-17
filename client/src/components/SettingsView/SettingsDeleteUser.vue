@@ -15,7 +15,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import Button from 'primevue/button'
 
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 
 import { useToast } from 'primevue/usetoast'
 import { logout } from '@/services/useUser'

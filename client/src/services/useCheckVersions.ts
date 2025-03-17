@@ -1,4 +1,4 @@
-import { DefaultService } from '@/generatedClient'
+import { DefaultService } from '@/generatedClient/index.ts'
 import type { ToastServiceMethods } from 'primevue/toastservice'
 import { i18n } from './i18n'
 

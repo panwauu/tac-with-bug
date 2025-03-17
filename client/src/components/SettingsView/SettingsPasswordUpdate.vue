@@ -40,7 +40,7 @@ import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 
 import PasswordForm from '../Forms/PasswordForm.vue'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()

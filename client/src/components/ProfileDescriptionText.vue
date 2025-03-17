@@ -62,7 +62,7 @@ import Textarea from 'primevue/textarea'
 
 import { ref, watch, computed } from 'vue'
 import { username as loggedInUsername } from '@/services/useUser'
-import { DefaultService as Service } from '@/generatedClient'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { useToast } from 'primevue/usetoast'
 import { useSettingsStore } from '@/store/settings'
 

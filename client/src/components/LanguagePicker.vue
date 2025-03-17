@@ -52,7 +52,7 @@ import Dropdown from 'primevue/dropdown'
 import { ref } from 'vue'
 import { locales } from '@/../../server/src/sharedDefinitions/locales'
 import { i18n, setLocaleAndLoadMessages } from '../services/i18n'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import router from '@/router/index'
 import LocaleIcons from './assets/LocaleIcons.vue'
 

@@ -30,7 +30,7 @@ import Column from 'primevue/column'
 import Crown from '@/components/icons/CrownSymbol.vue'
 
 import { watch, ref } from 'vue'
-import { DefaultService as Service } from '@/generatedClient'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import type { TournamentParticipation } from '@/../../server/src/sharedTypes/typesTournament'
 import router from '@/router'
 import { useI18n } from 'vue-i18n'

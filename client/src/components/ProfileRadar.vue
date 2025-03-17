@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
 import Chart from 'primevue/chart'
-import { DefaultService as Service } from '@/generatedClient/index'
+import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { username as loggedInUsername } from '@/services/useUser'
 import { useI18n } from 'vue-i18n'
 
