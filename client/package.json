@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@paypal/paypal-js": "^8.2.0",
-    "@vueuse/core": "^10.11.1",
+    "@vueuse/core": "^13.0.0",
     "apexcharts": "^4.5.0",
     "chart.js": "^4.4.8",
     "cytoscape": "^3.31.1",
