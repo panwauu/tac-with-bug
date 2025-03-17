@@ -2,6 +2,7 @@
 
 exports[`Platform PlayerStatistic Test Suite > Should return playerStats of existing player 1`] = `
 {
+  "blockedByModerationUntil": null,
   "gamesDistribution": {
     "aborted": 2,
     "lost4": 0,
