@@ -95,12 +95,12 @@ onMounted(() => {
 })
 
 let substitutionTimeout: number
-function updateSubstitutionTimeout(updateData: UpdateDataType) {
+function updateSubstitutionTimeout(updateDataParam: UpdateDataType) {
   clearTimeout(substitutionTimeout)
 
-  if (updateData.gameEnded) return
+  if (updateDataParam.gameEnded) return
 
-  const timeout = updateData.lastPlayed + 60 * 1000 - Date.now()
+  const timeout = updateDataParam.lastPlayed + 60 * 1000 - Date.now()
   if (timeout < 0) return
 
   substitutionTimeout = window.setTimeout(() => {

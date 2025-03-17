@@ -12,7 +12,9 @@ export function getLocaleFromBrowser(): string {
   }
 
   browserLocales = browserLocales.map((locale) => {
-    return locale.trim().split(/-|_/)[0]
+    console.log(locale)
+    console.log(locale.trim().split(/[-_]/)[0])
+    return locale.trim().split(/[-_]/)[0]
   })
 
   for (const locale of browserLocales) {

@@ -269,30 +269,30 @@ async function onPage() {
 }
 
 async function onPageCoop(nPlayers: number) {
-  const first = nPlayers === 4 ? firstCoop4.value : firstCoop6.value
+  const firstCoop = nPlayers === 4 ? firstCoop4.value : firstCoop6.value
 
   if (nPlayers === 6) {
     loadingCoop6.value = true
   } else {
     loadingCoop4.value = true
   }
-  Service.getCoopLeaderboard(rows.value, first, nPlayers, selectedDate.value.startDate, selectedDate.value.endDate ?? undefined).then((res) => {
+  Service.getCoopLeaderboard(rows.value, firstCoop, nPlayers, selectedDate.value.startDate, selectedDate.value.endDate ?? undefined).then((res) => {
     if (nPlayers === 6) {
       dataCoop6.value = []
     } else {
       dataCoop4.value = []
     }
     res.count.forEach((count: number, index: number) => {
-      const data = {
+      const dataToPush = {
         team: res.team[index],
         count: count,
-        index: index + 1 + first,
+        index: index + 1 + firstCoop,
         lastplayed: res.lastplayed[index],
       }
       if (nPlayers === 6) {
-        dataCoop6.value.push(data)
+        dataCoop6.value.push(dataToPush)
       } else {
-        dataCoop4.value.push(data)
+        dataCoop4.value.push(dataToPush)
       }
     })
     if (nPlayers === 6) {

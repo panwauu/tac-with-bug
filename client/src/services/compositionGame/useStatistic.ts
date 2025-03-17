@@ -1,5 +1,4 @@
-import { reactive, computed, type ComputedRef } from 'vue'
-import type { UnwrapNestedRefs } from '@/../node_modules/@vue/reactivity/dist/reactivity'
+import { reactive, computed, type ComputedRef, type UnwrapNestedRefs } from 'vue'
 import { i18n } from '@/services/i18n'
 
 import type { GameStatistic, GameStatisticCardsType } from '@/../../server/src/sharedTypes/typesStatistic'

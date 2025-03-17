@@ -127,7 +127,7 @@ function signUpTeam() {
 }
 
 const letters = /^[A-Za-z\u00E4\u00F6\u00FC\u00C4\u00D6\u00DC\u00df0-9._ +<>-]+$/
-const blanks = /^[ ]+$/
+const blanks = /^ +$/
 
 const alreadyRegistered = computed(() => {
   return (
