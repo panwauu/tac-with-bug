@@ -5,10 +5,24 @@ import eslintConfigPrettier from 'eslint-config-prettier/flat'
 
 export default [
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.strict,
   sonarjs.configs.recommended,
+  eslintConfigPrettier,
   {
     rules: {
+      'no-throw-literal': 'error',
+      eqeqeq: ['error', 'always', { null: 'ignore' }],
+      'max-len': ['error', { code: 180 }],
+      curly: ['error', 'multi-line', 'consistent'],
+      'no-duplicate-imports': 'error',
+
+      // Enable in the future?
+      'no-shadow': ['warn'],
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
+      '@typescript-eslint/no-invalid-void-type': 'off',
       'sonarjs/cognitive-complexity': ['warn', 20],
       'sonarjs/no-duplicate-string': 'off',
       'sonarjs/no-identical-functions': 'off',
@@ -27,24 +41,6 @@ export default [
       'sonarjs/no-ignored-exceptions': 'off',
       'sonarjs/no-commented-code': 'off',
       'sonarjs/no-dead-store': 'off',
-    },
-  },
-  eslintConfigPrettier,
-  {
-    rules: {
-      'no-throw-literal': 'error',
-      eqeqeq: ['error', 'always', { null: 'ignore' }],
-      'max-len': ['error', { code: 180 }],
-      curly: ['error', 'multi-line', 'consistent'],
-      'no-duplicate-imports': 'error',
-
-      // Enable in the future?
-      'no-shadow': ['warn'],
-      'no-param-reassign': ['off', { props: true }],
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-expressions': 'off',
     },
   },
 ]
