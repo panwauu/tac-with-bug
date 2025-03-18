@@ -20,13 +20,18 @@
       <LoginButton />
       <template v-if="username != null">
         <PlayerWithPicture :username="username" />
-        <i
+        <OverlayBadge
           v-if="friendsState.numberOpenRequests !== 0"
-          v-badge.danger="friendsState.numberOpenRequests"
-          class="pi pi-user"
-          style="font-size: 1.4rem; margin-right: 5px; cursor: pointer"
-          @click="router.push({ name: 'Profile-Friends', params: { username: username, locale: router.currentRoute.value.params.locale } })"
-        />
+          severity="danger"
+          :value="friendsState.numberOpenRequests"
+          size="small"
+        >
+          <i
+            class="pi pi-user"
+            style="font-size: 1.4rem; margin-right: 5px; cursor: pointer"
+            @click="router.push({ name: 'Profile-Friends', params: { username: username, locale: router.currentRoute.value.params.locale } })"
+          />
+        </OverlayBadge>
       </template>
       <NavigationElement @logout="$emit('logout')" />
     </div>
@@ -38,6 +43,7 @@ import TwbSymbol from '@/components/icons/TwbSymbol.vue'
 import LoginButton from './LoginButton.vue'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import NavigationElement from './NavigationElement.vue'
+import OverlayBadge from 'primevue/overlaybadge'
 
 import router from '@/router/index'
 import { username } from '@/services/useUser'
