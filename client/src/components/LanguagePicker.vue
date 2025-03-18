@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Dropdown
+    <Select
       v-model="selectedLocale"
       :options="locales"
       option-label="name"
@@ -39,7 +39,7 @@
           </div>
         </div>
       </template>
-    </Dropdown>
+    </Select>
   </div>
 </template>
 
@@ -47,7 +47,7 @@
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-import Dropdown from 'primevue/dropdown'
+import Select from 'primevue/select'
 
 import { ref } from 'vue'
 import { locales } from '@/../../server/src/sharedDefinitions/locales'

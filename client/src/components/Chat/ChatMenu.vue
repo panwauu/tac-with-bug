@@ -105,7 +105,7 @@
       </div>
     </div>
 
-    <OverlayPanel
+    <Popover
       ref="overlayPanelRef"
       :show-close-icon="true"
       :dismissable="true"
@@ -113,7 +113,7 @@
       :base-z-index="1000"
     >
       <ChatCreatorOverlay @close="closeOverlay" />
-    </OverlayPanel>
+    </Popover>
   </div>
 </template>
 
@@ -124,7 +124,7 @@ const { t } = useI18n()
 import ChatPositions from '../icons/ChatPositions.vue'
 import Badge from 'primevue/badge'
 import Button from 'primevue/button'
-import OverlayPanel from 'primevue/overlaypanel'
+import Popover from 'primevue/popover'
 import ChatCreatorOverlay from './ChatCreatorOverlay.vue'
 
 import { useChatStore } from '@/store/chat'
@@ -137,7 +137,7 @@ const chatStore = useChatStore()
 const messageStore = useMessagesStore()
 const settingsStore = useSettingsStore()
 
-const overlayPanelRef = ref<OverlayPanel | null>()
+const overlayPanelRef = ref<Popover | null>()
 function toggle(event: any) {
   overlayPanelRef.value?.toggle(event)
 }

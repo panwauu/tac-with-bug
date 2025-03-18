@@ -7,7 +7,7 @@
       :disabled="nWatching === 0"
       @click="toggle"
     />
-    <OverlayPanel
+    <Popover
       ref="watchingPlayersRef"
       append-to="body"
       :show-close-icon="true"
@@ -26,13 +26,13 @@
           {{ t('Game.WatchingPlayers.anonymousWatching', { count: nWatching - watchingPlayers.length, n: nWatching - watchingPlayers.length }) }}
         </div>
       </div>
-    </OverlayPanel>
+    </Popover>
   </div>
 </template>
 
 <script setup lang="ts">
 import Button from 'primevue/button'
-import OverlayPanel from 'primevue/overlaypanel'
+import Popover from 'primevue/popover'
 import PlayerWithPicture from '../PlayerWithPicture.vue'
 
 import { ref, computed } from 'vue'
@@ -41,7 +41,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const props = defineProps<{ displayText: boolean; nWatching: number; watchingPlayers: string[] }>()
 
-const watchingPlayersRef = ref<OverlayPanel | null>(null)
+const watchingPlayersRef = ref<Popover | null>(null)
 function toggle(event: any) {
   watchingPlayersRef.value?.toggle(event)
 }

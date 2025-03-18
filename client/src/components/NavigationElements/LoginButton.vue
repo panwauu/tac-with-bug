@@ -8,7 +8,7 @@
     class="p-button-sm"
     @click="toggle"
   />
-  <OverlayPanel
+  <Popover
     ref="loginOverlayRef"
     append-to="body"
     :show-close-icon="true"
@@ -27,7 +27,7 @@
         <NewPassword />
       </TabPanel>
     </TabView>
-  </OverlayPanel>
+  </Popover>
 </template>
 
 <script setup lang="ts">
@@ -35,7 +35,7 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 import Button from 'primevue/button'
-import OverlayPanel from 'primevue/overlaypanel'
+import Popover from 'primevue/popover'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import LoginView from '../LoginView/LoginView.vue'
@@ -45,7 +45,7 @@ import NewPassword from '../LoginView/NewPassword.vue'
 import { ref } from 'vue'
 import { username } from '@/services/useUser'
 
-const loginOverlayRef = ref<OverlayPanel | null>(null)
+const loginOverlayRef = ref<Popover | null>(null)
 function toggle(event: any) {
   loginOverlayRef.value?.toggle(event)
 }

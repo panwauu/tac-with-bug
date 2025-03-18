@@ -5,7 +5,7 @@
     </div>
 
     <PlayerWithPicture
-      class="p-dropdown substitutionPlayer dropdown-imitation"
+      class="p-select substitutionPlayer dropdown-imitation"
       :username="newPlayer.username"
       :bot="newPlayer.bot"
       :name-first="false"
@@ -17,13 +17,13 @@
     ></i>
     <PlayerWithPicture
       v-if="substitutionRunning"
-      class="p-dropdown substitutionPlayer dropdown-imitation"
+      class="p-select substitutionPlayer dropdown-imitation"
       :username="updateData?.players[updateData?.substitution?.playerIndexToSubstitute ?? 0].name ?? ''"
       :bot="updateData?.players[updateData?.substitution?.playerIndexToSubstitute ?? 0].bot ?? true"
       :name-first="false"
       :clickable="false"
     />
-    <Dropdown
+    <Select
       v-if="!substitutionRunning"
       v-model="selectedToSubstitute"
       class="substitutionPlayer"
@@ -55,7 +55,7 @@
           :clickable="false"
         />
       </template>
-    </Dropdown>
+    </Select>
 
     <Button
       v-if="substitutionRunning === false"
@@ -132,7 +132,7 @@
 
 <script setup lang="ts">
 import Button from 'primevue/button'
-import Dropdown from 'primevue/dropdown'
+import Select from 'primevue/select'
 import PlayerWithPicture from '../PlayerWithPicture.vue'
 import CountdownTimer from '../CountdownTimer.vue'
 import BallsImage from '../assets/BallsImage.vue'

@@ -159,7 +159,7 @@
       </Message>
     </div>
 
-    <OverlayPanel
+    <Popover
       ref="overlayPanelRef"
       :show-close-icon="true"
       :dismissable="true"
@@ -174,7 +174,7 @@
         v-else
         @close="closeOverlay"
       />
-    </OverlayPanel>
+    </Popover>
   </div>
 </template>
 
@@ -183,7 +183,7 @@ import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
 import ProfilePicture from '../ProfilePicture.vue'
-import OverlayPanel from 'primevue/overlaypanel'
+import Popover from 'primevue/popover'
 import ChatGroupEditor from './ChatGroupEditor.vue'
 import PrivateChatEditor from './PrivateChatEditor.vue'
 import Message from 'primevue/message'
@@ -246,7 +246,7 @@ function textAreaKeydown(e: KeyboardEvent) {
   }
 }
 
-const overlayPanelRef = ref<OverlayPanel | null>()
+const overlayPanelRef = ref<Popover | null>()
 function toggle(event: any) {
   overlayPanelRef.value?.toggle(event)
 }

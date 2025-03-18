@@ -19,7 +19,7 @@
   <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap">
     <div style="display: flex; justify-content: center">
       <div style="display: flex; justify-content: center" />
-      <Dropdown
+      <Select
         v-model="nPlayersSelection"
         :options="nPlayersOptions"
         option-label="name"
@@ -28,7 +28,7 @@
         style="width: 110px"
       />
 
-      <Dropdown
+      <Select
         v-model="nTeamsSelection"
         :options="nTeamsOptions"
         option-label="name"
@@ -38,7 +38,7 @@
       />
     </div>
     <div style="display: flex; justify-content: center">
-      <Dropdown
+      <Select
         v-model="meisterSelection"
         :options="meisterOptions"
         option-label="name"
@@ -85,9 +85,9 @@
             <div>{{ t('Waiting.WaitingGameCreator.meisterFalseName') }}</div>
           </div>
         </template>
-      </Dropdown>
+      </Select>
 
-      <Dropdown
+      <Select
         v-model="privateSelection"
         :options="privateOptions"
         option-label="name"
@@ -144,7 +144,7 @@
             <div>{{ t('Waiting.WaitingGameCreator.privateFalseName') }}</div>
           </div>
         </template>
-      </Dropdown>
+      </Select>
     </div>
     <Button
       v-if="isLoggedIn"
@@ -194,7 +194,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import Button from 'primevue/button'
 import Tag from 'primevue/tag'
-import Dropdown from 'primevue/dropdown'
+import Select from 'primevue/select'
 import WaitingGame from '@/components/WaitingGame.vue'
 import WaitingGameCreator from '@/components/WaitingGameCreator.vue'
 import Brain from '@/components/icons/BrainSymbol.vue'

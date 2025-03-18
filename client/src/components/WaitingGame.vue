@@ -150,7 +150,7 @@
         </div>
       </div>
     </div>
-    <OverlayPanel ref="opRef">
+    <Popover ref="opRef">
       <BallsImage
         v-for="color in colors"
         :key="`overlayBall-${color}`"
@@ -158,7 +158,7 @@
         :color="color"
         @click="switchColor(color)"
       />
-    </OverlayPanel>
+    </Popover>
     <div
       v-if="active"
       class="footerWithButtons p-card-footer"
@@ -183,7 +183,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button'
-import OverlayPanel from 'primevue/overlaypanel'
+import Popover from 'primevue/popover'
 import PlayerWithPicture from './PlayerWithPicture.vue'
 import Brain from '@/components/icons/BrainSymbol.vue'
 import Heart from '@/components/icons/HeartSymbol.vue'
@@ -212,7 +212,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-const opRef = ref<OverlayPanel | null>(null)
+const opRef = ref<Popover | null>(null)
 
 const colors = computed(() => {
   return ['black', 'blackWhite', 'blue', 'green', 'orange', 'red', 'melone', 'white', 'turquoise', 'pink', 'yellow'].filter((c) => !props.game.balls.some((b) => b === c))

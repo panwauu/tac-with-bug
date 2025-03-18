@@ -71,7 +71,7 @@
     </div>
   </div>
 
-  <OverlayPanel
+  <Popover
     ref="opRef"
     style="max-width: 300px"
   >
@@ -79,14 +79,14 @@
       :misc-state="miscState"
       @close="opRef?.hide()"
     />
-  </OverlayPanel>
+  </Popover>
 </template>
 
 <script setup lang="ts">
 import ProfilePicture from '@/components/ProfilePicture.vue'
 import Aussetzen from '@/components/icons/AussetzenSymbol.vue'
 import CardImage from '@/components/assets/CardImage.vue'
-import OverlayPanel from 'primevue/overlaypanel'
+import Popover from 'primevue/popover'
 import EmojiSelector from './EmojiSelector.vue'
 
 import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
@@ -94,7 +94,7 @@ import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { ref } from 'vue'
 import router from '@/router'
 
-const opRef = ref<undefined | OverlayPanel>()
+const opRef = ref<undefined | Popover>()
 
 const props = defineProps<{
   positionStyles: PositionStylesState
