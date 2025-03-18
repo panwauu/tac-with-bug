@@ -1,5 +1,5 @@
 <template>
-  <div class="p-inputgroup">
+  <InputGroup>
     <AutoComplete
       ref="PlayerSearchInputRef"
       v-model="selectedPlayer"
@@ -8,8 +8,9 @@
       append-to="body"
       :placeholder="t('Home.Spielersuche')"
       @complete="searchPlayers()"
-      @item-select="searchSubmitFromAutoComplete()"
-      @keyup.enter="searchSubmitFromAutoComplete()"
+      @option-select="searchSubmit()"
+      @dropdown-click="searchSubmit()"
+      @keyup.enter="searchSubmit()"
     />
     <Button
       ref="PlayerSearchButtonRef"
@@ -18,19 +19,20 @@
       class="p-button"
       @click="searchSubmit()"
     />
-  </div>
+  </InputGroup>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import Button from 'primevue/button'
 import AutoComplete from 'primevue/autocomplete'
+import InputGroup from 'primevue/inputgroup'
 
 import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { ref } from 'vue'
 import router from '@/router/index'
+
+const { t } = useI18n()
 
 const selectedPlayer = ref<string>('')
 const filteredPlayers = ref<string[]>([])
@@ -49,15 +51,5 @@ const searchSubmit = () => {
     })
   }
   selectedPlayer.value = ''
-}
-
-const searchSubmitFromAutoComplete = () => {
-  PlayerSearchButtonRef.value?.$el?.click()
-  PlayerSearchInputRef.value?.$el?.blur()
-  PlayerSearchInputRef.value?.$el?.children?.forEach((child: any) => child.blur())
-  setTimeout(() => {
-    PlayerSearchInputRef.value?.$el?.blur()
-    PlayerSearchInputRef.value?.$el?.children?.forEach((child: any) => child.blur())
-  }, 0)
 }
 </script>

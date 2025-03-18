@@ -1,9 +1,6 @@
 <template>
   <div style="display: flex; overflow-x: auto; min-width: 20px; min-height: 20px">
-    <div
-      v-if="emojiListEditing"
-      class="p-inputgroup"
-    >
+    <InputGroup v-if="emojiListEditing">
       <InputText
         v-model="newEmoji"
         style="width: 40px"
@@ -14,7 +11,7 @@
         :disabled="!validNewEmoji"
         @click="addEmoji"
       />
-    </div>
+    </InputGroup>
     <div
       v-for="(emoji, i) in emojiList"
       :key="`EmojiList${i}`"
@@ -62,6 +59,7 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
+import InputGroup from 'primevue/inputgroup'
 
 import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { computed, ref } from 'vue'

@@ -116,17 +116,18 @@
         style="height: 100%"
         @submit.prevent="submitChatInput"
       >
-        <div
+        <InputGroup
           v-if="!settingsStore.isBlockedByModeration"
-          class="p-inputgroup"
           style="width: 100%"
         >
           <Textarea
             v-model="inputMessage"
             :auto-resize="true"
             :rows="1"
+            size="normal"
             aria-label="chat text input"
             :placeholder="t('Chat.textPlaceholder')"
+            style="width: 100%"
             @keydown="textAreaKeydown($event)"
           />
           <Button
@@ -134,7 +135,7 @@
             :label="t('Chat.submitButton')"
             :disabled="inputMessage === '' || inputMessage.length > 500"
           />
-        </div>
+        </InputGroup>
         <div v-else>
           <BlockedByModerationMessage :blocked-by-moderation-until="settingsStore.blockedByModerationUntil ?? ''" />
         </div>
@@ -189,6 +190,7 @@ import PrivateChatEditor from './PrivateChatEditor.vue'
 import Message from 'primevue/message'
 import Badge from 'primevue/badge'
 import BlockedByModerationMessage from '@/components/BlockedByModerationMessage.vue'
+import InputGroup from 'primevue/inputgroup'
 
 import { useScroll } from '@vueuse/core'
 import { useChatStore } from '@/store/chat'

@@ -1,9 +1,6 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
-    <div
-      v-if="!settingsStore.isBlockedByModeration"
-      class="p-inputgroup"
-    >
+    <InputGroup v-if="!settingsStore.isBlockedByModeration">
       <InputText v-model="groupTitle" />
       <Button
         icon="pi pi-check"
@@ -11,7 +8,7 @@
         :disabled="groupTitle === messagesStore.getCurrentChat?.groupTitle || groupTitle.length < 3 || groupTitle.length >= 25"
         @click="changeTitle"
       />
-    </div>
+    </InputGroup>
     <div v-else>
       <BlockedByModerationMessage :blocked-by-moderation-until="settingsStore.blockedByModerationUntil ?? ''" />
     </div>
@@ -50,6 +47,7 @@ import Divider from 'primevue/divider'
 import PlayerWithPicture from '../PlayerWithPicture.vue'
 import PlayersAutoComplete from '../PlayersAutoComplete.vue'
 import BlockedByModerationMessage from '../BlockedByModerationMessage.vue'
+import InputGroup from 'primevue/inputgroup'
 
 import { ref } from 'vue'
 import { useMessagesStore } from '@/store/messages'
