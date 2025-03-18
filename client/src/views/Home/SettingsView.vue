@@ -1,55 +1,81 @@
 <template>
   <div class="p-card settingsPage">
-    <Accordion v-model:active-index="activeIndex">
-      <AccordionTab
-        :header="t('Settings.ChangeUsername.header')"
+    <Accordion v-model:value="activeIndex">
+      <AccordionPanel
+        :value="0"
         :disabled="!isLoggedIn"
       >
-        <SettingsUsernameUpdate @settingoperationdone="activeIndex = undefined" />
-      </AccordionTab>
-      <AccordionTab
-        :header="t('Settings.ChangeMail.header')"
+        <AccordionHeader>{{ t('Settings.ChangeUsername.header') }}</AccordionHeader>
+        <AccordionContent>
+          <SettingsUsernameUpdate @settingoperationdone="activeIndex = undefined" />
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel
+        :value="1"
         :disabled="!isLoggedIn"
       >
-        <SettingsMailUpdate @settingoperationdone="activeIndex = undefined" />
-      </AccordionTab>
-      <AccordionTab
-        :header="t('Settings.ChangePassword.header')"
+        <AccordionHeader>{{ t('Settings.ChangeMail.header') }}</AccordionHeader>
+        <AccordionContent>
+          <SettingsMailUpdate @settingoperationdone="activeIndex = undefined" />
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel
+        :value="2"
         :disabled="!isLoggedIn"
       >
-        <SettingsPasswordUpdate @settingoperationdone="activeIndex = undefined" />
-      </AccordionTab>
-      <AccordionTab
-        :header="t('Settings.UploadProfilePicture.header')"
+        <AccordionHeader>{{ t('Settings.ChangePassword.header') }}</AccordionHeader>
+        <AccordionContent>
+          <SettingsPasswordUpdate @settingoperationdone="activeIndex = undefined" />
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel
+        :value="3"
         :disabled="!isLoggedIn"
       >
-        <SettingsProfilePicture @settingoperationdone="activeIndex = undefined" />
-      </AccordionTab>
-      <AccordionTab
-        :header="t('Settings.DeleteProfile.header')"
+        <AccordionHeader>{{ t('Settings.UploadProfilePicture.header') }}</AccordionHeader>
+        <AccordionContent>
+          <SettingsProfilePicture @settingoperationdone="activeIndex = undefined" />
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel
+        :value="4"
         :disabled="!isLoggedIn"
       >
-        <SettingsDeleteUser @settingoperationdone="activeIndex = undefined" />
-      </AccordionTab>
-      <AccordionTab :header="t('Settings.Language.header')">
-        <LanguagePicker :upload-flag="isLoggedIn" />
-      </AccordionTab>
-      <AccordionTab :header="t('Settings.Audio.header')">
-        <SettingsAudioVolume />
-      </AccordionTab>
-      <AccordionTab
-        :header="t('Settings.EmailNotifiactions.header')"
+        <AccordionHeader>{{ t('Settings.DeleteProfile.header') }}</AccordionHeader>
+        <AccordionContent>
+          <SettingsDeleteUser @settingoperationdone="activeIndex = undefined" />
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel :value="5">
+        <AccordionHeader>{{ t('Settings.Language.header') }}</AccordionHeader>
+        <AccordionContent>
+          <LanguagePicker :upload-flag="isLoggedIn" />
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel :value="6">
+        <AccordionHeader>{{ t('Settings.Audio.header') }}</AccordionHeader>
+        <AccordionContent>
+          <SettingsAudioVolume />
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel
+        :value="7"
         :disabled="!isLoggedIn"
       >
-        <SettingsEmailNotification v-if="isLoggedIn" />
-      </AccordionTab>
+        <AccordionHeader>{{ t('Settings.EmailNotifiactions.header') }}</AccordionHeader>
+        <AccordionContent>
+          <SettingsEmailNotification v-if="isLoggedIn" />
+        </AccordionContent>
+      </AccordionPanel>
     </Accordion>
   </div>
 </template>
 
 <script setup lang="ts">
 import Accordion from 'primevue/accordion'
-import AccordionTab from 'primevue/accordiontab'
+import AccordionPanel from 'primevue/accordionpanel'
+import AccordionHeader from 'primevue/accordionheader'
+import AccordionContent from 'primevue/accordioncontent'
 
 import SettingsUsernameUpdate from '@/components/SettingsView/SettingsUsernameUpdate.vue'
 import SettingsProfilePicture from '@/components/SettingsView/SettingsProfilePicture.vue'

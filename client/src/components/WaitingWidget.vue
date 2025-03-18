@@ -3,43 +3,49 @@
   <p>{{ t('Landing.Waiting.description') }}</p>
   <Accordion
     :multiple="false"
-    :active-index="activeIndex"
+    v-model:value="activeIndex"
     :disabled="!isLoggedIn"
   >
-    <AccordionTab
-      :header="t('Landing.Waiting.openGames', { n: gamesSummary.runningGames.length })"
+    <AccordionPanel
+      :value="0"
       :disabled="gamesSummary.runningGames.length === 0"
     >
-      <p v-if="gamesSummary.runningGames.length === 0 && username != null">{{ t('Landing.Waiting.noGamesGoToWaiting') }}</p>
-      <GamesTable
-        v-else
-        :loading="false"
-        :n-entries="gamesSummary.runningGames.length"
-        :games="gamesSummary.runningGames"
-        :username="username ?? ''"
-        :paginator="false"
-        @row-select="startGame"
-      />
-    </AccordionTab>
-    <AccordionTab :header="t('Landing.Waiting.waitingRoomsHeader')">
-      <Message
-        v-if="gamesSummary.runningGames.length !== 0"
-        severity="error"
-        :closable="false"
-      >
-        {{ t('Landing.Waiting.openGamesWarning', { openGames: gamesSummary.runningGames.length }) }}
-      </Message>
-      <WaitingOverview />
-    </AccordionTab>
+      <AccordionHeader>{{ t('Landing.Waiting.openGames', { n: gamesSummary.runningGames.length }) }}</AccordionHeader>
+      <AccordionContent>
+        <p v-if="gamesSummary.runningGames.length === 0 && username != null">{{ t('Landing.Waiting.noGamesGoToWaiting') }}</p>
+        <GamesTable
+          v-else
+          :loading="false"
+          :n-entries="gamesSummary.runningGames.length"
+          :games="gamesSummary.runningGames"
+          :username="username ?? ''"
+          :paginator="false"
+          @row-select="startGame"
+        />
+      </AccordionContent>
+    </AccordionPanel>
+    <AccordionPanel :value="1">
+      <AccordionHeader>{{ t('Landing.Waiting.waitingRoomsHeader') }}</AccordionHeader>
+      <AccordionContent>
+        <Message
+          v-if="gamesSummary.runningGames.length !== 0"
+          severity="error"
+          :closable="false"
+        >
+          {{ t('Landing.Waiting.openGamesWarning', { openGames: gamesSummary.runningGames.length }) }}
+        </Message>
+        <WaitingOverview />
+      </AccordionContent>
+    </AccordionPanel>
   </Accordion>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import Accordion from 'primevue/accordion'
-import AccordionTab from 'primevue/accordiontab'
+import AccordionPanel from 'primevue/accordionpanel'
+import AccordionHeader from 'primevue/accordionheader'
+import AccordionContent from 'primevue/accordioncontent'
 import WaitingOverview from '@/components/WaitingOverview.vue'
 import GamesTable from '@/components/GamesTable.vue'
 import Message from 'primevue/message'
@@ -49,6 +55,7 @@ import { injectStrict, GamesSummaryKey } from '@/services/injections'
 import { isLoggedIn, username } from '@/services/useUser'
 import router from '@/router'
 
+const { t } = useI18n()
 const gamesSummary = injectStrict(GamesSummaryKey)
 
 gamesSummary.getGames()

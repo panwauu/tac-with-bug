@@ -19,133 +19,141 @@
     >
       <h2>{{ t(`FAQ.${block.header}`) }}</h2>
       <Accordion>
-        <AccordionTab
+        <AccordionPanel
           v-for="(qa, qaI) in block.data"
           :key="`Block${i}QA${qaI}`"
-          :header="t(`FAQ.${qa.q}`)"
+          :value="qaI"
         >
-          <p v-html="t(`FAQ.${qa.a}`, qa.par ?? {})" />
-        </AccordionTab>
+          <AccordionHeader>{{ t(`FAQ.${qa.q}`) }}</AccordionHeader>
+          <AccordionContent>
+            <p v-html="t(`FAQ.${qa.a}`, qa.par ?? {})" />
+          </AccordionContent>
+        </AccordionPanel>
       </Accordion>
     </template>
 
     <h2>{{ t('FAQ.techStack.header') }}</h2>
     <Accordion>
-      <AccordionTab :header="t('FAQ.techStack.header')">
-        <p>{{ t('FAQ.techStack.description') }}</p>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://nodejs.org/en/"
-          >
-            <img
-              src="https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg"
-              class="logo"
-              alt="NodeJS Logo"
-            />
-          </a>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://expressjs.com/"
-          >
-            <img
-              src="https://www.vectorlogo.zone/logos/expressjs/expressjs-ar21.svg"
-              class="logo"
-              alt="ExpressJS Logo"
-            />
-          </a>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://socket.io/"
-          >
-            <img
-              src="https://cdn.worldvectorlogo.com/logos/socket-io.svg"
-              class="logo"
-              alt="Socket.io Logo"
-            />
-          </a>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.primefaces.org/primevue/"
-          >
-            <img
-              src="https://raw.githubusercontent.com/primefaces/primevue/master/assets/images/logo.svg"
-              class="logo"
-              alt="Primevue Logo"
-            />
-          </a>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://nodemailer.com/about/"
-          >
-            <img
-              src="https://nodemailer.com/nm_logo_200x136.png"
-              class="logo"
-              alt="Nodemailer Logo"
-            />
-          </a>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://kazupon.github.io/vue-i18n/"
-          >
-            <img
-              src="https://kazupon.github.io/vue-i18n/vue-i18n-logo.png"
-              class="logo"
-              alt="vue-i18n Logo"
-            />
-          </a>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.postgresql.org/"
-          >
-            <img
-              src="https://www.postgresql.org/media/img/about/press/elephant.png"
-              class="logo"
-              alt="Postgres Logo"
-            />
-          </a>
-        </div>
-        <div style="display: flex; flex-direction: column">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://socket.io/"
-          >
-            Splitpanes
-          </a>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.npmjs.com/package/ical-generator"
-          >
-            ical-generator
-          </a>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.npmjs.com/package/vue-cropperjs"
-          >
-            vue-cropperjs
-          </a>
-        </div>
-      </AccordionTab>
+      <AccordionPanel :value="0">
+        <AccordionHeader>{{ t('FAQ.techStack.header') }}</AccordionHeader>
+        <AccordionContent>
+          <p>{{ t('FAQ.techStack.description') }}</p>
+          <div style="display: flex; flex-wrap: wrap; justify-content: center">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://nodejs.org/en/"
+            >
+              <img
+                src="https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg"
+                class="logo"
+                alt="NodeJS Logo"
+              />
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://expressjs.com/"
+            >
+              <img
+                src="https://www.vectorlogo.zone/logos/expressjs/expressjs-ar21.svg"
+                class="logo"
+                alt="ExpressJS Logo"
+              />
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://socket.io/"
+            >
+              <img
+                src="https://cdn.worldvectorlogo.com/logos/socket-io.svg"
+                class="logo"
+                alt="Socket.io Logo"
+              />
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.primefaces.org/primevue/"
+            >
+              <img
+                src="https://raw.githubusercontent.com/primefaces/primevue/master/assets/images/logo.svg"
+                class="logo"
+                alt="Primevue Logo"
+              />
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://nodemailer.com/about/"
+            >
+              <img
+                src="https://nodemailer.com/nm_logo_200x136.png"
+                class="logo"
+                alt="Nodemailer Logo"
+              />
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://kazupon.github.io/vue-i18n/"
+            >
+              <img
+                src="https://kazupon.github.io/vue-i18n/vue-i18n-logo.png"
+                class="logo"
+                alt="vue-i18n Logo"
+              />
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.postgresql.org/"
+            >
+              <img
+                src="https://www.postgresql.org/media/img/about/press/elephant.png"
+                class="logo"
+                alt="Postgres Logo"
+              />
+            </a>
+          </div>
+          <div style="display: flex; flex-direction: column">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://socket.io/"
+            >
+              Splitpanes
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.npmjs.com/package/ical-generator"
+            >
+              ical-generator
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.npmjs.com/package/vue-cropperjs"
+            >
+              vue-cropperjs
+            </a>
+          </div>
+        </AccordionContent>
+      </AccordionPanel>
     </Accordion>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import Accordion from 'primevue/accordion'
+import AccordionPanel from 'primevue/accordionpanel'
+import AccordionHeader from 'primevue/accordionheader'
+import AccordionContent from 'primevue/accordioncontent'
 
 const { t } = useI18n()
-import Accordion from 'primevue/accordion'
-import AccordionTab from 'primevue/accordiontab'
 
 const faq = [
   {

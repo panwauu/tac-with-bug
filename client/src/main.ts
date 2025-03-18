@@ -69,7 +69,6 @@ import { i18n } from '@/services/i18n'
 import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
-import BadgeDirective from 'primevue/badgedirective'
 import Tooltip from 'primevue/tooltip'
 import { regsiterGeneralSocket } from './services/registerSockets'
 import { SocketKey } from './services/injections'
@@ -90,7 +89,6 @@ app.use(i18n)
 app.use(PrimeVue, { theme: { preset: MyPreset } })
 app.use(ToastService)
 
-app.directive('badge', BadgeDirective)
 app.directive('tooltip', Tooltip)
 
 app.mount('#app')

@@ -3,11 +3,12 @@
     <h2>{{ t('Tutorial.tutorialHeader') }}</h2>
     <div style="margin-bottom: 15px">{{ t('Tutorial.moreTutorialsInFuture') }}</div>
     <Accordion>
-      <AccordionTab
+      <AccordionPanel
         v-for="(tutorialProgress, tutorialID) in tutorialStore.getProgress"
         :key="`Tutorial-${tutorialID}`"
+        :value="tutorialID"
       >
-        <template #header>
+        <AccordionHeader>
           <div class="HeaderTemplate">
             <div>{{ t(`Tutorial.${tutorialID}.title`) }}</div>
             <div class="rightHeader">
@@ -20,34 +21,36 @@
               </div>
             </div>
           </div>
-        </template>
-        <div style="margin: 5px">{{ t(`Tutorial.${tutorialID}.time`) }}</div>
-        <div style="margin: 5px">{{ t(`Tutorial.${tutorialID}.description`) }}</div>
-        <Button
-          style="margin: 5px"
-          :label="t(`Tutorial.ButtonStartOverwiew.${getStartButton(tutorialProgress)}`)"
-          @click="clickStartButton(tutorialID, tutorialProgress)"
-        />
-        <template
-          v-for="(stepIsDone, tutorialStep) in tutorialProgress"
-          :key="`Tutorial-${tutorialID}-key-${tutorialStep}`"
-        >
-          <Divider />
-          <div
-            class="nameElement"
-            @click="startTutorial(tutorialID, tutorialStep)"
+        </AccordionHeader>
+        <AccordionContent>
+          <div style="margin: 5px">{{ t(`Tutorial.${tutorialID}.time`) }}</div>
+          <div style="margin: 5px">{{ t(`Tutorial.${tutorialID}.description`) }}</div>
+          <Button
+            style="margin: 5px"
+            :label="t(`Tutorial.ButtonStartOverwiew.${getStartButton(tutorialProgress)}`)"
+            @click="clickStartButton(tutorialID, tutorialProgress)"
+          />
+          <template
+            v-for="(stepIsDone, tutorialStep) in tutorialProgress"
+            :key="`Tutorial-${tutorialID}-key-${tutorialStep}`"
           >
-            <div>{{ tutorialStep + 1 }}.</div>
-            <div>{{ t(`Tutorial.${tutorialID}.${tutorialStep}.title`) }}</div>
-            <div class="checkbox">
-              <div
-                v-if="stepIsDone === true"
-                class="checkboxInner"
-              />
+            <Divider />
+            <div
+              class="nameElement"
+              @click="startTutorial(tutorialID, tutorialStep)"
+            >
+              <div>{{ tutorialStep + 1 }}.</div>
+              <div>{{ t(`Tutorial.${tutorialID}.${tutorialStep}.title`) }}</div>
+              <div class="checkbox">
+                <div
+                  v-if="stepIsDone === true"
+                  class="checkboxInner"
+                />
+              </div>
             </div>
-          </div>
-        </template>
-      </AccordionTab>
+          </template>
+        </AccordionContent>
+      </AccordionPanel>
     </Accordion>
 
     <h2 style="margin-top: 35px">{{ t('Tutorial.replayHeader') }}</h2>
@@ -58,7 +61,9 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 import Accordion from 'primevue/accordion'
-import AccordionTab from 'primevue/accordiontab'
+import AccordionPanel from 'primevue/accordionpanel'
+import AccordionHeader from 'primevue/accordionheader'
+import AccordionContent from 'primevue/accordioncontent'
 import Divider from 'primevue/divider'
 
 import router from '@/router/index'
