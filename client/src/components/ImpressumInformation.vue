@@ -1,9 +1,7 @@
 <template>
   <div>
     <p>Oskar Baumann</p>
-    <p>Leopoldstraße 108a</p>
-    <p>80802, München</p>
-***REMOVED***
+    <p>Oskar-von-Miller-Straße 7, 92224 Amberg, Deutschland</p>
     <p>Mail: oskar@spieltac.de</p>
   </div>
 </template>

@@ -72,14 +72,10 @@
     <p>
       Oskar Baumann
       <br />
-      Leopoldstr 108a
-      <br />
-      80802 M&uuml;nchen
+      Oskar-von-Miller-Straße 7, 92224 Amberg, Deutschland
     </p>
 
     <p>
-***REMOVED***
-      <br />
       E-Mail: &#91;oskar@spieltac.de&#93;
     </p>
     <p>
