@@ -75,9 +75,7 @@
       Oskar-von-Miller-Straße 7, 92224 Amberg, Deutschland
     </p>
 
-    <p>
-      E-Mail: &#91;oskar@spieltac.de&#93;
-    </p>
+    <p>E-Mail: &#91;oskar@spieltac.de&#93;</p>
     <p>
       Verantwortliche Stelle ist die nat&uuml;rliche oder juristische Person, die allein oder gemeinsam mit anderen &uuml;ber die Zwecke und Mittel der Verarbeitung von
       personenbezogenen Daten (z.&nbsp;B. Namen, E-Mail-Adressen o. &Auml;.) entscheidet.
