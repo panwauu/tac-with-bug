@@ -66,7 +66,7 @@ async function updateData() {
   border: 2px solid var(--text-color);
   border-radius: 3px;
   display: inline-block;
-  background-color: var(--primary-color);
-  color: var(--primary-color-text);
+  background-color: var(--p-primary-color);
+  color: var(--p-primary-color-text);
 }
 </style>

@@ -94,7 +94,7 @@
     <h3>{{ t('Subscription.headerAdditionalPay') }}</h3>
     <a
       class="p-button p-component p-button-label"
-      style="color: var(--primary-color-text); text-decoration: none; margin-bottom: 20px"
+      style="color: var(--p-primary-color-text); text-decoration: none; margin-bottom: 20px"
       target="_blank"
       rel="noopener noreferrer"
       href="https://www.paypal.com/paypalme/TacWithBug"
@@ -313,7 +313,7 @@ const paypalPercentageSeverity = computed(() => {
 .PriceTag {
   padding: 5px;
   background: var(--green-500);
-  color: var(--primary-color-text);
+  color: var(--p-primary-color-text);
   font-size: 1.3rem;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;

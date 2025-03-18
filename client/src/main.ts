@@ -66,7 +66,6 @@ import { createPinia } from 'pinia'
 const pinia = createPinia()
 import { i18n } from '@/services/i18n'
 
-import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
@@ -74,6 +73,7 @@ import BadgeDirective from 'primevue/badgedirective'
 import Tooltip from 'primevue/tooltip'
 import { regsiterGeneralSocket } from './services/registerSockets'
 import { SocketKey } from './services/injections'
+import { MyPreset } from './services/preset'
 
 const app = createApp(App)
 export const socket = regsiterGeneralSocket()
@@ -87,7 +87,7 @@ pinia.use(({ store }) => {
 app.use(pinia)
 app.use(i18n)
 
-app.use(PrimeVue)
+app.use(PrimeVue, { theme: { preset: MyPreset } })
 app.use(ToastService)
 
 app.directive('badge', BadgeDirective)

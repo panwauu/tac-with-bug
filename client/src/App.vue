@@ -7,6 +7,10 @@
     <router-view class="RouterView" />
   </ChatWrapper>
   <ConnectionStatusOverlay />
+
+  <Menubar v-show="false" />
+  <Button v-show="false" />
+  <Card v-show="false" />
 </template>
 
 <script setup lang="ts">
@@ -26,6 +30,10 @@ import { useToast } from 'primevue/usetoast'
 import router from './router'
 import { initTournamentWinners } from './services/useTournamentWinners'
 import { useI18n } from 'vue-i18n'
+
+import Menubar from 'primevue/menubar'
+import Button from 'primevue/button'
+import Card from 'primevue/card'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -135,7 +143,17 @@ html {
   margin: 0;
   height: 100%;
   width: 100%;
-  background-color: var(--surface-b);
+}
+
+html {
+  background-color: var(--p-surface-50);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: var(--p-surface-800);
+  }
 }
 
 body {
@@ -174,7 +192,7 @@ body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--primary-color) transparent;
+  scrollbar-color: var(--p-primary-color) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -186,14 +204,11 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--primary-color);
+  background-color: var(--p-primary-color);
   border-radius: 20px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
-
-@import url('../node_modules/primevue/resources/themes/saga-blue/theme.css') (prefers-color-scheme: light);
-@import url('../node_modules/primevue/resources/themes/arya-blue/theme.css') (prefers-color-scheme: dark);
 
 @font-face {
   font-family: 'tacfontregular';
