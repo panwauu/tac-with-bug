@@ -7,10 +7,7 @@
       style="width: 100%"
     />
 
-    <span
-      class="p-float-label"
-      style="margin-top: 30px"
-    >
+    <FloatLabel style="margin-top: 30px">
       <InputText
         id="setUsernamePassword"
         v-model="password"
@@ -21,7 +18,7 @@
       <label for="setUsernamePassword">
         {{ t('Settings.ChangeMail.password') }}
       </label>
-    </span>
+    </FloatLabel>
     <Button
       type="submit"
       icon="pi pi-refresh"
@@ -38,6 +35,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
+import FloatLabel from 'primevue/floatlabel'
 
 import UsernameForm from '../Forms/UsernameForm.vue'
 import { DefaultService as Service } from '@/generatedClient/index.ts'

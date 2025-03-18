@@ -17,10 +17,7 @@
     @hide="generateNewName"
   >
     <div class="teamSignUp">
-      <span
-        class="p-float-label"
-        style="min-width: 230px; margin: 20px"
-      >
+      <FloatLabel style="min-width: 230px; margin: 20px">
         <InputText
           id="signUpTeamName"
           v-model="signUpTeamName"
@@ -35,7 +32,7 @@
         >
           {{ t('Tournament.SignUp.invalidTeamName') }}
         </div>
-      </span>
+      </FloatLabel>
       <SelectButton
         v-model="signUpAlone"
         class="filterButton"
@@ -72,6 +69,7 @@ import SelectButton from 'primevue/selectbutton'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import PlayersAutoComplete from '@/components/PlayersAutoComplete.vue'
+import FloatLabel from 'primevue/floatlabel'
 
 import type { PublicTournament } from '@/../../server/src/sharedTypes/typesTournament'
 

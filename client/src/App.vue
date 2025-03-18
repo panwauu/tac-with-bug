@@ -11,6 +11,10 @@
   <Menubar v-show="false" />
   <Button v-show="false" />
   <Card v-show="false" />
+  <InputGroup v-show="false" />
+  <InputText v-show="false" />
+  <InputNumber v-show="false" />
+  <FloatLabel v-show="false" />
 </template>
 
 <script setup lang="ts">
@@ -34,6 +38,10 @@ import { useI18n } from 'vue-i18n'
 import Menubar from 'primevue/menubar'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
+import InputGroup from 'primevue/inputgroup'
+import InputText from 'primevue/inputtext'
+import InputNumber from 'primevue/inputnumber'
+import FloatLabel from 'primevue/floatlabel'
 
 const { t } = useI18n()
 const toast = useToast()

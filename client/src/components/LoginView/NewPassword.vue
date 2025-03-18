@@ -1,7 +1,7 @@
 <template>
   <div>
     <form @submit.prevent="executeNewPassword">
-      <span class="p-float-label floatingTextInput usernameEmailInput loginInputElement">
+      <FloatLabel class="floatingTextInput usernameEmailInput loginInputElement">
         <InputText
           id="NPusername"
           v-model="usernameOrEmail"
@@ -10,7 +10,7 @@
           class="inputElement"
         />
         <label for="NPusername">{{ t('Login.emailOrUsername') }}</label>
-      </span>
+      </FloatLabel>
       <Button
         type="submit"
         class="loginInputElement"
@@ -23,17 +23,17 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
+import FloatLabel from 'primevue/floatlabel'
 
 import { ref } from 'vue'
 import * as EmailValidator from 'email-validator'
 import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { useToast } from 'primevue/usetoast'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const toast = useToast()
 const usernameOrEmail = ref('')
 const loading = ref(false)

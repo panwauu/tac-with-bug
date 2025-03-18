@@ -1,5 +1,5 @@
 <template>
-  <span :class="['p-float-label', 'floatingTextInput', iconClass]">
+  <FloatLabel :class="['floatingTextInput', iconClass]">
     <i
       v-if="nameCheck === null"
       class="pi pi-spin pi-spinner"
@@ -20,7 +20,7 @@
     />
     <label for="SUusername">{{ t('Login.username') }}</label>
     <small class="p-error">{{ usernameErrorLabel }}</small>
-  </span>
+  </FloatLabel>
 </template>
 
 <script setup lang="ts">
@@ -28,6 +28,7 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 import InputText from 'primevue/inputtext'
+import FloatLabel from 'primevue/floatlabel'
 
 import { ref, computed, watch } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index.ts'

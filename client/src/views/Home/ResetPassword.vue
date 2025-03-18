@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%; max-width: 400px">
-    <span :class="['p-float-label', 'floatingTextInput']">
+    <FloatLabel :class="['floatingTextInput']">
       <InputText
         id="SUusername"
         :model-value="username"
@@ -10,7 +10,7 @@
         :disabled="true"
       />
       <label for="SUusername">{{ t('Login.username') }}</label>
-    </span>
+    </FloatLabel>
     <PasswordForm
       v-model:valid="valid"
       v-model:password="password"
@@ -31,6 +31,7 @@ import router from '@/router/index'
 import PasswordForm from '@/components/Forms/PasswordForm.vue'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
+import FloatLabel from 'primevue/floatlabel'
 import { ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { DefaultService } from '@/generatedClient/index.ts'

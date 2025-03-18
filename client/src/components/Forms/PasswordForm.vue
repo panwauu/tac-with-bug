@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class="p-float-label floatingTextInput">
+    <FloatLabel class="floatingTextInput">
       <PasswordPrimevue
         id="SUpassword"
         v-model="localPassword"
@@ -22,9 +22,9 @@
         </template>
       </PasswordPrimevue>
       <label for="SUpassword">{{ t('Login.password') }}</label>
-    </span>
+    </FloatLabel>
 
-    <span class="p-float-label floatingTextInput">
+    <FloatLabel class="floatingTextInput">
       <InputText
         id="SUpasswordRepeat"
         v-model="passwordRepeat"
@@ -40,7 +40,7 @@
       >
         {{ t('Login.SignUp.passwordUnequal') }}
       </small>
-    </span>
+    </FloatLabel>
   </div>
 </template>
 
@@ -49,6 +49,7 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 import InputText from 'primevue/inputtext'
+import FloatLabel from 'primevue/floatlabel'
 
 import { computed, ref, watch } from 'vue'
 import PasswordPrimevue from 'primevue/password'

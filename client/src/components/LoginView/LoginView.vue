@@ -16,7 +16,7 @@
       </div>
     </Message>
     <form @submit.prevent="login">
-      <span class="p-float-label floatingTextInput loginInputElement">
+      <FloatLabel class="floatingTextInput loginInputElement">
         <InputText
           id="LIusername"
           v-model="username"
@@ -25,8 +25,8 @@
           style="width: 100%"
         />
         <label for="LIusername">{{ t('Login.username') }}</label>
-      </span>
-      <span class="p-float-label floatingTextInput loginInputElement">
+      </FloatLabel>
+      <FloatLabel class="floatingTextInput loginInputElement">
         <InputText
           id="LIpassword"
           v-model="password"
@@ -35,7 +35,7 @@
           style="width: 100%"
         />
         <label for="LIpassword">{{ t('Login.password') }}</label>
-      </span>
+      </FloatLabel>
       <Button
         type="submit"
         :icon="'pi ' + (loading ? 'pi-spin pi-spinner' : 'pi-sign-in')"
@@ -48,12 +48,10 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import Button from 'primevue/button'
 import Message from 'primevue/message'
 import InputText from 'primevue/inputtext'
+import FloatLabel from 'primevue/floatlabel'
 
 import { ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index.ts'
@@ -61,11 +59,12 @@ import { login as userLogin } from '@/services/useUser'
 import { useToast } from 'primevue/usetoast'
 import router from '@/router'
 import { injectStrict, SocketKey } from '@/services/injections'
-
+import { useI18n } from 'vue-i18n'
 import { useSettingsStore } from '@/store/settings'
 import { deleteProfilePics } from '@/services/useProfilePicture'
-const settingsStore = useSettingsStore()
 
+const settingsStore = useSettingsStore()
+const { t } = useI18n()
 const socket = injectStrict(SocketKey)
 const toast = useToast()
 

@@ -71,7 +71,7 @@ const props = withDefaults(
 
 const selectedLocale = ref<string | undefined>()
 
-selectedLocale.value = locales.find((l) => l === i18n.global.locale)
+selectedLocale.value = locales.find((l) => l === i18n.global.locale.value)
 
 const setLocale = async () => {
   if (selectedLocale.value == null) {

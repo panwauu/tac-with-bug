@@ -39,6 +39,7 @@ export const i18n = createI18n({
   fallbackLocale: fallbackLocale,
   locale: getLocaleFromBrowser(),
   allowComposition: true,
+  legacy: false,
 })
 
 export const currentLocale = computed<string>(() => {

@@ -1,5 +1,5 @@
 <template>
-  <span class="p-float-label">
+  <FloatLabel>
     <InputText
       id="signUpTeamName"
       v-model="localTeamName"
@@ -22,17 +22,17 @@
     >
       {{ t('Tournament.SignUp.notNewTeamName') }}
     </small>
-  </span>
+  </FloatLabel>
 </template>
 
 <script setup lang="ts">
+import InputText from 'primevue/inputtext'
+import FloatLabel from 'primevue/floatlabel'
+
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-import InputText from 'primevue/inputtext'
-
-import { computed, watch } from 'vue'
-
 const emit = defineEmits<{ 'update:teamname': [teamname: string]; 'update:valid': [valid: boolean] }>()
 const props = defineProps<{ teamname: string; disabled: boolean; existingTeamNames: string[]; valid: boolean }>()
 

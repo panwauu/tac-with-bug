@@ -2,8 +2,8 @@
   <h2>{{ t('Landing.Waiting.title') }}</h2>
   <p>{{ t('Landing.Waiting.description') }}</p>
   <Accordion
-    :multiple="false"
     v-model:value="activeIndex"
+    :multiple="false"
     :disabled="!isLoggedIn"
   >
     <AccordionPanel
