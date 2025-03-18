@@ -6,7 +6,7 @@ function hexToRGBA(h: string, alpha: number) {
   return `rgba(${r},${g},${b},${alpha})`
 }
 
-const cssColorCode = ['--blue-600', '--green-600', '--orange-600', '--indigo-600', '--teal-600', '--cyan-600', '--yellow-600', '--purple-600']
+const cssColorCode = ['--p-blue-600', '--p-green-600', '--p-orange-600', '--p-indigo-600', '--p-teal-600', '--p-cyan-600', '--p-yellow-600', '--p-purple-600']
 
 export function getGraphColors(config?: { alpha?: number; elementNumber?: number }) {
   const alpha = config?.alpha ?? 1

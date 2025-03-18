@@ -5,7 +5,7 @@
       viewBox="0 0 24 24"
       preserveAspectRatio="xMaxYMax"
       height="100%"
-      :style="`fill: var(${cssColor});`"
+      :style="`fill: ${cssColor};`"
     >
       <g data-name="Layer 2">
         <g data-name="heart">
@@ -22,5 +22,5 @@
 import { computed } from 'vue'
 const props = defineProps<{ color?: 'primary' }>()
 
-const cssColor = computed(() => (props.color === 'primary' ? '--p-primary-color-text' : '--text-color'))
+const cssColor = computed(() => (props.color === 'primary' ? 'var(--p-primary-color-text)' : 'currentColor'))
 </script>

@@ -3,7 +3,7 @@
   "version": "1.4.8",
   "type": "commonjs",
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "description": "",
   "main": "server.js",
