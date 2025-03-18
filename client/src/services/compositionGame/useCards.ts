@@ -204,9 +204,9 @@ export function useCards(ballsState: BallsStateType, miscState: MiscStateType): 
         }
       }
 
-      // Handle preselected Card - Either as 7 is not finished or if already selected or if only one possible
+      // Handle preselected Card - Either as 7 is not finished or if already selected or if only one possible (or multiple cards with same name)
       const possibleCardIndex = cardsState.cards.findIndex((c) => c.possible)
-      if (possibleCardIndex !== -1 && cardsState.cards.filter((c) => c.possible).length === 1 && cardsState.selectedCard === -1) {
+      if (cardsState.selectedCard === -1 && possibleCardIndex !== -1 && [...new Set(cardsState.cards.filter((c) => c.possible).map((c) => c.title))].length === 1) {
         cardsState.selectedCard = possibleCardIndex
       }
 
