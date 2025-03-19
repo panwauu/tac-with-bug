@@ -35,6 +35,9 @@ jobs:
           cache-dependency-path: |
             server/package-lock.json
             client/package-lock.json
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
       - name: Install server modules
         run: |
           cd server
