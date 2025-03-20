@@ -43,10 +43,11 @@ const searchPlayers = () => {
 }
 
 const searchSubmit = () => {
-  if (filteredPlayers.value.includes(selectedPlayer.value)) {
+  const player = filteredPlayers.value.find((n) => n.toLowerCase() === selectedPlayer.value.toLowerCase())
+  if (player) {
     router.push({
       name: 'Profile',
-      params: { username: selectedPlayer.value, locale: router.currentRoute.value.params.locale },
+      params: { username: player, locale: router.currentRoute.value.params.locale },
     })
   }
   selectedPlayer.value = ''
