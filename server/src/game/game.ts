@@ -168,7 +168,7 @@ export class Game implements GameData {
     } else if (this.aussetzenFlag) {
       this.cards.players[activePlayer].forEach((card) => {
         if (card === 'tac') {
-          cardsWithMoves.push(createCardWithMove('8', this.balls, activePlayer, activePlayer, this.teams, this.cards, this.coop, this.sevenChosenPlayer))
+          cardsWithMoves.push(createCardWithMove('8', this.priorBalls, activePlayer, activePlayer, this.teams, this.cards, this.coop, this.sevenChosenPlayer))
           cardsWithMoves[cardsWithMoves.length - 1].title = 'tac'
         } else {
           cardsWithMoves.push(createCardWithMove(card, this.balls, activePlayer, -1, this.teams, this.cards, this.coop, this.sevenChosenPlayer))

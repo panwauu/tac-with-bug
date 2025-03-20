@@ -477,15 +477,23 @@ describe('Test suite with recorded games', () => {
     expect(result.ended).toBe(true)
   })
 
-  test('X Test with captured Prod Game 7652', () => {
+  test('Test with captured Prod Game 7652', () => {
     const result = testCapturedMoves('7652prod')
     expect(result.equal).toBe(true)
     expect(result.ended).toBe(true)
   })
 
-  test('X Test with captured Prod Game 9791', () => {
+  test('Test with captured Prod Game 9791', () => {
     const result = testCapturedMoves('9791prod')
     expect(result.equal).toBe(true)
     expect(result.ended).toBe(true)
+  })
+
+  test('Test with captured Prod Game 296047: Tac should evaluate aussetzen based on priorBalls after 8', () => {
+    const result = testCapturedMoves('296047')
+    expect(result.ended).toBe(false)
+    console.log(JSON.stringify(result.game))
+    console.log(result.game?.cardsWithMoves)
+    expect(result.game?.cardsWithMoves.some((card) => Object.keys(card.ballActions).length > 0)).toBe(false)
   })
 })
