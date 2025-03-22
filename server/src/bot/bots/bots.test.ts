@@ -6,12 +6,16 @@ describe('Test bots', () => {
     runSimulation(1, [Bot.Raindom, Bot.Raindom, Bot.Raindom, Bot.Raindom])
   })
   test('Greedy should end a game', () => {
-    runSimulation(1, [Bot.Greedy, Bot.Raindom, Bot.Greedy, Bot.Raindom])
+    runSimulation(1, [Bot.Greedy, Bot.Greedy, Bot.Greedy, Bot.Greedy])
   })
   test('Ruby should end a game', () => {
-    runSimulation(1, [Bot.Ruby, Bot.Raindom, Bot.Ruby, Bot.Raindom])
+    runSimulation(1, [Bot.Ruby, Bot.Ruby, Bot.Ruby, Bot.Ruby])
   })
-  test('Futuro should end a game', () => {
-    runSimulation(1, [Bot.Futuro, Bot.Raindom, Bot.Futuro, Bot.Raindom])
-  })
+  test(
+    'Futuro should end a game',
+    () => {
+      runSimulation(1, [Bot.Futuro, Bot.Futuro, Bot.Futuro, Bot.Futuro])
+    },
+    30 * 1000
+  )
 })
