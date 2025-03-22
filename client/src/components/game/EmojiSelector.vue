@@ -7,7 +7,7 @@
       />
       <Button
         icon="pi pi-plus"
-        class="p-button-success"
+        severity="success"
         :disabled="!validNewEmoji"
         @click="addEmoji"
       />
@@ -21,7 +21,9 @@
       <Button
         v-if="emojiListEditing"
         icon="pi pi-arrow-left"
-        class="p-button-rounded p-button-text p-button-sm"
+        text
+        rounded
+        size="small"
         style="margin-right: -15px"
         @click="swapEmojis(i, -1)"
       />
@@ -35,21 +37,29 @@
         <Button
           v-if="emojiListEditing"
           icon="pi pi-times"
-          class="emojiDeleteButton p-button-rounded p-button-danger p-button-sm"
+          class="emojiDeleteButton"
+          rounded
+          severity="danger"
+          size="small"
           @click="emojiList.splice(i, 1)"
         />
       </div>
       <Button
         v-if="emojiListEditing"
         icon="pi pi-arrow-right"
-        class="p-button-rounded p-button-text p-button-sm"
+        text
+        rounded
+        size="small"
         style="margin-left: -15px"
         @click="swapEmojis(i, 1)"
       />
     </div>
     <Button
       :icon="`pi pi-${emojiListEditing ? 'check' : 'pencil'}`"
-      :class="`p-button-sm p-button-rounded p-button-text ${emojiListEditing ? 'p-button-success' : ''}`"
+      text
+      rounded
+      :severity="emojiListEditing ? 'success' : 'primary'"
+      size="small"
       style="position: absolute; right: -6px; top: -6px"
       @click="emojiListEditing = !emojiListEditing"
     />

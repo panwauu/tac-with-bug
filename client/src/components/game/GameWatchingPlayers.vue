@@ -2,7 +2,8 @@
   <div>
     <Button
       icon="pi pi-eye"
-      class="p-button-rounded p-button-info"
+      severity="info"
+      rounded
       :label="buttonLabel"
       :disabled="nWatching === 0"
       @click="toggle"

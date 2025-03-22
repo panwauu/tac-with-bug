@@ -44,25 +44,33 @@
             <Button
               aria-label="Statistics"
               icon="pi pi-chart-bar"
-              class="p-button-rounded p-button-success landscapeMenuButton"
+              class="landscapeMenuButton"
+              rounded
+              severity="success"
               @click="openModal('statistic')"
             />
             <Button
               aria-label="Settings"
               icon="pi pi-cog"
-              class="p-button-rounded p-button-secondary landscapeMenuButton"
+              class="landscapeMenuButton"
+              rounded
+              severity="secondary"
               @click="openModal('settings')"
             />
             <Button
               aria-label="Help"
               icon="pi pi-question"
-              class="p-button-rounded p-button-info landscapeMenuButton"
+              class="landscapeMenuButton"
+              severity="info"
+              rounded
               @click="openModal('assistance')"
             />
             <Button
               aria-label="Substitution"
               icon="pi pi-arrows-h"
-              class="p-button-rounded p-button-warning landscapeMenuButton"
+              severity="warn"
+              class="landscapeMenuButton"
+              rounded
               :class="updateData?.substitution != null ? 'blink-animation' : ''"
               @click="openModal('substitution')"
             />

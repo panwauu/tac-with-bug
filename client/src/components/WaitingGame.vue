@@ -26,7 +26,7 @@
         />
       </Tag>
       <Tag
-        severity="warning"
+        severity="warn"
         class="status-badge"
       >
         {{ active ? t(`Waiting.Icons.${game.meister ? 'meister' : 'normal'}`) : '' }}
@@ -129,13 +129,21 @@
             >
               <Button
                 icon="pi pi-angle-up"
-                class="p-button-rounded p-button-secondary p-button-sm p-button-text buttonUpDown"
+                class="buttonUpDown"
+                text
+                rounded
+                severity="secondary"
+                size="small"
                 :disabled="playerIndex(Number(teamIndex), index) <= 0"
                 @click="movePlayerOrBot(game.id, playerIndex(Number(teamIndex), index), -1)"
               />
               <Button
                 icon="pi pi-angle-down"
-                class="p-button-rounded p-button-secondary p-button-sm p-button-text buttonUpDown"
+                class="buttonUpDown"
+                text
+                rounded
+                severity="secondary"
+                size="small"
                 :disabled="playerIndex(Number(teamIndex), index) >= game.nPlayers - 1"
                 @click="movePlayerOrBot(game.id, playerIndex(Number(teamIndex), index), 1)"
               />
@@ -143,7 +151,9 @@
             <Button
               v-if="activeAndSelfOrAdmin(playerIndex(Number(teamIndex), index))"
               icon="pi pi-times"
-              class="p-button-rounded p-button-danger p-button-text"
+              text
+              rounded
+              severity="danger"
               @click="removePlayerOrBot(playerIndex(Number(teamIndex), index))"
             />
           </div>
@@ -166,13 +176,13 @@
       <Button
         label="Diesen Warteraum verlassen"
         icon="pi pi-sign-out"
-        class="p-button-danger"
+        severity="danger"
         @click="removePlayer(username ?? '')"
       />
       <Button
         label="Bereit zum Starten?"
         icon="pi pi-caret-right"
-        class="p-button-success"
+        severity="success"
         :disabled="game.players.slice(0, game.nPlayers).some((p, i) => p === null && game.bots[i] == null) || game.ready.find((_, index) => game.players[index] === username)"
         @click="setPlayerReady()"
       />

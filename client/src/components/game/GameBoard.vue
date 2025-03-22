@@ -51,7 +51,8 @@
         <Button
           v-for="(textAction, index) in cardsState.getTextAction()"
           :key="`textAction-${String(index)}`"
-          class="p-button-danger textActionButton"
+          class="textActionButton"
+          severity="danger"
           @click="performTextAction(textAction)"
         >
           {{ t(`Game.CardActionButton.${textAction}`) }}

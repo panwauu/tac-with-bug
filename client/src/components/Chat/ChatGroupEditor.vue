@@ -4,7 +4,7 @@
       <InputText v-model="groupTitle" />
       <Button
         icon="pi pi-check"
-        class="p-button-success"
+        severity="success"
         :disabled="groupTitle === messagesStore.getCurrentChat?.groupTitle || groupTitle.length < 3 || groupTitle.length >= 25"
         @click="changeTitle"
       />
@@ -34,7 +34,7 @@
     <Divider />
     <Button
       :label="t('Chat.GroupChatEditor.leaveButton')"
-      class="p-button-danger"
+      severity="danger"
       @click="leaveChat"
     />
   </div>

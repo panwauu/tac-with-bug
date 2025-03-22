@@ -2,7 +2,11 @@
   <Button
     aria-label="Explanation"
     icon="pi pi-question"
-    class="p-button-rounded p-button-sm p-button-text p-button-secondary buttonExplanation"
+    class="buttonExplanation"
+    text
+    rounded
+    severity="secondary"
+    size="small"
     @click="displayExplanation = true"
   />
   <Dialog

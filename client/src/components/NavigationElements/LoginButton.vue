@@ -5,7 +5,7 @@
     :label="'Login'"
     icon="pi pi-sign-in"
     icon-pos="right"
-    class="p-button-sm"
+    size="small"
     @click="toggle"
   />
   <Popover

@@ -106,7 +106,9 @@
             username === loggedInUser && slotProps.data.status === 'running' && slotProps.data.tournamentid === null && Date.now() - slotProps.data.created < 1000 * 60 * 5
           "
           icon="pi pi-times"
-          class="p-button-rounded p-button-danger p-button-text"
+          text
+          rounded
+          severity="danger"
           @click="abortButton(slotProps.data)"
         />
       </template>

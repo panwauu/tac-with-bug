@@ -41,23 +41,28 @@
       <div class="cropperControls">
         <Button
           :label="t('Settings.UploadProfilePicture.Modal.reset')"
-          class="p-button-secondary p-button-text"
+          text
+          severity="secondary"
           @click="reset"
         />
         <Button
           icon="pi pi-undo"
-          class="p-button-secondary p-button-text"
+          text
+          severity="secondary"
           @click="rotate(-90)"
         />
         <Button
           icon="pi pi-undo"
-          class="flipped p-button-secondary p-button-text"
+          class="flipped"
+          text
+          severity="secondary"
           @click="rotate(90)"
         />
         <Button
           icon="pi pi-upload"
           :label="t('Settings.UploadProfilePicture.Modal.submit')"
-          class="p-button-secondary p-button-text"
+          text
+          severity="secondary"
           @click="submit"
         />
       </div>

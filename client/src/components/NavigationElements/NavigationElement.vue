@@ -4,7 +4,8 @@
       aria-label="Menu"
       type="button"
       icon="pi pi-chevron-down"
-      class="p-button-text p-button-plain"
+      text
+      plain
       style="padding: 0.5rem"
       @click="toggle"
     >

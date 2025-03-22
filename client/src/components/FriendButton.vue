@@ -1,41 +1,49 @@
 <template>
   <Button
     v-if="username !== loggedInUser && friendShipStatus === 'none' && !settingsStore.isBlockedByModeration"
-    class="p-button-sm p-button-outlined p-button-success"
+    size="small"
+    outlined
+    severity="success"
     :label="t('Friends.FriendButton.requestFriend')"
     icon="pi pi-user-plus"
     @click="friendsState.request(username)"
   />
   <Button
     v-if="username !== loggedInUser && friendShipStatus === 'done'"
-    class="p-button-sm p-button-outlined p-button-danger"
+    severity="danger"
+    size="small"
+    outlined
     :label="t('Friends.FriendButton.cancelFriendship')"
     icon="pi pi-user-minus"
     @click="friendsState.cancel(username)"
   />
   <Button
     v-if="username !== loggedInUser && friendShipStatus === 'to'"
-    class="p-button-sm p-button-outlined p-button-danger"
+    severity="danger"
+    size="small"
+    outlined
     :label="t('Friends.FriendButton.withdrawRequest')"
     icon="pi pi-user-minus"
     @click="friendsState.withdraw(username)"
   />
-  <span
-    v-if="username !== loggedInUser && friendShipStatus === 'from'"
-    class="p-buttonset"
-  >
+
+  <ButtonGroup v-if="username !== loggedInUser && friendShipStatus === 'from'">
     <Button
       :label="t('Friends.FriendButton.acceptRequest')"
       icon="pi pi-user-plus"
-      class="p-button-sm p-button-outlined p-button-success"
+      severity="success"
+      size="small"
+      outlined
       @click="friendsState.confirm(username)"
     />
     <Button
       icon="pi pi-user-minus"
-      class="p-button-sm p-button-outlined p-button-danger"
+      severity="danger"
+      size="small"
+      outlined
       @click="friendsState.decline(username)"
     />
-  </span>
+  </ButtonGroup>
 </template>
 
 <script setup lang="ts">
@@ -43,7 +51,7 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 import Button from 'primevue/button'
-
+import ButtonGroup from 'primevue/buttongroup'
 import { computed } from 'vue'
 import { FriendsStateKey, injectStrict } from '@/services/injections'
 import { username as loggedInUser } from '@/services/useUser'

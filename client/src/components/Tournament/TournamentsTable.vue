@@ -48,7 +48,11 @@
     </DataTable>
     <Button
       icon="pi pi-refresh"
-      class="p-button-rounded p-button-sm p-button-text p-button-secondary refreshButton"
+      class="refreshButton"
+      text
+      rounded
+      severity="secondary"
+      size="small"
       @click="getHistory(0)"
     />
   </div>

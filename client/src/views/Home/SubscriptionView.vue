@@ -92,20 +92,15 @@
       </div>
     </div>
     <h3>{{ t('Subscription.headerAdditionalPay') }}</h3>
-    <a
-      class="p-button p-component p-button-label"
-      style="color: var(--p-primary-color-text); text-decoration: none; margin-bottom: 20px"
+    <Button
+      style="text-decoration: none"
+      icon="pi pi-paypal"
+      :label="t('Subscription.buttonAdditionalPay')"
+      as="a"
       target="_blank"
       rel="noopener noreferrer"
       href="https://www.paypal.com/paypalme/TacWithBug"
-    >
-      {{ t('Subscription.buttonAdditionalPay') }}
-      <i
-        class="pi pi-paypal"
-        style="margin-left: 5px"
-        aria-hidden="true"
-      />
-    </a>
+    />
     <div style="margin-top: 10px">
       <div class="disclaimer">{{ t('Subscription.disclaimer1') }}</div>
       <div class="disclaimer">{{ t('Subscription.disclaimer2') }}</div>

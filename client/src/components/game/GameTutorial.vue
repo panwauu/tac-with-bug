@@ -19,7 +19,7 @@
     <div class="tutorialControls p-card">
       <Button
         icon="pi pi-angle-left"
-        class="p-button tutorialControlsButton"
+        class="tutorialControlsButton"
         :disabled="!canGoBackward || loading"
         @click="goBackward()"
       />
@@ -133,7 +133,7 @@
       </div>
       <Button
         icon="pi pi-angle-right"
-        class="p-button tutorialControlsButton"
+        class="tutorialControlsButton"
         :disabled="!done || loading || tutorialStep + 1 >= tutorialStore.getProgress[tutorialID].length"
         @click="goForward()"
       />

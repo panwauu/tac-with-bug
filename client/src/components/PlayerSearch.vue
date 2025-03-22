@@ -16,7 +16,6 @@
       ref="PlayerSearchButtonRef"
       aria-label="Player Search Submit"
       icon="pi pi-search"
-      class="p-button"
       @click="searchSubmit()"
     />
   </InputGroup>

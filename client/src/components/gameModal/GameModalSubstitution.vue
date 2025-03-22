@@ -62,7 +62,7 @@
       :disabled="startSubstitutionPossible === false"
       :label="t('Game.GameModal.Substitution.offerButton')"
       style="margin-top: 15px"
-      class="p-button-success"
+      severity="success"
       @click="startSubstitution"
     />
 
@@ -94,19 +94,19 @@
       <Button
         v-if="updateData.gamePlayer != -1 && updateData.gamePlayer != updateData.substitution.playerIndexToSubstitute"
         :disabled="updateData.substitution.acceptedByIndex.includes(updateData.gamePlayer)"
-        class="p-button-success"
+        severity="success"
         :label="t('Game.GameModal.Substitution.acceptButton')"
         @click="answerSubstitution(true)"
       />
       <Button
         v-if="updateData.gamePlayer != -1"
-        class="p-button-danger"
+        severity="danger"
         :label="t('Game.GameModal.Substitution.rejectButton')"
         @click="answerSubstitution(false)"
       />
       <Button
         v-if="updateData.substitution.substitute.username === username"
-        class="p-button-danger"
+        severity="danger"
         :label="t('Game.GameModal.Substitution.endOfferButton')"
         @click="answerSubstitution(false)"
       />

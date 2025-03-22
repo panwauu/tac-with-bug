@@ -21,13 +21,17 @@
           <Button
             v-if="player === username && !team.activated[playerIndex]"
             icon="pi pi-check"
-            class="p-button-rounded p-button-success p-button-text"
+            text
+            rounded
+            severity="success"
             @click="activatePlayer()"
           />
           <Button
             v-if="tournament.adminPlayer === username || player === username"
             icon="pi pi-times"
-            class="p-button-rounded p-button-danger p-button-text"
+            text
+            rounded
+            severity="danger"
             @click="removePlayer(player)"
           />
         </div>
@@ -60,7 +64,7 @@
       :disabled="!readyToStart"
       :label="t('Tournament.EditPrivate.startButton')"
       icon="pi pi-play"
-      class="p-button-success"
+      class=""
       @click="startTournament"
     />
     <PrivateTournamentEditorDialog

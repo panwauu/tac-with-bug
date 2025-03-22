@@ -60,7 +60,7 @@
         </div>
       </div>
     </div>
-    <span class="p-buttonset">
+    <ButtonGroup>
       <Button
         icon="pi pi-refresh"
         label="Reset"
@@ -71,7 +71,7 @@
         label="Rescale"
         @click="resetGraphSize()"
       />
-    </span>
+    </ButtonGroup>
     <div
       v-if="loading"
       class="chartSponsorOverlay"
@@ -90,6 +90,7 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 import Button from 'primevue/button'
+import ButtonGroup from 'primevue/buttongroup'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
 import { onUnmounted, onMounted, watch, ref } from 'vue'

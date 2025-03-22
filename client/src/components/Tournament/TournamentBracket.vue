@@ -133,7 +133,9 @@
                   "
                   style="margin-left: 10px"
                   icon="pi pi-play"
-                  class="p-button-success p-button-rounded p-button-text"
+                  text
+                  rounded
+                  severity="success"
                   @click="startGame(listIndex, matchIndex)"
                 />
               </div>

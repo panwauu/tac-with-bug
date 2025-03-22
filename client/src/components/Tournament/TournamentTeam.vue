@@ -19,13 +19,17 @@
         <Button
           v-if="player === username && team.activated[i] === false"
           icon="pi pi-check"
-          class="p-button-rounded p-button-success p-button-text"
+          text
+          rounded
+          severity="success"
           @click="activateUser()"
         />
         <Button
           v-if="player === username"
           icon="pi pi-times"
-          class="p-button-rounded p-button-danger p-button-text"
+          text
+          rounded
+          severity="danger"
           @click="leaveTournament()"
         />
       </div>

@@ -29,26 +29,29 @@
       <Button
         v-show="!editing"
         icon="pi pi-pencil"
-        class="p-button-rounded p-button-secondary"
+        rounded
+        severity="secondary"
         :disabled="editing"
         @click="startEdit"
       />
-      <span class="p-buttonset">
+      <ButtonGroup>
         <Button
           v-show="editing"
           icon="pi pi-check"
-          class="p-button-rounded p-button-success"
+          rounded
+          severity="success"
           :disabled="!editing || descriptionTooLong"
           @click="submitEdit"
         />
         <Button
           v-show="editing"
           icon="pi pi-times"
-          class="p-button-rounded p-button-danger"
+          rounded
+          severity="danger"
           :disabled="!editing"
           @click="resetValueAndEndEditing"
         />
-      </span>
+      </ButtonGroup>
     </div>
   </div>
 </template>
@@ -59,7 +62,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
-
+import ButtonGroup from 'primevue/buttongroup'
 import { ref, watch, computed } from 'vue'
 import { username as loggedInUsername } from '@/services/useUser'
 import { DefaultService as Service } from '@/generatedClient/index.ts'

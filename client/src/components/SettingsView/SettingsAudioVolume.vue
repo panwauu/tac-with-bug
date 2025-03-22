@@ -2,7 +2,9 @@
   <div class="audioSwitchSlider">
     <Button
       :icon="`pi ${audioIcon}`"
-      class="p-button-lg p-button-rounded p-button-text"
+      size="large"
+      text
+      rounded
       @click="audioButtonClick()"
     />
     <Slider

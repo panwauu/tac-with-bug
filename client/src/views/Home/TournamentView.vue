@@ -4,7 +4,11 @@
       v-if="router.currentRoute.value.name !== 'TournamentOverview'"
       :label="t('Tournament.backButton')"
       icon="pi pi-backward"
-      class="p-button-rounded p-button-sm p-button-text p-button-secondary buttonBack"
+      class="buttonBack"
+      text
+      rounded
+      severity="secondary"
+      size="small"
       @click="router.push({ name: 'TournamentOverview' })"
     />
     <router-view />

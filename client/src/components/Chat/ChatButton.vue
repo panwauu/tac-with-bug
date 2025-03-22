@@ -20,7 +20,7 @@
     <Badge
       v-if="messagesStore.notificationsChannels !== 0"
       :value="messagesStore.notificationsChannels.toString()"
-      severity="warning"
+      severity="warn"
       class="notiBadge badgeGeneral"
       size="small"
     />

@@ -5,7 +5,9 @@
         <Button
           aria-label="open sidebar"
           :icon="`pi pi-${chatStore.displayChatMenu ? 'arrow-left' : 'bars'}`"
-          class="p-button-rounded p-button-text sidebarButton"
+          class="sidebarButton"
+          text
+          rounded
           @click="chatStore.toggleChatMenu"
         />
         <Badge
@@ -33,14 +35,17 @@
         v-if="messagesStore.getCurrentChat != null"
         aria-label="edit chat"
         icon="pi pi-pencil"
-        class="p-button-rounded p-button-text"
+        text
+        rounded
         @click="toggle"
       />
       <div style="margin: 0 auto" />
       <Button
         aria-label="close chat"
         icon="pi pi-times"
-        class="p-button-rounded p-button-text closeButton"
+        class="closeButton"
+        text
+        rounded
         @click="chatStore.closeChat()"
       />
     </div>
@@ -103,7 +108,8 @@
         <Button
           v-if="y < -20"
           icon="pi pi-arrow-down"
-          class="p-button-rounded scrollDownButton"
+          class="scrollDownButton"
+          rounded
           @click="scrollDown"
         />
       </Transition>

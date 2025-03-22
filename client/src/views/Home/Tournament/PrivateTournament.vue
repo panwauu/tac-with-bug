@@ -8,7 +8,11 @@
   >
     <Button
       icon="pi pi-question"
-      class="p-button-rounded p-button-sm p-button-text p-button-secondary buttonExplanation"
+      class="buttonExplanation"
+      text
+      rounded
+      severity="secondary"
+      size="small"
       @click="displayExplanation = true"
     />
 
@@ -44,7 +48,7 @@
       v-if="tournament.adminPlayer === username && ['planned', 'running'].includes(tournament.status)"
       icon="pi pi-times"
       :label="t('Tournament.Private.abortButton')"
-      class="p-button-warning"
+      severity="warn"
       @click="abortTournament"
     />
     <div v-if="tournament.status === 'planned'">

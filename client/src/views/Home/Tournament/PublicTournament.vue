@@ -2,7 +2,11 @@
   <div class="publicTournamentPage">
     <Button
       icon="pi pi-question"
-      class="p-button-rounded p-button-sm p-button-text p-button-secondary buttonExplanation"
+      class="buttonExplanation"
+      rounded
+      text
+      severity="secondary"
+      size="small"
       @click="displayExplanation = true"
     />
 

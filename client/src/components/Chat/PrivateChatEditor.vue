@@ -2,7 +2,7 @@
   <div style="display: flex; flex-direction: column; align-items: center">
     <Button
       :label="t('Chat.GroupChatEditor.leaveButton')"
-      class="p-button-danger"
+      severity="danger"
       @click="leaveChat"
     />
   </div>

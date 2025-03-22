@@ -29,7 +29,9 @@
           v-if="chatStore.responsiveMode"
           aria-label="close chat"
           icon="pi pi-arrow-left"
-          class="p-button-rounded p-button-text positionsItem"
+          class="positionsItem"
+          text
+          rounded
           @click="chatStore.toggleChatMenu"
         />
       </div>
