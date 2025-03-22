@@ -67,11 +67,8 @@ const modalState = ref('statistic')
 const loading = ref(true)
 const tutorialStepOutput = ref<null | TutorialStepOutput>(null)
 const displayTutorialOverlay = ref(true)
-const tutorialID = ref(0)
-const tutorialStep = ref(0)
-
-tutorialID.value = parseInt(router.currentRoute.value.query.tutorialID as string)
-tutorialStep.value = parseInt(router.currentRoute.value.query.tutorialStep as string)
+const tutorialID = ref(parseInt(router.currentRoute.value.query.tutorialID as string))
+const tutorialStep = ref(parseInt(router.currentRoute.value.query.tutorialStep as string))
 
 function closeGame() {
   if (tutorialStepOutput?.value?.goal?.closeButton != null) {
@@ -98,7 +95,9 @@ loadStep()
 
 async function loadStep() {
   loading.value = true
+  console.log(tutorialID.value, tutorialStep.value)
   const res = await socket.emitWithAck(5000, 'tutorial:load', { tutorialID: tutorialID.value, tutorialStep: tutorialStep.value })
+  console.log(res)
   if (res.status !== 200 || res.data == null) {
     router.push({ name: 'TutorialOverview' })
     return

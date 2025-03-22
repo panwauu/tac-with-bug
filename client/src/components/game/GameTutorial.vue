@@ -242,6 +242,7 @@ const progress = computed(() => {
 
 .tutorialControls {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   flex: 0 1 600px;
 }

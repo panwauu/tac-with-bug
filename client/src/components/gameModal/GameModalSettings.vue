@@ -11,7 +11,7 @@
     />
     <h3>{{ t(`Game.GameModal.Settings.position`) }}</h3>
     <div class="positionContainer">
-      <div class="p-field-radiobutton">
+      <div>
         <RadioButton
           v-model="position"
           name="position_-1"
@@ -25,7 +25,6 @@
       <div
         v-for="index in nPlayers"
         :key="`radioButton-${index}`"
-        class="p-field-radiobutton"
       >
         <RadioButton
           v-model="position"
@@ -96,6 +95,7 @@ const localColorBlindness = computed({
 
 .positionContainer {
   display: flex;
+  gap: 2px;
   flex-direction: column;
   align-items: flex-start;
 }
