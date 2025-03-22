@@ -7,19 +7,19 @@
       height="100%"
     >
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M0 0h100v12H0z"
       />
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M0 0h12v80H0z"
       />
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M0 68h100v12H0z"
       />
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M70 0h30v80H70z"
       />
     </svg>
@@ -30,19 +30,19 @@
       height="100%"
     >
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M0 0h100v12H0z"
       />
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M0 0h12v80H0z"
       />
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M0 50h100v30H0z"
       />
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M88 0h12v80H88z"
       />
     </svg>
@@ -53,15 +53,15 @@
       height="100%"
     >
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M0 0h30v12H0zM0 68h30v12H0zM70 0h30v12H70z"
       />
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M0 0h12v30H0zM0 50h12v30H0zM70 68h30v12H70z"
       />
       <path
-        :fill="selected ? 'var(--p-primary-color)' : 'var(--surface-800)'"
+        :fill="selected ? 'var(--p-primary-color)' : 'var(--p-surface-800)'"
         d="M88 50h12v30H88zM88 0h12v30H88z"
       />
     </svg>

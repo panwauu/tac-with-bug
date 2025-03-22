@@ -13,7 +13,7 @@
       <path
         xmlns="http://www.w3.org/2000/svg"
         d="M20 7h-7L10 .5 7 7H0l5.46 5.47-1.64 7 6.18-3.7 6.18 3.73-1.63-7zm-10 6.9l-3.76 2.27 1-4.28L3.5 8.5h4.61L10 4.6l1.9 3.9h4.6l-3.73 3.4 1 4.28z"
-        fill="var(--surface-400)"
+        fill="var(--p-surface-400)"
       />
     </svg>
     <div>
@@ -41,10 +41,10 @@ const toSubscription = async () => {
   font-weight: 800;
   display: flex;
   align-items: center;
-  border: solid 2px var(--surface-400);
+  border: solid 2px var(--p-surface-400);
   border-radius: 7px;
   padding: 0px 4px;
   background-color: var(--surface-d);
-  color: var(--surface-400);
+  color: var(--p-surface-400);
 }
 </style>

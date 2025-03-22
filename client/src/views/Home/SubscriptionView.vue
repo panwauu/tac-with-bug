@@ -321,7 +321,7 @@ const paypalPercentageSeverity = computed(() => {
 
 .Features {
   border-radius: 5px;
-  border: solid var(--green-500) 5px;
+  border: solid var(--p-message-success-color) 5px;
   padding: 10px;
 }
 
