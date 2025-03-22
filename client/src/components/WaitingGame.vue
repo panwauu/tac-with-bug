@@ -284,7 +284,7 @@ const switchColor = (color: string) => {
   margin: 15px;
   min-height: 200px;
   padding: 10px;
-  background-color: var(--surface-b);
+  background-color: var(--background-contraster);
 }
 
 .waitingGameHeader {
@@ -336,7 +336,7 @@ const switchColor = (color: string) => {
 }
 
 .teamBody {
-  background: var(--surface-d);
+  background: var(--background-contrastest);
   border-radius: 5px;
   padding: 5px;
 }

@@ -38,8 +38,8 @@ const dayChartOptions = {
   scales: {
     r: {
       angleLines: {
-        color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
-        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--surface-d'),
+        color: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
+        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
         display: true,
       },
       beginAtZero: true,
@@ -50,7 +50,7 @@ const dayChartOptions = {
         showLabelBackdrop: false,
       },
       grid: {
-        color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
+        color: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
       },
     },
   },

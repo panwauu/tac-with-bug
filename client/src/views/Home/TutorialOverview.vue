@@ -130,7 +130,7 @@ function clickStartButton(tutorialID: number, tutorialProgress: boolean[]) {
 .checkbox {
   width: 20px;
   height: 20px;
-  border: 4px solid var(--surface-d);
+  border: 4px solid var(--background-contrastest);
   border-radius: 4px;
   flex: 0 0 auto;
   margin-left: 5px;

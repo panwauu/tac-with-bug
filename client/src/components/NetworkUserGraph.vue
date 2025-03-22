@@ -319,7 +319,7 @@ watch(
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--surface-ground);
+  background-color: var(--background-contraster);
   padding: 20px;
   border-radius: 5px;
   display: flex;
@@ -359,7 +359,7 @@ watch(
   height: 100%;
   top: 0;
   left: 0;
-  background: var(--surface-a);
+  background: var(--p-content-background);
   opacity: 0.6;
 }
 </style>

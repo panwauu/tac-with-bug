@@ -125,14 +125,14 @@ const weekChartOptions = {
   scales: {
     x: {
       grid: {
-        color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
-        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--surface-d'),
+        color: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
+        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
       },
     },
     y: {
       grid: {
-        color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
-        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--surface-d'),
+        color: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
+        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
       },
     },
   },

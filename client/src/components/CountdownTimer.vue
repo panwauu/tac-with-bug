@@ -160,7 +160,7 @@ onUnmounted(() => {
   margin: 10px;
   padding: 10px;
   border-radius: 10px;
-  background-color: var(--surface-b);
+  background-color: var(--background-contraster);
   display: flex;
   flex-direction: column;
   justify-content: center;

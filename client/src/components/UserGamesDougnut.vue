@@ -57,7 +57,7 @@ const chartData = ref({
 })
 const chartOptions = {
   responsive: true,
-  borderColor: getComputedStyle(document.body).getPropertyValue('--surface-d'),
+  borderColor: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
   borderWidth: 3,
   plugins: {
     legend: {

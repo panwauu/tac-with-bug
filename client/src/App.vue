@@ -144,6 +144,19 @@ onUnmounted(() => clearInterval(interval))
 :root {
   --tac-red: #ef3f23;
   --tac-text-color: #002b54;
+  --background-ground: var(--p-surface-50);
+  --background-contrast: var(--p-content-background);
+  --background-contraster: var(--p-surface-100);
+  --background-contrastest: var(--p-surface-200);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-ground: var(--p-surface-950);
+    --background-contrast: var(--p-content-background);
+    --background-contraster: var(--p-surface-800);
+    --background-contrastest: var(--p-surface-700);
+  }
 }
 
 html {
@@ -154,17 +167,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: Avenir, Helvetica, Arial, sans-serif;
-}
-
-html {
-  background-color: var(--p-surface-50);
-}
-
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  html {
-    background-color: var(--p-surface-800);
-  }
+  background-color: var(--background-ground);
 }
 
 body {
@@ -191,7 +194,6 @@ body {
   width: 100%;
   height: 100%;
   text-align: center;
-  color: var(--text-color);
 }
 
 .clickable {

@@ -326,7 +326,7 @@ function scrollDown() {
 
 .chatMessagesDateInner {
   margin: 0 auto;
-  background: var(--surface-d);
+  background: var(--background-contrastest);
   padding: 5px;
   border-radius: 5px;
   font-size: small;
@@ -362,7 +362,7 @@ function scrollDown() {
 .chatMessage {
   box-shadow: 0px 3px 5px -5px var(--gray-600);
   border-radius: 5px;
-  background: var(--surface-b);
+  background: var(--background-contraster);
   padding: 7px 7px 10px 7px;
   max-width: 70%;
   min-width: 50px;
@@ -383,14 +383,14 @@ function scrollDown() {
 .chatMessageOwn::before {
   right: 0;
   margin-right: -10px;
-  border-left-color: var(--surface-b);
+  border-left-color: var(--background-contraster);
   border-right: 0;
 }
 
 .chatMessageNotOwn::before {
   left: 0;
   margin-left: -10px;
-  border-right-color: var(--surface-b);
+  border-right-color: var(--background-contraster);
   border-left: 0;
 }
 

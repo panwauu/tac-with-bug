@@ -104,7 +104,7 @@ async function setValues(keys: string[]) {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--surface-a);
+  background-color: var(--p-content-background);
   opacity: 0.8;
 }
 .notifications-container {

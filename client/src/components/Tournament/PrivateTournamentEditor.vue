@@ -163,7 +163,7 @@ async function startTournament() {
 
 <style scoped>
 .team {
-  background: var(--surface-d);
+  background: var(--background-contrastest);
   border-radius: 10px;
   padding: 10px;
   position: relative;

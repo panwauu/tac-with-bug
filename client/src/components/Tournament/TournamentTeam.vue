@@ -90,7 +90,7 @@ function activateUser() {
 }
 
 .teamBody {
-  background: var(--surface-d);
+  background: var(--background-contrastest);
   border-radius: 5px;
   padding: 5px;
   display: flex;

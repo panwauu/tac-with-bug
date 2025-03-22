@@ -133,7 +133,7 @@ const reconnectionProgress = computed(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--surface-a);
+  background-color: var(--p-content-background);
   opacity: 0.7;
   z-index: 1;
 }

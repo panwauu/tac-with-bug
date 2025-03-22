@@ -44,7 +44,7 @@ const toSubscription = async () => {
   border: solid 2px var(--p-surface-400);
   border-radius: 7px;
   padding: 0px 4px;
-  background-color: var(--surface-d);
+  background-color: var(--background-contrastest);
   color: var(--p-surface-400);
 }
 </style>

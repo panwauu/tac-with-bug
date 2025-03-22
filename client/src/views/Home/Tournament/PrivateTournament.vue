@@ -171,7 +171,7 @@ const displayExplanation = ref(false)
 table,
 th,
 td {
-  border: 1px solid var(--surface-d);
+  border: 1px solid var(--background-contrastest);
   border-collapse: collapse;
   padding: 10px 25px;
 }

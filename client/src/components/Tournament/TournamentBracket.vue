@@ -245,9 +245,9 @@ async function startGame(tournamentRound: number, roundGame: number) {
 .bracket-connector-1 {
   height: 100%;
   width: 20px;
-  border-top: 4px solid var(--surface-b);
-  border-right: 4px solid var(--surface-b);
-  border-bottom: 4px solid var(--surface-b);
+  border-top: 4px solid var(--background-contraster);
+  border-right: 4px solid var(--background-contraster);
+  border-bottom: 4px solid var(--background-contraster);
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -255,13 +255,13 @@ async function startGame(tournamentRound: number, roundGame: number) {
 .bracket-connector-2 {
   height: 50%;
   width: 20px;
-  border-bottom: 4px solid var(--surface-b);
+  border-bottom: 4px solid var(--background-contraster);
 }
 
 .bracket-match {
   position: relative;
   border-radius: 10px;
-  background-color: var(--surface-b);
+  background-color: var(--background-contraster);
   width: 100%;
 }
 
@@ -279,7 +279,7 @@ async function startGame(tournamentRound: number, roundGame: number) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--surface-d);
+  background: var(--background-contrastest);
   border-radius: 5px;
   padding: 5px;
 }

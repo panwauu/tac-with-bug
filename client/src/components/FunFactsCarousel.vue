@@ -111,7 +111,7 @@ const funfactsForCarousel = computed(() => {
 }
 
 .custom-card {
-  background-color: var(--surface-b);
+  background-color: var(--background-contraster);
   border-radius: 3px;
 }
 </style>

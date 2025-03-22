@@ -101,7 +101,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background: var(--surface-d);
+  background: var(--background-contrastest);
   border-radius: 5px;
   padding: 5px;
   overflow: hidden;

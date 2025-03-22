@@ -66,10 +66,10 @@ const activityHeatmapOptions = {
   xaxis: {
     categories: ['🌙', '', '', '', '', '', '🌅', '', '', '', '', '☀️', '', '', '', '', '🌅', '', '', '', '', '', '🌙'],
     axisBorder: {
-      color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
+      color: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
     },
     axisTicks: {
-      color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
+      color: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
     },
   },
   grid: {

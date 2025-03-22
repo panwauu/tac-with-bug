@@ -33,8 +33,8 @@ const hourChartOptions = {
   scales: {
     y: {
       grid: {
-        color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
-        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--surface-d'),
+        color: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
+        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
       },
       ticks: {
         min: 0,
@@ -45,8 +45,8 @@ const hourChartOptions = {
     },
     x: {
       grid: {
-        color: getComputedStyle(document.body).getPropertyValue('--surface-d'),
-        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--surface-d'),
+        color: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
+        zeroLineColor: getComputedStyle(document.body).getPropertyValue('--background-contrastest'),
       },
     },
   },
