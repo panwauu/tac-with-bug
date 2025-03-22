@@ -10,8 +10,8 @@ import { discardBot } from './DiscardBot'
 import { tradeBot } from './TradeBot'
 import { ballInBackwardProximity, ballInForward7Proximity, ballInForwardProximity, ballInProximityOfHouse, normalizedNecessaryForwardMovesToEndOfGoal } from './utils'
 
-const cutOfNodes = 100
-const movesIntoTheFuture = 6
+const cutOfNodes = 20
+const movesIntoTheFuture = 3
 
 export class Futuro implements AiInterface {
   choose(data: AiData) {
