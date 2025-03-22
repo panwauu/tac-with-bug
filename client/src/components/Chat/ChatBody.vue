@@ -256,7 +256,7 @@ function textAreaKeydown(e: KeyboardEvent) {
   }
 }
 
-const overlayPanelRef = ref<Popover | null>()
+const overlayPanelRef = ref<InstanceType<typeof Popover> | null>()
 function toggle(event: any) {
   overlayPanelRef.value?.toggle(event)
 }

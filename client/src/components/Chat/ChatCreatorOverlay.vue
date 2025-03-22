@@ -3,8 +3,7 @@
     <SelectButton
       v-model="chatOptionSelected"
       :options="chatOptions"
-      data-key="value"
-      style="margin: 10px"
+      option-label="value"
     >
       <template #option="slotProps">
         <div style="display: flex; align-items: center">
@@ -17,6 +16,7 @@
         </div>
       </template>
     </SelectButton>
+
     <PlayersAutoComplete
       v-model:username="selectedPlayerUsername"
       v-model:userid="selectedPlayerUserid"
@@ -25,7 +25,7 @@
     />
     <Button
       :label="t('Chat.ChatCreator.startButton')"
-      :disabled="selectedPlayerUsername == '' || chatOptionSelected == null"
+      :disabled="selectedPlayerUsername == '' || selectedPlayerUsername == null || chatOptionSelected == null"
       @click="startChat"
     />
   </div>
@@ -49,11 +49,11 @@ const messagesStore = useMessagesStore()
 const selectedPlayerUsername = ref('')
 const selectedPlayerUserid = ref(null)
 
-const chatOptionSelected = ref()
 const chatOptions = ref([
   { icon: 'pi pi-comment', value: 'single' },
   { icon: 'pi pi-comments', value: 'group' },
 ])
+const chatOptionSelected = ref(chatOptions.value[0])
 
 function startChat() {
   if (selectedPlayerUserid.value == null || selectedPlayerUserid.value < 0 || selectedPlayerUsername.value === '') {
@@ -61,7 +61,7 @@ function startChat() {
     return
   }
   messagesStore.startChat([{ id: selectedPlayerUserid.value, username: selectedPlayerUsername.value }], chatOptionSelected.value?.value === 'group' ? 'Neuer Chat' : null)
-  chatOptionSelected.value = null
+  chatOptionSelected.value = chatOptions.value[0]
   selectedPlayerUsername.value = ''
   selectedPlayerUserid.value = null
   emits('close')

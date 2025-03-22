@@ -79,7 +79,7 @@ const localVisible = computed({
   get: () => props.visible,
 })
 
-const adaptTeamDialog = ref<Dialog | null>()
+const adaptTeamDialog = ref<InstanceType<typeof Dialog> | null>()
 const teamName = ref('')
 const validTeamName = ref(false)
 const playerName = ref<string | null>(null)

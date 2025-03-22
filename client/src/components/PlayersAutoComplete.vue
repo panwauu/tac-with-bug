@@ -3,17 +3,17 @@
     v-model="localUsername"
     force-selection
     :suggestions="filteredPlayers"
-    field="username"
+    option-label="username"
     append-to="body"
     :input-style="{ width: '100%' }"
     :placeholder="t('PlayersAutoComplete.placeholder')"
     @complete="searchPlayers()"
   >
-    <template #item="slotProps">
+    <template #option="slotProps">
       <PlayerWithPicture
         :name-first="false"
         :clickable="false"
-        :username="slotProps.item.username"
+        :username="slotProps.option.username"
       />
     </template>
   </AutoComplete>
@@ -25,29 +25,36 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import PlayerWithPicture from './PlayerWithPicture.vue'
 import AutoComplete from 'primevue/autocomplete'
-
 import { computed, ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index.ts'
 
-const props = defineProps<{ username: string | null; userid: number | null; playersToAvoid?: string[] }>()
-const emit = defineEmits<{ 'update:username': [username: string]; 'update:userid': [id: any] }>()
+const props = defineProps<{ playersToAvoid?: string[] }>()
+const username = defineModel<string | null>('username')
+const userid = defineModel<number | null>('userid')
 
+const selectedElement = ref<string>('')
 const filteredPlayers = ref<{ username: string; id: number }[]>([])
 
 const localUsername = computed({
   get(): string {
-    return props.username ?? ''
+    return username.value ?? ''
   },
-  set(value: string) {
+  set(value: string | { id: number; username: string }) {
     if (value == null) {
+      username.value = null
+      userid.value = null
+      selectedElement.value = ''
       return
     }
-    if (typeof value === 'string') {
-      return emit('update:username', value)
-    } else {
-      emit('update:userid', (value as any).id)
-      return emit('update:username', (value as any).username)
+
+    if (typeof value !== 'string') {
+      username.value = value.username
+      userid.value = value.id
+      selectedElement.value = value.username
+      return
     }
+
+    selectedElement.value = value
   },
 })
 

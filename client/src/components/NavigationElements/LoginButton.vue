@@ -55,7 +55,7 @@ import NewPassword from '../LoginView/NewPassword.vue'
 import { ref } from 'vue'
 import { username } from '@/services/useUser'
 
-const loginOverlayRef = ref<Popover | null>(null)
+const loginOverlayRef = ref<InstanceType<typeof Popover> | null>(null)
 function toggle(event: any) {
   loginOverlayRef.value?.toggle(event)
 }

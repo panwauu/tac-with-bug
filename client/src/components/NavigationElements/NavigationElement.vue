@@ -34,7 +34,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const emit = defineEmits<{ logout: [] }>()
 
-const menuRef = ref<null | Menu>(null)
+const menuRef = ref<null | InstanceType<typeof Menu>>(null)
 
 function returnMenu() {
   const menu: MenuItem[] = [

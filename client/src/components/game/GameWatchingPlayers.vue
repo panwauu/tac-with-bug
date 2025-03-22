@@ -42,7 +42,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const props = defineProps<{ displayText: boolean; nWatching: number; watchingPlayers: string[] }>()
 
-const watchingPlayersRef = ref<Popover | null>(null)
+const watchingPlayersRef = ref<InstanceType<typeof Popover> | null>(null)
 function toggle(event: any) {
   watchingPlayersRef.value?.toggle(event)
 }

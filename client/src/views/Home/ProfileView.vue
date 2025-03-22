@@ -40,7 +40,7 @@
       <TabList>
         <Tab
           v-for="tab in items"
-          :key="tab.label"
+          :key="tab.to.name"
           :value="tab.to.name"
         >
           <i :class="tab.icon" />
@@ -158,7 +158,7 @@ function updateMenu() {
   items.value = createMenu(profileContainer.value?.getBoundingClientRect().width === undefined || profileContainer.value?.getBoundingClientRect().width > 550)
 }
 
-const tabValueToName = ref<string>(router.currentRoute.value.name)
+const tabValueToName = ref<string>(String(router.currentRoute.value.name))
 watch(
   tabValueToName,
   () => {

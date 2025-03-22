@@ -141,7 +141,7 @@ const chatStore = useChatStore()
 const messageStore = useMessagesStore()
 const settingsStore = useSettingsStore()
 
-const overlayPanelRef = ref<Popover | null>()
+const overlayPanelRef = ref<InstanceType<typeof Popover> | null>()
 function toggle(event: any) {
   overlayPanelRef.value?.toggle(event)
 }

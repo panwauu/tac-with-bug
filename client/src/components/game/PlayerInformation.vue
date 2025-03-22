@@ -94,7 +94,7 @@ import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { ref } from 'vue'
 import router from '@/router'
 
-const opRef = ref<undefined | Popover>()
+const opRef = ref<undefined | InstanceType<typeof Popover>>()
 
 const props = defineProps<{
   positionStyles: PositionStylesState
