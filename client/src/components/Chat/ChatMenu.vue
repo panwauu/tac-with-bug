@@ -55,6 +55,7 @@
               v-if="chat.numberOfUnread !== 0"
               :value="chat.numberOfUnread.toString()"
               :severity="'danger'"
+              size="small"
             />
           </div>
         </div>
@@ -99,6 +100,7 @@
               v-if="chat.numberOfUnread !== 0"
               :value="chat.numberOfUnread.toString()"
               :severity="menuItemIterator < 2 ? 'danger' : 'warning'"
+              size="small"
             />
           </div>
         </div>

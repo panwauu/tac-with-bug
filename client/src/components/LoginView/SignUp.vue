@@ -64,7 +64,7 @@ async function signUp() {
     username: username.value,
     email: email.value,
     password: password.value,
-    locale: String(i18n.global.locale),
+    locale: String(i18n.global.locale.value),
   }
   try {
     await Service.signUpUser(credentials)

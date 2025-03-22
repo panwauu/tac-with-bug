@@ -12,13 +12,13 @@
     <label for="signUpTeamName">{{ t('Tournament.SignUp.teamNamePlaceholder') }}</label>
     <small
       v-if="!(localTeamName === '' || validTeamName) && !disabled"
-      class="p-error"
+      class="custom-invalid"
     >
       {{ t('Tournament.SignUp.invalidTeamName') }}
     </small>
     <small
       v-if="!(localTeamName === '' || newName) && !disabled"
-      class="p-error"
+      class="custom-invalid"
     >
       {{ t('Tournament.SignUp.notNewTeamName') }}
     </small>

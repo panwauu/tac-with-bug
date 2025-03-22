@@ -50,8 +50,8 @@
     <div v-if="tournament.registerTeams.length < tournament.nTeams && tournament.adminPlayer !== username">...</div>
     <Message
       v-if="!readyToStart"
-      :closable="false"
       severity="error"
+      icon="pi pi-times-circle"
     >
       {{ t('Tournament.EditPrivate.notCompleteMessage') }}
     </Message>

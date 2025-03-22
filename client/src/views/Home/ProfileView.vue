@@ -58,12 +58,9 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'
-import TabMenu from 'primevue/tabmenu'
 import type { MenuItem } from 'primevue/menuitem'
 import FriendButton from '@/components/FriendButton.vue'
 import ProfilePicture from '@/components/ProfilePicture.vue'
@@ -78,6 +75,8 @@ import router from '@/router/index'
 import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue'
 import { useResizeObserver } from '@vueuse/core'
 import BlockedByModerationMessage from '@/components/BlockedByModerationMessage.vue'
+
+const { t } = useI18n()
 
 const props = defineProps<{ username: string }>()
 
@@ -128,41 +127,26 @@ function createMenu(displayText: boolean): MenuItem[] {
       label: displayText ? t('Profile.menuOverview') : '',
       icon: 'pi pi-fw pi-home',
       to: { name: 'Profile' },
-      command: () => {
-        router.push({ name: 'Profile' })
-      },
     },
     {
       label: displayText ? t('Profile.menuAchievements') : '',
       icon: 'pi pi-fw pi-flag',
       to: { name: 'Profile-Achievements' },
-      command: () => {
-        router.push({ name: 'Profile-Achievements' })
-      },
     },
     {
       label: displayText ? t('Profile.menuGames') : '',
       icon: 'pi pi-fw pi-table',
       to: { name: 'Profile-Games' },
-      command: () => {
-        router.push({ name: 'Profile-Games' })
-      },
     },
     {
       label: displayText ? t('Profile.menuFriends') : '',
       icon: 'pi pi-fw pi-users',
       to: { name: 'Profile-Friends' },
-      command: () => {
-        router.push({ name: 'Profile-Friends' })
-      },
     },
     {
       label: displayText ? t('Profile.menuSocials') : '',
       icon: 'pi pi-fw pi-sitemap',
       to: { name: 'Profile-Socials' },
-      command: () => {
-        router.push({ name: 'Profile-Socials' })
-      },
     },
   ]
 }
@@ -178,9 +162,9 @@ const tabValueToName = ref<string>(router.currentRoute.value.name)
 watch(
   tabValueToName,
   () => {
-    const item = items.value.find((item) => item.to.name === tabValueToName.value)
-    if (item != null) {
-      router.push(item.to)
+    const itemToPushTo = items.value.find((item) => item.to.name === tabValueToName.value)
+    if (itemToPushTo != null) {
+      router.push(itemToPushTo.to)
     }
   },
   { immediate: true }

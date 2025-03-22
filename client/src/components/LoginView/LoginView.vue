@@ -3,7 +3,7 @@
     <Message
       v-if="displayUnactivatedMessage"
       severity="error"
-      :sticky="true"
+      icon="pi pi-times-circle"
     >
       <div>
         {{ t(`Login.SignIn.errorMsgEmail`) }}

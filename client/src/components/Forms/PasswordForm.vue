@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <FloatLabel class="floatingTextInput">
-      <PasswordPrimevue
+  <div class="floatingTextInput">
+    <FloatLabel>
+      <Password
         id="SUpassword"
         v-model="localPassword"
         type="password"
@@ -11,16 +11,16 @@
         :weak-label="t('Login.SignUp.passwordWeak')"
         :medium-label="t('Login.SignUp.passwordMedium')"
         :strong-label="t('Login.SignUp.passwordStrong')"
-        :class="validPassword || password === '' ? '' : 'p-invalid'"
+        :invalid="!validPassword && password !== ''"
       >
         <template #footer>
           <Divider />
           <ul style="line-height: 1.5">
-            <li :class="passwordTooShort ? 'p-error' : ''">{{ t('Login.SignUp.passwordMinLetters') }}</li>
-            <li :class="passwordTooLong ? 'p-error' : ''">{{ t('Login.SignUp.passwordMaxLetters') }}</li>
+            <li :class="passwordTooShort ? 'custom-invalid' : ''">{{ t('Login.SignUp.passwordMinLetters') }}</li>
+            <li :class="passwordTooLong ? 'custom-invalid' : ''">{{ t('Login.SignUp.passwordMaxLetters') }}</li>
           </ul>
         </template>
-      </PasswordPrimevue>
+      </Password>
       <label for="SUpassword">{{ t('Login.password') }}</label>
     </FloatLabel>
 
@@ -31,12 +31,12 @@
         type="password"
         name="password"
         style="width: 100%"
-        :class="validPasswordRepeat || password === '' ? '' : 'p-invalid'"
+        :invalid="!validPasswordRepeat && password !== ''"
       />
       <label for="SUpasswordRepeat">{{ t('Login.passwordRepeat') }}</label>
       <small
         v-if="!validPasswordRepeat && password !== '' && passwordRepeat !== ''"
-        class="p-error"
+        class="custom-invalid"
       >
         {{ t('Login.SignUp.passwordUnequal') }}
       </small>
@@ -46,15 +46,13 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import InputText from 'primevue/inputtext'
 import FloatLabel from 'primevue/floatlabel'
-
 import { computed, ref, watch } from 'vue'
-import PasswordPrimevue from 'primevue/password'
+import Password from 'primevue/password'
 import Divider from 'primevue/divider'
 
+const { t } = useI18n()
 const emit = defineEmits<{
   'update:password': [password: string]
   'update:valid': [valid: boolean]

@@ -10,7 +10,7 @@
       />
       <small
         v-if="!titleValid"
-        class="p-error"
+        class="custom-invalid"
       >
         {{ t('Tournament.CreatePrivate.tournamentNameInvalid') }}
       </small>

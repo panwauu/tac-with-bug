@@ -1,6 +1,6 @@
 <template>
-  <!-- eslint-disable -->
   <div>
+    <!-- eslint-disable -->
     <svg
       v-if="nTeams === 1"
       viewBox="0 0 497 396"

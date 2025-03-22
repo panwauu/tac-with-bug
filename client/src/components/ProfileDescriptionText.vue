@@ -18,7 +18,7 @@
     />
     <small
       v-if="editing && descriptionTooLong"
-      class="p-error"
+      class="custom-invalid"
     >
       {{ t('Profile.DescriptionEditor.descriptionTooLong') }}
     </small>

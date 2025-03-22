@@ -62,14 +62,14 @@
           <Message
             v-if="quizError"
             severity="error"
-            :closable="false"
+            icon="pi pi-times-circle"
           >
             {{ t('Tutorial.quizWrongAnswer') }}
           </Message>
           <Message
             v-if="done && tutorialStepOutput?.goal != null"
             severity="success"
-            :closable="false"
+            icon="pi pi-check"
           >
             {{ t(`Tutorial.Encouragement.${Math.floor(Math.random() * 10)}`) }}
             {{ t(`Tutorial.nextQuestion`) }}

@@ -1,15 +1,8 @@
 <template>
   <Message
+    icon="pi pi-exclamation-triangle"
+    size="small"
     severity="warn"
-    :closable="false"
-    :pt="{
-      wrapper: {
-        style: 'padding: 0.75rem',
-      },
-      text: {
-        style: 'font-size: small',
-      },
-    }"
     :title="secondPerson === true ? t('Moderation.he-was-blocked-explanation') : t('Moderation.you-are-blocked-explanation')"
   >
     {{

@@ -1,6 +1,6 @@
 <template>
-  <!-- eslint-disable -->
   <div>
+    <!-- eslint-disable -->
     <svg
       viewBox="0 0 470 343"
       preserveAspectRatio="xMaxYMax"

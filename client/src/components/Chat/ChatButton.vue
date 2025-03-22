@@ -15,12 +15,14 @@
       :value="messagesStore.notificationsChat.toString()"
       severity="danger"
       class="notiBadge badgeGame"
+      size="small"
     />
     <Badge
       v-if="messagesStore.notificationsChannels !== 0"
       :value="messagesStore.notificationsChannels.toString()"
       severity="warning"
       class="notiBadge badgeGeneral"
+      size="small"
     />
   </Button>
 </template>

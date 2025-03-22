@@ -198,6 +198,11 @@ body {
   cursor: pointer;
 }
 
+.custom-invalid {
+  color: var(--p-form-field-invalid-placeholder-color);
+  border-color: var(--p-form-field-invalid-border-color);
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--p-primary-color) transparent;

@@ -1,39 +1,51 @@
 <template>
-  <FloatLabel :class="['floatingTextInput', iconClass]">
-    <i
-      v-if="emailCheck === null"
-      class="pi pi-spin pi-spinner"
-      aria-hidden="true"
-    />
-    <i
-      v-if="emailCheck === true"
-      class="pi pi-check"
-      aria-hidden="true"
-    />
-    <InputText
-      id="SUemail"
-      v-model="localEmail"
-      type="text"
-      name="email"
-      style="width: 100%"
-      :class="localValid || localEmail === '' ? '' : 'p-invalid'"
-    />
-    <label for="SUemail">{{ t('Login.email') }}</label>
-    <small class="p-error">{{ emailErrorLabel }}</small>
-  </FloatLabel>
+  <div class="floatingTextInput">
+    <InputGroup>
+      <FloatLabel>
+        <InputText
+          id="SUemail"
+          v-model="localEmail"
+          type="text"
+          name="email"
+          style="width: 100%"
+          :class="localValid || localEmail === '' ? '' : 'p-invalid'"
+        />
+        <label for="SUemail">{{ t('Login.email') }}</label>
+      </FloatLabel>
+      <InputGroupAddon v-if="emailCheck === null">
+        <i
+          class="pi pi-spin pi-spinner"
+          aria-hidden="true"
+        />
+      </InputGroupAddon>
+      <InputGroupAddon v-else-if="emailCheck === true">
+        <i
+          class="pi pi-check"
+          aria-hidden="true"
+        />
+      </InputGroupAddon>
+      <InputGroupAddon v-else>
+        <i
+          class="pi pi-times"
+          aria-hidden="true"
+        />
+      </InputGroupAddon>
+    </InputGroup>
+    <small class="custom-invalid">{{ emailErrorLabel }}</small>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import InputText from 'primevue/inputtext'
 import FloatLabel from 'primevue/floatlabel'
-
+import InputGroup from 'primevue/inputgroup'
+import InputGroupAddon from 'primevue/inputgroupaddon'
 import { ref, computed, watch } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index.ts'
 import * as EmailValidator from 'email-validator'
 
+const { t } = useI18n()
 const emailCheck = ref<boolean | null>(false)
 const emailCheckTimeout = ref(undefined as number | undefined)
 
@@ -83,9 +95,5 @@ const emailErrorLabel = computed(() => {
     }
   }
   return ''
-})
-
-const iconClass = computed(() => {
-  return emailCheck.value === null || emailCheck.value === true ? 'p-input-icon-right' : ''
 })
 </script>

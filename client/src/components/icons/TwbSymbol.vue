@@ -1,6 +1,6 @@
 <template>
-  <!-- eslint-disable -->
   <div>
+    <!-- eslint-disable -->
     <svg
       v-if="side === 'right'"
       preserveAspectRatio="xMaxYMax"

@@ -122,6 +122,7 @@ export const useMessagesStore = defineStore('messages', {
       return state.channels.reduce((p, c) => (p += c.missedMessages), 0)
     },
     mayNotUseChat: (state) => {
+      console.log(state)
       if (state.selectedChat.type !== 'chat' || username.value == null) {
         return false
       }

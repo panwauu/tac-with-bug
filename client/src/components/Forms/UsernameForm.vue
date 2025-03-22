@@ -1,38 +1,50 @@
 <template>
-  <FloatLabel :class="['floatingTextInput', iconClass]">
-    <i
-      v-if="nameCheck === null"
-      class="pi pi-spin pi-spinner"
-      aria-hidden="true"
-    />
-    <i
-      v-if="nameCheck === true"
-      class="pi pi-check"
-      aria-hidden="true"
-    />
-    <InputText
-      id="SUusername"
-      v-model="localUsername"
-      type="text"
-      name="username"
-      style="width: 100%"
-      :class="localValid || localUsername === '' ? '' : 'p-invalid'"
-    />
-    <label for="SUusername">{{ t('Login.username') }}</label>
-    <small class="p-error">{{ usernameErrorLabel }}</small>
-  </FloatLabel>
+  <div class="floatingTextInput">
+    <InputGroup>
+      <FloatLabel>
+        <InputText
+          id="SUusername"
+          v-model="localUsername"
+          type="text"
+          name="username"
+          :invalid="!localValid && localUsername != ''"
+        />
+        <label for="SUusername">{{ t('Login.username') }}</label>
+      </FloatLabel>
+      <InputGroupAddon v-if="nameCheck === null">
+        <i
+          class="pi pi-spin pi-spinner"
+          aria-hidden="true"
+        />
+      </InputGroupAddon>
+      <InputGroupAddon v-else-if="nameCheck === true">
+        <i
+          class="pi pi-check"
+          aria-hidden="true"
+        />
+      </InputGroupAddon>
+      <InputGroupAddon v-else>
+        <i
+          class="pi pi-times"
+          aria-hidden="true"
+        />
+      </InputGroupAddon>
+    </InputGroup>
+    <small class="custom-invalid">{{ usernameErrorLabel }}</small>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import InputText from 'primevue/inputtext'
 import FloatLabel from 'primevue/floatlabel'
+import InputGroup from 'primevue/inputgroup'
+import InputGroupAddon from 'primevue/inputgroupaddon'
 
 import { ref, computed, watch } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index.ts'
 
+const { t } = useI18n()
 const nameCheck = ref<boolean | null>(false)
 const nameCheckTimeout = ref(undefined as number | undefined)
 
@@ -89,9 +101,5 @@ const usernameErrorLabel = computed(() => {
     }
   }
   return ''
-})
-
-const iconClass = computed(() => {
-  return nameCheck.value === null || nameCheck.value === true ? 'p-input-icon-right' : ''
 })
 </script>

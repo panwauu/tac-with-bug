@@ -13,6 +13,7 @@
           style="position: absolute; right: 0; top: 0"
           :value="(messagesStore.notificationsChat + messagesStore.notificationsChannels - messagesStore.getChatNotifications).toString()"
           severity="danger"
+          size="small"
         />
       </div>
       <i
@@ -26,6 +27,7 @@
         style="margin-left: 10px"
         :value="messagesStore.getChatNotifications.toString()"
         :severity="messagesStore.selectedChat.type === 'chat' ? 'danger' : 'warning'"
+        size="small"
       />
       <Button
         v-if="messagesStore.getCurrentChat != null"
@@ -112,14 +114,15 @@
       @click="messagesStore.markAsRead"
     >
       <form
-        v-if="!messagesStore.mayNotUseChat && !(messagesStore.selectedChat.type === 'channel' && messagesStore.selectedChat.id === 'news' && !settingsStore.admin)"
+        v-if="
+          !messagesStore.mayNotUseChat &&
+          !(messagesStore.selectedChat.type === 'channel' && messagesStore.selectedChat.id === 'news' && !settingsStore.admin) &&
+          !settingsStore.isBlockedByModeration
+        "
         style="height: 100%"
         @submit.prevent="submitChatInput"
       >
-        <InputGroup
-          v-if="!settingsStore.isBlockedByModeration"
-          style="width: 100%"
-        >
+        <InputGroup style="width: 100%">
           <Textarea
             v-model="inputMessage"
             :auto-resize="true"
@@ -136,25 +139,24 @@
             :disabled="inputMessage === '' || inputMessage.length > 500"
           />
         </InputGroup>
-        <div v-else>
-          <BlockedByModerationMessage :blocked-by-moderation-until="settingsStore.blockedByModerationUntil ?? ''" />
-        </div>
       </form>
+      <BlockedByModerationMessage
+        v-if="settingsStore.isBlockedByModeration"
+        :blocked-by-moderation-until="settingsStore.blockedByModerationUntil ?? ''"
+      />
       <Message
         v-if="messagesStore.mayNotUseChat"
         severity="warn"
-        :sticky="true"
-        :closable="false"
-        style="margin: 0"
+        size="small"
+        icon="pi pi-exclamation-triangle"
       >
         {{ t('Chat.mayNotUseOverlay') }}
       </Message>
       <Message
         v-if="messagesStore.selectedChat.type === 'channel' && messagesStore.selectedChat.id === 'news' && !settingsStore.admin"
         severity="warn"
-        :sticky="true"
-        :closable="false"
-        style="margin: 0"
+        size="small"
+        icon="pi pi-exclamation-triangle"
       >
         {{ t('Chat.onlyAdminsOverlay') }}
       </Message>

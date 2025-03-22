@@ -30,7 +30,8 @@
         <Message
           v-if="gamesSummary.runningGames.length !== 0"
           severity="error"
-          :closable="false"
+          icon="pi pi-times-circle"
+          style="margin-top: 10px; margin-bottom: 10px"
         >
           {{ t('Landing.Waiting.openGamesWarning', { openGames: gamesSummary.runningGames.length }) }}
         </Message>

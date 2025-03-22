@@ -36,8 +36,8 @@
     <div v-show="isLoggedIn">
       <div v-if="subscriptionState.status === 'expiring'">
         <Message
-          :closable="false"
           severity="warn"
+          icon="pi pi-exclamation-triangle"
         >
           {{
             t('Subscription.expiring', {
@@ -51,6 +51,7 @@
         <Message
           :closable="false"
           severity="success"
+          icon="pi pi-check"
         >
           {{ t('Subscription.running') }}
         </Message>
@@ -80,7 +81,6 @@
           option-label="name"
         />
         <Message
-          :closable="false"
           :severity="paypalPercentageSeverity"
           class="paypalPercentage"
         >

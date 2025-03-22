@@ -34,8 +34,8 @@
         </OverlayBadge>
       </template>
       <NavigationElement
-        @logout="$emit('logout')"
         style="margin-left: 10px"
+        @logout="$emit('logout')"
       />
     </div>
   </div>
