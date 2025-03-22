@@ -8,7 +8,7 @@
           type="text"
           name="email"
           style="width: 100%"
-          :class="localValid || localEmail === '' ? '' : 'p-invalid'"
+          :invalid="!localValid && localEmail !== ''"
         />
         <label for="SUemail">{{ t('Login.email') }}</label>
       </FloatLabel>

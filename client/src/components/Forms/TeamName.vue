@@ -6,7 +6,7 @@
       type="text"
       name="teamname"
       style="width: 100%"
-      :class="localTeamName === '' || validName ? '' : 'p-invalid'"
+      :invalid="localTeamName !== '' && !validTeamName"
       :disabled="disabled"
     />
     <label for="signUpTeamName">{{ t('Tournament.SignUp.teamNamePlaceholder') }}</label>

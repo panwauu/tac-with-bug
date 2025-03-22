@@ -23,7 +23,7 @@
           v-model="signUpTeamName"
           type="text"
           style="width: 100%"
-          :class="validTeamName ? '' : 'p-invalid'"
+          :invalid="!validTeamName && signUpTeamName !== ''"
         />
         <label for="signUpTeamName">{{ t('Tournament.SignUp.teamNamePlaceholder') }}</label>
         <div

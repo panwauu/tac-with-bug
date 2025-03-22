@@ -6,7 +6,7 @@
         v-model="title"
         mode="decimal"
         :use-grouping="false"
-        :class="{ 'p-invalid': !titleValid }"
+        :invlaid="!titleValid"
       />
       <small
         v-if="!titleValid"
