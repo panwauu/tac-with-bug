@@ -120,17 +120,17 @@ onUnmounted(() => clearInterval(interval))
 }
 
 .splitpanes__splitter {
-  background: var(--surface-d) !important;
+  background: var(--p-content-border-color) !important;
 }
 
 .default-theme.splitpanes--horizontal > .splitpanes__splitter,
 .default-theme .splitpanes--horizontal > .splitpanes__splitter {
-  border-top: 1px solid var(--surface-d) !important;
+  border-top: 1px solid var(--p-content-border-color) !important;
 }
 
 .default-theme.splitpanes--vertical > .splitpanes__splitter,
 .default-theme .splitpanes--vertical > .splitpanes__splitter {
-  border-left: 1px solid var(--surface-d) !important;
+  border-left: 1px solid var(--p-content-border-color) !important;
 }
 
 :not(.splitpanes--dragging) > .splitpanes__pane {

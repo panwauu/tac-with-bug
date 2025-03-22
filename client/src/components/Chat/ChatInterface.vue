@@ -48,7 +48,7 @@ function closeMenuIfResponsive() {
   overflow: hidden;
   width: 100%;
   height: 100%;
-  border: solid 2px var(--surface-d);
+  border: solid 2px var(--p-content-border-color);
 }
 
 .chatSidebar {
@@ -59,8 +59,8 @@ function closeMenuIfResponsive() {
   top: 0;
   left: 0;
   transition: transform 0.3s ease 0s;
-  box-shadow: 2px 0px 3px -3px var(--gray-400);
-  background: var(--surface-e);
+  border-right: solid 2px var(--p-content-border-color);
+  background: var(--p-content-background);
   z-index: 1;
 }
 
@@ -75,7 +75,7 @@ function closeMenuIfResponsive() {
     margin 0.3s ease 0s,
     width 0.3s ease 0s;
   position: relative;
-  background: var(--surface-e);
+  background: var(--p-content-background);
 }
 
 .withSidebar {
@@ -89,7 +89,7 @@ function closeMenuIfResponsive() {
   right: 0;
   bottom: 0;
   left: 0;
-  background: var(--surface-b);
+  background: var(--p-content-background);
   opacity: 0.7;
 }
 

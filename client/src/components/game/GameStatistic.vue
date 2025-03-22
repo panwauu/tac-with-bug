@@ -16,52 +16,61 @@
       largest-unit="hours"
     />
     <div>
-      <TabView>
-        <TabPanel :header="t('Game.Statistic.Cards.title')">
-          <div class="chart-container">
-            <Chart
-              type="bar"
-              :data="cardStatistic"
-              :options="optionsCards"
-            />
-          </div>
-        </TabPanel>
-        <TabPanel :header="t('Game.Statistic.Actions.title')">
-          <div class="chart-container">
-            <Chart
-              type="bar"
-              :data="actionStatistics"
-              :options="optionsActions"
-            />
-          </div>
-        </TabPanel>
-        <TabPanel
-          :header="t('Game.Statistic.CardsTable.title')"
-          :disabled="miscState.gameRunning"
-        >
-          <div
-            class="chart-container"
-            style="overflow-y: auto"
+      <Tabs value="Cards">
+        <TabList>
+          <Tab value="Cards">{{ t('Game.Statistic.Cards.title') }}</Tab>
+          <Tab value="Actions">{{ t('Game.Statistic.Actions.title') }}</Tab>
+          <Tab
+            value="CardsTable"
+            :disabled="miscState.gameRunning"
           >
-            <DataTable :value="statisticState.cardsTable">
-              <Column
-                field="card"
-                :header="t('Game.Statistic.CardsTable.card')"
-              >
-                <template #body="slotProps">
-                  <div :class="`tac ${redText(slotProps.data.card) ? 'red' : ''}`">{{ cardName(slotProps.data.card) }}</div>
-                </template>
-              </Column>
-              <Column
-                v-for="i in [...Array(Object.keys(statisticState.cardsTable['1']).length - 1).keys()]"
-                :key="`Column-${i}`"
-                :field="i.toString()"
-                :header="updateData?.playernames[i] ?? ''"
+            {{ t('Game.Statistic.CardsTable.title') }}
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel value="Cards">
+            <div class="chart-container">
+              <Chart
+                type="bar"
+                :data="cardStatistic"
+                :options="optionsCards"
               />
-            </DataTable>
-          </div>
-        </TabPanel>
-      </TabView>
+            </div>
+          </TabPanel>
+          <TabPanel value="Actions">
+            <div class="chart-container">
+              <Chart
+                type="bar"
+                :data="actionStatistics"
+                :options="optionsActions"
+              />
+            </div>
+          </TabPanel>
+          <TabPanel value="CardsTable">
+            <div
+              class="chart-container"
+              style="overflow-y: auto"
+            >
+              <DataTable :value="statisticState.cardsTable">
+                <Column
+                  field="card"
+                  :header="t('Game.Statistic.CardsTable.card')"
+                >
+                  <template #body="slotProps">
+                    <div :class="`tac ${redText(slotProps.data.card) ? 'red' : ''}`">{{ cardName(slotProps.data.card) }}</div>
+                  </template>
+                </Column>
+                <Column
+                  v-for="i in [...Array(Object.keys(statisticState.cardsTable['1']).length - 1).keys()]"
+                  :key="`Column-${i}`"
+                  :field="i.toString()"
+                  :header="updateData?.playernames[i] ?? ''"
+                />
+              </DataTable>
+            </div>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   </div>
 </template>
@@ -70,7 +79,10 @@
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-import TabView from 'primevue/tabview'
+import Tabs from 'primevue/tabs'
+import TabList from 'primevue/tablist'
+import Tab from 'primevue/tab'
+import TabPanels from 'primevue/tabpanels'
 import TabPanel from 'primevue/tabpanel'
 import Chart from 'primevue/chart'
 import DataTable from 'primevue/datatable'

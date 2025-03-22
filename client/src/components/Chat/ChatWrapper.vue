@@ -54,8 +54,8 @@ import { useChatStore } from '@/store/chat'
 
 const chatStore = useChatStore()
 
-const resize = ($event: { min: number; max: number; size: number }[]) => {
-  chatStore.setChatSize($event[0].size)
+const resize = ($event: { panes: { min: number; max: number; size: number }[] }) => {
+  chatStore.setChatSize($event.panes[0].size)
 }
 </script>
 
@@ -115,17 +115,17 @@ const resize = ($event: { min: number; max: number; size: number }[]) => {
 }
 
 .splitpanes__splitter {
-  background: var(--surface-d) !important;
+  background: var(--p-content-border-color) !important;
 }
 
 .default-theme.splitpanes--horizontal > .splitpanes__splitter,
 .default-theme .splitpanes--horizontal > .splitpanes__splitter {
-  border-top: 1px solid var(--surface-d) !important;
+  border-top: 1px solid var(--p-content-border-color) !important;
 }
 
 .default-theme.splitpanes--vertical > .splitpanes__splitter,
 .default-theme .splitpanes--vertical > .splitpanes__splitter {
-  border-left: 1px solid var(--surface-d) !important;
+  border-left: 1px solid var(--p-content-border-color) !important;
 }
 
 :not(.splitpanes--dragging) > .splitpanes__pane {

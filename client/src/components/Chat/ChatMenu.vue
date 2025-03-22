@@ -171,7 +171,7 @@ function closeOverlay() {
   justify-content: space-between;
   padding: 5px;
   align-items: center;
-  box-shadow: 0px 3px 3px -3px var(--gray-600);
+  box-shadow: 0px 3px 3px -3px var(--p-content-border-color);
 }
 
 .chatMenuBody {

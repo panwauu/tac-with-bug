@@ -7,156 +7,163 @@
       option-label="name"
       @click="changeTimeFrame()"
     />
-    <TabView>
-      <TabPanel header="TAC">
-        <DataTable
-          v-model:first="first"
-          :value="data"
-          :auto-layout="true"
-          :loading="loading"
-          :paginator="true"
-          :page-link-size="3"
-          :total-records="totalNumber"
-          :rows="rows"
-          :lazy="true"
-          @page="onPage()"
-        >
-          <Column
-            field="index"
-            :header="t('Leaders.rank')"
-          />
-          <Column
-            field="username"
-            :header="t('Leaders.name')"
+    <Tabs value="tac">
+      <TabList>
+        <Tab value="tac">TAC</Tab>
+        <Tab value="4">4er Team-Tac</Tab>
+        <Tab value="6">6er Team-Tac</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel value="tac">
+          <DataTable
+            v-model:first="first"
+            :value="data"
+            :auto-layout="true"
+            :loading="loading"
+            :paginator="true"
+            :page-link-size="3"
+            :total-records="totalNumber"
+            :rows="rows"
+            :lazy="true"
+            @page="onPage()"
           >
-            <template #body="slotProps">
-              <PlayerWithPicture
-                :name-first="false"
-                :username="slotProps.data.username"
-              />
-            </template>
-          </Column>
-          <Column
-            field="winshare"
-            :header="t('Leaders.winshare')"
-          />
-          <Column
-            field="wins"
-            :header="t('Leaders.wins')"
-          />
-        </DataTable>
-      </TabPanel>
-      <TabPanel header="4er Team-Tac">
-        <DataTable
-          v-model:first="firstCoop4"
-          :value="dataCoop4"
-          :auto-layout="true"
-          :loading="loading"
-          :paginator="true"
-          :page-link-size="3"
-          :total-records="totalNumberCoop4"
-          :rows="rows"
-          :lazy="true"
-          @page="onPageCoop(4)"
-        >
-          <Column
-            field="index"
-            :header="t('Leaders.rank')"
-          />
-          <Column
-            field="team"
-            :header="t('Leaders.teams')"
+            <Column
+              field="index"
+              :header="t('Leaders.rank')"
+            />
+            <Column
+              field="username"
+              :header="t('Leaders.name')"
+            >
+              <template #body="slotProps">
+                <PlayerWithPicture
+                  :name-first="false"
+                  :username="slotProps.data.username"
+                />
+              </template>
+            </Column>
+            <Column
+              field="winshare"
+              :header="t('Leaders.winshare')"
+            />
+            <Column
+              field="wins"
+              :header="t('Leaders.wins')"
+            />
+          </DataTable>
+        </TabPanel>
+        <TabPanel value="4">
+          <DataTable
+            v-model:first="firstCoop4"
+            :value="dataCoop4"
+            :auto-layout="true"
+            :loading="loading"
+            :paginator="true"
+            :page-link-size="3"
+            :total-records="totalNumberCoop4"
+            :rows="rows"
+            :lazy="true"
+            @page="onPageCoop(4)"
           >
-            <template #body="slotProps">
-              <div class="teamContainer">
-                <div
-                  v-for="teamIndex in Math.ceil(slotProps.data.team.length / 2)"
-                  :key="`team4-${teamIndex}`"
-                  class="team"
-                >
-                  <PlayerWithPicture
-                    :name-first="false"
-                    :username="slotProps.data.team[2 * teamIndex - 2]"
-                  />
-                  <PlayerWithPicture
-                    v-if="slotProps.data.team[2 * teamIndex - 1] != null"
-                    :name-first="false"
-                    :username="slotProps.data.team[2 * teamIndex - 1]"
-                  />
+            <Column
+              field="index"
+              :header="t('Leaders.rank')"
+            />
+            <Column
+              field="team"
+              :header="t('Leaders.teams')"
+            >
+              <template #body="slotProps">
+                <div class="teamContainer">
+                  <div
+                    v-for="teamIndex in Math.ceil(slotProps.data.team.length / 2)"
+                    :key="`team4-${teamIndex}`"
+                    class="team"
+                  >
+                    <PlayerWithPicture
+                      :name-first="false"
+                      :username="slotProps.data.team[2 * teamIndex - 2]"
+                    />
+                    <PlayerWithPicture
+                      v-if="slotProps.data.team[2 * teamIndex - 1] != null"
+                      :name-first="false"
+                      :username="slotProps.data.team[2 * teamIndex - 1]"
+                    />
+                  </div>
                 </div>
-              </div>
-            </template>
-          </Column>
-          <Column
-            field="count"
-            :header="t('Leaders.cards')"
-          />
-          <Column
-            field="lastplayed"
-            :header="t('Leaders.date')"
+              </template>
+            </Column>
+            <Column
+              field="count"
+              :header="t('Leaders.cards')"
+            />
+            <Column
+              field="lastplayed"
+              :header="t('Leaders.date')"
+            >
+              <template #body="slotProps">
+                <div>{{ createDateString(slotProps.data.lastplayed) }}</div>
+              </template>
+            </Column>
+          </DataTable>
+        </TabPanel>
+        <TabPanel value="6">
+          <DataTable
+            v-model:first="firstCoop6"
+            :value="dataCoop6"
+            :auto-layout="true"
+            :loading="loading"
+            :paginator="true"
+            :page-link-size="3"
+            :total-records="totalNumberCoop6"
+            :rows="rows"
+            :lazy="true"
+            @page="onPageCoop(6)"
           >
-            <template #body="slotProps">
-              <div>{{ createDateString(slotProps.data.lastplayed) }}</div>
-            </template>
-          </Column>
-        </DataTable>
-      </TabPanel>
-      <TabPanel header="6er Team-Tac">
-        <DataTable
-          v-model:first="firstCoop6"
-          :value="dataCoop6"
-          :auto-layout="true"
-          :loading="loading"
-          :paginator="true"
-          :page-link-size="3"
-          :total-records="totalNumberCoop6"
-          :rows="rows"
-          :lazy="true"
-          @page="onPageCoop(6)"
-        >
-          <Column
-            field="index"
-            :header="t('Leaders.rank')"
-          />
-          <Column
-            field="team"
-            :header="t('Leaders.teams')"
-          >
-            <template #body="slotProps">
-              <div class="teamContainer">
-                <div
-                  v-for="teamIndex in Math.ceil(slotProps.data.team.length / 2)"
-                  :key="`team4-${teamIndex}`"
-                  class="team"
-                >
-                  <PlayerWithPicture
-                    :name-first="false"
-                    :username="slotProps.data.team[2 * teamIndex - 2]"
-                  />
-                  <PlayerWithPicture
-                    v-if="slotProps.data.team[2 * teamIndex - 1] != null"
-                    :name-first="false"
-                    :username="slotProps.data.team[2 * teamIndex - 1]"
-                  />
+            <Column
+              field="index"
+              :header="t('Leaders.rank')"
+            />
+            <Column
+              field="team"
+              :header="t('Leaders.teams')"
+            >
+              <template #body="slotProps">
+                <div class="teamContainer">
+                  <div
+                    v-for="teamIndex in Math.ceil(slotProps.data.team.length / 2)"
+                    :key="`team4-${teamIndex}`"
+                    class="team"
+                  >
+                    <PlayerWithPicture
+                      :name-first="false"
+                      :username="slotProps.data.team[2 * teamIndex - 2]"
+                    />
+                    <PlayerWithPicture
+                      v-if="slotProps.data.team[2 * teamIndex - 1] != null"
+                      :name-first="false"
+                      :username="slotProps.data.team[2 * teamIndex - 1]"
+                    />
+                  </div>
                 </div>
-              </div>
-            </template>
-          </Column>
-          <Column
-            field="count"
-            :header="t('Leaders.cards')"
-          />
-          <Column
-            field="lastplayed"
-            :header="t('Leaders.teams')"
-          >
-            <template #body="slotProps">
-              <div>{{ createDateString(slotProps.data.lastplayed) }}</div>
-            </template>
-          </Column>
-        </DataTable>
-      </TabPanel>
-    </TabView>
+              </template>
+            </Column>
+            <Column
+              field="count"
+              :header="t('Leaders.cards')"
+            />
+            <Column
+              field="lastplayed"
+              :header="t('Leaders.teams')"
+            >
+              <template #body="slotProps">
+                <div>{{ createDateString(slotProps.data.lastplayed) }}</div>
+              </template>
+            </Column>
+          </DataTable>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   </div>
 </template>
 
@@ -164,7 +171,10 @@
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-import TabView from 'primevue/tabview'
+import Tabs from 'primevue/tabs'
+import TabList from 'primevue/tablist'
+import Tab from 'primevue/tab'
+import TabPanels from 'primevue/tabpanels'
 import TabPanel from 'primevue/tabpanel'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'

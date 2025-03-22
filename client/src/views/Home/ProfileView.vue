@@ -36,10 +36,18 @@
         <FriendButton :username="username" />
       </div>
     </div>
-    <TabMenu
-      :model="items"
-      :active-index="activeMenuItemIndex"
-    />
+    <Tabs v-model:value="tabValueToName">
+      <TabList>
+        <Tab
+          v-for="tab in items"
+          :key="tab.label"
+          :value="tab.to.name"
+        >
+          <i :class="tab.icon" />
+          <span>{{ tab.label }}</span>
+        </Tab>
+      </TabList>
+    </Tabs>
     <router-view
       style="padding-top: 15px"
       :radar-data="radarData"
@@ -52,6 +60,9 @@
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+import Tabs from 'primevue/tabs'
+import TabList from 'primevue/tablist'
+import Tab from 'primevue/tab'
 import TabMenu from 'primevue/tabmenu'
 import type { MenuItem } from 'primevue/menuitem'
 import FriendButton from '@/components/FriendButton.vue'
@@ -163,12 +174,14 @@ function updateMenu() {
   items.value = createMenu(profileContainer.value?.getBoundingClientRect().width === undefined || profileContainer.value?.getBoundingClientRect().width > 550)
 }
 
-const activeMenuItemIndex = ref(0)
-
+const tabValueToName = ref<string>(router.currentRoute.value.name)
 watch(
-  () => router.currentRoute.value.fullPath,
+  tabValueToName,
   () => {
-    activeMenuItemIndex.value = items.value.findIndex((item) => router.currentRoute.value.name === item.to.name)
+    const item = items.value.find((item) => item.to.name === tabValueToName.value)
+    if (item != null) {
+      router.push(item.to)
+    }
   },
   { immediate: true }
 )

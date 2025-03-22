@@ -1,5 +1,5 @@
 import { definePreset } from '@primeuix/themes'
-import Theme from '@primeuix/themes/lara'
+import Theme from '@primeuix/themes/aura'
 
 export const MyPreset = definePreset(Theme, {
   semantic: {
@@ -34,7 +34,7 @@ export const MyPreset = definePreset(Theme, {
       },
     },
   },
-  components: {
+  /*components: {
     menubar: {
       colorScheme: {
         light: {
@@ -47,5 +47,5 @@ export const MyPreset = definePreset(Theme, {
         },
       },
     },
-  },
+  },*/
 })

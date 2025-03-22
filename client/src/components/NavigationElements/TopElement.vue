@@ -33,7 +33,10 @@
           />
         </OverlayBadge>
       </template>
-      <NavigationElement @logout="$emit('logout')" />
+      <NavigationElement
+        @logout="$emit('logout')"
+        style="margin-left: 10px"
+      />
     </div>
   </div>
 </template>
