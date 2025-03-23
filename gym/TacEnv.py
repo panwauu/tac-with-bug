@@ -164,6 +164,7 @@ class TacEnv(AECEnv[str, Any, Any]):
             player_index,
             chosen_action,
         )
+        print(new_state)
 
         # Calculate the reward and check if the game is done, if invalid move -100 reward
         rewards, done = self._calculate_reward(self.current_state, new_state, action_out_of_bounds)
@@ -223,16 +224,28 @@ class TacEnv(AECEnv[str, Any, Any]):
             return rewards, done
 
         # Ball in house
-        # TODO
-        own_ball_in_house = False
-        if own_ball_in_house:
+        new_own_ball_in_house = False
+        for i in range(len(new_state["game"]["balls"])):
+            if (
+                new_state["game"]["balls"][i]["player"] in players_in_my_team
+                and new_state["game"]["balls"][i]["state"] in ("locked", "goal")
+                and prev_state["game"]["balls"][i]["state"] not in ("locked", "goal")
+            ):
+                new_own_ball_in_house = True
+        if new_own_ball_in_house:
             rewards_array = [5.0 if i in players_in_my_team else 0.0 for i in rewards_array]
             rewards = {self.agents[i]: rewards_array[i] for i in range(self.n_players)}
             return rewards, done
 
         # If killed enemy ball
-        # TODO
         killed_enemy_ball = False
+        for i in range(len(new_state["game"]["balls"])):
+            if (
+                new_state["game"]["balls"][i]["player"] not in players_in_my_team
+                and new_state["game"]["balls"][i]["state"] in ("house")
+                and prev_state["game"]["balls"][i]["state"] not in ("house")
+            ):
+                killed_enemy_ball = True
         if killed_enemy_ball:
             rewards_array = [2.0 if i in players_in_my_team else -2.0 for i in rewards_array]
             rewards = {self.agents[i]: rewards_array[i] for i in range(self.n_players)}
