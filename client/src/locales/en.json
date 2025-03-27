@@ -546,7 +546,9 @@
     "joinGamePrivate": "This room was created as a closed round. Are you sure you are welcome in this round?",
     "leaveRematch": "Are you sure you want to leave this rematch?",
     "adminBadge": "Admin",
-    "bot": "Bot"
+    "bot": "Bot",
+    "leaveButton": "Leave this waiting room",
+    "readyButton": "Ready to start"
   },
   "Login": {
     "username": "Username",

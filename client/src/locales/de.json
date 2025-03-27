@@ -546,7 +546,9 @@
     "switchGameConfirmPrivate": "Dieser Raum wurde als geschlossene Runde erstellt. Sicher, dass du den Warteraum wechseln möchtest?",
     "joinGamePrivate": "Dieser Raum wurde als geschlossene Runde erstellt. Bist du sicher, dass du in dieser Runde willkommen bist?",
     "leaveRematch": "Bist du dir sicher, dass du dieses Rematch verlassen möchtest?",
-    "bot": "Bot"
+    "bot": "Bot",
+    "leaveButton": "Diesen Warteraum verlassen",
+    "readyButton": "Bereit zum Starten"
   },
   "Login": {
     "username": "Benutzername",
