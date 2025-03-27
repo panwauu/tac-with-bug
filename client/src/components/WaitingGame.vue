@@ -174,13 +174,13 @@
       class="footerWithButtons p-card-footer"
     >
       <Button
-        label="Diesen Warteraum verlassen"
+        :label="t('Waiting.leaveButton')"
         icon="pi pi-sign-out"
         severity="danger"
         @click="removePlayer(username ?? '')"
       />
       <Button
-        label="Bereit zum Starten?"
+        :label="t('Waiting.readyButton')"
         icon="pi pi-caret-right"
         severity="success"
         :disabled="game.players.slice(0, game.nPlayers).some((p, i) => p === null && game.bots[i] == null) || game.ready.find((_, index) => game.players[index] === username)"

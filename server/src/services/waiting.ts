@@ -277,7 +277,10 @@ export async function removePlayer(sqlClient: pg.Pool, usernameToRemove: string,
       p.push(sqlClient.query('DELETE FROM waitinggames WHERE id=$1;', [waitingGame.id]))
     } else {
       const indexToRemove = waitingGame.playerIDs.findIndex((p) => p === userIDToRemove)
+
+      const isAdmin = userIDToRemove === waitingGame.adminID
       const newAdminIndex = waitingGame.playerIDs.findIndex((p) => p !== userIDToRemove && p != null)
+      const updateAdminString = isAdmin ? `adminplayer=player${newAdminIndex},` : ''
 
       if (indexToRemove === -1 || newAdminIndex === -1) {
         throw new Error('Could not remove player as player is not in game or no new admin could be found')
@@ -286,7 +289,7 @@ export async function removePlayer(sqlClient: pg.Pool, usernameToRemove: string,
         sqlClient.query(
           `UPDATE waitinggames SET 
                 player${indexToRemove}=null, balls${indexToRemove}=null, 
-                adminplayer=player${newAdminIndex}, 
+                ${updateAdminString} 
                 ready0=false, ready1=false, ready2=false, ready3=false, ready4=false, ready5=false WHERE id=$1;`,
           [waitingGame.id]
         )
