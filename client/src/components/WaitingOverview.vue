@@ -16,9 +16,9 @@
     />
   </div>
 
-  <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap">
-    <div style="display: flex; justify-content: center">
-      <div style="display: flex; justify-content: center" />
+  <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px">
+    <div style="display: flex; justify-content: center; gap: 5px">
+      <div style="display: flex; justify-content: center; gap: 5px" />
       <Select
         v-model="nPlayersSelection"
         :options="nPlayersOptions"
@@ -37,7 +37,7 @@
         style="width: 110px"
       />
     </div>
-    <div style="display: flex; justify-content: center">
+    <div style="display: flex; justify-content: center; gap: 5px">
       <Select
         v-model="meisterSelection"
         :options="meisterOptions"

@@ -381,5 +381,7 @@ const switchColor = (color: string) => {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
 }
 </style>
