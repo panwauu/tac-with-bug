@@ -1,4 +1,4 @@
-# Definitions
+# Game
 
 ## State space
 
@@ -21,6 +21,8 @@ An analysis of the action space in a sample of 3 games led to the following stat
 
 - With the hardcoded bot "Futuro" a game takes around `250 turns` (With better bots this could be faster because of better moves or longer because of more destructive behavior)
 - In the performance benchmark we achieve around `600 turns per second`. This means around `400ms per game`
+
+# Usage
 
 ## Setup
 
@@ -45,3 +47,5 @@ pip install -r requirements.txt
 cd Tac-Env/tac-env/env
 python -m unittest discover -p "*_test.py"
 ```
+
+# Development

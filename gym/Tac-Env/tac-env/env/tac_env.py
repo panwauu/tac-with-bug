@@ -1,11 +1,12 @@
 from tac_env_types import AiData, CurrentState
 from typing import Any, Literal
 from pettingzoo import AECEnv
-import requests
+from pettingzoo.utils import wrappers
 import numpy as np
-from gymnasium import spaces
+from gymnasium import spaces, logger
 from card_probability_utils import get_card_probablities
 import httpx
+import json
 
 MAX_POSSIBLE_ACTIONS = 50
 
@@ -180,7 +181,7 @@ def create_observation_space(data: AiData, moves: list[Any]):
     }
 
 
-class TacEnv(AECEnv[str, Any, Any]):
+class raw_env(AECEnv[str, Any, Any]):
     n_players: Literal[4, 6]
     n_teams: Literal[2, 3]
     meister: bool
@@ -191,7 +192,7 @@ class TacEnv(AECEnv[str, Any, Any]):
 
     current_state: CurrentState
 
-    metadata = {"render.modes": [], "name": "tac-with-bug"}
+    metadata = {"render_modes": ["human"], "name": "tac-with-bug"}
 
     def __init__(self, render_mode=None, uds_path: str | None = None, http_path: str | None = None):
         """
@@ -235,7 +236,11 @@ class TacEnv(AECEnv[str, Any, Any]):
         return self.action_spaces[agent]
 
     def render(self):
-        pass
+        if self.render_mode is None:
+            logger.warn("You are calling render method without specifying any render mode.")
+            return
+
+        print(json.dumps(self.current_state, indent=4))
 
     def close(self):
         if hasattr(self, "client") and self.client is not None:
@@ -424,3 +429,22 @@ class TacEnv(AECEnv[str, Any, Any]):
         }
         request = self.client.post(f"{self.client_base_path}/apply-action", json=json)
         return request.json()
+
+
+def env(render_mode=None):
+    """
+    The env function often wraps the environment in wrappers by default.
+    You can find full documentation for these methods
+    elsewhere in the developer documentation.
+    """
+    internal_render_mode = render_mode
+    env = raw_env(render_mode=internal_render_mode)
+    # This wrapper is only for environments which print results to the terminal
+    if render_mode == "ansi":
+        env = wrappers.CaptureStdoutWrapper(env)
+    # this wrapper helps error handling for discrete action spaces
+    env = wrappers.AssertOutOfBoundsWrapper(env)
+    # Provides a wide vareity of helpful user errors
+    # Strongly recommended
+    env = wrappers.OrderEnforcingWrapper(env)
+    return env
