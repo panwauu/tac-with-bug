@@ -1,9 +1,10 @@
-from TacEnv_types import AiData, CurrentState
+from tac_env_types import AiData, CurrentState
 from typing import Any, Literal
 from pettingzoo import AECEnv
 import requests
 import numpy as np
 from gymnasium import spaces
+from card_probability_utils import get_card_probablities
 
 MAX_POSSIBLE_ACTIONS = 50
 
@@ -121,6 +122,12 @@ observation_space = spaces.Dict(
             shape=(MAX_POSSIBLE_ACTIONS, 4),
             dtype=np.int8,
         ),
+        "cardProbabilities": spaces.Box(
+            low=0,
+            high=1,
+            shape=(18,),
+            dtype=np.float32,
+        ),
     }
 )
 
@@ -189,6 +196,7 @@ def create_observation_space(data: AiData, moves: list[Any]):
             [map_move_for_observation(move) for move in moves[0:MAX_POSSIBLE_ACTIONS]]
             + [np.array([-1, -1, -1, -1], dtype=np.int8)] * (MAX_POSSIBLE_ACTIONS - len(moves))
         ),
+        "cardProbabilities": get_card_probablities(data),
     }
 
 
