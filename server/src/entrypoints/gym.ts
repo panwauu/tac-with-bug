@@ -11,8 +11,8 @@ import { MoveTextOrBall } from '../sharedTypes/typesBall'
 import { AiData, getAiData } from '../bot/simulation/output'
 import { projectMoveToGamePlayer } from '../bot/normalize/normalize'
 import { getMovesFromCards } from '../bot/simulation/simulation'
+import fs from 'fs'
 
-const port = 3000
 const app = express()
 app.use(express.json())
 
@@ -135,6 +135,20 @@ app.post('/apply-action', (req, res) => {
   }
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+const port = process.env.PORT
+const socketPath = process.env.SOCKET_PATH
+
+if (socketPath == null || socketPath === '') {
+  const localPort = port || 3000
+  app.listen(localPort, () => {
+    console.log(`Server listening on TCP port: ${localPort}`)
+  })
+} else {
+  if (fs.existsSync(socketPath)) {
+    fs.unlinkSync(socketPath)
+  }
+
+  app.listen(socketPath, () => {
+    console.log(`Server listening on UDS: ${socketPath}`)
+  })
+}

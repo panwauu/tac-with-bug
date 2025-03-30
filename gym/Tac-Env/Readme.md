@@ -20,7 +20,7 @@ An analysis of the action space in a sample of 3 games led to the following stat
 ## Game Stats
 
 - With the hardcoded bot "Futuro" a game takes around `250 turns` (With better bots this could be faster because of better moves or longer because of more destructive behavior)
-- In the performance benchmark we achieve around `450 turns per second`. This means around `0.55s per game`
+- In the performance benchmark we achieve around `600 turns per second`. This means around `400ms per game`
 
 ## Setup
 

@@ -5,29 +5,9 @@ import requests
 import numpy as np
 from gymnasium import spaces
 from card_probability_utils import get_card_probablities
+import httpx
 
 MAX_POSSIBLE_ACTIONS = 50
-
-
-def get_initial_state(n_players: int, n_teams: int, meister: bool, coop: bool) -> Any:
-    params = {
-        "nPlayers": n_players,
-        "nTeams": n_teams,
-        "meister": meister,
-        "coop": coop,
-    }
-    request = requests.get("http://localhost:3000/new", params=params)
-    return request.json()
-
-
-def perform_move(state: Any, current_player: int, move: Any) -> Any:
-    json = {
-        "data": state,
-        "player": current_player,
-        "move": move,
-    }
-    request = requests.post("http://localhost:3000/apply-action", json=json)
-    return request.json()
 
 
 N_PLAYERS = 6
@@ -205,11 +185,21 @@ class TacEnv(AECEnv[str, Any, Any]):
     n_teams: Literal[2, 3]
     meister: bool
     coop: bool
+
+    client: httpx.Client
+    client_base_path: str
+
     current_state: CurrentState
 
     metadata = {"render.modes": [], "name": "tac-with-bug"}
 
-    def __init__(self, render_mode=None):
+    def __init__(self, render_mode=None, uds_path: str | None = None, http_path: str | None = None):
+        """
+        Communication with the ts server needs to be done via a socket or http
+        - uds_path: path to the socket
+        - http_path: path to the http server
+        - both are None: http://localhost:3000
+        """
         super().__init__()
         self.render_mode = render_mode
         self.possible_agents = [f"player_{r}" for r in range(6)]
@@ -224,6 +214,18 @@ class TacEnv(AECEnv[str, Any, Any]):
         }
         self.action_spaces = {agent: spaces.Discrete(MAX_POSSIBLE_ACTIONS) for agent in self.possible_agents}
 
+        http_path = "http://localhost:3000"
+
+        if uds_path is not None:
+            self.client = httpx.Client(transport=httpx.HTTPTransport(uds=uds_path))
+            self.client_base_path = "http://localhost"
+        elif http_path is not None:
+            self.client = httpx.Client()
+            self.client_base_path = http_path
+        else:
+            self.client = httpx.Client()
+            self.client_base_path = "http://localhost:3000"
+
     # Observation space should be defined here.
     def observation_space(self, agent):
         return self.observation_spaces[agent]
@@ -236,7 +238,8 @@ class TacEnv(AECEnv[str, Any, Any]):
         pass
 
     def close(self):
-        pass
+        if hasattr(self, "client") and self.client is not None:
+            self.client.close()
 
     def reset(self, seed=None, options=None):
         """
@@ -257,7 +260,7 @@ class TacEnv(AECEnv[str, Any, Any]):
         self.meister = options.get("meister", True) if options else True
         self.coop = options.get("coop", False) if options else False
 
-        self.current_state = get_initial_state(self.n_players, self.n_teams, self.meister, self.coop)
+        self.current_state = self.get_initial_state(self.n_players, self.n_teams, self.meister, self.coop)
 
         self.agents = self.possible_agents[0 : self.n_players]
         self.rewards = {agent: 0 for agent in self.agents}
@@ -291,7 +294,7 @@ class TacEnv(AECEnv[str, Any, Any]):
         )
 
         # Perform the move and get the new state
-        new_state = perform_move(
+        new_state = self.perform_move(
             self.current_state,
             player_index,
             chosen_action,
@@ -402,3 +405,22 @@ class TacEnv(AECEnv[str, Any, Any]):
             ),
             "action_mask": self._get_action_mask(self._get_player_index_from_agent(agent)),
         }
+
+    def get_initial_state(self, n_players: int, n_teams: int, meister: bool, coop: bool) -> Any:
+        params = {
+            "nPlayers": n_players,
+            "nTeams": n_teams,
+            "meister": meister,
+            "coop": coop,
+        }
+        request = self.client.get(f"{self.client_base_path}/new", params=params)
+        return request.json()
+
+    def perform_move(self, state: Any, current_player: int, move: Any) -> Any:
+        json = {
+            "data": state,
+            "player": current_player,
+            "move": move,
+        }
+        request = self.client.post(f"{self.client_base_path}/apply-action", json=json)
+        return request.json()
