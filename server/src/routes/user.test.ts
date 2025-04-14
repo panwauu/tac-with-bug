@@ -37,7 +37,7 @@ describe('Sign-Up', () => {
   })
 
   test('Empty Request', async () => {
-    const response = await testAgent.post('/gameApi/sign-up')
+    const response = await testAgent.post('/gameApi/sign-up').send({})
     expect(response.statusCode).toBe(422)
     expect(response.body.message).toStrictEqual('Validation Failed')
     const detailString = JSON.stringify(response.body.details)
@@ -189,7 +189,7 @@ describe('Sign-Up', () => {
   })
 
   test('Login', async () => {
-    let response = await testAgent.post('/gameApi/login')
+    let response = await testAgent.post('/gameApi/login').send({})
     expect(response.statusCode).toBe(422)
     expect(response.body.message).toStrictEqual('Validation Failed')
     expect(JSON.stringify(response.body.details)).toContain("'username' is required")
@@ -222,7 +222,7 @@ describe('Sign-Up', () => {
     response = await testAgent.post('/gameApi/changeMail')
     expect(response.statusCode).toBe(401)
 
-    response = await testAgent.post('/gameApi/changeMail').set({ Authorization: authHeader })
+    response = await testAgent.post('/gameApi/changeMail').set({ Authorization: authHeader }).send({})
     expect(response.statusCode).toBe(422)
     expect(response.body.message).toStrictEqual('Validation Failed')
     expect(JSON.stringify(response.body.details)).toContain("'email' is required")
@@ -270,7 +270,7 @@ describe('Sign-Up', () => {
     response = await testAgent.post('/gameApi/changeUsername').send()
     expect(response.statusCode).toBe(401)
 
-    response = await testAgent.post('/gameApi/changeUsername').send().set({ Authorization: authHeader })
+    response = await testAgent.post('/gameApi/changeUsername').set({ Authorization: authHeader }).send({})
     expect(response.statusCode).toBe(422)
     expect(response.body.message).toStrictEqual('Validation Failed')
     expect(JSON.stringify(response.body.details)).toContain("'username' is required")
@@ -323,7 +323,7 @@ describe('Sign-Up', () => {
     response = await testAgent.post('/gameApi/changePassword')
     expect(response.statusCode).toBe(401)
 
-    response = await testAgent.post('/gameApi/changePassword').set({ Authorization: authHeader })
+    response = await testAgent.post('/gameApi/changePassword').set({ Authorization: authHeader }).send({})
     expect(response.statusCode).toBe(422)
     expect(response.body.message).toStrictEqual('Validation Failed')
     expect(JSON.stringify(response.body.details)).toContain("'password' is required")

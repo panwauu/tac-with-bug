@@ -19,7 +19,7 @@ describe('Settings-REST test', () => {
     })
 
     test('Unsuccessful request', async () => {
-      const response = await testAgent.post('/gameApi/setLocale').set({ Authorization: userWithCredentials.authHeader })
+      const response = await testAgent.post('/gameApi/setLocale').set({ Authorization: userWithCredentials.authHeader }).send({})
       expect(response.statusCode).toBe(422)
       expect(response.body.message).toStrictEqual('Validation Failed')
       expect(JSON.stringify(response.body.details)).toContain("'locale' is required")
@@ -40,7 +40,7 @@ describe('Settings-REST test', () => {
     })
 
     test('Unsuccessful request', async () => {
-      const response = await testAgent.post('/gameApi/setColorBlindnessFlag').set({ Authorization: userWithCredentials.authHeader })
+      const response = await testAgent.post('/gameApi/setColorBlindnessFlag').set({ Authorization: userWithCredentials.authHeader }).send({})
       expect(response.statusCode).toBe(422)
       expect(response.body.message).toStrictEqual('Validation Failed')
       expect(JSON.stringify(response.body.details)).toContain("'colorBlindnessFlag' is required")
@@ -63,7 +63,7 @@ describe('Settings-REST test', () => {
     })
 
     test('Unsuccessful request', async () => {
-      const response = await testAgent.post('/gameApi/setGameDefaultPositions').set({ Authorization: userWithCredentials.authHeader })
+      const response = await testAgent.post('/gameApi/setGameDefaultPositions').set({ Authorization: userWithCredentials.authHeader }).send({})
       expect(response.statusCode).toBe(422)
       expect(response.body.message).toStrictEqual('Validation Failed')
       expect(JSON.stringify(response.body.details)).toContain("'gameDefaultPositions' is required")
