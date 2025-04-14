@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node ./dist/entrypoints/index.js",
     "start:dev": "cross-env NODE_ENV=development nodemon ./dist/entrypoints/index.js",
-    "start:test": "cross-env NODE_ENV=test node ./dist/entrypoints/index.js --serve",
+    "start:test": "cross-env NODE_ENV=test nodemon ./dist/entrypoints/index.js",
     "build-spec": "echo 'build started' && tsoa spec-and-routes && openapi --input ./src/swagger.json --output ../client/src/generatedClient --useUnionTypes && echo 'build ended'",
     "build-spec:watch": "onchange \"src/routes/*.controller.ts\" -e \"src/routes/routes.ts\" -i -k -- npm run build-spec",
     "tsc": "tsc",
