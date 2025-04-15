@@ -76,7 +76,7 @@ export class TacServer {
       )
 
       // Handle SPA
-      this.app.all('*', (_, res) => {
+      this.app.all('/*splat', (_, res) => {
         res.redirect('/')
       })
     }
