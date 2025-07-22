@@ -272,7 +272,7 @@ export const useMessagesStore = defineStore('messages', {
     async startChat(users: { id: number; username: string }[], title: string | null) {
       if (title == null) {
         const chat = this.chats.find((c) => {
-          return !c.groupChat && c.players.includes(users[0].username)
+          return !c.groupChat && c.players?.includes(users[0].username)
         })
         if (chat != null) {
           this.selectChat(false, chat.chatid.toString())
