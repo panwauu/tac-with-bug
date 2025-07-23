@@ -30,7 +30,7 @@ jobs:
       - name: Use Node.js 20.x
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 20.x
       - name: Install pg-diff
