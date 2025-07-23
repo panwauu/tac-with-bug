@@ -1,7 +1,6 @@
-version: '3.9'
 services:
   db:
-    image: postgres:14.1
+    image: postgres:17.5
     container_name: postgres
     restart: always
     user: postgres
@@ -15,8 +14,8 @@ services:
         max-size: 10m
         max-file: "3"
     ports:
-      - '5432:5432'
-    volumes: 
+      - "5432:5432"
+    volumes:
       # store the data in a folder on the host to persist between containers
       - ./postgres-data:/var/lib/postgresql/data
       # copy the sql script to create tables
