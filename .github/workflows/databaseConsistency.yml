@@ -26,7 +26,7 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js 20.x
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
