@@ -29,4 +29,15 @@
   <script type="module" src="/src/main.ts"></script>
 </body>
 
+<script>
+  (function () {
+    let scheme = localStorage.getItem('color-scheme');
+    if (scheme === 'dark' || window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('tac-with-bug-dark');
+    } else {
+      document.documentElement.classList.remove('tac-with-bug-dark');
+    }
+  })();
+</script>
+
 </html>
