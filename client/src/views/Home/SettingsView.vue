@@ -67,6 +67,12 @@
           <SettingsEmailNotification v-if="isLoggedIn" />
         </AccordionContent>
       </AccordionPanel>
+      <AccordionPanel :value="8">
+        <AccordionHeader>{{ t('Settings.ColorScheme.header') }}</AccordionHeader>
+        <AccordionContent>
+          <SettingsColorScheme />
+        </AccordionContent>
+      </AccordionPanel>
     </Accordion>
   </div>
 </template>
@@ -85,6 +91,7 @@ import SettingsDeleteUser from '@/components/SettingsView/SettingsDeleteUser.vue
 import SettingsEmailNotification from '@/components/SettingsView/SettingsEmailNotification.vue'
 import LanguagePicker from '@/components/LanguagePicker.vue'
 import SettingsAudioVolume from '@/components/SettingsView/SettingsAudioVolume.vue'
+import SettingsColorScheme from '@/components/SettingsView/SettingsColorScheme.vue'
 
 import { ref } from 'vue'
 import { isLoggedIn } from '@/services/useUser'

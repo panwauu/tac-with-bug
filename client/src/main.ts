@@ -86,7 +86,14 @@ pinia.use(({ store }) => {
 app.use(pinia)
 app.use(i18n)
 
-app.use(PrimeVue, { theme: { preset: MyPreset } })
+app.use(PrimeVue, {
+  theme: {
+    preset: MyPreset,
+    options: {
+      darkModeSelector: '.tac-with-bug-dark',
+    },
+  },
+})
 app.use(ToastService)
 
 app.directive('tooltip', Tooltip)

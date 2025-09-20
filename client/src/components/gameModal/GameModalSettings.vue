@@ -2,6 +2,8 @@
   <div>
     <h3>{{ t(`Game.GameModal.Settings.audioVolume`) }}</h3>
     <SettingsAudioVolume />
+    <h3>{{ t(`Game.GameModal.Settings.colorScheme`) }}</h3>
+    <SettingsColorScheme />
     <h3>{{ t(`Game.GameModal.Settings.colorBlindness`) }}</h3>
     <SelectButton
       v-model="localColorBlindness"
@@ -47,6 +49,7 @@ const { t } = useI18n()
 import SelectButton from 'primevue/selectbutton'
 import RadioButton from 'primevue/radiobutton'
 import SettingsAudioVolume from '../SettingsView/SettingsAudioVolume.vue'
+import SettingsColorScheme from '../SettingsView/SettingsColorScheme.vue'
 
 import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { computed } from 'vue'

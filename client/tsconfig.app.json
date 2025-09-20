@@ -35,6 +35,9 @@
 
     // Advanced Options
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    // Disable in future
+    "noUncheckedIndexedAccess": false
   }
 }

@@ -3,20 +3,12 @@ services:
     image: postgres:17.5
     container_name: postgres
     restart: always
-    user: postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=tac
-      - PGDATA=/var/lib/postgresql/pgdata
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      # store the data in a folder on the host to persist between containers
       - ./postgres-data:/var/lib/postgresql/data
-      # copy the sql script to create tables
       - ./server/src/dbUtils/init_db_tac.sql:/docker-entrypoint-initdb.d/init_db_tac.sql

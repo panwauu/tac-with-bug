@@ -7,7 +7,7 @@
       class="imgGameBoard"
       :n-players="miscState.nPlayers"
       :turned="positionStyles.turned ?? false"
-      :style="`filter: brightness(${brightnessValue()});`"
+      :style="boardImageBrightnessFilter"
       draggable="false"
     />
     <template v-if="positionStyles.initialized">
@@ -153,6 +153,8 @@ import type { PerformMoveAction } from '@/services/compositionGame/usePerformMov
 import type { MoveBall, MoveText } from '@/../../server/src/sharedTypes/typesBall'
 import { rotatePosition as rotatePositionImport } from '@/js/rotateBoard'
 import BallsImage from '../assets/BallsImage.vue'
+import { computed } from 'vue'
+import { useColorSchemeStore } from '@/store/colorScheme'
 
 const props = defineProps<{
   positionStyles: PositionStylesState
@@ -162,6 +164,8 @@ const props = defineProps<{
   discardPileState: DiscardPileStateType
   performMove: (data: PerformMoveAction) => void
 }>()
+
+const colorScheme = useColorSchemeStore()
 
 function rotatePosition(position: number) {
   return rotatePositionImport(position, props.positionStyles.nRotate, props.miscState.players.length)
@@ -214,12 +218,11 @@ function performTextAction(textAction: string): void {
   })
 }
 
-function brightnessValue() {
-  if (!window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return '1'
-  }
-  return props.miscState.players.length === 4 ? '0.75' : '0.9'
-}
+const boardImageBrightnessFilter = computed(() => {
+  let brightnessValue = '1'
+  if (colorScheme.isDark) brightnessValue = props.miscState.players.length === 4 ? '0.75' : '0.9'
+  return `filter: brightness(${brightnessValue});`
+})
 </script>
 
 <style scoped lang="scss">
