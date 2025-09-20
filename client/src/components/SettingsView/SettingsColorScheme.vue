@@ -5,7 +5,7 @@
       v-model="value"
       :options="options"
       option-label="label"
-      :allowEmpty="false"
+      :allow-empty="false"
     >
       <template #option="slotProps">{{ t(slotProps.option.label) }}</template>
     </SelectButton>

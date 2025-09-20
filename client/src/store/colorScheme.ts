@@ -27,7 +27,7 @@ function applyColorSchemeClass(scheme: ColorScheme) {
 
 export const useColorSchemeStore = defineStore('colorScheme', {
   state: () => {
-    let stored = localStorage.getItem('color-scheme') as ColorScheme | null
+    const stored = localStorage.getItem('color-scheme') as ColorScheme | null
     let colorScheme: ColorScheme = 'system'
 
     if (stored === 'light' || stored === 'dark') {
