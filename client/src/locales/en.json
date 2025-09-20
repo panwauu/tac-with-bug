@@ -358,6 +358,7 @@
       },
       "Settings": {
         "audioVolume": "Volume:",
+        "colorScheme": "Color scheme:",
         "colorBlindness": "Optimizing balls for color blind people:",
         "colorBlindnessOn": "An",
         "colorBlindnessOff": "Out",
@@ -687,6 +688,13 @@
       "sponsoring": "Updates about your sponsorship",
       "messages": "For unread messages",
       "friendRequests": "On the occasion of open friend requests"
+    },
+    "ColorScheme": {
+      "header": "Color scheme",
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark",
+      "explanation": "The color scheme determines the appearance of the application. 'Light' displays a bright design, 'Dark' activates dark mode, and 'System' automatically adapts the color scheme to your device settings."
     }
   },
   "Profile": {
