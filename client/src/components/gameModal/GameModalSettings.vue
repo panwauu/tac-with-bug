@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="max-width: min(600px, 100vw)">
     <h3>{{ t(`Game.GameModal.Settings.audioVolume`) }}</h3>
     <SettingsAudioVolume />
     <h3>{{ t(`Game.GameModal.Settings.colorScheme`) }}</h3>

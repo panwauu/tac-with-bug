@@ -358,6 +358,7 @@
       },
       "Settings": {
         "audioVolume": "Lautstärke:",
+        "colorScheme": "Farbschema:",
         "colorBlindness": "Kugeln optimieren für Farbenblinde:",
         "colorBlindnessOn": "An",
         "colorBlindnessOff": "Aus",
@@ -687,6 +688,13 @@
       "sponsoring": "Updates über dein Sponsoring",
       "messages": "Bei ungelesenen Nachrichten",
       "friendRequests": "Anlässlich offener Freundschaftsanfragen"
+    },
+    "ColorScheme": {
+      "header": "Farbschema",
+      "system": "System",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "explanation": "Das Farbschema bestimmt das Aussehen der Anwendung. Mit „Hell“ wird ein helles Design angezeigt, „Dunkel“ aktiviert den dunklen Modus, und „System“ passt das Farbschema automatisch an die Einstellungen deines Geräts an."
     }
   },
   "Profile": {
