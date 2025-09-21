@@ -18,6 +18,7 @@ CREATE TABLE users (
   currentsubscription int,
   locale VARCHAR(2) NOT NULL DEFAULT 'de',
   color_blindness_flag BOOLEAN NOT NULL DEFAULT false,
+  prefers_dark_mode BOOLEAN DEFAULT NULL,
   admin BOOLEAN NOT NULL DEFAULT FALSE,
   game_default_position INTEGER [2] NOT NULL DEFAULT '{1, 0}',
   user_description VARCHAR(200) NOT NULL DEFAULT '',

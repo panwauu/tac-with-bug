@@ -148,4 +148,46 @@ describe('Settings-REST test', () => {
       }
     })
   })
+
+  describe('Set ColorScheme', () => {
+    test('Unauthorized', async () => {
+      const response = await testAgent.post('/gameApi/setColorScheme')
+      expect(response.statusCode).toBe(401)
+    })
+
+    test('Unsuccessful request', async () => {
+      const response = await testAgent.post('/gameApi/setColorScheme').set({ Authorization: userWithCredentials.authHeader }).send({})
+      expect(response.statusCode).toBe(422)
+      expect(response.body.message).toStrictEqual('Validation Failed')
+      expect(JSON.stringify(response.body.details)).toContain("'colorScheme' is required")
+    })
+
+    test('Invalid data', async () => {
+      const response = await testAgent.post('/gameApi/setColorScheme').set({ Authorization: userWithCredentials.authHeader }).send({ colorScheme: 'darg' })
+      expect(response.statusCode).toBe(422)
+      expect(response.body.message).toStrictEqual('Validation Failed')
+      expect(JSON.stringify(response.body.details)).toContain('should be one of the following')
+    })
+
+    test('Successful request to set dark', async () => {
+      const response = await testAgent.post('/gameApi/setColorScheme').set({ Authorization: userWithCredentials.authHeader }).send({ colorScheme: 'dark' })
+      expect(response.statusCode).toBe(204)
+      const newLocale = await testServer.pgPool.query('SELECT prefers_dark_mode FROM users WHERE username=$1;', [userWithCredentials.username])
+      expect(newLocale.rows[0].prefers_dark_mode).toBe(true)
+    })
+
+    test('Successful request to set light', async () => {
+      const response = await testAgent.post('/gameApi/setColorScheme').set({ Authorization: userWithCredentials.authHeader }).send({ colorScheme: 'light' })
+      expect(response.statusCode).toBe(204)
+      const newLocale = await testServer.pgPool.query('SELECT prefers_dark_mode FROM users WHERE username=$1;', [userWithCredentials.username])
+      expect(newLocale.rows[0].prefers_dark_mode).toBe(false)
+    })
+
+    test('Successful request to set system', async () => {
+      const response = await testAgent.post('/gameApi/setColorScheme').set({ Authorization: userWithCredentials.authHeader }).send({ colorScheme: 'system' })
+      expect(response.statusCode).toBe(204)
+      const newLocale = await testServer.pgPool.query('SELECT prefers_dark_mode FROM users WHERE username=$1;', [userWithCredentials.username])
+      expect(newLocale.rows[0].prefers_dark_mode).toBe(null)
+    })
+  })
 })

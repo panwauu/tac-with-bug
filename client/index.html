@@ -62,6 +62,7 @@
     />
     <title>Tac-With-Bug: Multiplayer TAC</title>
   </head>
+
   <body>
     <noscript>
       <strong>We're sorry but this app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
@@ -72,4 +73,15 @@
       src="/src/main.ts"
     ></script>
   </body>
+
+  <script>
+    ;(function () {
+      let scheme = localStorage.getItem('color-scheme')
+      if (scheme === 'dark' || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('tac-with-bug-dark')
+      } else {
+        document.documentElement.classList.remove('tac-with-bug-dark')
+      }
+    })()
+  </script>
 </html>

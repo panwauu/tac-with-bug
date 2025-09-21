@@ -140,13 +140,11 @@ onUnmounted(() => clearInterval(interval))
   --background-contrastest: var(--p-surface-200);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-ground: var(--p-surface-950);
-    --background-contrast: var(--p-content-background);
-    --background-contraster: var(--p-surface-800);
-    --background-contrastest: var(--p-surface-700);
-  }
+:root.tac-with-bug-dark {
+  --background-ground: var(--p-surface-950);
+  --background-contrast: var(--p-content-background);
+  --background-contraster: var(--p-surface-800);
+  --background-contrastest: var(--p-surface-700);
 }
 
 html {

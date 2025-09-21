@@ -5,6 +5,8 @@ import {
   EmailNotificationSettingsType,
   SetEmailNotificationSettingsError,
   setEmailNotificationSettings,
+  setColorSchemeSettings,
+  SetColorSchemeSettingsError,
 } from '../services/settings'
 import { Controller, Get, Post, Body, Route, Request, Security, TsoaResponse, Res } from 'tsoa'
 
@@ -99,5 +101,23 @@ export class SettingsController extends Controller {
     const changedSettings = await setEmailNotificationSettings(request.app.locals.sqlClient, request.userData.userID, settingsObject)
     if (changedSettings.isErr()) return serverError(500, changedSettings.error)
     return changedSettings.value
+  }
+
+  /**
+   * Set color scheme setting to persist for the user
+   * Values:
+   * - light
+   * - dark
+   * - system
+   */
+  @Security('jwt')
+  @Post('/setColorScheme')
+  public async setColorScheme(
+    @Request() request: express.Request,
+    @Body() settingsObject: { colorScheme: 'dark' | 'light' | 'system' },
+    @Res() serverError: TsoaResponse<500, SetColorSchemeSettingsError>
+  ): Promise<void> {
+    const changedSettings = await setColorSchemeSettings(request.app.locals.sqlClient, request.userData.userID, settingsObject.colorScheme)
+    if (changedSettings.isErr()) return serverError(500, changedSettings.error)
   }
 }

@@ -47,3 +47,23 @@ export async function getEmailsFromUsersForNews(pgPool: pg.Pool, type: 'news' | 
   const res = await pgPool.query<{ email: string }>('SELECT email FROM users WHERE notification_settings[$1] IS true;', [indexOfSettings + 1])
   return res.rows.map((e) => e.email).join(';')
 }
+
+// colorScheme can be 'light', 'dark' or 'system'
+// in Database stored as:
+// - NULL -> system
+// - 0 -> light
+// - 1 -> dark
+export type SetColorSchemeSettingsError = 'COULD_NOT_CHANGE_COLOR_SCHEME'
+export async function setColorSchemeSettings(pgPool: pg.Pool, userID: number, colorScheme: 'light' | 'dark' | 'system'): Promise<Result<void, SetColorSchemeSettingsError>> {
+  try {
+    let prefersDarkMode = null
+    if (colorScheme === 'dark') prefersDarkMode = 1
+    else if (colorScheme === 'light') prefersDarkMode = 0
+
+    await pgPool.query('UPDATE users SET prefers_dark_mode = $1 WHERE id = $2;', [prefersDarkMode, userID])
+    return ok()
+  } catch (error) {
+    logger.error(error)
+    return err('COULD_NOT_CHANGE_COLOR_SCHEME')
+  }
+}

@@ -26,13 +26,13 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 22.x
+      - uses: actions/checkout@v5
+      - name: Use Node.js
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 22.x
+          node-version-file: server/package.json
       - name: Install pg-diff
         run: |
           npm install -g pg-diff-cli

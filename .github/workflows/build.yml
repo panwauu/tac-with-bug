@@ -20,7 +20,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         ports:
-          - 5432:5432
+          - 5433:5432
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -29,15 +29,15 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: Use Node.js 22.x
+      - name: Use Node.js
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 22.x
+          node-version-file: server/package.json
           cache: "npm"
           cache-dependency-path: |
             server/package-lock.json
@@ -92,8 +92,8 @@ jobs:
           cd server
           npm run setup-test-database
           npm run test:e2e
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v3.1.0
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

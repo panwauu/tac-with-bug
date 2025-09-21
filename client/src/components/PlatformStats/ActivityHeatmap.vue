@@ -14,6 +14,9 @@ import VueApexCharts from 'vue3-apexcharts'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useColorSchemeStore } from '@/store/colorScheme'
+const colorSchemeStore = useColorSchemeStore()
+
 const { t } = useI18n()
 const props = defineProps<{ data?: ActivityHeatmap }>()
 watch(
@@ -50,7 +53,7 @@ const activityHeatmapOptions = {
     foreColor: getComputedStyle(document.body).getPropertyValue('--text-color'),
   },
   theme: {
-    mode: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+    mode: colorSchemeStore.isDark ? 'dark' : 'light',
   },
   plotOptions: {
     heatmap: {

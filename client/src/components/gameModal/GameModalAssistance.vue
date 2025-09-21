@@ -1,5 +1,5 @@
 <template>
-  <div class="assistantWrapper">
+  <div :class="['assistantWrapper', { light: isLight }]">
     <div class="assistantElement">
       <h2>{{ t('Game.GameModal.ShortManual.basisspiel') }}</h2>
       <div class="cardNumber tacRed">1</div>
@@ -80,6 +80,10 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import CardSymbols from '@/components/icons/CardSymbols.vue'
 import TacSymbol from '@/components/icons/TacSymbol.vue'
+
+import { useColorSchemeStore } from '@/store/colorScheme'
+const colorSchemeStore = useColorSchemeStore()
+const isLight = colorSchemeStore.isLight
 </script>
 
 <style scoped>
@@ -111,10 +115,8 @@ import TacSymbol from '@/components/icons/TacSymbol.vue'
   font-size: 1.7rem;
 }
 
-@media (prefers-color-scheme: light) {
-  .cardNumber {
-    color: var(--tac-text-color);
-  }
+.light .cardNumber {
+  color: var(--tac-text-color);
 }
 
 .cardSymbol {

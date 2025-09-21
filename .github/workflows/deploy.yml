@@ -8,29 +8,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: tac
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 22.x
+      - uses: actions/checkout@v5
+      - name: Use Node.js
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 22.x
+          node-version-file: server/package.json
           cache: "npm"
           cache-dependency-path: |
             server/package-lock.json
@@ -105,5 +90,5 @@ jobs:
       - name: Sanity check of tac-with-bug
         uses: fjogeleit/http-request-action@master
         with:
-          url: "https://www.tac-with-bug.com"
+          url: "https://tac-with-bug.herokuapp.com"
           method: "GET"
