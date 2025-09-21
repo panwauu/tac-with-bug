@@ -25,4 +25,5 @@ SET
 ALTER TABLE
     users DROP COLUMN currentsubscription;
 
+-- Do this later!
 DROP TABLE subscriptions;
