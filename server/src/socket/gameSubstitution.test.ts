@@ -34,7 +34,7 @@ describe('Test substitution start conditions with socket.io', () => {
     usersWithSocket = (await getUsersWithSockets({ ids: [5] }))[0]
     gameSocket = initiateGameSocket(testCases[testCaseNumber][0], usersWithSocket.token)
     await connectSocket(gameSocket)
-    await sleep(100)
+    await sleep(1000)
   })
 
   afterEach(async () => {
