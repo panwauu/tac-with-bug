@@ -62,8 +62,10 @@ import { injectStrict, SocketKey } from '@/services/injections'
 import { useI18n } from 'vue-i18n'
 import { useSettingsStore } from '@/store/settings'
 import { deleteProfilePics } from '@/services/useProfilePicture'
+import { useColorSchemeStore } from '@/store/colorScheme'
 
 const settingsStore = useSettingsStore()
+const colorSchemeStore = useColorSchemeStore()
 const { t } = useI18n()
 const socket = injectStrict(SocketKey)
 const toast = useToast()
@@ -96,6 +98,7 @@ async function login() {
     settingsStore.setDefaultPositions(response.gameDefaultPositions as [number, number], false)
     settingsStore.setAdmin(response.admin)
     settingsStore.setBlockedByModerationUntil(response.blockedByModerationUntil)
+    colorSchemeStore.setColorScheme(response.colorScheme, false)
     router.push({
       name: router.currentRoute.value.name != null ? router.currentRoute.value.name.toString() : 'Landing',
       query: router.currentRoute.value.query,

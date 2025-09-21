@@ -103,6 +103,7 @@ export class UserController extends Controller {
     gameDefaultPositions: number[]
     admin: boolean
     blockedByModerationUntil: string | null
+    colorScheme: 'light' | 'dark' | 'system'
   }> {
     const user = await getUser(request.app.locals.sqlClient, { username: userToLogin.username })
     if (user.isErr()) {
@@ -133,6 +134,7 @@ export class UserController extends Controller {
       gameDefaultPositions: user.value.gameDefaultPositions,
       admin: user.value.admin,
       blockedByModerationUntil: user.value.blockedByModerationUntil,
+      colorScheme: user.value.prefersDarkMode === null ? 'system' : user.value.prefersDarkMode ? 'dark' : 'light',
     }
   }
 

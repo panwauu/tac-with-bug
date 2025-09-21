@@ -32,7 +32,7 @@ const value = computed<{ label: string; value: ColorScheme }>({
     return options.value.find((option) => option.value === colorSchemeStore.colorScheme) ?? options.value[0]
   },
   set: (val) => {
-    colorSchemeStore.setColorScheme(val.value)
+    colorSchemeStore.setColorScheme(val.value, true)
   },
 })
 </script>

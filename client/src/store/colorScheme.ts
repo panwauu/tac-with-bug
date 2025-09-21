@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import { DefaultService as Service } from '../generatedClient/index.ts'
+import { isLoggedIn } from '../services/useUser'
 
 // Additional information:
 // To avoid flickering on initial load, there is an inline script in index.html that sets the class based on localstorage and system preference
@@ -54,7 +56,7 @@ export const useColorSchemeStore = defineStore('colorScheme', {
     },
   },
   actions: {
-    setColorScheme(scheme: ColorScheme) {
+    setColorScheme(scheme: ColorScheme, saveToServer: boolean) {
       this.colorScheme = scheme
 
       // Persist only light/dark, remove for system
@@ -62,6 +64,10 @@ export const useColorSchemeStore = defineStore('colorScheme', {
 
       // Apply css
       applyColorSchemeClass(scheme)
+
+      if (saveToServer && isLoggedIn.value) {
+        Service.setColorScheme(scheme)
+      }
     },
   },
 })
