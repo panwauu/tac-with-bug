@@ -114,10 +114,10 @@ export class SettingsController extends Controller {
   @Post('/setColorScheme')
   public async setColorScheme(
     @Request() request: express.Request,
-    @Body() settingsObject: 'dark' | 'light' | 'system',
+    @Body() settingsObject: { colorScheme: 'dark' | 'light' | 'system' },
     @Res() serverError: TsoaResponse<500, SetColorSchemeSettingsError>
   ): Promise<void> {
-    const changedSettings = await setColorSchemeSettings(request.app.locals.sqlClient, request.userData.userID, settingsObject)
+    const changedSettings = await setColorSchemeSettings(request.app.locals.sqlClient, request.userData.userID, settingsObject.colorScheme)
     if (changedSettings.isErr()) return serverError(500, changedSettings.error)
   }
 }

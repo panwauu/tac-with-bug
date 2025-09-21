@@ -66,7 +66,7 @@ export const useColorSchemeStore = defineStore('colorScheme', {
       applyColorSchemeClass(scheme)
 
       if (saveToServer && isLoggedIn.value) {
-        Service.setColorScheme(scheme)
+        Service.setColorScheme({ colorScheme: scheme })
       }
     },
   },
