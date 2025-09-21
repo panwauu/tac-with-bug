@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - name: Use Node.js 22.x
+      - name: Use Node.js
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         uses: actions/setup-node@v5
