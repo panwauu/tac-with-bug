@@ -16,7 +16,7 @@ beforeAll(async () => {
       host: 'localhost',
       database: databaseName,
       password: 'postgres',
-      port: 5432,
+      port: 5433,
       max: 15,
       idleTimeoutMillis: 100,
       connectionTimeoutMillis: 2000,
