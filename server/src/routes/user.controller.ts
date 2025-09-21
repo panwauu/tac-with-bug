@@ -124,6 +124,11 @@ export class UserController extends Controller {
     await updateUsersLastLogin(request.app.locals.sqlClient, userToLogin.username)
     await disablePasswordResetRequestsOfUser(request.app.locals.sqlClient, user.value.id)
 
+    let colorScheme: 'light' | 'dark' | 'system' = 'system'
+    if (user.value.prefersDarkMode !== null) {
+      colorScheme = user.value.prefersDarkMode ? 'dark' : 'light'
+    }
+
     const token = signJWT(userToLogin.username, user.value.id)
     return {
       message: 'Logged in!',
@@ -134,7 +139,7 @@ export class UserController extends Controller {
       gameDefaultPositions: user.value.gameDefaultPositions,
       admin: user.value.admin,
       blockedByModerationUntil: user.value.blockedByModerationUntil,
-      colorScheme: user.value.prefersDarkMode === null ? 'system' : user.value.prefersDarkMode ? 'dark' : 'light',
+      colorScheme: colorScheme,
     }
   }
 
