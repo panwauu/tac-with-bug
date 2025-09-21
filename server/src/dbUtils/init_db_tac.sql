@@ -21,7 +21,7 @@ CREATE TABLE users (
   admin BOOLEAN NOT NULL DEFAULT FALSE,
   game_default_position INTEGER [2] NOT NULL DEFAULT '{1, 0}',
   user_description VARCHAR(200) NOT NULL DEFAULT '',
-  notification_settings BOOLEAN [] NOT NULL DEFAULT array_fill(TRUE, ARRAY [6]) CHECK (array_length(notification_settings, 1) = 6)
+  notification_settings BOOLEAN [] NOT NULL DEFAULT array_fill(TRUE, ARRAY [5]) CHECK (array_length(notification_settings, 1) = 5)
 );
 
 CREATE TABLE password_reset_requests (
