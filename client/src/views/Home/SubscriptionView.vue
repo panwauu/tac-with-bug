@@ -57,7 +57,6 @@
 
 <script setup lang="ts">
 import Button from 'primevue/button'
-import SubscriptionTag from '@/components/SubscriptionTag.vue'
 import YinYang from '@/components/icons/YinYang.vue'
 import Luck from '@/components/icons/LuckSymbol.vue'
 import { isLoggedIn } from '@/services/useUser'
