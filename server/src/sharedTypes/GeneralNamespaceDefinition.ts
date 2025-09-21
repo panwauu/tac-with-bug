@@ -1,7 +1,6 @@
 import type { Socket as ServerSocket, Namespace } from 'socket.io'
 import type { Socket as ClientSocket } from 'socket.io-client'
 import type { CreateGameType, MovePlayerType, SwitchColorType, WaitingGame, StartGameType, MoveBotType } from './typesWaiting'
-import type { SubscriptionExport } from './typesSubscription'
 import type { GameForOverview, GetGamesType, GetRunningGamesType, UpdateDataType, GameForPlay } from './typesDBgame'
 import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTournament, TournamentTableData, LastTournamentWinners } from './typesTournament'
 import type { MoveTextOrBall } from './typesBall'
@@ -51,12 +50,6 @@ export interface ClientToServerEvents extends Record<string, any> {
   'chat:overview:load': (cb: CallbackFunction<ChatElement[]>) => void
   'channel:sendMessage': (data: { channel: string; body: string }, cb: CallbackFunction<null>) => void
   'channel:load': (data: { channel: string }, cb: CallbackFunction<{ channel: string; messages: ChatMessage[] }>) => void
-
-  //subscription
-  'subscription:get': () => void
-  'subscription:new': (subscriptionID: string, cb: CallbackFunction<null>) => void
-  'subscription:cancel': (cb: CallbackFunction<null>) => void
-  'subscription:nSubscriptions': () => void
 
   //tournament
   'tournament:loadTable': (data: { filter: 'private' | 'public' | null; first: number; limit: number }, cb: CallbackFunction<TournamentTableData>) => void
@@ -123,10 +116,6 @@ export interface ServerToClientEvents {
   'chat:singleChat:update': (data: { chatid: number; messages: ChatMessage[] }) => void
   'chat:overview:update': (chats: ChatElement[]) => void
   'channel:update': (data: { channel: string; messages: ChatMessage[] }) => void
-
-  //subscription
-  'subscription:get': (sub: SubscriptionExport) => void
-  'subscription:nSubscriptions': (nSubscriptions: number) => void
 
   //tournament
   'tournament:private:update': (tournament: PrivateTournament) => void

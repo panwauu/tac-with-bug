@@ -6,7 +6,6 @@ import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatisti
 import { initalizeStatistic } from '../game/statistic'
 import { getGames } from './game'
 import { ballPlayer } from '../game/ballUtils'
-import { isSubscribed } from '../paypal/paypal'
 import { getUser } from './user'
 import { isHofMember } from './hof'
 
@@ -167,9 +166,6 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
 
   const stat = await getPlayerStats(sqlClient, user.value.id)
 
-  const sub = await isSubscribed(sqlClient, username, false)
-  const subscribed = sub.isErr() ? false : sub.value
-
   return {
     history: stat.wl.lastGamesHistory,
     players: findPlayersFromStat(stat.wl),
@@ -204,7 +200,6 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
       aborted: stat.wl.nGamesAborted,
       running: stat.wl.nGamesRunning,
     },
-    subscriber: subscribed,
     people: stat.wl.people,
     hof: await isHofMember(sqlClient, username),
     userDescription: user.value.userDescription,
