@@ -1,5 +1,5 @@
-import type { BallsType } from './typesBall'
-import type { GameForPlay, UpdateDataType } from './typesDBgame'
+import type { BallsType } from 'tac-core/types/typesBall'
+import type { GameForPlay, UpdateDataType } from 'tac-core/types/typesDBgame'
 
 export interface TutorialStepOutput extends TutorialStepDefinition {
   updateData: UpdateDataType

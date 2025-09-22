@@ -1,5 +1,5 @@
 import type { GeneralSocketC } from '@/services/socket'
-import type { GameForOverview, GetGamesType } from '@/../../server/src/sharedTypes/typesDBgame'
+import type { GameForOverview, GetGamesType } from 'tac-core/types/typesDBgame'
 
 import { reactive, onBeforeUnmount } from 'vue'
 

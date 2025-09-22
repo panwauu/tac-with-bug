@@ -1,10 +1,10 @@
 import logger from '../helpers/logger'
 import type pg from 'pg'
 import type * as tTournament from '../sharedTypes/typesTournament'
-import type * as dbGame from '../sharedTypes/typesDBgame'
+import type * as dbGame from 'tac-core/types/typesDBgame'
 
 import { colors } from '../sharedDefinitions/colors'
-import { shuffleArray } from '../game/cardUtils'
+import { shuffleArray } from 'tac-core/game/cardUtils'
 import { abortGame, createGame } from './game'
 import { err, ok, Result } from 'neverthrow'
 import { evaluateGameWinnerAndReturnEndedFlag, EvaluateGameWinnerAndReturnEndedFlagError, updateScore } from './tournamentKO'
@@ -13,7 +13,7 @@ import { updateTournamentWinners } from '../socket/tournament'
 import { getSocketByUserID } from '../socket/general'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { tournamentBus } from './tournaments'
-import { switchFromTeamsOrderToGameOrder } from '../game/teamUtils'
+import { switchFromTeamsOrderToGameOrder } from 'tac-core/game/teamUtils'
 
 interface GetTournamentCondition {
   id?: number

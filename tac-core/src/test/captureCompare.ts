@@ -1,11 +1,11 @@
 import { cloneDeep } from 'lodash'
 import fs from 'fs'
-import { Game } from 'tac-core/game/game'
+import { Game } from '../game/game'
 
 //From File
 export function testCapturedMoves(testFileName: string, nPlayers?: number, nTeams?: number, meisterVersion?: boolean, coop?: boolean) {
   // read contents of the file
-  const data = String(fs.readFileSync(`./src/game/capturedGames/${testFileName}.txt`))
+  const data = String(fs.readFileSync(`./src/capturedGames/${testFileName}.txt`))
 
   // split the contents by new line
   const lines = data.split(/\r?\n/).map((line) => JSON.parse(line))

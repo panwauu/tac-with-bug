@@ -1,4 +1,4 @@
-import type { PlayerCard as ServerPlayerCard } from '@/../../server/src/sharedTypes/typesCard'
+import type { PlayerCard as ServerPlayerCard } from 'tac-core/types/typesCard'
 
 export interface PlayerCard extends ServerPlayerCard {
   key: string

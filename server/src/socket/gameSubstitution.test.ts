@@ -1,11 +1,11 @@
 import type { GameSocketC } from '../test/socket'
-import type { Substitution } from '../sharedTypes/game'
+import type { Substitution } from 'tac-core/types/game'
 
 import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets'
 import { initiateGameSocket } from '../test/handleGameSocket'
 import { closeSockets, connectSocket, waitForEventOnSockets } from '../test/handleSocket'
 import { sleep } from '../helpers/sleep'
-import { getBotName } from '../bot/names'
+import { getBotName } from 'tac-core/bot/names'
 import { getGame } from '../services/game'
 
 describe.todo('Test substitution start conditions with socket.io', () => {

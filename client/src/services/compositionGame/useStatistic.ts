@@ -2,7 +2,7 @@ import { reactive, computed, type ComputedRef, type UnwrapNestedRefs } from 'vue
 import { i18n } from '@/services/i18n'
 
 import type { GameStatistic, GameStatisticCardsType } from '@/../../server/src/sharedTypes/typesStatistic'
-import type { UpdateDataType } from '../../../../server/src/sharedTypes/typesDBgame'
+import type { UpdateDataType } from 'tac-core/types/typesDBgame'
 
 type StatisticStateTypeNonReactive = {
   statistic: GameStatistic[]

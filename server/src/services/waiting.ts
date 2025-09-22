@@ -1,5 +1,5 @@
 import type { WaitingGame } from '../sharedTypes/typesWaiting'
-import type { GameForPlay } from '../sharedTypes/typesDBgame'
+import type { GameForPlay } from 'tac-core/types/typesDBgame'
 import type pg from 'pg'
 
 import { Result, ok, err } from 'neverthrow'
@@ -8,8 +8,8 @@ import { createGame, disableRematchOfGame } from './game'
 import { isUserOnline } from '../socket/general'
 import { expectOneChangeToDatabase, NotOneDatabaseChangeError } from '../dbUtils/dbHelpers'
 import { getUser } from './user'
-import { validBotIds } from '../bot/bots/bots'
-import { switchFromGameOrderToTeamsOrder, switchFromTeamsOrderToGameOrder } from '../game/teamUtils'
+import { validBotIds } from 'tac-core/bot/bots/bots'
+import { switchFromGameOrderToTeamsOrder, switchFromTeamsOrderToGameOrder } from 'tac-core/game/teamUtils'
 import logger from '../helpers/logger'
 
 export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number) {

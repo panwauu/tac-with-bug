@@ -13,6 +13,7 @@
     "prettier:check": "prettier --config .prettierrc.json --check ."
   },
   "dependencies": {
+    "tac-core": "file:../tac-core",
     "@paypal/paypal-js": "^8.2.0",
     "@primeuix/themes": "^1.0.3",
     "@vueuse/core": "^13.1.0",

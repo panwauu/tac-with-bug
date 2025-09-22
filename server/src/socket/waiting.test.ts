@@ -5,7 +5,7 @@ import { disableRematchOfOldGames, getGame } from '../services/game'
 import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets, connectSocket } from '../test/handleSocket'
 import type { GameSocketC, GeneralSocketC } from '../test/socket'
-import { getBotName } from '../bot/names'
+import { getBotName } from 'tac-core/bot/names'
 const chance = new Chance()
 
 describe('Waiting game test suite via Socket.io', () => {

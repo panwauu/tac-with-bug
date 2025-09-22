@@ -5,7 +5,7 @@
     "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
-    "types": ["vitest/globals" ],
+    "types": ["vitest/globals"],
     "typeRoots": ["src/@types", "./node_modules/@types", "./node_modules"],
     "resolveJsonModule": true,
 
@@ -30,6 +30,9 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "esModuleInterop": true,
+    "paths": {
+      "tac-core/*": ["../tac-core/src/*"]
+    },
 
     /* Experimental Options */
     "experimentalDecorators": true,

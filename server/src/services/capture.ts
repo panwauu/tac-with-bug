@@ -1,8 +1,8 @@
 import logger from '../helpers/logger'
-import type * as tBall from '../sharedTypes/typesBall'
+import type * as tBall from 'tac-core/types/typesBall'
 import type pg from 'pg'
-import type { Game } from '../game/game'
-import type { CardsType } from '../sharedTypes/typesCard'
+import type { Game } from 'tac-core/game/game'
+import type { CardsType } from 'tac-core/types/typesCard'
 import { sanitizeGameCapture } from './gameCaptureSanitation'
 
 export interface CapturedType {

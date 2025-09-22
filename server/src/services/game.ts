@@ -1,19 +1,19 @@
 import logger from '../helpers/logger'
 import type pg from 'pg'
-import type * as tDBTypes from '../sharedTypes/typesDBgame'
+import type * as tDBTypes from 'tac-core/types/typesDBgame'
 
-import { Game } from '../game/game'
+import { Game } from 'tac-core/game/game'
 import { captureMove } from './capture'
 import { updateTournamentFromGame as updatePrivateTournamentFromGame } from './tournamentsPrivate'
 import { updateTournamentFromGame as updatePublicTournamentFromGame } from './tournamentsPublic'
-import type { MoveType } from '../sharedTypes/typesBall'
+import type { MoveType } from 'tac-core/types/typesBall'
 import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { getSocketByUserID } from '../socket/general'
 import { getSubstitution } from './substitution'
-import { getBotName } from '../bot/names'
-import { convertGameOrderToArrayPerTeam } from '../game/teamUtils'
+import { getBotName } from 'tac-core/bot/names'
+import { convertGameOrderToArrayPerTeam } from 'tac-core/game/teamUtils'
 
 function mergeElementsWithIndices<T>(elements: T[], indices: number[], minLength: number): (T | null)[] {
   return Array(Math.max(Math.max(...indices) + 1, minLength))

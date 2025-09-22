@@ -18,7 +18,7 @@ Two step guide to get started with the [Tac-With-Bug](https://www.tac-with-bug.c
 
 You will need the CLI for Postgres `psql`. I also recommend [pgAdmin](https://www.pgadmin.org/) to manipulate the database using a GUI.
 
-- On Windows install [postgres (13.x)](https://www.postgresql.org/download/) locally.
+- On Windows install [postgres (17.x)](https://www.postgresql.org/download/) locally.
 
 - On Mac the easiest way is [Postgres.app](https://postgresapp.com).
 
@@ -53,12 +53,16 @@ psql -h localhost -U postgres -d tac -f './server/src/dbUtils/populate_test.sql'
 
 | Folder             | Description                           |
 | ------------------ | ------------------------------------- |
+| [core](./core)     | Core logics for game and bots         |
 | [client](./client) | Vue source code for the web interface |
 | [server](./server) | Node server code                      |
 
 First all packages have to be installed and built.
 
 ```shell
+cd core
+npm install
+
 cd client
 npm install
 

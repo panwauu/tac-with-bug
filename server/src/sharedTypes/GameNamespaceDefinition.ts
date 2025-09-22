@@ -1,7 +1,7 @@
 import type { Socket as ServerSocket, Namespace } from 'socket.io'
 import type { Socket as ClientSocket } from 'socket.io-client'
-import type { MoveTextOrBall } from './typesBall'
-import type { UpdateDataType } from './typesDBgame'
+import type { MoveTextOrBall } from 'tac-core/types/typesBall'
+import type { UpdateDataType } from 'tac-core/types/typesDBgame'
 import type { CallbackFunction } from './GeneralNamespaceDefinition'
 
 export interface ClientToServerEvents {

@@ -1,8 +1,8 @@
 import type pg from 'pg'
 import type { TutorialStepDefinition } from '../sharedTypes/typesTutorial'
 import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
-import { Game } from '../game/game'
-import { getPlayerUpdateFromGame } from '../game/serverOutput'
+import { Game } from 'tac-core/game/game'
+import { getPlayerUpdateFromGame } from 'tac-core/game/serverOutput'
 import { getDefaultTutorialProgress, getTutorialProgress, resetTutorialProgress, setTutorialProgress } from '../services/tutorial'
 import Joi from 'joi'
 

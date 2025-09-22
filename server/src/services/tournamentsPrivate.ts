@@ -5,12 +5,12 @@ import { ok, err, Result } from 'neverthrow'
 import { getUser, GetUserErrors } from './user'
 import { createGame } from './game'
 import { colors } from '../sharedDefinitions/colors'
-import type { GameForPlay } from '../sharedTypes/typesDBgame'
+import type { GameForPlay } from 'tac-core/types/typesDBgame'
 import { evaluateGameWinnerAndReturnEndedFlag, EvaluateGameWinnerAndReturnEndedFlagError, updateScore, createTournamentDataKO, CreateTournamentDataKOError } from './tournamentKO'
 import { pushChangedPrivateTournament } from '../socket/tournamentPrivate'
 import { getSocketByUserID } from '../socket/general'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
-import { switchFromTeamsOrderToGameOrder } from '../game/teamUtils'
+import { switchFromTeamsOrderToGameOrder } from 'tac-core/game/teamUtils'
 
 interface GetPrivateTournamentCondition {
   id?: number

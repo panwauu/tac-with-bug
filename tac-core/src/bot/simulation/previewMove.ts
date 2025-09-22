@@ -1,4 +1,4 @@
-import { MoveTextOrBall } from '../../sharedTypes/typesBall'
+import { MoveTextOrBall } from '../../types/typesBall'
 import { Game } from '../../game/game'
 import { initalizeStatistic } from '../../game/statistic'
 import { AiData, getAiData } from './output'

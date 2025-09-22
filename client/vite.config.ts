@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import loadVersion from 'vite-plugin-package-version'
+import { resolve } from 'node:path'
 
 export default defineConfig({
   plugins: [vue(), vueDevTools(), loadVersion()],
@@ -44,6 +45,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      'tac-core': resolve(__dirname, '../tac-core/src'),
     },
   },
   build: {

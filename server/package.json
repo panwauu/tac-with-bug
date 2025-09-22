@@ -57,8 +57,10 @@
     "sharp": "^0.34.1",
     "socket.io": "^4.6.1",
     "swagger-ui-express": "^5.0.1",
+    "tac-core": "file:../tac-core",
     "tsoa": "^6.6.0",
     "ua-parser-js": "^2.0.3",
+    "vite": "^7.1.7",
     "winston": "^3.17.0",
     "winston-transport": "^4.9.0"
   },
@@ -95,7 +97,8 @@
     "supertest": "^7.1.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
-    "vitest": "^3.1.1"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   },
   "nodemonConfig": {
     "ignore": [

@@ -2,8 +2,8 @@ import { reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { i18n } from '@/services/i18n'
 
-import type * as tPlayers from '@/../../server/src/sharedTypes/typesPlayers'
-import type { UpdateDataType } from '@/../../server/src/sharedTypes/typesDBgame'
+import type * as tPlayers from 'tac-core/types/typesPlayers'
+import type { UpdateDataType } from 'tac-core/types/typesDBgame'
 
 export interface MiscStateType {
   gameID: number

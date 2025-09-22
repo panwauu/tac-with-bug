@@ -1,9 +1,9 @@
-import { MoveTextOrBall } from '../../sharedTypes/typesBall'
+import { MoveTextOrBall } from '../../types/typesBall'
 import { AiData } from '../simulation/output'
-import { Futuro } from './Futuro'
 import { Ruby } from './Ruby'
 import { Greedy } from './Greedy'
 import { Raindom } from './Raindom'
+import { Futuro } from './Futuro'
 
 export enum Bot {
   Raindom = 0,

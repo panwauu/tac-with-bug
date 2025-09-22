@@ -1,15 +1,15 @@
 import { Result, ok, err } from 'neverthrow'
 import type pg from 'pg'
 import { getSocketByUserID, getSocketsInGame, nsp, sendUpdatesOfGameToPlayers } from '../socket/game'
-import type { GameForPlay } from '../sharedTypes/typesDBgame'
+import type { GameForPlay } from 'tac-core/types/typesDBgame'
 import { getGame, updateGame } from './game'
-import { initalizeStatistic } from '../game/statistic'
+import { initalizeStatistic } from 'tac-core/game/statistic'
 import { addJob } from './scheduledTasks'
 import { scheduleJob } from 'node-schedule'
 import { getUser, GetUserErrors } from './user'
-import type { Substitution } from '../sharedTypes/game'
-import { getBotName } from '../bot/names'
-import { validBotIds } from '../bot/bots/bots'
+import type { Substitution } from 'tac-core/types/game'
+import { getBotName } from 'tac-core/bot/names'
+import { validBotIds } from 'tac-core/bot/bots/bots'
 
 const MAX_TIME_FOR_SUBSTITUTION = 60 * 1000
 

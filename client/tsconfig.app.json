@@ -9,7 +9,8 @@
     "module": "esnext",
     "lib": ["esnext", "dom", "dom.iterable"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "tac-core/*": ["../tac-core/src/*"]
     },
     "sourceMap": true,
     "baseUrl": ".",

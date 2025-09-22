@@ -1,5 +1,5 @@
-import { MoveTextOrBall } from '../../sharedTypes/typesBall'
-import { CardType, PlayerCard } from '../../sharedTypes/typesCard'
+import { MoveTextOrBall } from '../../types/typesBall'
+import { CardType, PlayerCard } from '../../types/typesCard'
 import { getCards } from '../../game/serverOutput'
 import { Game } from '../../game/game'
 import { projectMoveToGamePlayer } from '../normalize/normalize'

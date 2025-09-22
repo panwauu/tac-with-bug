@@ -1,5 +1,5 @@
-import { CardType } from '../../sharedTypes/typesCard'
-import { MoveTextOrBall } from '../../sharedTypes/typesBall'
+import { CardType } from '../../types/typesCard'
+import { MoveTextOrBall } from '../../types/typesBall'
 import { AiData } from '../simulation/output'
 import { getMovesFromCards } from '../simulation/simulation'
 

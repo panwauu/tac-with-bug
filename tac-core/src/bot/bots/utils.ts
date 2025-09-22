@@ -1,5 +1,5 @@
 import { ballGoal, ballStart, getPositionsBetweenStarts } from '../../game/ballUtils'
-import { BallsType } from '../../sharedTypes/typesBall'
+import { BallsType } from '../../types/typesBall'
 
 function necessaryForwardMovesToEndOfGoal(position: number, ballIndex: number, balls: BallsType): number {
   if (position < ballStart(0, balls)) return maxMovesToEndOfGoal(balls)

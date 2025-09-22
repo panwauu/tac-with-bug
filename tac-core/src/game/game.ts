@@ -1,10 +1,10 @@
-import type * as tCard from '../sharedTypes/typesCard'
-import type * as tBall from '../sharedTypes/typesBall'
-import type * as tStatistic from '../sharedTypes/typesStatistic'
-import type { GameData } from '../sharedTypes/game'
+import type * as tCard from '../types/typesCard'
+import type * as tBall from '../types/typesBall'
+import type * as tStatistic from '../types/typesStatistic'
+import type { GameData } from '../types/game'
 
 import { cloneDeep } from 'lodash'
-import logger from '../helpers/logger'
+import { type Logger, noopLogger } from '../utils/logger'
 import { initalizeCards, dealCards, discardCard, narrCardSwap, addCardToDiscardPile, removeCardFromPlayersHand, checkCardsAndDeal } from './cardUtils'
 import { createCardWithMove, initializeTeams } from './generateMovesUtils'
 import { performBallAction, getLastNonTacCard } from './performMoveUtils'
@@ -39,7 +39,11 @@ export class Game implements GameData {
   statistic: tStatistic.GameStatistic[]
   substitutedPlayerIndices: number[]
 
-  constructor(nPlayers: number, nTeams: number, meisterVersion: boolean, coop: boolean, gameLoad?: GameData) {
+  private logger?: Logger
+
+  constructor(nPlayers: number, nTeams: number, meisterVersion: boolean, coop: boolean, gameLoad?: GameData, logger: Logger = noopLogger) {
+    this.logger = logger
+
     if (gameLoad != null) {
       this.nPlayers = gameLoad.nPlayers
       this.coop = gameLoad.coop || false
@@ -265,28 +269,28 @@ export class Game implements GameData {
     }
 
     if (move[0] !== this.activePlayer) {
-      logger.info('Player is not active Player')
+      this.logger?.info('Player is not active Player')
       return false
     }
 
     const card = this.cardsWithMoves?.[move[1]]
     if (card == null) {
-      logger.info('Card number is not in correct Range')
+      this.logger?.info('Card number is not in correct Range')
       return false
     }
 
     if (!card.possible) {
-      logger.info('card not possible')
+      this.logger?.info('card not possible')
       return false
     }
 
     if (move.length === 3) {
       if (move[2] === '') {
-        logger.info('textAction empty')
+        this.logger?.info('textAction empty')
         return false
       }
       if (!card.textAction.includes(move[2])) {
-        logger.info('textAction not allowed')
+        this.logger?.info('textAction not allowed')
         return false
       }
     } else if (card.ballActions[move[2]] == null || !card.ballActions[move[2]].includes(move[3])) {

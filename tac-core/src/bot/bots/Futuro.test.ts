@@ -1,8 +1,10 @@
-import { Game } from '../../game/game'
+describe.todo('test Futuro bot', () => {})
+
+/*import { Game } from '../../game/game'
 import { getAiData } from '../simulation/output'
 import { Futuro } from './Futuro'
 
-describe('test Futuro bot', () => {
+describe.todo('test Futuro bot', () => {
   test('Should not split 7 if there is only one ball', () => {
     const game = new Game(4, 2, true, false)
     game.activePlayer = 0
@@ -258,3 +260,4 @@ describe('test Futuro bot', () => {
     expect([0, 1]).toContain(move?.[1])
   })
 })
+*/

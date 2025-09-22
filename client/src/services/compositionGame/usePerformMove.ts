@@ -4,7 +4,7 @@ import type { BallsStateType } from './useBalls'
 import type { MiscStateType } from './useMisc'
 import type { DiscardPileStateType } from './useDiscardPile'
 import type { CardsStateType } from './useCards'
-import type { MoveTextOrBall } from '@/../../server/src/sharedTypes/typesBall'
+import type { MoveTextOrBall } from 'tac-core/types/typesBall'
 
 export type PerformMoveAction = {
   textAction: string

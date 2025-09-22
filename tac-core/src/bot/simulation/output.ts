@@ -1,5 +1,5 @@
-import { BallsType } from '../../sharedTypes/typesBall'
-import { CardType, PlayerCard } from '../../sharedTypes/typesCard'
+import { BallsType } from '../../types/typesBall'
+import { CardType, PlayerCard } from '../../types/typesCard'
 import { getCards } from '../../game/serverOutput'
 import { Game } from '../../game/game'
 import { modulo, rightShiftArray } from '../normalize/helpers'

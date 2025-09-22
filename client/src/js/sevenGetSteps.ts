@@ -1,4 +1,4 @@
-import type * as tBall from '@/../../server/src/sharedTypes/typesBall'
+import type * as tBall from 'tac-core/types/typesBall'
 import type * as tCard from '../@types/typesCard'
 import type { DiscardElement } from '@/services/compositionGame/useDiscardPile'
 

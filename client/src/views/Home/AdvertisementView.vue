@@ -5,10 +5,7 @@
     :class="{ advertPagePortrait: showPortrait }"
   >
     <div style="width: 100%">
-      <img
-        style="width: 100%; max-width: 600px; border-radius: 10px"
-        src="@/assets/gameexample.png"
-      />
+      <GameSimulation />
     </div>
     <div style="display: flex; justify-content: center">
       <div style="display: flex; flex-direction: column; align-items: center; padding: 10px; flex: 0 1 600px; max-width: 100%">
@@ -61,6 +58,7 @@ import { useResizeObserver } from '@vueuse/core'
 import FunFactsCarousel from '@/components/FunFactsCarousel.vue'
 import router from '@/router'
 import { useI18n } from 'vue-i18n'
+import GameSimulation from '@/components/GameSimulation.vue'
 
 const { t } = useI18n()
 
