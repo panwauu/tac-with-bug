@@ -1,8 +1,8 @@
 {
   "name": "@repo/core",
   "version": "1.5.8",
-  "main": "index.ts",
-  "types": "index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "description": "Shared game logic for Tac (client/server)",
   "author": "",
   "license": "MIT",
