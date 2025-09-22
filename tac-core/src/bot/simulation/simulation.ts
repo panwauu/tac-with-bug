@@ -1,9 +1,9 @@
-import { MoveTextOrBall } from '../../types/typesBall'
-import { CardType, PlayerCard } from '../../types/typesCard'
+import type { MoveTextOrBall } from '../../types/typesBall'
+import type { CardType, PlayerCard } from '../../types/typesCard'
 import { getCards } from '../../game/serverOutput'
 import { Game } from '../../game/game'
 import { projectMoveToGamePlayer } from '../normalize/normalize'
-import { AiData, getAiData } from './output'
+import { type AiData, getAiData } from './output'
 import { Bot, getBotMove } from '../bots/bots'
 
 export type AiInterface = {

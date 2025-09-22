@@ -1,9 +1,9 @@
 // Hi, I'm ruby,
 // I am a RUle-Based sYstem, hoping to be a good AI
 
-import { MoveTextOrBall } from '../../types/typesBall'
-import { AiData } from '../simulation/output'
-import { AiInterface, getMovesFromCards } from '../simulation/simulation'
+import type { MoveTextOrBall } from '../../types/typesBall'
+import type { AiData } from '../simulation/output'
+import { type AiInterface, getMovesFromCards } from '../simulation/simulation'
 import { ballInProximityOfHouse, normalizedNecessaryForwardMovesToEndOfGoal } from './utils'
 
 export class Ruby implements AiInterface {

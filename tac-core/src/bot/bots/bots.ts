@@ -1,5 +1,5 @@
-import { MoveTextOrBall } from '../../types/typesBall'
-import { AiData } from '../simulation/output'
+import type { MoveTextOrBall } from '../../types/typesBall'
+import type { AiData } from '../simulation/output'
 import { Ruby } from './Ruby'
 import { Greedy } from './Greedy'
 import { Raindom } from './Raindom'

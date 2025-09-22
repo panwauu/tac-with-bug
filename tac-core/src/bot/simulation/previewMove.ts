@@ -1,7 +1,7 @@
-import { MoveTextOrBall } from '../../types/typesBall'
+import type { MoveTextOrBall } from '../../types/typesBall'
 import { Game } from '../../game/game'
 import { initalizeStatistic } from '../../game/statistic'
-import { AiData, getAiData } from './output'
+import { type AiData, getAiData } from './output'
 
 export function previewMove(data: AiData, move: MoveTextOrBall): AiData {
   // Convert data back to game

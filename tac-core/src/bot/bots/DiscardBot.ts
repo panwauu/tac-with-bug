@@ -1,6 +1,6 @@
-import { CardType } from '../../types/typesCard'
-import { MoveTextOrBall } from '../../types/typesBall'
-import { AiData } from '../simulation/output'
+import type { CardType } from '../../types/typesCard'
+import type { MoveTextOrBall } from '../../types/typesBall'
+import type { AiData } from '../simulation/output'
 import { getMovesFromCards } from '../simulation/simulation'
 
 // Most valuable first, if not in array then it is discarded first

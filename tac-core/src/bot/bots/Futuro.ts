@@ -2,10 +2,10 @@
 // I look into the future and plan my moves accordingly
 
 import { ballGoal } from '../../game/ballUtils'
-import { BallsType, MoveText, MoveTextOrBall } from '../../types/typesBall'
-import { AiData, getAiData } from '../simulation/output'
+import type { BallsType, MoveText, MoveTextOrBall } from '../../types/typesBall'
+import { type AiData, getAiData } from '../simulation/output'
 import { convertDataToGameAsIf0WasActive, previewMove } from '../simulation/previewMove'
-import { AiInterface, getMovesFromCards } from '../simulation/simulation'
+import { type AiInterface, getMovesFromCards } from '../simulation/simulation'
 import { discardBot } from './DiscardBot'
 import { tradeBot } from './TradeBot'
 import { ballInBackwardProximity, ballInForward7Proximity, ballInForwardProximity, ballInProximityOfHouse, normalizedNecessaryForwardMovesToEndOfGoal } from './utils'
