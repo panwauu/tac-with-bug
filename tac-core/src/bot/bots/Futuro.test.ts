@@ -1,10 +1,14 @@
-describe.todo('test Futuro bot', () => {})
+describe.todo('test Futuro bot', () => {
+  test('Test needed', () => {
+    expect(true).toBe(true)
+  })
+})
 
 /*import { Game } from '../../game/game'
 import { getAiData } from '../simulation/output'
 import { Futuro } from './Futuro'
 
-describe.todo('test Futuro bot', () => {
+describe('test Futuro bot', () => {
   test('Should not split 7 if there is only one ball', () => {
     const game = new Game(4, 2, true, false)
     game.activePlayer = 0
