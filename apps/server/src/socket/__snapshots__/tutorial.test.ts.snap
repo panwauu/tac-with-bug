@@ -260,6 +260,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
       ],
       "coop": false,
       "gameEnded": false,
+      "logger": {},
       "nPlayers": 4,
       "narrFlag": [
         false,

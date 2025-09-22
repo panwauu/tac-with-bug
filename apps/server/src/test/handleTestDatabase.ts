@@ -47,8 +47,8 @@ async function initAndPopulateTestDatabase(databaseName: string): Promise<void> 
   try {
     await pgClient.connect()
 
-    const initTacDatabaseSQL = fs.readFileSync(path.join(getRoot(), 'server', 'src', 'dbUtils', 'init_db_tac.sql')).toString()
-    const populateTestDatabaseSQL = fs.readFileSync(path.join(getRoot(), 'server', 'src', 'dbUtils', 'populate_test.sql')).toString()
+    const initTacDatabaseSQL = fs.readFileSync(path.join(getRoot(), 'apps', 'server', 'src', 'dbUtils', 'init_db_tac.sql')).toString()
+    const populateTestDatabaseSQL = fs.readFileSync(path.join(getRoot(), 'apps', 'server', 'src', 'dbUtils', 'populate_test.sql')).toString()
 
     await pgClient.query(initTacDatabaseSQL)
     await pgClient.query(populateTestDatabaseSQL)
@@ -65,7 +65,7 @@ function getRoot(): string {
 
   do {
     const dircontent = fs.readdirSync(remainingPath)
-    if (['.github', 'server', 'client'].every((f) => dircontent.includes(f))) {
+    if (['.github', 'apps', 'packages'].every((f) => dircontent.includes(f))) {
       return remainingPath
     }
 
