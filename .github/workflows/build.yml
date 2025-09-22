@@ -59,7 +59,7 @@ jobs:
       - name: Build
         run: |
           npm run build
-      - name: Run test - TODO coverage missing
+      - name: Run tests
         run: |
           npm run test
         env:

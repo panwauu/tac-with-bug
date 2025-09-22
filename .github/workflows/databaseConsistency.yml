@@ -54,6 +54,7 @@ jobs:
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       - name: Run compare script
         run: |
+          cd apps
           cd server
           cd src
           cd dbUtils
