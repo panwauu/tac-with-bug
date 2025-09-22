@@ -50,15 +50,15 @@ jobs:
       - name: Check formatting
         run: |
           npm run check-format
-      - name: Check locale files
-        run: |
-          npm run check-locale-files
       - name: Check types
         run: |
           npm run check-types
       - name: Build
         run: |
           npm run build
+      - name: Check locale files
+        run: |
+          npm run check-locale-files
       - name: Run tests
         run: |
           npm run test
