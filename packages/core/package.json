@@ -1,0 +1,79 @@
+{
+  "name": "@repo/core",
+  "version": "1.5.8",
+  "main": "index.ts",
+  "types": "index.ts",
+  "description": "Shared game logic for Tac (client/server)",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@types/lodash": "^4.17.16",
+    "@types/node": "^22.14.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-sonarjs": "^3.0.5",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.44.0",
+    "vitest": "^3.2.4"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "build": "tsc",
+    "test": "vitest run",
+    "lint": "eslint ./src",
+    "prettier:format": "prettier --config .prettierrc --write .",
+    "check-format": "prettier --config .prettierrc --check ."
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./game/game": {
+      "types": "./dist/game/game.d.ts",
+      "require": "./dist/game/game.js"
+    },
+    "./bot/simulation/simulation": {
+      "types": "./dist/bot/simulation/simulation.d.ts",
+      "require": "./dist/bot/simulation/simulation.js"
+    },
+    "./types/typesBall": {
+      "types": "./dist/types/typesBall.d.ts",
+      "require": "./dist/types/typesBall.js"
+    },
+    "./game/serverOutput": {
+      "types": "./dist/game/serverOutput.d.ts",
+      "require": "./dist/game/serverOutput.js"
+    },
+    "./bot/normalize/normalize": {
+      "types": "./dist/bot/normalize/normalize.d.ts",
+      "require": "./dist/bot/normalize/normalize.js"
+    },
+    "./bot/simulation/output": {
+      "types": "./dist/bot/simulation/output.d.ts",
+      "require": "./dist/bot/simulation/output.js"
+    },
+    "./bot/bots/bots": {
+      "types": "./dist/bot/bots/bots.d.ts",
+      "require": "./dist/bot/bots/bots.js"
+    },
+    "./types/typesDBgame": {
+      "types": "./dist/types/typesDBgame.d.ts",
+      "require": "./dist/types/typesDBgame.js"
+    },
+    "./bot/names": {
+      "types": "./dist/bot/names.d.ts",
+      "require": "./dist/bot/names.js"
+    },
+    "./types/game": {
+      "types": "./dist/types/game.d.ts",
+      "require": "./dist/types/game.js"
+    }
+  }
+}

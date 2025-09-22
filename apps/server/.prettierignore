@@ -1,0 +1,17 @@
+# Ignore artifacts:
+coverage
+dist
+email
+node_modules
+public
+__snapshots__
+test-results
+playwright-report
+.cache
+
+.env
+package.json
+package-lock.json
+*.json
+
+src/routes/routes.ts

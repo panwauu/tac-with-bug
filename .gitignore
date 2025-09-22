@@ -1,24 +1,22 @@
 .DS_Store
 node_modules
 coverage
-server/public
-server/.git
-server/.env
-server/dist
-server/src/swagger.json
-server/src/routes/routes.ts
+dist
+test-results
+playwright-report
+playwright/.cache/
+.turbo
+
+apps/server/.git
+apps/server/src/swagger.json
+apps/server/src/routes/routes.ts
 client/src/locales/.git
 client/src/locales/README.md
 client/src/locales/docs
 client/src/generatedClient
-tac-core/.env
-tac-core/dist
-tac-core/coverage
-test-results
-playwright-report
-playwright/.cache/
 
 # local env files
+.env
 .env.local
 .env.*.local
 *.pem
