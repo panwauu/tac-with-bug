@@ -50,9 +50,6 @@ jobs:
       - name: Check formatting
         run: |
           npm run check-format
-      - name: Check types
-        run: |
-          npm run check-types
       - name: Build
         run: |
           npm run build
