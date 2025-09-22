@@ -56,9 +56,9 @@ jobs:
       - name: Check locale files
         run: |
           npm run check-locale-files
-      - name: Run tests
+      - name: Run tests with coverage
         run: |
-          npm run test
+          npm run test -- -- --coverage
         env:
           paypal_Secret: ${{ secrets.PAYPAL_SECRET }}
       - name: SonarQube Scan
