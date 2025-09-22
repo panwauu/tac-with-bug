@@ -32,7 +32,7 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         uses: actions/setup-node@v5
         with:
-          node-version-file: server/package.json
+          node-version-file: apps/server/package.json
       - name: Install pg-diff
         run: |
           npm install -g pg-diff-cli
