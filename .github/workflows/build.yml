@@ -44,16 +44,16 @@ jobs:
             client/package-lock.json
       - name: Install core modules
         run: |
-          cd core
+          cd tac-core
           npm ci
       - name: Check linting and formatting of core
         run: |
-          cd core
+          cd tac-core
           npm run lint
           npm run prettier:check
       - name: Build core
         run: |
-          cd core
+          cd tac-core
           npm run tsc
       - name: Install server modules
         run: |
@@ -92,7 +92,7 @@ jobs:
           npm run build
       - name: Run core test
         run: |
-          cd core
+          cd tac-core
           npm run test -- --coverage=true
       - name: Run server test
         run: |
