@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "module": "commonjs",
+    "module": "NodeNext",
     "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
-    "types": ["vitest/globals"],
-    "typeRoots": ["src/@types", "./node_modules/@types", "./node_modules"],
+    "typeRoots": ["src/@types", "../../node_modules/@types"],
     "resolveJsonModule": true,
 
     /* Strict Type-Checking Options */
@@ -27,12 +26,9 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Module Resolution Options */
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "baseUrl": ".",
     "esModuleInterop": true,
-    "paths": {
-      "@repo/core/*": ["../../packages/core/src/*"]
-    },
 
     /* Experimental Options */
     "experimentalDecorators": true,
@@ -44,6 +40,12 @@
     "skipLibCheck": true
   },
   "lib": ["es2015"],
-  "exclude": ["**/vitest.config.ts", "**/vite.config.ts"]
+    "exclude": [
+      "**/vitest.config.ts",
+      "**/vite.config.ts",
+      "**/*.test.ts",
+      "src/test/**",
+      "src/tests/**"
+    ]
   //"include": ["src/**/*"]
 }

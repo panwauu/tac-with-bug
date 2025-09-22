@@ -47,9 +47,29 @@
       "types": "./dist/types/typesBall.d.ts",
       "require": "./dist/types/typesBall.js"
     },
+    "./types/typesCard": {
+      "types": "./dist/types/typesCard.d.ts",
+      "require": "./dist/types/typesCard.js"
+    },
+    "./game/ballUtils": {
+      "types": "./dist/game/ballUtils.d.ts",
+      "require": "./dist/game/ballUtils.js"
+    },
+    "./game/cardUtils": {
+      "types": "./dist/game/cardUtils.d.ts",
+      "require": "./dist/game/cardUtils.js"
+    },
+    "./game/statistic": {
+      "types": "./dist/game/statistic.d.ts",
+      "require": "./dist/game/statistic.js"
+    },
     "./game/serverOutput": {
       "types": "./dist/game/serverOutput.d.ts",
       "require": "./dist/game/serverOutput.js"
+    },
+    "./game/teamUtils": {
+      "types": "./dist/game/teamUtils.d.ts",
+      "require": "./dist/game/teamUtils.js"
     },
     "./bot/normalize/normalize": {
       "types": "./dist/bot/normalize/normalize.d.ts",

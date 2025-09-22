@@ -4,6 +4,7 @@ node_modules
 public
 __snapshots__
 generatedClient
+dist
 
 .env
 package.json

@@ -2,8 +2,9 @@
   "private": true,
   "scripts": {
     "check-types": "turbo run check-types",
-    "lint": "turbo run lint",
     "check-format": "turbo run check-format",
+    "check-locale-files": "turbo run check-locale-files",
+    "lint": "turbo run lint",
     "build": "turbo run build",
     "dev": "turbo run dev"
   },
