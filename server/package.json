@@ -8,9 +8,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node ./dist/entrypoints/index.js",
-    "start:dev": "cross-env NODE_ENV=development nodemon ./dist/entrypoints/index.js",
-    "start:test": "cross-env NODE_ENV=test node ./dist/entrypoints/index.js --serve",
+    "start": "node ./dist/server/src/entrypoints/index.js",
+    "start:dev": "cross-env NODE_ENV=development nodemon ./dist/server/src/entrypoints/index.js",
+    "start:test": "cross-env NODE_ENV=test node ./dist/server/src/entrypoints/index.js --serve",
     "build-spec": "echo 'build started' && tsoa spec-and-routes && openapi --input ./src/swagger.json --output ../client/src/generatedClient --useUnionTypes && echo 'build ended'",
     "build-spec:watch": "onchange \"src/routes/*.controller.ts\" -e \"src/routes/routes.ts\" -i -k -- npm run build-spec",
     "tsc": "tsc",
@@ -21,9 +21,9 @@
     "lint": "eslint ./src",
     "prettier:format": "prettier --config .prettierrc --write .",
     "prettier:check": "prettier --config .prettierrc --check .",
-    "check-locales": "node ./dist/entrypoints/checkLocales.js ../../email/locales && node ./dist/entrypoints/checkLocales.js ../../../client/src/locales",
-    "sanitize-captures": "node ./dist/entrypoints/sanitizeCapture.js",
-    "setup-test-database": "node ./dist/entrypoints/createTestDatabase.js"
+    "check-locales": "node ./dist/server/src/entrypoints/checkLocales.js ../../../../email/locales && node ./dist/server/src/entrypoints/checkLocales.js ../../../../../client/src/locales",
+    "sanitize-captures": "node ./dist/server/src/entrypoints/sanitizeCapture.js",
+    "setup-test-database": "node ./dist/server/src/entrypoints/createTestDatabase.js"
   },
   "author": "",
   "license": "ISC",
