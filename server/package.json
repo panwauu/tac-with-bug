@@ -22,7 +22,6 @@
     "prettier:format": "prettier --config .prettierrc --write .",
     "prettier:check": "prettier --config .prettierrc --check .",
     "check-locales": "node ./dist/server/src/entrypoints/checkLocales.js ../../../../email/locales && node ./dist/server/src/entrypoints/checkLocales.js ../../../../../client/src/locales",
-    "sanitize-captures": "node ./dist/server/src/entrypoints/sanitizeCapture.js",
     "setup-test-database": "node ./dist/server/src/entrypoints/createTestDatabase.js"
   },
   "author": "",
