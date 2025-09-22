@@ -47,7 +47,7 @@ function sevenReconstructPath(balls: tBall.BallsType, nBall: number, goalPositio
     startPaths = [...endPaths]
   }
   if (finalPath === undefined) {
-    throw 'Could not reconstruct Path of 7'
+    throw new Error('Could not reconstruct Path of 7')
   }
   return finalPath
 }
@@ -127,7 +127,7 @@ function ballGoal(nBall: number, balls: tBall.BallsType) {
 }
 function getPositionsBetweenStarts(balls: tBall.BallsType) {
   if (balls.length !== 16 && balls.length !== 24) {
-    throw 'Wrong balls length'
+    throw new Error('Wrong balls length')
   }
   if (balls.length === 16) {
     return 16
