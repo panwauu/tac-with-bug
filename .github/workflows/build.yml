@@ -9,6 +9,46 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: package.json
+          cache: "npm"
+          cache-dependency-path: |
+            package-lock.json
+      - name: Install modules
+        run: |
+          npm ci
+      - name: Check linting
+        run: |
+          npm run lint
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: package.json
+          cache: "npm"
+          cache-dependency-path: |
+            package-lock.json
+      - name: Install modules
+        run: |
+          npm ci
+      - name: Check formatting
+        run: |
+          npm run check-format
+
   build:
     runs-on: ubuntu-latest
 
@@ -37,19 +77,13 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         uses: actions/setup-node@v5
         with:
-          node-version-file: apps/server/package.json
+          node-version-file: package.json
           cache: "npm"
           cache-dependency-path: |
             package-lock.json
       - name: Install modules
         run: |
-          npm install
-      - name: Check linting
-        run: |
-          npm run lint
-      - name: Check formatting
-        run: |
-          npm run check-format
+          npm ci
       - name: Build
         run: |
           npm run build
