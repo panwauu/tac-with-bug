@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "@repo/server",
   "version": "1.5.8",
   "type": "commonjs",
   "engines": {
