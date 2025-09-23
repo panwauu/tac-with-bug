@@ -54,12 +54,7 @@ function correctTauschen(game: CapturedType[], checkOnlyLastLine?: boolean): boo
 
       for (const indices of tauschenPlayers) {
         if (indices.length > 1) {
-          linesToRemove = linesToRemove.concat(
-            indices
-              .sort()
-              .reverse()
-              .filter((_, i) => i > 0)
-          )
+          linesToRemove = linesToRemove.concat(indices.sort((a: number, b: number) => b - a).filter((_, i) => i > 0))
         }
       }
     }
