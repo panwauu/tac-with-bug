@@ -12,13 +12,13 @@ export async function prepareTestDatabase(databaseName: string, dropIfExists: bo
     await initAndPopulateTestDatabase(databaseName)
     logger.info('Test database preparation done')
   } catch (err) {
-    logger.error('Test database could not be prepared')
+    logger.error(`Test database could not be prepared: ${err}`)
     throw err
   }
 }
 
 export async function createTestDatabase(databaseName: string, dropIfExists: boolean = false): Promise<void> {
-  if (!/^[a-zA-Z0-9_]+$/.test(databaseName)) {
+  if (!/^\w+$/.test(databaseName)) {
     throw new Error('Invalid database name')
   }
 
@@ -26,9 +26,9 @@ export async function createTestDatabase(databaseName: string, dropIfExists: boo
   try {
     await pgClient.connect()
     if (dropIfExists) {
-      await pgClient.query('DROP DATABASE IF EXISTS $1;', [databaseName])
+      await pgClient.query(`DROP DATABASE IF EXISTS "${databaseName}";`)
     }
-    await pgClient.query('CREATE DATABASE $1;', [databaseName])
+    await pgClient.query(`CREATE DATABASE "${databaseName}";`)
     await pgClient.end()
   } catch (err) {
     await pgClient.end()
@@ -40,7 +40,7 @@ export async function dropTestDatabase(databaseName: string): Promise<void> {
   const pgClient = initTestDatabaseClient('postgres')
   try {
     await pgClient.connect()
-    await pgClient.query('DROP DATABASE IF EXISTS $1;', [databaseName])
+    await pgClient.query(`DROP DATABASE IF EXISTS "${databaseName}";`)
     await pgClient.end()
   } catch (err) {
     await pgClient.end()

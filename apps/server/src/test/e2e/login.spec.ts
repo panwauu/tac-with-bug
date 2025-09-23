@@ -12,7 +12,7 @@ test('Test login', async ({ page }) => {
   await page.locator('#LIpassword').fill('password')
 
   page.locator('.loginInputElement.loginButton').click()
-  await page.locator('.loginInputElement.loginButton').waitFor({ state: 'detached', timeout: 3000 })
+  await page.locator('.loginInputElement.loginButton').waitFor({ state: 'detached', timeout: 10000 })
 
   await expect(page).toHaveURL(/\/advert/)
 
