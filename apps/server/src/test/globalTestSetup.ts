@@ -1,4 +1,4 @@
-require('sharp') // eslint-disable-line
+import 'sharp'
 
 export function setup() {}
 

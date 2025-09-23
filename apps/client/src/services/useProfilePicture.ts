@@ -23,7 +23,7 @@ export function getProfilePicSrc(username: string): string | undefined {
 }
 
 export function deleteProfilePic(username: string): void {
-  delete profileState.profilePics[username] // eslint-disable-line
+  profileState.profilePics[username] = undefined
 }
 
 export function deleteProfilePics(): void {
