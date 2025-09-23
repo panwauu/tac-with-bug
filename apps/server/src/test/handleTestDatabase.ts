@@ -4,10 +4,10 @@ import logger from '../helpers/logger'
 import intro from '../dbUtils/intro.json'
 import { initTestDatabaseClient } from '../dbUtils/initdBUtils'
 
-export async function prepareTestDatabase(databaseName: string) {
+export async function prepareTestDatabase(databaseName: string, dropIfExists: boolean = false) {
   try {
     logger.info('Drop and create test database')
-    await createTestDatabase(databaseName)
+    await createTestDatabase(databaseName, dropIfExists)
     logger.info('Initialize and populate test database')
     await initAndPopulateTestDatabase(databaseName)
     logger.info('Test database preparation done')
@@ -17,11 +17,18 @@ export async function prepareTestDatabase(databaseName: string) {
   }
 }
 
-export async function createTestDatabase(databaseName: string): Promise<void> {
+export async function createTestDatabase(databaseName: string, dropIfExists: boolean = false): Promise<void> {
+  if (!/^[a-zA-Z0-9_]+$/.test(databaseName)) {
+    throw new Error('Invalid database name')
+  }
+
   const pgClient = initTestDatabaseClient('postgres')
   try {
     await pgClient.connect()
-    await pgClient.query(`CREATE DATABASE ${databaseName};`)
+    if (dropIfExists) {
+      await pgClient.query('DROP DATABASE IF EXISTS $1;', [databaseName])
+    }
+    await pgClient.query('CREATE DATABASE $1;', [databaseName])
     await pgClient.end()
   } catch (err) {
     await pgClient.end()
@@ -33,7 +40,7 @@ export async function dropTestDatabase(databaseName: string): Promise<void> {
   const pgClient = initTestDatabaseClient('postgres')
   try {
     await pgClient.connect()
-    await pgClient.query(`DROP DATABASE IF EXISTS ${databaseName};`)
+    await pgClient.query('DROP DATABASE IF EXISTS $1;', [databaseName])
     await pgClient.end()
   } catch (err) {
     await pgClient.end()

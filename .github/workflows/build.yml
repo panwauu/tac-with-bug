@@ -95,6 +95,16 @@ jobs:
           npm run test -- -- --coverage
         env:
           paypal_Secret: ${{ secrets.PAYPAL_SECRET }}
+      - name: Install Playwright Browsers
+        run: |
+          npx playwright install --with-deps
+      - name: Prepare test database
+        run: |
+          cd server
+          npm run setup-test-database
+      - name: Run Playwright tests
+        run: |
+          npm run test:e2e
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6.0.0
         env:

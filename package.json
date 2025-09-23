@@ -11,6 +11,7 @@
     "lint": "turbo run lint",
     "build": "turbo run build",
     "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
     "dev": "turbo run dev"
   },
   "devDependencies": {
