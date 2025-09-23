@@ -1,5 +1,8 @@
 {
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "check-types": "turbo run check-types",
     "check-format": "turbo run check-format",

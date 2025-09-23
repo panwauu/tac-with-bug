@@ -1,0 +1,9 @@
+/.github
+/.turbo
+/apps/client
+
+
+
+**/src
+**/node_modules
+**/coverage

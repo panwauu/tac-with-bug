@@ -10,6 +10,7 @@ playwright/.cache/
 apps/server/.git
 apps/server/src/swagger.json
 apps/server/src/routes/routes.ts
+apps/server/public
 client/src/locales/.git
 client/src/locales/README.md
 client/src/locales/docs
