@@ -16,9 +16,11 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
 
     "forceConsistentCasingInFileNames": true,
 
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "incremental": true
   }
 }

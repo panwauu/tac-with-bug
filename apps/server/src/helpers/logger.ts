@@ -39,7 +39,7 @@ class PostgresTransport extends Transport {
     this.pgPool = opts.postgres
   }
 
-  log(info: any, callback: any) {
+  override log(info: any, callback: any) {
     setImmediate(() => {
       this.emit('logged', info)
     })
