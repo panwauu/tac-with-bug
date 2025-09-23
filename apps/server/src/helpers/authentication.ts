@@ -64,13 +64,13 @@ export async function expressAuthentication(request: express.Request, securityNa
   request.userData = { userID: decoded.value.userID }
 
   if (scopes === undefined || scopes.length === 0) {
-    return Promise.resolve()
+    return
   }
 
   if (scopes.includes('admin')) {
     const admin = await isAdmin(request.app.locals.sqlClient, decoded.value.userID)
     if (admin.isOk() && admin.value) {
-      return Promise.resolve()
+      return
     }
   }
 
