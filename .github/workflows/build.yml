@@ -100,7 +100,7 @@ jobs:
           npx playwright install --with-deps
       - name: Prepare test database
         run: |
-          cd server
+          cd apps/server
           npm run setup-test-database
       - name: Run Playwright tests
         run: |
