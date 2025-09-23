@@ -1,15 +1,15 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@repo/typescript-config/server.json",
+
   "compilerOptions": {
     "target": "esnext",
     "module": "CommonJS",
     "declaration": true,
     "outDir": "./dist",
-    "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
     "types": ["vitest/globals"]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "**/vitest.config.ts", "**/vite.config.ts", "**/*.test.ts"]
 }

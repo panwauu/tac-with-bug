@@ -68,6 +68,7 @@
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
     "@playwright/test": "^1.51.1",
     "@types/bcrypt": "^6.0.0",
     "@types/chance": "^1.1.3",
