@@ -49,7 +49,7 @@ type SimulationResults = {
   winner: number | null
 }[]
 
-export function runSimulation(nSimulations: number, bots: Bot[], gameParameters?: { nPlayers: number; nTeams: number; coop: boolean; meisterVersion: boolean }) {
+export async function runSimulation(nSimulations: number, bots: Bot[], gameParameters?: { nPlayers: number; nTeams: number; coop: boolean; meisterVersion: boolean }) {
   if (bots.length !== (gameParameters?.nPlayers ?? 4)) {
     throw new Error('Need more agents')
   }
@@ -92,7 +92,7 @@ export function runSimulation(nSimulations: number, bots: Bot[], gameParameters?
           if (cards.every((c) => !c.possible)) continue
 
           const aiData = getAiData(game, gamePlayer)
-          const agentMove = getBotMove(bots[gamePlayer], aiData)
+          const agentMove = await getBotMove(bots[gamePlayer], aiData)
           move = projectMoveToGamePlayer(game, agentMove, gamePlayer)
 
           if (!game.checkMove(move)) {

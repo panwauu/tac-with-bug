@@ -72,7 +72,7 @@ function playerSubstitutionCondition(game: GameForPlay, initiatingUserID: number
 }
 
 function botSubstitutionCondition(game: GameForPlay, initiatingUserID: number, substitutePlayerID: number | null, substituteBotID: number | null) {
-  return substituteBotID != null && substitutePlayerID === null && game.playerIDs.includes(initiatingUserID) && validBotIds.includes(substituteBotID)
+  return substituteBotID != null && substitutePlayerID === null && game.playerIDs.includes(initiatingUserID) && validBotIds().includes(substituteBotID)
 }
 
 // Ordinary move or teufel

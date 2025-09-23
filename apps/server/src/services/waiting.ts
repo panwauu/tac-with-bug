@@ -373,7 +373,7 @@ export async function addBot(sqlClient: pg.Pool, waitingGameID: number, botID: n
     return err('PLAYER_INDEX_ALREADY_FULL')
   }
 
-  if (!validBotIds.includes(botID)) {
+  if (!validBotIds().includes(botID)) {
     return err('BOT_ID_INVALID')
   }
 

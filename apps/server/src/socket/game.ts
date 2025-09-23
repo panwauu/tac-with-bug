@@ -194,7 +194,7 @@ async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
         continue
       }
 
-      const agentMove = getBotMove(game.bots[gamePlayer] ?? 3, getAiData(game.game, gamePlayer))
+      const agentMove = await getBotMove(game.bots[gamePlayer] ?? 3, getAiData(game.game, gamePlayer))
       move = projectMoveToGamePlayer(game.game, agentMove, gamePlayer)
       logger.info(`Bot took ${performance.now() - start}ms`)
       break
