@@ -15,11 +15,9 @@ import { getBotName } from '@repo/core/bot/names'
 import { convertGameOrderToArrayPerTeam } from '@repo/core/game/teamUtils'
 
 function mergeElementsWithIndices<T>(elements: T[], indices: number[], minLength: number): (T | null)[] {
-  return Array(Math.max(Math.max(...indices) + 1, minLength))
-    .fill(null)
-    .map((_, index) => {
-      return elements[indices.indexOf(index)] ?? null
-    })
+  return new Array(Math.max(Math.max(...indices) + 1, minLength)).fill(null).map((_, index) => {
+    return elements[indices.indexOf(index)] ?? null
+  })
 }
 
 async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
@@ -372,7 +370,7 @@ export async function endNotProperlyEndedGames(sqlClient: pg.Pool) {
   for (const id of dbRes.rows.map((e) => e.id)) {
     try {
       const game = await getGame(sqlClient, id)
-      if (game.game.winningTeams.some((e) => e === true)) {
+      if (game.game.winningTeams.includes(true)) {
         game.game.gameEnded = true
         logger.info(`Spiel beendet durch Automat: ID=${id}`)
         await updateGame(sqlClient, id, game.game.getJSON(), false, false, false, game.bots)

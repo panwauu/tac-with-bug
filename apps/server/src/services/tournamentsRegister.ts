@@ -240,11 +240,11 @@ export async function endSignUpOnCondition(sqlClient: pg.Pool) {
     if (tournament.status === 'signUpEnded') {
       tournamentBus.emit('signUpEnded-you-partizipate', {
         tournamentTitle: tournament.title,
-        playerids: tournament.teams.map((r) => r.playerids).flat(),
+        playerids: tournament.teams.flatMap((r) => r.playerids),
       })
       tournamentBus.emit('signUpEnded-you-wont-partizipate', {
         tournamentTitle: tournament.title,
-        playerids: tournament.registerTeams.map((r) => r.playerids).flat(),
+        playerids: tournament.registerTeams.flatMap((r) => r.playerids),
       })
     } else {
       tournament.status = 'signUpFailed'

@@ -32,7 +32,7 @@ export const useMessagesStore = defineStore('messages', {
           .slice(0, 5)
           .map((o) => {
             return {
-              label: o.groupTitle ?? o.players?.filter((p) => p !== username.value)[0] ?? i18n.global.t('Chat.deletedPlayer'),
+              label: o.groupTitle ?? o.players?.find((p) => p !== username.value) ?? i18n.global.t('Chat.deletedPlayer'),
               id: o.chatid,
               created: o.created,
               numberOfUnread: o.numberOfUnread,
@@ -50,7 +50,7 @@ export const useMessagesStore = defineStore('messages', {
           .sort((a, b) => Date.parse(b.lastMessage) - Date.parse(a.lastMessage))
           .map((o) => {
             return {
-              label: o.players?.filter((p) => p !== username.value)[0] ?? i18n.global.t('Chat.deletedPlayer'),
+              label: o.players?.find((p) => p !== username.value) ?? i18n.global.t('Chat.deletedPlayer'),
               id: o.chatid,
               created: o.created,
               numberOfUnread: o.numberOfUnread,
@@ -234,7 +234,7 @@ export const useMessagesStore = defineStore('messages', {
       this.expandedChats[index] = !this.expandedChats[index]
     },
     selectChat(channel: boolean, id: string) {
-      if ((channel && this.channels.find((c) => c.id === id) == null) || (!channel && this.chats.find((c) => c.chatid.toString() === id) == null)) {
+      if ((channel && !this.channels.some((c) => c.id === id)) || (!channel && !this.chats.some((c) => c.chatid.toString() === id))) {
         this.selectedChat.type = 'channel'
         this.selectedChat.id = 'general'
         return
@@ -289,12 +289,12 @@ export const useMessagesStore = defineStore('messages', {
       this.selectChat(false, data.data.chatid.toString())
     },
     addChannel(channel: string, endDate?: number) {
-      if (this.channels.find((c) => c.id === channel) == null) {
+      if (!this.channels.some((c) => c.id === channel)) {
         this.channels.push({ id: channel, missedMessages: 0, endDate: endDate ?? null })
       }
     },
     removeGameChannels() {
-      if (this.channels.find((c) => c.id.startsWith('g-')) != null) {
+      if (this.channels.some((c) => c.id.startsWith('g-'))) {
         this.channels = this.channels.filter((c) => !c.id.startsWith('g-'))
       }
       if (this.selectedChat.type === 'channel' && this.selectedChat.id.startsWith('g-')) {
@@ -334,7 +334,7 @@ export const useMessagesStore = defineStore('messages', {
       this.channels = this.channels.filter((c) => !c.id.startsWith('g-') || c.endDate == null || c.endDate > new Date().getTime())
     },
     removeWaitingRoomChannels() {
-      if (this.channels.find((c) => c.id.startsWith('w-')) != null) {
+      if (this.channels.some((c) => c.id.startsWith('w-'))) {
         this.channels = this.channels.filter((c) => !c.id.startsWith('w-'))
       }
       if (this.selectedChat.type === 'channel' && this.selectedChat.id.startsWith('w-')) {

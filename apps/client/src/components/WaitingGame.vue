@@ -225,7 +225,7 @@ const { t } = useI18n()
 const opRef = ref<InstanceType<typeof Popover> | null>(null)
 
 const colors = computed(() => {
-  return ['black', 'blackWhite', 'blue', 'green', 'orange', 'red', 'melone', 'white', 'turquoise', 'pink', 'yellow'].filter((c) => !props.game.balls.some((b) => b === c))
+  return ['black', 'blackWhite', 'blue', 'green', 'orange', 'red', 'melone', 'white', 'turquoise', 'pink', 'yellow'].filter((c) => !props.game.balls.includes(c))
 })
 
 const playerIndex = (teamIndex: number, index: number) => {

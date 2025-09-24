@@ -219,7 +219,7 @@ export async function rejectSubstitution(game: GameForPlay, userID: number): Pro
     return err('NO_RUNNING_SUBSTITUTION')
   }
 
-  const playerIndex = game.playerIDs.findIndex((id) => id === userID)
+  const playerIndex = game.playerIDs.indexOf(userID)
   if ((playerIndex < 0 || playerIndex >= game.nPlayers) && userID !== game.substitution.substitute.userID) {
     return err('PLAYER_NOT_IN_GAME_AND_NOT_SUBSTITUTION')
   }

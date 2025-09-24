@@ -96,7 +96,7 @@ function correctNarr(game: CapturedType[], checkOnlyLastLine?: boolean): boolean
 
     if (linesToRemove.length > 0) {
       const cardsAfterNarr = cloneDeep(game[lastNarrLine].cards)
-      const narrIndicesAfterRemove = [...Array(lastNarrLine - firstNarrLine + 1).keys()].map((x) => x + firstNarrLine).filter((x) => !linesToRemove.includes(x))
+      const narrIndicesAfterRemove = [...new Array(lastNarrLine - firstNarrLine + 1).keys()].map((x) => x + firstNarrLine).filter((x) => !linesToRemove.includes(x))
       const lastNarrIndexAfterRemove = Math.max(...narrIndicesAfterRemove)
       game[lastNarrIndexAfterRemove].cards = cardsAfterNarr
     }

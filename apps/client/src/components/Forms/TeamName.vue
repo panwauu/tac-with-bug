@@ -55,7 +55,7 @@ const validTeamName = computed(() => {
 })
 
 const newName = computed(() => {
-  return !props.existingTeamNames.some((team) => team === localTeamName.value)
+  return !props.existingTeamNames.includes(localTeamName.value)
 })
 
 const validName = computed(() => {

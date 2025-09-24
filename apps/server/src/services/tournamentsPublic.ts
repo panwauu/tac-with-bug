@@ -163,7 +163,7 @@ export type CreateGamesTournamentError = 'GAMES_ALREADY_CREATED_OR_NOT_ALL_ENDED
 async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament.PublicTournament): Promise<Result<tTournament.PublicTournament, CreateGamesTournamentError>> {
   if (
     tournament.data.brackets[tournament.creationPhase - 1].some((b) => {
-      return b.teams.some((t) => t === -1) || b.gameID !== -1
+      return b.teams.includes(-1) || b.gameID !== -1
     })
   ) {
     return err('GAMES_ALREADY_CREATED_OR_NOT_ALL_ENDED')

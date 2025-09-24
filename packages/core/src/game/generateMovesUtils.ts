@@ -227,7 +227,7 @@ export function getSevenPositions(balls: tBall.BallsType, nBall: number, remaini
             ball.position
           )
         }) &&
-      endNodes.some((position) => position === ballGoal(nBall, balls))
+      endNodes.includes(ballGoal(nBall, balls))
     ) {
       // last Goal Position is contained in endNodes
       const pathToGoal = sevenReconstructPath(balls, nBall, ballGoal(nBall, balls))

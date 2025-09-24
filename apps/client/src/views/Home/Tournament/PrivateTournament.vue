@@ -61,7 +61,7 @@
     <div v-if="tournament.status === 'aborted' && tournament.teams.length === 0">
       <h4>{{ t('Tournament.Private.abortedPlayersList') }}</h4>
       <PlayerWithPicture
-        v-for="registeredUsername in tournament.registerTeams.map((t) => t.players).flat()"
+        v-for="registeredUsername in tournament.registerTeams.flatMap((t) => t.players)"
         :key="`Player-${registeredUsername}`"
         :username="registeredUsername"
         :name-first="false"

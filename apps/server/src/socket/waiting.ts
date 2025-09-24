@@ -192,7 +192,7 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
           value.emit('waiting:startGame', {
             gameID: createdGame.id,
             nPlayers: createdGame.nPlayers,
-            gamePlayer: createdGame.playerIDs.findIndex((e) => e === userID),
+            gamePlayer: createdGame.playerIDs.indexOf(userID),
           })
           emitGamesUpdate(pgPool, value)
         }

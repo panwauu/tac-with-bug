@@ -106,7 +106,7 @@ async function loadStep() {
   tutorialStepOutput.value = res.data
 
   if (tutorialStepOutput.value?.goal?.quiz != null) {
-    tutorialStepOutput.value.goal.quiz.order = [...Array(tutorialStepOutput.value?.goal?.quiz.nSolutions).keys()].sort(() => 0.5 - Math.random())
+    tutorialStepOutput.value.goal.quiz.order = [...new Array(tutorialStepOutput.value?.goal?.quiz.nSolutions).keys()].sort(() => 0.5 - Math.random())
   }
 
   displayTutorialOverlay.value = true

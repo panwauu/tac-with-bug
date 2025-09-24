@@ -25,7 +25,7 @@ export function createTournamentDataKO(nTeams: number, teamsPerMatch: 2 | 3): Re
     brackets[nRounds - 1].push({ score: [0, 0], winner: -1, teams: [-1, -1], gameID: -1 })
   }
 
-  const shuffledPlayers = [...Array(nTeams).keys()]
+  const shuffledPlayers = [...new Array(nTeams).keys()]
   shuffleArray(shuffledPlayers)
   for (const [bracketIndex, b] of brackets[0].entries()) {
     for (const [teamIndex] of b.teams.entries()) {
@@ -120,7 +120,7 @@ function getWinnerOfTournamentGame(game: GameForPlay, bracket: KoBracket, tourna
       })
       .filter((c) => c.card == null)
       .map((c) => c.index)
-  } else if (game.game.narrFlag.some((f) => f === true)) {
+  } else if (game.game.narrFlag.includes(true)) {
     players = game.game.narrFlag
       .map((f, i) => {
         return { flag: f, index: i }

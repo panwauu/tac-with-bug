@@ -50,7 +50,7 @@ function getPlayers(game: Game, names: (string | null)[], bots: (number | null)[
       active: game.activePlayer === i,
       playerNumber: i,
       team: game.teams.findIndex((team) => team.includes(i)),
-      narrFlag: [game.narrFlag.some((e) => e === true), game.narrFlag[i]],
+      narrFlag: [game.narrFlag.includes(true), game.narrFlag[i]],
       discarded: game.cards.discardPlayer === i,
       bot: bots[i] != null,
     }
@@ -85,7 +85,7 @@ export function getCards(game: Game, player: number): tCard.PlayerCard[] {
     return createCardsWithMovesForUnactivePlayer(game.cards.players[player], 'tauschen')
   }
 
-  if (!game.tradeFlag && !game.narrFlag.some((e) => e === true) && player === game.activePlayer) {
+  if (!game.tradeFlag && !game.narrFlag.includes(true) && player === game.activePlayer) {
     return game.cardsWithMoves
   }
 

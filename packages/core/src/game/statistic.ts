@@ -60,13 +60,13 @@ export function statisticAnalyseAction(
   statistic[nPlayer].actions.nMoves += 1
 
   // Do not return if confirmation of narr
-  if (move[2] === 'narr' && narrFlagSave.some((e) => e === true)) {
+  if (move[2] === 'narr' && narrFlagSave.includes(true)) {
     return
   }
 
   // cards
   const cardTitle = cardsBefore.players[(move[0] + (teufelFlag ? 1 : 0)) % cardsBefore.players.length][move[1]]
-  if (cardTitle.indexOf('-') === -1) {
+  if (!cardTitle.includes('-')) {
     if (move[2] !== 'tauschen') {
       statistic[nPlayer].cards['total'][0] += 1
       if (move[2] !== 'abwerfen') {

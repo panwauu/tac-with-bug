@@ -52,7 +52,7 @@ export async function resetTutorialProgress(pgPool: pg.Pool, userID: number, tut
     return err(validationRes.error)
   }
 
-  const newProgressRow = JSON.stringify(Array(tutorialLevels[tutorialID]).fill(false))
+  const newProgressRow = JSON.stringify(new Array(tutorialLevels[tutorialID]).fill(false))
   const dbRes = await pgPool.query<{ tutorial: boolean[][] }>('UPDATE users SET tutorial = jsonb_set(tutorial, ARRAY[$2::text], $3) WHERE id = $1 RETURNING *;', [
     userID,
     tutorialID,

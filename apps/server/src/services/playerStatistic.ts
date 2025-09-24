@@ -295,7 +295,7 @@ function getUserNetworkFromGamesEdges(games: GameForPlay[], nodes: tStatistic.Us
       continue
     }
     const playerIDedgeInd = games[gamesInd].playerIDs[playerEdgeInd]
-    if (nodes.findIndex((n) => n.data.idInt === games[gamesInd].playerIDs[playerEdgeInd]) === -1) {
+    if (!nodes.some((n) => n.data.idInt === games[gamesInd].playerIDs[playerEdgeInd])) {
       continue
     }
     if (playerIDedgeInd == null || games[gamesInd].players[playerEdgeInd] == null) {
@@ -334,7 +334,7 @@ function getUserNetworkFromGames(allGames: GameForPlay[], userID: number, userna
   const edges: tStatistic.UserNetworkEdge[] = []
   for (let gamesInd = 0; gamesInd < games.length; gamesInd++) {
     for (let playerInd = 0; playerInd < games[gamesInd].players.length; playerInd++) {
-      if (nodes.findIndex((n) => n.data.idInt === games[gamesInd].playerIDs[playerInd]) === -1) {
+      if (!nodes.some((n) => n.data.idInt === games[gamesInd].playerIDs[playerInd])) {
         continue
       }
       getUserNetworkFromGamesEdges(games, nodes, edges, playerInd, gamesInd)

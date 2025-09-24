@@ -116,10 +116,16 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
 
       if (tournament.status === 'signUpEnded') {
         await sendInvitationToAll(pgPool, tournament)
-        for (const s of getSocketsOfPlayerIDs(nsp, tournament.teams.map((t) => t.playerids).flat())) {
+        for (const s of getSocketsOfPlayerIDs(
+          nsp,
+          tournament.teams.flatMap((t) => t.playerids)
+        )) {
           s.emit('tournament:toast:signUpEnded-you-partizipate', { tournamentTitle: tournament.title })
         }
-        for (const s of getSocketsOfPlayerIDs(nsp, tournament.registerTeams.map((t) => t.playerids).flat())) {
+        for (const s of getSocketsOfPlayerIDs(
+          nsp,
+          tournament.registerTeams.flatMap((t) => t.playerids)
+        )) {
           s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: tournament.title })
         }
       }
@@ -170,10 +176,16 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
 
       if (tournament.status === 'signUpEnded') {
         await sendInvitationToAll(pgPool, tournament)
-        for (const s of getSocketsOfPlayerIDs(nsp, tournament.teams.map((t) => t.playerids).flat())) {
+        for (const s of getSocketsOfPlayerIDs(
+          nsp,
+          tournament.teams.flatMap((t) => t.playerids)
+        )) {
           s.emit('tournament:toast:signUpEnded-you-partizipate', { tournamentTitle: tournament.title })
         }
-        for (const s of getSocketsOfPlayerIDs(nsp, tournament.registerTeams.map((t) => t.playerids).flat())) {
+        for (const s of getSocketsOfPlayerIDs(
+          nsp,
+          tournament.registerTeams.flatMap((t) => t.playerids)
+        )) {
           s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: tournament.title })
         }
       }
@@ -270,7 +282,7 @@ async function sendMailToUnactivatedPlayer(sqlClient: pg.Pool, players: string[]
 export async function sendInvitationToAll(sqlClient: pg.Pool, tournament: tTournament.PublicTournament) {
   const ical = generateIcal(tournament)
 
-  const playerIDs = tournament.teams.map((t) => t.playerids).flat()
+  const playerIDs = tournament.teams.flatMap((t) => t.playerids)
   for (const id of playerIDs) {
     const userDB = await getUser(sqlClient, { id: id })
     if (userDB.isErr()) continue
