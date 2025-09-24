@@ -140,7 +140,7 @@ function getWinnerOfTournamentGame(game: GameForPlay, bracket: KoBracket, tourna
 
   // Get Time Played by each Team
   const timePerTeam = Array.from({ length: game.game.teams.length }).fill(0) as number[]
-  for (const [i, _] of timePerTeam.entries()) {
+  for (const [i] of timePerTeam.entries()) {
     for (const p of game.game.teams[i]) {
       timePerTeam[i] += statisticsCopy[p].actions.timePlayed
     }

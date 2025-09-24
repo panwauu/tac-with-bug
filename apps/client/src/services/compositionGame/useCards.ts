@@ -75,7 +75,7 @@ export function useCards(ballsState: BallsStateType, miscState: MiscStateType): 
       }
     },
     disableCards: () => {
-      for (const [cardIndex, _] of cardsState.cards.entries()) {
+      for (const [cardIndex] of cardsState.cards.entries()) {
         cardsState.cards[cardIndex].possible = false
         cardsState.cards[cardIndex].ballActions = {}
         cardsState.cards[cardIndex].textAction = ''
