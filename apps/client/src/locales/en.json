@@ -38,11 +38,7 @@
     "disclaimer1": "*: The subscription can of course be terminated at any time",
     "disclaimer2": "**: PayPal unfortunately requires a fixed fee of around € 0.35 per transaction in addition to a percentage of around 2.5%. As a result, the fee increases proportionally for regular, small payments. So most of your donation actually reaches me if you rarely pay a large amount for it.",
     "disclaimer3": "***: Of course, this only refers to personal happiness",
-    "disclaimer3Link": "(More info)",
-    "Tag": {
-      "sponsor": "Sponsor",
-      "sponsorsOnly": "Sponsors only"
-    }
+    "disclaimer3Link": "(More info)"
   },
   "Stats": {
     "headerTable": "Tac-With-Bug in Numbers",

@@ -6,7 +6,6 @@ import { initializeChat, registerChatHandlers } from './chat'
 import { registerTournamentHandler } from './tournament'
 import { initializeGames, registerGamesHandler } from './games'
 import { initializeTutorial, registerTutorialHandler } from './tutorial'
-import { initializeSubscription, registerSubscriptionHandler } from './subscription'
 import { initializeFriends, registerFriendsHandlers } from './friends'
 import { registerAuthHandlers, logoutSocket } from './authentication'
 import { generalSocketIOAuthentication } from '../helpers/authentication'
@@ -37,7 +36,6 @@ export function registerSocketNspGeneral(nsp: GeneralNamespace, pgPool: pg.Pool)
     registerTournamentPrivateHandler(pgPool, socket)
     registerGamesHandler(pgPool, socket)
     registerTutorialHandler(pgPool, socket)
-    registerSubscriptionHandler(pgPool, socket)
     registerFriendsHandlers(pgPool, socket)
     registerChannelHandlers(pgPool, socket)
 
@@ -56,7 +54,6 @@ export async function initializeSocket(pgPool: pg.Pool, socket: GeneralSocketS) 
   await initializeInfo()
   await initializeTutorial(pgPool, socket)
   await initializeWaiting(pgPool, socket)
-  initializeSubscription(pgPool, socket)
   await initializeGames(pgPool, socket)
   await initializeFriends(pgPool, socket)
   initializeChat(pgPool, socket)

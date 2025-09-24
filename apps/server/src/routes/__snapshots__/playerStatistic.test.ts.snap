@@ -70,7 +70,6 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
     "mostFrequent": "UserB",
     "worstEnemy": "UserB",
   },
-  "subscriber": false,
   "table": [
     100,
     50,

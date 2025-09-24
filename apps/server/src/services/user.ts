@@ -2,7 +2,6 @@ import type pg from 'pg'
 import type { Friend } from '../sharedTypes/typesFriends'
 import { randomUUID, randomBytes } from 'node:crypto'
 import type { UserIdentifier, User } from '../sharedTypes/typesDBuser'
-import { getSubscription, cancelSubscription, GetSubscriptionError, CancelSubscriptionError } from '../paypal/paypal'
 import { Result, err, ok } from 'neverthrow'
 import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
 import { deletePlayerFromTournament } from './tournamentsPrivate'
@@ -187,23 +186,8 @@ export async function editUserDescription(sqlClient: pg.Pool, userID: number, te
   expectOneChangeInDatabase(res)
 }
 
-export type DeleteUserError = GetSubscriptionError | CancelSubscriptionError
+export type DeleteUserError = null
 export async function deleteUser(sqlClient: pg.Pool, userID: number): Promise<Result<null, DeleteUserError>> {
-  const sub = await getSubscription(sqlClient, userID)
-  if (sub.isErr()) {
-    return err(sub.error)
-  }
-
-  if (sub.value.status === 'running') {
-    const cancelRes = await cancelSubscription(sqlClient, userID)
-    if (cancelRes.isErr()) {
-      return err(cancelRes.error)
-    }
-  }
-
-  await sqlClient.query('UPDATE users SET currentsubscription = NULL WHERE id = $1;', [userID])
-  await sqlClient.query('DELETE FROM subscriptions WHERE userid = $1;', [userID])
-
   await sqlClient.query('DELETE FROM users_to_tournaments WHERE userid = $1;', [userID])
   await sqlClient.query('DELETE FROM tournaments_register WHERE userid = $1;', [userID])
 
