@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash'
-import fs from 'fs'
+import fs from 'node:fs'
 import { Game } from '@repo/core/game/game'
 
 //From File

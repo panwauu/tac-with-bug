@@ -63,7 +63,7 @@ function addScoreAndReturnChangedFlag(game: GameForPlay, tournament: PublicTourn
       return ballPlayer(bI) === pI && (b.state === 'locked' || b.state === 'goal')
     }).length
     const tournamentT = tournament.teams.findIndex((t) => t.players.includes(p ?? ''))
-    const tournamentTI = tournament.data.brackets[pos[0]][pos[1]].teams.findIndex((t) => t === tournamentT)
+    const tournamentTI = tournament.data.brackets[pos[0]][pos[1]].teams.indexOf(tournamentT)
     score[tournamentTI] += count
   })
 
@@ -88,7 +88,7 @@ export function updateScore(tournament: PublicTournament | PrivateTournament, ga
 export type GetWinnerOfTournamentGameError = 'WINNER_OF_TOURNAMENT_GAME_NOT_FOUND'
 function getWinnerOfTournamentGame(game: GameForPlay, bracket: KoBracket, tournament: PublicTournament | PrivateTournament): Result<number, GetWinnerOfTournamentGameError> {
   if (!game.running && game.game.gameEnded) {
-    const gameWinningTeam = game.game.winningTeams.findIndex((w) => w === true)
+    const gameWinningTeam = game.game.winningTeams.indexOf(true)
     if (gameWinningTeam === -1) {
       return err('WINNER_OF_TOURNAMENT_GAME_NOT_FOUND')
     }

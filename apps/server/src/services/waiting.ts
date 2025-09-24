@@ -276,7 +276,7 @@ export async function removePlayer(sqlClient: pg.Pool, usernameToRemove: string,
     if (waitingGame.gameid != null || waitingGame.playerIDs.filter((id) => id != null).length <= 1) {
       p.push(sqlClient.query('DELETE FROM waitinggames WHERE id=$1;', [waitingGame.id]))
     } else {
-      const indexToRemove = waitingGame.playerIDs.findIndex((p) => p === userIDToRemove)
+      const indexToRemove = waitingGame.playerIDs.indexOf(userIDToRemove)
 
       const isAdmin = userIDToRemove === waitingGame.adminID
       const newAdminIndex = waitingGame.playerIDs.findIndex((p) => p !== userIDToRemove && p != null)
@@ -402,7 +402,7 @@ export async function setPlayerReady(sqlClient: pg.Pool, waitingGameID: number, 
     return err('WAITING_GAME_IS_NOT_FULL')
   }
 
-  const playerIndex = game.value.playerIDs.findIndex((p) => p === userID)
+  const playerIndex = game.value.playerIDs.indexOf(userID)
   if (playerIndex === -1) {
     return err('PLAYER_NOT_FOUND_IN_WAITING_GAME')
   }

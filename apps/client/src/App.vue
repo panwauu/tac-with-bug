@@ -67,7 +67,7 @@ watch(
 
 function checkForEmailActivation() {
   if (router.currentRoute.value.query.activationUserID != null && router.currentRoute.value.query.activationToken != null) {
-    const userID = parseInt(router.currentRoute.value.query.activationUserID as string)
+    const userID = Number.parseInt(router.currentRoute.value.query.activationUserID as string)
     const token = router.currentRoute.value.query.activationToken as string
     activateUser(userID, token)
   }

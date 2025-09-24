@@ -32,7 +32,7 @@ function updateLocaleChart() {
 
   const data = props.data
     .map((e: any) => {
-      return { locale: e.locale, nUsers: parseInt(e.nUsers) }
+      return { locale: e.locale, nUsers: Number.parseInt(e.nUsers) }
     })
     .sort((a, b) => b.nUsers - a.nUsers)
   localeChartData.value.labels = data.map((e: any) => e.locale)

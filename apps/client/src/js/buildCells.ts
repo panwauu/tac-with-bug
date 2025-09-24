@@ -30,8 +30,8 @@ export function positionStyles6(turned: boolean | undefined): PositionStyle[] {
     for (let j = 0; j < 4; j++) {
       result.push(
         calculatePositionPolar(
-          parseFloat(startCenter.left.substring(0, startCenter.left.length - 1)),
-          parseFloat(startCenter.top.substring(0, startCenter.top.length - 1)),
+          Number.parseFloat(startCenter.left.substring(0, startCenter.left.length - 1)),
+          Number.parseFloat(startCenter.top.substring(0, startCenter.top.length - 1)),
           (1 / 4 + j / 2) * Math.PI,
           turned ? rSmHouse / aspectRatio : rSmHouse,
           aspectRatio
@@ -49,8 +49,8 @@ export function positionStyles6(turned: boolean | undefined): PositionStyle[] {
     for (let j = 0; j < 4; j++) {
       result.push(
         calculatePositionPolar(
-          parseFloat(goalCenter.left.substring(0, goalCenter.left.length - 1)),
-          parseFloat(goalCenter.top.substring(0, goalCenter.top.length - 1)),
+          Number.parseFloat(goalCenter.left.substring(0, goalCenter.left.length - 1)),
+          Number.parseFloat(goalCenter.top.substring(0, goalCenter.top.length - 1)),
           (phiGoal[j] / 180) * Math.PI + i * ((2 * Math.PI) / nPlayers) + (turned ? Math.PI / 6 : 0),
           rSmGoal,
           aspectRatio

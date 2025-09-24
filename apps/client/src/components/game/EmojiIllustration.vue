@@ -62,8 +62,8 @@ function onNewMessage(data: { channel: string; messages: ChatMessage[] }) {
   }
   const styles = props.positionStyles.stylePositionPictures[rotateIndex(index)]
   const left = styles.includes('left')
-  const side = parseFloat(styles.slice(styles.indexOf(left ? 'left' : 'right') + 6, styles.indexOf('%;', styles.indexOf(left ? 'left' : 'right')))) + 3
-  const top = parseFloat(styles.slice(styles.indexOf('top') + 5, styles.indexOf('%;', styles.indexOf('top')))) + 3
+  const side = Number.parseFloat(styles.slice(styles.indexOf(left ? 'left' : 'right') + 6, styles.indexOf('%;', styles.indexOf(left ? 'left' : 'right')))) + 3
+  const top = Number.parseFloat(styles.slice(styles.indexOf('top') + 5, styles.indexOf('%;', styles.indexOf('top')))) + 3
 
   emojiMessages.value.push({
     pos: `${left ? 'left' : 'right'}: ${side}%; top: ${top}%;`,

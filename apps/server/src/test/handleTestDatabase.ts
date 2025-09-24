@@ -1,5 +1,5 @@
-import path from 'path'
-import fs from 'fs'
+import path from 'node:path'
+import fs from 'node:fs'
 import logger from '../helpers/logger'
 import intro from '../dbUtils/intro.json'
 import { initTestDatabaseClient } from '../dbUtils/initdBUtils'

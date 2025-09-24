@@ -19,7 +19,7 @@ function mergeElementsWithIndices<T>(elements: T[], indices: number[], minLength
   return Array(Math.max(Math.max(...indices) + 1, minLength))
     .fill(null)
     .map((_, index) => {
-      return elements[indices.findIndex((i) => i === index)] ?? null
+      return elements[indices.indexOf(index)] ?? null
     })
 }
 
@@ -196,14 +196,11 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
   const games = await getGames(sqlClient, userID)
 
   return {
-    open: games.filter((g) => g.running && g.playerIDs.findIndex((id) => id === userID) < g.nPlayers).length,
-    aborted: games.filter((g) => (!g.running && !g.game.gameEnded) || g.playerIDs.findIndex((id) => id === userID) >= g.nPlayers).length,
-    won: games.filter(
-      (g) => !g.running && !g.game.coop && g.game.gameEnded && g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.findIndex((e) => e === userID)))]
-    ).length,
-    lost: games.filter(
-      (g) => !g.running && !g.game.coop && g.game.gameEnded && !g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.findIndex((e) => e === userID)))]
-    ).length,
+    open: games.filter((g) => g.running && g.playerIDs.indexOf(userID) < g.nPlayers).length,
+    aborted: games.filter((g) => (!g.running && !g.game.gameEnded) || g.playerIDs.indexOf(userID) >= g.nPlayers).length,
+    won: games.filter((g) => !g.running && !g.game.coop && g.game.gameEnded && g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.indexOf(userID)))]).length,
+    lost: games.filter((g) => !g.running && !g.game.coop && g.game.gameEnded && !g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.indexOf(userID)))])
+      .length,
     team: games.filter((g) => !g.running && g.game.coop && g.game.gameEnded).length,
     history: games
       .filter((g) => !g.running && g.game.gameEnded)
@@ -212,14 +209,14 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
         if (g.game.coop) {
           return 2
         }
-        if (g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.findIndex((e) => e === userID)))]) {
+        if (g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.indexOf(userID)))]) {
           return 1
         } else {
           return 0
         }
       }),
     runningGames: games
-      .filter((g) => g.running && g.playerIDs.findIndex((id) => id === userID) < g.nPlayers)
+      .filter((g) => g.running && g.playerIDs.indexOf(userID) < g.nPlayers)
       .map((game) => {
         const teams = convertGameOrderToArrayPerTeam(
           game.players.slice(0, game.nPlayers).map((p, i) => p ?? getBotName(game.id, i)),
@@ -258,7 +255,7 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
     ORDER BY games.${orderColumn} ${sortOrder === 1 ? 'ASC' : 'DESC'} LIMIT $2 OFFSET $3;`,
     values
   )
-  const nEntries = parseInt(res.rows[0]?.n_entries) || 0
+  const nEntries = Number.parseInt(res.rows[0]?.n_entries) || 0
   const idList = res.rows.map((r) => r.id as number)
   const gamesFromDB = await queryGamesByID(sqlClient, idList)
 

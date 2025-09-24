@@ -214,7 +214,7 @@ const reset = computed(() => {
 })
 
 const canGoBackward = computed(() => {
-  return parseInt(router.currentRoute.value.query?.step as string) !== 0
+  return Number.parseInt(router.currentRoute.value.query?.step as string) !== 0
 })
 
 const done = computed(() => {

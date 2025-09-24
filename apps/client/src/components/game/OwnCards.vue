@@ -51,7 +51,7 @@ const props = defineProps<{
 
 function clickCard(event: Event) {
   if (!(props.miscState.teufelFlag && props.miscState.players[props.miscState.gamePlayer].active && props.own)) {
-    const id = parseInt((event.target as HTMLElement).id)
+    const id = Number.parseInt((event.target as HTMLElement).id)
     props.cardsState.setSelectedCard(id)
   }
 }

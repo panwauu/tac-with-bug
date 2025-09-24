@@ -54,7 +54,7 @@ function correctTauschen(game: CapturedType[], checkOnlyLastLine?: boolean): boo
 
       for (const indices of tauschenPlayers) {
         if (indices.length > 1) {
-          linesToRemove = linesToRemove.concat(indices.sort((a: number, b: number) => b - a).filter((_, i) => i > 0))
+          linesToRemove = linesToRemove.concat(indices.toSorted((a: number, b: number) => b - a).filter((_, i) => i > 0))
         }
       }
     }
@@ -90,7 +90,7 @@ function correctNarr(game: CapturedType[], checkOnlyLastLine?: boolean): boolean
       if (playerCardsBeforeNarr[playerIndex]?.length === 0 && indices.length > 0) {
         linesToRemove = linesToRemove.concat(indices)
       } else if (indices.length > 1) {
-        linesToRemove = linesToRemove.concat(indices.sort((a, b) => b - a).filter((_, i) => i > 0))
+        linesToRemove = linesToRemove.concat(indices.toSorted((a, b) => b - a).filter((_, i) => i > 0))
       }
     }
 

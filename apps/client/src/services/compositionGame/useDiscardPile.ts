@@ -51,8 +51,8 @@ export function useDiscardPile(gamePlayer: number): DiscardPileStateType {
             break
           }
 
-          const transformPx1 = (parseFloat(style.left.slice(0, style.left.length - 1)) / 100) * gameboardBounding.height - gameboardBounding.height / 2
-          const transformPx2 = (parseFloat(style.top.slice(0, style.top.length - 1)) / 100) * gameboardBounding.height - gameboardBounding.height / 2
+          const transformPx1 = (Number.parseFloat(style.left.slice(0, style.left.length - 1)) / 100) * gameboardBounding.height - gameboardBounding.height / 2
+          const transformPx2 = (Number.parseFloat(style.top.slice(0, style.top.length - 1)) / 100) * gameboardBounding.height - gameboardBounding.height / 2
           discardPileState.discardPile.push({
             index: i,
             cardTitle: cardPictureDict[discardPile[i]],

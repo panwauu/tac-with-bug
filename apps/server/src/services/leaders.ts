@@ -28,7 +28,7 @@ export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, 
   return {
     username: dbRes.rows.map((row: any) => row.username),
     wins: dbRes.rows.map((row: any) => row.wins),
-    winshare: dbRes.rows.map((row: any) => ((parseInt(row.wins) * 100) / parseInt(row.ngames)).toFixed(2)),
+    winshare: dbRes.rows.map((row: any) => ((Number.parseInt(row.wins) * 100) / Number.parseInt(row.ngames)).toFixed(2)),
     nPlayers: dbRes.rowCount === 0 ? 0 : dbRes.rows?.[0].full_count,
   }
 }

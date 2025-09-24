@@ -90,13 +90,13 @@ export const useMessagesStore = defineStore('messages', {
       },
     ],
     getCurrentChat: (state) => {
-      return state.chats.find((c) => c.chatid === parseInt(state.selectedChat.id))
+      return state.chats.find((c) => c.chatid === Number.parseInt(state.selectedChat.id))
     },
     getChatLabel: (state) => {
       if (state.selectedChat.type === 'channel') {
         return state.selectedChat.id
       }
-      const chat = state.chats.find((c) => c.chatid === parseInt(state.selectedChat.id))
+      const chat = state.chats.find((c) => c.chatid === Number.parseInt(state.selectedChat.id))
       if (chat?.groupChat) {
         return chat.groupTitle
       }
@@ -106,7 +106,7 @@ export const useMessagesStore = defineStore('messages', {
       if (state.selectedChat.type === 'channel') {
         return 'hashtag'
       }
-      return state.chats.find((c) => c.chatid === parseInt(state.selectedChat.id))?.groupChat ? 'comments' : 'comment'
+      return state.chats.find((c) => c.chatid === Number.parseInt(state.selectedChat.id))?.groupChat ? 'comments' : 'comment'
     },
     getChatNotifications: (state) => {
       if (state.selectedChat.type === 'channel') {
@@ -127,7 +127,7 @@ export const useMessagesStore = defineStore('messages', {
         return false
       }
 
-      const chat = state.chats.find((c) => c.chatid === parseInt(state.selectedChat.id))
+      const chat = state.chats.find((c) => c.chatid === Number.parseInt(state.selectedChat.id))
       if (chat == null) {
         return false
       }
@@ -178,7 +178,7 @@ export const useMessagesStore = defineStore('messages', {
     loadChatMessages() {
       this.chatMessages = []
       if (this.selectedChat.type === 'chat') {
-        this.$state.socket.emitWithAck(20000, 'chat:singleChat:load', { chatid: parseInt(this.selectedChat.id) }).then((data) => {
+        this.$state.socket.emitWithAck(20000, 'chat:singleChat:load', { chatid: Number.parseInt(this.selectedChat.id) }).then((data) => {
           if (data.data == null) {
             return
           }
@@ -206,7 +206,7 @@ export const useMessagesStore = defineStore('messages', {
       this.chats = overview
     },
     handleSingleChatUpdate(chatid: number, messages: ChatMessage[]) {
-      if (this.selectedChat.type === 'chat' && chatid === parseInt(this.selectedChat.id)) {
+      if (this.selectedChat.type === 'chat' && chatid === Number.parseInt(this.selectedChat.id)) {
         this.chatMessages = messages
       }
     },
@@ -251,7 +251,7 @@ export const useMessagesStore = defineStore('messages', {
     },
     async markAsRead() {
       if (this.selectedChat.type === 'chat') {
-        await this.$state.socket.emitWithAck(2000, 'chat:markAsRead', { chatid: parseInt(this.selectedChat.id) })
+        await this.$state.socket.emitWithAck(2000, 'chat:markAsRead', { chatid: Number.parseInt(this.selectedChat.id) })
       } else {
         const channel = this.channels.find((c) => c.id === this.selectedChat.id)
         if (channel != null) {
@@ -264,7 +264,7 @@ export const useMessagesStore = defineStore('messages', {
     },
     async sendMessage(text: string) {
       if (this.selectedChat.type === 'chat' && !this.mayNotUseChat) {
-        await this.$state.socket.emitWithAck(2000, 'chat:sendMessage', { chatid: parseInt(this.selectedChat.id), body: text })
+        await this.$state.socket.emitWithAck(2000, 'chat:sendMessage', { chatid: Number.parseInt(this.selectedChat.id), body: text })
       } else {
         await this.$state.socket.emitWithAck(2000, 'channel:sendMessage', { channel: this.selectedChat.id, body: text })
       }

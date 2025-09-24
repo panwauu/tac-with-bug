@@ -15,9 +15,9 @@ export function registerGameSocket(): GameSocketC {
   const router = useRouter()
   const route = useRoute()
 
-  const gameID = parseInt(route.query.gameID as string)
+  const gameID = Number.parseInt(route.query.gameID as string)
 
-  if (isNaN(gameID) || gameID < 0) {
+  if (Number.isNaN(gameID) || gameID < 0) {
     router.push({ name: 'Landing' })
   }
 

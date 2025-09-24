@@ -1,6 +1,6 @@
 import './env'
 
-import path from 'path'
+import path from 'node:path'
 
 import express from 'express'
 import compression from 'compression'
@@ -86,7 +86,7 @@ export class TacServer {
     await registerJobs(this.pgPool)
     await loadTutorialLevels(this.pgPool)
 
-    const portToListen = port ?? (process.env.PORT != null ? parseInt(process.env.PORT) : 3000)
+    const portToListen = port ?? (process.env.PORT != null ? Number.parseInt(process.env.PORT) : 3000)
     this.httpServer.listen(portToListen)
     logger.debug(`Listening on port: ${(this.httpServer.address() as any)?.port}`)
 

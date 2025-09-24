@@ -63,12 +63,12 @@ export class LeadersController extends Controller {
 
 /*
 router.get('/getCoopLeaderboard/', isLoggedIn, async (req: express.Request, res: express.Response) => {
-    const limit = parseInt(req.query.limit as string)
-    const offset = parseInt(req.query.offset as string)
-    const nPlayers = parseInt(req.query.nPlayers as string)
-    const startDate = new Date(parseInt(req.query.startDate as string) || 0)
-    const endDate = new Date(!isNaN(parseInt(req.query.endDate as string)) ? parseInt(req.query.endDate as string) : Date.now())
-    if (isNaN(limit) || isNaN(offset)) { return res.status(400).send('limit and offset as integer required') }
+    const limit = Number.parseInt(req.query.limit as string)
+    const offset = Number.parseInt(req.query.offset as string)
+    const nPlayers = Number.parseInt(req.query.nPlayers as string)
+    const startDate = new Date(Number.parseInt(req.query.startDate as string) || 0)
+    const endDate = new Date(!Number.isNaN(Number.parseInt(req.query.endDate as string)) ? Number.parseInt(req.query.endDate as string) : Date.now())
+    if (Number.isNaN(limit) || Number.isNaN(offset)) { return res.status(400).send('limit and offset as integer required') }
     if (nPlayers !== 4 && nPlayers !== 6) { return res.status(400).send('nPlayers needs to be 4 or 6') }
     if (startDate >= endDate) { return res.status(400).send('startDate should be smaller than endDate') }
 

@@ -164,10 +164,10 @@ function getRemainingMoves(card: tCard.PlayerCard, balls: tBall.BallsType, nBall
     // reset all balls inbetween if "7"
     let priorRemainingMoves = 7
     if (card.title.startsWith('7-')) {
-      priorRemainingMoves = parseInt(card.title.substring(2, card.title.length))
+      priorRemainingMoves = Number.parseInt(card.title.substring(2, card.title.length))
     }
     if (card.title.startsWith('tac-')) {
-      priorRemainingMoves = parseInt(card.title.substring(4, card.title.length))
+      priorRemainingMoves = Number.parseInt(card.title.substring(4, card.title.length))
     }
     remainingMoves = priorRemainingMoves - (sevenReconstructPath(balls, nBall, newPosition).length - 1)
   }

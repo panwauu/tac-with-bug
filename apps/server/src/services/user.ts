@@ -1,6 +1,6 @@
 import type pg from 'pg'
 import type { Friend } from '../sharedTypes/typesFriends'
-import { randomUUID, randomBytes } from 'crypto'
+import { randomUUID, randomBytes } from 'node:crypto'
 import type { UserIdentifier, User } from '../sharedTypes/typesDBuser'
 import { getSubscription, cancelSubscription, GetSubscriptionError, CancelSubscriptionError } from '../paypal/paypal'
 import { Result, err, ok } from 'neverthrow'

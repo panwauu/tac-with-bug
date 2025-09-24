@@ -9,7 +9,7 @@ export interface Sound {
 }
 
 const storageResult = localStorage.getItem('soundvolume')
-const volume = storageResult != null && !Number.isNaN(parseInt(storageResult)) ? parseInt(storageResult) : 100
+const volume = storageResult != null && !Number.isNaN(Number.parseInt(storageResult)) ? Number.parseInt(storageResult) : 100
 
 import notiSound from '../assets/sounds/noti.mp3'
 import wonSound from '../assets/sounds/won.mp3'

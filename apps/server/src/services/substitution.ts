@@ -139,7 +139,7 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
     return err('NO_ACTIVE_SUBSTITUTION')
   }
 
-  const playerIndex = game.playerIDs.findIndex((id) => id === userID)
+  const playerIndex = game.playerIDs.indexOf(userID)
   if (playerIndex < 0 || playerIndex >= game.nPlayers) {
     return err('PLAYER_NOT_IN_GAME')
   }

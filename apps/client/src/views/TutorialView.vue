@@ -67,8 +67,8 @@ const modalState = ref('statistic')
 const loading = ref(true)
 const tutorialStepOutput = ref<null | TutorialStepOutput>(null)
 const displayTutorialOverlay = ref(true)
-const tutorialID = ref(parseInt(router.currentRoute.value.query.tutorialID as string))
-const tutorialStep = ref(parseInt(router.currentRoute.value.query.tutorialStep as string))
+const tutorialID = ref(Number.parseInt(router.currentRoute.value.query.tutorialID as string))
+const tutorialStep = ref(Number.parseInt(router.currentRoute.value.query.tutorialStep as string))
 
 function closeGame() {
   if (tutorialStepOutput?.value?.goal?.closeButton != null) {
@@ -116,7 +116,7 @@ async function loadStep() {
     setTimeout(() => {
       if (cardIndex >= 0) {
         cardsState.resetSelectedCard()
-        cardsState.setSelectedCard(parseInt(cardsState.cards[cardIndex].key))
+        cardsState.setSelectedCard(Number.parseInt(cardsState.cards[cardIndex].key))
       } else {
         cardsState.resetSelectedCard()
       }

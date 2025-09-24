@@ -138,7 +138,7 @@ export function getMoves(balls: tBall.BallsType, nBall: number, cardTitle: strin
   } else if (cardTitle.startsWith('7')) {
     let remainingMoves = 7
     if (cardTitle.length > 1) {
-      remainingMoves = parseInt(cardTitle.substring(2, cardTitle.length))
+      remainingMoves = Number.parseInt(cardTitle.substring(2, cardTitle.length))
     }
     movePositions = getSevenPositions(balls, nBall, remainingMoves, teams, coop)
   } else {
@@ -166,14 +166,7 @@ export function getKriegerMove(balls: tBall.BallsType, nBall: number): number[] 
       }
     }
   }
-  const positions = [
-    ...largerPos.sort(function (a, b) {
-      return a - b
-    }),
-    ...smallerPos.sort(function (a, b) {
-      return a - b
-    }),
-  ]
+  const positions = [...largerPos.toSorted((a, b) => a - b), ...smallerPos.toSorted((a, b) => a - b)]
 
   return [positions[0]]
 }
@@ -272,7 +265,7 @@ export function getSevenPositions(balls: tBall.BallsType, nBall: number, remaini
 }
 
 export function getMovingPositions(balls: tBall.BallsType, nBall: number, cardTitle: tCard.CardType): number[] {
-  const cardTitleNumber = parseInt(cardTitle)
+  const cardTitleNumber = Number.parseInt(cardTitle)
   const direction = cardTitle === '4' ? -1 : 1
 
   let startNodes = [balls[nBall].position]

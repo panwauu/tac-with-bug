@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import path from 'path'
+import path from 'node:path'
 
 async function globalSetup() {
   console.log('Building frontend: start')

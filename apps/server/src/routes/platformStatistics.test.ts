@@ -1,8 +1,8 @@
 import { locales } from '../sharedDefinitions/locales'
 import { getPassedRatio, getPlatformStatistic } from '../services/platformStatistic'
 import type { DayDatasetType, HourDatasetType } from '../sharedTypes/typesPlatformStatistic'
-import { readFileSync } from 'fs'
-import path from 'path'
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 
 describe('Platform Statistic Test Suite', () => {
   test('Test week data extrapolation with synthetic data', async () => {

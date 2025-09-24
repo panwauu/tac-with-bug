@@ -45,8 +45,8 @@ const props = withDefaults(
 const { t } = useI18n()
 
 const possibleElements: UnitKey[] = ['days', 'hours', 'minutes', 'seconds']
-const indexOfLargestElement = possibleElements.findIndex((e) => e === props.largestUnit)
-const indexOfSmallestElement = possibleElements.findIndex((e) => e === props.smallestUnit)
+const indexOfLargestElement = possibleElements.indexOf(props.largestUnit)
+const indexOfSmallestElement = possibleElements.indexOf(props.smallestUnit)
 if (indexOfSmallestElement < indexOfLargestElement) {
   throw new Error('Could not load Timer as largest element was smaller than smallest element')
 }

@@ -143,7 +143,7 @@ export async function activateUser(sqlClient: pg.Pool, tournamentid: number, use
   if (teamIndex === -1) {
     return err('USER_NOT_FOUND_IN_TOURNAMENT')
   }
-  const playerIndex = tournament.value.registerTeams[teamIndex].playerids.findIndex((id) => id === userID)
+  const playerIndex = tournament.value.registerTeams[teamIndex].playerids.indexOf(userID)
   if (playerIndex === -1) {
     return err('USER_NOT_FOUND_IN_TOURNAMENT')
   }
@@ -176,7 +176,7 @@ export async function leaveTournament(
   if (teamIndex === -1) {
     return err('USER_NOT_FOUND_IN_TOURNAMENT')
   }
-  const playerIndex = tournament.value.registerTeams[teamIndex].playerids.findIndex((id) => id === userID)
+  const playerIndex = tournament.value.registerTeams[teamIndex].playerids.indexOf(userID)
   if (playerIndex === -1) {
     return err('USER_NOT_FOUND_IN_TOURNAMENT')
   }

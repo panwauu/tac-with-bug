@@ -221,7 +221,7 @@ describe('Test suite with recorded games', () => {
     expect(result.equal).toBe(true)
     expect(result.ended).toBe(false)
 
-    expect(Object.keys(result.game?.cardsWithMoves[0].ballActions ?? {}).every((key) => Math.floor(parseInt(key) / 4) === 4)).toBe(true)
+    expect(Object.keys(result.game?.cardsWithMoves[0].ballActions ?? {}).every((key) => Math.floor(Number.parseInt(key) / 4) === 4)).toBe(true)
   })
 
   test('Test with captured Prod Game 308', () => {

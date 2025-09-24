@@ -116,7 +116,7 @@ export async function runSimulation(nSimulations: number, bots: Bot[], gameParam
       }
 
       simulations[simulationIndex].status = 'finished'
-      simulations[simulationIndex].winner = game.winningTeams.findIndex((t) => t)
+      simulations[simulationIndex].winner = game.winningTeams.indexOf(true)
     } catch (err) {
       console.error(err)
       simulations[simulationIndex].status = 'error'

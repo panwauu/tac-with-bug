@@ -28,7 +28,7 @@ function postgresIntervalToMilliseconds(interval: string) {
     throw new Error('Cannot parse Postgres Interval')
   }
 
-  const hours = parseInt(interval.slice(0, 2))
-  const minutes = parseInt(interval.slice(3, 5))
+  const hours = Number.parseInt(interval.slice(0, 2))
+  const minutes = Number.parseInt(interval.slice(3, 5))
   return (hours * 3600 + minutes * 60) * 1000
 }

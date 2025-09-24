@@ -93,10 +93,7 @@ function clickStartButton(tutorialID: number, tutorialProgress: boolean[]) {
     tutorialStore.resetTutorialProgress(socket, tutorialID)
     startTutorial(tutorialID, 0)
   } else {
-    startTutorial(
-      tutorialID,
-      tutorialProgress.findIndex((d: boolean) => d === false)
-    )
+    startTutorial(tutorialID, tutorialProgress.indexOf(false))
   }
 }
 </script>

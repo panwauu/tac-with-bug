@@ -62,7 +62,7 @@ export function useInstructions(miscState: MiscStateType, ballsState: BallsState
             instructions.push(i18n.global.t('Game.Instructions.buttonOrOtherCard'))
           } else if (cardsState.cards[cardsState.selectedCard].title.includes('-')) {
             const title = cardsState.cards[cardsState.selectedCard].title
-            const remainingSteps = parseInt(title.substring(title.indexOf('-') + 1))
+            const remainingSteps = Number.parseInt(title.substring(title.indexOf('-') + 1))
             instructions.push(i18n.global.t('Game.Instructions.remainingSteps', { steps: remainingSteps }))
           } else {
             instructions.push(i18n.global.t('Game.Instructions.moveOrOtherCard'))

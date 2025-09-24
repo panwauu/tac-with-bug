@@ -1,7 +1,7 @@
 function hexToRGBA(h: string, alpha: number) {
-  const r = parseInt(h[1] + h[2], 16)
-  const g = parseInt(h[3] + h[4], 16)
-  const b = parseInt(h[5] + h[6], 16)
+  const r = Number.parseInt(h[1] + h[2], 16)
+  const g = Number.parseInt(h[3] + h[4], 16)
+  const b = Number.parseInt(h[5] + h[6], 16)
 
   return `rgba(${r},${g},${b},${alpha})`
 }

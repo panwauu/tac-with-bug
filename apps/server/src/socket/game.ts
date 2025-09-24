@@ -39,7 +39,7 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
 
   nspGame.use(async (socket, next) => {
     try {
-      const gameID = parseInt(socket.handshake.auth.gameID as string)
+      const gameID = Number.parseInt(socket.handshake.auth.gameID as string)
       const game = await getGame(pgPool, gameID)
       const gamePlayer =
         socket.data.userID != null && game.playerIDs.findIndex((id) => id === socket.data.userID) < game.nPlayers ? game.playerIDs.findIndex((id) => id === socket.data.userID) : -1

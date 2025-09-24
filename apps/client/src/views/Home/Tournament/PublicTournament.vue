@@ -69,7 +69,7 @@ const { t } = useI18n()
 const props = defineProps<{ id: string; locale: string }>()
 
 const socket = injectStrict(SocketKey)
-const tournamentID = computed(() => parseInt(props.id))
+const tournamentID = computed(() => Number.parseInt(props.id))
 const tournament = ref<PublicTournament | null>()
 
 queryTournament()

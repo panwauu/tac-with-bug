@@ -273,7 +273,7 @@ async function onPage() {
         index: index + 1 + first.value,
       })
     )
-    totalNumber.value = typeof res.nPlayers === 'string' ? parseInt(res.nPlayers) : res.nPlayers
+    totalNumber.value = typeof res.nPlayers === 'string' ? Number.parseInt(res.nPlayers) : res.nPlayers
     loading.value = false
   })
 }
@@ -307,10 +307,10 @@ async function onPageCoop(nPlayers: number) {
     })
     if (nPlayers === 6) {
       loadingCoop6.value = false
-      totalNumberCoop6.value = typeof res.nGames === 'string' ? parseInt(res.nGames) : res.nGames
+      totalNumberCoop6.value = typeof res.nGames === 'string' ? Number.parseInt(res.nGames) : res.nGames
     } else {
       loadingCoop4.value = false
-      totalNumberCoop4.value = typeof res.nGames === 'string' ? parseInt(res.nGames) : res.nGames
+      totalNumberCoop4.value = typeof res.nGames === 'string' ? Number.parseInt(res.nGames) : res.nGames
     }
   })
 }

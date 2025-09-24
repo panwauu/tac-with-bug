@@ -16,8 +16,8 @@ import CountdownTimer from '@/components/CountdownTimer.vue'
 const props = defineProps<{ tournament: PublicTournament }>()
 
 function addInterval(date: Date, interval: string): Date {
-  const m = parseInt(interval.slice(interval.length - 2, interval.length))
-  const h = parseInt(interval.slice(0, interval.length - 3))
+  const m = Number.parseInt(interval.slice(interval.length - 2, interval.length))
+  const h = Number.parseInt(interval.slice(0, interval.length - 3))
   const returnDate = date
   returnDate.setMinutes(returnDate.getMinutes() + m)
   returnDate.setHours(returnDate.getHours() + h)
