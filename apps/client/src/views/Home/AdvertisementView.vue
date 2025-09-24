@@ -4,8 +4,12 @@
     class="advertPage"
     :class="{ advertPagePortrait: showPortrait }"
   >
-    <div style="width: 100%">
-      <GameSimulation />
+    <div style="width: 100%; max-width: 600px; border-radius: 10px; margin: 0 auto; position: relative; overflow: hidden">
+      <img
+        style="width: 100%; max-width: 600px; border-radius: 10px"
+        src="@/assets/gameexample.png"
+      />
+      <GameSimulation style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%" />
     </div>
     <div style="display: flex; justify-content: center">
       <div style="display: flex; flex-direction: column; align-items: center; padding: 10px; flex: 0 1 600px; max-width: 100%">

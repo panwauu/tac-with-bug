@@ -73,7 +73,7 @@ async function updateHandler(updateData: UpdateDataType): Promise<void> {
 const delayBetweenMoves = 1500
 const bots = [Bot.Raindom, Bot.Raindom, Bot.Raindom, Bot.Raindom]
 
-const game = new Game(4, 2, true, true)
+const game = new Game(4, 2, true, false)
 const additionalInformation: AdditionalInformation = {
   hadOneOrThirteen: [],
   tradedCards: [null, null, null, null],
@@ -123,7 +123,7 @@ async function simulateMove() {
     if (cards.every((c) => !c.possible)) continue
 
     const aiData = getAiData(game, gamePlayer)
-    const agentMove = getBotMove(bots[gamePlayer], aiData)
+    const agentMove = await getBotMove(bots[gamePlayer], aiData)
     move = projectMoveToGamePlayer(game, agentMove, gamePlayer)
 
     if (!game.checkMove(move)) {
@@ -145,6 +145,8 @@ async function simulateMove() {
   game.performAction(move, move[0])
 
   gameForPlay.game = game
+
+  return move
 }
 
 function restartGame() {
@@ -159,15 +161,14 @@ function restartGame() {
 async function startSimulation() {
   restartGame()
   while (!game.gameEnded) {
-    console.log('move')
-
+    const move = await simulateMove()
     const updateData = getPlayerUpdateFromGame(gameForPlay, miscState.gamePlayer)
     updateHandler(updateData).catch((e) => {
       console.error(e)
     })
-
-    await simulateMove()
-    await new Promise((r) => setTimeout(r, delayBetweenMoves))
+    if (move[2] !== 'tauschen') {
+      await new Promise((r) => setTimeout(r, delayBetweenMoves))
+    }
   }
 }
 
