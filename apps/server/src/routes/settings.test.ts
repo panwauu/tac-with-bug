@@ -109,7 +109,6 @@ describe('Settings-REST test', () => {
       news: false,
       tournamentNews: true,
       tournamentInvitations: true,
-      sponsoring: true,
       messages: true,
       friendRequests: true,
     }

@@ -10,7 +10,6 @@
 | &ensp;src/entrypoints        | Entrypoints for seperate scripts                          |
 | &ensp;src/game               | Game Logic                                                |
 | &ensp;src/helpers            | Helpers                                                   |
-| &ensp;src/paypal             | Paypal scripts                                            |
 | &ensp;src/routes             | REST Endpoints to be used by tsoa to generate the OpenAPI |
 | &ensp;src/services           | Service Logic behind REST and WS Endpoints                |
 | &ensp;src/sharedDefinitions  | Definitions shared with front-end                         |

@@ -1,7 +1,7 @@
 <template>
   <div
     :class="['badge', clickable ? 'clickable' : '']"
-    @click="toSubscription()"
+    @click="toHof()"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -26,9 +26,9 @@
 <script setup lang="ts">
 import router from '@/router/index'
 
-const props = withDefaults(defineProps<{ clickable?: boolean; sponsorsOnly?: boolean }>(), { clickable: true, sponsorsOnly: true })
+const props = withDefaults(defineProps<{ clickable?: boolean }>(), { clickable: true })
 
-const toSubscription = async () => {
+const toHof = async () => {
   if (props.clickable) {
     await router.push({ name: 'HOF' })
   }

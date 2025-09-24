@@ -9,7 +9,6 @@ export interface PlayerFrontendStatistic {
   }
   table: number[]
   gamesDistribution: GamesDistributionData
-  subscriber: boolean
   people: { [key: string]: number[] }
   hof: HofReason[]
   userDescription: string

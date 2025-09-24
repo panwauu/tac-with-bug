@@ -10,12 +10,6 @@
           :username="username"
           class="profilePicture"
         />
-        <Sponsor
-          v-if="isSubscribed"
-          :clickable="true"
-          :sponsors-only="false"
-          class="sponsorOverPicture"
-        />
         <HofBadge
           v-if="hofReasons.length > 0"
           class="hofOverPicture"
@@ -64,7 +58,6 @@ import Tab from 'primevue/tab'
 import type { MenuItem } from 'primevue/menuitem'
 import FriendButton from '@/components/FriendButton.vue'
 import ProfilePicture from '@/components/ProfilePicture.vue'
-import Sponsor from '@/components/SubscriptionTag.vue'
 import ProfileExplanation from '@/components/ProfileExplanation.vue'
 import HofBadge from '@/components/icons/HofBadge.vue'
 
@@ -81,7 +74,6 @@ const { t } = useI18n()
 const props = defineProps<{ username: string }>()
 
 const userDescription = ref('')
-const isSubscribed = ref(false)
 const radarData = ref<number[]>([])
 const gamesDistributionData = ref<GamesDistributionDataType>({
   teamWon: 0,
@@ -108,7 +100,6 @@ watch(
 async function updateData() {
   try {
     const usernameStats = await Service.getPlayerStats(props.username)
-    isSubscribed.value = usernameStats.subscriber
     radarData.value = usernameStats.table
     gamesDistributionData.value = usernameStats.gamesDistribution
     hofReasons.value = usernameStats.hof
@@ -203,11 +194,6 @@ watch(
   width: 100%;
   border-radius: 100%;
   object-fit: contain;
-}
-
-.sponsorOverPicture {
-  position: absolute;
-  bottom: 0;
 }
 
 .hofOverPicture {

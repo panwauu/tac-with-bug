@@ -38,11 +38,7 @@
     "disclaimer1": "*: Das Abonnement kann natürlich jederzeit beendet werden",
     "disclaimer2": "**: Paypal verlangt leider eine feste Gebühr von etwa 0,35€ pro Transaktion zusätzlich zu einem Prozentsatz von etwa 2,5%. Dies führt dazu, dass bei regelmäßigen, kleinen Zahlungen die Gebühr anteilsmäßig steigt. Es kommt also am meisten deiner Spende tatsächlich bei mir an, wenn du selten aber dafür einen hohen Betrag zahlst.",
     "disclaimer3": "***: Dies bezieht sich selbstverständlich lediglich auf persönliches Glück",
-    "disclaimer3Link": "(Mehr Info)",
-    "Tag": {
-      "sponsor": "Sponsor",
-      "sponsorsOnly": "Sponsor werden"
-    }
+    "disclaimer3Link": "(Mehr Info)"
   },
   "Stats": {
     "headerTable": "Tac-With-Bug in Zahlen",

@@ -15,14 +15,13 @@ CREATE TABLE users (
     AND jsonb_typeof(tutorial -> 0) = 'array'
     AND jsonb_array_length(tutorial -> 0) = 11
   ),
-  currentsubscription int,
   locale VARCHAR(2) NOT NULL DEFAULT 'de',
   color_blindness_flag BOOLEAN NOT NULL DEFAULT false,
   prefers_dark_mode BOOLEAN DEFAULT NULL,
   admin BOOLEAN NOT NULL DEFAULT FALSE,
   game_default_position INTEGER [2] NOT NULL DEFAULT '{1, 0}',
   user_description VARCHAR(200) NOT NULL DEFAULT '',
-  notification_settings BOOLEAN [] NOT NULL DEFAULT array_fill(TRUE, ARRAY [6]) CHECK (array_length(notification_settings, 1) = 6)
+  notification_settings BOOLEAN [] NOT NULL DEFAULT array_fill(TRUE, ARRAY [5]) CHECK (array_length(notification_settings, 1) = 5)
 );
 
 CREATE TABLE password_reset_requests (
@@ -31,23 +30,6 @@ CREATE TABLE password_reset_requests (
   time_of_request timestamptz NOT NULL DEFAULT current_timestamp,
   valid BOOLEAN NOT NULL DEFAULT TRUE
 );
-
-CREATE TABLE subscriptions (
-  id SERIAL PRIMARY KEY,
-  userid int NOT NULL REFERENCES users (id),
-  subscriptionid varchar(40) NOT NULL UNIQUE,
-  status varchar(20) NOT NULL CHECK(
-    status = 'running'
-    OR status = 'cancelled'
-    OR status = 'expiring'
-  ),
-  validuntil timestamptz NOT NULL
-);
-
-ALTER TABLE
-  users
-ADD
-  FOREIGN KEY (currentsubscription) REFERENCES subscriptions(id);
 
 CREATE TABLE friendships(
   userid1 int NOT NULL REFERENCES users (id),

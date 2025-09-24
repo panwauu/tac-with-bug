@@ -19,7 +19,6 @@ describe('Platform PlayerStatistic Test Suite', () => {
     expect(response.body.players.bestPartner).toEqual('')
     expect(response.body.players.worstEnemy).toEqual('')
     expect(response.body.table).toEqual([0, 0, 0, 0, 0, 0, 0])
-    expect(response.body.subscriber).toEqual(false)
     expect(response.body.people).toEqual({})
     expect(response.body.hof).toEqual([])
     expect(response.body.userDescription).toEqual('')
