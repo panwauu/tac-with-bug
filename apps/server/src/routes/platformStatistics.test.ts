@@ -107,9 +107,15 @@ describe('Platform Statistic Test Suite', () => {
   })
 
   test('Test server version', async () => {
+    // Get the root package.json for the version (!Not the server/package.json!)
+    const packageJSON = JSON.parse(readFileSync(path.join(__dirname, '..', '..', '..', '..', 'package.json')).toString())
+    expect(packageJSON).toBeDefined()
+    expect(packageJSON).not.toBe('0.0.0')
+
     const response = await testAgent.get('/gameApi/getServerVersion/')
     expect(response.statusCode).toBe(200)
-    const packageJSON = JSON.parse(readFileSync(path.join('package.json')).toString())
+    expect(response.body).toBeDefined()
+    expect(response.body).not.toBe('0.0.0')
     expect(response.body).toBe(packageJSON.version)
   })
 })

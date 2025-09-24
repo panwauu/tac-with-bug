@@ -16,24 +16,6 @@ jobs:
         with:
           ref: ${{ github.ref }}
           token: ${{ secrets.TAG_GITHUB_TOKEN }}
-      - name: "cat package.json"
-        run: cat ./apps/server/package.json
-      - name: "Automated Version Bump"
-        id: version-bump-root
-        uses: "phips28/gh-action-bump-version@master"
-        with:
-          skip-commit: "true"
-          skip-tag: "true"
-        env:
-          PACKAGEJSON_DIR: "."
-      - name: "Automated Version Bump"
-        id: version-bump-client
-        uses: "phips28/gh-action-bump-version@master"
-        with:
-          skip-commit: "true"
-          skip-tag: "true"
-        env:
-          PACKAGEJSON_DIR: "apps/client"
       - name: "Automated Version Bump"
         id: version-bump
         uses: "phips28/gh-action-bump-version@master"
@@ -42,9 +24,9 @@ jobs:
           commit-message: "CI: bumps version to {{version}}"
         env:
           GITHUB_TOKEN: ${{ secrets.TAG_GITHUB_TOKEN }}
-          PACKAGEJSON_DIR: "apps/server"
+          PACKAGEJSON_DIR: "."
       - name: "cat package.json"
-        run: cat ./apps/server/package.json
+        run: cat ./package.json
       - name: "Output New Tag"
         env:
           NEW_TAG: ${{ steps.version-bump.outputs.newTag }}

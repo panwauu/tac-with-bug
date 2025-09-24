@@ -1,9 +1,6 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "tasks": {
-    "check-types": {
-      "dependsOn": ["^check-types"]
-    },
     "check-format": {
       "dependsOn": ["^check-format"]
     },
@@ -13,9 +10,17 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "check-types": {
+      "dependsOn": ["^check-types"],
+      "outputs": ["**/dist/**"]
+    },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", "server/public/**"]
+      "outputs": [
+        "**/dist/**",
+        "apps/server/public/**",
+        "apps/client/src/generatedClient/**"
+      ]
     },
     "test": {
       "dependsOn": ["^test"]

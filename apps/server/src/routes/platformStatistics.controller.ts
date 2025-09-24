@@ -2,6 +2,7 @@ import type express from 'express'
 import type { PlatformFunFacts, PlatformStats } from '../sharedTypes/typesPlatformStatistic'
 import { Controller, Get, Route, Request, Res, TsoaResponse } from 'tsoa'
 import { getPlatformStatistic, getPlatformFunFacts } from '../services/platformStatistic'
+import { getRootPackageVersion } from '../entrypoints/version'
 
 @Route('/')
 export class PlatformStatisticController extends Controller {
@@ -26,9 +27,8 @@ export class PlatformStatisticController extends Controller {
    */
   @Get('/getServerVersion')
   public getServerVersion(@Res() serverError: TsoaResponse<500, string>): string {
-    if (process.env.npm_package_version != null) {
-      return process.env.npm_package_version
-    }
+    const version = getRootPackageVersion()
+    if (version != null) return version
     return serverError(500, 'NPM package version not found')
   }
 }

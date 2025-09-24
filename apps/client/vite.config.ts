@@ -3,11 +3,17 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import loadVersion from 'vite-plugin-package-version'
 import { resolve } from 'node:path'
+import { readFileSync } from 'node:fs'
 
 export default defineConfig({
-  plugins: [vue(), vueDevTools(), loadVersion()],
+  plugins: [vue(), vueDevTools()],
+  // Load root package.json version so CLIENT builds use the repo root version
+  // instead of the client's package.json (npm sets npm_package_version to the
+  // local package when running scripts inside the client folder).
+  define: {
+    'import.meta.env.PACKAGE_VERSION': JSON.stringify(JSON.parse(readFileSync(resolve(__dirname, '../../package.json'), 'utf8')).version),
+  },
   server: {
     port: 8080,
     proxy: {

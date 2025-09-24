@@ -1,6 +1,7 @@
 import minimist from 'minimist'
 import logger from '../helpers/logger'
 import { TacServer, ServerOptions } from './server'
+import { getRootPackageVersion } from './version'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -10,5 +11,6 @@ const options: ServerOptions = {
 
 const server = new TacServer(options)
 server.listen().then((port) => {
-  logger.info(`Server (version ${process.env.npm_package_version}) started on port ${port}`)
+  const version = getRootPackageVersion() ?? 'unknown'
+  logger.info(`Server (version ${version}) started on port ${port}`)
 })
