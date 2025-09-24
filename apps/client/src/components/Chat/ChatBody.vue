@@ -228,9 +228,9 @@ function beautifyDate(timestamp: string): string {
   const date = new Date(timestamp)
   if (new Date().toDateString() === date.toDateString()) {
     return t('Chat.Dates.today')
-  } else if (new Date(new Date().getTime() - 1000 * 60 * 60 * 24).toDateString() === date.toDateString()) {
+  } else if (new Date(Date.now() - 1000 * 60 * 60 * 24).toDateString() === date.toDateString()) {
     return t('Chat.Dates.yesterday')
-  } else if (new Date().getTime() - date.getTime() < 1000 * 60 * 60 * 24 * 7) {
+  } else if (Date.now() - date.getTime() < 1000 * 60 * 60 * 24 * 7) {
     return date.toLocaleString(currentLocale.value, { weekday: 'long' })
   }
   return date.toLocaleDateString(currentLocale.value)

@@ -305,7 +305,7 @@ export const useMessagesStore = defineStore('messages', {
       for (const id of removedRunningGameIDs) {
         const channel = this.channels.find((c) => c.id === `g-${id}`)
         if (channel != null) {
-          channel.endDate = new Date().getTime() + keepGameChannelAliveTime
+          channel.endDate = Date.now() + keepGameChannelAliveTime
         }
         setTimeout(() => this.updateGameChannels([], [], null, null), keepGameChannelAliveTime + 1000)
       }
@@ -331,7 +331,7 @@ export const useMessagesStore = defineStore('messages', {
         this.addChannel(`g-${newRouteGameID}`)
       }
 
-      this.channels = this.channels.filter((c) => !c.id.startsWith('g-') || c.endDate == null || c.endDate > new Date().getTime())
+      this.channels = this.channels.filter((c) => !c.id.startsWith('g-') || c.endDate == null || c.endDate > Date.now())
     },
     removeWaitingRoomChannels() {
       if (this.channels.some((c) => c.id.startsWith('w-'))) {

@@ -115,7 +115,7 @@ export async function emitOnlinePlayersEvents(pgPool: pg.Pool, nsp: GameNamespac
 
 async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePlayer: number, game: GameForPlay) {
   if (game.running && game.game.gameEnded === false && !game.game.cards.players.some((player) => player.length > 0)) {
-    const timeSinceLastPlayed = new Date().getTime() - new Date(game.lastPlayed).getTime()
+    const timeSinceLastPlayed = Date.now() - new Date(game.lastPlayed).getTime()
     const delay = Math.max(Math.min(2000 - timeSinceLastPlayed, 2000), 0)
 
     const newGame = await performMoveAndReturnGame(pgPool, 'dealCards', gamePlayer, game.id)
