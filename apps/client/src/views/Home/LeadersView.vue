@@ -265,14 +265,14 @@ async function onPage() {
   loading.value = true
   Service.getWinnerLeaderboard(rows.value, first.value, selectedDate.value.startDate, selectedDate.value.endDate ?? undefined).then((res) => {
     data.value = []
-    res.username.forEach((username: string, index: number) =>
+    for (const [index, username] of res.username.entries()) {
       data.value.push({
         username: username,
         wins: res.wins[index],
         winshare: res.winshare[index] + ' %',
         index: index + 1 + first.value,
       })
-    )
+    }
     totalNumber.value = typeof res.nPlayers === 'string' ? Number.parseInt(res.nPlayers) : res.nPlayers
     loading.value = false
   })
@@ -292,7 +292,7 @@ async function onPageCoop(nPlayers: number) {
     } else {
       dataCoop4.value = []
     }
-    res.count.forEach((count: number, index: number) => {
+    for (const [index, count] of res.count.entries()) {
       const dataToPush = {
         team: res.team[index],
         count: count,
@@ -304,7 +304,7 @@ async function onPageCoop(nPlayers: number) {
       } else {
         dataCoop4.value.push(dataToPush)
       }
-    })
+    }
     if (nPlayers === 6) {
       loadingCoop6.value = false
       totalNumberCoop6.value = typeof res.nGames === 'string' ? Number.parseInt(res.nGames) : res.nGames

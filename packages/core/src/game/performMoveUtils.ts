@@ -231,9 +231,9 @@ export function sevenReconstructPath(balls: tBall.BallsType, nBall: number, goal
   for (let move = 0; move < 7; move++) {
     for (const startPath of startPaths) {
       const oneStepPositions = moveOneStep(balls, nBall, startPath[startPath.length - 1], 1, 7)
-      oneStepPositions.forEach((newPos) => {
+      for (const newPos of oneStepPositions) {
         endPaths.push(startPath.concat([newPos]))
-      })
+      }
     }
     finalPath = endPaths.find((path) => path[path.length - 1] === goalPosition)
     if (finalPath != null) {
@@ -253,10 +253,10 @@ export function moveBallsBetweenPositionsToHouse(balls: tBall.BallsType, nBall: 
   let finalPath = sevenReconstructPath(balls, nBall, goalPosition)
   finalPath = finalPath.slice(1, finalPath.length)
 
-  finalPath.forEach((pos) => {
+  for (const pos of finalPath) {
     const nBallToRemove = balls.findIndex((ball) => ball.position === pos)
     if (nBallToRemove !== -1) {
       moveBallToHouse(balls, nBallToRemove)
     }
-  })
+  }
 }

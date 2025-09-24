@@ -1,13 +1,12 @@
 import { Result, ok, err } from 'neverthrow'
 import type pg from 'pg'
 import { getSocketByUserID, getSocketsInGame, nsp, sendUpdatesOfGameToPlayers } from '../socket/game'
-import type { GameForPlay } from '@repo/core/types'
+import type { GameForPlay, Substitution } from '@repo/core/types'
 import { getGame, updateGame } from './game'
 import { initalizeStatistic } from '@repo/core/game/statistic'
 import { addJob } from './scheduledTasks'
 import { scheduleJob } from 'node-schedule'
 import { getUser, GetUserErrors } from './user'
-import type { Substitution } from '@repo/core/types'
 import { getBotName } from '@repo/core/bot/names'
 import { validBotIds } from '@repo/core/bot/bots/bots'
 
@@ -195,13 +194,13 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
         newSocket.emit('substitution:changeGamePlayer', game.substitution.playerIndexToSubstitute)
       }
     }
-    getSocketsInGame(nsp, game.id).forEach((s) =>
+    for (const s of getSocketsInGame(nsp, game.id)) {
       s.emit(
         'toast:substitution-done',
         game.substitution?.substitute?.username ?? game.substitution?.substitute?.botUsername ?? '',
         game.players[game.substitution?.playerIndexToSubstitute ?? 0] ?? ''
       )
-    )
+    }
     await updateGame(pgPool, game.id, game.game.getJSON(), game.running, true, false, game.bots)
 
     game.substitution = null

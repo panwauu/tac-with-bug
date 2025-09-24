@@ -14,12 +14,11 @@
 <script setup lang="ts">
 import { Game } from '@repo/core/game/game'
 import type { AdditionalInformation } from '@repo/core/bot/simulation/simulation'
-import type { MoveTextOrBall } from '@repo/core/types'
 import { getCards, getPlayerUpdateFromGame } from '@repo/core/game/serverOutput'
 import { projectMoveToGamePlayer } from '@repo/core/bot/normalize/normalize'
 import { getAiData } from '@repo/core/bot/simulation/output'
 import { Bot, getBotMove } from '@repo/core/bot/bots/bots'
-import type { GameForPlay, UpdateDataType } from '@repo/core/types'
+import type { GameForPlay, UpdateDataType, MoveTextOrBall } from '@repo/core/types'
 import { usePositionStyles } from '@/services/compositionGame/usePositionStyles'
 import { useMisc } from '@/services/compositionGame/useMisc'
 import { useStatistic } from '@/services/compositionGame/useStatistic'

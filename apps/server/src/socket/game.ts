@@ -1,5 +1,5 @@
 import type pg from 'pg'
-import type { GameForPlay } from '@repo/core/types'
+import type { GameForPlay, MoveTextOrBall } from '@repo/core/types'
 import type { GameSocketS, GameNamespace } from '../sharedTypes/GameNamespaceDefinition'
 
 import logger from '../helpers/logger'
@@ -9,7 +9,6 @@ import { gameSocketIOAuthentication } from '../helpers/authentication'
 import { initializeInfo } from './info'
 import { registerSubstitutionHandlers } from './gameSubstitution'
 import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/substitution'
-import { MoveTextOrBall } from '@repo/core/types'
 import { getAiData } from '@repo/core/bot/simulation/output'
 import { projectMoveToGamePlayer } from '@repo/core/bot/normalize/normalize'
 import { getBotMove } from '@repo/core/bot/bots/bots'
@@ -46,11 +45,9 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
 
       socket.data.gameID = gameID
       socket.data.gamePlayer = gamePlayer
-      ;[...nspGame.sockets.values()]
-        .filter((e) => e.data.userID != null && e.data.userID === socket.data.userID && e.data.gameID === socket.data.gameID)
-        .forEach((s) => {
-          s.disconnect()
-        })
+      for (const s of [...nspGame.sockets.values()].filter((e) => e.data.userID != null && e.data.userID === socket.data.userID && e.data.gameID === socket.data.gameID)) {
+        s.disconnect()
+      }
 
       return next()
     } catch (err) {
@@ -87,9 +84,9 @@ export function registerSocketNspGame(nspGame: GameNamespace, pgPool: pg.Pool) {
 
       const game = await performMoveAndReturnGame(pgPool, postMove, socket.data.gamePlayer, socket.data.gameID)
       endSubstitutionIfRunning(game)
-      getSocketsInGame(nspGame, socket.data.gameID).forEach((socketIterator) => {
+      for (const socketIterator of getSocketsInGame(nspGame, socket.data.gameID)) {
         socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
-      })
+      }
       await dealCardsIfNecessary(pgPool, nspGame, socket.data.gamePlayer, game)
     })
 
@@ -110,9 +107,9 @@ export async function emitOnlinePlayersEvents(pgPool: pg.Pool, nsp: GameNamespac
   const res = await pgPool.query('SELECT username FROM users WHERE id = ANY($1::int[])', [watchingPlayerIDs])
   const watchingPlayerNames = res.rows.map((r) => r.username)
 
-  socketsInGame.forEach((s) => {
+  for (const s of socketsInGame) {
     s.emit('game:online-players', { onlineGamePlayers, nWatchingPlayers, watchingPlayerNames })
-  })
+  }
 
   initializeInfo()
 }
@@ -124,9 +121,9 @@ async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePla
 
     const newGame = await performMoveAndReturnGame(pgPool, 'dealCards', gamePlayer, game.id)
     setTimeout(async () => {
-      getSocketsInGame(nsp, game.id).forEach((s) => {
+      for (const s of getSocketsInGame(nsp, game.id)) {
         s.emit('update', getPlayerUpdateFromGame(newGame, s.data.gamePlayer ?? -1))
-      })
+      }
     }, delay)
   }
 }
@@ -150,9 +147,9 @@ export function isPlayingInGame(userID: number, gameID: number) {
 }
 
 export function sendUpdatesOfGameToPlayers(game: GameForPlay) {
-  getSocketsInGame(nsp, game.id).forEach((socket) => {
+  for (const socket of getSocketsInGame(nsp, game.id)) {
     socket.emit('update', getPlayerUpdateFromGame(game, socket.data.gamePlayer ?? -1))
-  })
+  }
 }
 
 const BOT_TIME_TO_WAIT = 4000 as const
@@ -202,9 +199,9 @@ async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
 
     if (move != null) {
       const game = await performMoveAndReturnGame(pgPool, move, move[0], gameID)
-      getSocketsInGame(nspGame, gameID).forEach((socketIterator) => {
+      for (const socketIterator of getSocketsInGame(nspGame, gameID)) {
         socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
-      })
+      }
       await dealCardsIfNecessary(pgPool, nspGame, game.game.activePlayer, game)
     }
   }

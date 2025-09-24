@@ -168,7 +168,7 @@ function calculatePointsOfTeamFromBalls(balls: BallsType, team: number[]): numbe
   // + for moves to house required
 
   let score = 0
-  balls.forEach((b, i) => {
+  for (const [i, b] of balls.entries()) {
     if (team.includes(b.player)) {
       if (b.state === 'goal' || b.state === 'locked') score += 1000
       if (ballInForward7Proximity(b.position, i, balls)) score += 11
@@ -178,7 +178,7 @@ function calculatePointsOfTeamFromBalls(balls: BallsType, team: number[]): numbe
       if (b.state === 'invalid' || b.state === 'valid') score += 1
       score += normalizedNecessaryForwardMovesToEndOfGoal(b.position, i, balls)
     }
-  })
+  }
 
   return score
 }

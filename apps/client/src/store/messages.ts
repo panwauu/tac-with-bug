@@ -143,13 +143,13 @@ export const useMessagesStore = defineStore('messages', {
     },
     getDateGroupedChatMessages: (state) => {
       const messages: { date: string; messages: ChatMessage[] }[] = []
-      state.chatMessages.forEach((m) => {
+      for (const m of state.chatMessages) {
         if (messages.length === 0 || new Date(messages[messages.length - 1].date).toDateString() !== new Date(m.created).toDateString()) {
           messages.push({ date: m.created, messages: [m] })
         } else {
           messages[messages.length - 1].messages.push(m)
         }
-      })
+      }
       return messages
     },
   },
@@ -302,16 +302,16 @@ export const useMessagesStore = defineStore('messages', {
       }
     },
     updateGameChannels(newRunningGameIDs: number[], removedRunningGameIDs: number[], newRouteGameID: string | null, oldRouteGameID: string | null) {
-      removedRunningGameIDs.forEach((id) => {
+      for (const id of removedRunningGameIDs) {
         const channel = this.channels.find((c) => c.id === `g-${id}`)
         if (channel != null) {
           channel.endDate = new Date().getTime() + keepGameChannelAliveTime
         }
         setTimeout(() => this.updateGameChannels([], [], null, null), keepGameChannelAliveTime + 1000)
-      })
-      newRunningGameIDs.forEach((id) => {
+      }
+      for (const id of newRunningGameIDs) {
         this.addChannel(`g-${id}`)
-      })
+      }
 
       const serverInfoStore = useServerInfoStore()
       if (

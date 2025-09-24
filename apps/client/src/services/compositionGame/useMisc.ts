@@ -2,8 +2,7 @@ import { reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { i18n } from '@/services/i18n'
 
-import type { Player } from '@repo/core/types'
-import type { UpdateDataType } from '@repo/core/types'
+import type { Player, UpdateDataType } from '@repo/core/types'
 
 export interface MiscStateType {
   gameID: number

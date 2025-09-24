@@ -22,14 +22,14 @@ export async function getLastTournamentWinners(sqlClient: pg.Pool) {
     ) as t JOIN users ON users.id = t.userid WHERE t.placement > 0;`)
 
   const res: tTournament.LastTournamentWinners = []
-  dbResult.rows.forEach((r) => {
+  for (const r of dbResult.rows) {
     const index = res.findIndex((resRow) => resRow.placement === r.placement)
     if (index === -1) {
       res.push({ placement: r.placement, teamName: r.team_name, players: [r.username] })
     } else {
       res[index].players.push(r.username)
     }
-  })
+  }
 
   return res.sort((a, b) => a.placement - b.placement)
 }

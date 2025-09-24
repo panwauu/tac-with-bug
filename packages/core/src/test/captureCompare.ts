@@ -100,20 +100,24 @@ function compareGameWithCaptured(gameInst: Game, capturedState: any) {
   if (compareBalls(gameInst.balls, capturedState.balls) === false) {
     console.log('balls unequal')
     const tableData: any[] = cloneDeep(gameInst.balls)
-    Object.keys(tableData[0]).forEach((k) => tableData.forEach((b, i) => (b[`${k}-des`] = capturedState.balls[i][k])))
+    for (const k of Object.keys(tableData[0])) {
+      for (const [i, b] of tableData.entries()) {
+        b[`${k}-des`] = capturedState.balls[i][k]
+      }
+    }
     console.table(tableData)
     return false
   }
   if (compareCards(gameInst.cards, capturedState.cards) === false) {
     console.log('cards unequal')
     const dataForTable: any = { status: ['cards', 'cards_des'] }
-    Object.keys(gameInst.cards).forEach((k) => {
+    for (const k of Object.keys(gameInst.cards)) {
       if (typeof (gameInst.cards as any)[k] === 'object') {
         dataForTable[k] = [JSON.stringify((gameInst.cards as any)[k]), JSON.stringify(capturedState.cards[k])]
       } else {
         dataForTable[k] = [(gameInst.cards as any)[k], capturedState.cards[k]]
       }
-    })
+    }
     console.table(dataForTable)
     return false
   }

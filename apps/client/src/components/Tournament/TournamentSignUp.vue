@@ -147,16 +147,16 @@ const validTeamName = computed(() => {
 
 const playersAlreadyInTournament = computed(() => {
   const result: string[] = []
-  props.tournament.teams.forEach((team) => {
-    team.players.forEach((p) => {
+  for (const team of props.tournament.teams) {
+    for (const p of team.players) {
       result.push(p)
-    })
-  })
-  props.tournament.registerTeams.forEach((team) => {
-    team.players.forEach((p) => {
+    }
+  }
+  for (const team of props.tournament.registerTeams) {
+    for (const p of team.players) {
       result.push(p)
-    })
-  })
+    }
+  }
   if (username.value != null) {
     result.push(username.value)
   }

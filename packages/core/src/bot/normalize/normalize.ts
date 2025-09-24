@@ -36,9 +36,9 @@ export function rightShiftCards(game: Game, cards: PlayerCard[], rightShiftPlaye
     for (const ballIndex of Object.keys(card.ballActions)) {
       const shiftedBallIndex = modulo(Number(ballIndex) + rightShiftPlayersBy * 4, game.nPlayers * 4)
       newBallActions[shiftedBallIndex] = []
-      card.ballActions[Number(ballIndex)].forEach((action) => {
+      for (const action of card.ballActions[Number(ballIndex)]) {
         newBallActions[shiftedBallIndex].push(changePosition(game, action, rightShiftPlayersBy))
-      })
+      }
     }
     card.ballActions = newBallActions
   }

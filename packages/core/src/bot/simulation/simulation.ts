@@ -24,18 +24,15 @@ export function getMovesFromCards(cards: PlayerCard[], gamePlayer: number): Move
     if (!card.possible) continue
 
     if (card.textAction !== '') {
-      card.textAction
-        .split('+')
-        .filter((a) => a != null && a.length > 0)
-        .forEach((action) => {
-          moves.push([gamePlayer, cardIndex, action])
-        })
+      for (const action of card.textAction.split('+').filter((a) => a != null && a.length > 0)) {
+        moves.push([gamePlayer, cardIndex, action])
+      }
     }
 
     for (const ballIndex of Object.keys(card.ballActions)) {
-      card.ballActions[Number(ballIndex)].forEach((action) => {
+      for (const action of card.ballActions[Number(ballIndex)]) {
         moves.push([gamePlayer, cardIndex, Number(ballIndex), action])
-      })
+      }
     }
   }
 

@@ -58,14 +58,14 @@ function findBracket(tournament: PublicTournament | PrivateTournament, gameID: n
 function addScoreAndReturnChangedFlag(game: GameForPlay, tournament: PublicTournament | PrivateTournament, pos: [number, number]): boolean {
   const score = tournament.data.brackets[pos[0]][pos[1]].score.map(() => 0)
 
-  game.players.forEach((p, pI) => {
+  for (const [pI, p] of game.players.entries()) {
     const count = game.game.balls.filter((b, bI) => {
       return ballPlayer(bI) === pI && (b.state === 'locked' || b.state === 'goal')
     }).length
     const tournamentT = tournament.teams.findIndex((t) => t.players.includes(p ?? ''))
     const tournamentTI = tournament.data.brackets[pos[0]][pos[1]].teams.indexOf(tournamentT)
     score[tournamentTI] += count
-  })
+  }
 
   if (score.some((s, i) => s !== tournament.data.brackets[pos[0]][pos[1]].score[i])) {
     tournament.data.brackets[pos[0]][pos[1]].score = score
@@ -132,19 +132,19 @@ function getWinnerOfTournamentGame(game: GameForPlay, bracket: KoBracket, tourna
   }
 
   const statisticsCopy = cloneDeep(game.game.statistic)
-  players.forEach((nPlayer) => {
+  for (const nPlayer of players) {
     const time = Math.floor((Date.now() - game.lastPlayed) / 1000)
     statisticsCopy[nPlayer].actions.timePlayed += time
     statisticsCopy[nPlayer].actions.nMoves += 1
-  })
+  }
 
   // Get Time Played by each Team
   const timePerTeam = Array.from({ length: game.game.teams.length }).fill(0) as number[]
-  timePerTeam.forEach((_, i) => {
-    game.game.teams[i].forEach((p) => {
+  for (const [i, _] of timePerTeam.entries()) {
+    for (const p of game.game.teams[i]) {
       timePerTeam[i] += statisticsCopy[p].actions.timePlayed
-    })
-  })
+    }
+  }
 
   // Get tournament Team with the lowest Time
   const gameWinningTeam = timePerTeam.indexOf(Math.min(...timePerTeam))

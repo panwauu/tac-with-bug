@@ -77,10 +77,10 @@ export async function registerTeam(
   tournament.value.registerTeams.push(team)
 
   const values: any[] = [tournamentid, team.name]
-  team.playerids.forEach((id, i) => {
+  for (const [i, id] of team.playerids.entries()) {
     values.push(id)
     values.push(team.activated[i])
-  })
+  }
   await sqlClient.query(
     `INSERT INTO tournaments_register (tournamentid, team_name, userid, activated) VALUES ($1, $2, $3, $4) 
         ${team.players.length > 1 ? ',($1, $2, $5, $6)' : ''} ${team.players.length > 2 ? ',($1, $2, $7, $8)' : ''};`,
@@ -214,11 +214,11 @@ export async function endSignupIfComplete(sqlClient: pg.Pool, tournament: tTourn
 
   tournament.status = 'signUpEnded'
   const dataForUsersToTournaments: { userid: number; tournamentid: number; team_name: string; team_number: number }[] = []
-  tournament.teams.forEach((r, i) => {
-    r.playerids.forEach((id) => {
+  for (const [i, r] of tournament.teams.entries()) {
+    for (const id of r.playerids) {
       dataForUsersToTournaments.push({ team_number: i, team_name: r.name, tournamentid: tournament.id, userid: id })
-    })
-  })
+    }
+  }
 
   await sqlClient.query('UPDATE tournaments SET status=$1 WHERE id=$2;', [tournament.status, tournament.id])
   await sqlClient.query('INSERT INTO users_to_tournaments SELECT m.* FROM json_populate_recordset(null::users_to_tournaments_type, $1::json) AS m;', [

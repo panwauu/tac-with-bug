@@ -24,7 +24,9 @@ export function useInstructions(miscState: MiscStateType, ballsState: BallsState
         instructions.push(i18n.global.t('Game.Instructions.needToChooseCard'))
       } else {
         const playersToTrade: string[] = []
-        miscState.players.filter((player) => player.tradeInformation?.[1] === false).forEach((player) => playersToTrade.push(player.name))
+        for (const player of miscState.players.filter((player) => player.tradeInformation?.[1] === false)) {
+          playersToTrade.push(player.name)
+        }
         instructions.push(i18n.global.t('Game.Instructions.needToWait'))
         instructions.push(i18n.global.t('Game.Instructions.waitingFor') + playersToTrade.join(', '))
       }
@@ -34,7 +36,9 @@ export function useInstructions(miscState: MiscStateType, ballsState: BallsState
         instructions.push(i18n.global.t('Game.Instructions.needToNarrButton'))
       } else {
         const playersToTrade: string[] = []
-        miscState.players.filter((player) => player.narrFlag[1] === false).forEach((player) => playersToTrade.push(player.name))
+        for (const player of miscState.players.filter((player) => player.narrFlag[1] === false)) {
+          playersToTrade.push(player.name)
+        }
         instructions.push(i18n.global.t('Game.Instructions.needToWait'))
         instructions.push(i18n.global.t('Game.Instructions.narrWaitingFor') + playersToTrade.join(', '))
       }

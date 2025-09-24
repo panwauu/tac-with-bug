@@ -144,14 +144,14 @@ const weekChartOptions = {
 }
 
 const toggleVisibility = (legendItem: any) => {
-  weekChartData.value.datasets.forEach((ds: any, i: number) => {
+  for (const [i, ds] of weekChartData.value.datasets.entries()) {
     if (
       ((legendItem.datasetIndex === 0 && (i === 0 || i === 1)) || (legendItem.datasetIndex === 2 && i === 2) || (legendItem.datasetIndex === 3 && (i === 3 || i === 4))) &&
       (ds.shouldBeVisible === undefined || ds.shouldBeVisible === true)
     ) {
       ds.hidden = !ds.hidden
     }
-  })
+  }
   weekChart.value?.refresh()
 }
 </script>

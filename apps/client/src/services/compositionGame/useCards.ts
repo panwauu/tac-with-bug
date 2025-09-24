@@ -75,17 +75,17 @@ export function useCards(ballsState: BallsStateType, miscState: MiscStateType): 
       }
     },
     disableCards: () => {
-      cardsState.cards.forEach((_, cardIndex) => {
+      for (const [cardIndex, _] of cardsState.cards.entries()) {
         cardsState.cards[cardIndex].possible = false
         cardsState.cards[cardIndex].ballActions = {}
         cardsState.cards[cardIndex].textAction = ''
-      })
+      }
     },
     setAnimationEnded: () => {
       cardsState.cardAnimation = false
-      cardsState.cards.forEach((c, i) => {
+      for (const [i, c] of cardsState.cards.entries()) {
         c.style = `left: ${i * 12}%;`
-      })
+      }
     },
     getTextAction: () => {
       if (miscState.gamePlayer === -1) {
@@ -142,7 +142,7 @@ export function useCards(ballsState: BallsStateType, miscState: MiscStateType): 
         //Not own Cards and teufelPlayer and not narrFlag
         if (cardsState.cards.length === 0) {
           cardsState.ownCards = []
-          ownCards.forEach((cT, i) => {
+          for (const [i, cT] of ownCards.entries()) {
             cardsState.ownCards?.push({
               title: cT,
               key: cardKeyNumber.toString(),
@@ -152,7 +152,7 @@ export function useCards(ballsState: BallsStateType, miscState: MiscStateType): 
               style: `left: ${i * 12}%;`,
             })
             cardKeyNumber++
-          })
+          }
         } else {
           cardsState.setAnimationEnded()
           cardsState.ownCards = cloneDeep(cardsState.cards)

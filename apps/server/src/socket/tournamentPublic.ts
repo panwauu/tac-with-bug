@@ -59,10 +59,12 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
 
       const dataForClient = { registerTeam: teamToRegister, tournamentTitle: tournament.title, player: user.value.username }
       socket.emit('tournament:toast:you-created-a-team', dataForClient)
-      getSocketsOfPlayerIDs(
+      for (const s of getSocketsOfPlayerIDs(
         nsp,
         teamToRegister.playerids.filter((_, i) => teamToRegister.activated[i] === false)
-      ).forEach((s) => s.emit('tournament:toast:invited-to-a-team', dataForClient))
+      )) {
+        s.emit('tournament:toast:invited-to-a-team', dataForClient)
+      }
       return cb?.({ status: 200 })
     } catch (err) {
       logger.error('Error in tournament:public:registerTeam', err)
@@ -95,27 +97,31 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
         const dataForClient = { registerTeam: registerTeam, tournamentTitle: tournament.title, player: user.value.username }
         if (registerTeam.activated.every((a) => a === true)) {
           socket.emit('tournament:toast:you-joined-team-complete', dataForClient)
-          getSocketsOfPlayerIDs(
+          for (const s of getSocketsOfPlayerIDs(
             nsp,
             registerTeam.playerids.filter((id) => id !== socket.data.userID)
-          ).forEach((s) => s.emit('tournament:toast:player-joined-team-complete', dataForClient))
+          )) {
+            s.emit('tournament:toast:player-joined-team-complete', dataForClient)
+          }
         } else {
           socket.emit('tournament:toast:you-joined-team-incomplete', dataForClient)
-          getSocketsOfPlayerIDs(
+          for (const s of getSocketsOfPlayerIDs(
             nsp,
             registerTeam.playerids.filter((id) => id !== socket.data.userID)
-          ).forEach((s) => s.emit('tournament:toast:player-joined-team-incomplete', dataForClient))
+          )) {
+            s.emit('tournament:toast:player-joined-team-incomplete', dataForClient)
+          }
         }
       }
 
       if (tournament.status === 'signUpEnded') {
         await sendInvitationToAll(pgPool, tournament)
-        getSocketsOfPlayerIDs(nsp, tournament.teams.map((t) => t.playerids).flat()).forEach((s) =>
+        for (const s of getSocketsOfPlayerIDs(nsp, tournament.teams.map((t) => t.playerids).flat())) {
           s.emit('tournament:toast:signUpEnded-you-partizipate', { tournamentTitle: tournament.title })
-        )
-        getSocketsOfPlayerIDs(nsp, tournament.registerTeams.map((t) => t.playerids).flat()).forEach((s) =>
+        }
+        for (const s of getSocketsOfPlayerIDs(nsp, tournament.registerTeams.map((t) => t.playerids).flat())) {
           s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: tournament.title })
-        )
+        }
       }
       return cb?.({ status: 200 })
     } catch (err) {
@@ -145,27 +151,31 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
         const dataForClient = { registerTeam: registerTeam, tournamentTitle: tournament.title, player: user.value.username }
         if (registerTeam.activated.every((a) => a === true)) {
           socket.emit('tournament:toast:you-activated-complete', dataForClient)
-          getSocketsOfPlayerIDs(
+          for (const s of getSocketsOfPlayerIDs(
             nsp,
             registerTeam.playerids.filter((id) => id !== socket.data.userID)
-          ).forEach((s) => s.emit('tournament:toast:player-activated-team-complete', dataForClient))
+          )) {
+            s.emit('tournament:toast:player-activated-team-complete', dataForClient)
+          }
         } else {
           socket.emit('tournament:toast:you-activated-incomplete', dataForClient)
-          getSocketsOfPlayerIDs(
+          for (const s of getSocketsOfPlayerIDs(
             nsp,
             registerTeam.playerids.filter((id) => id !== socket.data.userID)
-          ).forEach((s) => s.emit('tournament:toast:player-activated-team-incomplete', dataForClient))
+          )) {
+            s.emit('tournament:toast:player-activated-team-incomplete', dataForClient)
+          }
         }
       }
 
       if (tournament.status === 'signUpEnded') {
         await sendInvitationToAll(pgPool, tournament)
-        getSocketsOfPlayerIDs(nsp, tournament.teams.map((t) => t.playerids).flat()).forEach((s) =>
+        for (const s of getSocketsOfPlayerIDs(nsp, tournament.teams.map((t) => t.playerids).flat())) {
           s.emit('tournament:toast:signUpEnded-you-partizipate', { tournamentTitle: tournament.title })
-        )
-        getSocketsOfPlayerIDs(nsp, tournament.registerTeams.map((t) => t.playerids).flat()).forEach((s) =>
+        }
+        for (const s of getSocketsOfPlayerIDs(nsp, tournament.registerTeams.map((t) => t.playerids).flat())) {
           s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: tournament.title })
-        )
+        }
       }
       return cb?.({ status: 200 })
     } catch (err) {
@@ -192,7 +202,9 @@ export function registerTournamentPublicHandler(pgPool: pg.Pool, socket: General
 
       const dataForClient = { registerTeam: registerTeamForNotification, tournamentTitle: tournament.title, player: user.value.username }
       socket.emit('tournament:toast:you-left-tournament', dataForClient)
-      getSocketsOfPlayerIDs(nsp, registerTeamForNotification.playerids).forEach((s) => s.emit('tournament:toast:partner-left-tournament', dataForClient))
+      for (const s of getSocketsOfPlayerIDs(nsp, registerTeamForNotification.playerids)) {
+        s.emit('tournament:toast:partner-left-tournament', dataForClient)
+      }
       return cb?.({ status: 200 })
     } catch (err) {
       logger.error('Error in tournament:public:leaveTournament', err)
@@ -207,13 +219,19 @@ export function pushChangedPublicTournament(tournament: tTournament.PublicTourna
 
 export function registerTournamentBus() {
   tournamentBus.on('signUp-failed', (data: { playerids: number[]; tournamentTitle: string }) => {
-    getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUp-failed', { tournamentTitle: data.tournamentTitle }))
+    for (const s of getSocketsOfPlayerIDs(nsp, data.playerids)) {
+      s.emit('tournament:toast:signUp-failed', { tournamentTitle: data.tournamentTitle })
+    }
   })
   tournamentBus.on('signUpEnded-you-partizipate', (data: { playerids: number[]; tournamentTitle: string }) => {
-    getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUpEnded-you-partizipate', { tournamentTitle: data.tournamentTitle }))
+    for (const s of getSocketsOfPlayerIDs(nsp, data.playerids)) {
+      s.emit('tournament:toast:signUpEnded-you-partizipate', { tournamentTitle: data.tournamentTitle })
+    }
   })
   tournamentBus.on('signUpEnded-you-wont-partizipate', (data: { playerids: number[]; tournamentTitle: string }) => {
-    getSocketsOfPlayerIDs(nsp, data.playerids).forEach((s) => s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: data.tournamentTitle }))
+    for (const s of getSocketsOfPlayerIDs(nsp, data.playerids)) {
+      s.emit('tournament:toast:signUpEnded-you-wont-partizipate', { tournamentTitle: data.tournamentTitle })
+    }
   })
   tournamentBus.on('started', (data: { tournamentTitle: string }) => {
     nsp.emit('tournament:toast:started', { tournamentTitle: data.tournamentTitle })

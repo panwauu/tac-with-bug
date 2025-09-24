@@ -89,7 +89,7 @@ export function statisticAnalyseAction(
   }
 
   // balls lost/kicked
-  ballsBefore.forEach((ball, ballIndex) => {
+  for (const [ballIndex, ball] of ballsBefore.entries()) {
     if (ball.state !== 'house' && ballsAfter[ballIndex].state === 'house') {
       const nPlayerLost = ballPlayer(ballIndex)
       const ownTeamIndex = teams.findIndex((team) => team.includes(nPlayer))
@@ -102,7 +102,7 @@ export function statisticAnalyseAction(
         statistic[nPlayer].actions.nBallsKickedEnemy += 1
       }
     }
-  })
+  }
 
   if (move[2] === 'abwerfen') {
     statistic[nPlayer].actions.nAbgeworfen += 1

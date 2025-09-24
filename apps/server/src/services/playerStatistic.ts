@@ -56,14 +56,14 @@ function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: G
     playerStatistic.wl.coopBest6 = Math.min(playerStatistic.wl.coopBest6, nMovesToWin)
   }
 
-  game.players.forEach((player, playerIndex) => {
+  for (const [playerIndex, player] of game.players.entries()) {
     if (playerIndex !== nPlayer && player != null) {
       if (!(player in playerStatistic.wl.people)) {
         playerStatistic.wl.people[player] = [0, 0, 0, 0, 0]
       }
       playerStatistic.wl.people[player][4] += 1
     }
-  })
+  }
 
   addToGamesHistory(playerStatistic, 'coop')
 }
@@ -91,7 +91,7 @@ function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game
 
 function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number, ownTeamIndex: number) {
   // bestFriend worstEnemy --- [togetherTotal, togetherWon, againstTotal, againstWon]
-  game.players.forEach((player, playerIndex) => {
+  for (const [playerIndex, player] of game.players.entries()) {
     if (playerIndex !== nPlayer && player != null) {
       if (!(player in playerStatistic.wl.people)) {
         playerStatistic.wl.people[player] = [0, 0, 0, 0, 0]
@@ -106,7 +106,7 @@ function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: GameFor
         playerStatistic.wl.people[player][3] += game.game.winningTeams[ownTeamIndex] ? 1 : 0
       }
     }
-  })
+  }
 }
 
 export function addWLStatistic(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number) {
@@ -133,17 +133,17 @@ function addToGamesHistory(playerStatistic: tStatistic.PlayerStatistic, status: 
 }
 
 function addActionStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: tStatistic.GameStatistic) {
-  ;(Object.keys(playerStatistic.actions) as Array<keyof tStatistic.GameStatisticActionsType>).forEach((key) => {
+  for (const key of Object.keys(playerStatistic.actions) as Array<keyof tStatistic.GameStatisticActionsType>) {
     playerStatistic.actions[key] += gameStatistic.actions[key]
-  })
+  }
 }
 
 function addCardsStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: tStatistic.GameStatistic) {
-  ;(Object.keys(playerStatistic.cards) as Array<keyof tStatistic.GameStatisticCardsType>).forEach((key) => {
+  for (const key of Object.keys(playerStatistic.cards) as Array<keyof tStatistic.GameStatisticCardsType>) {
     playerStatistic.cards[key][0] += gameStatistic.cards[key][0]
     playerStatistic.cards[key][1] += gameStatistic.cards[key][1]
     playerStatistic.cards[key][2] += gameStatistic.cards[key][2]
-  })
+  }
 }
 
 export async function getPlayerStats(sqlClient: pg.Pool, userID: number) {
@@ -215,11 +215,11 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
 
 function countTradedSpecialCards(stat: any) {
   let total = 0
-  Object.keys(stat).forEach((key) => {
+  for (const key of Object.keys(stat)) {
     if (key !== 'total') {
       total += stat[key][2]
     }
-  })
+  }
   return total
 }
 
@@ -235,7 +235,7 @@ function findPlayersFromStat(wl: tStatistic.PlayerWLStatistic) {
   }
 
   const keys = Object.keys(wl.people)
-  keys.forEach((key) => {
+  for (const key of keys) {
     if (res.mostFrequent === '' || wl.people[key][4] > wl.people[res.mostFrequent][4]) {
       res.mostFrequent = key
     }
@@ -253,7 +253,7 @@ function findPlayersFromStat(wl: tStatistic.PlayerWLStatistic) {
     ) {
       res.worstEnemy = key
     }
-  })
+  }
 
   return res
 }
@@ -341,13 +341,13 @@ function getUserNetworkFromGames(allGames: GameForPlay[], userID: number, userna
     }
   }
 
-  nodes.forEach((n) => {
+  for (const n of nodes) {
     n.data.score = n.data.score / games.length
-  })
+  }
   const edgeWeightMax = Math.max(...edges.map((e) => e.data.weight))
-  edges.forEach((n) => {
+  for (const n of edges) {
     n.data.weight = n.data.weight / edgeWeightMax
-  })
+  }
 
   if (nodes.length === 0) {
     nodes.push({

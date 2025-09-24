@@ -2,8 +2,7 @@ import { reactive } from 'vue'
 import { cardPictureDict } from './useCards'
 
 import type { PlayerCard } from '@/@types/typesCard'
-import type { PlayerCard as ServerPlayerCard } from '@repo/core/types'
-import type { Player } from '@repo/core/types'
+import type { PlayerCard as ServerPlayerCard, Player } from '@repo/core/types'
 import type { PositionStylesState } from './usePositionStyles'
 
 export interface DiscardElement {
@@ -61,12 +60,12 @@ export function useDiscardPile(gamePlayer: number): DiscardPileStateType {
             key: Math.floor(Math.random() * 1e-10).toString(),
           })
           setTimeout(() => {
-            discardPileState.discardPile.forEach((card) => {
+            for (const card of discardPileState.discardPile) {
               if (card.animationDone === false) {
                 card.animationDone = true
                 card.style = 'transform: rotate(' + Math.floor(Math.random() * 360).toString() + 'deg);'
               }
-            })
+            }
           }, 300)
         }
       }
@@ -95,12 +94,12 @@ export function useDiscardPile(gamePlayer: number): DiscardPileStateType {
       cardElement.style.opacity = '0'
     },
     performAnimation: () => {
-      discardPileState.discardPile.forEach((card) => {
+      for (const card of discardPileState.discardPile) {
         if (card.animationDone === false) {
           card.animationDone = true
           card.style = 'transform: rotate(' + Math.floor(Math.random() * 360).toString() + 'deg);'
         }
-      })
+      }
     },
     getDiscardPile: () => {
       return discardPileState.discardPile.slice(Math.max(0, discardPileState.discardPile.length - 12), discardPileState.discardPile.length)

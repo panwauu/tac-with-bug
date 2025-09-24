@@ -114,13 +114,13 @@ function groupAndSortData(data: Record<string, number>, threshold: number, group
 
   const othersElement: [string, number] = [groupKeyName, 0]
   let resultingArray: [string, number][] = []
-  entries.forEach((e) => {
+  for (const e of entries) {
     if (e[1] / overallDataPoints < threshold) {
       othersElement[1] += e[1]
     } else {
       resultingArray.push(e)
     }
-  })
+  }
 
   resultingArray = resultingArray.sort((a, b) => b[1] - a[1])
   if (othersElement[1] !== 0) {

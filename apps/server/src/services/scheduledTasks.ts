@@ -74,9 +74,9 @@ async function DeleteUnactivatedUsers(sqlClient: pg.Pool) {
 
 async function registerTournamentJobs(sqlClient: pg.Pool) {
   const tournaments = await getPublicTournament(sqlClient)
-  tournaments.forEach((t) => {
+  for (const t of tournaments) {
     registerJobsForOneTournament(sqlClient, t)
-  })
+  }
 
   // Execute all jobs once in case they passed during the job registration and are now in the past
   await startSignUpOnCondition(sqlClient)
@@ -107,7 +107,7 @@ export function registerJobsForOneTournament(sqlClient: pg.Pool, tournament: Pub
 
   const timePerGameInMS = timePerGameToMS(tournament.timePerGame)
 
-  tournament.creationDates.forEach((date, i) => {
+  for (const [i, date] of tournament.creationDates.entries()) {
     if (i === 0) {
       jobs.push(
         schedule.scheduleJob(new Date(new Date(date).getTime() + tournamentTimeOffset), async () => {
@@ -127,7 +127,7 @@ export function registerJobsForOneTournament(sqlClient: pg.Pool, tournament: Pub
         await checkForceGameEnd(sqlClient)
       })
     )
-  })
+  }
 }
 
 function timePerGameToMS(timePerGame: string) {

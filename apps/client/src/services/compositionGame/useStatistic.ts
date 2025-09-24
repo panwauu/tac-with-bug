@@ -29,7 +29,7 @@ export function useStatistic(): StatisticStateType {
     actionStatistic: {},
     cardsTable: computed(() => {
       const result: { 0: number; 1: number; 2: number; 3: number; 4?: number; 5?: number; card: string }[] = []
-      ;(Object.keys(statisticState.statistic[0].cards) as Array<keyof GameStatisticCardsType>).forEach((key) => {
+      for (const key of Object.keys(statisticState.statistic[0].cards) as Array<keyof GameStatisticCardsType>) {
         if (key !== 'total') {
           result.push({
             card: key,
@@ -43,8 +43,7 @@ export function useStatistic(): StatisticStateType {
             result[result.length - 1]['5'] = statisticState.statistic[5].cards[key][0]
           }
         }
-      })
-
+      }
       return result
     }),
     setStatistic: (updateData, hexColors) => {
@@ -119,12 +118,12 @@ export function useStatistic(): StatisticStateType {
 
 function countSpecialCards(cards: any): number[] {
   const arr = [0, 0, 0]
-  Object.keys(cards).forEach((key) => {
+  for (const key of Object.keys(cards)) {
     if (key !== 'total') {
-      ;[0, 1, 2].forEach((i) => {
+      for (const i of [0, 1, 2]) {
         arr[i] += cards[key][i]
-      })
+      }
     }
-  })
+  }
   return arr
 }

@@ -5,7 +5,7 @@ export function generateIcal(tournament: PublicTournament) {
   const cal = ical()
 
   const millisPerGame = postgresIntervalToMilliseconds(tournament.timePerGame)
-  tournament.creationDates.forEach((d, i) => {
+  for (const [i, d] of tournament.creationDates.entries()) {
     const start = new Date(d)
     const eventObj = {
       start: start,
@@ -18,7 +18,7 @@ export function generateIcal(tournament: PublicTournament) {
     const event = cal.createEvent(eventObj)
     event.createAlarm({ type: ICalAlarmType.display, trigger: 24 * 60 * 60 })
     event.createAlarm({ type: ICalAlarmType.display, trigger: 60 * 15 })
-  })
+  }
 
   return cal
 }

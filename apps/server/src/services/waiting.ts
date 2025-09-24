@@ -32,7 +32,7 @@ export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number
     waitingGameID != null ? [waitingGameID] : []
   )
   const data: WaitingGame[] = []
-  res.rows.forEach((row) => {
+  for (const row of res.rows) {
     const adminIndex = ['player0', 'player1', 'player2', 'player3', 'player4', 'player5'].map((e) => row[e]).indexOf(row.adminplayer)
     data.push({
       id: row.id,
@@ -49,7 +49,7 @@ export async function getWaitingGames(sqlClient: pg.Pool, waitingGameID?: number
       balls: ['balls0', 'balls1', 'balls2', 'balls3', 'balls4', 'balls5'].map((e) => row[e]),
       ready: ['ready0', 'ready1', 'ready2', 'ready3', 'ready4', 'ready5'].map((e) => row[e]),
     })
-  })
+  }
   return data
 }
 
@@ -101,20 +101,20 @@ export async function createRematchGame(pgPool: pg.Pool, game: GameForPlay, user
   let ballsStr = ''
   let playersStr = ''
   let valStr = ''
-  switchFromGameOrderToTeamsOrder(game.colors.slice(0, game.nPlayers), game.nPlayers, game.nTeams).forEach((color, i) => {
+  for (const [i, color] of switchFromGameOrderToTeamsOrder(game.colors.slice(0, game.nPlayers), game.nPlayers, game.nTeams).entries()) {
     if (color != null) {
       ballsStr += `, balls${i}`
       values.push(color)
       valStr += `, $${values.length}`
     }
-  })
-  switchFromGameOrderToTeamsOrder(game.playerIDs.slice(0, game.nPlayers), game.nPlayers, game.nTeams).forEach((id, i) => {
+  }
+  for (const [i, id] of switchFromGameOrderToTeamsOrder(game.playerIDs.slice(0, game.nPlayers), game.nPlayers, game.nTeams).entries()) {
     if (id != null) {
       playersStr += `, player${i}`
       values.push(id)
       valStr += `, $${values.length}`
     }
-  })
+  }
 
   const query = `INSERT INTO waitinggames (private, adminplayer, nPlayers, nTeams, meister, gameid, bots ${ballsStr} ${playersStr}) 
     VALUES (true, $1, $2, $3, $4, $5, $6 ${valStr}) RETURNING id;`
@@ -196,9 +196,9 @@ async function executeMovePlayerOrBot(
   ;[newBotsArray[indexOne], newBotsArray[indexTwo]] = [newBotsArray[indexTwo], newBotsArray[indexOne]]
 
   let readyToFalse = ''
-  ;[0, 1, 2, 3, 4, 5].forEach((n) => {
+  for (const n of [0, 1, 2, 3, 4, 5]) {
     readyToFalse += `, ready${n}=false`
-  })
+  }
 
   const query = `UPDATE waitinggames SET (${playerFirst}, ${playerSecond}, ${ballsFirst}, ${ballsSecond}) = 
     (${playerSecond}, ${playerFirst}, ${ballsSecond}, ${ballsFirst}), bots = $2 ${readyToFalse} WHERE id=$1;`

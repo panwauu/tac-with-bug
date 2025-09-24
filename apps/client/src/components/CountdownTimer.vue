@@ -92,10 +92,10 @@ const updateNumbers = () => {
   }
 
   diffSeconds = Math.abs(diffSeconds)
-  elements.forEach((e, i) => {
+  for (const [i, e] of elements.entries()) {
     numbers.value[i] = Math.floor(diffSeconds / unitToSeconds[e])
     diffSeconds -= numbers.value[i] * unitToSeconds[e]
-  })
+  }
 }
 
 useResizeObserver(timerContainerRef, () => {

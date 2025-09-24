@@ -218,11 +218,11 @@ export async function startPrivateTournament(
   tournament.registerTeams = tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length !== tournament.playersPerTeam)
 
   const dataForUsersToTournaments: { userid: number; tournamentid: number; team_name: string; team_number: number }[] = []
-  tournament.teams.forEach((r, i) => {
-    r.playerids.forEach((id) => {
+  for (const [i, r] of tournament.teams.entries()) {
+    for (const id of r.playerids) {
       dataForUsersToTournaments.push({ team_number: i, team_name: r.name, tournamentid: tournament.id, userid: id })
-    })
-  })
+    }
+  }
 
   await pgPool.query("UPDATE private_tournaments SET status='running' WHERE id=$1;", [tournament.id])
   await pgPool.query('INSERT INTO users_to_private_tournaments SELECT m.* FROM json_populate_recordset(null::users_to_tournaments_type, $1::json) AS m;', [
@@ -250,9 +250,9 @@ export async function startTournamentGame(
   }
 
   let playerids: number[] = []
-  tournament.data.brackets[tournamentRound][roundGame].teams.forEach((t) => {
+  for (const t of tournament.data.brackets[tournamentRound][roundGame].teams) {
     playerids = playerids.concat(tournament.teams[t].playerids)
-  })
+  }
 
   const playeridsOrdered = switchFromTeamsOrderToGameOrder(playerids, tournament.playersPerTeam * tournament.teamsPerMatch, tournament.teamsPerMatch)
 
@@ -277,10 +277,10 @@ export async function startTournamentGame(
     return err('TOURNAMENT_NOT_FOUND')
   }
 
-  createdGame.playerIDs.forEach((id) => {
+  for (const id of createdGame.playerIDs) {
     const socket = getSocketByUserID(id ?? -1)
     socket != null && emitGamesUpdate(pgPool, socket)
-  })
+  }
 
   emitRunningGamesUpdate(pgPool)
 

@@ -171,9 +171,9 @@ async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament
 
   for (const bracket of tournament.data.brackets[tournament.creationPhase - 1]) {
     let playerids: number[] = []
-    bracket.teams.forEach((t) => {
+    for (const t of bracket.teams) {
       playerids = playerids.concat(tournament.teams[t].playerids)
-    })
+    }
 
     const playeridsOrdered = switchFromTeamsOrderToGameOrder(playerids, tournament.playersPerTeam * tournament.teamsPerMatch, tournament.teamsPerMatch)
 
@@ -191,10 +191,10 @@ async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament
       undefined
     )
 
-    createdGame.playerIDs.forEach((id) => {
+    for (const id of createdGame.playerIDs) {
       const socket = getSocketByUserID(id ?? -1)
       socket != null && emitGamesUpdate(sqlClient, socket)
-    })
+    }
 
     bracket.gameID = createdGame.id
     logger.info(`Neues Spiel erstellt: ${createdGame.id}`)

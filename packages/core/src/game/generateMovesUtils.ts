@@ -83,13 +83,13 @@ export function getPlayablePlayers(balls: tBall.BallsType, player: number, teams
   }
 
   let playablePlayers: number[] = []
-  teams.forEach((team) => {
+  for (const team of teams) {
     if (team.includes(player)) {
       playablePlayers = team
         .filter((teamPlayer) => teamPlayer !== player)
         .filter((player) => balls.filter((_, nBall) => ballPlayer(nBall) === player).some((ball) => ball.state !== 'locked'))
     }
-  })
+  }
 
   if (coop === true && balls.filter((_, index) => playablePlayers.includes(ballPlayer(index))).every((ball) => ball.state === 'locked')) {
     playablePlayers = [...new Set(balls.filter((ball) => ball.state !== 'locked').map((ball) => ball.player))]

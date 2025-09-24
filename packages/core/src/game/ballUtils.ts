@@ -49,7 +49,7 @@ export function initializeBalls(nPlayers: number) {
 }
 
 export function resetBalls(balls: tBall.BallsType): void {
-  balls.forEach((ball, index) => {
+  for (const [index, ball] of balls.entries()) {
     if (ball.position < ballStart(0, balls)) {
       ball.state = 'house'
     } else if (ball.position === ballStart(0, balls)) {
@@ -63,5 +63,5 @@ export function resetBalls(balls: tBall.BallsType): void {
         ball.state = 'goal'
       }
     }
-  })
+  }
 }

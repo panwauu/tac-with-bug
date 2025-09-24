@@ -30,13 +30,15 @@ export const sound = reactive<Sound>({
   $volume(inputVolume: number) {
     sound.volume = Math.max(0, Math.min(100, Math.round(inputVolume)))
     localStorage.setItem('soundvolume', sound.volume.toString())
-    Object.values(this.audios).forEach((a) => (a.volume = sound.volume / 100))
+    for (const a of Object.values(this.audios)) {
+      a.volume = sound.volume / 100
+    }
   },
   $stop() {
-    Object.values(this.audios).forEach((a) => {
+    for (const a of Object.values(this.audios)) {
       if (!a.paused) a.pause()
       a.currentTime = 0
-    })
+    }
   },
 })
 

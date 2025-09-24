@@ -109,16 +109,16 @@ async function submitNewTeam() {
 
 const playersAlreadyInTournament = computed(() => {
   const result: string[] = []
-  props.tournament.teams.forEach((t) => {
-    t.players.forEach((p) => {
+  for (const t of props.tournament.teams) {
+    for (const p of t.players) {
       result.push(p)
-    })
-  })
-  props.tournament.registerTeams.forEach((t) => {
-    t.players.forEach((p) => {
+    }
+  }
+  for (const t of props.tournament.registerTeams) {
+    for (const p of t.players) {
       result.push(p)
-    })
-  })
+    }
+  }
   return result
 })
 

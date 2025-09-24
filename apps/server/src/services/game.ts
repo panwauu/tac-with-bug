@@ -1,12 +1,11 @@
 import logger from '../helpers/logger'
 import type pg from 'pg'
-import type { GameForOverview, GameForPlay, GetRunningGamesType, GetGamesType } from '@repo/core/types'
+import type { GameForOverview, GameForPlay, GetRunningGamesType, GetGamesType, MoveType } from '@repo/core/types'
 
 import { Game } from '@repo/core/game/game'
 import { captureMove } from './capture'
 import { updateTournamentFromGame as updatePrivateTournamentFromGame } from './tournamentsPrivate'
 import { updateTournamentFromGame as updatePublicTournamentFromGame } from './tournamentsPublic'
-import type { MoveType } from '@repo/core/types'
 import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
@@ -38,7 +37,7 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
 
   const games: GameForPlay[] = []
 
-  dbRes.rows.forEach((dbGame) => {
+  for (const dbGame of dbRes.rows) {
     games.push({
       id: dbGame.id,
       running: dbGame.running,
@@ -59,7 +58,7 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
       substitution: getSubstitution(dbGame.id),
       bots: dbGame.bots,
     })
-  })
+  }
 
   return games
 }
@@ -184,10 +183,10 @@ export async function abortGame(pgPool: pg.Pool, gameID: number) {
   }
   await pgPool.query('UPDATE games SET running=FALSE WHERE id=$1;', [gameID])
 
-  game.playerIDs.forEach((id) => {
+  for (const id of game.playerIDs) {
     const socket = getSocketByUserID(id ?? -1)
     socket != null && emitGamesUpdate(pgPool, socket)
-  })
+  }
   emitRunningGamesUpdate(pgPool)
   sendUpdatesOfGameToPlayers(game)
 }
@@ -348,10 +347,10 @@ export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: Mov
   await captureMove(sqlClient, gameID, postMove, game.game)
 
   if (game.game.gameEnded) {
-    game.playerIDs.forEach((id) => {
+    for (const id of game.playerIDs) {
       const socket = getSocketByUserID(id ?? -1)
       socket != null && emitGamesUpdate(sqlClient, socket)
-    })
+    }
     emitRunningGamesUpdate(sqlClient)
   }
 
@@ -383,10 +382,10 @@ export async function endNotProperlyEndedGames(sqlClient: pg.Pool) {
         if (game.publicTournamentId != null) {
           updatePublicTournamentFromGame(sqlClient, game)
         }
-        game.playerIDs.forEach((id) => {
+        for (const id of game.playerIDs) {
           const socket = getSocketByUserID(id ?? -1)
           socket != null && emitGamesUpdate(sqlClient, socket)
-        })
+        }
         emitRunningGamesUpdate(sqlClient)
         sendUpdatesOfGameToPlayers(game)
       }

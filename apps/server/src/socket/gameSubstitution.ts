@@ -21,15 +21,13 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
     const res = await startSubstitution(pgPool, game, socket.data.userID, playerIndexToSubstitute, substituteByBotID)
     if (res.isErr()) return cb({ status: 500, error: res.error })
 
-    getSocketsInGame(nsp, socket.data.gameID)
-      .filter((s) => s.id !== socket.id)
-      .forEach((s) =>
-        s.emit(
-          'toast:substitution-started',
-          game.substitution?.substitute.username ?? game.substitution?.substitute.botUsername ?? '',
-          game.players.at(game.substitution?.playerIndexToSubstitute ?? 0) ?? ''
-        )
+    for (const s of getSocketsInGame(nsp, socket.data.gameID).filter((s) => s.id !== socket.id)) {
+      s.emit(
+        'toast:substitution-started',
+        game.substitution?.substitute.username ?? game.substitution?.substitute.botUsername ?? '',
+        game.players.at(game.substitution?.playerIndexToSubstitute ?? 0) ?? ''
       )
+    }
 
     await acceptSubstitution(pgPool, game, socket.data.userID)
     await emitOnlinePlayersEvents(pgPool, nsp, game.id)
@@ -65,9 +63,9 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
         if (rejectRes.isErr()) {
           return cb({ status: 500, error: rejectRes.error })
         }
-        getSocketsInGame(nsp, socket.data.gameID)
-          .filter((s) => s.id !== socket.id)
-          .forEach((s) => s.emit('toast:substitution-stopped'))
+        for (const s of getSocketsInGame(nsp, socket.data.gameID).filter((s) => s.id !== socket.id)) {
+          s.emit('toast:substitution-stopped')
+        }
       }
 
       await emitOnlinePlayersEvents(pgPool, nsp, game.id)

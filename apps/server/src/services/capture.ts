@@ -1,8 +1,7 @@
 import logger from '../helpers/logger'
-import type { MoveType, BallsType } from '@repo/core/types'
+import type { MoveType, BallsType, CardsType } from '@repo/core/types'
 import type pg from 'pg'
 import type { Game } from '@repo/core/game/game'
-import type { CardsType } from '@repo/core/types'
 import { sanitizeGameCapture } from './gameCaptureSanitation'
 
 export interface CapturedType {

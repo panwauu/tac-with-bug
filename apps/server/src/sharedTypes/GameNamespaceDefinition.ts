@@ -1,7 +1,6 @@
 import type { Socket as ServerSocket, Namespace } from 'socket.io'
 import type { Socket as ClientSocket } from 'socket.io-client'
-import type { MoveTextOrBall } from '@repo/core/types'
-import type { UpdateDataType } from '@repo/core/types'
+import type { MoveTextOrBall, UpdateDataType } from '@repo/core/types'
 import type { CallbackFunction } from './GeneralNamespaceDefinition'
 
 export interface ClientToServerEvents {
