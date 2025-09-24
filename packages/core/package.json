@@ -23,6 +23,7 @@
   "scripts": {
     "check-types": "tsc --noEmit",
     "build": "tsc",
+    "dev": "tsc -w",
     "test": "vitest run",
     "lint": "eslint ./src",
     "prettier:format": "prettier --config .prettierrc --write .",
