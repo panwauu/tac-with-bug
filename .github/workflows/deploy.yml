@@ -15,31 +15,13 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         uses: actions/setup-node@v5
         with:
-          node-version-file: server/package.json
+          node-version-file: package.json
           cache: "npm"
           cache-dependency-path: |
-            server/package-lock.json
-            client/package-lock.json
+            package-lock.json
       - name: Install Heroku CLI
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
-      - name: Install server modules
-        run: |
-          cd server
-          npm ci
-      - name: Build server
-        run: |
-          cd server
-          npm run build-spec
-          npm run tsc
-      - name: Install client modules
-        run: |
-          cd client
-          npm ci
-      - name: Build Vue Files
-        run: |
-          cd client
-          npm run build
       - name: Deploy - Heroku login credentials
         run: |
           cat > ~/.netrc <<EOF
@@ -55,7 +37,6 @@ jobs:
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       - name: Push to heroku
         run: |
-          cd server
           git init
           git config user.name "Oskar Baumann"
           git config user.email ${{ secrets.HEROKU_EMAIL }}

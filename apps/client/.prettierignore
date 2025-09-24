@@ -1,0 +1,12 @@
+# Ignore artifacts:
+coverage
+node_modules
+public
+__snapshots__
+generatedClient
+dist
+
+.env
+package.json
+package-lock.json
+*.json

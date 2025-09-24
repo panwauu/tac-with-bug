@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@repo/typescript-config/server.json",
+
+  "compilerOptions": {
+    /* Basic Options */
+    "module": "NodeNext",
+    "target": "ESNext",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "typeRoots": ["src/@types", "../../node_modules/@types"],
+    "resolveJsonModule": true,
+
+    /* Module Resolution Options */
+    "moduleResolution": "nodenext",
+    "baseUrl": ".",
+    "esModuleInterop": true,
+
+    /* Experimental Options */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "lib": ["es2015"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/vitest.config.ts", "**/vite.config.ts", "**/*.test.ts", "src/test/**", "src/tests/**"]
+}

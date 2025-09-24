@@ -1,0 +1,36 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "tasks": {
+    "check-format": {
+      "dependsOn": ["^check-format"]
+    },
+    "check-locale-files": {
+      "dependsOn": ["^check-locale-files"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"],
+      "outputs": ["**/dist/**"]
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "**/dist/**",
+        "apps/server/public/**",
+        "apps/client/src/generatedClient/**"
+      ]
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "test:e2e": {
+      "dependsOn": ["^test:e2e"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    }
+  }
+}

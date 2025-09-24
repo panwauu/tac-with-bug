@@ -9,6 +9,46 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: package.json
+          cache: "npm"
+          cache-dependency-path: |
+            package-lock.json
+      - name: Install modules
+        run: |
+          npm ci
+      - name: Check linting
+        run: |
+          npm run lint
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: package.json
+          cache: "npm"
+          cache-dependency-path: |
+            package-lock.json
+      - name: Install modules
+        run: |
+          npm ci
+      - name: Check formatting
+        run: |
+          npm run check-format
+
   build:
     runs-on: ubuntu-latest
 
@@ -37,63 +77,35 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         uses: actions/setup-node@v5
         with:
-          node-version-file: server/package.json
+          node-version-file: package.json
           cache: "npm"
           cache-dependency-path: |
-            server/package-lock.json
-            client/package-lock.json
-      - name: Install server modules
+            package-lock.json
+      - name: Install modules
         run: |
-          cd server
           npm ci
-      - name: Check linting and formatting of server
+      - name: Build
         run: |
-          cd server
-          npm run lint
-          npm run prettier:check
-      - name: Build server
-        run: |
-          cd server
-          npm run build-spec
-          npm run tsc
-      - name: Check Locale Files (All languages and identical keys)
-        run: |
-          cd server
-          npm run check-locales
-      - name: Install client modules
-        run: |
-          cd client
-          npm ci
-      - name: Check linting and formatting of client
-        run: |
-          cd client
-          npm run lint
-          npm run prettier:check
-      - name: Run client tsc
-        run: |
-          cd client
-          npm run tsc
-      - name: Build Vue Files
-        run: |
-          cd client
           npm run build
-      - name: Run server test
+      - name: Check locale files
         run: |
-          cd server
-          npm run test -- --coverage=true
+          npm run check-locale-files
+      - name: Run tests with coverage
+        run: |
+          npm run test -- -- --coverage
         env:
           paypal_Secret: ${{ secrets.PAYPAL_SECRET }}
       - name: Install Playwright Browsers
         run: |
-          cd server
           npx playwright install --with-deps
+      - name: Prepare test database
+        run: |
+          cd apps/server
+          npm run setup-test-database
       - name: Run Playwright tests
         run: |
-          cd server
-          npm run setup-test-database
           npm run test:e2e
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

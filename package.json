@@ -1,0 +1,26 @@
+{
+  "version": "1.5.8",
+  "private": true,
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "check-types": "turbo run check-types",
+    "check-format": "turbo run check-format",
+    "check-locale-files": "turbo run check-locale-files",
+    "lint": "turbo run lint",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "dev": "turbo run dev"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.6",
+    "vitest": "^3.2.4"
+  },
+  "packageManager": "npm@11.5.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
