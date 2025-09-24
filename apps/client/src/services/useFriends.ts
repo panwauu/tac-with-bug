@@ -9,11 +9,11 @@ export interface FriendsStateNonReactive {
   resetFriends: () => void
   setFriends: (data: Friend[]) => void
   friendshipStatus: (username: string) => 'done' | 'to' | 'from' | 'none'
-  request: (username: string) => void
-  confirm: (username: string) => void
-  decline: (username: string) => void
-  withdraw: (username: string) => void
-  cancel: (username: string) => void
+  request: (username: string) => Promise<void>
+  confirm: (username: string) => Promise<void>
+  decline: (username: string) => Promise<void>
+  withdraw: (username: string) => Promise<void>
+  cancel: (username: string) => Promise<void>
   numberOpenRequests: ComputedRef<number>
 }
 
