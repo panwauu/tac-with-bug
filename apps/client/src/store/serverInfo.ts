@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { nextTick } from 'vue'
-import type { GetRunningGamesType } from 'tac-core/types/typesDBgame'
+import type { GetRunningGamesType } from '@repo/core/types'
 
 nextTick(() => {
   const serverInfoStore = useServerInfoStore()

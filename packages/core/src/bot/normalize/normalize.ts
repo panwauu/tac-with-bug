@@ -1,9 +1,9 @@
-import type { BallActions, BallsType, MoveTextOrBall } from '../../types/typesBall'
+import type { BallActions, BallsType, MoveTextOrBall } from '../../types/ball'
 
 import { Game } from '../../game/game'
 import { ballGoal, ballStart, getPositionsBetweenStarts } from '../../game/ballUtils'
 import { modulo, moduloOffset, rightShiftArray } from './helpers'
-import type { PlayerCard } from '../../types/typesCard'
+import type { PlayerCard } from '../../types/card'
 
 function changePosition(gameInst: Game, position: number, playersShiftedBy: number) {
   const firstStartPosition = ballStart(0, gameInst.balls)

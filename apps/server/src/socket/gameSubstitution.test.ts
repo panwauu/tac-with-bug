@@ -1,5 +1,5 @@
 import type { GameSocketC } from '../test/socket'
-import type { Substitution } from '@repo/core/types/game'
+import type { Substitution } from '@repo/core/types'
 
 import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets'
 import { initiateGameSocket } from '../test/handleGameSocket'

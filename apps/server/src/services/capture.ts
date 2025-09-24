@@ -1,18 +1,18 @@
 import logger from '../helpers/logger'
-import type * as tBall from '@repo/core/types/typesBall'
+import type { MoveType, BallsType } from '@repo/core/types'
 import type pg from 'pg'
 import type { Game } from '@repo/core/game/game'
-import type { CardsType } from '@repo/core/types/typesCard'
+import type { CardsType } from '@repo/core/types'
 import { sanitizeGameCapture } from './gameCaptureSanitation'
 
 export interface CapturedType {
-  action: tBall.MoveType | ['init', number, number, boolean, boolean] | 'reset'
-  balls: tBall.BallsType
+  action: MoveType | ['init', number, number, boolean, boolean] | 'reset'
+  balls: BallsType
   cards: CardsType
   activePlayer: number
 }
 
-export async function captureMove(sqlClient: pg.Pool, gameID: number, action: tBall.MoveType | ['init', number, number, boolean, boolean] | 'reset', game: Game) {
+export async function captureMove(sqlClient: pg.Pool, gameID: number, action: MoveType | ['init', number, number, boolean, boolean] | 'reset', game: Game) {
   logger.info('Capture')
   const data: CapturedType = {
     action: action,

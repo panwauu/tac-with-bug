@@ -2,8 +2,8 @@ import { reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { i18n } from '@/services/i18n'
 
-import type * as tPlayers from 'tac-core/types/typesPlayers'
-import type { UpdateDataType } from 'tac-core/types/typesDBgame'
+import type { Player } from '@repo/core/types'
+import type { UpdateDataType } from '@repo/core/types'
 
 export interface MiscStateType {
   gameID: number
@@ -16,7 +16,7 @@ export interface MiscStateType {
   gameRunning: boolean
   gameEndedText: string
   tradeDirection: 1 | 0 | -1
-  players: tPlayers.Player[]
+  players: Player[]
   aussetzenFlag: boolean
   teufelFlag: boolean
   onlineGamePlayers: number[]
@@ -30,9 +30,9 @@ export interface MiscStateType {
   setGamePlayer: (gamePlayer: number) => void
   setDeckInfo: (deckInfoInput: number[]) => void
   setCoopCounter: (coopCounter: number) => void
-  setGameRunning: (gameEnded: boolean, running: boolean, players: tPlayers.Player[], winningTeams: boolean[], coopCounter: number, gamePlayer: number) => void
-  setTradeDirection: (players: tPlayers.Player[], tradeDirection: 1 | -1) => void
-  setPlayers: (players: tPlayers.Player[]) => void
+  setGameRunning: (gameEnded: boolean, running: boolean, players: Player[], winningTeams: boolean[], coopCounter: number, gamePlayer: number) => void
+  setTradeDirection: (players: Player[], tradeDirection: 1 | -1) => void
+  setPlayers: (players: Player[]) => void
   setFlags: (data: UpdateDataType) => void
   setOnlinePlayers: (data: { onlineGamePlayers: number[]; nWatchingPlayers: number; watchingPlayerNames: string[] }) => void
   setTimestamps: (created: number, lastPlayed: number) => void

@@ -1,6 +1,6 @@
 import type pg from 'pg'
 import type * as tStatistic from '../sharedTypes/typesStatistic'
-import type * as tDBgame from '@repo/core/types/typesDBgame'
+import type { GameForPlay } from '@repo/core/types'
 import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
 
 import { initalizeStatistic } from '@repo/core/game/statistic'
@@ -36,7 +36,7 @@ function intializePlayerStatistic(): tStatistic.PlayerStatistic {
   }
 }
 
-function addWLStatisticAborted(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay) {
+function addWLStatisticAborted(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay) {
   if (game.coop) {
     playerStatistic.wl.nGamesCoopAborted += 1
   } else {
@@ -45,7 +45,7 @@ function addWLStatisticAborted(playerStatistic: tStatistic.PlayerStatistic, game
   addToGamesHistory(playerStatistic, 'aborted')
 }
 
-function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay, nPlayer: number) {
+function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number) {
   playerStatistic.wl.nGamesCoopWon += 1
   const nMovesToWin = game.game.statistic.reduce(function (accumulator, currentValue) {
     return accumulator + currentValue.cards.total[0]
@@ -68,7 +68,7 @@ function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: t
   addToGamesHistory(playerStatistic, 'coop')
 }
 
-function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay, nPlayer: number) {
+function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number) {
   // Won - Lost
   const ownTeamIndex = game.game.teams.findIndex((team) => team.includes(nPlayer))
   if (game.nPlayers === 4) {
@@ -89,7 +89,7 @@ function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game
   addToPlayers(playerStatistic, game, nPlayer, ownTeamIndex)
 }
 
-function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay, nPlayer: number, ownTeamIndex: number) {
+function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number, ownTeamIndex: number) {
   // bestFriend worstEnemy --- [togetherTotal, togetherWon, againstTotal, againstWon]
   game.players.forEach((player, playerIndex) => {
     if (playerIndex !== nPlayer && player != null) {
@@ -109,7 +109,7 @@ function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame
   })
 }
 
-export function addWLStatistic(playerStatistic: tStatistic.PlayerStatistic, game: tDBgame.GameForPlay, nPlayer: number) {
+export function addWLStatistic(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number) {
   if ((!game.running && !game.game.gameEnded) || nPlayer >= game.nPlayers) {
     return addWLStatisticAborted(playerStatistic, game)
   }
@@ -258,7 +258,7 @@ function findPlayersFromStat(wl: tStatistic.PlayerWLStatistic) {
   return res
 }
 
-function getUserNetworkFromGamesNodes(games: tDBgame.GameForPlay[]): tStatistic.UserNetworkNode[] {
+function getUserNetworkFromGamesNodes(games: GameForPlay[]): tStatistic.UserNetworkNode[] {
   const nodesLimit = 30
   const nodes: tStatistic.UserNetworkNode[] = []
 
@@ -288,7 +288,7 @@ function getUserNetworkFromGamesNodes(games: tDBgame.GameForPlay[]): tStatistic.
   return nodes.toSorted((n) => n.data.score).slice(0, nodesLimit)
 }
 
-function getUserNetworkFromGamesEdges(games: tDBgame.GameForPlay[], nodes: tStatistic.UserNetworkNode[], edges: tStatistic.UserNetworkEdge[], playerInd: number, gamesInd: number) {
+function getUserNetworkFromGamesEdges(games: GameForPlay[], nodes: tStatistic.UserNetworkNode[], edges: tStatistic.UserNetworkEdge[], playerInd: number, gamesInd: number) {
   const playerID = games[gamesInd].playerIDs[playerInd]
   for (let playerEdgeInd = playerInd + 1; playerEdgeInd < games[gamesInd].players.length; playerEdgeInd++) {
     if (playerID == null) {
@@ -326,7 +326,7 @@ function getUserNetworkFromGamesEdges(games: tDBgame.GameForPlay[], nodes: tStat
   }
 }
 
-function getUserNetworkFromGames(allGames: tDBgame.GameForPlay[], userID: number, username: string): tStatistic.UserNetwork {
+function getUserNetworkFromGames(allGames: GameForPlay[], userID: number, username: string): tStatistic.UserNetwork {
   const games = allGames.filter((g) => g.game.gameEnded && !g.running)
 
   const nodes = getUserNetworkFromGamesNodes(games)

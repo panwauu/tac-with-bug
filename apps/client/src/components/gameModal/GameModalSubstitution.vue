@@ -137,7 +137,7 @@ import PlayerWithPicture from '../PlayerWithPicture.vue'
 import CountdownTimer from '../CountdownTimer.vue'
 import BallsImage from '../assets/BallsImage.vue'
 
-import type { UpdateDataType } from 'tac-core/types/typesDBgame'
+import type { UpdateDataType } from '@repo/core/types'
 import { GameSocketKey } from '@/services/injections'
 import { inject, ref, computed, watch } from 'vue'
 import { username } from '@/services/useUser'

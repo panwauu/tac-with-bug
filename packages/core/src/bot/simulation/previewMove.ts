@@ -1,4 +1,4 @@
-import type { MoveTextOrBall } from '../../types/typesBall'
+import type { MoveTextOrBall } from '../../types/ball'
 import { Game } from '../../game/game'
 import { initalizeStatistic } from '../../game/statistic'
 import { type AiData, getAiData } from './output'

@@ -45,7 +45,7 @@ import Column from 'primevue/column'
 import PlayerWithPicture from './PlayerWithPicture.vue'
 
 import { ref } from 'vue'
-import type { GetRunningGamesType } from 'tac-core/types/typesDBgame'
+import type { GetRunningGamesType } from '@repo/core/types'
 import router from '@/router'
 import { useServerInfoStore } from '@/store/serverInfo'
 

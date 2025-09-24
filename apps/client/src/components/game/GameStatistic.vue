@@ -93,7 +93,7 @@ import GameWatchingPlayers from './GameWatchingPlayers.vue'
 import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import type { StatisticStateType } from '@/services/compositionGame/useStatistic'
 import { computed } from 'vue'
-import type { UpdateDataType } from 'tac-core/types/typesDBgame'
+import type { UpdateDataType } from '@repo/core/types'
 
 const props = defineProps<{
   miscState: MiscStateType

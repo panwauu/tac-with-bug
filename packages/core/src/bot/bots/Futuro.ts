@@ -2,7 +2,7 @@
 // I look into the future and plan my moves accordingly
 
 import { ballGoal } from '../../game/ballUtils'
-import type { BallsType, MoveText, MoveTextOrBall } from '../../types/typesBall'
+import type { BallsType, MoveText, MoveTextOrBall } from '../../types/ball'
 import { type AiData, getAiData } from '../simulation/output'
 import { convertDataToGameAsIf0WasActive, previewMove } from '../simulation/previewMove'
 import { type AiInterface, getMovesFromCards } from '../simulation/simulation'

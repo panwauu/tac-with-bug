@@ -219,7 +219,7 @@ import type { DiscardPileStateType } from '@/services/compositionGame/useDiscard
 import type { InstructionsStateType } from '@/services/compositionGame/useInstructions'
 import type { StatisticStateType } from '@/services/compositionGame/useStatistic'
 import type { PerformMoveAction } from '@/services/compositionGame/usePerformMove'
-import type { UpdateDataType } from 'tac-core/types/typesDBgame'
+import type { UpdateDataType } from '@repo/core/types'
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import router from '@/router'
 import { useResizeObserver } from '@vueuse/core'

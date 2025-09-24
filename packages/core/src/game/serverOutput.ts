@@ -1,8 +1,8 @@
-import type * as dbGame from '../types/typesDBgame'
-import type * as tCard from '../types/typesCard'
-import type { Player } from '../types/typesPlayers'
+import type * as dbGame from '../types/DBgame'
+import type * as tCard from '../types/card'
+import type { Player } from '../types/player'
 import type { Game } from './game'
-import type { UpdateDataType } from '../types/typesDBgame'
+import type { UpdateDataType } from '../types/DBgame'
 import { getBotName } from '../bot/names'
 
 export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: number): UpdateDataType {

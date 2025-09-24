@@ -1,7 +1,7 @@
 import logger from '../helpers/logger'
 import type pg from 'pg'
 import type * as tTournament from '../sharedTypes/typesTournament'
-import type * as dbGame from '@repo/core/types/typesDBgame'
+import type { GameForPlay } from '@repo/core/types'
 
 import { colors } from '../sharedDefinitions/colors'
 import { shuffleArray } from '@repo/core/game/cardUtils'
@@ -246,7 +246,7 @@ export async function checkForceGameEnd(sqlClient: pg.Pool) {
 }
 
 export type UpdateTournamentFromGameError = 'GAME_IS_NOT_PART_OF_PUBLIC_TOURNAMENT' | GetTournamentByIDError | EvaluateGameWinnerAndReturnEndedFlagError
-export async function updateTournamentFromGame(pgPool: pg.Pool, game: dbGame.GameForPlay, forceGameEnd?: boolean): Promise<Result<null, UpdateTournamentFromGameError>> {
+export async function updateTournamentFromGame(pgPool: pg.Pool, game: GameForPlay, forceGameEnd?: boolean): Promise<Result<null, UpdateTournamentFromGameError>> {
   if (game.publicTournamentId == null) {
     return err('GAME_IS_NOT_PART_OF_PUBLIC_TOURNAMENT')
   }

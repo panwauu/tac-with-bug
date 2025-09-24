@@ -1,5 +1,5 @@
-import type { BallsType } from '@repo/core/types/typesBall'
-import type { GameForPlay, UpdateDataType } from '@repo/core/types/typesDBgame'
+import type { BallsType } from '@repo/core/types'
+import type { GameForPlay, UpdateDataType } from '@repo/core/types'
 
 export interface TutorialStepOutput extends TutorialStepDefinition {
   updateData: UpdateDataType

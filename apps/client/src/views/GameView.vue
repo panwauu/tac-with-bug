@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import GameComponent from '@/components/game/GameComponent.vue'
-import type { UpdateDataType } from 'tac-core/types/typesDBgame'
+import type { UpdateDataType } from '@repo/core/types'
 import { ref, onMounted, onUnmounted, provide } from 'vue'
 import { registerGameSocket } from '@/services/registerSockets'
 import { usePositionStyles } from '@/services/compositionGame/usePositionStyles'

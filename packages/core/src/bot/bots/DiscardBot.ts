@@ -1,5 +1,5 @@
-import type { CardType } from '../../types/typesCard'
-import type { MoveTextOrBall } from '../../types/typesBall'
+import type { CardType } from '../../types/card'
+import type { MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
 import { getMovesFromCards } from '../simulation/simulation'
 

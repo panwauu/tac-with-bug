@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash'
 import { err, ok, Result } from 'neverthrow'
 import { ballPlayer } from '@repo/core/game/ballUtils'
-import type { GameForPlay } from '@repo/core/types/typesDBgame'
+import type { GameForPlay } from '@repo/core/types'
 import type { KoBracket, PrivateTournament, PublicTournament, TournamentDataKO } from '../sharedTypes/typesTournament'
 import { shuffleArray } from '@repo/core/game/cardUtils'
 

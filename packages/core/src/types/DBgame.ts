@@ -1,8 +1,8 @@
 import type { Game } from '../game/game'
-import type { BallsType } from './typesBall'
-import type { PlayerCard } from './typesCard'
-import type { GameStatistic } from './typesStatistic'
-import type { Player } from './typesPlayers'
+import type { BallsType } from './ball'
+import type { PlayerCard } from './card'
+import type { GameStatistic } from './statistic'
+import type { Player } from './player'
 import type { Substitution } from './game'
 
 interface GameGeneral {

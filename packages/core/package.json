@@ -42,14 +42,6 @@
       "types": "./dist/bot/simulation/simulation.d.ts",
       "require": "./dist/bot/simulation/simulation.js"
     },
-    "./types/typesBall": {
-      "types": "./dist/types/typesBall.d.ts",
-      "require": "./dist/types/typesBall.js"
-    },
-    "./types/typesCard": {
-      "types": "./dist/types/typesCard.d.ts",
-      "require": "./dist/types/typesCard.js"
-    },
     "./game/ballUtils": {
       "types": "./dist/game/ballUtils.d.ts",
       "require": "./dist/game/ballUtils.js"
@@ -82,17 +74,37 @@
       "types": "./dist/bot/bots/bots.d.ts",
       "require": "./dist/bot/bots/bots.js"
     },
-    "./types/typesDBgame": {
-      "types": "./dist/types/typesDBgame.d.ts",
-      "require": "./dist/types/typesDBgame.js"
-    },
     "./bot/names": {
       "types": "./dist/bot/names.d.ts",
       "require": "./dist/bot/names.js"
     },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/types/index.js"
+    },
+    "./types/ball": {
+      "types": "./dist/types/ball.d.ts",
+      "require": "./dist/types/ball.js"
+    },
+    "./types/card": {
+      "types": "./dist/types/card.d.ts",
+      "require": "./dist/types/card.js"
+    },
     "./types/game": {
       "types": "./dist/types/game.d.ts",
       "require": "./dist/types/game.js"
+    },
+    "./types/player": {
+      "types": "./dist/types/player.d.ts",
+      "require": "./dist/types/player.js"
+    },
+    "./types/DBgame": {
+      "types": "./dist/types/DBgame.d.ts",
+      "require": "./dist/types/DBgame.js"
+    },
+    "./types/statistic": {
+      "types": "./dist/types/statistic.d.ts",
+      "require": "./dist/types/statistic.js"
     }
   }
 }

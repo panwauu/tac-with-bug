@@ -1,6 +1,6 @@
-import type * as tCard from '../types/typesCard'
-import type * as tBall from '../types/typesBall'
-import type * as tStatistic from '../types/typesStatistic'
+import type * as tCard from '../types/card'
+import type * as tBall from '../types/ball'
+import type * as tStatistic from '../types/statistic'
 import type { GameData } from '../types/game'
 
 import { cloneDeep } from 'lodash'

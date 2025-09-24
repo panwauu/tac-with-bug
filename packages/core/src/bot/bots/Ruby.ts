@@ -1,7 +1,7 @@
 // Hi, I'm ruby,
 // I am a RUle-Based sYstem, hoping to be a good AI
 
-import type { MoveTextOrBall } from '../../types/typesBall'
+import type { MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
 import { type AiInterface, getMovesFromCards } from '../simulation/simulation'
 import { ballInProximityOfHouse, normalizedNecessaryForwardMovesToEndOfGoal } from './utils'

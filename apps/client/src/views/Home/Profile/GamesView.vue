@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import GamesTable from '@/components/GamesTable.vue'
 
-import type { GameForOverview } from 'tac-core/types/typesDBgame'
+import type { GameForOverview } from '@repo/core/types'
 import { ref, onMounted } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey } from '@/services/injections'

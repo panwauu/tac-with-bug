@@ -4,12 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check-types": "vue-tsc --noEmit",
+    "check-types": "vue-tsc --build --noEmit",
     "dev": "vite",
-    "build": "vite build --emptyOutDir",
+    "build": "vue-tsc --build --noEmit && vite build --emptyOutDir",
     "preview": "vite preview",
     "lint": "eslint .",
-    "tsc": "vue-tsc --build --noEmit",
     "prettier:format": "prettier --config .prettierrc.json --write .",
     "check-format": "prettier --config .prettierrc.json --check ."
   },

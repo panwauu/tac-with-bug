@@ -1,5 +1,5 @@
 import type { WaitingGame } from '../sharedTypes/typesWaiting'
-import type { GameForPlay } from '@repo/core/types/typesDBgame'
+import type { GameForPlay } from '@repo/core/types'
 import type pg from 'pg'
 
 import { Result, ok, err } from 'neverthrow'

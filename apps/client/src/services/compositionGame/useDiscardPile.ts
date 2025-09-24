@@ -1,9 +1,9 @@
 import { reactive } from 'vue'
 import { cardPictureDict } from './useCards'
 
-import type * as tCard from '@/@types/typesCard'
-import type { PlayerCard as ServerPlayerCard } from 'tac-core/types/typesCard'
-import type * as tPlayers from 'tac-core/types/typesPlayers'
+import type { PlayerCard } from '@/@types/typesCard'
+import type { PlayerCard as ServerPlayerCard } from '@repo/core/types'
+import type { Player } from '@repo/core/types'
 import type { PositionStylesState } from './usePositionStyles'
 
 export interface DiscardElement {
@@ -16,8 +16,8 @@ export interface DiscardElement {
 
 export interface DiscardPileStateType {
   discardPile: DiscardElement[]
-  updateDiscardPile: (discardPile: string[], players: tPlayers.Player[], cards: ServerPlayerCard[], positionStyles: PositionStylesState) => void
-  addToDiscardPile: (card: tCard.PlayerCard) => void
+  updateDiscardPile: (discardPile: string[], players: Player[], cards: ServerPlayerCard[], positionStyles: PositionStylesState) => void
+  addToDiscardPile: (card: PlayerCard) => void
   performAnimation: () => void
   getDiscardPile: () => DiscardElement[]
 }

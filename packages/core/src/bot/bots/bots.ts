@@ -1,4 +1,4 @@
-import type { MoveTextOrBall } from '../../types/typesBall'
+import type { MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
 
 // Export the Bot enum synchronously so other modules can reference it without

@@ -1,12 +1,12 @@
 import logger from '../helpers/logger'
 import type pg from 'pg'
-import type * as tDBTypes from '@repo/core/types/typesDBgame'
+import type { GameForOverview, GameForPlay, GetRunningGamesType, GetGamesType } from '@repo/core/types'
 
 import { Game } from '@repo/core/game/game'
 import { captureMove } from './capture'
 import { updateTournamentFromGame as updatePrivateTournamentFromGame } from './tournamentsPrivate'
 import { updateTournamentFromGame as updatePublicTournamentFromGame } from './tournamentsPublic'
-import type { MoveType } from '@repo/core/types/typesBall'
+import type { MoveType } from '@repo/core/types'
 import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
 import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
@@ -36,7 +36,7 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
   WHERE games.id = ANY($1::int[]) GROUP BY games.id ORDER BY games.id;`
   const dbRes = await sqlClient.query(query, [gameIDs])
 
-  const games: tDBTypes.GameForPlay[] = []
+  const games: GameForPlay[] = []
 
   dbRes.rows.forEach((dbGame) => {
     games.push({
@@ -85,7 +85,7 @@ export async function getGames(sqlClient: pg.Pool, userID: number) {
   )
 }
 
-export async function getRunningGames(pgPool: pg.Pool): Promise<tDBTypes.GetRunningGamesType[]> {
+export async function getRunningGames(pgPool: pg.Pool): Promise<GetRunningGamesType[]> {
   const dbRes = await pgPool.query('SELECT id FROM games WHERE running=TRUE;')
   if (dbRes.rows.length === 0) {
     return []
@@ -192,7 +192,7 @@ export async function abortGame(pgPool: pg.Pool, gameID: number) {
   sendUpdatesOfGameToPlayers(game)
 }
 
-export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promise<tDBTypes.GetGamesType> {
+export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promise<GetGamesType> {
   const games = await getGames(sqlClient, userID)
 
   return {
@@ -262,7 +262,7 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
   const idList = res.rows.map((r) => r.id as number)
   const gamesFromDB = await queryGamesByID(sqlClient, idList)
 
-  const games: tDBTypes.GameForOverview[] = gamesFromDB.map((game) => {
+  const games: GameForOverview[] = gamesFromDB.map((game) => {
     const teams = convertGameOrderToArrayPerTeam(
       game.players.slice(0, game.nPlayers).map((p, i) => p ?? getBotName(game.id, i)),
       game.nPlayers,
@@ -293,7 +293,7 @@ export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: nu
   return { games: games.toSorted(gamesSort(orderColumn, sortOrder ?? 1)), nEntries }
 }
 
-function getStatusForOverview(game: tDBTypes.GameForPlay, playerIndex: number) {
+function getStatusForOverview(game: GameForPlay, playerIndex: number) {
   if (playerIndex >= game.nPlayers) {
     return 'aborted'
   }

@@ -1,21 +1,21 @@
 import { reactive } from 'vue'
 import { cloneDeep } from 'lodash'
 
-import type * as tBall from 'tac-core/types/typesBall'
+import type { BallsType, BallActions } from '@repo/core/types'
 import type { CardsStateType } from './useCards'
 
 export interface BallsStateType {
-  balls: tBall.BallsType
-  priorBalls: tBall.BallsType
+  balls: BallsType
+  priorBalls: BallsType
   selectedBall: number
-  playableBalls: tBall.BallActions
-  updateBallsState: (balls: tBall.BallsType, priorBalls: tBall.BallsType) => void
-  setPlayableBalls: (playableBalls: tBall.BallActions) => void
+  playableBalls: BallActions
+  updateBallsState: (balls: BallsType, priorBalls: BallsType) => void
+  setPlayableBalls: (playableBalls: BallActions) => void
   resetPlayableBalls: () => void
   setSelectedBall: (selectedBall: number) => void
   resetSelectedBall: () => void
   switchBallsWithPrior: () => void
-  getBalls: (cardsState: CardsStateType) => tBall.BallsType
+  getBalls: (cardsState: CardsStateType) => BallsType
 }
 
 export function useBalls(): BallsStateType {
@@ -24,7 +24,7 @@ export function useBalls(): BallsStateType {
     priorBalls: [],
     selectedBall: -1,
     playableBalls: [],
-    updateBallsState: (balls: tBall.BallsType, priorBalls: tBall.BallsType) => {
+    updateBallsState: (balls: BallsType, priorBalls: BallsType) => {
       ballsState.balls = balls
       ballsState.priorBalls = priorBalls
     },

@@ -1,5 +1,5 @@
 import { testCapturedMoves } from '../test/captureCompare'
-import type { GameStatisticCardsType } from '../types/typesStatistic'
+import type { GameStatisticCardsType } from '../types/statistic'
 
 test('Test with captured  - test kicked balls WITHOUT TAC', () => {
   const result = testCapturedMoves('170', 4, 2, false)

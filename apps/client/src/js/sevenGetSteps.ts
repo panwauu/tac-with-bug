@@ -1,8 +1,8 @@
-import type * as tBall from 'tac-core/types/typesBall'
-import type * as tCard from '../@types/typesCard'
+import type { BallsType } from '@repo/core/types'
+import type { PlayerCard } from '@/@types/typesCard'
 import type { DiscardElement } from '@/services/compositionGame/useDiscardPile'
 
-export function getRemainingMoves(card: tCard.PlayerCard, balls: tBall.BallsType, nBall: number, newPosition: number, discardPile: DiscardElement[]): number {
+export function getRemainingMoves(card: PlayerCard, balls: BallsType, nBall: number, newPosition: number, discardPile: DiscardElement[]): number {
   const lastNonTacCard = getLastNonTacCard(discardPile)
 
   let remainingMoves = 0
@@ -28,7 +28,7 @@ function getLastNonTacCard(discardPile: DiscardElement[]): DiscardElement | unde
   }
   return undefined
 }
-function sevenReconstructPath(balls: tBall.BallsType, nBall: number, goalPosition: number) {
+function sevenReconstructPath(balls: BallsType, nBall: number, goalPosition: number) {
   // Returns the path a ball with 7 can have used with start and End -> returns undefined if not possible
   let startPaths = [[balls[nBall].position]]
   const endPaths: number[][] = []
@@ -52,7 +52,7 @@ function sevenReconstructPath(balls: tBall.BallsType, nBall: number, goalPositio
   return finalPath
 }
 
-function moveOneStep(balls: tBall.BallsType, nBall: number, ballPosition: number, direction: number, cardNumber: number) {
+function moveOneStep(balls: BallsType, nBall: number, ballPosition: number, direction: number, cardNumber: number) {
   if (ballPosition < ballStart(0, balls)) {
     return []
   }
@@ -117,15 +117,15 @@ function moveOneStep(balls: tBall.BallsType, nBall: number, ballPosition: number
   return resultingPositions
 }
 
-function ballStart(nBall: number, balls: tBall.BallsType) {
+function ballStart(nBall: number, balls: BallsType) {
   //start: 4 * nPlayers + nPlayer * positionsBetweenStarts,
   return balls.length + ballPlayer(nBall) * getPositionsBetweenStarts(balls)
 }
-function ballGoal(nBall: number, balls: tBall.BallsType) {
+function ballGoal(nBall: number, balls: BallsType) {
   //goal: 4 * nPlayers + nPlayers * positionsBetweenStarts + nPlayer * 4,
   return balls.length + (balls.length / 4) * getPositionsBetweenStarts(balls) + ballPlayer(nBall) * 4
 }
-function getPositionsBetweenStarts(balls: tBall.BallsType) {
+function getPositionsBetweenStarts(balls: BallsType) {
   if (balls.length !== 16 && balls.length !== 24) {
     throw new Error('Wrong balls length')
   }
