@@ -37,15 +37,19 @@ jobs:
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       - name: Push to heroku
         run: |
-          git init
+          # Ensure the Heroku git remote points to the intended app. Remove any existing remote first to be deterministic.
+          git remote remove heroku || true
+          git remote add heroku https://git.heroku.com/$HEROKU_APP_NAME.git
+
+          # Configure CI git identity (safe even if no commits are made here)
           git config user.name "Oskar Baumann"
-          git config user.email ${{ secrets.HEROKU_EMAIL }}
-          heroku git:remote --app $HEROKU_APP_NAME
-          git add -A;
-          git commit -m "Deploy";
-          git push --force heroku master;
+          git config user.email "$HEROKU_EMAIL"
+
+          # Push the currently-checked-out commit to Heroku's main branch. Use force to overwrite.
+          git push --force heroku HEAD:main
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       - name: Advance deployed tag
         uses: actions/github-script@v5
         with:
