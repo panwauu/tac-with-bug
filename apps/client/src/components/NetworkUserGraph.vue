@@ -63,12 +63,12 @@
     <ButtonGroup>
       <Button
         icon="pi pi-refresh"
-        label="Reset"
+        :label="t('Profile.NetworkGraph.reset')"
         @click="resetGraph()"
       />
       <Button
         icon="pi pi-window-minimize"
-        label="Rescale"
+        :label="t('Profile.NetworkGraph.rescale')"
         @click="resetGraphSize()"
       />
     </ButtonGroup>

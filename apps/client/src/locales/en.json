@@ -80,7 +80,7 @@
     "Spielersuche": "Search Users",
     "Games": "Games",
     "Waiting": "Find a game",
-    "Tournament": "Competition",
+    "Tournament": "Tournament",
     "Leaderboard": "Leaderboard",
     "TutorialOverview": "Tutorials",
     "Subscription": "Become a sponsor",
@@ -223,7 +223,8 @@
       "4p": "4 players per game",
       "6p2t": "6 players per game - 2 teams per game",
       "6p3t": "6 players per game - 3 teams per game",
-      "nTeams": "Number of teams:"
+      "nTeams": "Number of teams:",
+      "createPrivateButton": "Create Tournament"
     },
     "TournamentsTable": {
       "title": "Tournament title",
@@ -734,7 +735,9 @@
       "togetherWith": "{nGames} games played together with {username} | {nGames} game played together with {username} | Played {nGames} games together with {username}",
       "wonOf": "Of these, {nGames} won",
       "playedAgainst": "{nGames} games played against {username} | {nGames} game played against {username} | Played {nGames} games against {username}",
-      "team": "{nGames} games played in team mode | {nGames} game played in team mode | {nGames} games played in team mode"
+      "team": "{nGames} games played in team mode | {nGames} game played in team mode | {nGames} games played in team mode",
+      "rescale": "Rescale",
+      "reset": "Reset"
     },
     "DistributionGraph": {
       "4er": "4-Players",
@@ -762,7 +765,7 @@
       "friendssince": "Friends since"
     },
     "TournamentParticipations": {
-      "tournamentTitle": "Competition",
+      "tournamentTitle": "Tournament",
       "tournamentResult": "Result"
     },
     "registeredOn": "User since:"
@@ -990,5 +993,8 @@
     "you-are-blocked-message": "You were blocked from moderation until {0}.",
     "he-is-blocked-message": "This player was blocked from the moderation until {0}.",
     "he-was-blocked-explanation": "This player was blocked by a moderator due to offensive behavior. \nHe cannot write messages, change no profile picture, do not add a description and do not create any invitations to tournaments or tournament teams."
+  },
+  "PlayerSearch": {
+    "noResults": "No players found"
   }
 }

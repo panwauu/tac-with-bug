@@ -223,7 +223,8 @@
       "4p": "4 Spieler pro Spiel",
       "6p2t": "6 Spieler pro Spiel - 2 Teams pro Spiel",
       "6p3t": "6 Spieler pro Spiel - 3 Teams pro Spiel",
-      "nTeams": "Anzahl Teams:"
+      "nTeams": "Anzahl Teams:",
+      "createPrivateButton": "Turnier erstellen"
     },
     "TournamentsTable": {
       "title": "Turniertitel",
@@ -734,7 +735,9 @@
       "togetherWith": "{nGames} Spiele mit {username} zusammen gespielt | {nGames} Spiel mit {username} zusammen gespielt | {nGames} Spiele mit {username} zusammen gespielt",
       "wonOf": "Davon {nGames} gewonnen",
       "playedAgainst": "{nGames} Spiele gegen {username} gespielt | {nGames} Spiel gegen {username} gespielt | {nGames} Spiele gegen {username} gespielt",
-      "team": "{nGames} Spiele im Team-Modus gespielt|{nGames} Spiel im Team-Modus gespielt|{nGames} Spiele im Team-Modus gespielt"
+      "team": "{nGames} Spiele im Team-Modus gespielt|{nGames} Spiel im Team-Modus gespielt|{nGames} Spiele im Team-Modus gespielt",
+      "reset": "Zurücksetzen",
+      "rescale": "Neu skalieren"
     },
     "DistributionGraph": {
       "4er": "4-Spieler",
@@ -990,5 +993,8 @@
     "you-are-blocked-explanation": "Du wurdest von einem Moderator aufgrund von anstößigen Verhalten blockiert. Du kannst keine Nachrichten schreiben, kein Profilbild ändern, keine Beschreibung hinzufügen und selbst keine Einladungen zu Turnieren oder Turnierteams erstellen.",
     "he-is-blocked-message": "Dieser Spieler wurde von der Moderation bis zum {0} blockiert.",
     "he-was-blocked-explanation": "Dieser Spieler wurde von einem Moderator aufgrund von anstößigen Verhaltens blockiert. Er kannst keine Nachrichten schreiben, kein Profilbild ändern, keine Beschreibung hinzufügen und selbst keine Einladungen zu Turnieren oder Turnierteams erstellen."
+  },
+  "PlayerSearch": {
+    "noResults": "Keine Spieler gefunden"
   }
 }
