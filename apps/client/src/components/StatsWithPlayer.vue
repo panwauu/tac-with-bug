@@ -35,13 +35,14 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import PlayerWithPicture from './PlayerWithPicture.vue'
 import { useI18n } from 'vue-i18n'
+import type { PlayerRelationType } from '@/generatedClient'
 
 const { t } = useI18n()
 const props = defineProps<{
   username: string
   usernameToCommpareTo: string
   winRateOfCompareUser: number
-  stats: number[]
+  stats: PlayerRelationType
 }>()
 
 const winRateTogether = (props.stats[1] / props.stats[0]) * 100

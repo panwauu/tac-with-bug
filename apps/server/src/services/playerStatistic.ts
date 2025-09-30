@@ -1,6 +1,6 @@
 import type pg from 'pg'
-import type * as tStatistic from '../sharedTypes/typesStatistic'
-import type { GameForPlay } from '@repo/core/types'
+import type * as tStatistic from '../sharedTypes/typesPlayerStatistic'
+import type { GameForPlay, GameStatistic, GameStatisticActionsType, GameStatisticCardsType } from '@repo/core/types'
 import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
 
 import { initalizeStatistic } from '@repo/core/game/statistic'
@@ -91,7 +91,6 @@ function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game
 }
 
 function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number, ownTeamIndex: number) {
-  // bestFriend worstEnemy --- [togetherTotal, togetherWon, againstTotal, againstWon]
   for (const [playerIndex, player] of game.players.entries()) {
     if (playerIndex !== nPlayer && player != null) {
       if (!(player in playerStatistic.wl.people)) {
@@ -131,14 +130,14 @@ function addToGamesHistory(playerStatistic: tStatistic.PlayerStatistic, status: 
   playerStatistic.wl.gamesHistory.push(status)
 }
 
-function addActionStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: tStatistic.GameStatistic) {
-  for (const key of Object.keys(playerStatistic.actions) as Array<keyof tStatistic.GameStatisticActionsType>) {
+function addActionStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: GameStatistic) {
+  for (const key of Object.keys(playerStatistic.actions) as Array<keyof GameStatisticActionsType>) {
     playerStatistic.actions[key] += gameStatistic.actions[key]
   }
 }
 
-function addCardsStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: tStatistic.GameStatistic) {
-  for (const key of Object.keys(playerStatistic.cards) as Array<keyof tStatistic.GameStatisticCardsType>) {
+function addCardsStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: GameStatistic) {
+  for (const key of Object.keys(playerStatistic.cards) as Array<keyof GameStatisticCardsType>) {
     playerStatistic.cards[key][0] += gameStatistic.cards[key][0]
     playerStatistic.cards[key][1] += gameStatistic.cards[key][1]
     playerStatistic.cards[key][2] += gameStatistic.cards[key][2]

@@ -171,7 +171,7 @@ const style = [
 ]
 
 const cy: null | any = ref(null)
-const selectedUser: null | any = ref(null)
+const selectedUser = ref<null | { name: string; data: any }>(null)
 
 const resetGraph = () => {
   if (cy.value != null && props.networkData != null) {
@@ -183,7 +183,7 @@ const resetGraph = () => {
     cy.value?.nodes()?.on('select', (event: any) => {
       selectedUser.value = {
         name: event.target['_private'].data.name,
-        data: props.peopleData[event.target['_private'].data.name],
+        data: props.playerStats.people[event.target['_private'].data.name],
       }
     })
     cy.value?.on('unselect', () => {

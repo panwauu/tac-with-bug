@@ -3,7 +3,7 @@ import type { TournamentParticipation } from '../sharedTypes/typesTournament'
 import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
 import { Controller, Get, Query, Route, Request } from 'tsoa'
 
-import type { UserNetworkApiResponse } from '../sharedTypes/typesStatistic'
+import type { UserNetworkApiResponse } from '../sharedTypes/typesPlayerStatistic'
 import { getUserNetworkData, getDataForProfilePage } from '../services/playerStatistic'
 import { getTournamentParticipations } from '../services/tournaments'
 

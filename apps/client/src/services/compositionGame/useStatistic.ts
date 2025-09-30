@@ -1,8 +1,7 @@
 import { reactive, computed, type ComputedRef, type UnwrapNestedRefs } from 'vue'
 import { i18n } from '@/services/i18n'
 
-import type { GameStatistic, GameStatisticCardsType } from '@/../../server/src/sharedTypes/typesStatistic'
-import type { UpdateDataType } from '@repo/core/types'
+import type { GameStatistic, GameStatisticCardsType, UpdateDataType } from '@repo/core/types'
 
 type StatisticStateTypeNonReactive = {
   statistic: GameStatistic[]
