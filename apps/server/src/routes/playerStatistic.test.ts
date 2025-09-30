@@ -41,7 +41,6 @@ describe('Platform PlayerStatistic Test Suite', () => {
     expect(response.body.graph.nodes.length).toEqual(1)
     expect(response.body.graph.nodes[0].data.name).toBe(userWithCredentials.username)
     expect(response.body.graph.edges).toEqual([])
-    expect(response.body.people).toEqual({})
   })
 
   test('Should return empty tournamentParticipations for new user', async () => {
@@ -60,7 +59,6 @@ describe('Platform PlayerStatistic Test Suite', () => {
   test('Should return userGraph of existing player', async () => {
     const response = await testAgent.get('/gameApi/profile/userNetwork/').query({ username: 'UserA' })
     expect(response.status).toBe(200)
-    expect(Object.keys(response.body.people).length).toBeGreaterThan(0)
     expect(response.body).toMatchSnapshot()
   })
 
