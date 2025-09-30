@@ -2,11 +2,12 @@
   <div class="chartNextToEachOtherContainer">
     <ProfileRadar
       :username="username"
-      :data="radarData"
+      :data="playerStats.table"
+      :my-data="myStats.table"
       class="chartNextToEachOther"
     />
     <UserGamesDougnut
-      :data="gamesDistributionData"
+      :data="playerStats.gamesDistribution"
       :username="username"
       class="chartNextToEachOther"
       style="padding: 0 20px"
@@ -17,10 +18,9 @@
 <script setup lang="ts">
 import ProfileRadar from '@/components/ProfileRadar.vue'
 import UserGamesDougnut from '@/components/UserGamesDougnut.vue'
+import type { PlayerFrontendStatistic } from '@/generatedClient'
 
-import type { GamesDistributionData } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
-
-defineProps<{ username: string; radarData: number[]; gamesDistributionData: GamesDistributionData }>()
+defineProps<{ username: string; playerStats: PlayerFrontendStatistic; myStats: PlayerFrontendStatistic }>()
 </script>
 
 <style scoped>

@@ -1,9 +1,18 @@
 <template>
   <div>
-    <DataTable :value="friendsForTable">
+    <DataTable
+      :value="friendsForTable"
+      :paginator="friendsForTable.length > 10"
+      :rows="rows"
+      v-model:first="first"
+      :rowsPerPageOptions="[5, 10, 20, 50]"
+      :sort-field="'totalGames'"
+      :sort-order="-1"
+    >
       <Column
         field="username"
         :header="t('Profile.Friends.username')"
+        sortable
       >
         <template #body="slotProps">
           <PlayerWithPicture
@@ -16,9 +25,15 @@
       <Column
         field="date"
         :header="t('Profile.Friends.friendssince')"
+        sortable
       >
         <template #body="slotProps">{{ new Date(slotProps.data.date).toLocaleDateString() }}</template>
       </Column>
+      <Column
+        field="totalGames"
+        :header="t('Profile.Friends.totalgames')"
+        sortable
+      ></Column>
       <Column
         v-if="username === loggedInUsername"
         field="status"
@@ -45,13 +60,18 @@ import router from '@/router/index'
 import { injectStrict, SocketKey, FriendsStateKey } from '@/services/injections'
 import type { Friend } from '@/../../server/src/sharedTypes/typesFriends'
 import { username as loggedInUsername, user } from '@/services/useUser'
+import type { PlayerFrontendStatistic } from '@/generatedClient'
 
 const socket = injectStrict(SocketKey)
 const friendsState = injectStrict(FriendsStateKey)
-const props = defineProps<{ username: string }>()
+const props = defineProps<{ username: string; playerStats: PlayerFrontendStatistic }>()
 
 const loading = ref(false)
 const friends = ref<Friend[]>([])
+
+// Pagination state for DataTable
+const first = ref(0)
+const rows = ref(10)
 
 updateData().catch((err) => console.log(err))
 watch(
@@ -79,11 +99,22 @@ async function updateData() {
   }
 }
 
+function getGamesWith(username: string): number {
+  if (props.playerStats == null) {
+    return 0
+  }
+  return props.playerStats.people[username]?.[4] ?? 0
+}
+
 const friendsForTable = computed(() => {
   if (props.username === loggedInUsername.value) {
-    return friendsState.friends
+    return friendsState.friends.map((f) => {
+      return { ...f, totalGames: getGamesWith(f.username) }
+    })
   }
-  return friends.value
+  return friends.value.map((f) => {
+    return { ...f, totalGames: getGamesWith(f.username) }
+  })
 })
 
 const onlineFriends = ref<string[]>([])

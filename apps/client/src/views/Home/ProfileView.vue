@@ -11,26 +11,26 @@
           class="profilePicture"
         />
         <Sponsor
-          v-if="isSubscribed"
+          v-if="playerStats?.subscriber"
           :clickable="true"
           :sponsors-only="false"
           class="sponsorOverPicture"
         />
         <HofBadge
-          v-if="hofReasons.length > 0"
+          v-if="playerStats?.hof && playerStats.hof.length > 0"
           class="hofOverPicture"
         />
       </div>
       <div class="userInfos">
         <h1>{{ username }}</h1>
         <ProfileDescriptionText
-          v-model="userDescription"
+          :value="playerStats?.userDescription ?? ''"
           :username="username"
         />
-        <p class="registered">{{ t('Profile.registeredOn') }} {{ registeredOn.toLocaleDateString() }}</p>
+        <p class="registered">{{ t('Profile.registeredOn') }} {{ new Date(playerStats?.registered ?? 0).toLocaleDateString() }}</p>
         <BlockedByModerationMessage
-          v-if="userBlockedUntil != null"
-          :blocked-by-moderation-until="userBlockedUntil"
+          v-if="playerStats?.blockedByModerationUntil != null"
+          :blocked-by-moderation-until="playerStats.blockedByModerationUntil"
           :second-person="true"
         />
         <FriendButton
@@ -52,9 +52,11 @@
       </TabList>
     </Tabs>
     <router-view
+      v-if="!loading"
       style="padding-top: 15px"
-      :radar-data="radarData"
-      :games-distribution-data="gamesDistributionData"
+      :player-stats="playerStats"
+      :my-stats="myStats"
+      :radar-data="playerStats?.table ?? []"
     />
   </div>
 </template>
@@ -71,37 +73,23 @@ import Sponsor from '@/components/SubscriptionTag.vue'
 import ProfileExplanation from '@/components/ProfileExplanation.vue'
 import HofBadge from '@/components/icons/HofBadge.vue'
 
-import type { GamesDistributionData as GamesDistributionDataType } from '@/../../server/src/sharedTypes/typesPlayerStatistic'
-import { watch, ref } from 'vue'
-import { type HofReason, DefaultService as Service } from '@/generatedClient/index.ts'
+import { watch, ref, computed } from 'vue'
+import { type PlayerFrontendStatistic, DefaultService as Service } from '@/generatedClient/index.ts'
 import router from '@/router/index'
 import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue'
 import { useResizeObserver } from '@vueuse/core'
 import BlockedByModerationMessage from '@/components/BlockedByModerationMessage.vue'
-import { isLoggedIn } from '@/services/useUser'
+import { isLoggedIn, username as loggedInUsername } from '@/services/useUser'
 
 const { t } = useI18n()
 
 const props = defineProps<{ username: string }>()
 
-const userDescription = ref('')
-const isSubscribed = ref(false)
-const radarData = ref<number[]>([])
-const gamesDistributionData = ref<GamesDistributionDataType>({
-  teamWon: 0,
-  teamAborted: 0,
-  won4: 0,
-  lost4: 0,
-  won6: 0,
-  lost6: 0,
-  aborted: 0,
-  running: 0,
-})
-const hofReasons = ref<HofReason[]>([])
 const items = ref(createMenu(true))
 const profileContainer = ref<null | HTMLElement>(null)
-const registeredOn = ref<Date>(new Date(0))
-const userBlockedUntil = ref<string | null>(null)
+
+const playerStats = ref<PlayerFrontendStatistic | null>(null)
+const myStats = ref<PlayerFrontendStatistic | null>(null)
 
 updateData()
 watch(
@@ -111,17 +99,27 @@ watch(
 
 async function updateData() {
   try {
+    playerStats.value = null
     const usernameStats = await Service.getPlayerStats(props.username)
-    isSubscribed.value = usernameStats.subscriber
-    radarData.value = usernameStats.table
-    gamesDistributionData.value = usernameStats.gamesDistribution
-    hofReasons.value = usernameStats.hof
-    userDescription.value = usernameStats.userDescription
-    registeredOn.value = new Date(usernameStats.registered)
-    userBlockedUntil.value = usernameStats.blockedByModerationUntil
+    playerStats.value = usernameStats
   } catch (err) {
     console.log(err)
     router.push({ name: 'Landing' })
+  }
+}
+
+loadMyStats()
+watch(loggedInUsername, () => loadMyStats())
+
+async function loadMyStats() {
+  try {
+    myStats.value = null
+    if (loggedInUsername.value != null) {
+      const myUsernameStats = await Service.getPlayerStats(loggedInUsername.value)
+      myStats.value = myUsernameStats
+    }
+  } catch (err) {
+    console.log(err)
   }
 }
 
@@ -162,17 +160,16 @@ function updateMenu() {
   items.value = createMenu(profileContainer.value?.getBoundingClientRect().width === undefined || profileContainer.value?.getBoundingClientRect().width > 550)
 }
 
-const tabValueToName = ref<string>(String(router.currentRoute.value.name))
-watch(
-  tabValueToName,
-  () => {
-    const itemToPushTo = items.value.find((item) => item.to.name === tabValueToName.value)
-    if (itemToPushTo != null) {
-      router.push(itemToPushTo.to)
-    }
+const tabValueToName = computed({
+  get: () => String(router.currentRoute.value.name),
+  set: (value) => {
+    router.push({ name: value })
   },
-  { immediate: true }
-)
+})
+
+const loading = computed(() => {
+  return playerStats.value == null || (isLoggedIn.value && myStats.value == null)
+})
 </script>
 
 <style scoped>

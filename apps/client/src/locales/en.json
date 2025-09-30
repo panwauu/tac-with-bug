@@ -762,7 +762,8 @@
     "menuSocials": "Social",
     "Friends": {
       "username": "Username",
-      "friendssince": "Friends since"
+      "friendssince": "Friends since",
+      "totalgames": "Games together"
     },
     "TournamentParticipations": {
       "tournamentTitle": "Tournament",

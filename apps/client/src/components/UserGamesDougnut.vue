@@ -16,7 +16,7 @@ import Chart from 'primevue/chart'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-const props = defineProps<{ data: GamesDistributionData; username: string }>()
+const props = defineProps<{ data: GamesDistributionData }>()
 const userGamesDoughnutChart = ref<null | InstanceType<typeof Chart>>()
 
 const chartData = ref({

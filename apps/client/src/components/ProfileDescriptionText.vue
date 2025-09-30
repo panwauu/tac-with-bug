@@ -69,16 +69,15 @@ import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { useToast } from 'primevue/usetoast'
 import { useSettingsStore } from '@/store/settings'
 
-const emits = defineEmits<{ 'update:modelValue': [modelValue: string] }>()
-const props = defineProps<{ username: string; modelValue: string }>()
+const props = defineProps<{ username: string; value: string }>()
 
 const settingsStore = useSettingsStore()
 const toast = useToast()
 const editing = ref(false)
-const userDescription = ref(props.modelValue)
+const userDescription = ref(props.value)
 
 watch(
-  () => props.modelValue,
+  () => props.value,
   () => {
     resetValueAndEndEditing()
   }
@@ -91,25 +90,21 @@ watch(
 )
 
 function startEdit() {
-  userDescription.value = props.modelValue
+  userDescription.value = props.value
   editing.value = true
 }
 
 function submitEdit() {
   editing.value = false
-  Service.editUserDescription({ userDescription: userDescription.value })
-    .then(() => {
-      emits('update:modelValue', userDescription.value)
+  Service.editUserDescription({ userDescription: userDescription.value }).catch(() => {
+    resetValueAndEndEditing()
+    toast.add({
+      severity: 'error',
+      summary: t('Toast.GenericError.summary'),
+      detail: t('Toast.GenericError.detail'),
+      life: 3000,
     })
-    .catch(() => {
-      resetValueAndEndEditing()
-      toast.add({
-        severity: 'error',
-        summary: t('Toast.GenericError.summary'),
-        detail: t('Toast.GenericError.detail'),
-        life: 3000,
-      })
-    })
+  })
 }
 
 function clearValueAndEndEditing() {
@@ -119,7 +114,7 @@ function clearValueAndEndEditing() {
 
 function resetValueAndEndEditing() {
   editing.value = false
-  userDescription.value = props.modelValue
+  userDescription.value = props.value
 }
 
 const descriptionTooLong = computed(() => userDescription.value.length > 150)

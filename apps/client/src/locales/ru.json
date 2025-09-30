@@ -762,7 +762,8 @@
     "menuSocials": "Социальное",
     "Friends": {
       "username": "Имя пользователя",
-      "friendssince": "Друзья с"
+      "friendssince": "Друзья с",
+      "totalgames": "Играть вместе"
     },
     "TournamentParticipations": {
       "tournamentTitle": "Турнир",
