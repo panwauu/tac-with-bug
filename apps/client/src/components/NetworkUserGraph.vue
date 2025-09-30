@@ -6,58 +6,10 @@
         v-if="selectedUser != null"
         class="playerCardNetwork"
       >
-        <PlayerWithPicture
+        <StatsWithPlayer
           :username="selectedUser.name"
-          :name-first="false"
+          :stats="selectedUser.data"
         />
-        <div class="playerCardElement">
-          {{
-            t('Profile.NetworkGraph.togetherWith', {
-              username: username,
-              nGames: selectedUser.data[0],
-              count: selectedUser.data[0],
-            })
-          }}
-        </div>
-        <div
-          class="playerCardElement"
-          style="padding-left: 10px"
-        >
-          {{
-            t('Profile.NetworkGraph.wonOf', {
-              nGames: selectedUser.data[1],
-              count: selectedUser.data[1],
-            })
-          }}
-        </div>
-        <div class="playerCardElement">
-          {{
-            t('Profile.NetworkGraph.playedAgainst', {
-              username: username,
-              nGames: selectedUser.data[2],
-              count: selectedUser.data[2],
-            })
-          }}
-        </div>
-        <div
-          class="playerCardElement"
-          style="padding-left: 10px"
-        >
-          {{
-            t('Profile.NetworkGraph.wonOf', {
-              nGames: selectedUser.data[2] - selectedUser.data[3],
-              count: selectedUser.data[2] - selectedUser.data[3],
-            })
-          }}
-        </div>
-        <div class="playerCardElement">
-          {{
-            t('Profile.NetworkGraph.team', {
-              nGames: selectedUser.data[4] - selectedUser.data[2] - selectedUser.data[0],
-              count: selectedUser.data[4] - selectedUser.data[2] - selectedUser.data[0],
-            })
-          }}
-        </div>
       </div>
     </div>
     <ButtonGroup>
@@ -91,10 +43,10 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import Button from 'primevue/button'
 import ButtonGroup from 'primevue/buttongroup'
-import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
 import { onUnmounted, onMounted, watch, ref } from 'vue'
 import cytoscape from 'cytoscape'
+import StatsWithPlayer from './StatsWithPlayer.vue'
 
 const props = defineProps<{
   networkData: any
@@ -326,10 +278,6 @@ watch(
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
-
-.playerCardElement {
-  white-space: nowrap;
 }
 </style>
 

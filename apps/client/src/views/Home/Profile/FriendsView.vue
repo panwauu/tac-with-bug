@@ -33,7 +33,17 @@
         field="totalGames"
         :header="t('Profile.Friends.totalgames')"
         sortable
-      ></Column>
+      >
+        <template #body="slotProps">
+          <div
+            @click="showPopover($event, slotProps.data.username)"
+            class="clickable"
+          >
+            {{ slotProps.data.totalGames }}
+            <i class="pi pi-info-circle" />
+          </div>
+        </template>
+      </Column>
       <Column
         v-if="username === loggedInUsername"
         field="status"
@@ -43,6 +53,15 @@
         </template>
       </Column>
     </DataTable>
+
+    <Popover ref="popover">
+      <div v-if="popoverUsername != null && popoverStats != null">
+        <StatsWithPlayer
+          :username="popoverUsername"
+          :stats="popoverStats"
+        />
+      </div>
+    </Popover>
   </div>
 </template>
 
@@ -54,13 +73,14 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import FriendButton from '@/components/FriendButton.vue'
-
-import { watch, ref, computed } from 'vue'
+import Popover from 'primevue/popover'
+import { watch, ref, computed, useTemplateRef, nextTick } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey, FriendsStateKey } from '@/services/injections'
 import type { Friend } from '@/../../server/src/sharedTypes/typesFriends'
 import { username as loggedInUsername, user } from '@/services/useUser'
 import type { PlayerFrontendStatistic } from '@/generatedClient'
+import StatsWithPlayer from '@/components/StatsWithPlayer.vue'
 
 const socket = injectStrict(SocketKey)
 const friendsState = injectStrict(FriendsStateKey)
@@ -140,4 +160,26 @@ watch(
   },
   { deep: true }
 )
+
+const popover = useTemplateRef('popover')
+const popoverUsername = ref<string>()
+const popoverStats = ref<number[]>()
+
+const showPopover = (event: any, username: string) => {
+  popover.value?.hide()
+
+  const stats = props.playerStats.people[username]
+
+  if (username != null && username !== '' && stats != null && username !== popoverUsername.value) {
+    popoverUsername.value = username
+    popoverStats.value = stats
+
+    nextTick(() => {
+      popover.value?.show(event)
+    })
+  } else {
+    popoverUsername.value = undefined
+    popoverStats.value = undefined
+  }
+}
 </script>
