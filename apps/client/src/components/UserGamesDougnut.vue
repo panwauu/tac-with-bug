@@ -14,7 +14,6 @@ import type { GamesDistributionData } from '@/../../server/src/sharedTypes/types
 import { ref, onMounted, watch } from 'vue'
 import Chart from 'primevue/chart'
 import { useI18n } from 'vue-i18n'
-import { title } from 'process'
 
 const { t } = useI18n()
 const props = defineProps<{ data: GamesDistributionData }>()
