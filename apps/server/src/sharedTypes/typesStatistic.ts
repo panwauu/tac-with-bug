@@ -84,5 +84,4 @@ export interface UserNetwork {
 
 export interface UserNetworkApiResponse {
   graph: UserNetwork
-  people: PeopleOjectType
 }

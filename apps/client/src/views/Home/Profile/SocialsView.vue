@@ -3,7 +3,7 @@
     <NetworkUserGraph
       :network-data="networkData"
       :username="username"
-      :people-data="peopleData"
+      :people-data="playerStats.people"
       :loading="loading"
       :player-stats="props.playerStats"
       style="width: 100%"
@@ -21,7 +21,6 @@ const props = defineProps<{ username: string; playerStats: PlayerFrontendStatist
 
 const loading = ref(true)
 const networkData = ref({ edges: [] as any[], nodes: [] as any[] })
-const peopleData = ref({})
 
 updateData()
 watch(
@@ -34,7 +33,6 @@ async function updateData() {
     loading.value = true
     const data = await Service.getProfileUserNetwork(props.username)
     networkData.value = data.graph
-    peopleData.value = data.people
     loading.value = false
   } catch (err) {
     console.log(err)

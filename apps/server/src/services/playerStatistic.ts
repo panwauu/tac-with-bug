@@ -371,7 +371,6 @@ export async function getUserNetworkData(sqlClient: pg.Pool, username: string): 
 
   const games = await getGames(sqlClient, user.value.id)
 
-  const stat = await getPlayerStats(sqlClient, user.value.id)
   const graph = getUserNetworkFromGames(games, user.value.id, username)
-  return { graph: graph, people: stat.wl.people }
+  return { graph: graph }
 }
