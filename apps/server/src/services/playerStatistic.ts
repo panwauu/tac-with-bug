@@ -32,9 +32,8 @@ function intializePlayerStatistic(): tStatistic.PlayerStatistic {
         coopBest4: 1000,
         coopBest6: 1000,
         longestWinningStreak: 0,
-        currentWinningStreak: 0,
         longestLosingStreak: 0,
-        currentLosingStreak: 0,
+        currentStreak: 0,
       },
     },
   }
@@ -206,10 +205,9 @@ function calculateStreaks(playerStatistic: tStatistic.PlayerStatistic, games: Ga
     }
   }
 
-  playerStatistic.wl.currentWinningStreak = currentWinningStreak
   playerStatistic.wl.longestWinningStreak = longestWinningStreak
-  playerStatistic.wl.currentLosingStreak = currentLosingStreak
   playerStatistic.wl.longestLosingStreak = longestLosingStreak
+  playerStatistic.wl.currentStreak = currentLosingStreak > 0 ? -1 * currentLosingStreak : currentWinningStreak
 }
 
 export async function getPlayerStats(sqlClient: pg.Pool, userID: number) {
@@ -279,9 +277,8 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
     blockedByModerationUntil: user.value.blockedByModerationUntil,
     streaks: {
       longestWinningStreak: stat.wl.longestWinningStreak,
-      currentWinningStreak: stat.wl.currentWinningStreak,
       longestLosingStreak: stat.wl.longestLosingStreak,
-      currentLosingStreak: stat.wl.currentLosingStreak,
+      currentStreak: stat.wl.currentStreak,
     },
   }
 }

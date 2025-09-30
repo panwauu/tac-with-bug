@@ -71,8 +71,7 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
     "worstEnemy": "UserB",
   },
   "streaks": {
-    "currentLosingStreak": 2,
-    "currentWinningStreak": 0,
+    "currentStreak": -2,
     "longestLosingStreak": 2,
     "longestWinningStreak": 1,
   },

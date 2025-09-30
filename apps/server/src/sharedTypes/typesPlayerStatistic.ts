@@ -17,9 +17,8 @@ export interface PlayerFrontendStatistic {
   blockedByModerationUntil: string | null
   streaks: {
     longestWinningStreak: number
-    currentWinningStreak: number
     longestLosingStreak: number
-    currentLosingStreak: number
+    currentStreak: number
   }
 }
 
