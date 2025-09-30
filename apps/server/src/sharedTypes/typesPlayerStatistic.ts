@@ -15,6 +15,12 @@ export interface PlayerFrontendStatistic {
   userDescription: string
   registered: string
   blockedByModerationUntil: string | null
+  streaks: {
+    longestWinningStreak: number
+    currentWinningStreak: number
+    longestLosingStreak: number
+    currentLosingStreak: number
+  }
 }
 
 export interface GamesDistributionData {

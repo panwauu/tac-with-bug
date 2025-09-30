@@ -19,6 +19,10 @@ export interface PlayerWLStatistic {
   people: PeopleOjectType
   coopBest4: number
   coopBest6: number
+  longestWinningStreak: number
+  currentWinningStreak: number
+  longestLosingStreak: number
+  currentLosingStreak: number
 }
 
 export interface PeopleOjectType {

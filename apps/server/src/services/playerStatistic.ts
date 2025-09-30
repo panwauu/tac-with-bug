@@ -31,6 +31,10 @@ function intializePlayerStatistic(): tStatistic.PlayerStatistic {
         people: {},
         coopBest4: 1000,
         coopBest6: 1000,
+        longestWinningStreak: 0,
+        currentWinningStreak: 0,
+        longestLosingStreak: 0,
+        currentLosingStreak: 0,
       },
     },
   }
@@ -146,6 +150,68 @@ function addCardsStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStat
   }
 }
 
+function calculateStreaks(playerStatistic: tStatistic.PlayerStatistic, games: GameForPlay[], userID: number) {
+  let longestWinningStreakTemp = 0
+  let longestWinningStreak = 0
+  let longestLosingStreakTemp = 0
+  let longestLosingStreak = 0
+
+  for (const game of games) {
+    const playerIndex = game.playerIDs.indexOf(userID)
+    if (playerIndex === -1) continue
+    if (game.running || game.game.coop) continue
+
+    const teamIndex = game.game.teams.findIndex((team) => team.includes(playerIndex))
+    const gameResult = game.game.winningTeams[teamIndex] ? 'won' : 'lost'
+    if (gameResult === 'won') {
+      longestWinningStreakTemp++
+      longestWinningStreak = Math.max(longestWinningStreak, longestWinningStreakTemp)
+      longestLosingStreakTemp = 0
+    } else {
+      longestLosingStreakTemp++
+      longestLosingStreak = Math.max(longestLosingStreak, longestLosingStreakTemp)
+      longestWinningStreakTemp = 0
+    }
+  }
+
+  let currentWinningStreak = 0
+  for (let i = games.length - 1; i >= 0; i--) {
+    const game = games[i]
+    const playerIndex = game.playerIDs.indexOf(userID)
+    if (playerIndex === -1) continue
+    if (game.running || game.game.coop) continue
+
+    const teamIndex = game.game.teams.findIndex((team) => team.includes(playerIndex))
+    const gameResult = game.game.winningTeams[teamIndex] ? 'won' : 'lost'
+    if (gameResult === 'won') {
+      currentWinningStreak++
+    } else {
+      break
+    }
+  }
+
+  let currentLosingStreak = 0
+  for (let i = games.length - 1; i >= 0; i--) {
+    const game = games[i]
+    const playerIndex = game.playerIDs.indexOf(userID)
+    if (playerIndex === -1) continue
+    if (game.running || game.game.coop) continue
+
+    const teamIndex = game.game.teams.findIndex((team) => team.includes(playerIndex))
+    const gameResult = game.game.winningTeams[teamIndex] ? 'won' : 'lost'
+    if (gameResult === 'lost') {
+      currentLosingStreak++
+    } else {
+      break
+    }
+  }
+
+  playerStatistic.wl.currentWinningStreak = currentWinningStreak
+  playerStatistic.wl.longestWinningStreak = longestWinningStreak
+  playerStatistic.wl.currentLosingStreak = currentLosingStreak
+  playerStatistic.wl.longestLosingStreak = longestLosingStreak
+}
+
 export async function getPlayerStats(sqlClient: pg.Pool, userID: number) {
   const games = await getGames(sqlClient, userID)
   games.sort((a, b) => (a.lastPlayed > b.lastPlayed ? 1 : -1))
@@ -156,6 +222,7 @@ export async function getPlayerStats(sqlClient: pg.Pool, userID: number) {
     addCardsStatistic(sum, game.game.statistic[playerIndex])
     addWLStatistic(sum, game, playerIndex)
   }
+  calculateStreaks(sum, games, userID)
   return sum
 }
 
@@ -210,6 +277,12 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
     userDescription: user.value.userDescription,
     registered: user.value.registered,
     blockedByModerationUntil: user.value.blockedByModerationUntil,
+    streaks: {
+      longestWinningStreak: stat.wl.longestWinningStreak,
+      currentWinningStreak: stat.wl.currentWinningStreak,
+      longestLosingStreak: stat.wl.longestLosingStreak,
+      currentLosingStreak: stat.wl.currentLosingStreak,
+    },
   }
 }
 

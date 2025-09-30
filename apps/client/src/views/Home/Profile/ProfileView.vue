@@ -1,17 +1,22 @@
 <template>
-  <div class="chartNextToEachOtherContainer">
-    <ProfileRadar
-      :username="username"
-      :data="playerStats.table"
-      :my-data="myStats.table"
-      class="chartNextToEachOther"
-    />
-    <UserGamesDougnut
-      :data="playerStats.gamesDistribution"
-      :username="username"
-      class="chartNextToEachOther"
-      style="padding: 0 20px"
-    />
+  <div>
+    <div>{{ playerStats.players }}</div>
+    <div>{{ playerStats.history }}</div>
+    <div>{{ playerStats.streaks }}</div>
+    <div class="chartNextToEachOtherContainer">
+      <ProfileRadar
+        :username="username"
+        :data="playerStats.table"
+        :my-data="myStats.table"
+        class="chartNextToEachOther"
+      />
+      <UserGamesDougnut
+        :data="playerStats.gamesDistribution"
+        :username="username"
+        class="chartNextToEachOther"
+        style="padding: 0 20px"
+      />
+    </div>
   </div>
 </template>
 
