@@ -120,7 +120,7 @@ function tradeCardToMoveIntoGoal(data: AiData, tradeToPlayer: number, ignoreOthe
 
 function tradeOneOrThirteen(data: AiData, tradeToPlayer: number): MoveText | null {
   const cardOneOrThirteenIndex = data.cardsWithMoves.findIndex((c) => c.title === '1' || c.title === '13')
-  if (!data.hadOneOrThirteen[tradeToPlayer] && cardOneOrThirteenIndex >= 0) {
+  if (!data.hadOneOrThirteen[tradeToPlayer] && cardOneOrThirteenIndex !== -1) {
     const numberOfOwn1Or13 = data.cardsWithMoves.filter((c) => c.title === '1' || c.title === '13').length
     if (numberOfOwn1Or13 > 1) return [data.gamePlayer, cardOneOrThirteenIndex, 'tauschen']
 

@@ -138,7 +138,7 @@ export function getMoves(balls: tBall.BallsType, nBall: number, cardTitle: strin
   } else if (cardTitle.startsWith('7')) {
     let remainingMoves = 7
     if (cardTitle.length > 1) {
-      remainingMoves = Number.parseInt(cardTitle.substring(2, cardTitle.length))
+      remainingMoves = Number.parseInt(cardTitle.slice(2))
     }
     movePositions = getSevenPositions(balls, nBall, remainingMoves, teams, coop)
   } else {
@@ -275,12 +275,13 @@ export function getMovingPositions(balls: tBall.BallsType, nBall: number, cardTi
     for (const startNode of startNodes) {
       endNodes = endNodes.concat(moveOneStep(balls, nBall, startNode, direction, cardTitleNumber))
     }
-    if (move + 1 !== cardTitleNumber) {
-      endNodes = endNodes.filter((position) => !balls.some((ball) => ball.position === position))
-    } else {
-      // in Goal also remove positions that are occupied
-      endNodes = endNodes.filter((position) => position < ballGoal(0, balls) || !balls.some((ball) => ball.position === position))
-    }
+
+    // in Goal also remove positions that are occupied
+    endNodes =
+      move + 1 === cardTitleNumber
+        ? endNodes.filter((position) => position < ballGoal(0, balls) || !balls.some((ball) => ball.position === position))
+        : endNodes.filter((position) => !balls.some((ball) => ball.position === position))
+
     startNodes = [...endNodes]
   }
 

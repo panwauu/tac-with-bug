@@ -81,7 +81,7 @@ export async function runSimulation(nSimulations: number, bots: Bot[], gameParam
         let move: MoveTextOrBall | null = null
         for (let gamePlayer = 0; gamePlayer < game.nPlayers; gamePlayer++) {
           const cards = getCards(game, gamePlayer)
-          if (cards.length !== 0 && game.narrFlag.some((f) => f) && !game.narrFlag[gamePlayer]) {
+          if (cards.length !== 0 && game.narrFlag.some(Boolean) && !game.narrFlag[gamePlayer]) {
             move = [gamePlayer, 0, 'narr']
             additionalInformation.narrTradedCards[gamePlayer] = game.cards.players[gamePlayer]
             break

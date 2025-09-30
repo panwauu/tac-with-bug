@@ -57,11 +57,7 @@ export function resetBalls(balls: tBall.BallsType): void {
     } else if (ball.position < ballGoal(0, balls)) {
       ball.state = 'valid'
     } else {
-      if (ballInLastGoalPosition(balls, index, ball.position)) {
-        ball.state = 'locked'
-      } else {
-        ball.state = 'goal'
-      }
+      ball.state = ballInLastGoalPosition(balls, index, ball.position) ? 'locked' : 'goal';
     }
   }
 }

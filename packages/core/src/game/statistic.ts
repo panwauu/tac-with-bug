@@ -67,23 +67,23 @@ export function statisticAnalyseAction(
   // cards
   const cardTitle = cardsBefore.players[(move[0] + (teufelFlag ? 1 : 0)) % cardsBefore.players.length][move[1]]
   if (!cardTitle.includes('-')) {
-    if (move[2] !== 'tauschen') {
+    if (move[2] === 'tauschen') {
+      statistic[nPlayer].cards['total'][2] += 1
+    } else {
       statistic[nPlayer].cards['total'][0] += 1
       if (move[2] !== 'abwerfen') {
         statistic[nPlayer].cards['total'][1] += 1
       }
-    } else {
-      statistic[nPlayer].cards['total'][2] += 1
     }
 
     if (isTrackedCard(cardTitle, statistic[nPlayer].cards)) {
-      if (move[2] !== 'tauschen') {
+      if (move[2] === 'tauschen') {
+        statistic[nPlayer].cards[cardTitle][2] += 1
+      } else {
         statistic[nPlayer].cards[cardTitle][0] += 1
         if (move[2] !== 'abwerfen') {
           statistic[nPlayer].cards[cardTitle][1] += 1
         }
-      } else {
-        statistic[nPlayer].cards[cardTitle][2] += 1
       }
     }
   }

@@ -46,9 +46,9 @@ function countSpecialCards(cards: GameStatisticCardsType | undefined) {
 
   for (const [key, value] of Object.entries(cards)) {
     if (key !== 'total') {
-      ;[0, 1, 2].forEach((i) => {
+      ;for (const i of [0, 1, 2]) {
         arr[i] += value[i]
-      })
+      }
     }
   }
   return arr

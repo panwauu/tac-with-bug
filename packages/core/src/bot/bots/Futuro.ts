@@ -108,10 +108,10 @@ function expandNode(node: EndNode): EndNode[] {
     .filter((m) => m.length === 3 || !node.state.cardsWithMoves[m[1]].title.includes('-') || !node.forbiddenBalls.includes(m[2]))
 
   // Filter moves from the same card as they are redundant
-  const duplicatedCardIndices = node.state.cardsWithMoves
+  const duplicatedCardIndices = new Set(node.state.cardsWithMoves
     .map((_, i) => i)
-    .filter((i) => node.state.cardsWithMoves.map((c) => c.title).indexOf(node.state.cardsWithMoves[i].title) !== i)
-  moves = moves.filter((m) => !duplicatedCardIndices.includes(m[1]))
+    .filter((i) => node.state.cardsWithMoves.map((c) => c.title).indexOf(node.state.cardsWithMoves[i].title) !== i))
+  moves = moves.filter((m) => !duplicatedCardIndices.has(m[1]))
 
   // Filter moves where the ball is moved from house
   moves = moves.reduce((filteredMoves, m) => {

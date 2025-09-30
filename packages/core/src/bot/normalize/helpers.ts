@@ -17,14 +17,14 @@ export function reorderArray<T>(array: T[], order: number[], revertFlag?: boolea
     throw new Error('Order has to be the same length as the array to be ordered')
   }
   for (let i = 0; i < array.length; i++) {
-    if (!order.some((o) => o === i)) {
+    if (!order.includes(i)) {
       throw new Error(`Order has to contain each element in array: index ${i} missing`)
     }
   }
 
   if (revertFlag === true) {
-    return Array.from(new Array(array.length).keys())
-      .sort((a, b) => order[a] - order[b])
+    return Array.from(Array.from({ length: array.length }).keys())
+      .toSorted((a, b) => order[a] - order[b])
       .map((i) => array[i])
   }
 

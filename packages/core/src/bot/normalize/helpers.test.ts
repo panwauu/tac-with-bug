@@ -49,17 +49,17 @@ describe('Test helper functions', () => {
   })
 
   test('Array should be ordered for random array', () => {
-    const order = Array.from(Array(10).keys()).sort(() => {
+    const order = Array.from(Array.from({ length: 10 }).keys()).toSorted(() => {
       return Math.random() - 0.5
     })
-    expect(reorderArray(Array.from(Array(10).keys()), order)).toEqual(order)
+    expect(reorderArray(Array.from(Array.from({ length: 10 }).keys()), order)).toEqual(order)
   })
 
   test('Order Array should be reversible for random array and random order', () => {
-    const array = Array(10)
+    const array = Array.from({ length: 10 })
       .fill(0)
       .map(() => Math.random())
-    const order = Array.from(Array(array.length).keys()).sort(() => {
+    const order = Array.from(Array.from({ length: array.length }).keys()).toSorted(() => {
       return Math.random() - 0.5
     })
     expect(reorderArray(reorderArray(array, order), order, true)).toEqual(array)
