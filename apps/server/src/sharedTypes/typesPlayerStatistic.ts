@@ -2,11 +2,6 @@ import type { HofReason } from './typesHof'
 
 export interface PlayerFrontendStatistic {
   history: ('won' | 'lost' | 'coop' | 'aborted' | 'running')[]
-  players: {
-    mostFrequent: string
-    bestPartner: string
-    worstEnemy: string
-  }
   table: number[]
   gamesDistribution: GamesDistributionData
   subscriber: boolean

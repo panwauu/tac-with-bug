@@ -237,7 +237,6 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
 
   return {
     history: stat.wl.lastGamesHistory,
-    players: findPlayersFromStat(stat.wl),
     table:
       stat.wl.nGamesCoopWon + stat.wl.nGamesCoopAborted + stat.wl.nGamesLost4 + stat.wl.nGamesLost6 + stat.wl.nGamesWon4 + stat.wl.nGamesWon6 === 0
         ? [0, 0, 0, 0, 0, 0, 0]
@@ -291,41 +290,6 @@ function countTradedSpecialCards(stat: any) {
     }
   }
   return total
-}
-
-function findPlayersFromStat(wl: tStatistic.PlayerWLStatistic) {
-  const res = {
-    mostFrequent: '',
-    bestPartner: '',
-    worstEnemy: '',
-  }
-
-  if (Object.keys(wl.people).length === 0) {
-    return res
-  }
-
-  const keys = Object.keys(wl.people)
-  for (const key of keys) {
-    if (res.mostFrequent === '' || wl.people[key][4] > wl.people[res.mostFrequent][4]) {
-      res.mostFrequent = key
-    }
-
-    if (
-      (res.bestPartner === '' && wl.people[key][0] > 0) ||
-      (wl.people[key][0] > 0 && wl.people[key][1] / wl.people[key][0] > wl.people[res.bestPartner][1] / wl.people[res.bestPartner][0])
-    ) {
-      res.bestPartner = key
-    }
-
-    if (
-      (res.worstEnemy === '' && wl.people[key][2] > 0) ||
-      (wl.people[key][2] > 0 && wl.people[key][3] / wl.people[key][2] < wl.people[res.worstEnemy][3] / wl.people[res.worstEnemy][2])
-    ) {
-      res.worstEnemy = key
-    }
-  }
-
-  return res
 }
 
 function getUserNetworkFromGamesNodes(games: GameForPlay[]): tStatistic.UserNetworkNode[] {
