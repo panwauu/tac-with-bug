@@ -33,7 +33,10 @@
           :blocked-by-moderation-until="userBlockedUntil"
           :second-person="true"
         />
-        <FriendButton :username="username" />
+        <FriendButton
+          :username="username"
+          v-if="isLoggedIn"
+        />
       </div>
     </div>
     <Tabs v-model:value="tabValueToName">
@@ -75,6 +78,7 @@ import router from '@/router/index'
 import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue'
 import { useResizeObserver } from '@vueuse/core'
 import BlockedByModerationMessage from '@/components/BlockedByModerationMessage.vue'
+import { isLoggedIn } from '@/services/useUser'
 
 const { t } = useI18n()
 
