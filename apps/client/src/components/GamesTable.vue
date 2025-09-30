@@ -5,7 +5,7 @@
     :value="games"
     :lazy="true"
     data-key="id"
-    :selection-mode="username === loggedInUser ? 'multiple' : undefined"
+    :selection-mode="'multiple'"
     class="p-datatable-sm gamesTable p-card"
     sort-field="created"
     :sort-order="-1"
