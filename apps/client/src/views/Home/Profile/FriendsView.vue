@@ -1,11 +1,11 @@
 <template>
   <div>
     <DataTable
+      v-model:first="first"
       :value="friendsForTable"
       :paginator="friendsForTable.length > 10"
       :rows="rows"
-      v-model:first="first"
-      :rowsPerPageOptions="[5, 10, 20, 50]"
+      :rows-per-page-options="[5, 10, 20, 50]"
       :sort-field="'totalGames'"
       :sort-order="-1"
     >
@@ -36,8 +36,8 @@
       >
         <template #body="slotProps">
           <div
-            @click="showPopover($event, slotProps.data.username)"
             class="clickable"
+            @click="showPopover($event, slotProps.data.username)"
           >
             {{ slotProps.data.totalGames }}
             <i class="pi pi-info-circle" />

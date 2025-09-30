@@ -77,16 +77,14 @@ const chartOptions = {
             return ''
           }
 
-          if (context[0].dataset.data.length === 7) {
-            let index = 0
+          if (context[0].dataset.data.length === chartData.value.datasets[1].data.length) {
+            let index = context[0].dataIndex - 3
             if (context[0].dataIndex <= 1) {
               index = 0
             } else if (context[0].dataIndex <= 3) {
               index = 1
             } else if (context[0].dataIndex <= 5) {
               index = 2
-            } else {
-              index = context[0].dataIndex - 3
             }
             return chartData.value.labels[index]
           }

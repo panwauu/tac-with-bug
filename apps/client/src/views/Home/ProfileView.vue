@@ -34,8 +34,8 @@
           :second-person="true"
         />
         <FriendButton
-          :username="username"
           v-if="isLoggedIn"
+          :username="username"
         />
       </div>
     </div>
