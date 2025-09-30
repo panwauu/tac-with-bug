@@ -1,7 +1,11 @@
 import type { HofReason } from './typesHof'
 
 export interface PlayerFrontendStatistic {
-  history: ('won' | 'lost' | 'coop' | 'aborted' | 'running')[]
+  /**
+   * All games of a player from oldest to newest
+   * 'w' = won, 'l' = lost, 'c' = coop, 'a' = aborted, 'r' = running
+   */
+  history: ('w' | 'l' | 'c' | 'a' | 'r')[]
   table: number[]
   gamesDistribution: GamesDistributionData
   subscriber: boolean

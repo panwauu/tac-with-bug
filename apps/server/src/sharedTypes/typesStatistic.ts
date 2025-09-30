@@ -15,7 +15,7 @@ export interface PlayerWLStatistic {
   nGamesRunning: number
   ballsInOwnTeam: number
   ballsInEnemy: number
-  lastGamesHistory: ('won' | 'lost' | 'coop' | 'aborted' | 'running')[]
+  gamesHistory: ('w' | 'l' | 'c' | 'a' | 'r')[]
   people: PeopleOjectType
   coopBest4: number
   coopBest6: number

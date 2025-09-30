@@ -10,8 +10,6 @@ import { isSubscribed } from '../paypal/paypal'
 import { getUser } from './user'
 import { isHofMember } from './hof'
 
-const lastGamesHistoryLength = 10
-
 function intializePlayerStatistic(): tStatistic.PlayerStatistic {
   return {
     ...initalizeStatistic(1)[0],
@@ -27,7 +25,7 @@ function intializePlayerStatistic(): tStatistic.PlayerStatistic {
         nGamesRunning: 0,
         ballsInOwnTeam: 0,
         ballsInEnemy: 0,
-        lastGamesHistory: [],
+        gamesHistory: [],
         people: {},
         coopBest4: 1000,
         coopBest6: 1000,
@@ -45,7 +43,7 @@ function addWLStatisticAborted(playerStatistic: tStatistic.PlayerStatistic, game
   } else {
     playerStatistic.wl.nGamesAborted += 1
   }
-  addToGamesHistory(playerStatistic, 'aborted')
+  addToGamesHistory(playerStatistic, 'a')
 }
 
 function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number) {
@@ -68,7 +66,7 @@ function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: G
     }
   }
 
-  addToGamesHistory(playerStatistic, 'coop')
+  addToGamesHistory(playerStatistic, 'c')
 }
 
 function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number) {
@@ -79,7 +77,7 @@ function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game
   } else {
     game.game.winningTeams[ownTeamIndex] ? (playerStatistic.wl.nGamesWon6 += 1) : (playerStatistic.wl.nGamesLost6 += 1)
   }
-  addToGamesHistory(playerStatistic, game.game.winningTeams[ownTeamIndex] ? 'won' : 'lost')
+  addToGamesHistory(playerStatistic, game.game.winningTeams[ownTeamIndex] ? 'w' : 'l')
 
   // ballsInOwnTeam - ballsInEnemy
   playerStatistic.wl.ballsInOwnTeam += game.game.balls
@@ -119,7 +117,7 @@ export function addWLStatistic(playerStatistic: tStatistic.PlayerStatistic, game
 
   if (game.running) {
     playerStatistic.wl.nGamesRunning += 1
-    return addToGamesHistory(playerStatistic, 'running')
+    return addToGamesHistory(playerStatistic, 'r')
   }
 
   if (game.game.coop) {
@@ -129,10 +127,8 @@ export function addWLStatistic(playerStatistic: tStatistic.PlayerStatistic, game
   return addWLStatisticWonLost(playerStatistic, game, nPlayer)
 }
 
-function addToGamesHistory(playerStatistic: tStatistic.PlayerStatistic, status: 'won' | 'lost' | 'coop' | 'aborted' | 'running') {
-  playerStatistic.wl.lastGamesHistory = playerStatistic.wl.lastGamesHistory
-    .slice(Math.max(0, playerStatistic.wl.lastGamesHistory.length + 1 - lastGamesHistoryLength))
-    .concat([status])
+function addToGamesHistory(playerStatistic: tStatistic.PlayerStatistic, status: 'w' | 'l' | 'c' | 'a' | 'r') {
+  playerStatistic.wl.gamesHistory.push(status)
 }
 
 function addActionStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: tStatistic.GameStatistic) {
@@ -236,7 +232,7 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
   const subscribed = sub.isErr() ? false : sub.value
 
   return {
-    history: stat.wl.lastGamesHistory,
+    history: stat.wl.gamesHistory,
     table:
       stat.wl.nGamesCoopWon + stat.wl.nGamesCoopAborted + stat.wl.nGamesLost4 + stat.wl.nGamesLost6 + stat.wl.nGamesWon4 + stat.wl.nGamesWon6 === 0
         ? [0, 0, 0, 0, 0, 0, 0]
