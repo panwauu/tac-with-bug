@@ -732,10 +732,6 @@
     "abortionrate": "Упорство",
     "abortionrateExp": "Доля игр, сыгранных до конца и не заброшенных",
     "NetworkGraph": {
-      "togetherWith": "{nGames} игр, сыгранных вместе с {username} | {nGames} игра, сыгранная вместе с {username} | Сыграли в игры {nGames} вместе с {username}",
-      "wonOf": "Из них {nGames} выиграли",
-      "playedAgainst": "{nGames} игр против {username} | {nGames} игра против {username} | Сыграно {nGames} игр против {username}",
-      "team": "{nGames} игр в командном режиме | {nGames} игр в командном режиме | {nGames} игр в командном режиме",
       "rescale": "Масштабировать",
       "reset": "Сброс"
     },
@@ -769,7 +765,16 @@
       "tournamentTitle": "Турнир",
       "tournamentResult": "Результат"
     },
-    "registeredOn": "Пользователь с:"
+    "registeredOn": "Пользователь с:",
+    "StatsWithPlayer": {
+      "gamesPlayedCoop": "Team-TAC Games играли вместе",
+      "gamesPlayedTogether": "Играть в команде",
+      "gamesTogetherTotal": "Игры, сыгранные вместе в общей сложности",
+      "gamesWonTogether": "Игры выиграли вместе",
+      "playedAgainst": "Игры играли друг против друга",
+      "successRateAgainst": "Скорость победы против {пользователя} (сравнение с {пользователем} среднее)",
+      "successRateTogether": "Уровень побед в команде (сравнение с {пользователем} среднее)"
+    }
   },
   "Tutorial": {
     "0": {

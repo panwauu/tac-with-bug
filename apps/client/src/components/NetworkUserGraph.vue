@@ -8,6 +8,8 @@
       >
         <StatsWithPlayer
           :username="selectedUser.name"
+          :username-to-commpare-to="props.username"
+          :win-rate-of-compare-user="props.playerStats.table[0]"
           :stats="selectedUser.data"
         />
       </div>
@@ -39,20 +41,20 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import Button from 'primevue/button'
 import ButtonGroup from 'primevue/buttongroup'
-
 import { onUnmounted, onMounted, watch, ref } from 'vue'
 import cytoscape from 'cytoscape'
 import StatsWithPlayer from './StatsWithPlayer.vue'
+import type { PlayerFrontendStatistic } from '@/generatedClient'
 
+const { t } = useI18n()
 const props = defineProps<{
   networkData: any
   peopleData: any
   username: string
   loading: boolean
+  playerStats: PlayerFrontendStatistic
 }>()
 
 const layout = {

@@ -5,6 +5,7 @@
       :username="username"
       :people-data="peopleData"
       :loading="loading"
+      :player-stats="props.playerStats"
       style="width: 100%"
     />
   </div>
@@ -13,10 +14,10 @@
 <script setup lang="ts">
 import NetworkUserGraph from '@/components/NetworkUserGraph.vue'
 import { ref, watch } from 'vue'
-import { DefaultService as Service } from '@/generatedClient/index.ts'
+import { DefaultService as Service, type PlayerFrontendStatistic } from '@/generatedClient/index.ts'
 import router from '@/router/index'
 
-const props = defineProps<{ username: string }>()
+const props = defineProps<{ username: string; playerStats: PlayerFrontendStatistic }>()
 
 const loading = ref(true)
 const networkData = ref({ edges: [] as any[], nodes: [] as any[] })

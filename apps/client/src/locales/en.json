@@ -732,10 +732,6 @@
     "abortionrate": "Perseverance",
     "abortionrateExp": "Proportion of games that were played to the end and not abandoned",
     "NetworkGraph": {
-      "togetherWith": "{nGames} games played together with {username} | {nGames} game played together with {username} | Played {nGames} games together with {username}",
-      "wonOf": "Of these, {nGames} won",
-      "playedAgainst": "{nGames} games played against {username} | {nGames} game played against {username} | Played {nGames} games against {username}",
-      "team": "{nGames} games played in team mode | {nGames} game played in team mode | {nGames} games played in team mode",
       "rescale": "Rescale",
       "reset": "Reset"
     },
@@ -769,7 +765,16 @@
       "tournamentTitle": "Tournament",
       "tournamentResult": "Result"
     },
-    "registeredOn": "User since:"
+    "registeredOn": "User since:",
+    "StatsWithPlayer": {
+      "gamesPlayedCoop": "Team-Tac games played together",
+      "gamesPlayedTogether": "Games played in one team",
+      "gamesTogetherTotal": "Total games played",
+      "gamesWonTogether": "Games won together",
+      "playedAgainst": "Games played against each other",
+      "successRateAgainst": "Victory rate against {user} (comparison to {user} average)",
+      "successRateTogether": "Victory rate as a team (comparison to {user} average)"
+    }
   },
   "Tutorial": {
     "0": {

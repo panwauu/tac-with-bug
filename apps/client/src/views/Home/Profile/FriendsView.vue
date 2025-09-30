@@ -58,6 +58,8 @@
       <div v-if="popoverUsername != null && popoverStats != null">
         <StatsWithPlayer
           :username="popoverUsername"
+          :username-to-commpare-to="props.username"
+          :win-rate-of-compare-user="props.playerStats.table[0]"
           :stats="popoverStats"
         />
       </div>
