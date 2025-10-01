@@ -103,27 +103,29 @@ export function checkCardsAndDeal(game: Game) {
   }
 }
 
+export const cardCount4erTac = {
+  '1': 9,
+  '2': 7,
+  '3': 7,
+  '4': 7,
+  '5': 7,
+  '6': 7,
+  '7': 8,
+  '8': 7,
+  '9': 7,
+  '10': 7,
+  '12': 7,
+  '13': 9,
+  trickser: 7,
+  tac: 4,
+  krieger: 1,
+  engel: 1,
+  teufel: 1,
+  narr: 1,
+}
+
 export function createCardDeck(nPlayers: number, meisterVersion: boolean): Array<tCard.CardType> {
-  const cardCount = {
-    '1': 9,
-    '2': 7,
-    '3': 7,
-    '4': 7,
-    '5': 7,
-    '6': 7,
-    '7': 8,
-    '8': 7,
-    '9': 7,
-    '10': 7,
-    '12': 7,
-    '13': 9,
-    trickser: 7,
-    tac: 4,
-    krieger: 1,
-    engel: 1,
-    teufel: 1,
-    narr: 1,
-  }
+  const cardCount = cloneDeep(cardCount4erTac)
 
   if (nPlayers === 6 && meisterVersion) {
     cardCount['12'] -= 2

@@ -220,6 +220,7 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
     timePlayed: stat.actions.timePlayed,
     nAbgeworfen: stat.actions.nAbgeworfen,
     nAussetzen: stat.actions.nAussetzen,
+    cards: stat.cards,
   }
 }
 

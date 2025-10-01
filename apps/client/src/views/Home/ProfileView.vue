@@ -135,10 +135,16 @@ function createMenu(displayText: boolean): MenuItem[] {
       icon: 'pi pi-fw pi-flag',
       to: { name: 'Profile-Achievements' },
     },
+
     {
       label: displayText ? t('Profile.menuGames') : '',
       icon: 'pi pi-fw pi-table',
       to: { name: 'Profile-Games' },
+    },
+    {
+      label: displayText ? t('Profile.menuCards') : '',
+      icon: 'pi pi-fw pi-calculator',
+      to: { name: 'Profile-Cards' },
     },
     {
       label: displayText ? t('Profile.menuFriends') : '',

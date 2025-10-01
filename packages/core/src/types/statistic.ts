@@ -3,20 +3,20 @@ export interface GameStatistic {
   actions: GameStatisticActionsType
 }
 
+/** Total played / actually used / traded to Partner */
 export interface GameStatisticCardsType {
-  // Total played / actually used / traded to Partner
-  total: [number, number, number]
-  '7': [number, number, number]
-  '13': [number, number, number]
-  '1': [number, number, number]
-  '8': [number, number, number]
-  trickser: [number, number, number]
-  tac: [number, number, number]
-  engel: [number, number, number]
-  teufel: [number, number, number]
-  krieger: [number, number, number]
-  narr: [number, number, number]
-  '4': [number, number, number]
+  total: number[] // [number, number, number] removed because of tsoa
+  '7': number[] // [number, number, number] removed because of tsoa
+  '13': number[] // [number, number, number] removed because of tsoa
+  '1': number[] // [number, number, number] removed because of tsoa
+  '8': number[] // [number, number, number] removed because of tsoa
+  trickser: number[] // [number, number, number] removed because of tsoa
+  tac: number[] // [number, number, number] removed because of tsoa
+  engel: number[] // [number, number, number] removed because of tsoa
+  teufel: number[] // [number, number, number] removed because of tsoa
+  krieger: number[] // [number, number, number] removed because of tsoa
+  narr: number[] // [number, number, number] removed because of tsoa
+  '4': number[] // [number, number, number] removed because of tsoa
 }
 
 export interface GameStatisticActionsType {

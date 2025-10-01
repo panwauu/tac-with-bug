@@ -792,7 +792,14 @@
     "nBallsKickedOwnTeam": "Geworfene Kugeln des eigenen Teams",
     "nBallsKickedSelf": "Eigene Kugeln selbst geworfen",
     "nBallsLost": "Kugeln verloren",
-    "nAbgeworfen": "Karten abgeworfen"
+    "nAbgeworfen": "Karten abgeworfen",
+    "menuCards": "Karten",
+    "CardsView": {
+      "probability": "Warscheinlichkeit",
+      "notSpecialCard": "Nicht-Sonderkarten",
+      "diff": "+/-",
+      "explanation": "Diese Tabelle zeigt die Kartenverteilung die der Spieler über all seine Spiele erhalten hat, sowie die Warscheinlichkeiten der Karten im 4er Tac und die Differenz. Also wie viel öfter der Spieler eine bestimmte Karte bekommt. Unten kann das ganze für die gesamten Nicht-Sonderkarten gesehen werden. Schon nach wenigen Spielen gleicht sich die Kartenverteilung an die Warscheinlichkeiten an."
+    }
   },
   "Tutorial": {
     "0": {

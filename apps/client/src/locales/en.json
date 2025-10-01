@@ -792,7 +792,14 @@
     "worstStreak": "Longest streak of losses",
     "bestStreak": "Longest winning streak",
     "winsharesTitle": "Relative numbers",
-    "winsharesTitleExp": "Only players with at least 5 games together"
+    "winsharesTitleExp": "Only players with at least 5 games together",
+    "CardsView": {
+      "explanation": "This table shows the distribution of cards that the player has received throughout all of their games, as well as the probabilities of the cards in the 4-Tac and the difference. In other words, how much more often the player receives a certain card. Below, you can see the sum for all non-special cards. After just a few games, the distribution of cards evens out to match the probabilities.",
+      "diff": "+/-",
+      "notSpecialCard": "Normal cards",
+      "probability": "Probability"
+    },
+    "menuCards": "Cards"
   },
   "Tutorial": {
     "0": {

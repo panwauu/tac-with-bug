@@ -2,8 +2,72 @@
 
 exports[`Platform PlayerStatistic Test Suite > Should return playerStats of existing player 1`] = `
 {
+  "ballsInEnemy": 7,
+  "ballsInOwnTeam": 8,
   "bestCoop": 130,
   "blockedByModerationUntil": null,
+  "cards": {
+    "1": [
+      25,
+      25,
+      7,
+    ],
+    "13": [
+      15,
+      15,
+      0,
+    ],
+    "4": [
+      16,
+      14,
+      23,
+    ],
+    "7": [
+      40,
+      35,
+      3,
+    ],
+    "8": [
+      29,
+      26,
+      1,
+    ],
+    "engel": [
+      1,
+      1,
+      0,
+    ],
+    "krieger": [
+      0,
+      0,
+      0,
+    ],
+    "narr": [
+      0,
+      0,
+      1,
+    ],
+    "tac": [
+      12,
+      12,
+      1,
+    ],
+    "teufel": [
+      2,
+      2,
+      2,
+    ],
+    "total": [
+      427,
+      373,
+      88,
+    ],
+    "trickser": [
+      16,
+      15,
+      6,
+    ],
+  },
   "gamesDistribution": {
     "aborted": 2,
     "lost4": 0,
@@ -30,6 +94,13 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
   "hof": [
     "verlag",
   ],
+  "nAbgeworfen": 50,
+  "nAussetzen": 19,
+  "nBallsKickedEnemy": 5,
+  "nBallsKickedOwnTeam": 12,
+  "nBallsKickedSelf": 0,
+  "nBallsLost": 4,
+  "nMoves": 391,
   "people": {
     "UserB": [
       0,
@@ -77,6 +148,7 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
     87,
     60,
   ],
+  "timePlayed": 5020,
   "userDescription": "",
   "worstCoop": 192,
 }

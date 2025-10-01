@@ -10,6 +10,7 @@ const ProfileGames = () => import('@/views/Home/Profile/GamesView.vue')
 const ProfileFriends = () => import('@/views/Home/Profile/FriendsView.vue')
 const ProfileAchievements = () => import('@/views/Home/Profile/AchievementsView.vue')
 const ProfileSocials = () => import('@/views/Home/Profile/SocialsView.vue')
+const ProfileCards = () => import('@/views/Home/Profile/CardsView.vue')
 const Tournament = () => import('@/views/Home/TournamentView.vue')
 const TournamentsOverview = () => import('@/views/Home/Tournament/TournamentsOverview.vue')
 const PublicTournament = () => import('@/views/Home/Tournament/PublicTournament.vue')
@@ -86,6 +87,12 @@ const routes = [
             name: 'Profile-Games',
             props: true,
             component: ProfileGames,
+          },
+          {
+            path: 'cards',
+            name: 'Profile-Cards',
+            props: true,
+            component: ProfileCards,
           },
           {
             path: 'friends',

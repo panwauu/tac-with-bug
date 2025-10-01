@@ -1,5 +1,21 @@
-import type { GameStatisticActionsType, GameStatisticCardsType } from '@repo/core/types'
+import type { GameStatisticActionsType } from '@repo/core/types'
 import type { HofReason } from './typesHof'
+
+/** Copied for tsoa - Total played / actually used / traded to Partner */
+export interface GameStatisticCardsType {
+  total: number[] // [number, number, number] removed because of tsoa
+  '7': number[] // [number, number, number] removed because of tsoa
+  '13': number[] // [number, number, number] removed because of tsoa
+  '1': number[] // [number, number, number] removed because of tsoa
+  '8': number[] // [number, number, number] removed because of tsoa
+  trickser: number[] // [number, number, number] removed because of tsoa
+  tac: number[] // [number, number, number] removed because of tsoa
+  engel: number[] // [number, number, number] removed because of tsoa
+  teufel: number[] // [number, number, number] removed because of tsoa
+  krieger: number[] // [number, number, number] removed because of tsoa
+  narr: number[] // [number, number, number] removed because of tsoa
+  '4': number[] // [number, number, number] removed because of tsoa
+}
 
 export interface PlayerFrontendStatistic {
   /**
@@ -27,6 +43,7 @@ export interface PlayerFrontendStatistic {
   timePlayed: number
   nAbgeworfen: number
   nAussetzen: number
+  cards: GameStatisticCardsType
 }
 
 export interface GamesDistributionData {
