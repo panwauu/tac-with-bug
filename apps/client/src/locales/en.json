@@ -797,7 +797,8 @@
       "explanation": "This table shows the distribution of cards that the player has received throughout all of their games, as well as the probabilities of the cards in the 4-Tac and the difference. In other words, how much more often the player receives a certain card. Below, you can see the sum for all non-special cards. After just a few games, the distribution of cards evens out to match the probabilities.",
       "diff": "+/-",
       "notSpecialCard": "Normal cards",
-      "probability": "Probability"
+      "probability": "Probability",
+      "noCards": "No games so far"
     },
     "menuCards": "Cards"
   },

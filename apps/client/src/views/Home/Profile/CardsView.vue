@@ -1,44 +1,49 @@
 <template>
   <div>
-    <small>
-      {{ t('Profile.CardsView.explanation') }}
-      Diese Tabelle zeigt die Kartenverteilung die der Spieler über all seine Spiele erhalten hat, sowie die Warscheinlichkeiten der Karten im 4er Tac und die Differenz. Also
-      wie viel öfter der Spieler eine bestimmte Karte bekommt. Unten kann das ganze für die gesamten Nicht-Sonderkarten gesehen werden. Schon nach wenigen Spielen gleicht sich
-      die Kartenverteilung an die Warscheinlichkeiten an.
-    </small>
-    <DataTable :value="tableData">
-      <Column
-        field="card"
-        :header="t('Game.Statistic.CardsTable.card')"
-      >
-        <template #body="slotProps">
-          <div :class="`tac ${redText(slotProps.data.card) ? 'red' : ''}`">{{ cardName(slotProps.data.card) }}</div>
-        </template>
-      </Column>
-      <Column
-        field="shareUser"
-        :header="username"
-      >
-        <template #body="slotProps">
-          <div>{{ percentageFormatter.format(slotProps.data.shareUser) }}</div>
-        </template>
-      </Column>
-      <Column
-        field="probability"
-        :header="t('Profile.CardsView.probability')"
-      >
-        <template #body="slotProps">
-          <div>{{ percentageFormatter.format(slotProps.data.probability) }}</div>
-        </template>
-      </Column>
-      <Column :header="t('Profile.CardsView.diff')">
-        <template #body="slotProps">
-          <div :class="{ 'diff-up': slotProps.data.shareUser - slotProps.data.probability > 0, 'diff-down': slotProps.data.shareUser - slotProps.data.probability < 0 }">
-            {{ (slotProps.data.shareUser - slotProps.data.probability > 0 ? '+' : '') + percentageFormatter.format(slotProps.data.shareUser - slotProps.data.probability) }}
-          </div>
-        </template>
-      </Column>
-    </DataTable>
+    <div
+      v-if="cardsTotal === 0"
+      style="margin: 40px 0"
+    >
+      {{ t('Profile.CardsView.noCards') }}
+    </div>
+    <template v-else>
+      <small>
+        {{ t('Profile.CardsView.explanation') }}
+      </small>
+      <DataTable :value="tableData">
+        <Column
+          field="card"
+          :header="t('Game.Statistic.CardsTable.card')"
+        >
+          <template #body="slotProps">
+            <div :class="`tac ${redText(slotProps.data.card) ? 'red' : ''}`">{{ cardName(slotProps.data.card) }}</div>
+          </template>
+        </Column>
+        <Column
+          field="shareUser"
+          :header="username"
+        >
+          <template #body="slotProps">
+            <div>{{ percentageFormatter.format(slotProps.data.shareUser) }}</div>
+          </template>
+        </Column>
+        <Column
+          field="probability"
+          :header="t('Profile.CardsView.probability')"
+        >
+          <template #body="slotProps">
+            <div>{{ percentageFormatter.format(slotProps.data.probability) }}</div>
+          </template>
+        </Column>
+        <Column :header="t('Profile.CardsView.diff')">
+          <template #body="slotProps">
+            <div :class="{ 'diff-up': slotProps.data.shareUser - slotProps.data.probability > 0, 'diff-down': slotProps.data.shareUser - slotProps.data.probability < 0 }">
+              {{ (slotProps.data.shareUser - slotProps.data.probability > 0 ? '+' : '') + percentageFormatter.format(slotProps.data.shareUser - slotProps.data.probability) }}
+            </div>
+          </template>
+        </Column>
+      </DataTable>
+    </template>
   </div>
 </template>
 
@@ -69,6 +74,8 @@ function cardName(title: string) {
   }
   return title
 }
+
+const cardsTotal = props.playerStats.cards.total[0]
 
 const tableData = computed(() => {
   const cardsTotal = props.playerStats.cards.total[0]
