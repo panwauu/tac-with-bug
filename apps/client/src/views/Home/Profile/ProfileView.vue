@@ -20,17 +20,19 @@
                     class="games-with clickable"
                     @click="showPopover($event, mostFrequent)"
                   >
-                    <div class="games-with-number">
-                      {{ props.playerStats.people[mostFrequent][4] }}
-                      <i
-                        class="pi pi-info-circle"
-                        style="margin-left: 5px"
+                    <template v-if="mostFrequent != null">
+                      <div class="games-with-number">
+                        {{ props.playerStats.people[mostFrequent][4] }}
+                        <i
+                          class="pi pi-info-circle"
+                          style="margin-left: 5px"
+                        />
+                      </div>
+                      <PlayerWithPicture
+                        :username="mostFrequent"
+                        :name-first="false"
                       />
-                    </div>
-                    <PlayerWithPicture
-                      :username="mostFrequent"
-                      :name-first="false"
-                    />
+                    </template>
                   </td>
                 </tr>
                 <tr>
@@ -39,17 +41,19 @@
                     class="games-with clickable"
                     @click="showPopover($event, bestTeammate)"
                   >
-                    <div class="games-with-number">
-                      {{ props.playerStats.people[bestTeammate][1] }}
-                      <i
-                        class="pi pi-info-circle"
-                        style="margin-left: 5px"
+                    <template v-if="bestTeammate != null">
+                      <div class="games-with-number">
+                        {{ props.playerStats.people[bestTeammate][1] }}
+                        <i
+                          class="pi pi-info-circle"
+                          style="margin-left: 5px"
+                        />
+                      </div>
+                      <PlayerWithPicture
+                        :username="bestTeammate"
+                        :name-first="false"
                       />
-                    </div>
-                    <PlayerWithPicture
-                      :username="bestTeammate"
-                      :name-first="false"
-                    />
+                    </template>
                   </td>
                 </tr>
                 <tr>
@@ -58,17 +62,19 @@
                     class="games-with clickable"
                     @click="showPopover($event, worstEnemy)"
                   >
-                    <div class="games-with-number">
-                      {{ props.playerStats.people[worstEnemy][2] - props.playerStats.people[worstEnemy][3] }}
-                      <i
-                        class="pi pi-info-circle"
-                        style="margin-left: 5px"
+                    <template v-if="worstEnemy != null">
+                      <div class="games-with-number">
+                        {{ props.playerStats.people[worstEnemy][2] - props.playerStats.people[worstEnemy][3] }}
+                        <i
+                          class="pi pi-info-circle"
+                          style="margin-left: 5px"
+                        />
+                      </div>
+                      <PlayerWithPicture
+                        :username="worstEnemy"
+                        :name-first="false"
                       />
-                    </div>
-                    <PlayerWithPicture
-                      :username="worstEnemy"
-                      :name-first="false"
-                    />
+                    </template>
                   </td>
                 </tr>
               </tbody>
@@ -89,19 +95,23 @@
                     class="games-with clickable"
                     @click="showPopover($event, bestTeammateByShare)"
                   >
-                    <div class="games-with-number">
-                      {{
-                        ((props.playerStats.people[bestTeammateByShare][1] / (props.playerStats.people[bestTeammateByShare][0] || Number.MAX_SAFE_INTEGER)) * 100).toFixed(0)
-                      }}%
-                      <i
-                        class="pi pi-info-circle"
-                        style="margin-left: 5px"
+                    <template v-if="bestTeammateByShare != null">
+                      <div class="games-with-number">
+                        {{
+                          ((props.playerStats.people[bestTeammateByShare][1] / (props.playerStats.people[bestTeammateByShare][0] || Number.MAX_SAFE_INTEGER)) * 100).toFixed(
+                            0
+                          )
+                        }}%
+                        <i
+                          class="pi pi-info-circle"
+                          style="margin-left: 5px"
+                        />
+                      </div>
+                      <PlayerWithPicture
+                        :username="bestTeammateByShare"
+                        :name-first="false"
                       />
-                    </div>
-                    <PlayerWithPicture
-                      :username="bestTeammateByShare"
-                      :name-first="false"
-                    />
+                    </template>
                   </td>
                 </tr>
                 <tr>
@@ -110,23 +120,25 @@
                     class="games-with clickable"
                     @click="showPopover($event, worstEnemyByShare)"
                   >
-                    <div class="games-with-number">
-                      {{
-                        (
-                          ((props.playerStats.people[worstEnemyByShare][2] - props.playerStats.people[worstEnemyByShare][3]) /
-                            (props.playerStats.people[worstEnemyByShare][2] || Number.MAX_SAFE_INTEGER)) *
-                          100
-                        ).toFixed(0)
-                      }}%
-                      <i
-                        class="pi pi-info-circle"
-                        style="margin-left: 5px"
+                    <template v-if="worstEnemyByShare != null">
+                      <div class="games-with-number">
+                        {{
+                          (
+                            ((props.playerStats.people[worstEnemyByShare][2] - props.playerStats.people[worstEnemyByShare][3]) /
+                              (props.playerStats.people[worstEnemyByShare][2] || Number.MAX_SAFE_INTEGER)) *
+                            100
+                          ).toFixed(0)
+                        }}%
+                        <i
+                          class="pi pi-info-circle"
+                          style="margin-left: 5px"
+                        />
+                      </div>
+                      <PlayerWithPicture
+                        :username="worstEnemyByShare"
+                        :name-first="false"
                       />
-                    </div>
-                    <PlayerWithPicture
-                      :username="worstEnemyByShare"
-                      :name-first="false"
-                    />
+                    </template>
                   </td>
                 </tr>
               </tbody>
@@ -192,17 +204,19 @@
                     class="games-with clickable"
                     @click="showPopover($event, mostFrequentCoop)"
                   >
-                    <div class="games-with-number">
-                      {{ props.playerStats.people[mostFrequentCoop][4] - props.playerStats.people[mostFrequentCoop][2] - props.playerStats.people[mostFrequentCoop][0] }}
-                      <i
-                        class="pi pi-info-circle"
-                        style="margin-left: 5px"
+                    <template v-if="mostFrequentCoop != null">
+                      <div class="games-with-number">
+                        {{ props.playerStats.people[mostFrequentCoop][4] - props.playerStats.people[mostFrequentCoop][2] - props.playerStats.people[mostFrequentCoop][0] }}
+                        <i
+                          class="pi pi-info-circle"
+                          style="margin-left: 5px"
+                        />
+                      </div>
+                      <PlayerWithPicture
+                        :username="mostFrequentCoop"
+                        :name-first="false"
                       />
-                    </div>
-                    <PlayerWithPicture
-                      :username="mostFrequentCoop"
-                      :name-first="false"
-                    />
+                    </template>
                   </td>
                 </tr>
                 <tr class="table-3-split-height">
@@ -327,61 +341,72 @@ const props = defineProps<{ username: string; playerStats: PlayerFrontendStatist
 const carouselOptions = ['games', 'winshares', 'streaks', 'coop', 'actions', 'balls', 'oopsies']
 
 // Get the biggest element e[0] in props.playersStats.players
-const mostFrequent = Object.keys(props.playerStats.people).reduce((prevKey, currentKey) => {
-  return props.playerStats.people[currentKey][0] > props.playerStats.people[prevKey][0] ? currentKey : prevKey
-})
-const bestTeammate = Object.keys(props.playerStats.people).reduce((prevKey, currentKey) => {
-  return props.playerStats.people[currentKey][1] > props.playerStats.people[prevKey][1] ? currentKey : prevKey
-})
-const bestTeammateByShare = Object.keys(props.playerStats.people)
+const mostFrequent: string | undefined = Object.keys(props.playerStats.people).reduce(
+  (prevKey, currentKey) => {
+    if (prevKey != null) return props.playerStats.people[currentKey][0] > props.playerStats.people[prevKey][0] ? currentKey : prevKey
+    return props.playerStats.people[currentKey][0] > 0 ? currentKey : prevKey
+  },
+  undefined as string | undefined
+)
+
+const bestTeammate: string | undefined = Object.keys(props.playerStats.people).reduce(
+  (prevKey, currentKey) => {
+    if (prevKey != null) return props.playerStats.people[currentKey][1] > props.playerStats.people[prevKey][1] ? currentKey : prevKey
+    return props.playerStats.people[currentKey][1] > 0 ? currentKey : prevKey
+  },
+  undefined as string | undefined
+)
+
+const bestTeammateByShare: string | undefined = Object.keys(props.playerStats.people)
   .filter((key) => props.playerStats.people[key][0] >= 5)
-  .reduce((prevKey, currentKey) => {
-    return props.playerStats.people[currentKey][1] / (props.playerStats.people[currentKey][0] || Number.MAX_SAFE_INTEGER) >
-      props.playerStats.people[prevKey][1] / (props.playerStats.people[prevKey][0] || Number.MAX_SAFE_INTEGER)
-      ? currentKey
-      : prevKey
-  })
-const worstEnemy = Object.keys(props.playerStats.people).reduce((prevKey, currentKey) => {
-  return props.playerStats.people[currentKey][2] - props.playerStats.people[currentKey][3] > props.playerStats.people[prevKey][2] - props.playerStats.people[prevKey][3]
-    ? currentKey
-    : prevKey
-})
-const worstEnemyByShare = Object.keys(props.playerStats.people)
+  .reduce(
+    (prevKey, currentKey) => {
+      if (prevKey != null)
+        return props.playerStats.people[currentKey][1] / (props.playerStats.people[currentKey][0] || Number.MAX_SAFE_INTEGER) >
+          props.playerStats.people[prevKey][1] / (props.playerStats.people[prevKey][0] || Number.MAX_SAFE_INTEGER)
+          ? currentKey
+          : prevKey
+      return props.playerStats.people[currentKey][0] > 0 ? currentKey : prevKey
+    },
+    undefined as string | undefined
+  )
+
+const worstEnemy: string | undefined = Object.keys(props.playerStats.people).reduce(
+  (prevKey, currentKey) => {
+    if (prevKey != null)
+      return props.playerStats.people[currentKey][2] - props.playerStats.people[currentKey][3] > props.playerStats.people[prevKey][2] - props.playerStats.people[prevKey][3]
+        ? currentKey
+        : prevKey
+    return props.playerStats.people[currentKey][2] - props.playerStats.people[currentKey][3] > 0 ? currentKey : prevKey
+  },
+  undefined as string | undefined
+)
+
+const worstEnemyByShare: string | undefined = Object.keys(props.playerStats.people)
   .filter((key) => props.playerStats.people[key][2] >= 5)
-  .reduce((prevKey, currentKey) => {
-    return (props.playerStats.people[currentKey][2] - props.playerStats.people[currentKey][3]) / (props.playerStats.people[currentKey][2] || Number.MAX_SAFE_INTEGER) >
-      (props.playerStats.people[prevKey][2] - props.playerStats.people[prevKey][3]) / (props.playerStats.people[prevKey][2] || Number.MAX_SAFE_INTEGER)
-      ? currentKey
-      : prevKey
-  })
-const mostFrequentCoop = Object.keys(props.playerStats.people).reduce((prevKey, currentKey) => {
-  return props.playerStats.people[currentKey][4] - props.playerStats.people[currentKey][2] - props.playerStats.people[currentKey][0] >
-    props.playerStats.people[prevKey][4] - props.playerStats.people[prevKey][2] - props.playerStats.people[prevKey][0]
-    ? currentKey
-    : prevKey
-})
+  .reduce(
+    (prevKey, currentKey) => {
+      if (prevKey != null)
+        return (props.playerStats.people[currentKey][2] - props.playerStats.people[currentKey][3]) / (props.playerStats.people[currentKey][2] || Number.MAX_SAFE_INTEGER) >
+          (props.playerStats.people[prevKey][2] - props.playerStats.people[prevKey][3]) / (props.playerStats.people[prevKey][2] || Number.MAX_SAFE_INTEGER)
+          ? currentKey
+          : prevKey
+      return props.playerStats.people[currentKey][2] > 0 ? currentKey : prevKey
+    },
+    undefined as string | undefined
+  )
 
-const popover = useTemplateRef('popover')
-const popoverUsername = ref<string>()
-const popoverStats = ref<number[]>()
-
-const showPopover = (event: any, username: string) => {
-  popover.value?.hide()
-
-  const stats = props.playerStats.people[username]
-
-  if (username != null && username !== '' && stats != null && username !== popoverUsername.value) {
-    popoverUsername.value = username
-    popoverStats.value = stats
-
-    nextTick(() => {
-      popover.value?.show(event)
-    })
-  } else {
-    popoverUsername.value = undefined
-    popoverStats.value = undefined
-  }
-}
+const mostFrequentCoop: string | undefined = Object.keys(props.playerStats.people).reduce(
+  (prevKey, currentKey) => {
+    if (prevKey != null)
+      return props.playerStats.people[currentKey][4] - props.playerStats.people[currentKey][2] - props.playerStats.people[currentKey][0] >
+        props.playerStats.people[prevKey][4] - props.playerStats.people[prevKey][2] - props.playerStats.people[prevKey][0]
+        ? currentKey
+        : prevKey
+    return props.playerStats.people[currentKey][4] - props.playerStats.people[currentKey][2] - props.playerStats.people[currentKey][0] > 0 ? currentKey : prevKey
+  },
+  undefined as string | undefined
+)
 
 function calculateStreaks(history: typeof props.playerStats.history) {
   let longestWinningStreakTemp = 0
@@ -427,6 +452,34 @@ function calculateStreaks(history: typeof props.playerStats.history) {
   return [longestWinningStreak, longestLosingStreak, currentLosingStreak > 0 ? -1 * currentLosingStreak : currentWinningStreak]
 }
 const [longestWinningStreak, longestLosingStreak, currentStreak] = calculateStreaks(props.playerStats.history)
+
+// popover logic
+const popover = useTemplateRef('popover')
+const popoverUsername = ref<string>()
+const popoverStats = ref<number[]>()
+
+const showPopover = (event: any, username: string | undefined) => {
+  popover.value?.hide()
+  if (username == null) {
+    popoverUsername.value = undefined
+    popoverStats.value = undefined
+    return
+  }
+
+  const stats = props.playerStats.people[username]
+
+  if (username != null && username !== '' && stats != null && username !== popoverUsername.value) {
+    popoverUsername.value = username
+    popoverStats.value = stats
+
+    nextTick(() => {
+      popover.value?.show(event)
+    })
+  } else {
+    popoverUsername.value = undefined
+    popoverStats.value = undefined
+  }
+}
 </script>
 
 <style scoped>
