@@ -47,6 +47,20 @@ const cy = ref<cytoscape.Core>()
 
 const layout: LayoutOptions = {
   name: 'cose',
+  idealEdgeLength: (edge: any) => {
+    return edge['_private'].data.weight
+  },
+  nodeOverlap: 20,
+  refresh: 20,
+  fit: true,
+  randomize: true,
+  componentSpacing: 100,
+  nodeRepulsion: 100000,
+  nestingFactor: 5,
+  gravity: 80,
+  numIter: 1000,
+  initialTemp: 200,
+  coolingFactor: 0.95,
 }
 
 const style: StylesheetJson = [
@@ -173,6 +187,18 @@ function getElements(): ElementsDefinition {
       }),
     ],
     nodes: [
+      {
+        data: {
+          id: props.username,
+          name: props.username,
+          score: Math.max(...peopleToConsider.map((p) => props.playerStats.people[p][0] + props.playerStats.people[p][2]), 10),
+        },
+        selected: false,
+        selectable: false,
+        locked: true,
+        grabbed: false,
+        grabbable: false,
+      },
       ...peopleToConsider.map((p) => {
         return {
           data: {
@@ -187,18 +213,6 @@ function getElements(): ElementsDefinition {
           grabbable: true,
         }
       }),
-      {
-        data: {
-          id: props.username,
-          name: props.username,
-          score: Math.max(...peopleToConsider.map((p) => props.playerStats.people[p][0] + props.playerStats.people[p][2]), 10),
-        },
-        selected: false,
-        selectable: false,
-        locked: true,
-        grabbed: false,
-        grabbable: false,
-      },
     ],
   }
 }
@@ -209,7 +223,29 @@ const resetGraph = () => {
   if (cy.value != null) {
     selectedUser.value = null
     cy.value.elements().remove()
-    cy.value.add(getElements())
+
+    const elements = getElements()
+
+    // compute center in pixels from container (fallback to cy width/height)
+    const container = cy.value.container()
+    let centerX = cy.value.width() / 2
+    let centerY = cy.value.height() / 2
+    if (container instanceof HTMLElement) {
+      const rect = container.getBoundingClientRect()
+      // use container pixel center so layout will treat the locked node as fixed there
+      centerX = rect.width / 2
+      centerY = rect.height / 2
+    }
+
+    // find main node and set fixed position so layouts won't move it
+    const mainNode = (elements.nodes || []).find((n: any) => n?.data?.id === props.username)
+    if (mainNode) {
+      mainNode.position = { x: centerX, y: centerY }
+      // keep locked true (already set in getElements) but ensure it's present
+      mainNode.locked = true
+    }
+
+    cy.value.add(elements)
     cy.value.layout(layout).run()
 
     cy.value.nodes().on('select', (event) => {
