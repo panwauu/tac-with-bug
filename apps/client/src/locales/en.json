@@ -1,44 +1,8 @@
 {
   "Subscription": {
-    "running": "You are an active supporter of Tac-With-Bug! Thank you for your help",
-    "runningNextPayment": "The next payment is due on {time}.",
-    "expiring": "You have ended your subscription. Your benefits end on {time}.",
-    "buttonPlanMonthly": "month",
-    "buttonPlanYearly": "year",
-    "buttonPlanQuaterly": "quarter",
-    "headerAdditionalPay": "Of course, I am also looking forward to additional, one-time support:",
-    "buttonAdditionalPay": "Additional karma",
-    "paypalFeeDisclaimer": "% of your donation goes to PayPal **",
-    "paymentPerTime": "Payment once in",
-    "New": {
-      "successDetail": "Thank you for supporting me and Tac-With-Bug! Enjoy your advantages and the extra luck.",
-      "successSummary": "Subscription registered",
-      "errorDetail": "Sorry! An error occurred while connecting your subscription to your account. Please contact me via the imprint.",
-      "errorSummary": "That didn`t work!",
-      "bookingErrorDetail": "Sorry! Something went wrong booking the subscription. Try again in a moment.",
-      "bookingErrorSummary": "That didn`t work!"
-    },
-    "Cancel": {
-      "button": "End support",
-      "confirm": "It's a shame that you want to end your subscription, but thank you very much for supporting Tac-With-Bug! If you end the subscription you will still be able to take advantage of the benefits until the next payment is due. Are you sure you want to end your subscription?",
-      "successDetail": "Your subscription ended successfully. Thank you for supporting Tac-With-Bug.",
-      "successSummary": "Subscription ended",
-      "errorDetail": "Sorry! Something went wrong when you ended your subscription. Just try again in a moment.",
-      "errorSummary": "That didn`t work!"
-    },
     "aboutMeHeader": "Hello Tac-Fan,",
-    "aboutMe1": "I'm Oskar, 24 years old and live in Munich. I learned programming during my mechanical engineering degree. As a new challenge in the November lockdown, I started to learn how to program websites, something I had no experience with before. After a few tutorials, I started the Tac-With-Bug project over Christmas. Since then, I have put every free minute into this website alongside my work as a research assistant at the Technical University of Munich.",
-    "aboutMe2": "In addition to the entire development work, there are also running costs. Unfortunately, a website does not host itself. In order to give this project a future, you are now asked! With your support you will enable me to operate the site and also in the long term to make further updates and improvements on the way to Tac-Without-Bug.",
-    "price": "€ 2 per month *",
-    "featureKarma1": "Karma:",
-    "featureKarma2": "You help me to cover my fixed costs and compensate me for all my programming hours!",
-    "featureLuck": "Happiness guarantee**",
-    "nSubscriptions": "Number of sponsors",
-    "becomingSponsor": "Become a sponsor:",
-    "disclaimer1": "*: The subscription can of course be terminated at any time",
-    "disclaimer2": "**: PayPal unfortunately requires a fixed fee of around € 0.35 per transaction in addition to a percentage of around 2.5%. As a result, the fee increases proportionally for regular, small payments. So most of your donation actually reaches me if you rarely pay a large amount for it.",
-    "disclaimer3": "***: Of course, this only refers to personal happiness",
-    "disclaimer3Link": "(More info)"
+    "aboutMe1": "My name is Oskar. I learned programming while studying mechanical engineering. As a new challenge during the November lockdown, I started learning how to program websites at the age of 24 in Munich, something I had no previous experience with. After a few tutorials, I jumped right into the Tac-With-Bug project over Christmas. Since then, I have spent many hours working on this wonderful project.",
+    "aboutMe2": "In addition to the entire development work, there are also running costs. Unfortunately, a website does not host itself. In order to give this project a future, you are now asked! With your support you will enable me to operate the site and also in the long term to make further updates and improvements on the way to Tac-Without-Bug."
   },
   "Stats": {
     "headerTable": "Tac-With-Bug in Numbers",
@@ -543,7 +507,7 @@
     "switchGameConfirmPrivate": "This room was created as a closed round. Are you sure you want to change the waiting room?",
     "joinGamePrivate": "This room was created as a closed round. Are you sure you are welcome in this round?",
     "leaveRematch": "Are you sure you want to leave this rematch?",
-    "adminBadge": "Admin",
+    "adminBadge": "Host",
     "bot": "Bot",
     "leaveButton": "Leave this waiting room",
     "readyButton": "Ready to start"

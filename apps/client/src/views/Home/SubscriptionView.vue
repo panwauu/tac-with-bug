@@ -9,31 +9,19 @@
       <h2>{{ t('Subscription.aboutMeHeader') }}</h2>
       <p>{{ t('Subscription.aboutMe1') }}</p>
       <p>{{ t('Subscription.aboutMe2') }}</p>
-      <div class="FeaturesAndPrice">
-        <div class="PriceTag">
-          <strong>{{ t('Subscription.price') }}</strong>
-        </div>
-        <div class="Features">
-          <div class="FeatureElement">
-            <YinYang class="FeatureIcon" />
-            <div class="FeatureText">
-              <strong>{{ t('Subscription.featureKarma1') }}</strong>
-              {{ t('Subscription.featureKarma2') }}
-            </div>
-          </div>
-          <div class="FeatureElement">
-            <Luck class="FeatureIcon" />
-            <div class="FeatureText">{{ t('Subscription.featureLuck') }}</div>
-          </div>
-        </div>
-      </div>
     </div>
+
+    <iframe
+      id="kofiframe"
+      src="https://ko-fi.com/tacwithbug/?hidefeed=true&widget=true&embed=true&preview=true"
+      style="border: none; width: 100%; padding: 4px; background: #f9f9f9"
+      height="712"
+      title="tacwithbug"
+    ></iframe>
   </div>
 </template>
 
 <script setup lang="ts">
-import YinYang from '@/components/icons/YinYang.vue'
-import Luck from '@/components/icons/LuckSymbol.vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
