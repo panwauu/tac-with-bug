@@ -263,7 +263,7 @@ function getUserNetworkFromGamesNodes(games: GameForPlay[]): tStatistic.UserNetw
     }
   }
 
-  return nodes.toSorted((n) => n.data.score).slice(0, nodesLimit)
+  return nodes.toSorted((a, b) => b.data.score - a.data.score).slice(0, nodesLimit)
 }
 
 function getUserNetworkFromGamesEdges(games: GameForPlay[], nodes: tStatistic.UserNetworkNode[], edges: tStatistic.UserNetworkEdge[], playerInd: number, gamesInd: number) {
@@ -313,6 +313,9 @@ function getUserNetworkFromGames(allGames: GameForPlay[], userID: number, userna
   for (let gamesInd = 0; gamesInd < games.length; gamesInd++) {
     for (let playerInd = 0; playerInd < games[gamesInd].players.length; playerInd++) {
       if (!nodes.some((n) => n.data.idInt === games[gamesInd].playerIDs[playerInd])) {
+        continue
+      }
+      if (games[gamesInd].playerIDs[playerInd] == null || games[gamesInd].playerIDs[playerInd] != userID) {
         continue
       }
       getUserNetworkFromGamesEdges(games, nodes, edges, playerInd, gamesInd)
