@@ -781,8 +781,18 @@
     "currentStreak": "Aktuelle Serie",
     "worstStreak": "Längste Niederlagenserie",
     "bestStreak": "Längste Siegesserie",
-    "winsharesTitle": "Relativen Zahlen",
-    "winsharesTitleExp": "Nur Spieler mit mindestens 5 Spielen zusammen"
+    "winsharesTitle": "Relative Zahlen",
+    "winsharesTitleExp": "Nur Spieler mit mindestens 5 Spielen zusammen",
+    "nMoves": "Gesamte Spielzüge",
+    "timePlayed": "Gesamte Spielzeit",
+    "nAussetzen": "Aussetzen gespielt",
+    "ballsInOwnTeam": "Kugeln des eigenen Teams im Haus",
+    "ballsInEnemy": "Kugeln der Gegner ins Haus gelassen",
+    "nBallsKickedEnemy": "Geworfene gegnerische Kugeln",
+    "nBallsKickedOwnTeam": "Geworfene Kugeln des eigenen Teams",
+    "nBallsKickedSelf": "Eigene Kugeln selbst geworfen",
+    "nBallsLost": "Kugeln verloren",
+    "nAbgeworfen": "Karten abgeworfen"
   },
   "Tutorial": {
     "0": {

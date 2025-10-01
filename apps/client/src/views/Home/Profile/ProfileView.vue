@@ -320,7 +320,6 @@ import Carousel from 'primevue/carousel'
 import Popover from 'primevue/popover'
 import { ref, useTemplateRef, nextTick } from 'vue'
 import StatsWithPlayer from '@/components/StatsWithPlayer.vue'
-import _ from 'lodash'
 
 const { t } = useI18n()
 const props = defineProps<{ username: string; playerStats: PlayerFrontendStatistic; myStats: PlayerFrontendStatistic }>()
@@ -418,7 +417,7 @@ function calculateStreaks(history: typeof props.playerStats.history) {
   for (const game of history.toReversed()) {
     if (game === 'r' || game === 'c') continue
 
-    if (game != 'w') {
+    if (game !== 'w') {
       currentLosingStreak++
     } else {
       break
