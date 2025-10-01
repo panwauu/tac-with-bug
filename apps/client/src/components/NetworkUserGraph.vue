@@ -43,6 +43,7 @@ const props = defineProps<{
   username: string
   playerStats: PlayerFrontendStatistic
 }>()
+const cy = ref<cytoscape.Core>()
 
 const layout: LayoutOptions = {
   name: 'cose',
@@ -129,34 +130,6 @@ const style: StylesheetJson = [
   },
 ]
 
-const cy = ref<cytoscape.Core>()
-const selectedUser = ref<null | { name: string; data: any }>(null)
-
-const resetGraph = () => {
-  if (cy.value != null) {
-    selectedUser.value = null
-    cy.value.elements().remove()
-    cy.value.add(getElements())
-    cy.value.layout(layout).run()
-
-    cy.value.nodes().on('select', (event) => {
-      selectedUser.value = {
-        name: event.target['_private'].data.name,
-        data: props.playerStats.people[event.target['_private'].data.name],
-      }
-    })
-    cy.value.on('unselect', () => {
-      selectedUser.value = null
-    })
-  }
-}
-
-const resetGraphSize = () => {
-  if (cy.value != null) {
-    cy.value?.fit()
-  }
-}
-
 function getElements(): ElementsDefinition {
   const numberOfNodes = 20
 
@@ -227,6 +200,33 @@ function getElements(): ElementsDefinition {
         grabbable: false,
       },
     ],
+  }
+}
+
+const selectedUser = ref<null | { name: string; data: any }>(null)
+
+const resetGraph = () => {
+  if (cy.value != null) {
+    selectedUser.value = null
+    cy.value.elements().remove()
+    cy.value.add(getElements())
+    cy.value.layout(layout).run()
+
+    cy.value.nodes().on('select', (event) => {
+      selectedUser.value = {
+        name: event.target['_private'].data.name,
+        data: props.playerStats.people[event.target['_private'].data.name],
+      }
+    })
+    cy.value.on('unselect', () => {
+      selectedUser.value = null
+    })
+  }
+}
+
+const resetGraphSize = () => {
+  if (cy.value != null) {
+    cy.value?.fit()
   }
 }
 
