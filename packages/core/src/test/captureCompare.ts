@@ -112,7 +112,10 @@ function compareGameWithCaptured(gameInst: Game, capturedState: any) {
     console.log('cards unequal')
     const dataForTable: any = { status: ['cards', 'cards_des'] }
     for (const k of Object.keys(gameInst.cards)) {
-      dataForTable[k] = typeof (gameInst.cards as any)[k] === 'object' ? [JSON.stringify((gameInst.cards as any)[k]), JSON.stringify(capturedState.cards[k])] : [(gameInst.cards as any)[k], capturedState.cards[k]];
+      dataForTable[k] =
+        typeof (gameInst.cards as any)[k] === 'object'
+          ? [JSON.stringify((gameInst.cards as any)[k]), JSON.stringify(capturedState.cards[k])]
+          : [(gameInst.cards as any)[k], capturedState.cards[k]]
     }
     console.table(dataForTable)
     return false
