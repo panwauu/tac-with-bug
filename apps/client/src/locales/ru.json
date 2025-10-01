@@ -618,7 +618,7 @@
       "header": "Изменить пароль",
       "currentPassword": "Текущий пароль",
       "newPassword": "Новый пароль",
-      "newPasswordRepeat": "Повторение нового пароля",
+      "newPasswordRepeat": "Повторите новый пароль",
       "passwordTooShort": "Пароль должен содержать не менее 6 символов.",
       "passwordTooLong": "Пароль может содержать не более 20 символов.",
       "passwordUnequal": "Пароли не совпадают",
@@ -740,7 +740,7 @@
       "6er": "6 игроков",
       "team": "Команда",
       "aborted": "Отменено",
-      "running": "Постоянно",
+      "running": "В процессе",
       "won": "Выиграл",
       "lost": "Проиграл",
       "teamEnded": "Завершенные командные игры",
@@ -759,7 +759,7 @@
     "Friends": {
       "username": "Имя пользователя",
       "friendssince": "Друзья с",
-      "totalgames": "Играть вместе"
+      "totalgames": "Игр вместе"
     },
     "TournamentParticipations": {
       "tournamentTitle": "Турнир",
@@ -767,13 +767,13 @@
     },
     "registeredOn": "Пользователь с:",
     "StatsWithPlayer": {
-      "gamesPlayedCoop": "Team-TAC Games играли вместе",
-      "gamesPlayedTogether": "Играть в команде",
-      "gamesTogetherTotal": "Игры, сыгранные вместе в общей сложности",
-      "gamesWonTogether": "Игры выиграли вместе",
-      "playedAgainst": "Игры играли друг против друга",
-      "successRateAgainst": "Скорость победы против {пользователя} (сравнение с {пользователем} среднее)",
-      "successRateTogether": "Уровень побед в команде (сравнение с {пользователем} среднее)"
+      "gamesPlayedCoop": "Сыграно вместе игр Team-TAC",
+      "gamesPlayedTogether": "Игр в команде",
+      "gamesTogetherTotal": "Игр, сыгранных вместе в общей сложности",
+      "gamesWonTogether": "Игр выиграли вместе",
+      "playedAgainst": "Игр играли друг против друга",
+      "successRateAgainst": "Скорость победы против {user} (сравнение со средним {user})",
+      "successRateTogether": "Уровень побед в команде (сравнение со средним {user})"
     }
   },
   "Tutorial": {
@@ -1001,6 +1001,6 @@
     "he-was-blocked-explanation": "Этот игрок был заблокирован модератором из-за оскорбительного поведения. \nОн не может писать сообщения, менять изображение профиля, добавлять описание и создавать приглашения на турниры или турнирные команды."
   },
   "PlayerSearch": {
-    "noResults": "Ни игроков не нашел"
+    "noResults": "Игроки не найдены"
   }
 }
