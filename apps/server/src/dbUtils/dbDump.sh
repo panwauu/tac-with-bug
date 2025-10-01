@@ -33,11 +33,9 @@ psql "$databaseurl_postgres" -c 'DROP DATABASE tac;'
 psql "$databaseurl_postgres" -c 'CREATE DATABASE tac;'
 pg_restore -d "$databaseurl_tac" --verbose --clean --no-acl --no-owner -j 8 "${filename}"
 
-psql "$databaseurl_tac" -c 'UPDATE users SET currentsubscription=Null;'
 psql "$databaseurl_tac" -c "UPDATE users SET password = (SELECT password FROM users WHERE username = '${username}');"
 psql "$databaseurl_tac" -c "UPDATE users SET profilepic = (SELECT profilepic FROM users WHERE username = '${username}');"
 psql "$databaseurl_tac" -c "UPDATE users SET email= id || 'test@test.test' WHERE username != '${username}';"
-psql "$databaseurl_tac" -c 'DELETE FROM subscriptions;'
 psql "$databaseurl_tac" -c 'DELETE FROM waitinggames;'
 
 psql "$databaseurl_tac" -f './changes.sql'

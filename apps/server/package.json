@@ -33,7 +33,6 @@
     "@dicebear/collection": "^9.2.4",
     "@dicebear/core": "^9.2.4",
     "@repo/core": "*",
-    "axios": "^1.8.4",
     "bcrypt": "^6.0.0",
     "cli-progress": "^3.12.0",
     "compression": "^1.8.0",

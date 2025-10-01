@@ -25,7 +25,6 @@ export interface PlayerFrontendStatistic {
   history: ('w' | 'l' | 'c' | 'a' | 'r')[]
   table: number[]
   gamesDistribution: GamesDistributionData
-  subscriber: boolean
   people: PeopleOjectType
   hof: HofReason[]
   userDescription: string

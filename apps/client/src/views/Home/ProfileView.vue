@@ -10,12 +10,6 @@
           :username="username"
           class="profilePicture"
         />
-        <Sponsor
-          v-if="playerStats?.subscriber"
-          :clickable="true"
-          :sponsors-only="false"
-          class="sponsorOverPicture"
-        />
         <HofBadge
           v-if="playerStats?.hof && playerStats.hof.length > 0"
           class="hofOverPicture"
@@ -69,7 +63,6 @@ import Tab from 'primevue/tab'
 import type { MenuItem } from 'primevue/menuitem'
 import FriendButton from '@/components/FriendButton.vue'
 import ProfilePicture from '@/components/ProfilePicture.vue'
-import Sponsor from '@/components/SubscriptionTag.vue'
 import ProfileExplanation from '@/components/ProfileExplanation.vue'
 import HofBadge from '@/components/icons/HofBadge.vue'
 
@@ -209,11 +202,6 @@ const loading = computed(() => {
   width: 100%;
   border-radius: 100%;
   object-fit: contain;
-}
-
-.sponsorOverPicture {
-  position: absolute;
-  bottom: 0;
 }
 
 .hofOverPicture {

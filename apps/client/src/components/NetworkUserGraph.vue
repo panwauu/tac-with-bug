@@ -334,7 +334,7 @@ watch(
   font-size: 30px;
 }
 
-.chartSponsorOverlay {
+.loadingOverlay {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -345,7 +345,7 @@ watch(
   align-items: center;
 }
 
-.chartSponsorOverlay::after {
+.loadingOverlay::after {
   content: '';
   position: absolute;
   width: 100%;

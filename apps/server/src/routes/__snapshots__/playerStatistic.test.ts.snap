@@ -141,7 +141,6 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
       1,
     ],
   },
-  "subscriber": false,
   "table": [
     100,
     50,

@@ -1,48 +1,8 @@
 {
   "Subscription": {
-    "running": "Du bist ein aktiver Unterstützer von Tac-With-Bug! Vielen Dank für deine Hilfe",
-    "runningNextPayment": "Die nächste Zahlung ist am {time} fällig.",
-    "expiring": "Du hast dein Abonnement beendet. Deine Vorteile enden am {time}.",
-    "buttonPlanMonthly": "Monat",
-    "buttonPlanYearly": "Jahr",
-    "buttonPlanQuaterly": "Quartal",
-    "headerAdditionalPay": "Ich freue mich natürlich auch über zusätzliche, einmalige Unterstützungen:",
-    "buttonAdditionalPay": "Zusätzliches Karma",
-    "paypalFeeDisclaimer": "% deiner Spende geht an PayPal**",
-    "paymentPerTime": "Zahlung einmal im",
-    "New": {
-      "successDetail": "Vielen Dank, dass du mich und Tac-With-Bug unterstützt! Genieße deine Vorteile und das zusätzliche Glück.",
-      "successSummary": "Abonnement eingetragen",
-      "errorDetail": "Entschuldigung! Beim Verbinden deines Abonnements mit deinem Account ist ein Fehler passiert. Bitte kontaktiere mich über das Impressum.",
-      "errorSummary": "Das hat nicht geklappt!",
-      "bookingErrorDetail": "Entschuldigung! Buchen des Abonnements ist etwas schiefgegangen. Versuche es in einem Moment erneut.",
-      "bookingErrorSummary": "Das hat nicht geklappt!"
-    },
-    "Cancel": {
-      "button": "Unterstützung beenden",
-      "confirm": "Schade, dass du dein Abonnement beenden möchtest, aber trotzdem vielen Dank, dass du Tac-With-Bug unterstützt hast! Wenn du das Abonnement beendest, wirst du noch weiter die Vorteile nutzen können, bis die nächste Zahlung fällig gewesen wäre. Bist du dir sicher, dass du dein Abonnement beenden möchtest?",
-      "successDetail": "Dein Abonnement wurde erfolgreich beendet. Vielen Dank, dass du Tac-With-Bug unterstützt hast.",
-      "successSummary": "Abonnement beendet",
-      "errorDetail": "Entschuldigung! Beim Beenden deines Abonnements ist etwas schiefgegangen. Versuche es einfach in einem Moment erneut.",
-      "errorSummary": "Das hat nicht geklappt!"
-    },
     "aboutMeHeader": "Hallo Tac-Fan,",
-    "aboutMe1": "Ich bin Oskar, 24 Jahre alt und wohne in München. Während meines Maschinenbaustudiums habe ich das Programmieren gelernt. Als neue Herausforderung im November-Lockdown habe ich begonnen, mir das Programmieren von Websiten anzueignen, womit ich vorher noch keine Erfahrungen hatte. Nach einigen Tutorials bin ich gleich über Weihnachten in das Projekt Tac-With-Bug eingestiegen. Seitdem habe ich jede freie Minute neben meiner Arbeit als wissenschaftlicher Mitarbeiter der TU München in diese Website gesteckt.",
-    "aboutMe2": "Zusätzlich zu der ganzen Entwicklungsarbeit fallen auch laufende Kosten an. Eine Website hostet sich leider nicht von selbst. Um diesem Projekt weiter eine Zukunft zu geben, seid jetzt ihr gefragt! Mit eurer Unterstützung ermöglicht ihr mir das Betreiben der Seite und auch langfristig weitere Updates und Verbesserungen auf dem Weg zu Tac-Without-Bug.",
-    "price": "2€ pro Monat*",
-    "featureKarma1": "Karma:",
-    "featureKarma2": "Du hilfst mir meine Fixkosten zu decken und entschädigst mich für all meine Programmierstunden!**",
-    "featureLuck": "Glücksgarantie***",
-    "nSubscriptions": "Anzahl Sponsoren",
-    "becomingSponsor": "Werde Sponsor:",
-    "disclaimer1": "*: Das Abonnement kann natürlich jederzeit beendet werden",
-    "disclaimer2": "**: Paypal verlangt leider eine feste Gebühr von etwa 0,35€ pro Transaktion zusätzlich zu einem Prozentsatz von etwa 2,5%. Dies führt dazu, dass bei regelmäßigen, kleinen Zahlungen die Gebühr anteilsmäßig steigt. Es kommt also am meisten deiner Spende tatsächlich bei mir an, wenn du selten aber dafür einen hohen Betrag zahlst.",
-    "disclaimer3": "***: Dies bezieht sich selbstverständlich lediglich auf persönliches Glück",
-    "disclaimer3Link": "(Mehr Info)",
-    "Tag": {
-      "sponsor": "Sponsor",
-      "sponsorsOnly": "Sponsor werden"
-    }
+    "aboutMe1": "Ich bin Oskar. Während meines Maschinenbaustudiums habe ich das Programmieren gelernt. Als neue Herausforderung im November-Lockdown habe ich mit 24 in München begonnen, mir das Programmieren von Websiten anzueignen, womit ich vorher noch keine Erfahrungen hatte. Nach einigen Tutorials bin ich gleich über Weihnachten in das Projekt Tac-With-Bug eingestiegen. Seitdem sind diverse Stunden in dieses schöne Projekt geflossen.",
+    "aboutMe2": "Zusätzlich zu der ganzen Entwicklungsarbeit fallen auch laufende Kosten an. Eine Website hostet sich leider nicht von selbst. Um diesem Projekt weiter eine Zukunft zu geben, seid jetzt ihr gefragt! Mit eurer Unterstützung ermöglicht ihr mir das Betreiben der Seite und auch langfristig weitere Updates und Verbesserungen auf dem Weg zu Tac-Without-Bug."
   },
   "Stats": {
     "headerTable": "Tac-With-Bug in Zahlen",
@@ -540,7 +500,7 @@
       "privateTrueName": "Privat",
       "privateFalseName": "Öffentlich"
     },
-    "adminBadge": "Admin",
+    "adminBadge": "Host",
     "joinRandomGameButton": "Bestem Spiel beitreten",
     "removePlayerConfirmSelf": "Sicher, dass du diesen Warteraum verlassen möchtest?",
     "removePlayerConfirmOther": "Sicher, dass du einen Spieler aus dem Warteraum entlassen möchtest?",
