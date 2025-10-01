@@ -699,7 +699,7 @@
     }
   },
   "Profile": {
-    "mostFrequent": "Most frequent fellow",
+    "mostFrequent": "Most frequent partner",
     "mostFrequentExp": "Player with whom the most games (including Team-Games) were played",
     "bestPlayer": "Best teammate",
     "bestPlayerExp": "Player who achieved the highest win rate as a teammate",
@@ -777,7 +777,22 @@
     },
     "mostFrequentCoop": "Most frequent Team-Tac teammat",
     "bestCoop": "Best Team-Tac game",
-    "worstCoop": "Longest Team-Tac game"
+    "worstCoop": "Longest Team-Tac game",
+    "timePlayed": "Total playing time",
+    "nAbgeworfen": "Cards discarded",
+    "nBallsKickedSelf": "Own balls kicked",
+    "nBallsKickedOwnTeam": "Team balls kicked",
+    "nBallsLost": "Balls lost",
+    "nBallsKickedEnemy": "Kicked opposing balls",
+    "ballsInOwnTeam": "Team balls brought home",
+    "ballsInEnemy": "Opponent balls let into the house",
+    "nMoves": "Total moves",
+    "nAussetzen": "Let the opononet sit out",
+    "currentStreak": "Current streak",
+    "worstStreak": "Longest streak of losses",
+    "bestStreak": "Longest winning streak",
+    "winsharesTitle": "Relative numbers",
+    "winsharesTitleExp": "Only players with at least 5 games together"
   },
   "Tutorial": {
     "0": {

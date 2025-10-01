@@ -777,7 +777,22 @@
     },
     "mostFrequentCoop": "Большинство товарищей по команде команды TAC",
     "bestCoop": "Лучшая командная игра TAC",
-    "worstCoop": "Длинная командная игра"
+    "worstCoop": "Длинная командная игра",
+    "timePlayed": "Весь сезон",
+    "nAbgeworfen": "Карты упали",
+    "nBallsKickedSelf": "Собственные шары",
+    "nBallsKickedOwnTeam": "Командные мячи брошены",
+    "nBallsLost": "Шары потерялись",
+    "nBallsKickedEnemy": "Брошенные противоположные шарики",
+    "ballsInOwnTeam": "Командные мячи принесли домой",
+    "ballsInEnemy": "Оппоненные пули остались в дом",
+    "nMoves": "Целые движения",
+    "nAussetzen": "Позвольте противнику разоблачить",
+    "currentStreak": "Текущая серия",
+    "worstStreak": "Самая длинная серия поражений",
+    "bestStreak": "Самая длинная серия побед",
+    "winsharesTitle": "Относительные числа",
+    "winsharesTitleExp": "Только игроки с по крайней мере 5 играми вместе"
   },
   "Tutorial": {
     "0": {

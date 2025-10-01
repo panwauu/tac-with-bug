@@ -17,6 +17,16 @@ export interface PlayerFrontendStatistic {
   blockedByModerationUntil: string | null
   bestCoop: number
   worstCoop: number
+  ballsInOwnTeam: number
+  ballsInEnemy: number
+  nBallsLost: number
+  nBallsKickedEnemy: number
+  nBallsKickedOwnTeam: number
+  nBallsKickedSelf: number
+  nMoves: number
+  timePlayed: number
+  nAbgeworfen: number
+  nAussetzen: number
 }
 
 export interface GamesDistributionData {

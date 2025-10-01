@@ -777,7 +777,12 @@
     },
     "bestCoop": "Bestes Team-Tac Spiel",
     "mostFrequentCoop": "Häufigster Team-Tac Mitspieler",
-    "worstCoop": "Längstes Team-Tac Spiel"
+    "worstCoop": "Längstes Team-Tac Spiel",
+    "currentStreak": "Aktuelle Serie",
+    "worstStreak": "Längste Niederlagenserie",
+    "bestStreak": "Längste Siegesserie",
+    "winsharesTitle": "Relativen Zahlen",
+    "winsharesTitleExp": "Nur Spieler mit mindestens 5 Spielen zusammen"
   },
   "Tutorial": {
     "0": {

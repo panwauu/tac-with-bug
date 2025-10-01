@@ -4,7 +4,7 @@
       <Carousel
         style="max-width: 700px; margin: 0 auto"
         :value="carouselOptions"
-        :autoplay-interval="10000"
+        :autoplay-interval="5000"
         :circular="true"
         :num-scroll="1"
         :num-visible="1"
@@ -77,9 +77,11 @@
           <div v-else-if="slotProps.data === 'winshares'">
             <table class="carousel-element">
               <tbody>
-                <tr>
-                  <th>Relavtive Zahlen</th>
-                  <td><small>Nur Spieler mit mindestens 5 Spielen zusammen</small></td>
+                <tr class="table-3-split-height">
+                  <th>{{ t('Profile.winsharesTitle') }}</th>
+                  <td>
+                    <small>{{ t('Profile.winsharesTitleExp') }}</small>
+                  </td>
                 </tr>
                 <tr>
                   <th>{{ t('Profile.bestPlayer') + ':' }}</th>
@@ -134,7 +136,7 @@
             <table class="carousel-element">
               <tbody>
                 <tr>
-                  <th>Beste Serie</th>
+                  <th>{{ t('Profile.bestStreak') + ':' }}</th>
                   <td>
                     <div style="display: flex; align-items: center">
                       <div class="history-badge-stack-number">{{ longestWinningStreak }}</div>
@@ -149,7 +151,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <th>Schlechteste Serie</th>
+                  <th>{{ t('Profile.worstStreak') + ':' }}</th>
                   <td>
                     <div style="display: flex; align-items: center">
                       <div class="history-badge-stack-number">{{ longestLosingStreak }}</div>
@@ -164,7 +166,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <th>Aktuelle Serie</th>
+                  <th>{{ t('Profile.currentStreak') + ':' }}</th>
                   <td>
                     <div style="display: flex; align-items: center">
                       <div class="history-badge-stack-number">{{ currentStreak }}</div>
@@ -203,13 +205,75 @@
                     />
                   </td>
                 </tr>
-                <tr>
+                <tr class="table-3-split-height">
                   <th>{{ t('Profile.bestCoop') + ':' }}</th>
                   <td>{{ props.playerStats.bestCoop }}</td>
                 </tr>
-                <tr>
+                <tr class="table-3-split-height">
                   <th>{{ t('Profile.worstCoop') + ':' }}</th>
                   <td>{{ props.playerStats.worstCoop }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div v-else-if="slotProps.data === 'actions'">
+            <table class="carousel-element">
+              <tbody>
+                <tr class="table-3-split-height">
+                  <th>{{ t('Profile.nMoves') + ':' }}</th>
+                  <td>{{ props.playerStats.nMoves }}</td>
+                </tr>
+                <tr class="table-3-split-height">
+                  <th>{{ t('Profile.timePlayed') + ':' }}</th>
+                  <td>
+                    {{ Math.floor((props.playerStats?.timePlayed ?? 0) / 3600) }}:{{
+                      String(Math.floor(((props.playerStats?.timePlayed ?? 0) % 3600) / 60)).padStart(2, '0')
+                    }}h
+                  </td>
+                </tr>
+                <tr class="table-3-split-height">
+                  <th>{{ t('Profile.nAussetzen') + ':' }}</th>
+                  <td>{{ props.playerStats.nAussetzen }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div v-else-if="slotProps.data === 'balls'">
+            <table class="carousel-element">
+              <tbody>
+                <tr class="table-4-split-height">
+                  <th>{{ t('Profile.ballsInOwnTeam') + ':' }}</th>
+                  <td>{{ props.playerStats.ballsInOwnTeam }}</td>
+                </tr>
+                <tr class="table-4-split-height">
+                  <th>{{ t('Profile.ballsInEnemy') + ':' }}</th>
+                  <td>{{ props.playerStats.ballsInEnemy }}</td>
+                </tr>
+                <tr class="table-4-split-height">
+                  <th>{{ t('Profile.nBallsLost') + ':' }}</th>
+                  <td>{{ props.playerStats.nBallsLost }}</td>
+                </tr>
+                <tr class="table-4-split-height">
+                  <th>{{ t('Profile.nBallsKickedEnemy') + ':' }}</th>
+                  <td>{{ props.playerStats.nBallsKickedEnemy }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div v-else-if="slotProps.data === 'oopsies'">
+            <table class="carousel-element">
+              <tbody>
+                <tr class="table-3-split-height">
+                  <th>{{ t('Profile.nBallsKickedSelf') + ':' }}</th>
+                  <td>{{ props.playerStats.nBallsKickedSelf }}</td>
+                </tr>
+                <tr class="table-3-split-height">
+                  <th>{{ t('Profile.nBallsKickedOwnTeam') + ':' }}</th>
+                  <td>{{ props.playerStats.nBallsKickedOwnTeam }}</td>
+                </tr>
+                <tr class="table-3-split-height">
+                  <th>{{ t('Profile.nAbgeworfen') + ':' }}</th>
+                  <td>{{ props.playerStats.nAbgeworfen }}</td>
                 </tr>
               </tbody>
             </table>
@@ -256,11 +320,12 @@ import Carousel from 'primevue/carousel'
 import Popover from 'primevue/popover'
 import { ref, useTemplateRef, nextTick } from 'vue'
 import StatsWithPlayer from '@/components/StatsWithPlayer.vue'
+import _ from 'lodash'
 
 const { t } = useI18n()
 const props = defineProps<{ username: string; playerStats: PlayerFrontendStatistic; myStats: PlayerFrontendStatistic }>()
 
-const carouselOptions = ['games', 'winshares', 'streaks', 'coop']
+const carouselOptions = ['games', 'winshares', 'streaks', 'coop', 'actions', 'balls', 'oopsies']
 
 // Get the biggest element e[0] in props.playersStats.players
 const mostFrequent = Object.keys(props.playerStats.people).reduce((prevKey, currentKey) => {
@@ -374,6 +439,14 @@ const [longestWinningStreak, longestLosingStreak, currentStreak] = calculateStre
   background-color: var(--background-contraster);
   border-radius: 10px;
   overflow: hidden;
+}
+
+.table-3-split-height {
+  height: 32px;
+}
+
+.table-4-split-height {
+  height: 23px;
 }
 
 .games-with {

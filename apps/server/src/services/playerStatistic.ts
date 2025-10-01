@@ -210,6 +210,16 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
     blockedByModerationUntil: user.value.blockedByModerationUntil,
     bestCoop: Math.min(stat.wl.coopBest4, stat.wl.coopBest6),
     worstCoop: Math.max(stat.wl.coopWorst4, stat.wl.coopWorst6),
+    ballsInOwnTeam: stat.wl.ballsInOwnTeam,
+    ballsInEnemy: stat.wl.ballsInEnemy,
+    nBallsLost: stat.actions.nBallsLost,
+    nBallsKickedEnemy: stat.actions.nBallsKickedEnemy,
+    nBallsKickedOwnTeam: stat.actions.nBallsKickedOwnTeam,
+    nBallsKickedSelf: stat.actions.nBallsKickedSelf,
+    nMoves: stat.actions.nMoves,
+    timePlayed: stat.actions.timePlayed,
+    nAbgeworfen: stat.actions.nAbgeworfen,
+    nAussetzen: stat.actions.nAussetzen,
   }
 }
 
