@@ -223,7 +223,8 @@
       "4p": "4 игрока за игру",
       "6p2t": "6 игроков за игру - 2 команды за игру",
       "6p3t": "6 игроков за игру - 3 команды за игру",
-      "nTeams": "Количество команд:"
+      "nTeams": "Количество команд:",
+      "createPrivateButton": "Создать турнир"
     },
     "TournamentsTable": {
       "title": "Название турнира",
@@ -617,7 +618,7 @@
       "header": "Изменить пароль",
       "currentPassword": "Текущий пароль",
       "newPassword": "Новый пароль",
-      "newPasswordRepeat": "Повторение нового пароля",
+      "newPasswordRepeat": "Повторите новый пароль",
       "passwordTooShort": "Пароль должен содержать не менее 6 символов.",
       "passwordTooLong": "Пароль может содержать не более 20 символов.",
       "passwordUnequal": "Пароли не совпадают",
@@ -731,17 +732,15 @@
     "abortionrate": "Упорство",
     "abortionrateExp": "Доля игр, сыгранных до конца и не заброшенных",
     "NetworkGraph": {
-      "togetherWith": "{nGames} игр, сыгранных вместе с {username} | {nGames} игра, сыгранная вместе с {username} | Сыграли в игры {nGames} вместе с {username}",
-      "wonOf": "Из них {nGames} выиграли",
-      "playedAgainst": "{nGames} игр против {username} | {nGames} игра против {username} | Сыграно {nGames} игр против {username}",
-      "team": "{nGames} игр в командном режиме | {nGames} игр в командном режиме | {nGames} игр в командном режиме"
+      "rescale": "Масштабировать",
+      "reset": "Сброс"
     },
     "DistributionGraph": {
       "4er": "4 игрока",
       "6er": "6 игроков",
       "team": "Команда",
       "aborted": "Отменено",
-      "running": "Постоянно",
+      "running": "В процессе",
       "won": "Выиграл",
       "lost": "Проиграл",
       "teamEnded": "Завершенные командные игры",
@@ -759,13 +758,49 @@
     "menuSocials": "Социальное",
     "Friends": {
       "username": "Имя пользователя",
-      "friendssince": "Друзья с"
+      "friendssince": "Друзья с",
+      "totalgames": "Игр вместе"
     },
     "TournamentParticipations": {
       "tournamentTitle": "Турнир",
       "tournamentResult": "Результат"
     },
-    "registeredOn": "Пользователь с:"
+    "registeredOn": "Пользователь с:",
+    "StatsWithPlayer": {
+      "gamesPlayedCoop": "Сыграно вместе игр Team-TAC",
+      "gamesPlayedTogether": "Игр в команде",
+      "gamesTogetherTotal": "Игр, сыгранных вместе в общей сложности",
+      "gamesWonTogether": "Игр выиграли вместе",
+      "playedAgainst": "Игр играли друг против друга",
+      "successRateAgainst": "Скорость победы против {user} (сравнение со средним {user})",
+      "successRateTogether": "Уровень побед в команде (сравнение со средним {user})"
+    },
+    "mostFrequentCoop": "Большинство товарищей по команде команды TAC",
+    "bestCoop": "Лучшая командная игра TAC",
+    "worstCoop": "Длинная командная игра",
+    "timePlayed": "Весь сезон",
+    "nAbgeworfen": "Карты упали",
+    "nBallsKickedSelf": "Собственные шары",
+    "nBallsKickedOwnTeam": "Командные мячи брошены",
+    "nBallsLost": "Шары потерялись",
+    "nBallsKickedEnemy": "Брошенные противоположные шарики",
+    "ballsInOwnTeam": "Командные мячи принесли домой",
+    "ballsInEnemy": "Оппоненные пули остались в дом",
+    "nMoves": "Целые движения",
+    "nAussetzen": "Позвольте противнику разоблачить",
+    "currentStreak": "Текущая серия",
+    "worstStreak": "Самая длинная серия поражений",
+    "bestStreak": "Самая длинная серия побед",
+    "winsharesTitle": "Относительные числа",
+    "winsharesTitleExp": "Только игроки с по крайней мере 5 играми вместе",
+    "menuCards": "Карты",
+    "CardsView": {
+      "probability": "Вход",
+      "notSpecialCard": "отдых",
+      "diff": "+/-",
+      "explanation": "Эта таблица показывает распределение карт, которое игрок получил обо всех своих играх, а также наиболее вероятных картах в TAC 4 серии и разнице. Итак, насколько чаще игрок получает определенную карту. Все это можно увидеть для всех неспециальных карт ниже. После всего лишь нескольких игр распределение карт такое же.",
+      "noCards": "До сих пор нет игр"
+    }
   },
   "Tutorial": {
     "0": {
@@ -990,5 +1025,8 @@
     "you-are-blocked-message": "Вы были заблокированы модератором до {0}.",
     "he-is-blocked-message": "Этот игрок был заблокирован модератором до {0}.",
     "he-was-blocked-explanation": "Этот игрок был заблокирован модератором из-за оскорбительного поведения. \nОн не может писать сообщения, менять изображение профиля, добавлять описание и создавать приглашения на турниры или турнирные команды."
+  },
+  "PlayerSearch": {
+    "noResults": "Игроки не найдены"
   }
 }

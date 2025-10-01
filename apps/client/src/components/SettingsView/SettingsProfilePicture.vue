@@ -1,17 +1,19 @@
 <template>
   <div v-if="!settingsStore.isBlockedByModeration">
     <p>{{ t('Settings.UploadProfilePicture.privacyDisclaimer') }}</p>
-    <FileUpload
-      class="SettingsButton"
-      :choose-label="t('Settings.UploadProfilePicture.ChooseFile')"
-      mode="basic"
-      name="PictureUpload"
-      accept="image/*"
-      :auto="true"
-      :custom-upload="true"
-      :max-file-size="8000000"
-      @uploader="startCropper($event)"
-    />
+    <div class="SettingsButton">
+      <FileUpload
+        class="SettingsButton"
+        :choose-label="t('Settings.UploadProfilePicture.ChooseFile')"
+        mode="basic"
+        name="PictureUpload"
+        accept="image/*"
+        :auto="true"
+        :custom-upload="true"
+        :max-file-size="8000000"
+        @uploader="startCropper($event)"
+      />
+    </div>
     <Button
       class="SettingsButton"
       type="button"
@@ -176,7 +178,8 @@ const deleteImage = async () => {
 
 <style scoped>
 .SettingsButton {
-  margin: 5px;
+  margin: 5px auto;
+  width: fit-content;
 }
 
 .cropper {

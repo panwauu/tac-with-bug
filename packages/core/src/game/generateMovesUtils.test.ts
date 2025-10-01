@@ -777,7 +777,7 @@ test('getSevenPositions', () => {
   // Also entering the goal area
   balls[0].position = ballStart(0, balls)
   balls[0].state = 'valid'
-  expect(getSevenPositions(balls, 0, 7, initializeTeams(4, 2), false).sort()).toEqual([
+  expect(getSevenPositions(balls, 0, 7, initializeTeams(4, 2), false).toSorted()).toEqual([
     17,
     18,
     19,
@@ -790,26 +790,26 @@ test('getSevenPositions', () => {
     ballGoal(0, balls) + 2,
     ballGoal(0, balls) + 3,
   ])
-  expect(getSevenPositions(balls, 0, 2, initializeTeams(4, 2), false).sort()).toEqual([17, 18, ballGoal(0, balls), ballGoal(0, balls) + 1])
+  expect(getSevenPositions(balls, 0, 2, initializeTeams(4, 2), false).toSorted()).toEqual([17, 18, ballGoal(0, balls), ballGoal(0, balls) + 1])
 
   // Not removing Balls in goal
   balls[1].position = ballGoal(0, balls)
   balls[1].state = 'goal'
-  expect(getSevenPositions(balls, 0, 7, initializeTeams(4, 2), false).sort()).toEqual([17, 18, 19, 20, 21, 22, 23])
-  expect(getSevenPositions(balls, 0, 4, initializeTeams(4, 2), false).sort()).toEqual([17, 18, 19, 20])
+  expect(getSevenPositions(balls, 0, 7, initializeTeams(4, 2), false).toSorted()).toEqual([17, 18, 19, 20, 21, 22, 23])
+  expect(getSevenPositions(balls, 0, 4, initializeTeams(4, 2), false).toSorted()).toEqual([17, 18, 19, 20])
 
   // Not removing Balls in goal but outside
   balls[1].position = ballGoal(0, balls) + 2
   balls[1].state = 'goal'
   balls[2].position = ballStart(0, balls) + 2
-  expect(getSevenPositions(balls, 0, 7, initializeTeams(4, 2), false).sort()).toEqual([17, 18, 19, 20, 21, 22, 23, ballGoal(0, balls), ballGoal(0, balls) + 1])
-  expect(getSevenPositions(balls, 0, 2, initializeTeams(4, 2), false).sort()).toEqual([17, 18, ballGoal(0, balls), ballGoal(0, balls) + 1])
+  expect(getSevenPositions(balls, 0, 7, initializeTeams(4, 2), false).toSorted()).toEqual([17, 18, 19, 20, 21, 22, 23, ballGoal(0, balls), ballGoal(0, balls) + 1])
+  expect(getSevenPositions(balls, 0, 2, initializeTeams(4, 2), false).toSorted()).toEqual([17, 18, ballGoal(0, balls), ballGoal(0, balls) + 1])
 
   // Entering from behind the goal
   balls[0].position = ballGoal(0, balls) - 1
   balls[0].state = 'valid'
-  expect(getSevenPositions(balls, 0, 6, initializeTeams(4, 2), false).sort()).toEqual([16, 17, 18, 19, 20, 21, ballGoal(0, balls), ballGoal(0, balls) + 1])
-  expect(getSevenPositions(balls, 0, 2, initializeTeams(4, 2), false).sort()).toEqual([16, 17, ballGoal(0, balls)])
+  expect(getSevenPositions(balls, 0, 6, initializeTeams(4, 2), false).toSorted()).toEqual([16, 17, 18, 19, 20, 21, ballGoal(0, balls), ballGoal(0, balls) + 1])
+  expect(getSevenPositions(balls, 0, 2, initializeTeams(4, 2), false).toSorted()).toEqual([16, 17, ballGoal(0, balls)])
 
   // Test if remaining Moves === 0
   expect(getSevenPositions(balls, Math.floor(Math.random() * balls.length), 0, initializeTeams(4, 2), false)).toEqual([])
@@ -891,7 +891,7 @@ test('getPlayablePlayers, 6 - 2Teams', () => {
 
   balls[player * 4].state = 'locked'
   balls[player * 4].position = ballGoal(player * 4, balls)
-  expect(getPlayablePlayers(balls, player, teams, false, null)).toEqual([(player + 2) % 6, (player + 4) % 6].sort())
+  expect(getPlayablePlayers(balls, player, teams, false, null)).toEqual([(player + 2) % 6, (player + 4) % 6].toSorted())
 })
 
 test('getPlayablePlayers, 4 Coop', () => {
@@ -1026,92 +1026,90 @@ test('getPlayablePlayers, 6-2 Coop', () => {
 test('Move one with all in House', () => {
   const balls = cloneDeep(ballsSample)
   for (let player = 0; player < nPlayers; player++) {
-    expect(moveOneStep(balls, player, balls[player].position, -1, 4).sort()).toEqual([])
-    expect(moveOneStep(balls, player, balls[player].position, 1, 7).sort()).toEqual([])
+    expect(moveOneStep(balls, player, balls[player].position, -1, 4).toSorted()).toEqual([])
+    expect(moveOneStep(balls, player, balls[player].position, 1, 7).toSorted()).toEqual([])
   }
 })
 
 test('Move one forward without goal', () => {
   const balls = cloneDeep(ballsSample)
   balls[0].position = ballStart(0, balls) + 5
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 4).sort()).toEqual([ballStart(0, balls) + 6].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 4).toSorted()).toEqual([ballStart(0, balls) + 6].toSorted())
   balls[0].position = ballStart(0, balls) + 30
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 4).sort()).toEqual([ballStart(0, balls) + 31].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 4).toSorted()).toEqual([ballStart(0, balls) + 31].toSorted())
 
   balls[5].position = ballGoal(0, balls) - 1
-  expect(moveOneStep(balls, 5, balls[5].position, 1, 4).sort()).toEqual([ballStart(0, balls)].sort())
+  expect(moveOneStep(balls, 5, balls[5].position, 1, 4).toSorted()).toEqual([ballStart(0, balls)].toSorted())
 })
 
 test('Move one forward with goal', () => {
   const balls = cloneDeep(ballsSample)
   balls[0].position = ballStart(0, balls)
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 4).sort()).toEqual([ballStart(0, balls) + 1].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 4).toSorted()).toEqual([ballStart(0, balls) + 1].toSorted())
   balls[0].state = 'valid'
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 4).sort()).toEqual([ballStart(0, balls) + 1, ballGoal(0, balls)].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 4).toSorted()).toEqual([ballStart(0, balls) + 1, ballGoal(0, balls)].toSorted())
 })
 
 test('Move one forward in goal not 7', () => {
   const balls = cloneDeep(ballsSample)
   balls[0].position = ballGoal(0, balls)
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 1).sort()).toEqual([ballGoal(0, balls) + 1].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 1).toSorted()).toEqual([ballGoal(0, balls) + 1].toSorted())
   balls[0].position = ballGoal(0, balls) + 1
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 1).sort()).toEqual([ballGoal(0, balls) + 2].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 1).toSorted()).toEqual([ballGoal(0, balls) + 2].toSorted())
   balls[0].position = ballGoal(0, balls) + 2
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 1).sort()).toEqual([ballGoal(0, balls) + 3].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 1).toSorted()).toEqual([ballGoal(0, balls) + 3].toSorted())
   balls[0].position = ballGoal(0, balls) + 3
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 1).sort()).toEqual([].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 1).toSorted()).toEqual([].toSorted())
 })
 
 test('Move one forward in goal with 7', () => {
   const balls = cloneDeep(ballsSample)
   balls[0].position = ballGoal(0, balls)
   balls[0].state = 'goal'
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 7).sort()).toEqual([ballGoal(0, balls) + 1])
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 7).toSorted()).toEqual([ballGoal(0, balls) + 1])
 
   balls[0].position = ballGoal(0, balls) + 1
   balls[0].state = 'goal'
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 7).sort()).toEqual([ballGoal(0, balls), ballGoal(0, balls) + 2].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 7).toSorted()).toEqual([ballGoal(0, balls), ballGoal(0, balls) + 2].toSorted())
 
   balls[0].position = ballGoal(0, balls) + 3
   balls[0].state = 'goal'
-  expect(moveOneStep(balls, 0, balls[0].position, 1, 7).sort()).toEqual([ballGoal(0, balls) + 2])
+  expect(moveOneStep(balls, 0, balls[0].position, 1, 7).toSorted()).toEqual([ballGoal(0, balls) + 2])
 })
 
 test('Move backwards without goal', () => {
   const balls = cloneDeep(ballsSample)
   const nBall = 0
   balls[nBall].position = ballStart(nBall, balls) + 5
-  expect(moveOneStep(balls, nBall, balls[nBall].position, -1, 4).sort()).toEqual([ballStart(nBall, balls) + 4].sort())
+  expect(moveOneStep(balls, nBall, balls[nBall].position, -1, 4).toSorted()).toEqual([ballStart(nBall, balls) + 4].toSorted())
   balls[nBall].position = ballStart(nBall, balls) + 30
-  expect(moveOneStep(balls, nBall, balls[nBall].position, -1, 4).sort()).toEqual([ballStart(nBall, balls) + 29].sort())
+  expect(moveOneStep(balls, nBall, balls[nBall].position, -1, 4).toSorted()).toEqual([ballStart(nBall, balls) + 29].toSorted())
 
   balls[nBall].position = ballStart(0, balls)
-  expect(moveOneStep(balls, nBall, balls[nBall].position, -1, 4).sort()).toEqual([ballGoal(0, balls) - 1].sort())
+  expect(moveOneStep(balls, nBall, balls[nBall].position, -1, 4).toSorted()).toEqual([ballGoal(0, balls) - 1].toSorted())
 })
 
 test('Move backwards with goal', () => {
   const balls = cloneDeep(ballsSample)
   balls[0].state = 'valid'
   balls[0].position = ballStart(0, balls)
-  expect(moveOneStep(balls, 0, balls[0].position, -1, 4).sort()).toEqual([ballGoal(0, balls), ballGoal(0, balls) - 1].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, -1, 4).toSorted()).toEqual([ballGoal(0, balls), ballGoal(0, balls) - 1].toSorted())
 
-  balls[balls.length - 1].state = 'valid'
-  balls[balls.length - 1].position = ballStart(balls.length - 1, balls)
-  expect(moveOneStep(balls, balls.length - 1, balls[balls.length - 1].position, -1, 4).sort()).toEqual(
-    [ballGoal(balls.length - 1, balls), balls[balls.length - 1].position - 1].sort()
-  )
+  balls.at(-1).state = 'valid'
+  balls.at(-1).position = ballStart(balls.length - 1, balls)
+  expect(moveOneStep(balls, balls.length - 1, balls.at(-1).position, -1, 4).toSorted()).toEqual([ballGoal(balls.length - 1, balls), balls.at(-1).position - 1].toSorted())
 })
 
 test('Move backwards in goal', () => {
   const balls = cloneDeep(ballsSample)
   balls[0].position = ballGoal(0, balls)
-  expect(moveOneStep(balls, 0, balls[0].position, -1, 4).sort()).toEqual([ballGoal(0, balls) + 1].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, -1, 4).toSorted()).toEqual([ballGoal(0, balls) + 1].toSorted())
   balls[0].position = ballGoal(0, balls) + 1
-  expect(moveOneStep(balls, 0, balls[0].position, -1, 4).sort()).toEqual([ballGoal(0, balls) + 2].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, -1, 4).toSorted()).toEqual([ballGoal(0, balls) + 2].toSorted())
   balls[0].position = ballGoal(0, balls) + 2
-  expect(moveOneStep(balls, 0, balls[0].position, -1, 4).sort()).toEqual([ballGoal(0, balls) + 3].sort())
+  expect(moveOneStep(balls, 0, balls[0].position, -1, 4).toSorted()).toEqual([ballGoal(0, balls) + 3].toSorted())
   balls[0].position = ballGoal(0, balls) + 3
-  expect(moveOneStep(balls, 0, balls[0].position, -1, 4).sort()).toEqual([])
+  expect(moveOneStep(balls, 0, balls[0].position, -1, 4).toSorted()).toEqual([])
 })
 
 test('Move forward with one ball with ordinary number Cards', () => {
@@ -1154,7 +1152,7 @@ test('Move forward with multiple ball and into goal - not 7', () => {
   balls[nBall].position = ballStart(nBall, balls)
   balls[nBall].state = 'valid'
   balls[0].position = ballGoal(nBall, balls) + 1
-  expect(getMovingPositions(balls, nBall, '1').sort()).toEqual([ballGoal(nBall, balls), ballStart(nBall, balls) + 1].sort())
+  expect(getMovingPositions(balls, nBall, '1').toSorted()).toEqual([ballGoal(nBall, balls), ballStart(nBall, balls) + 1].toSorted())
 
   balls[nBall].position = ballStart(nBall, balls)
   balls[nBall].state = 'valid'
@@ -1207,7 +1205,7 @@ test('Move backward with one or more balls in goal', () => {
 
   balls[0].position = ballStart(0, balls) + 3
   balls[0].state = 'valid'
-  expect(getMovingPositions(balls, 0, '4').sort()).toEqual([ballGoal(0, balls) - 1, ballGoal(0, balls)].sort())
+  expect(getMovingPositions(balls, 0, '4').toSorted()).toEqual([ballGoal(0, balls) - 1, ballGoal(0, balls)].toSorted())
 })
 
 test('Starting from house', () => {
@@ -1240,9 +1238,9 @@ test('Switching Moves', () => {
   expect(getSwitchingMoves(balls, 5)).toEqual([ballStart(0, balls)])
 
   balls[8].position = ballStart(8, balls) + 5
-  expect(getSwitchingMoves(balls, 0).sort()).toEqual([ballStart(5, balls), ballStart(8, balls) + 5].sort())
-  expect(getSwitchingMoves(balls, 5).sort()).toEqual([ballStart(0, balls), ballStart(8, balls) + 5].sort())
-  expect(getSwitchingMoves(balls, 8).sort()).toEqual([ballStart(0, balls), ballStart(5, balls)].sort())
+  expect(getSwitchingMoves(balls, 0).toSorted()).toEqual([ballStart(5, balls), ballStart(8, balls) + 5].toSorted())
+  expect(getSwitchingMoves(balls, 5).toSorted()).toEqual([ballStart(0, balls), ballStart(8, balls) + 5].toSorted())
+  expect(getSwitchingMoves(balls, 8).toSorted()).toEqual([ballStart(0, balls), ballStart(5, balls)].toSorted())
 
   balls[8].position = ballGoal(8, balls)
   expect(getSwitchingMoves(balls, 0)).toEqual([ballStart(5, balls)])
@@ -1332,7 +1330,7 @@ test('Test with Krieger, Trickser, Narr', () => {
   balls[5].position = ballStart(5, balls)
   balls[9].position = ballStart(9, balls)
   expect(getMoves(balls, 0, 'krieger', [[]], false)).toEqual([ballStart(5, balls)])
-  expect(getMoves(balls, 0, 'trickser', [[]], false).sort()).toEqual([ballStart(5, balls), ballStart(9, balls)].sort())
+  expect(getMoves(balls, 0, 'trickser', [[]], false).toSorted()).toEqual([ballStart(5, balls), ballStart(9, balls)].toSorted())
   expect(getMoves(balls, 0, 'narr', [[]], false)).toEqual([])
 })
 
@@ -1346,7 +1344,7 @@ test('Test with 7', () => {
 
   balls[0].position = ballGoal(0, balls) - 1
   balls[0].state = 'valid'
-  expect(getMoves(balls, 0, '7', initializeTeams(4, 2), false).sort()).toEqual([
+  expect(getMoves(balls, 0, '7', initializeTeams(4, 2), false).toSorted()).toEqual([
     16,
     17,
     18,
@@ -1359,8 +1357,8 @@ test('Test with 7', () => {
     ballGoal(0, balls) + 2,
     ballGoal(0, balls) + 3,
   ])
-  expect(getMoves(balls, 0, '7-2', initializeTeams(4, 2), false).sort()).toEqual([16, 17, ballGoal(0, balls)])
-  expect(getMoves(balls, 0, '7-5', initializeTeams(4, 2), false).sort()).toEqual([
+  expect(getMoves(balls, 0, '7-2', initializeTeams(4, 2), false).toSorted()).toEqual([16, 17, ballGoal(0, balls)])
+  expect(getMoves(balls, 0, '7-5', initializeTeams(4, 2), false).toSorted()).toEqual([
     16,
     17,
     18,

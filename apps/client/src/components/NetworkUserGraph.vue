@@ -6,136 +6,64 @@
         v-if="selectedUser != null"
         class="playerCardNetwork"
       >
-        <PlayerWithPicture
+        <StatsWithPlayer
           :username="selectedUser.name"
-          :name-first="false"
+          :username-to-commpare-to="props.username"
+          :win-rate-of-compare-user="props.playerStats.table[0]"
+          :stats="selectedUser.data"
         />
-        <div class="playerCardElement">
-          {{
-            t('Profile.NetworkGraph.togetherWith', {
-              username: username,
-              nGames: selectedUser.data[0],
-              count: selectedUser.data[0],
-            })
-          }}
-        </div>
-        <div
-          class="playerCardElement"
-          style="padding-left: 10px"
-        >
-          {{
-            t('Profile.NetworkGraph.wonOf', {
-              nGames: selectedUser.data[1],
-              count: selectedUser.data[1],
-            })
-          }}
-        </div>
-        <div class="playerCardElement">
-          {{
-            t('Profile.NetworkGraph.playedAgainst', {
-              username: username,
-              nGames: selectedUser.data[2],
-              count: selectedUser.data[2],
-            })
-          }}
-        </div>
-        <div
-          class="playerCardElement"
-          style="padding-left: 10px"
-        >
-          {{
-            t('Profile.NetworkGraph.wonOf', {
-              nGames: selectedUser.data[2] - selectedUser.data[3],
-              count: selectedUser.data[2] - selectedUser.data[3],
-            })
-          }}
-        </div>
-        <div class="playerCardElement">
-          {{
-            t('Profile.NetworkGraph.team', {
-              nGames: selectedUser.data[4] - selectedUser.data[2] - selectedUser.data[0],
-              count: selectedUser.data[4] - selectedUser.data[2] - selectedUser.data[0],
-            })
-          }}
-        </div>
       </div>
     </div>
     <ButtonGroup>
       <Button
         icon="pi pi-refresh"
-        label="Reset"
+        :label="t('Profile.NetworkGraph.reset')"
         @click="resetGraph()"
       />
       <Button
         icon="pi pi-window-minimize"
-        label="Rescale"
+        :label="t('Profile.NetworkGraph.rescale')"
         @click="resetGraphSize()"
       />
     </ButtonGroup>
-    <div
-      v-if="loading"
-      class="chartSponsorOverlay"
-    >
-      <i
-        class="pi pi-spin pi-spinner"
-        style="font-size: 4rem"
-        aria-hidden="true"
-      />
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import Button from 'primevue/button'
 import ButtonGroup from 'primevue/buttongroup'
-import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
-
 import { onUnmounted, onMounted, watch, ref } from 'vue'
-import cytoscape from 'cytoscape'
+import cytoscape, { type ElementsDefinition, type LayoutOptions, type StylesheetJson } from 'cytoscape'
+import StatsWithPlayer from './StatsWithPlayer.vue'
+import type { PlayerFrontendStatistic } from '@/generatedClient'
 
+const { t } = useI18n()
 const props = defineProps<{
-  networkData: any
-  peopleData: any
   username: string
-  loading: boolean
+  playerStats: PlayerFrontendStatistic
 }>()
+const cy = ref<cytoscape.Core>()
 
-const layout = {
+const layout: LayoutOptions = {
   name: 'cose',
   idealEdgeLength: (edge: any) => {
-    return 1 / edge['_private'].data.weight
+    return edge['_private'].data.weight
   },
   nodeOverlap: 20,
   refresh: 20,
   fit: true,
   randomize: true,
   componentSpacing: 100,
-  nodeRepulsion: () => {
-    return 1000000
-  },
-  edgeElasticity: (edge: any) => {
-    return edge['_private'].data.weight * 300
-  },
+  nodeRepulsion: 100000,
   nestingFactor: 5,
   gravity: 80,
   numIter: 1000,
   initialTemp: 200,
   coolingFactor: 0.95,
-  minTemp: 1.0,
 }
 
-const style = [
-  {
-    selector: 'core',
-    style: {
-      'selection-box-color': '#AAD8FF',
-      'selection-box-border-color': '#8BB0D0',
-      'selection-box-opacity': 0.5,
-    },
-  },
+const style: StylesheetJson = [
   {
     selector: 'node',
     style: {
@@ -216,23 +144,117 @@ const style = [
   },
 ]
 
-const cy: null | any = ref(null)
-const selectedUser: null | any = ref(null)
+function getElements(): ElementsDefinition {
+  const numberOfNodes = 20
+
+  const peopleToConsider = Object.keys(props.playerStats.people)
+    .toSorted((a, b) => props.playerStats.people[b][0] + props.playerStats.people[b][2] - props.playerStats.people[a][0] - props.playerStats.people[a][2])
+    .slice(0, numberOfNodes)
+
+  return {
+    edges: [
+      ...peopleToConsider.map((p) => {
+        return {
+          data: {
+            source: p,
+            target: props.username,
+            weight: props.playerStats.people[p][0],
+            together: true,
+            id: `e-${p}-${props.username}-together`,
+          },
+          selected: false,
+          selectable: false,
+          locked: false,
+          grabbed: false,
+          classes: 'game_together_edge',
+        }
+      }),
+      ...peopleToConsider.map((p) => {
+        return {
+          data: {
+            source: p,
+            target: props.username,
+            weight: props.playerStats.people[p][2],
+            together: false,
+            id: `e-${p}-${props.username}-against`,
+          },
+          selected: false,
+          selectable: false,
+          locked: false,
+          grabbed: false,
+          classes: 'game_against_edge',
+        }
+      }),
+    ],
+    nodes: [
+      {
+        data: {
+          id: props.username,
+          name: props.username,
+          score: Math.max(...peopleToConsider.map((p) => props.playerStats.people[p][0] + props.playerStats.people[p][2]), 10),
+        },
+        selected: false,
+        selectable: false,
+        locked: true,
+        grabbed: false,
+        grabbable: false,
+      },
+      ...peopleToConsider.map((p) => {
+        return {
+          data: {
+            id: p,
+            name: p,
+            score: props.playerStats.people[p][0] + props.playerStats.people[p][2],
+          },
+          selected: false,
+          selectable: true,
+          locked: false,
+          grabbed: false,
+          grabbable: true,
+        }
+      }),
+    ],
+  }
+}
+
+const selectedUser = ref<null | { name: string; data: any }>(null)
 
 const resetGraph = () => {
-  if (cy.value != null && props.networkData != null) {
+  if (cy.value != null) {
     selectedUser.value = null
-    cy.value?.elements()?.remove()
-    cy.value?.add(enrichDataModel())
-    cy.value?.layout(layout)?.run()
+    cy.value.elements().remove()
 
-    cy.value?.nodes()?.on('select', (event: any) => {
+    const elements = getElements()
+
+    // compute center in pixels from container (fallback to cy width/height)
+    const container = cy.value.container()
+    let centerX = cy.value.width() / 2
+    let centerY = cy.value.height() / 2
+    if (container instanceof HTMLElement) {
+      const rect = container.getBoundingClientRect()
+      // use container pixel center so layout will treat the locked node as fixed there
+      centerX = rect.width / 2
+      centerY = rect.height / 2
+    }
+
+    // find main node and set fixed position so layouts won't move it
+    const mainNode = (elements.nodes || []).find((n: any) => n?.data?.id === props.username)
+    if (mainNode) {
+      mainNode.position = { x: centerX, y: centerY }
+      // keep locked true (already set in getElements) but ensure it's present
+      mainNode.locked = true
+    }
+
+    cy.value.add(elements)
+    cy.value.layout(layout).run()
+
+    cy.value.nodes().on('select', (event) => {
       selectedUser.value = {
         name: event.target['_private'].data.name,
-        data: props.peopleData[event.target['_private'].data.name],
+        data: props.playerStats.people[event.target['_private'].data.name],
       }
     })
-    cy.value?.on('unselect', () => {
+    cy.value.on('unselect', () => {
       selectedUser.value = null
     })
   }
@@ -244,40 +266,14 @@ const resetGraphSize = () => {
   }
 }
 
-const enrichDataModel = () => {
-  return {
-    edges: props.networkData.edges.map((e: any) => {
-      return {
-        ...e,
-        group: 'edges',
-        selected: false,
-        selectable: false,
-        locked: false,
-        grabbed: false,
-        classes: e.data.together ? 'game_together_edge' : 'game_against_edge',
-      }
-    }),
-    nodes: props.networkData.nodes.map((e: any) => {
-      return {
-        ...e,
-        group: 'nodes',
-        selected: false,
-        selectable: e.data.name !== props.username,
-        locked: false,
-        grabbed: false,
-        grabbable: true,
-      }
-    }),
-  }
-}
-
 onMounted(() => {
   cy.value = cytoscape({
     container: document.getElementById('cy'), // container to render in
-    elements: props.networkData,
-    layout: layout as any,
-    style: style as any,
+    elements: { edges: [], nodes: [] },
+    layout: layout,
+    style: style,
   })
+  resetGraph()
 })
 
 onUnmounted(() => {
@@ -286,7 +282,7 @@ onUnmounted(() => {
 })
 
 watch(
-  () => props.networkData,
+  () => props.username,
   () => {
     resetGraph()
   },
@@ -304,7 +300,7 @@ watch(
   position: relative;
   width: 100%;
   height: 0;
-  padding-top: 100%;
+  padding-top: calc(100% * min(1, 1vh / 1vw));
 }
 
 #cy {
@@ -326,10 +322,6 @@ watch(
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
-
-.playerCardElement {
-  white-space: nowrap;
 }
 </style>
 

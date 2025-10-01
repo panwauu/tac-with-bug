@@ -2,7 +2,75 @@
 
 exports[`Platform PlayerStatistic Test Suite > Should return playerStats of existing player 1`] = `
 {
+  "ballsInEnemy": 7,
+  "ballsInOwnTeam": 8,
   "blockedByModerationUntil": null,
+  "cards": {
+    "1": [
+      25,
+      25,
+      7,
+    ],
+    "13": [
+      15,
+      15,
+      0,
+    ],
+    "4": [
+      16,
+      14,
+      23,
+    ],
+    "7": [
+      40,
+      35,
+      3,
+    ],
+    "8": [
+      29,
+      26,
+      1,
+    ],
+    "engel": [
+      1,
+      1,
+      0,
+    ],
+    "krieger": [
+      0,
+      0,
+      0,
+    ],
+    "narr": [
+      0,
+      0,
+      1,
+    ],
+    "tac": [
+      12,
+      12,
+      1,
+    ],
+    "teufel": [
+      2,
+      2,
+      2,
+    ],
+    "total": [
+      427,
+      373,
+      88,
+    ],
+    "trickser": [
+      16,
+      15,
+      6,
+    ],
+  },
+  "coopBest4": 130,
+  "coopBest6": 192,
+  "coopWorst4": 130,
+  "coopWorst6": 192,
   "gamesDistribution": {
     "aborted": 2,
     "lost4": 0,
@@ -14,20 +82,28 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
     "won6": 0,
   },
   "history": [
-    "coop",
-    "won",
-    "running",
-    "running",
-    "running",
-    "running",
-    "running",
-    "running",
-    "aborted",
-    "aborted",
+    "c",
+    "c",
+    "w",
+    "r",
+    "r",
+    "r",
+    "r",
+    "r",
+    "r",
+    "a",
+    "a",
   ],
   "hof": [
     "verlag",
   ],
+  "nAbgeworfen": 50,
+  "nAussetzen": 19,
+  "nBallsKickedEnemy": 5,
+  "nBallsKickedOwnTeam": 12,
+  "nBallsKickedSelf": 0,
+  "nBallsLost": 4,
+  "nMoves": 391,
   "people": {
     "UserB": [
       0,
@@ -65,11 +141,6 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
       1,
     ],
   },
-  "players": {
-    "bestPartner": "UserC",
-    "mostFrequent": "UserB",
-    "worstEnemy": "UserB",
-  },
   "subscriber": false,
   "table": [
     100,
@@ -80,6 +151,7 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
     87,
     60,
   ],
+  "timePlayed": 5020,
   "userDescription": "",
 }
 `;
@@ -106,262 +178,4 @@ exports[`Platform PlayerStatistic Test Suite > Should return tournamentParticipa
     "totalRounds": 2,
   },
 ]
-`;
-
-exports[`Platform PlayerStatistic Test Suite > Should return userGraph of existing player 1`] = `
-{
-  "graph": {
-    "edges": [
-      {
-        "data": {
-          "id": "e0",
-          "source": "1",
-          "target": "2",
-          "together": false,
-          "weight": 1,
-        },
-      },
-      {
-        "data": {
-          "id": "e1",
-          "source": "1",
-          "target": "3",
-          "together": true,
-          "weight": 0.6666666666666666,
-        },
-      },
-      {
-        "data": {
-          "id": "e2",
-          "source": "1",
-          "target": "4",
-          "together": false,
-          "weight": 0.6666666666666666,
-        },
-      },
-      {
-        "data": {
-          "id": "e3",
-          "source": "2",
-          "target": "3",
-          "together": false,
-          "weight": 1,
-        },
-      },
-      {
-        "data": {
-          "id": "e4",
-          "source": "2",
-          "target": "4",
-          "together": true,
-          "weight": 0.6666666666666666,
-        },
-      },
-      {
-        "data": {
-          "id": "e5",
-          "source": "3",
-          "target": "4",
-          "together": false,
-          "weight": 1,
-        },
-      },
-      {
-        "data": {
-          "id": "e6",
-          "source": "1",
-          "target": "3",
-          "together": false,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e7",
-          "source": "1",
-          "target": "4",
-          "together": true,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e8",
-          "source": "1",
-          "target": "5",
-          "together": false,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e9",
-          "source": "1",
-          "target": "6",
-          "together": false,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e10",
-          "source": "2",
-          "target": "4",
-          "together": false,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e11",
-          "source": "2",
-          "target": "5",
-          "together": true,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e12",
-          "source": "2",
-          "target": "6",
-          "together": false,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e13",
-          "source": "3",
-          "target": "5",
-          "together": false,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e14",
-          "source": "3",
-          "target": "6",
-          "together": true,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e15",
-          "source": "4",
-          "target": "5",
-          "together": false,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e16",
-          "source": "4",
-          "target": "6",
-          "together": false,
-          "weight": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "e17",
-          "source": "5",
-          "target": "6",
-          "together": false,
-          "weight": 0.3333333333333333,
-        },
-      },
-    ],
-    "nodes": [
-      {
-        "data": {
-          "id": "1",
-          "idInt": 1,
-          "name": "UserA",
-          "score": 1,
-        },
-      },
-      {
-        "data": {
-          "id": "2",
-          "idInt": 2,
-          "name": "UserB",
-          "score": 1,
-        },
-      },
-      {
-        "data": {
-          "id": "3",
-          "idInt": 3,
-          "name": "UserC",
-          "score": 1,
-        },
-      },
-      {
-        "data": {
-          "id": "4",
-          "idInt": 4,
-          "name": "UserD",
-          "score": 1,
-        },
-      },
-      {
-        "data": {
-          "id": "5",
-          "idInt": 5,
-          "name": "UserE",
-          "score": 0.3333333333333333,
-        },
-      },
-      {
-        "data": {
-          "id": "6",
-          "idInt": 6,
-          "name": "UserF",
-          "score": 0.3333333333333333,
-        },
-      },
-    ],
-  },
-  "people": {
-    "UserB": [
-      0,
-      0,
-      1,
-      1,
-      3,
-    ],
-    "UserC": [
-      1,
-      1,
-      0,
-      0,
-      3,
-    ],
-    "UserD": [
-      0,
-      0,
-      1,
-      1,
-      3,
-    ],
-    "UserE": [
-      0,
-      0,
-      0,
-      0,
-      1,
-    ],
-    "UserF": [
-      0,
-      0,
-      0,
-      0,
-      1,
-    ],
-  },
-}
 `;

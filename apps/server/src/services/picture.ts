@@ -2,8 +2,8 @@ import type pg from 'pg'
 import sharp from 'sharp'
 
 // https://avatars.dicebear.com/styles/bottts
-import { createAvatar } from '@dicebear/avatars'
-import * as style from '@dicebear/avatars-bottts-sprites'
+import { createAvatar } from '@dicebear/core'
+import { bottts } from '@dicebear/collection'
 
 import { resolveUserIdentifier } from '../services/user'
 import type { UserIdentifier } from '../sharedTypes/typesDBuser'
@@ -27,8 +27,8 @@ export async function queryProfilePicture(sqlClient: pg.Pool, identifier: UserId
 }
 
 export async function selectRandomProfilePicture(sqlClient: pg.Pool, userID: number) {
-  const svg = createAvatar(style)
-  const svgBuffer = Buffer.from(svg, 'utf8')
+  const svg = createAvatar(bottts, { seed: Date.now().toString() })
+  const svgBuffer = Buffer.from(svg.toString(), 'utf8')
   const resizedBuffer = await sharp(svgBuffer).resize(profilePictureSize, profilePictureSize).toBuffer()
   await saveProfilePicture(sqlClient, resizedBuffer, userID)
 }

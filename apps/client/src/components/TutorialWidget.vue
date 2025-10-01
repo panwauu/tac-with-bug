@@ -1,5 +1,5 @@
 <template>
-  <h2>Tutorials</h2>
+  <h2>{{ t('Tutorial.tutorialHeader') }}</h2>
   <div
     v-for="(data, index) in progressInEachTutorial"
     :key="`TutorialWidget-${index}`"
