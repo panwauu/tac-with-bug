@@ -93,7 +93,7 @@ function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game
 
 function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number, ownTeamIndex: number) {
   for (const [playerIndex, player] of game.players.entries()) {
-    if (playerIndex !== nPlayer && player != null) {
+    if (playerIndex !== nPlayer && player != null && game.bots[playerIndex] == null) {
       if (!(player in playerStatistic.wl.people)) {
         playerStatistic.wl.people[player] = [0, 0, 0, 0, 0]
       }
