@@ -221,11 +221,11 @@
                 </tr>
                 <tr class="table-3-split-height">
                   <th>{{ t('Profile.bestCoop') + ':' }}</th>
-                  <td>{{ props.playerStats.bestCoop }}</td>
+                  <td>{{ props.playerStats.coopBest4 }}</td>
                 </tr>
                 <tr class="table-3-split-height">
                   <th>{{ t('Profile.worstCoop') + ':' }}</th>
-                  <td>{{ props.playerStats.worstCoop }}</td>
+                  <td>{{ props.playerStats.coopWorst4 }}</td>
                 </tr>
               </tbody>
             </table>

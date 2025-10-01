@@ -27,10 +27,10 @@ function intializePlayerStatistic(): tStatistic.PlayerStatistic {
         ballsInEnemy: 0,
         gamesHistory: [],
         people: {},
-        coopBest4: 1000,
-        coopBest6: 1000,
-        coopWorst4: 0,
-        coopWorst6: 0,
+        coopBest4: null,
+        coopBest6: null,
+        coopWorst4: null,
+        coopWorst6: null,
       },
     },
   }
@@ -51,11 +51,11 @@ function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: G
     return accumulator + currentValue.cards.total[0]
   }, 0)
   if (game.game.nPlayers === 4) {
-    playerStatistic.wl.coopBest4 = Math.min(playerStatistic.wl.coopBest4, nMovesToWin)
-    playerStatistic.wl.coopWorst4 = Math.max(playerStatistic.wl.coopWorst4, nMovesToWin)
+    playerStatistic.wl.coopBest4 = playerStatistic.wl.coopBest4 == null ? nMovesToWin : Math.min(playerStatistic.wl.coopBest4, nMovesToWin)
+    playerStatistic.wl.coopWorst4 = playerStatistic.wl.coopWorst4 == null ? nMovesToWin : Math.max(playerStatistic.wl.coopWorst4, nMovesToWin)
   } else {
-    playerStatistic.wl.coopBest6 = Math.min(playerStatistic.wl.coopBest6, nMovesToWin)
-    playerStatistic.wl.coopWorst6 = Math.max(playerStatistic.wl.coopWorst6, nMovesToWin)
+    playerStatistic.wl.coopBest6 = playerStatistic.wl.coopBest6 == null ? nMovesToWin : Math.min(playerStatistic.wl.coopBest6, nMovesToWin)
+    playerStatistic.wl.coopWorst6 = playerStatistic.wl.coopWorst6 == null ? nMovesToWin : Math.max(playerStatistic.wl.coopWorst6, nMovesToWin)
   }
 
   for (const [playerIndex, player] of game.players.entries()) {
@@ -208,8 +208,10 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
     userDescription: user.value.userDescription,
     registered: user.value.registered,
     blockedByModerationUntil: user.value.blockedByModerationUntil,
-    bestCoop: Math.min(stat.wl.coopBest4, stat.wl.coopBest6),
-    worstCoop: Math.max(stat.wl.coopWorst4, stat.wl.coopWorst6),
+    coopBest4: stat.wl.coopBest4,
+    coopBest6: stat.wl.coopBest6,
+    coopWorst4: stat.wl.coopWorst4,
+    coopWorst6: stat.wl.coopWorst6,
     ballsInOwnTeam: stat.wl.ballsInOwnTeam,
     ballsInEnemy: stat.wl.ballsInEnemy,
     nBallsLost: stat.actions.nBallsLost,

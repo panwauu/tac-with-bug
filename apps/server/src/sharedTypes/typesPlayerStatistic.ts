@@ -31,8 +31,10 @@ export interface PlayerFrontendStatistic {
   userDescription: string
   registered: string
   blockedByModerationUntil: string | null
-  bestCoop: number
-  worstCoop: number
+  coopBest4: number | null
+  coopBest6: number | null
+  coopWorst4: number | null
+  coopWorst6: number | null
   ballsInOwnTeam: number
   ballsInEnemy: number
   nBallsLost: number
@@ -76,8 +78,8 @@ export interface PlayerWLStatistic {
   ballsInEnemy: number
   gamesHistory: ('w' | 'l' | 'c' | 'a' | 'r')[]
   people: PeopleOjectType
-  coopBest4: number
-  coopBest6: number
+  coopBest4: number | null
+  coopBest6: number | null
 }
 
 export interface UserNetworkEdge {
@@ -149,8 +151,8 @@ export interface PlayerWLStatistic {
   ballsInEnemy: number
   gamesHistory: ('w' | 'l' | 'c' | 'a' | 'r')[]
   people: PeopleOjectType
-  coopBest4: number
-  coopBest6: number
-  coopWorst4: number
-  coopWorst6: number
+  coopBest4: number | null
+  coopBest6: number | null
+  coopWorst4: number | null
+  coopWorst6: number | null
 }
