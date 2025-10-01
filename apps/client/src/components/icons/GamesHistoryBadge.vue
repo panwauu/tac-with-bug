@@ -29,7 +29,6 @@ defineProps<{ win: string }>()
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
   margin: 2px;
   font-size: 13px;
   font-weight: bolder;
