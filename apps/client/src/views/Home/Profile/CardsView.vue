@@ -76,7 +76,7 @@ const tableData = computed(() => {
 
   const specialCardsTable = [
     ...Object.entries(props.playerStats.cards)
-      .filter(([card]) => card != 'total')
+      .filter(([card]) => card !== 'total')
       .map(([card, values]) => ({
         card,
         shareUser: values[0] / cardsTotal,
