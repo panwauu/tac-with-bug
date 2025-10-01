@@ -78,7 +78,6 @@ function cardName(title: string) {
 const cardsTotal = props.playerStats.cards.total[0]
 
 const tableData = computed(() => {
-  const cardsTotal = props.playerStats.cards.total[0]
   const totalCardsIn4erDeck = Object.values(cardCount4erTac).reduce((acc, val) => acc + val, 0)
 
   const specialCardsTable = [
