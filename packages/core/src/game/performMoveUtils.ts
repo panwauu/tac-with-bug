@@ -121,13 +121,9 @@ function updateState(balls: tBall.BallsType, nBall: number, newPosition: number,
     // ball is in goal
     if (remainingMoves === 0) {
       // move ended
-      if (ballInLastGoalPosition(balls, nBall, newPosition)) {
-        // is in last position -> locked
-        balls[nBall].state = 'locked'
-      } else {
-        // is not in last position -> goal
-        balls[nBall].state = 'goal'
-      }
+      // is in last position -> locked
+      // is not in last position -> goal
+      balls[nBall].state = ballInLastGoalPosition(balls, nBall, newPosition) ? 'locked' : 'goal'
     } else {
       // move not ended - definitively seven
       if (newPosition === ballGoal(nBall, balls) && ballInLastGoalPosition(balls, nBall, newPosition)) {
@@ -164,10 +160,10 @@ function getRemainingMoves(card: tCard.PlayerCard, balls: tBall.BallsType, nBall
     // reset all balls inbetween if "7"
     let priorRemainingMoves = 7
     if (card.title.startsWith('7-')) {
-      priorRemainingMoves = Number.parseInt(card.title.substring(2, card.title.length))
+      priorRemainingMoves = Number.parseInt(card.title.slice(2))
     }
     if (card.title.startsWith('tac-')) {
-      priorRemainingMoves = Number.parseInt(card.title.substring(4, card.title.length))
+      priorRemainingMoves = Number.parseInt(card.title.slice(4))
     }
     remainingMoves = priorRemainingMoves - (sevenReconstructPath(balls, nBall, newPosition).length - 1)
   }
@@ -230,12 +226,14 @@ export function sevenReconstructPath(balls: tBall.BallsType, nBall: number, goal
   let finalPath: number[] | undefined
   for (let move = 0; move < 7; move++) {
     for (const startPath of startPaths) {
-      const oneStepPositions = moveOneStep(balls, nBall, startPath[startPath.length - 1], 1, 7)
+      const lastPos = startPath.at(-1)
+      if (lastPos === undefined) throw new Error('Could not reconstruct Path of 7')
+      const oneStepPositions = moveOneStep(balls, nBall, lastPos, 1, 7)
       for (const newPos of oneStepPositions) {
         endPaths.push(startPath.concat([newPos]))
       }
     }
-    finalPath = endPaths.find((path) => path[path.length - 1] === goalPosition)
+    finalPath = endPaths.find((path) => path.at(-1) === goalPosition)
     if (finalPath != null) {
       break
     }
@@ -251,7 +249,7 @@ export function sevenReconstructPath(balls: tBall.BallsType, nBall: number, goal
 export function moveBallsBetweenPositionsToHouse(balls: tBall.BallsType, nBall: number, goalPosition: number): void {
   // removes every ball between nBall.position and including goalPosition
   let finalPath = sevenReconstructPath(balls, nBall, goalPosition)
-  finalPath = finalPath.slice(1, finalPath.length)
+  finalPath = finalPath.slice(1)
 
   for (const pos of finalPath) {
     const nBallToRemove = balls.findIndex((ball) => ball.position === pos)

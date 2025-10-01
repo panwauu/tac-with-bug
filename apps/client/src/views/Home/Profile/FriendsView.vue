@@ -1,9 +1,18 @@
 <template>
   <div>
-    <DataTable :value="friendsForTable">
+    <DataTable
+      v-model:first="first"
+      :value="friendsForTable"
+      :paginator="friendsForTable.length > 10"
+      :rows="rows"
+      :rows-per-page-options="[5, 10, 20, 50]"
+      :sort-field="'totalGames'"
+      :sort-order="-1"
+    >
       <Column
         field="username"
         :header="t('Profile.Friends.username')"
+        sortable
       >
         <template #body="slotProps">
           <PlayerWithPicture
@@ -16,8 +25,24 @@
       <Column
         field="date"
         :header="t('Profile.Friends.friendssince')"
+        sortable
       >
         <template #body="slotProps">{{ new Date(slotProps.data.date).toLocaleDateString() }}</template>
+      </Column>
+      <Column
+        field="totalGames"
+        :header="t('Profile.Friends.totalgames')"
+        sortable
+      >
+        <template #body="slotProps">
+          <div
+            class="clickable"
+            @click="showPopover($event, slotProps.data.username)"
+          >
+            {{ slotProps.data.totalGames }}
+            <i class="pi pi-info-circle" />
+          </div>
+        </template>
       </Column>
       <Column
         v-if="username === loggedInUsername"
@@ -28,6 +53,17 @@
         </template>
       </Column>
     </DataTable>
+
+    <Popover ref="popover">
+      <div v-if="popoverUsername != null && popoverStats != null">
+        <StatsWithPlayer
+          :username="popoverUsername"
+          :username-to-commpare-to="props.username"
+          :win-rate-of-compare-user="props.playerStats.table[0]"
+          :stats="popoverStats"
+        />
+      </div>
+    </Popover>
   </div>
 </template>
 
@@ -39,19 +75,25 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import FriendButton from '@/components/FriendButton.vue'
-
-import { watch, ref, computed } from 'vue'
+import Popover from 'primevue/popover'
+import { watch, ref, computed, useTemplateRef, nextTick } from 'vue'
 import router from '@/router/index'
 import { injectStrict, SocketKey, FriendsStateKey } from '@/services/injections'
 import type { Friend } from '@/../../server/src/sharedTypes/typesFriends'
 import { username as loggedInUsername, user } from '@/services/useUser'
+import type { PlayerFrontendStatistic } from '@/generatedClient'
+import StatsWithPlayer from '@/components/StatsWithPlayer.vue'
 
 const socket = injectStrict(SocketKey)
 const friendsState = injectStrict(FriendsStateKey)
-const props = defineProps<{ username: string }>()
+const props = defineProps<{ username: string; playerStats: PlayerFrontendStatistic }>()
 
 const loading = ref(false)
 const friends = ref<Friend[]>([])
+
+// Pagination state for DataTable
+const first = ref(0)
+const rows = ref(10)
 
 updateData().catch((err) => console.log(err))
 watch(
@@ -79,11 +121,22 @@ async function updateData() {
   }
 }
 
+function getGamesWith(username: string): number {
+  if (props.playerStats == null) {
+    return 0
+  }
+  return props.playerStats.people[username]?.[4] ?? 0
+}
+
 const friendsForTable = computed(() => {
   if (props.username === loggedInUsername.value) {
-    return friendsState.friends
+    return friendsState.friends.map((f) => {
+      return { ...f, totalGames: getGamesWith(f.username) }
+    })
   }
-  return friends.value
+  return friends.value.map((f) => {
+    return { ...f, totalGames: getGamesWith(f.username) }
+  })
 })
 
 const onlineFriends = ref<string[]>([])
@@ -109,4 +162,26 @@ watch(
   },
   { deep: true }
 )
+
+const popover = useTemplateRef('popover')
+const popoverUsername = ref<string>()
+const popoverStats = ref<number[]>()
+
+const showPopover = (event: any, username: string) => {
+  popover.value?.hide()
+
+  const stats = props.playerStats.people[username]
+
+  if (username != null && username !== '' && stats != null && username !== popoverUsername.value) {
+    popoverUsername.value = username
+    popoverStats.value = stats
+
+    nextTick(() => {
+      popover.value?.show(event)
+    })
+  } else {
+    popoverUsername.value = undefined
+    popoverStats.value = undefined
+  }
+}
 </script>

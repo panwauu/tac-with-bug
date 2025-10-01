@@ -42,7 +42,13 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
   for (let i = 1; i < lines.length; i++) {
     //console.log("Line: " + (i + 1))
     const lineJSON = lines[i]
-    if (lineJSON.action !== 'reset') {
+    if (lineJSON.action === 'reset') {
+      gameInst.resetGame()
+      gameInst.cards.players = cloneDeep(lineJSON.cards.players)
+      gameInst.cards.deck = cloneDeep(lineJSON.cards.deck)
+      gameInst.cards.dealingPlayer = cloneDeep(lineJSON.cards.dealingPlayer)
+      gameInst.activePlayer = cloneDeep(lineJSON.activePlayer)
+    } else {
       try {
         let timeDummy = Math.random() * 2
         if (i === 1) {
@@ -60,12 +66,6 @@ export function repeatGame(lines: any[], nPlayersParam?: number, nTeamsParam?: n
         result.line = i
         return result
       }
-    } else {
-      gameInst.resetGame()
-      gameInst.cards.players = cloneDeep(lineJSON.cards.players)
-      gameInst.cards.deck = cloneDeep(lineJSON.cards.deck)
-      gameInst.cards.dealingPlayer = cloneDeep(lineJSON.cards.dealingPlayer)
-      gameInst.activePlayer = cloneDeep(lineJSON.activePlayer)
     }
 
     // Change the newly dealt cards if necessary
@@ -112,11 +112,10 @@ function compareGameWithCaptured(gameInst: Game, capturedState: any) {
     console.log('cards unequal')
     const dataForTable: any = { status: ['cards', 'cards_des'] }
     for (const k of Object.keys(gameInst.cards)) {
-      if (typeof (gameInst.cards as any)[k] === 'object') {
-        dataForTable[k] = [JSON.stringify((gameInst.cards as any)[k]), JSON.stringify(capturedState.cards[k])]
-      } else {
-        dataForTable[k] = [(gameInst.cards as any)[k], capturedState.cards[k]]
-      }
+      dataForTable[k] =
+        typeof (gameInst.cards as any)[k] === 'object'
+          ? [JSON.stringify((gameInst.cards as any)[k]), JSON.stringify(capturedState.cards[k])]
+          : [(gameInst.cards as any)[k], capturedState.cards[k]]
     }
     console.table(dataForTable)
     return false

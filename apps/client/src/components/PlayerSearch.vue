@@ -7,6 +7,7 @@
       :suggestions="filteredPlayers"
       append-to="body"
       :placeholder="t('Home.Spielersuche')"
+      :empty-search-message="t('PlayerSearch.noResults')"
       @complete="searchPlayers()"
       @option-select="searchSubmit()"
       @dropdown-click="searchSubmit()"

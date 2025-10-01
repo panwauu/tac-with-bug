@@ -37,15 +37,25 @@ jobs:
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       - name: Push to heroku
         run: |
+          # create temp dir and copy working tree (ignore .git)
+          TMP=$(mktemp -d)
+          rsync -a --exclude='.git' ./ "$TMP/"
+
+          pushd "$TMP"
           git init
           git config user.name "Oskar Baumann"
-          git config user.email ${{ secrets.HEROKU_EMAIL }}
-          heroku git:remote --app $HEROKU_APP_NAME
-          git add -A;
-          git commit -m "Deploy";
-          git push --force heroku master;
+          git config user.email "$HEROKU_EMAIL"
+          git add -A
+          git commit -m "Deploy from CI at $GITHUB_SHA"
+          git remote add heroku https://git.heroku.com/$HEROKU_APP_NAME.git
+          git push --force heroku HEAD:main
+          popd
+
+          # optionally clean up
+          rm -rf "$TMP"
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       - name: Advance deployed tag
         uses: actions/github-script@v5
         with:

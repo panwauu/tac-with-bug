@@ -12,13 +12,13 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
 import Chart from 'primevue/chart'
-import { DefaultService as Service } from '@/generatedClient/index.ts'
 import { username as loggedInUsername } from '@/services/useUser'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const props = defineProps<{
   data: number[]
+  myData: number[]
   username: string
 }>()
 
@@ -58,7 +58,7 @@ const chartOptions = {
   },
 }
 
-const resetGraph = async (data: any) => {
+const resetGraph = async (data: number[], myData: number[]) => {
   if (data === null || data.length === 0) {
     return
   }
@@ -70,7 +70,6 @@ const resetGraph = async (data: any) => {
     if (currentUserDataset != null) {
       newChartDataset.push(currentUserDataset)
     } else {
-      const stats = await Service.getPlayerStats(loggedInUsername.value)
       newChartDataset.push({
         label: loggedInUsername.value ?? '',
         backgroundColor: '#25602950',
@@ -79,7 +78,7 @@ const resetGraph = async (data: any) => {
         pointBorderColor: '#fff',
         pointHoverBackgroundColor: '#fff',
         pointHoverBorderColor: 'rgba(255,99,132,1)',
-        data: stats.table,
+        data: myData,
         order: 2,
       })
     }
@@ -104,12 +103,12 @@ const resetGraph = async (data: any) => {
 }
 
 onMounted(() => {
-  resetGraph(props.data)
+  resetGraph(props.data, props.myData)
 })
 watch(
-  () => props.data,
+  () => [props.data, props.myData],
   () => {
-    resetGraph(props.data)
+    resetGraph(props.data, props.myData)
   },
   { deep: true }
 )

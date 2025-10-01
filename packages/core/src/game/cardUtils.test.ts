@@ -47,7 +47,7 @@ test('Discard of seven', () => {
   dealCards(cards4)
   cards4.players[player][cardIndex] = '7-2'
   discardCard(cards4, cardIndex, player, false)
-  expect(cards4.discardPile[cards4.discardPile.length - 1]).toEqual('7')
+  expect(cards4.discardPile.at(-1)).toEqual('7')
 })
 
 test('Deal Cards 4', () => {
@@ -148,10 +148,10 @@ test('Size of Card Deck', () => {
 })
 
 test('Randomize Array -> Test of length and value consistency', () => {
-  const randomArray = [...Array(8)].map(() => Math.floor(Math.random() * 10))
+  const randomArray = Array.from({ length: 8 }).map(() => Math.floor(Math.random() * 10))
   const shuffledArray = [...randomArray]
   shuffleArray(shuffledArray)
-  expect(shuffledArray.sort()).toEqual(randomArray.sort())
+  expect(shuffledArray.toSorted()).toEqual(randomArray.toSorted())
 })
 
 test('Randomize Array -> Random test', () => {

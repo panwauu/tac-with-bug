@@ -63,7 +63,7 @@
     </div>
 
     <Button
-      label="Turnier erstellen"
+      :label="t('Tournament.CreatePrivate.createPrivateButton')"
       :disabled="!titleValid || settingsStore.isBlockedByModeration"
       @click="createPrivateTournament()"
     />

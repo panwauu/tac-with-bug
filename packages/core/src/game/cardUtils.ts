@@ -33,11 +33,12 @@ export function discardCard(cards: tCard.CardsType, cardIndex: number, activePla
 export function addCardToDiscardPile(cards: tCard.CardsType, cardIndex: number, activePlayer: number, teufelFlag: boolean) {
   const nPlayer = teufelFlag ? (activePlayer + 1) % cards.players.length : activePlayer
   cards.discardPlayer = nPlayer
-  cards.discardPile.push(cards.players[nPlayer][cardIndex])
-  if (cards.discardPile[cards.discardPile.length - 1].startsWith('7')) {
+  const cardToAdd = cards.players[nPlayer][cardIndex]
+  cards.discardPile.push(cardToAdd)
+  if (cardToAdd.startsWith('7')) {
     cards.discardPile[cards.discardPile.length - 1] = '7'
   }
-  if (cards.discardPile[cards.discardPile.length - 1].startsWith('tac')) {
+  if (cardToAdd.startsWith('tac')) {
     cards.discardPile[cards.discardPile.length - 1] = 'tac'
   }
 }
@@ -70,11 +71,7 @@ export function dealCards(cards: tCard.CardsType): void {
     }
   }
 
-  if (cards.deck.length >= createCardDeck(nPlayers, cards.meisterVersion).length) {
-    cards.previouslyPlayedCards = []
-  } else {
-    cards.previouslyPlayedCards = [...cards.previouslyPlayedCards, ...cards.discardPile]
-  }
+  cards.previouslyPlayedCards = cards.deck.length >= createCardDeck(nPlayers, cards.meisterVersion).length ? [] : [...cards.previouslyPlayedCards, ...cards.discardPile]
 
   for (let p = 0; p < nPlayers; p++) {
     cards.players[p] = cards.deck.slice(0, nCardsPerPlayer)
@@ -106,27 +103,29 @@ export function checkCardsAndDeal(game: Game) {
   }
 }
 
+export const cardCount4erTac = {
+  '1': 9,
+  '2': 7,
+  '3': 7,
+  '4': 7,
+  '5': 7,
+  '6': 7,
+  '7': 8,
+  '8': 7,
+  '9': 7,
+  '10': 7,
+  '12': 7,
+  '13': 9,
+  trickser: 7,
+  tac: 4,
+  krieger: 1,
+  engel: 1,
+  teufel: 1,
+  narr: 1,
+}
+
 export function createCardDeck(nPlayers: number, meisterVersion: boolean): Array<tCard.CardType> {
-  const cardCount = {
-    '1': 9,
-    '2': 7,
-    '3': 7,
-    '4': 7,
-    '5': 7,
-    '6': 7,
-    '7': 8,
-    '8': 7,
-    '9': 7,
-    '10': 7,
-    '12': 7,
-    '13': 9,
-    trickser: 7,
-    tac: 4,
-    krieger: 1,
-    engel: 1,
-    teufel: 1,
-    narr: 1,
-  }
+  const cardCount = cloneDeep(cardCount4erTac)
 
   if (nPlayers === 6 && meisterVersion) {
     cardCount['12'] -= 2

@@ -45,7 +45,7 @@ function getPlayers(game: Game, names: (string | null)[], bots: (number | null)[
   const players: Player[] = []
   for (let i = 0; i < game.cards.players.length; i++) {
     const player: Player = {
-      name: names[i] ?? (bots[i] != null ? getBotName(gameID, i) : ''),
+      name: names[i] ?? (bots[i] == null ? '' : getBotName(gameID, i)),
       remainingCards: game.cards.players[i].length,
       active: game.activePlayer === i,
       playerNumber: i,

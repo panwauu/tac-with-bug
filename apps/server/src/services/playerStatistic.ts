@@ -1,6 +1,6 @@
 import type pg from 'pg'
-import type * as tStatistic from '../sharedTypes/typesStatistic'
-import type { GameForPlay } from '@repo/core/types'
+import type * as tStatistic from '../sharedTypes/typesPlayerStatistic'
+import type { GameForPlay, GameStatistic, GameStatisticActionsType, GameStatisticCardsType } from '@repo/core/types'
 import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
 
 import { initalizeStatistic } from '@repo/core/game/statistic'
@@ -8,8 +8,6 @@ import { getGames } from './game'
 import { ballPlayer } from '@repo/core/game/ballUtils'
 import { getUser } from './user'
 import { isHofMember } from './hof'
-
-const lastGamesHistoryLength = 10
 
 function intializePlayerStatistic(): tStatistic.PlayerStatistic {
   return {
@@ -26,10 +24,12 @@ function intializePlayerStatistic(): tStatistic.PlayerStatistic {
         nGamesRunning: 0,
         ballsInOwnTeam: 0,
         ballsInEnemy: 0,
-        lastGamesHistory: [],
+        gamesHistory: [],
         people: {},
-        coopBest4: 1000,
-        coopBest6: 1000,
+        coopBest4: null,
+        coopBest6: null,
+        coopWorst4: null,
+        coopWorst6: null,
       },
     },
   }
@@ -41,7 +41,7 @@ function addWLStatisticAborted(playerStatistic: tStatistic.PlayerStatistic, game
   } else {
     playerStatistic.wl.nGamesAborted += 1
   }
-  addToGamesHistory(playerStatistic, 'aborted')
+  addToGamesHistory(playerStatistic, 'a')
 }
 
 function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number) {
@@ -50,9 +50,11 @@ function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: G
     return accumulator + currentValue.cards.total[0]
   }, 0)
   if (game.game.nPlayers === 4) {
-    playerStatistic.wl.coopBest4 = Math.min(playerStatistic.wl.coopBest4, nMovesToWin)
+    playerStatistic.wl.coopBest4 = playerStatistic.wl.coopBest4 == null ? nMovesToWin : Math.min(playerStatistic.wl.coopBest4, nMovesToWin)
+    playerStatistic.wl.coopWorst4 = playerStatistic.wl.coopWorst4 == null ? nMovesToWin : Math.max(playerStatistic.wl.coopWorst4, nMovesToWin)
   } else {
-    playerStatistic.wl.coopBest6 = Math.min(playerStatistic.wl.coopBest6, nMovesToWin)
+    playerStatistic.wl.coopBest6 = playerStatistic.wl.coopBest6 == null ? nMovesToWin : Math.min(playerStatistic.wl.coopBest6, nMovesToWin)
+    playerStatistic.wl.coopWorst6 = playerStatistic.wl.coopWorst6 == null ? nMovesToWin : Math.max(playerStatistic.wl.coopWorst6, nMovesToWin)
   }
 
   for (const [playerIndex, player] of game.players.entries()) {
@@ -64,7 +66,7 @@ function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: G
     }
   }
 
-  addToGamesHistory(playerStatistic, 'coop')
+  addToGamesHistory(playerStatistic, 'c')
 }
 
 function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number) {
@@ -75,7 +77,7 @@ function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game
   } else {
     game.game.winningTeams[ownTeamIndex] ? (playerStatistic.wl.nGamesWon6 += 1) : (playerStatistic.wl.nGamesLost6 += 1)
   }
-  addToGamesHistory(playerStatistic, game.game.winningTeams[ownTeamIndex] ? 'won' : 'lost')
+  addToGamesHistory(playerStatistic, game.game.winningTeams[ownTeamIndex] ? 'w' : 'l')
 
   // ballsInOwnTeam - ballsInEnemy
   playerStatistic.wl.ballsInOwnTeam += game.game.balls
@@ -89,9 +91,8 @@ function addWLStatisticWonLost(playerStatistic: tStatistic.PlayerStatistic, game
 }
 
 function addToPlayers(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, nPlayer: number, ownTeamIndex: number) {
-  // bestFriend worstEnemy --- [togetherTotal, togetherWon, againstTotal, againstWon]
   for (const [playerIndex, player] of game.players.entries()) {
-    if (playerIndex !== nPlayer && player != null) {
+    if (playerIndex !== nPlayer && player != null && game.bots[playerIndex] == null) {
       if (!(player in playerStatistic.wl.people)) {
         playerStatistic.wl.people[player] = [0, 0, 0, 0, 0]
       }
@@ -115,7 +116,7 @@ export function addWLStatistic(playerStatistic: tStatistic.PlayerStatistic, game
 
   if (game.running) {
     playerStatistic.wl.nGamesRunning += 1
-    return addToGamesHistory(playerStatistic, 'running')
+    return addToGamesHistory(playerStatistic, 'r')
   }
 
   if (game.game.coop) {
@@ -125,20 +126,18 @@ export function addWLStatistic(playerStatistic: tStatistic.PlayerStatistic, game
   return addWLStatisticWonLost(playerStatistic, game, nPlayer)
 }
 
-function addToGamesHistory(playerStatistic: tStatistic.PlayerStatistic, status: 'won' | 'lost' | 'coop' | 'aborted' | 'running') {
-  playerStatistic.wl.lastGamesHistory = playerStatistic.wl.lastGamesHistory
-    .slice(Math.max(0, playerStatistic.wl.lastGamesHistory.length + 1 - lastGamesHistoryLength))
-    .concat([status])
+function addToGamesHistory(playerStatistic: tStatistic.PlayerStatistic, status: 'w' | 'l' | 'c' | 'a' | 'r') {
+  playerStatistic.wl.gamesHistory.push(status)
 }
 
-function addActionStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: tStatistic.GameStatistic) {
-  for (const key of Object.keys(playerStatistic.actions) as Array<keyof tStatistic.GameStatisticActionsType>) {
+function addActionStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: GameStatistic) {
+  for (const key of Object.keys(playerStatistic.actions) as Array<keyof GameStatisticActionsType>) {
     playerStatistic.actions[key] += gameStatistic.actions[key]
   }
 }
 
-function addCardsStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: tStatistic.GameStatistic) {
-  for (const key of Object.keys(playerStatistic.cards) as Array<keyof tStatistic.GameStatisticCardsType>) {
+function addCardsStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStatistic: GameStatistic) {
+  for (const key of Object.keys(playerStatistic.cards) as Array<keyof GameStatisticCardsType>) {
     playerStatistic.cards[key][0] += gameStatistic.cards[key][0]
     playerStatistic.cards[key][1] += gameStatistic.cards[key][1]
     playerStatistic.cards[key][2] += gameStatistic.cards[key][2]
@@ -167,8 +166,7 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
   const stat = await getPlayerStats(sqlClient, user.value.id)
 
   return {
-    history: stat.wl.lastGamesHistory,
-    players: findPlayersFromStat(stat.wl),
+    history: stat.wl.gamesHistory,
     table:
       stat.wl.nGamesCoopWon + stat.wl.nGamesCoopAborted + stat.wl.nGamesLost4 + stat.wl.nGamesLost6 + stat.wl.nGamesWon4 + stat.wl.nGamesWon6 === 0
         ? [0, 0, 0, 0, 0, 0, 0]
@@ -205,6 +203,21 @@ export async function getDataForProfilePage(sqlClient: pg.Pool, username: string
     userDescription: user.value.userDescription,
     registered: user.value.registered,
     blockedByModerationUntil: user.value.blockedByModerationUntil,
+    coopBest4: stat.wl.coopBest4,
+    coopBest6: stat.wl.coopBest6,
+    coopWorst4: stat.wl.coopWorst4,
+    coopWorst6: stat.wl.coopWorst6,
+    ballsInOwnTeam: stat.wl.ballsInOwnTeam,
+    ballsInEnemy: stat.wl.ballsInEnemy,
+    nBallsLost: stat.actions.nBallsLost,
+    nBallsKickedEnemy: stat.actions.nBallsKickedEnemy,
+    nBallsKickedOwnTeam: stat.actions.nBallsKickedOwnTeam,
+    nBallsKickedSelf: stat.actions.nBallsKickedSelf,
+    nMoves: stat.actions.nMoves,
+    timePlayed: stat.actions.timePlayed,
+    nAbgeworfen: stat.actions.nAbgeworfen,
+    nAussetzen: stat.actions.nAussetzen,
+    cards: stat.cards,
   }
 }
 
@@ -216,157 +229,4 @@ function countTradedSpecialCards(stat: any) {
     }
   }
   return total
-}
-
-function findPlayersFromStat(wl: tStatistic.PlayerWLStatistic) {
-  const res = {
-    mostFrequent: '',
-    bestPartner: '',
-    worstEnemy: '',
-  }
-
-  if (Object.keys(wl.people).length === 0) {
-    return res
-  }
-
-  const keys = Object.keys(wl.people)
-  for (const key of keys) {
-    if (res.mostFrequent === '' || wl.people[key][4] > wl.people[res.mostFrequent][4]) {
-      res.mostFrequent = key
-    }
-
-    if (
-      (res.bestPartner === '' && wl.people[key][0] > 0) ||
-      (wl.people[key][0] > 0 && wl.people[key][1] / wl.people[key][0] > wl.people[res.bestPartner][1] / wl.people[res.bestPartner][0])
-    ) {
-      res.bestPartner = key
-    }
-
-    if (
-      (res.worstEnemy === '' && wl.people[key][2] > 0) ||
-      (wl.people[key][2] > 0 && wl.people[key][3] / wl.people[key][2] < wl.people[res.worstEnemy][3] / wl.people[res.worstEnemy][2])
-    ) {
-      res.worstEnemy = key
-    }
-  }
-
-  return res
-}
-
-function getUserNetworkFromGamesNodes(games: GameForPlay[]): tStatistic.UserNetworkNode[] {
-  const nodesLimit = 30
-  const nodes: tStatistic.UserNetworkNode[] = []
-
-  for (const game of games) {
-    for (let playerInd = 0; playerInd < game.players.length; playerInd++) {
-      const playerID = game.playerIDs[playerInd]
-      if (playerID == null || game.players[playerInd] == null) {
-        continue
-      }
-
-      const playerIndexInNodes = nodes.findIndex((n) => n.data.idInt === game.playerIDs[playerInd])
-      if (playerIndexInNodes === -1) {
-        nodes.push({
-          data: {
-            id: playerID.toString(),
-            idInt: playerID,
-            name: game.players[playerInd] ?? '',
-            score: 1,
-          },
-        })
-      } else {
-        nodes[playerIndexInNodes].data.score += 1
-      }
-    }
-  }
-
-  return nodes.toSorted((n) => n.data.score).slice(0, nodesLimit)
-}
-
-function getUserNetworkFromGamesEdges(games: GameForPlay[], nodes: tStatistic.UserNetworkNode[], edges: tStatistic.UserNetworkEdge[], playerInd: number, gamesInd: number) {
-  const playerID = games[gamesInd].playerIDs[playerInd]
-  for (let playerEdgeInd = playerInd + 1; playerEdgeInd < games[gamesInd].players.length; playerEdgeInd++) {
-    if (playerID == null) {
-      continue
-    }
-    const playerIDedgeInd = games[gamesInd].playerIDs[playerEdgeInd]
-    if (!nodes.some((n) => n.data.idInt === games[gamesInd].playerIDs[playerEdgeInd])) {
-      continue
-    }
-    if (playerIDedgeInd == null || games[gamesInd].players[playerEdgeInd] == null) {
-      continue
-    }
-
-    const together = games[gamesInd].game.teams.some((t) => t.includes(playerInd) && t.includes(playerEdgeInd))
-
-    const edgeIndex = edges.findIndex((n) => {
-      return (
-        (n.data.source === playerID.toString() && n.data.target === playerIDedgeInd.toString() && n.data.together === together) ||
-        (n.data.target === playerID.toString() && n.data.source === playerIDedgeInd.toString() && n.data.together === together)
-      )
-    })
-    if (edgeIndex === -1) {
-      edges.push({
-        data: {
-          source: playerID.toString(),
-          target: playerIDedgeInd.toString(),
-          weight: 1,
-          together: together,
-          id: `e${edges.length}`,
-        },
-      })
-    } else {
-      edges[edgeIndex].data.weight += 1
-    }
-  }
-}
-
-function getUserNetworkFromGames(allGames: GameForPlay[], userID: number, username: string): tStatistic.UserNetwork {
-  const games = allGames.filter((g) => g.game.gameEnded && !g.running)
-
-  const nodes = getUserNetworkFromGamesNodes(games)
-
-  const edges: tStatistic.UserNetworkEdge[] = []
-  for (let gamesInd = 0; gamesInd < games.length; gamesInd++) {
-    for (let playerInd = 0; playerInd < games[gamesInd].players.length; playerInd++) {
-      if (!nodes.some((n) => n.data.idInt === games[gamesInd].playerIDs[playerInd])) {
-        continue
-      }
-      getUserNetworkFromGamesEdges(games, nodes, edges, playerInd, gamesInd)
-    }
-  }
-
-  for (const n of nodes) {
-    n.data.score = n.data.score / games.length
-  }
-  const edgeWeightMax = Math.max(...edges.map((e) => e.data.weight))
-  for (const n of edges) {
-    n.data.weight = n.data.weight / edgeWeightMax
-  }
-
-  if (nodes.length === 0) {
-    nodes.push({
-      data: {
-        id: userID.toString(),
-        idInt: userID,
-        name: username,
-        score: 1,
-      },
-    })
-  }
-
-  return { nodes, edges }
-}
-
-export async function getUserNetworkData(sqlClient: pg.Pool, username: string): Promise<tStatistic.UserNetworkApiResponse> {
-  const user = await getUser(sqlClient, { username: username })
-  if (user.isErr()) {
-    throw new Error(user.error)
-  }
-
-  const games = await getGames(sqlClient, user.value.id)
-
-  const stat = await getPlayerStats(sqlClient, user.value.id)
-  const graph = getUserNetworkFromGames(games, user.value.id, username)
-  return { graph: graph, people: stat.wl.people }
 }

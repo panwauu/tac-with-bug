@@ -15,9 +15,6 @@ describe('Platform PlayerStatistic Test Suite', () => {
     const response = await testAgent.get('/gameApi/profile/getPlayerStats/').query({ username: userWithCredentials.username })
     expect(response.status).toBe(200)
     expect(response.body.history).toEqual([])
-    expect(response.body.players.mostFrequent).toEqual('')
-    expect(response.body.players.bestPartner).toEqual('')
-    expect(response.body.players.worstEnemy).toEqual('')
     expect(response.body.table).toEqual([0, 0, 0, 0, 0, 0, 0])
     expect(response.body.people).toEqual({})
     expect(response.body.hof).toEqual([])
@@ -34,15 +31,6 @@ describe('Platform PlayerStatistic Test Suite', () => {
     })
   })
 
-  test('Should return empty userGraph for new user', async () => {
-    const response = await testAgent.get('/gameApi/profile/userNetwork/').query({ username: userWithCredentials.username })
-    expect(response.status).toBe(200)
-    expect(response.body.graph.nodes.length).toEqual(1)
-    expect(response.body.graph.nodes[0].data.name).toBe(userWithCredentials.username)
-    expect(response.body.graph.edges).toEqual([])
-    expect(response.body.people).toEqual({})
-  })
-
   test('Should return empty tournamentParticipations for new user', async () => {
     const response = await testAgent.get('/gameApi/profile/userTournamentParticipations/').query({ username: userWithCredentials.username })
     expect(response.status).toBe(200)
@@ -53,13 +41,6 @@ describe('Platform PlayerStatistic Test Suite', () => {
     const response = await testAgent.get('/gameApi/profile/getPlayerStats/').query({ username: 'UserA' })
     expect(response.status).toBe(200)
     delete response.body.registered
-    expect(response.body).toMatchSnapshot()
-  })
-
-  test('Should return userGraph of existing player', async () => {
-    const response = await testAgent.get('/gameApi/profile/userNetwork/').query({ username: 'UserA' })
-    expect(response.status).toBe(200)
-    expect(Object.keys(response.body.people).length).toBeGreaterThan(0)
     expect(response.body).toMatchSnapshot()
   })
 
