@@ -23,14 +23,16 @@ defineProps<{ win: string }>()
 
 <style scoped>
 .gamesHistoryBadge {
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   margin: 2px;
+  font-size: 13px;
+  font-weight: bolder;
 }
 
 .won {

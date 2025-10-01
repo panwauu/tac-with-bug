@@ -177,14 +177,13 @@ const loading = computed(() => {
   position: relative;
   padding: 10px;
   flex: 0 1 800px;
-  max-width: 100%;
-  margin-top: 70px;
+  max-width: min(100%, 800px);
+  margin-top: 50px;
 }
 
 .profileInformation {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 15px;
 }
 
 .profilePictureContainer {
@@ -200,7 +199,7 @@ const loading = computed(() => {
 }
 
 .profilePicture {
-  margin-top: -90px;
+  margin-top: -70px;
   width: 100%;
   border-radius: 100%;
   object-fit: contain;

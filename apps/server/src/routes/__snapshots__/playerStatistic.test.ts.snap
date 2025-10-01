@@ -2,6 +2,7 @@
 
 exports[`Platform PlayerStatistic Test Suite > Should return playerStats of existing player 1`] = `
 {
+  "bestCoop": 130,
   "blockedByModerationUntil": null,
   "gamesDistribution": {
     "aborted": 2,
@@ -66,11 +67,6 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
       1,
     ],
   },
-  "streaks": {
-    "currentStreak": -2,
-    "longestLosingStreak": 2,
-    "longestWinningStreak": 1,
-  },
   "subscriber": false,
   "table": [
     100,
@@ -82,6 +78,7 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
     60,
   ],
   "userDescription": "",
+  "worstCoop": 192,
 }
 `;
 

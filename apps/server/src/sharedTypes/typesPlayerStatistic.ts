@@ -15,11 +15,8 @@ export interface PlayerFrontendStatistic {
   userDescription: string
   registered: string
   blockedByModerationUntil: string | null
-  streaks: {
-    longestWinningStreak: number
-    longestLosingStreak: number
-    currentStreak: number
-  }
+  bestCoop: number
+  worstCoop: number
 }
 
 export interface GamesDistributionData {
@@ -127,7 +124,6 @@ export interface PlayerWLStatistic {
   people: PeopleOjectType
   coopBest4: number
   coopBest6: number
-  longestWinningStreak: number
-  longestLosingStreak: number
-  currentStreak: number
+  coopWorst4: number
+  coopWorst6: number
 }

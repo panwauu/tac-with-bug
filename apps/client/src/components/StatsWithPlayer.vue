@@ -50,7 +50,7 @@ const togetherDifference = winRateTogether - props.winRateOfCompareUser
 const togetherDifferenceSign = togetherDifference >= 0 ? '+' : ''
 
 const winRateAgainst = ((props.stats[2] - props.stats[3]) / props.stats[2]) * 100
-const againstDifference = winRateAgainst - props.winRateOfCompareUser
+const againstDifference = winRateAgainst - (100 - props.winRateOfCompareUser)
 const againstDifferenceSign = againstDifference >= 0 ? '+' : ''
 
 const tableValues = [

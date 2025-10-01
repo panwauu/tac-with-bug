@@ -774,7 +774,10 @@
       "playedAgainst": "Games played against each other",
       "successRateAgainst": "Victory rate against {user} (comparison to {user} average)",
       "successRateTogether": "Victory rate as a team (comparison to {user} average)"
-    }
+    },
+    "mostFrequentCoop": "Most frequent Team-Tac teammat",
+    "bestCoop": "Best Team-Tac game",
+    "worstCoop": "Longest Team-Tac game"
   },
   "Tutorial": {
     "0": {

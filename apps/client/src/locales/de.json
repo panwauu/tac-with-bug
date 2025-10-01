@@ -774,7 +774,10 @@
       "successRateTogether": "Siegquote als Team (Vergleich zu {user} Durchschnitt)",
       "playedAgainst": "Spiele gegeneinander gespielt",
       "successRateAgainst": "Siegquote gegen {user} (Vergleich zu {user} Durchschnitt)"
-    }
+    },
+    "bestCoop": "Bestes Team-Tac Spiel",
+    "mostFrequentCoop": "Häufigster Team-Tac Mitspieler",
+    "worstCoop": "Längstes Team-Tac Spiel"
   },
   "Tutorial": {
     "0": {
