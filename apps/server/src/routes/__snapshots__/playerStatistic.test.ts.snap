@@ -4,7 +4,6 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
 {
   "ballsInEnemy": 7,
   "ballsInOwnTeam": 8,
-  "bestCoop": 130,
   "blockedByModerationUntil": null,
   "cards": {
     "1": [
@@ -68,6 +67,10 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
       6,
     ],
   },
+  "coopBest4": 130,
+  "coopBest6": 192,
+  "coopWorst4": 130,
+  "coopWorst6": 192,
   "gamesDistribution": {
     "aborted": 2,
     "lost4": 0,
@@ -150,7 +153,6 @@ exports[`Platform PlayerStatistic Test Suite > Should return playerStats of exis
   ],
   "timePlayed": 5020,
   "userDescription": "",
-  "worstCoop": 192,
 }
 `;
 
