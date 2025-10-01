@@ -82,34 +82,6 @@ export interface PlayerWLStatistic {
   coopBest6: number | null
 }
 
-export interface UserNetworkEdge {
-  data: {
-    source: string
-    target: string
-    weight: number
-    together: boolean
-    id: string
-  }
-}
-
-export interface UserNetworkNode {
-  data: {
-    id: string
-    idInt: number
-    name: string
-    score: number
-  }
-}
-
-export interface UserNetwork {
-  edges: UserNetworkEdge[]
-  nodes: UserNetworkNode[]
-}
-
-export interface UserNetworkApiResponse {
-  graph: UserNetwork
-}
-
 /**
  * Object with a key for every player containing an Array with the relational stats of the players:
  * - 0: Games played in one team (excluding coop)

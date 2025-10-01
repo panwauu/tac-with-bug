@@ -26,16 +26,6 @@
         @click="resetGraphSize()"
       />
     </ButtonGroup>
-    <div
-      v-if="loading"
-      class="chartSponsorOverlay"
-    >
-      <i
-        class="pi pi-spin pi-spinner"
-        style="font-size: 4rem"
-        aria-hidden="true"
-      />
-    </div>
   </div>
 </template>
 
@@ -44,52 +34,21 @@ import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button'
 import ButtonGroup from 'primevue/buttongroup'
 import { onUnmounted, onMounted, watch, ref } from 'vue'
-import cytoscape from 'cytoscape'
+import cytoscape, { type ElementsDefinition, type LayoutOptions, type StylesheetJson } from 'cytoscape'
 import StatsWithPlayer from './StatsWithPlayer.vue'
 import type { PlayerFrontendStatistic } from '@/generatedClient'
 
 const { t } = useI18n()
 const props = defineProps<{
-  networkData: any
-  peopleData: any
   username: string
-  loading: boolean
   playerStats: PlayerFrontendStatistic
 }>()
 
-const layout = {
+const layout: LayoutOptions = {
   name: 'cose',
-  idealEdgeLength: (edge: any) => {
-    return 1 / edge['_private'].data.weight
-  },
-  nodeOverlap: 20,
-  refresh: 20,
-  fit: true,
-  randomize: true,
-  componentSpacing: 100,
-  nodeRepulsion: () => {
-    return 1000000
-  },
-  edgeElasticity: (edge: any) => {
-    return edge['_private'].data.weight * 300
-  },
-  nestingFactor: 5,
-  gravity: 80,
-  numIter: 1000,
-  initialTemp: 200,
-  coolingFactor: 0.95,
-  minTemp: 1.0,
 }
 
-const style = [
-  {
-    selector: 'core',
-    style: {
-      'selection-box-color': '#AAD8FF',
-      'selection-box-border-color': '#8BB0D0',
-      'selection-box-opacity': 0.5,
-    },
-  },
+const style: StylesheetJson = [
   {
     selector: 'node',
     style: {
@@ -170,23 +129,23 @@ const style = [
   },
 ]
 
-const cy: null | any = ref(null)
+const cy = ref<cytoscape.Core>()
 const selectedUser = ref<null | { name: string; data: any }>(null)
 
 const resetGraph = () => {
-  if (cy.value != null && props.networkData != null) {
+  if (cy.value != null) {
     selectedUser.value = null
-    cy.value?.elements()?.remove()
-    cy.value?.add(enrichDataModel())
-    cy.value?.layout(layout)?.run()
+    cy.value.elements().remove()
+    cy.value.add(getElements())
+    cy.value.layout(layout).run()
 
-    cy.value?.nodes()?.on('select', (event: any) => {
+    cy.value.nodes().on('select', (event) => {
       selectedUser.value = {
         name: event.target['_private'].data.name,
         data: props.playerStats.people[event.target['_private'].data.name],
       }
     })
-    cy.value?.on('unselect', () => {
+    cy.value.on('unselect', () => {
       selectedUser.value = null
     })
   }
@@ -198,40 +157,87 @@ const resetGraphSize = () => {
   }
 }
 
-const enrichDataModel = () => {
+function getElements(): ElementsDefinition {
+  const numberOfNodes = 20
+
+  const peopleToConsider = Object.keys(props.playerStats.people)
+    .toSorted((a, b) => props.playerStats.people[b][0] + props.playerStats.people[b][2] - props.playerStats.people[a][0] - props.playerStats.people[a][2])
+    .slice(0, numberOfNodes)
+
   return {
-    edges: props.networkData.edges.map((e: any) => {
-      return {
-        ...e,
-        group: 'edges',
+    edges: [
+      ...peopleToConsider.map((p) => {
+        return {
+          data: {
+            source: p,
+            target: props.username,
+            weight: props.playerStats.people[p][0],
+            together: true,
+            id: `e-${p}-${props.username}-together`,
+          },
+          selected: false,
+          selectable: false,
+          locked: false,
+          grabbed: false,
+          classes: 'game_together_edge',
+        }
+      }),
+      ...peopleToConsider.map((p) => {
+        return {
+          data: {
+            source: p,
+            target: props.username,
+            weight: props.playerStats.people[p][2],
+            together: false,
+            id: `e-${p}-${props.username}-against`,
+          },
+          selected: false,
+          selectable: false,
+          locked: false,
+          grabbed: false,
+          classes: 'game_against_edge',
+        }
+      }),
+    ],
+    nodes: [
+      ...peopleToConsider.map((p) => {
+        return {
+          data: {
+            id: p,
+            name: p,
+            score: props.playerStats.people[p][0] + props.playerStats.people[p][2],
+          },
+          selected: false,
+          selectable: true,
+          locked: false,
+          grabbed: false,
+          grabbable: true,
+        }
+      }),
+      {
+        data: {
+          id: props.username,
+          name: props.username,
+          score: Math.max(...peopleToConsider.map((p) => props.playerStats.people[p][0] + props.playerStats.people[p][2]), 10),
+        },
         selected: false,
         selectable: false,
-        locked: false,
+        locked: true,
         grabbed: false,
-        classes: e.data.together ? 'game_together_edge' : 'game_against_edge',
-      }
-    }),
-    nodes: props.networkData.nodes.map((e: any) => {
-      return {
-        ...e,
-        group: 'nodes',
-        selected: false,
-        selectable: e.data.name !== props.username,
-        locked: false,
-        grabbed: false,
-        grabbable: true,
-      }
-    }),
+        grabbable: false,
+      },
+    ],
   }
 }
 
 onMounted(() => {
   cy.value = cytoscape({
     container: document.getElementById('cy'), // container to render in
-    elements: props.networkData,
-    layout: layout as any,
-    style: style as any,
+    elements: { edges: [], nodes: [] },
+    layout: layout,
+    style: style,
   })
+  resetGraph()
 })
 
 onUnmounted(() => {
@@ -240,7 +246,7 @@ onUnmounted(() => {
 })
 
 watch(
-  () => props.networkData,
+  () => props.username,
   () => {
     resetGraph()
   },
@@ -258,7 +264,7 @@ watch(
   position: relative;
   width: 100%;
   height: 0;
-  padding-top: 100%;
+  padding-top: calc(100% * min(1, 1vh / 1vw));
 }
 
 #cy {
