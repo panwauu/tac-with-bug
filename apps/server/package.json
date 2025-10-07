@@ -52,7 +52,7 @@
     "multer": "^2.0.2",
     "neverthrow": "^8.2.0",
     "node-schedule": "^2.1.1",
-    "nodemailer": "^7.0.5",
+    "nodemailer": "^7.0.7",
     "onchange": "^7.1.0",
     "pg": "^8.14.1",
     "preview-email": "^3.1.0",
