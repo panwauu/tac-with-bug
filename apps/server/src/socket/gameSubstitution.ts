@@ -31,7 +31,11 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
 
     await acceptSubstitution(pgPool, game, socket.data.userID)
     await emitOnlinePlayersEvents(pgPool, nsp, game.id)
-    sleep(1000).then(() => emitOnlinePlayersEvents(pgPool, nsp, game.id))
+
+    // Schedule second emission without blocking the callback
+    sleep(1000)
+      .then(() => emitOnlinePlayersEvents(pgPool, nsp, game.id))
+      .catch((err) => logger.error('Error in delayed emitOnlinePlayersEvents:', err))
 
     return cb({ status: 200 })
   })
@@ -69,7 +73,12 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
       }
 
       await emitOnlinePlayersEvents(pgPool, nsp, game.id)
-      sleep(1000).then(() => emitOnlinePlayersEvents(pgPool, nsp, game.id))
+
+      // Schedule second emission without blocking the callback
+      sleep(1000)
+        .then(() => emitOnlinePlayersEvents(pgPool, nsp, game.id))
+        .catch((err) => logger.error('Error in delayed emitOnlinePlayersEvents:', err))
+
       return cb({ status: 200 })
     } catch (err) {
       return cb({ status: 500 })
