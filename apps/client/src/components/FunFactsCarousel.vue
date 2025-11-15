@@ -3,6 +3,7 @@
     :value="funfactsForCarousel"
     :circular="true"
     style="max-width: 100%; margin: 20px 0px"
+    :pt="{ item: { style: 'overflow: hidden;' } }"
   >
     <template #item="slotProps">
       <div>
