@@ -376,7 +376,7 @@ describe.todo('Test game substitution of bot by player', () => {
 
     const updateData = await Promise.all(updateGamePromise)
     for (const update of updateData) {
-      expect(update.substitutedPlayerIndices).toStrictEqual([])
+      expect(update.substitutedPlayerIndices).toStrictEqual([2])
       expect(update.substitution).toBeNull()
     }
 
@@ -391,6 +391,6 @@ describe.todo('Test game substitution of bot by player', () => {
     const game = await getGame(testServer.pgPool, gameID)
     expect(game.bots).toEqual([null, null, null, 3, null, null])
     expect(game.playerIDs).toEqual([1, 2, 3, null])
-    expect(game.game.statistic.length).toBe(4)
+    expect(game.game.statistic.length).toBe(5)
   })
 })

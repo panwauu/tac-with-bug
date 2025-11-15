@@ -172,8 +172,16 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
         game.id,
       ])
     } else {
+      const playerIndexAdditional = game.game.statistic.length
+
+      game.game.substitutedPlayerIndices.push(game.substitution.playerIndexToSubstitute)
+      game.game.statistic.push(initalizeStatistic(1)[0])
+      ;[game.game.statistic[playerIndexAdditional], game.game.statistic[game.substitution.playerIndexToSubstitute]] = [
+        game.game.statistic[game.substitution.playerIndexToSubstitute],
+        game.game.statistic[playerIndexAdditional],
+      ]
+
       game.bots[game.substitution.playerIndexToSubstitute] = null
-      game.game.statistic[game.substitution.playerIndexToSubstitute] = initalizeStatistic(1)[0]
     }
 
     if (substitutionByPlayer) {
