@@ -53,7 +53,7 @@ const activityHeatmapOptions = {
     foreColor: getComputedStyle(document.body).getPropertyValue('--text-color'),
   },
   theme: {
-    mode: colorSchemeStore.isDark ? 'dark' : 'light',
+    mode: (colorSchemeStore.isDark ? 'dark' : 'light') as 'light' | 'dark',
   },
   plotOptions: {
     heatmap: {
