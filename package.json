@@ -2,7 +2,7 @@
   "version": "1.6.3",
   "private": true,
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   },
   "scripts": {
     "check-types": "turbo run check-types",
@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "turbo": "^2.5.8",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.9"
   },
   "packageManager": "npm@11.5.2",
   "workspaces": [

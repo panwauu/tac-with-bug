@@ -540,7 +540,7 @@
       "privateTrueName": "Privat",
       "privateFalseName": "Öffentlich"
     },
-    "adminBadge": "Admin",
+    "adminBadge": "Host",
     "joinRandomGameButton": "Bestem Spiel beitreten",
     "removePlayerConfirmSelf": "Sicher, dass du diesen Warteraum verlassen möchtest?",
     "removePlayerConfirmOther": "Sicher, dass du einen Spieler aus dem Warteraum entlassen möchtest?",

@@ -118,10 +118,17 @@ async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePla
     const timeSinceLastPlayed = Date.now() - new Date(game.lastPlayed).getTime()
     const delay = Math.max(Math.min(2000 - timeSinceLastPlayed, 2000), 0)
 
-    const newGame = await performMoveAndReturnGame(pgPool, 'dealCards', gamePlayer, game.id)
     setTimeout(async () => {
-      for (const s of getSocketsInGame(nsp, game.id)) {
-        s.emit('update', getPlayerUpdateFromGame(newGame, s.data.gamePlayer ?? -1))
+      try {
+        // Re-fetch game state to avoid stale data after substitutions
+        const newGame = await performMoveAndReturnGame(pgPool, 'dealCards', gamePlayer, game.id)
+        for (const s of getSocketsInGame(nsp, game.id)) {
+          if (!s.disconnected) {
+            s.emit('update', getPlayerUpdateFromGame(newGame, s.data.gamePlayer ?? -1))
+          }
+        }
+      } catch (err) {
+        logger.error('Error dealing cards:', err)
       }
     }, delay)
   }

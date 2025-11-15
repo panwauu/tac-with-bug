@@ -8,7 +8,7 @@
         :circular="true"
         :num-scroll="1"
         :num-visible="1"
-        :pt="{ indicatorList: { style: 'padding-top: 0;' } }"
+        :pt="{ indicatorList: { style: 'padding-top: 0;' }, item: { style: 'overflow: hidden;' } }"
       >
         <template #item="slotProps">
           <div v-if="slotProps.data === 'games'">

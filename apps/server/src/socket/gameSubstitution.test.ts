@@ -8,7 +8,7 @@ import { sleep } from '../helpers/sleep'
 import { getBotName } from '@repo/core/bot/names'
 import { getGame } from '../services/game'
 
-describe.todo('Test substitution start conditions with socket.io', () => {
+describe('Test substitution start conditions with socket.io', () => {
   let usersWithSocket: UserWithSocket
   let gameSocket: GameSocketC
   let testCaseNumber = 0
@@ -48,7 +48,7 @@ describe.todo('Test substitution start conditions with socket.io', () => {
   })
 })
 
-describe.todo('Test game substitution of player by player', () => {
+describe('Test game substitution of player by player', () => {
   const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
     afterOffer: {
       acceptedByIndex: [],
@@ -213,7 +213,7 @@ describe.todo('Test game substitution of player by player', () => {
   })
 })
 
-describe.todo('Test game substitution of player by bot', () => {
+describe('Test game substitution of player by bot', () => {
   const gameID = 2
   const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
     afterStart: {
@@ -304,7 +304,7 @@ describe.todo('Test game substitution of player by bot', () => {
   })
 })
 
-describe.todo('Test game substitution of bot by player', () => {
+describe('Test game substitution of bot by player', () => {
   const gameID = 13
   const substitutionStates: Record<string, Omit<Substitution, 'startDate'>> = {
     afterStart: {
@@ -376,7 +376,7 @@ describe.todo('Test game substitution of bot by player', () => {
 
     const updateData = await Promise.all(updateGamePromise)
     for (const update of updateData) {
-      expect(update.substitutedPlayerIndices).toStrictEqual([])
+      expect(update.substitutedPlayerIndices).toStrictEqual([2])
       expect(update.substitution).toBeNull()
     }
 
@@ -391,6 +391,6 @@ describe.todo('Test game substitution of bot by player', () => {
     const game = await getGame(testServer.pgPool, gameID)
     expect(game.bots).toEqual([null, null, null, 3, null, null])
     expect(game.playerIDs).toEqual([1, 2, 3, null])
-    expect(game.game.statistic.length).toBe(4)
+    expect(game.game.statistic.length).toBe(5)
   })
 })
