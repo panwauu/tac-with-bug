@@ -21,7 +21,7 @@
     "chart.js": "^4.4.8",
     "cytoscape": "^3.31.2",
     "email-validator": "^2.0.4",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "pinia": "^3.0.2",
     "primeicons": "^7.0.0",
     "primevue": "^4.3.3",
