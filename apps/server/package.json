@@ -47,7 +47,7 @@
     "joi": "^18.0.1",
     "json-stable-stringify": "^1.2.1",
     "jsonwebtoken": "^9.0.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "minimist": "^1.2.8",
     "multer": "^2.0.2",
     "neverthrow": "^8.2.0",

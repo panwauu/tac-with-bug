@@ -6,7 +6,7 @@
   "description": "Shared game logic for Tac (client/server)",
   "author": "",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
