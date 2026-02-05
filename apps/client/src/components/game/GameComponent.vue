@@ -124,6 +124,9 @@
         :cards-state="cardsState"
         :discard-pile-state="discardPileState"
         :perform-move="performMove"
+        :auto-discard-enabled="autoDiscardEnabled"
+        :show-auto-discard-toggle="showAutoDiscardToggle"
+        @update:auto-discard-enabled="autoDiscardEnabledLocal = $event"
       />
     </div>
     <div
@@ -224,7 +227,7 @@ import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import router from '@/router'
 import { useResizeObserver } from '@vueuse/core'
 
-const emit = defineEmits<{ closeGame: []; 'update:modalVisible': [value: boolean]; 'update:modalState': [value: string] }>()
+const emit = defineEmits<{ closeGame: []; 'update:modalVisible': [value: boolean]; 'update:modalState': [value: string]; 'update:autoDiscardEnabled': [value: boolean] }>()
 
 const props = defineProps<{
   positionStyles: PositionStylesState
@@ -238,6 +241,7 @@ const props = defineProps<{
   modalVisible: boolean
   modalState: string
   updateData: UpdateDataType | null
+  autoDiscardEnabled: boolean
 }>()
 
 watch(() => props.updateData, updateHandler, { deep: true })
@@ -376,6 +380,35 @@ function onResize() {
   const gameBoardSize = Math.max(gameboard.getBoundingClientRect().height, gameboard.getBoundingClientRect().width)
   gameViewRef.value.style.setProperty('--board-size-in-px', gameBoardSize === 0 ? '100vmin' : `${gameBoardSize}px`)
 }
+
+// Auto-discard toggle logic
+const showAutoDiscardToggle = computed(() => {
+  // Never show between rounds (no cards, trading phase, etc.)
+  if (props.miscState.gamePlayer === -1) return false
+  if ('tradeInformation' in props.miscState.players[props.miscState.gamePlayer]) return false
+  if (props.miscState.players[props.miscState.gamePlayer]?.narrFlag[0]) return false
+  if (props.cardsState.cards.length === 0) return false
+
+  const isPlayerTurn = props.miscState.players[props.miscState.gamePlayer]?.active === true
+  const allCardsMustDiscard = props.cardsState.cards.every((card) => card.textAction === 'abwerfen')
+
+  // When it's player's turn, only show if ALL cards must be discarded
+  if (isPlayerTurn) {
+    return allCardsMustDiscard
+  }
+
+  // When not player's turn, show if auto-discard is enabled (waiting for turn)
+  return props.autoDiscardEnabled
+})
+
+const autoDiscardEnabledLocal = computed({
+  get() {
+    return props.autoDiscardEnabled
+  },
+  set(value: boolean) {
+    emit('update:autoDiscardEnabled', value)
+  },
+})
 </script>
 
 <style scoped>

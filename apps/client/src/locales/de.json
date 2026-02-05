@@ -340,6 +340,9 @@
     "viewerModeText": "Du befindest dich im Zuschauermodus. Du siehst daher auch keine Karten! Du kannst den Spielchat lesen aber keine Nachrichten in diesem abschicken.",
     "viewerModeTag": "Zuschauermodus",
     "toViewerButton": "Zuschauen",
+    "autoDiscard": {
+      "toggle": "Auto-Abwerfen"
+    },
     "CardActionButton": {
       "beenden": "Spiel beenden",
       "aussetzen": "Aussetzen",

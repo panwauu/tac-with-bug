@@ -57,6 +57,14 @@
         >
           {{ t(`Game.CardActionButton.${textAction}`) }}
         </Button>
+        <Button
+          v-if="showAutoDiscardToggle"
+          class="textActionButton"
+          :severity="autoDiscardEnabled ? 'success' : 'secondary'"
+          :icon="autoDiscardEnabled ? 'pi pi-check' : 'pi pi-times'"
+          :label="t('Game.autoDiscard.toggle')"
+          @click="emit('update:autoDiscardEnabled', !autoDiscardEnabled)"
+        />
       </div>
 
       <DiscardPile
@@ -156,6 +164,8 @@ import BallsImage from '../assets/BallsImage.vue'
 import { computed } from 'vue'
 import { useColorSchemeStore } from '@/store/colorScheme'
 
+const emit = defineEmits<{ 'update:autoDiscardEnabled': [value: boolean] }>()
+
 const props = defineProps<{
   positionStyles: PositionStylesState
   miscState: MiscStateType
@@ -163,6 +173,8 @@ const props = defineProps<{
   cardsState: CardsStateType
   discardPileState: DiscardPileStateType
   performMove: (data: PerformMoveAction) => void
+  autoDiscardEnabled: boolean
+  showAutoDiscardToggle: boolean
 }>()
 
 const colorScheme = useColorSchemeStore()

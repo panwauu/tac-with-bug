@@ -2,6 +2,7 @@
   <GameComponent
     v-model:modal-visible="modalVisible"
     v-model:modal-state="modalState"
+    v-model:auto-discard-enabled="autoDiscardEnabled"
     :position-styles="positionStyles"
     :misc-state="miscState"
     :statistic-state="statisticState"
@@ -18,7 +19,7 @@
 <script setup lang="ts">
 import GameComponent from '@/components/game/GameComponent.vue'
 import type { UpdateDataType } from '@repo/core/types'
-import { ref, onMounted, onUnmounted, provide } from 'vue'
+import { ref, onMounted, onUnmounted, provide, watch, nextTick } from 'vue'
 import { registerGameSocket } from '@/services/registerSockets'
 import { usePositionStyles } from '@/services/compositionGame/usePositionStyles'
 import { useMisc } from '@/services/compositionGame/useMisc'
@@ -34,6 +35,7 @@ import router from '@/router/index'
 import { GameSocketKey } from '@/services/injections'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
+import type { MoveText } from '@repo/core/types'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -51,6 +53,7 @@ const updateData = ref<null | UpdateDataType>(null)
 
 const modalVisible = ref(false)
 const modalState = ref('settings')
+const autoDiscardEnabled = ref(false)
 
 gameSocket.on('game:online-players', miscState.setOnlinePlayers)
 gameSocket.on('update', updateHandler)
@@ -139,4 +142,83 @@ function closeGame() {
 function performMoveAndEmit(data: PerformMoveAction) {
   gameSocket.emit('postMove', performMove(data))
 }
+
+// Auto-discard logic
+let autoDiscardPending = false
+
+function isPlayerTurn(): boolean {
+  if (miscState.gamePlayer === -1) return false
+  if (!miscState.players[miscState.gamePlayer]?.active) return false
+  if ('tradeInformation' in miscState.players[miscState.gamePlayer]) return false
+  if (miscState.players[miscState.gamePlayer]?.narrFlag[0]) return false
+  return true
+}
+
+function hasPlayableCards(): boolean {
+  // Check if player has any card that can do something other than discard
+  if (cardsState.cards.length === 0) return false
+  return cardsState.cards.some((card) => card.textAction !== 'abwerfen' && card.textAction !== '')
+}
+
+function mustDiscardAllCards(): boolean {
+  if (!isPlayerTurn()) return false
+  if (cardsState.cards.length === 0) return false
+  return cardsState.cards.every((card) => card.textAction === 'abwerfen')
+}
+
+function shouldAutoDiscard(): boolean {
+  return autoDiscardEnabled.value && mustDiscardAllCards()
+}
+
+function performAutoDiscard() {
+  if (autoDiscardPending) return
+  if (!shouldAutoDiscard()) return
+
+  autoDiscardPending = true
+
+  // Small delay to ensure UI has updated and to avoid rapid-fire discards
+  setTimeout(() => {
+    if (shouldAutoDiscard() && cardsState.cards.length > 0) {
+      // Directly set the selected card index (don't use toggle function)
+      cardsState.selectedCard = 0
+
+      nextTick(() => {
+        const move: MoveText = [miscState.gamePlayer, 0, 'abwerfen']
+        performMoveAndEmit({
+          ballAction: [],
+          textAction: 'abwerfen',
+          move: move,
+        })
+        autoDiscardPending = false
+      })
+    } else {
+      autoDiscardPending = false
+    }
+  }, 300)
+}
+
+// Watch for card state changes to trigger auto-discard or reset the toggle
+watch(
+  () => [cardsState.cards, miscState.players],
+  () => {
+    nextTick(() => {
+      // Only disable auto-discard when player has playable cards (not just on turn change)
+      if (isPlayerTurn() && hasPlayableCards() && autoDiscardEnabled.value) {
+        autoDiscardEnabled.value = false
+      }
+      // If auto-discard is enabled and we must discard, perform auto-discard
+      performAutoDiscard()
+    })
+  },
+  { deep: true }
+)
+
+// Watch for toggle being enabled - immediately start discarding
+watch(autoDiscardEnabled, (enabled) => {
+  if (enabled) {
+    nextTick(() => {
+      performAutoDiscard()
+    })
+  }
+})
 </script>

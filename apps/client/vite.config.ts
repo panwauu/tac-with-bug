@@ -18,16 +18,16 @@ export default defineConfig({
     port: 8080,
     proxy: {
       '/socket.io': {
-        target: 'http://localhost:3000',
+        target: 'https://game.tac-with-bug.org',
         ws: true,
         changeOrigin: true,
-        secure: false,
+        secure: true,
       },
       '/gameApi': {
-        target: 'http://localhost:3000',
+        target: 'https://game.tac-with-bug.org',
         ws: true,
         changeOrigin: true,
-        secure: false,
+        secure: true,
       },
     },
   },

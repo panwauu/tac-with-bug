@@ -3,6 +3,7 @@
     <GameComponent
       v-model:modal-visible="modalVisible"
       v-model:modal-state="modalState"
+      v-model:auto-discard-enabled="autoDiscardEnabled"
       :position-styles="positionStyles"
       :misc-state="miscState"
       :discard-pile-state="discardPileState"
@@ -64,6 +65,7 @@ const instructionsState = useInstructions(miscState, ballsState, cardsState)
 
 const modalVisible = ref(false)
 const modalState = ref('statistic')
+const autoDiscardEnabled = ref(false)
 const loading = ref(true)
 const tutorialStepOutput = ref<null | TutorialStepOutput>(null)
 const displayTutorialOverlay = ref(true)

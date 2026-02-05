@@ -340,6 +340,9 @@
     "viewerModeText": "You are in spectator mode. So you don't see any cards! You can read the game chat but you cannot send messages in it.",
     "viewerModeTag": "Spectator mode",
     "toViewerButton": "Watch",
+    "autoDiscard": {
+      "toggle": "Auto-discard"
+    },
     "CardActionButton": {
       "beenden": "Finish game",
       "aussetzen": "Skip next player",
