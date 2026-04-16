@@ -526,6 +526,7 @@
       "private": "Private"
     },
     "noRoomsPlaceholder": "Unfortunately, there is no open waiting room that matches your filter criteria. Create one and wait for your friends to join!",
+    "noRoomsPlaceholderLoggedOut": "Unfortunately, there is no open waiting room that matches your filter criteria. Log in and create one yourself!",
     "WaitingGameCreator": {
       "startButton": "Create a new room",
       "title": "Create new room",
