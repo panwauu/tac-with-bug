@@ -197,10 +197,6 @@ export class Game implements GameData {
       }
     }
 
-    if (this.cards.discardPile.length > 0 && this.teufelFlag === true) {
-      activePlayer = (activePlayer + this.nPlayers - 1) % this.nPlayers
-    }
-
     if (!cardsWithMoves.some((card) => card.possible)) {
       for (const card of cardsWithMoves) {
         card.possible = true

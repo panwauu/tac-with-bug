@@ -123,11 +123,7 @@ export async function createRematchGame(pgPool: pg.Pool, game: GameForPlay, user
 }
 
 export type MovePlayerError =
-  | 'PLAYER_NOT_FOUND_IN_WAITING_GAME'
-  | 'PLAYER_NOT_ALLOWED_TO_MOVE'
-  | 'PLAYER_CANNOT_BE_MOVED_IN_DIRECTION'
-  | GetWaitingGameError
-  | NotOneDatabaseChangeError
+  'PLAYER_NOT_FOUND_IN_WAITING_GAME' | 'PLAYER_NOT_ALLOWED_TO_MOVE' | 'PLAYER_CANNOT_BE_MOVED_IN_DIRECTION' | GetWaitingGameError | NotOneDatabaseChangeError
 export async function movePlayer(sqlClient: pg.Pool, waitingGameID: number, usernameToMove: string, up: boolean, userID: number): Promise<Result<null, MovePlayerError>> {
   const game = await getWaitingGame(sqlClient, waitingGameID)
   if (game.isErr()) {
@@ -211,12 +207,7 @@ async function executeMovePlayerOrBot(
 }
 
 export type ChangeColorError =
-  | 'PLAYER_NOT_FOUND_IN_WAITING_GAME'
-  | 'PLAYER_NOT_ALLOWED_TO_CHANGE_COLOR'
-  | 'COLOR_DOES_NOT_EXIST'
-  | 'COLOR_ALREADY_IN_USE'
-  | GetWaitingGameError
-  | NotOneDatabaseChangeError
+  'PLAYER_NOT_FOUND_IN_WAITING_GAME' | 'PLAYER_NOT_ALLOWED_TO_CHANGE_COLOR' | 'COLOR_DOES_NOT_EXIST' | 'COLOR_ALREADY_IN_USE' | GetWaitingGameError | NotOneDatabaseChangeError
 export async function changeColor(
   sqlClient: pg.Pool,
   waitingGameID: number,
@@ -353,12 +344,7 @@ export async function addPlayer(sqlClient: pg.Pool, waitingGameID: number, userI
 }
 
 export type AddBotError =
-  | 'PLAYER_INDEX_ALREADY_FULL'
-  | 'COULD_NOT_FIND_COLOR_FOR_NEW_PLAYER'
-  | 'COULD_NOT_ADD_PLAYER'
-  | 'BOT_ID_INVALID'
-  | 'PLAYER_NOT_ALLOWED_TO_ADD'
-  | GetWaitingGameError
+  'PLAYER_INDEX_ALREADY_FULL' | 'COULD_NOT_FIND_COLOR_FOR_NEW_PLAYER' | 'COULD_NOT_ADD_PLAYER' | 'BOT_ID_INVALID' | 'PLAYER_NOT_ALLOWED_TO_ADD' | GetWaitingGameError
 export async function addBot(sqlClient: pg.Pool, waitingGameID: number, botID: number, playerIndex: number, userIDAdding: number): Promise<Result<null, AddBotError>> {
   const game = await getWaitingGame(sqlClient, waitingGameID)
   if (game.isErr()) {

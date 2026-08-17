@@ -204,9 +204,7 @@ function updateCardAfter7(
       }
     }
 
-    if (teufelflag) {
-      activePlayer = (activePlayer + cards.players.length - 1) % cards.players.length
-    }
+    // Watch out to reset activePlayer if teufelflag is set and more code is added here in the future
   }
 }
 

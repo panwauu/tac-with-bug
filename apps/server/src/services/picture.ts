@@ -2,14 +2,15 @@ import type pg from 'pg'
 import sharp from 'sharp'
 
 // https://avatars.dicebear.com/styles/bottts
-import { createAvatar } from '@dicebear/core'
-import { bottts } from '@dicebear/collection'
+import { Style, Avatar } from '@dicebear/core'
+import definition from '@dicebear/styles/bottts.json'
 
 import { resolveUserIdentifier } from '../services/user'
 import type { UserIdentifier } from '../sharedTypes/typesDBuser'
 import { ok, err, Result } from 'neverthrow'
 
 const profilePictureSize = 160
+const dicebearStyle = new Style(definition)
 
 async function saveProfilePicture(sqlClient: pg.Pool, profilePicAsByteA: any, userID: number) {
   const text = 'UPDATE users SET profilepic = $1 WHERE id = $2'
@@ -27,7 +28,7 @@ export async function queryProfilePicture(sqlClient: pg.Pool, identifier: UserId
 }
 
 export async function selectRandomProfilePicture(sqlClient: pg.Pool, userID: number) {
-  const svg = createAvatar(bottts, { seed: Date.now().toString() })
+  const svg = new Avatar(dicebearStyle, { seed: Date.now().toString() }).toString()
   const svgBuffer = Buffer.from(svg.toString(), 'utf8')
   const resizedBuffer = await sharp(svgBuffer).resize(profilePictureSize, profilePictureSize).toBuffer()
   await saveProfilePicture(sqlClient, resizedBuffer, userID)

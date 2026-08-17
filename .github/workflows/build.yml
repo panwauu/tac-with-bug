@@ -47,7 +47,7 @@ jobs:
           npm ci
       - name: Check formatting
         run: |
-          npm run check-format
+          npm run format:check
 
   build:
     runs-on: ubuntu-latest

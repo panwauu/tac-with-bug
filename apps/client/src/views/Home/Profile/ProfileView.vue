@@ -154,9 +154,9 @@
                       <div class="history-badge-stack-number">{{ longestWinningStreak }}</div>
                       <div class="history-badge-stack">
                         <GamesHistoryBadge
-                          :win="'won'"
                           v-for="index in Math.min(longestWinningStreak, 20)"
                           :key="index"
+                          :win="'won'"
                         />
                       </div>
                     </div>
@@ -169,9 +169,9 @@
                       <div class="history-badge-stack-number">{{ longestLosingStreak }}</div>
                       <div class="history-badge-stack">
                         <GamesHistoryBadge
-                          :win="'lost'"
                           v-for="index in Math.min(longestLosingStreak, 20)"
                           :key="index"
+                          :win="'lost'"
                         />
                       </div>
                     </div>
@@ -184,9 +184,9 @@
                       <div class="history-badge-stack-number">{{ currentStreak }}</div>
                       <div class="history-badge-stack">
                         <GamesHistoryBadge
-                          :win="currentStreak < 0 ? 'lost' : 'won'"
                           v-for="index in Math.min(Math.abs(currentStreak), 20)"
                           :key="index"
+                          :win="currentStreak < 0 ? 'lost' : 'won'"
                         />
                       </div>
                     </div>

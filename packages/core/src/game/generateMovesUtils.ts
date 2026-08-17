@@ -125,7 +125,7 @@ export function initializeTeams(nPlayers: number, nTeams: number): number[][] {
 export function getMoves(balls: tBall.BallsType, nBall: number, cardTitle: string, teams: number[][], coop: boolean): number[] {
   // Not called with tac card
 
-  let movePositions = []
+  let movePositions
 
   if (cardTitle === 'narr') {
     return []
@@ -197,7 +197,7 @@ export function getMovesLeavingHouse(balls: tBall.BallsType, nBall: number, card
 
 export function getSevenPositions(balls: tBall.BallsType, nBall: number, remainingMoves: number, teams: number[][], coop: boolean): number[] {
   let startNodes = [balls[nBall].position]
-  let endNodes: number[] = []
+  let endNodes: number[]
   let endAndInterimsNodes: number[] = []
   for (let move = 0; move < remainingMoves; move++) {
     endNodes = []

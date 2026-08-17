@@ -160,11 +160,7 @@ export async function cancelSubscription(sqlClient: pg.Pool, userID: number): Pr
 }
 
 export type NewSubscriptionError =
-  | 'SUBSCRIPTION_ALREADY_IN_DB'
-  | 'USER_ALREADY_HAS_SUBSCRIPTION'
-  | 'NEW_SUBSCRIPTION_NOT_ACTIVE_IN_PAYPAL'
-  | 'INVALID_PLAN_ID'
-  | GetPaypalSubscriptionDetailsError
+  'SUBSCRIPTION_ALREADY_IN_DB' | 'USER_ALREADY_HAS_SUBSCRIPTION' | 'NEW_SUBSCRIPTION_NOT_ACTIVE_IN_PAYPAL' | 'INVALID_PLAN_ID' | GetPaypalSubscriptionDetailsError
 export async function newSubscription(sqlClient: pg.Pool, userID: number, subscriptionID: string): Promise<Result<null, NewSubscriptionError>> {
   const res = await sqlClient.query('SELECT * FROM subscriptions WHERE subscriptionid = $1;', [subscriptionID])
   if (res.rowCount != null && res.rowCount > 0) {

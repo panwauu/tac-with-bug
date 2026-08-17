@@ -6,17 +6,18 @@
   },
   "scripts": {
     "check-types": "turbo run check-types",
-    "check-format": "turbo run check-format",
+    "format:check": "turbo run format:check",
+    "format:fix": "turbo run format:fix",
     "check-locale-files": "turbo run check-locale-files",
-    "lint": "turbo run lint",
+    "lint:check": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "build": "turbo run build",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "dev": "turbo run dev"
   },
   "devDependencies": {
-    "turbo": "^2.5.8",
-    "vitest": "^4.0.9"
+    "turbo": "^2.5.8"
   },
   "packageManager": "npm@11.5.2",
   "workspaces": [

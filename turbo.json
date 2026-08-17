@@ -1,14 +1,20 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "tasks": {
-    "check-format": {
-      "dependsOn": ["^check-format"]
+    "format:check": {
+      "dependsOn": ["^format:check"]
+    },
+    "format:fix": {
+      "dependsOn": ["^format:fix"]
     },
     "check-locale-files": {
       "dependsOn": ["^check-locale-files"]
     },
-    "lint": {
-      "dependsOn": ["^lint"]
+    "lint:check": {
+      "dependsOn": ["^lint:check"]
+    },
+    "lint:fix": {
+      "dependsOn": ["^lint:fix"]
     },
     "check-types": {
       "dependsOn": ["^check-types"],
@@ -27,6 +33,15 @@
     },
     "test:e2e": {
       "dependsOn": ["^test:e2e"]
+    },
+    "validate": {
+      "dependsOn": [
+        "format:check",
+        "check-locale-files",
+        "lint:check",
+        "check-types",
+        "test"
+      ]
     },
     "dev": {
       "persistent": true,

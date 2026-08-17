@@ -169,7 +169,7 @@ test('Randomize Array -> Random test', () => {
 })
 
 test('Test if random person is chosen', () => {
-  let cards4 = initalizeCards(4, true)
+  let cards4
   const playersToStart = [0, 0, 0, 0]
   const nIterations = 100
   for (let i = 0; i < nIterations; i++) {

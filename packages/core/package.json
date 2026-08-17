@@ -11,13 +11,12 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
-    "@eslint/js": "^9.36.0",
     "@types/lodash": "^4.17.16",
     "@types/node": "^24.10.1",
     "@vitest/coverage-v8": "^4.0.9",
-    "eslint": "^9.36.0",
+    "eslint": "^10.8.1",
     "prettier": "^3.6.2",
-    "typescript": "^5.8.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.0.9"
   },
   "scripts": {
@@ -25,9 +24,10 @@
     "build": "tsc",
     "dev": "tsc -w",
     "test": "vitest run",
-    "lint": "eslint ./src",
-    "prettier:format": "prettier --config .prettierrc --write .",
-    "check-format": "prettier --config .prettierrc --check ."
+    "lint:check": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "format:fix": "prettier --config .prettierrc --write .",
+    "format:check": "prettier --config .prettierrc --check ."
   },
   "exports": {
     ".": {

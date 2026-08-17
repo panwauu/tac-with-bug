@@ -112,7 +112,7 @@ function getWinnerOfTournamentGame(game: GameForPlay, bracket: KoBracket, tourna
   }
 
   // get Statistic with time since lastplayed
-  let players: number[] = []
+  let players: number[]
   if (game.game.tradeFlag) {
     players = game.game.tradedCards
       .map((c, i) => {

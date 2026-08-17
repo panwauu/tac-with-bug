@@ -40,7 +40,7 @@ const activityHeatmapOptions = {
   states: {
     active: {
       filter: {
-        type: 'none' /* none, lighten, darken */,
+        type: 'none' as const /* none, lighten, darken */,
       },
     },
   },

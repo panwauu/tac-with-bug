@@ -7,13 +7,13 @@
     "module": "NodeNext",
     "target": "ESNext",
     "sourceMap": true,
+    "rootDir": "./src",
     "outDir": "./dist",
     "typeRoots": ["src/@types", "../../node_modules/@types"],
     "resolveJsonModule": true,
 
     /* Module Resolution Options */
     "moduleResolution": "nodenext",
-    "baseUrl": ".",
     "esModuleInterop": true,
 
     /* Experimental Options */
