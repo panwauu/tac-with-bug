@@ -333,12 +333,22 @@ export const useMessagesStore = defineStore('messages', {
 
       this.channels = this.channels.filter((c) => !c.id.startsWith('g-') || c.endDate == null || c.endDate > Date.now())
     },
-    removeWaitingRoomChannels() {
-      if (this.channels.some((c) => c.id.startsWith('w-'))) {
-        this.channels = this.channels.filter((c) => !c.id.startsWith('w-'))
+    removeWaitingRoomChannels(keepChannelID?: string) {
+      if (this.channels.some((c) => c.id.startsWith('w-') && c.id !== keepChannelID)) {
+        this.channels = this.channels.filter((c) => !c.id.startsWith('w-') || c.id === keepChannelID)
       }
-      if (this.selectedChat.type === 'channel' && this.selectedChat.id.startsWith('w-')) {
-        this.selectChat(true, 'general')
+      if (this.selectedChat.type === 'channel' && this.selectedChat.id.startsWith('w-') && this.selectedChat.id !== keepChannelID) {
+        // Bugfix: Nicht in den allgemeinen Chat springen, sondern in den
+        // passenden Spiel-Kanal zurückkehren (falls vorhanden).
+        const routeGameID = router.currentRoute.value.query.gameID
+        const gameChannels = this.channels.filter((c) => c.id.startsWith('g-'))
+        if (routeGameID != null && this.channels.some((c) => c.id === `g-${routeGameID}`)) {
+          this.selectChat(true, `g-${routeGameID}`)
+        } else if (gameChannels.length > 0) {
+          this.selectChat(true, gameChannels[gameChannels.length - 1].id)
+        } else {
+          this.selectChat(true, 'general')
+        }
       }
     },
   },
@@ -358,6 +368,11 @@ watch(
   (newGameID, oldGameID) => {
     const messagesStore = useMessagesStore()
     messagesStore.updateGameChannels([], [], newGameID as string, oldGameID as string)
+    // Bugfix: Beim Betreten einer Spielseite (auch nach dem Neuladen durch
+    // den Revanche-Start) direkt den Chat-Kanal dieses Spiels auswählen.
+    if (newGameID != null) {
+      messagesStore.selectChat(true, `g-${newGameID}`)
+    }
   }
 )
 
@@ -369,8 +384,12 @@ nextTick(() => {
 
   watch(
     () => waitingStore.ownGame?.id,
-    (newID, oldID) => {
-      if (newID != null && oldID == null) {
+    (newID) => {
+      if (newID != null) {
+        // Bugfix: Auch beim direkten Wechsel von einem Warteraum in einen
+        // anderen (z. B. Revanche -> neues Spiel) dem neuen Warteraum-Chat
+        // folgen, statt in den allgemeinen Chat zu springen.
+        messagesStore.removeWaitingRoomChannels(`w-${newID.toString()}`)
         messagesStore.addChannel(`w-${newID.toString()}`)
         messagesStore.selectChat(true, `w-${newID.toString()}`)
       } else {
