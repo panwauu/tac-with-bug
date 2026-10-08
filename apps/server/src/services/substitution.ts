@@ -121,6 +121,13 @@ export async function startSubstitution(
     acceptedByIndex: substitutionBotId != null ? [game.playerIDs.indexOf(substitutionPlayerID)] : [],
     startDate: Date.now(),
   }
+  // Players without an active socket cannot answer the vote, so they must not block it:
+  // count them as accepted from the start (silent players agree, online players vote explicitly).
+  const offlinePlayerIndexes = game.playerIDs
+    .slice(0, game.nPlayers)
+    .map((id, i) => (id != null && i !== playerIndexToSubstitute && getSocketByUserID(id) == null ? i : -1))
+    .filter((i) => i >= 0)
+  game.substitution.acceptedByIndex.push(...offlinePlayerIndexes)
   setSubstitution(game.id, game.substitution)
   sendUpdatesOfGameToPlayers(game)
 
@@ -153,8 +160,13 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
 
   const substitutionOfPlayer = game.playerIDs.at(game.substitution.playerIndexToSubstitute) != null
   const substitutionByPlayer = game.substitution.substitute.userID != null
+  // Quorum is based on players who are actually online (and can thus vote):
+  // the substituted player is excluded, offline players are pre-accepted in startSubstitution.
+  const onlinePlayersExceptSubstituted = game.playerIDs
+    .slice(0, game.nPlayers)
+    .filter((id, i) => id != null && i !== game.substitution!.playerIndexToSubstitute && getSocketByUserID(id) != null).length
   const substitutionFullyAccepted =
-    game.substitution.acceptedByIndex.length >= game.playerIDs.slice(0, game.nPlayers).filter((id) => id != null).length - (substitutionOfPlayer ? 1 : 0)
+    game.substitution.acceptedByIndex.length > 0 && game.substitution.acceptedByIndex.length >= onlinePlayersExceptSubstituted
   if (substitutionFullyAccepted) {
     if (substitutionOfPlayer) {
       const playerIndexAdditional = game.game.statistic.length
