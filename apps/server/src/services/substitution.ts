@@ -67,7 +67,14 @@ function canBeSubstituted(game: GameForPlay, playerIndexToSubstitute: number): b
 }
 
 function playerSubstitutionCondition(game: GameForPlay, initiatingUserID: number, substitutePlayerID: number | null, substituteBotID: number | null) {
-  return substituteBotID === null && substitutePlayerID != null && initiatingUserID === substitutePlayerID && !game.playerIDs.includes(substitutePlayerID)
+  // Only actual seats count: a replaced player keeps a spectator entry in playerIDs
+  // (index >= nPlayers) and must still be allowed to take a bot seat back.
+  return (
+    substituteBotID === null &&
+    substitutePlayerID != null &&
+    initiatingUserID === substitutePlayerID &&
+    !game.playerIDs.slice(0, game.nPlayers).includes(substitutePlayerID)
+  )
 }
 
 function botSubstitutionCondition(game: GameForPlay, initiatingUserID: number, substitutePlayerID: number | null, substituteBotID: number | null) {
@@ -147,6 +154,13 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
 
   const playerIndex = game.playerIDs.indexOf(userID)
   if (playerIndex < 0 || playerIndex >= game.nPlayers) {
+    if (playerIndex >= game.nPlayers && game.substitution.substitute.userID === userID) {
+      // A returning player initiates the substitution from a spectator slot
+      // (index >= nPlayers); his own vote is not required for the quorum.
+      // Players who were never seated keep getting PLAYER_NOT_IN_GAME.
+      sendUpdatesOfGameToPlayers(game)
+      return ok(null)
+    }
     return err('PLAYER_NOT_IN_GAME')
   }
 
@@ -197,6 +211,12 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
     }
 
     if (substitutionByPlayer) {
+      // Remove the spectator entry of the returning player (if any) before seating him
+      await pgPool.query('DELETE FROM users_to_games WHERE userid = $1 AND gameid = $2 AND player_index >= $3;', [
+        game.substitution.substitute.userID,
+        game.id,
+        game.nPlayers,
+      ])
       await pgPool.query('INSERT INTO users_to_games (player_index, userid, gameid) VALUES ($1, $2, $3);', [
         game.substitution.playerIndexToSubstitute,
         game.substitution.substitute.userID,
