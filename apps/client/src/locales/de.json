@@ -526,6 +526,7 @@
       "private": "Privat"
     },
     "noRoomsPlaceholder": "Leider gibt es keinen offenen Warteraum, der deinen Filterkriterien entspricht. Erstelle einen und warte, dass deine Freunde dazustoßen!",
+    "noRoomsPlaceholderLoggedOut": "Leider gibt es keinen offenen Warteraum, der deinen Filterkriterien entspricht. Melde dich an und erstelle selbst einen!",
     "WaitingGameCreator": {
       "startButton": "Neuen Raum erstellen",
       "title": "Neuen Spielraum erstellen",

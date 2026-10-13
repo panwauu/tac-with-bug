@@ -179,7 +179,7 @@
       :class="[waitingStore.ownGame != null ? 'inactiveGame' : '']"
       @click="joinGame(game)"
     />
-    <p v-if="filteredWaitingGames.length === 0 && waitingStore.ownGame === null">{{ t('Waiting.noRoomsPlaceholder') }}</p>
+    <p v-if="filteredWaitingGames.length === 0 && waitingStore.ownGame === null">{{ isLoggedIn ? t('Waiting.noRoomsPlaceholder') : t('Waiting.noRoomsPlaceholderLoggedOut') }}</p>
   </div>
 
   <WaitingGameCreator
