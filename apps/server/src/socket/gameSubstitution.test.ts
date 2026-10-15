@@ -394,3 +394,95 @@ describe('Test game substitution of bot by player', () => {
     expect(game.game.statistic.length).toBe(5)
   })
 })
+
+describe('Test substitution when the voting players are offline', () => {
+  const gameID = 1
+  let usersWithSockets: UserWithSocket[]
+  const gameSockets: GameSocketC[] = []
+
+  beforeAll(async () => {
+    // Reset the game state: player 2 is active, no trade/narr/teufel pending,
+    // and the last move is older than the 60 second inactivity threshold
+    await testServer.pgPool.query(
+      `UPDATE games SET lastplayed = '2021-01-29 21:34:00+00', game = jsonb_set(jsonb_set(jsonb_set(game, '{activePlayer}', '2'), '{tradeFlag}', 'false'), '{narrFlag}', '[false,false,false,false]') WHERE id = $1;`,
+      [gameID]
+    )
+
+    // Only user 1 connects; all other players of game 1 stay offline.
+    // Previously no other online player could accept, so the substitution always timed out.
+    usersWithSockets = await getUsersWithSockets({ ids: [1] })
+    gameSockets.push(initiateGameSocket(gameID, usersWithSockets[0].token))
+    await connectSocket(gameSockets[0])
+    await sleep(1000)
+  })
+
+  afterAll(async () => {
+    await closeSockets([...gameSockets, ...usersWithSockets.map((uWS) => uWS.socket)])
+  })
+
+  test('Substitution proposed by the only online player should be performed immediately', async () => {
+    const statisticLengthBefore = (await getGame(testServer.pgPool, gameID)).game.statistic.length
+
+    const offerRes = await gameSockets[0].emitWithAck(5000, 'substitution:start', 2, 3)
+    expect(offerRes.status).toBe(200)
+
+    await sleep(2000)
+
+    const game = await getGame(testServer.pgPool, gameID)
+    expect(game.substitution).toBeNull()
+    expect(game.playerIDs[2]).toBeNull()
+    expect(game.bots[2]).toBe(3)
+    expect(game.game.substitutedPlayerIndices).toContain(2)
+    expect(game.game.statistic.length).toBe(statisticLengthBefore + 1)
+  })
+})
+
+describe('Test game substitution of bot by returning player', () => {
+  // After the 'player by bot' describe above, game 2 has a bot (id 3) seated at index 2
+  // and the replaced player 3 watching from a spectator slot (index >= nPlayers).
+  const gameID = 2
+  let usersWithSockets: UserWithSocket[]
+  const gameSockets: GameSocketC[] = []
+
+  beforeAll(async () => {
+    // The returning player and one seated player connect; the other two seats stay offline
+    usersWithSockets = await getUsersWithSockets({ ids: [3, 1] })
+    for (const user of usersWithSockets) {
+      gameSockets.push(initiateGameSocket(gameID, user.token))
+    }
+    await Promise.all(
+      gameSockets.map((s) => {
+        return connectSocket(s)
+      })
+    )
+    await sleep(1000)
+  })
+
+  afterAll(async () => {
+    await closeSockets([...gameSockets, ...usersWithSockets.map((uWS) => uWS.socket)])
+  })
+
+  test('Returning player should be able to propose taking the bot seat back', async () => {
+    // usersWithSockets[0] is player 3: replaced earlier, now watching with gamePlayer === -1
+    const offerRes = await gameSockets[0].emitWithAck(5000, 'substitution:start', 2, null)
+    expect(offerRes.status).toBe(200)
+  })
+
+  test('Substitution should be performed when a seated player accepts', async () => {
+    const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
+
+    const acceptRes = await gameSockets[1].emitWithAck(5000, 'substitution:answer', { accept: true })
+    expect(acceptRes.status).toBe(200)
+
+    const updateData = await Promise.all(updateGamePromise)
+    for (const update of updateData) {
+      expect(update.substitutedPlayerIndices).toContain(2)
+      expect(update.substitution).toBeNull()
+    }
+
+    const game = await getGame(testServer.pgPool, gameID)
+    expect(game.playerIDs[2]).toBe(3)
+    expect(game.bots[2]).toBeNull()
+    expect(game.game.statistic.length).toBe(6)
+  })
+})
