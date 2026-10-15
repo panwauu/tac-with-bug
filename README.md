@@ -1,4 +1,4 @@
-[![TWB Logo](client/src/assets/TwbLogo.png)](https://www.tac-with-bug.com/)
+[![TWB Logo](apps/client/src/assets/TwbLogo.png)](https://www.tac-with-bug.com/)
 
 [Tac-With-Bug](https://www.tac-with-bug.com/) is a online Multiplayer for the boardgame [TAC](https://shop.spiel-tac.de/Home). The game is a Vue webapp with a Node backend. Contributions are welcome.
 
