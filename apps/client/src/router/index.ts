@@ -30,12 +30,18 @@ const PlayerSearch = () => import('@/views/Home/PlayerSearch.vue')
 const Advertisement = () => import('@/views/Home/AdvertisementView.vue')
 const ResetPassword = () => import('@/views/Home/ResetPassword.vue')
 
+const Ki = () => import('@/views/KiView.vue')
 const regexp = locales.join('|')
 const routes = [
   {
     path: `/:locale(${regexp})?/game`,
     name: 'Game',
     component: Game,
+  },
+  {
+    path: `/:locale(${regexp})?/ki`,
+    name: 'Ki',
+    component: Ki,
   },
   {
     path: `/:locale(${regexp})?/tutorial`,

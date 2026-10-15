@@ -137,6 +137,12 @@
           :label="t('Game.EndedOverlay.backButton')"
           @click="router.push({ name: 'Landing' })"
         />
+        <Button
+          v-if="neuePartie != null"
+          class="endedButton"
+          :label="t('Ki.neuePartie')"
+          @click="neuePartie()"
+        />
         <Fieldset
           :legend="t('Game.EndedOverlay.statistic')"
           :toggleable="true"
@@ -151,7 +157,7 @@
           />
         </Fieldset>
         <Fieldset
-          v-if="miscState.tournamentID === null"
+          v-if="miscState.tournamentID === null && neuePartie == null"
           :legend="t('Game.Rematch.title')"
           :toggleable="true"
           :collapsed="false"
@@ -238,6 +244,8 @@ const props = defineProps<{
   modalVisible: boolean
   modalState: string
   updateData: UpdateDataType | null
+  /** Lokale Partie (gegen die KI): Knopf „Neue Partie" statt Revanche. */
+  neuePartie?: () => void
 }>()
 
 watch(() => props.updateData, updateHandler, { deep: true })

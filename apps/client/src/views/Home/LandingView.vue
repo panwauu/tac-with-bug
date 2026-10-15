@@ -3,6 +3,9 @@
     <div class="landingPageElement waitingWidget p-card">
       <WaitingWidget />
     </div>
+    <div class="landingPageElement kiWidget p-card">
+      <KiWidget />
+    </div>
     <div class="landingPageElement tournamentWidget p-card">
       <TournamentWidget />
     </div>
@@ -23,6 +26,7 @@ import TournamentWidget from '@/components/Tournament/TournamentWidget.vue'
 import RunningGamesWidget from '@/components/RunningGamesWidget.vue'
 import WaitingWidget from '@/components/WaitingWidget.vue'
 import TutorialWidget from '@/components/TutorialWidget.vue'
+import KiWidget from '@/components/KiWidget.vue'
 import router from '@/router'
 </script>
 
@@ -36,12 +40,13 @@ import router from '@/router'
   grid-auto-columns: minmax(0, 1fr);
   grid-template-areas:
     'waiting waiting waiting'
+    'ki ki ki'
     'tournament games tutorial';
 }
 
 @media (max-width: 800px) {
   .landingPage {
-    grid-template-areas: 'waiting' 'games' 'tournament' 'tutorial';
+    grid-template-areas: 'waiting' 'ki' 'games' 'tournament' 'tutorial';
   }
 }
 
@@ -54,6 +59,10 @@ import router from '@/router'
 
 .waitingWidget {
   grid-area: waiting;
+}
+
+.kiWidget {
+  grid-area: ki;
 }
 
 .tournamentWidget {

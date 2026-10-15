@@ -1,0 +1,20 @@
+{
+ "quelle": "TACPolicyNet.mlmodelc",
+ "schichten": [
+  {
+   "name": "fc0",
+   "aus": 256,
+   "ein": 160
+  },
+  {
+   "name": "fc1",
+   "aus": 256,
+   "ein": 256
+  },
+  {
+   "name": "fc2",
+   "aus": 1080,
+   "ein": 256
+  }
+ ]
+}

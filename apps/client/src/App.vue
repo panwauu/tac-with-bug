@@ -6,7 +6,8 @@
   <ChatWrapper>
     <router-view class="RouterView" />
   </ChatWrapper>
-  <ConnectionStatusOverlay />
+  <!-- KI braucht keinen Server: kein Verbindungshinweis auf /ki -->
+  <ConnectionStatusOverlay v-if="$route.name !== 'Ki'" />
 
   <Menubar v-show="false" />
   <Card v-show="false" />

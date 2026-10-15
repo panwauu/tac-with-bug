@@ -1,0 +1,278 @@
+<template>
+  <div style="width: 100%; height: 100%">
+    <div
+      v-if="stufe == null"
+      class="ki-auswahl"
+    >
+      <h2>{{ t('Ki.titel') }}</h2>
+      <h3>{{ t('Ki.modus.klassisch') }}</h3>
+      <p>{{ t('Ki.beschreibung') }}</p>
+      <div class="ki-stufen">
+        <Button
+          v-for="s in KI_STUFEN"
+          :key="s.name"
+          :label="`${s.titel} (${t(`Ki.schwierigkeit.${s.stufe}`)})`"
+          :severity="s.stufe === 'meister' ? 'contrast' : 'secondary'"
+          @click="starte('klassisch', s.name)"
+        />
+      </div>
+      <h3>{{ t('Ki.modus.drei') }}</h3>
+      <p>{{ t('Ki.beschreibungDrei') }}</p>
+      <div class="ki-stufen">
+        <Button
+          v-for="s in KI_STUFEN_DREI"
+          :key="s.name"
+          :label="`${s.titel} (${t(`Ki.schwierigkeit.${s.stufe}`)})`"
+          :severity="s.stufe === 'meister' ? 'contrast' : 'secondary'"
+          @click="starte('drei', s.name)"
+        />
+      </div>
+      <h3>{{ t('Ki.modus.koop') }}</h3>
+      <p>{{ t('Ki.beschreibungKoop') }}</p>
+      <div class="ki-stufen">
+        <Button
+          :label="t('Ki.modus.koop')"
+          severity="secondary"
+          @click="starte('koop', 'koop')"
+        />
+      </div>
+      <p class="ki-hinweis">{{ t('Ki.hinweis') }}</p>
+    </div>
+    <GameComponent
+      v-else
+      v-model:modal-visible="modalVisible"
+      v-model:modal-state="modalState"
+      :position-styles="positionStyles"
+      :misc-state="miscState"
+      :statistic-state="statisticState"
+      :discard-pile-state="discardPileState"
+      :balls-state="ballsState"
+      :perform-move="spielerZug"
+      :cards-state="cardsState"
+      :instructions-state="instructionsState"
+      :update-data="updateData"
+      :neue-partie="neuesSpiel"
+      @close-game="schliesse()"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+// Spiel gegen die KI der TAC-App, komplett im Browser: Oskars Spielregeln
+// aus dem gemeinsamen Kern, seine Spieloberflaeche, unsere KI im Web Worker.
+// Der Server ist an der Partie nicht beteiligt.
+import GameComponent from '@/components/game/GameComponent.vue'
+import Button from 'primevue/button'
+import { ref, onUnmounted, onMounted } from 'vue'
+import { Game } from '@repo/core/game/game'
+import { getCards, getPlayerUpdateFromGame } from '@repo/core/game/serverOutput'
+import { getAiData } from '@repo/core/bot/simulation/output'
+import { projectMoveToGamePlayer } from '@repo/core/bot/normalize/normalize'
+import type { GameForPlay, UpdateDataType, MoveTextOrBall } from '@repo/core/types'
+import { KiDienst } from '@repo/core/bot/netz/ki_dienst'
+import KiWorker from '@repo/core/bot/netz/ki_worker.ts?worker'
+import { usePositionStyles } from '@/services/compositionGame/usePositionStyles'
+import { useMisc } from '@/services/compositionGame/useMisc'
+import { useStatistic } from '@/services/compositionGame/useStatistic'
+import { useBalls } from '@/services/compositionGame/useBalls'
+import { useDiscardPile } from '@/services/compositionGame/useDiscardPile'
+import { type PerformMoveAction, usePerformMove } from '@/services/compositionGame/usePerformMove'
+import { useCards } from '@/services/compositionGame/useCards'
+import { useInstructions } from '@/services/compositionGame/useInstructions'
+import router from '@/router/index'
+import { useI18n } from 'vue-i18n'
+import { KI_STUFEN, KI_STUFEN_DREI, SITZE, type KiModus } from '@/views/kiStufen'
+
+const { t } = useI18n()
+/** Zeitgrenze je KI-Zug: auf schnellen Geraeten rechnet sie wie in der App. */
+const ZEITGRENZE = 2000
+/**
+ * Pause nach jedem KI-Zug, damit man ihn mitverfolgen kann. Muss laenger
+ * sein als die Kugel-Animation (1,2 s in GameBoard.vue), sonst startet der
+ * naechste Teilschritt einer 7 mitten im Flug und die Kugel springt.
+ * Oskars Server wartet bei der 7 aus demselben Grund 1,5 s.
+ */
+const PAUSE = 1400
+const PAUSE_7 = 1500
+const ICH = 0
+
+const modus: KiModus = (['klassisch', 'drei', 'koop'] as const).find((m) => m === router.currentRoute.value.query.modus) ?? 'klassisch'
+const SITZ_ZAHL = SITZE[modus]
+const miscState = useMisc(SITZ_ZAHL)
+const positionStyles = usePositionStyles(miscState)
+const statisticState = useStatistic()
+const discardPileState = useDiscardPile(miscState.gamePlayer)
+const ballsState = useBalls()
+const cardsState = useCards(ballsState, miscState)
+const performMove = usePerformMove(cardsState, ballsState, miscState, discardPileState)
+const instructionsState = useInstructions(miscState, ballsState, cardsState)
+const updateData = ref<null | UpdateDataType>(null)
+const modalVisible = ref(false)
+const modalState = ref('settings')
+
+const stufe = ref<string | null>((router.currentRoute.value.query.stufe as string) ?? null)
+/** Testmodus `?auto=1`: die KI spielt auch meinen Sitz (Partie bis zum Ende ohne Klicks). */
+const auto = router.currentRoute.value.query.auto === '1'
+const ki = new KiDienst(() => new KiWorker(), import.meta.env.BASE_URL + 'netze/')
+let game: Game | null = null
+let spiel: GameForPlay | null = null
+let laeuft = false
+let beendet = false
+
+function zeige() {
+  if (spiel) updateData.value = getPlayerUpdateFromGame(spiel, ICH)
+}
+
+const pause = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+/**
+ * Namen am Brett: klassisch heisst der Partner wie die Stufe, die Gegner
+ * bekommen eine Nummer; bei 3 gegen 3 die Partner A und B; kooperativ
+ * sind alle Mitspieler.
+ */
+function namen(kurz: string): string[] {
+  if (modus === 'koop') return [t('Ki.du'), 'KI 1', 'KI 2', 'KI 3']
+  if (modus === 'drei') return [t('Ki.du'), `${kurz} 1`, `${kurz} A`, `${kurz} 2`, `${kurz} B`, `${kurz} 3`]
+  return [t('Ki.du'), `${kurz} 1`, kurz, `${kurz} 2`]
+}
+
+function starte(m: KiModus, name: string) {
+  // Neu laden: die Spieloberflaeche ist beim Erzeugen auf eine Sitzzahl festgelegt.
+  window.location.hash = `#/ki?modus=${m}&stufe=${name}`
+  window.location.reload()
+}
+
+function neuesSpiel() {
+  const kurz = [...KI_STUFEN, ...KI_STUFEN_DREI].find((s) => s.name === stufe.value)?.kurz ?? 'KI'
+  beendet = false
+  game = new Game(SITZ_ZAHL, 2, true, modus === 'koop')
+  spiel = {
+    id: 0,
+    game,
+    colors: ['red', 'blue', 'green', 'yellow', 'orange', 'turquoise'].slice(0, SITZ_ZAHL),
+    rematch_open: false,
+    substitution: null,
+    running: true,
+    nPlayers: SITZ_ZAHL,
+    nTeams: 2,
+    coop: modus === 'koop',
+    created: Date.now(),
+    lastPlayed: Date.now(),
+    publicTournamentId: null,
+    privateTournamentId: null,
+    players: namen(kurz),
+    bots: [null, ...Array.from({ length: SITZ_ZAHL - 1 }, () => 0)],
+    playerIDs: Array.from({ length: SITZ_ZAHL }, () => null),
+  }
+  setTimeout(() => positionStyles.onResize(), 50)
+  zeige()
+  weiter()
+}
+
+/** Wer muss jetzt etwas tun? null = niemand (Partie zu Ende). */
+function amZug(g: Game): { sitz: number; zug?: MoveTextOrBall } | null {
+  if (g.gameEnded) return null
+  if (g.tradeFlag) {
+    // Die KI tauscht zuerst; danach wartet die Partie auf meinen Tausch.
+    const kiSitz = g.tradedCards.findIndex((c, i) => i !== ICH && c == null && g.cards.players[i].length > 0)
+    if (kiSitz >= 0) return { sitz: kiSitz }
+    return { sitz: ICH }
+  }
+  if (g.narrFlag.some(Boolean)) {
+    const p = g.narrFlag.findIndex((f, i) => !f && g.cards.players[i].length > 0 && (i !== ICH || auto))
+    if (p >= 0) return { sitz: p, zug: [p, 0, 'narr'] }
+    return { sitz: ICH }
+  }
+  const sitz = g.activePlayer
+  const k = getCards(g, sitz)
+  if ((sitz !== ICH || auto) && k.length > 0 && k.every((c) => c.textAction === 'beenden')) return { sitz, zug: [sitz, 0, 'beenden'] }
+  return { sitz }
+}
+
+/** Spielt die Zuege der KI, bis ich wieder dran bin. */
+async function weiter() {
+  if (laeuft || game == null) return
+  laeuft = true
+  try {
+    while (!beendet && game && !game.gameEnded) {
+      if (game.cards.players.every((p) => p.length === 0)) {
+        game.performAction('dealCards', 0)
+        zeige()
+        await pause(400)
+      }
+      game.updateCardsWithMoves()
+      const wer = amZug(game)
+      if (wer == null || (wer.sitz === ICH && !auto)) break
+      let zug = wer.zug
+      if (zug == null) {
+        const z = await ki.zug(stufe.value ?? 'heuristik', getAiData(game, wer.sitz), { sitz: String(wer.sitz), zeitGrenze: ZEITGRENZE })
+        if (beendet || game == null) return
+        zug = projectMoveToGamePlayer(game, z, wer.sitz)
+      }
+      if (!game.checkMove(zug)) {
+        console.error('KI-Zug abgelehnt', zug)
+        break
+      }
+      game.performAction(zug, 0)
+      if (spiel) spiel.lastPlayed = Date.now()
+      zeige()
+      const teilschritt = game.cardsWithMoves.some((c) => c.title.includes('-'))
+      await pause(zug[2] === 'tauschen' ? 50 : auto ? 60 : teilschritt ? PAUSE_7 : PAUSE)
+    }
+    if (game?.gameEnded && spiel) {
+      spiel.running = false
+      zeige()
+    }
+  } finally {
+    laeuft = false
+  }
+}
+
+/** Mein Zug aus der Oberflaeche: ausfuehren, dann ist die KI dran. */
+function spielerZug(aktion: PerformMoveAction) {
+  if (game == null || laeuft) return
+  const zug = performMove(aktion)
+  if (!game.checkMove(zug)) {
+    console.error('Zug abgelehnt', zug)
+    zeige()
+    return
+  }
+  game.performAction(zug, 0)
+  zeige()
+  weiter()
+}
+
+function schliesse() {
+  beendet = true
+  router.push({ name: 'Landing' })
+}
+
+onMounted(() => {
+  if (stufe.value != null) neuesSpiel()
+})
+
+onUnmounted(() => {
+  beendet = true
+  ki.beende()
+})
+</script>
+
+<style scoped>
+.ki-auswahl {
+  max-width: 560px;
+  margin: 48px auto;
+  padding: 0 16px;
+  text-align: center;
+}
+.ki-stufen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 24px 0;
+}
+.ki-hinweis {
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+</style>
