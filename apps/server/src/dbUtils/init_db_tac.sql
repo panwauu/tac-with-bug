@@ -225,6 +225,13 @@ CREATE TABLE games (
   colors json
 );
 
+-- The running games are few. The list of running games, the games summary and the jobs for idle games find them with
+-- this index instead of reading every game.
+CREATE INDEX games_running_idx ON games (id) WHERE running;
+
+-- The few games with an open rematch, for the job that closes them every 5 seconds
+CREATE INDEX games_rematch_open_idx ON games (lastplayed) WHERE rematch_open;
+
 CREATE TABLE users_to_games (
   id SERIAL PRIMARY KEY,
   userid INT NOT NULL REFERENCES users(id),
@@ -233,6 +240,82 @@ CREATE TABLE users_to_games (
   CONSTRAINT unique_game_user_combination UNIQUE(userid, gameid),
   CONSTRAINT unique_game_player_index_combination UNIQUE(gameid, player_index)
 );
+
+-- Leaderboards: one short row per finished game (game_results), written by a trigger on games.
+-- The leaderboard queries read only this table (and users_to_games/users for the names), never the game JSON.
+--
+-- A row exists exactly for the games the leaderboards count: running = FALSE and "gameEnded" is JSON true.
+-- The three functions read the stored JSON like the previous queries did, and never throw, whatever it looks like:
+--   coop           JSON true/false as stored; NULL if missing or not a boolean (such games are on no leaderboard)
+--   winning_seats  the seats (player_index) in a team whose "winningTeams" entry is JSON true; teams 0, 1 and 2
+--   cards          for team games: the sum of statistic[*].cards.total[0], each rounded like a cast to integer
+
+CREATE FUNCTION game_result_coop(game jsonb) RETURNS BOOLEAN LANGUAGE sql IMMUTABLE AS $$
+  SELECT CASE jsonb_typeof(game -> 'coop') WHEN 'boolean' THEN (game -> 'coop')::boolean END
+$$;
+
+CREATE FUNCTION game_result_winning_seats(game jsonb) RETURNS INT [] LANGUAGE sql IMMUTABLE AS $$
+  SELECT COALESCE(array_agg(DISTINCT seat ORDER BY seat), '{}')
+  FROM (
+    -- nested CASE: the number check comes first, so that no cast can fail
+    SELECT CASE WHEN jsonb_typeof(member.value) = 'number' THEN
+        CASE WHEN (member.value #>> '{}')::numeric BETWEEN 0 AND 1000 AND (member.value #>> '{}')::numeric = trunc((member.value #>> '{}')::numeric)
+          THEN (member.value #>> '{}')::numeric::int END
+      END AS seat
+    FROM generate_series(0, 2) AS team(nr)
+      CROSS JOIN LATERAL jsonb_array_elements(
+        CASE WHEN game -> 'winningTeams' -> team.nr = 'true'::jsonb AND jsonb_typeof(game -> 'teams' -> team.nr) = 'array'
+          THEN game -> 'teams' -> team.nr ELSE '[]'::jsonb END
+      ) AS member
+  ) AS seats
+  WHERE seat IS NOT NULL
+$$;
+
+CREATE FUNCTION game_result_cards(game jsonb) RETURNS INT LANGUAGE sql IMMUTABLE AS $$
+  SELECT CASE WHEN total BETWEEN -2147483648 AND 2147483647 THEN total::int END
+  FROM (
+    SELECT SUM(CASE WHEN jsonb_typeof(entry.value #> '{cards,total,0}') = 'number'
+                 THEN round((entry.value #>> '{cards,total,0}')::numeric) END) AS total
+    FROM jsonb_array_elements(CASE jsonb_typeof(game -> 'statistic') WHEN 'array' THEN game -> 'statistic' ELSE '[]'::jsonb END) AS entry
+  ) AS sum
+$$;
+
+CREATE TABLE game_results (
+  gameid INT PRIMARY KEY REFERENCES games (id) ON DELETE CASCADE,
+  created timestamptz NOT NULL,
+  lastplayed timestamptz NOT NULL,
+  n_players INT NOT NULL,
+  coop BOOLEAN,
+  winning_seats INT [] NOT NULL,
+  cards INT
+);
+
+CREATE INDEX game_results_competitive_idx ON game_results (created) WHERE coop = FALSE;
+CREATE INDEX game_results_coop_idx ON game_results (n_players, created) WHERE coop = TRUE;
+
+CREATE FUNCTION game_results_sync() RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+  BEGIN
+    IF NOT NEW.running AND NEW.game -> 'gameEnded' = 'true'::jsonb THEN
+      INSERT INTO game_results (gameid, created, lastplayed, n_players, coop, winning_seats, cards)
+      VALUES (NEW.id, NEW.created, NEW.lastplayed, NEW.n_players, game_result_coop(NEW.game), game_result_winning_seats(NEW.game), game_result_cards(NEW.game))
+      ON CONFLICT (gameid) DO UPDATE SET created = EXCLUDED.created, lastplayed = EXCLUDED.lastplayed, n_players = EXCLUDED.n_players,
+        coop = EXCLUDED.coop, winning_seats = EXCLUDED.winning_seats, cards = EXCLUDED.cards;
+    ELSIF TG_OP = 'UPDATE' THEN
+      DELETE FROM game_results WHERE gameid = NEW.id;
+    END IF;
+  EXCEPTION WHEN OTHERS THEN
+    -- A game must never fail to save because of the leaderboards
+    RAISE WARNING 'game_results: game % not recorded: %', NEW.id, SQLERRM;
+  END;
+  RETURN NULL;
+END
+$$;
+
+-- Only for finished games, and on updates only when a column the result is made of is set (not for rematch_open,
+-- bots or colors): moves of a running game and the rematch job do not run it.
+CREATE TRIGGER game_results_insert AFTER INSERT ON games FOR EACH ROW WHEN (NOT NEW.running) EXECUTE FUNCTION game_results_sync();
+CREATE TRIGGER game_results_update AFTER UPDATE OF running, game, created, lastplayed, n_players ON games FOR EACH ROW WHEN (NOT NEW.running OR NOT OLD.running) EXECUTE FUNCTION game_results_sync();
 
 CREATE TABLE saveGames (
   id SERIAL PRIMARY KEY,

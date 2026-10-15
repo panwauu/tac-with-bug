@@ -11,7 +11,7 @@ import { evaluateGameWinnerAndReturnEndedFlag, EvaluateGameWinnerAndReturnEndedF
 import { pushChangedPublicTournament } from '../socket/tournamentPublic'
 import { updateTournamentWinners } from '../socket/tournament'
 import { getSocketByUserID } from '../socket/general'
-import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
+import { emitRunningGamesOfUserUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { tournamentBus } from './tournaments'
 import { switchFromTeamsOrderToGameOrder } from '@repo/core/game/teamUtils'
 
@@ -193,7 +193,7 @@ async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament
 
     for (const id of createdGame.playerIDs) {
       const socket = getSocketByUserID(id ?? -1)
-      socket != null && emitGamesUpdate(sqlClient, socket)
+      socket != null && emitRunningGamesOfUserUpdate(sqlClient, socket)
     }
 
     bracket.gameID = createdGame.id

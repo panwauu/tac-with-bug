@@ -19,9 +19,9 @@ import ConnectionStatusOverlay from '@/components/ConnectionStatusOverlay.vue'
 
 import { watch, provide, onUnmounted } from 'vue'
 import { registerSocketToastHandlers } from '@/services/socketToastTournament'
-import { useGamesSummary } from '@/services/useGamesSummary'
+import { useRunningGamesOfUser } from '@/services/useRunningGamesOfUser'
 import { checkVersion } from '@/services/useCheckVersions'
-import { GamesSummaryKey, SocketKey, FriendsStateKey, injectStrict } from '@/services/injections'
+import { RunningGamesOfUserKey, SocketKey, FriendsStateKey, injectStrict } from '@/services/injections'
 import { logout } from '@/services/useUser'
 import { userFriends } from '@/services/useFriends'
 import { DefaultService as Service } from './generatedClient/index.ts'
@@ -37,10 +37,10 @@ const { t } = useI18n()
 const toast = useToast()
 
 const socket = injectStrict(SocketKey)
-const gamesSummary = useGamesSummary(socket)
+const runningGamesOfUser = useRunningGamesOfUser(socket)
 const friendsState = userFriends(socket)
 
-provide(GamesSummaryKey, gamesSummary)
+provide(RunningGamesOfUserKey, runningGamesOfUser)
 provide(FriendsStateKey, friendsState)
 
 socket.on('logged_out', async () => {

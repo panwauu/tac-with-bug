@@ -2,7 +2,7 @@ import type { Socket as ServerSocket, Namespace } from 'socket.io'
 import type { Socket as ClientSocket } from 'socket.io-client'
 import type { CreateGameType, MovePlayerType, SwitchColorType, WaitingGame, StartGameType, MoveBotType } from './typesWaiting'
 import type { SubscriptionExport } from './typesSubscription'
-import type { GameForOverview, GetGamesType, GetRunningGamesType, UpdateDataType, GameForPlay, MoveTextOrBall } from '@repo/core/types'
+import type { GameForOverview, GetRunningGamesType, UpdateDataType, GameForPlay, MoveTextOrBall } from '@repo/core/types'
 import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTournament, TournamentTableData, LastTournamentWinners } from './typesTournament'
 import type { Friend } from './typesFriends'
 import type { TutorialStepOutput } from './typesTutorial'
@@ -31,7 +31,9 @@ export interface ClientToServerEvents extends Record<string, any> {
     data: { first: number; limit: number; sortField?: string; sortOrder?: number; username?: string },
     cb: CallbackFunction<{ games: GameForOverview[]; nEntries: number }>
   ) => void
-  'games:getGames': () => void
+  // Ask for the running games of the own account; answered with 'games:runningGamesOfUser'
+  'games:getRunningGamesOfUser': () => void
+  // All running games on the server, for the waiting overview
   'games:getRunningGames': (cb: CallbackFunction<GetRunningGamesType[]>) => void
 
   //chat
@@ -110,7 +112,11 @@ export interface ServerToClientEvents {
   'tutorial:loadProgress': (progress: boolean[][]) => void
 
   //games
-  'games:getGames': (data: GetGamesType) => void
+  // The running games the user is seated in, with full detail. Pushed at login and at every game start, game end,
+  // abort and completed substitution, and on request. It says nothing about finished games: counters and results of
+  // the whole history are part of the profile (GET /gameApi/profile/getPlayerStats), never of this message.
+  'games:runningGamesOfUser': (games: GameForOverview[]) => void
+  // All running games on the server, for the waiting overview - everyone gets the same list
   'games:getRunningGames': (games: GetRunningGamesType[]) => void
 
   //chat

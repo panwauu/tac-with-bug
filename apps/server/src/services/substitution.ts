@@ -1,6 +1,7 @@
 import { Result, ok, err } from 'neverthrow'
 import type pg from 'pg'
 import { getSocketByUserID, getSocketsInGame, nsp, sendUpdatesOfGameToPlayers } from '../socket/game'
+import { emitRunningGamesUpdate } from '../socket/games'
 import type { GameForPlay, Substitution } from '@repo/core/types'
 import { getGame, updateGame } from './game'
 import { initalizeStatistic } from '@repo/core/game/statistic'
@@ -241,6 +242,9 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
     game.substitution = null
     setSubstitution(game.id, null)
     game = await getGame(pgPool, game.id)
+
+    // The players of a running game changed, so the list of running games changed too
+    emitRunningGamesUpdate(pgPool)
   }
 
   setSubstitution(game.id, game.substitution)

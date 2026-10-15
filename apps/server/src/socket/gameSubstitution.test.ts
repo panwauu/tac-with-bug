@@ -190,6 +190,10 @@ describe('Test game substitution of player by player', () => {
   test('Should be accepted by player 3 and performed', async () => {
     const updateGamePromise = waitForEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'update')
     const changePlayerPromise = waitForEventOnSockets([gameSockets[4]], 'substitution:changeGamePlayer')
+    const runningGamesPromise = waitForEventOnSockets(
+      usersWithSockets.map((uWS) => uWS.socket),
+      'games:getRunningGames'
+    )
 
     const acceptRes = await gameSockets[3].emitWithAck(5000, 'substitution:answer', { accept: true })
     expect(acceptRes.status).toBe(200)
@@ -201,6 +205,15 @@ describe('Test game substitution of player by player', () => {
     }
 
     expect(await changePlayerPromise[0]).toBe(2)
+
+    // Everyone gets the list of running games again, with the substitute in the game
+    const runningGamesData = await Promise.all(runningGamesPromise)
+    for (const runningGames of runningGamesData) {
+      const players = runningGames.find((g: { id: number }) => g.id === gameID)?.teams.flat()
+      expect(players).toContain('UserE')
+      expect(players).not.toContain('UserC')
+    }
+
     expect(gameSockets[2].disconnected).toBe(true)
 
     const onlinePlayersPromise = waitForEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'game:online-players')

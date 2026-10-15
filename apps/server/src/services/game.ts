@@ -1,6 +1,6 @@
 import logger from '../helpers/logger'
 import type pg from 'pg'
-import type { GameForOverview, GameForPlay, GetRunningGamesType, GetGamesType, MoveType } from '@repo/core/types'
+import type { GameForOverview, GameForPlay, GetRunningGamesType, MoveType } from '@repo/core/types'
 
 import { Game } from '@repo/core/game/game'
 import { captureMove } from './capture'
@@ -8,7 +8,7 @@ import { updateTournamentFromGame as updatePrivateTournamentFromGame } from './t
 import { updateTournamentFromGame as updatePublicTournamentFromGame } from './tournamentsPublic'
 import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
-import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
+import { emitRunningGamesOfUserUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { getSocketByUserID } from '../socket/general'
 import { getSubstitution } from './substitution'
 import { getBotName } from '@repo/core/bot/names'
@@ -80,6 +80,10 @@ export async function getGames(sqlClient: pg.Pool, userID: number) {
       return row.gameid
     })
   )
+}
+
+export async function getGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
+  return queryGamesByID(sqlClient, gameIDs)
 }
 
 export async function getRunningGames(pgPool: pg.Pool): Promise<GetRunningGamesType[]> {
@@ -183,69 +187,55 @@ export async function abortGame(pgPool: pg.Pool, gameID: number) {
 
   for (const id of game.playerIDs) {
     const socket = getSocketByUserID(id ?? -1)
-    socket != null && emitGamesUpdate(pgPool, socket)
+    socket != null && emitRunningGamesOfUserUpdate(pgPool, socket)
   }
   emitRunningGamesUpdate(pgPool)
   sendUpdatesOfGameToPlayers(game)
 }
 
-export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promise<GetGamesType> {
-  const games = await getGames(sqlClient, userID)
-  // A player who was substituted out holds no seat anymore - such a game counts as aborted and
-  // neither as won nor as lost, just as getStatusForOverview reports it
-  const isSeated = (game: GameForPlay) => game.playerIDs.indexOf(userID) >= 0 && game.playerIDs.indexOf(userID) < game.nPlayers
+// The running games the user is seated in, with the full detail the landing page needs. Sent at every socket login and
+// to every player at the table at each game start, game end, abort and completed substitution - so it must stay cheap:
+// only the running games of the user are read, finished games are not touched at all. Counters over the whole history
+// (won, lost, aborted, team games, the last results) belong to the profile and live in getPlayerStats.
+export async function getRunningGamesOfUser(sqlClient: pg.Pool, userID: number): Promise<GameForOverview[]> {
+  const dbRes = await sqlClient.query<{ id: number }>(
+    `SELECT games.id FROM users_to_games JOIN games ON games.id = users_to_games.gameid
+     WHERE users_to_games.userid = $1 AND games.running = TRUE AND users_to_games.player_index < games.n_players
+     ORDER BY games.id;`,
+    [userID]
+  )
+  const runningIDs = dbRes.rows.map((row) => row.id)
+  const running = runningIDs.length === 0 ? [] : await queryGamesByID(sqlClient, runningIDs)
 
-  return {
-    open: games.filter((g) => g.running && isSeated(g)).length,
-    aborted: games.filter((g) => (!g.running && !g.game.gameEnded) || !isSeated(g)).length,
-    won: games.filter(
-      (g) => !g.running && !g.game.coop && g.game.gameEnded && isSeated(g) && g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.indexOf(userID)))]
-    ).length,
-    lost: games.filter(
-      (g) => !g.running && !g.game.coop && g.game.gameEnded && isSeated(g) && !g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.indexOf(userID)))]
-    ).length,
-    team: games.filter((g) => !g.running && g.game.coop && g.game.gameEnded && isSeated(g)).length,
-    history: games
-      .filter((g) => !g.running && g.game.gameEnded && isSeated(g))
-      .slice(-10)
-      .map((g) => {
-        if (g.game.coop) {
-          return 2
-        }
-        if (g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.indexOf(userID)))]) {
-          return 1
-        } else {
-          return 0
-        }
-      }),
-    runningGames: games
-      .filter((g) => g.running && isSeated(g))
-      .map((game) => {
-        const teams = convertGameOrderToArrayPerTeam(
-          game.players.slice(0, game.nPlayers).map((p, i) => p ?? getBotName(game.id, i)),
-          game.nPlayers,
-          game.nTeams
-        )
+  // Checked again on the full data: a game that ended between the two queries drops out of the list. A player who was
+  // substituted out holds no seat anymore and sees the game as little as the first query returned it.
+  return running
+    .filter((g) => g.running && g.playerIDs.indexOf(userID) >= 0 && g.playerIDs.indexOf(userID) < g.nPlayers)
+    .map((game) => {
+      const teams = convertGameOrderToArrayPerTeam(
+        game.players.slice(0, game.nPlayers).map((p, i) => p ?? getBotName(game.id, i)),
+        game.nPlayers,
+        game.nTeams
+      )
 
-        return {
-          id: game.id,
-          running: game.running,
-          coop: game.game.coop,
-          nTeams: game.nTeams,
-          nPlayers: game.nPlayers,
-          status: 'running',
-          created: game.created,
-          lastPlayed: game.lastPlayed,
-          players: game.players,
-          playerIDs: game.playerIDs,
-          publicTournamentId: game.publicTournamentId,
-          privateTournamentId: game.privateTournamentId,
-          nPlayer: game.playerIDs.indexOf(userID),
-          teams: teams,
-          bots: game.bots,
-        }
-      }),
-  }
+      return {
+        id: game.id,
+        running: game.running,
+        coop: game.game.coop,
+        nTeams: game.nTeams,
+        nPlayers: game.nPlayers,
+        status: 'running',
+        created: game.created,
+        lastPlayed: game.lastPlayed,
+        players: game.players,
+        playerIDs: game.playerIDs,
+        publicTournamentId: game.publicTournamentId,
+        privateTournamentId: game.privateTournamentId,
+        nPlayer: game.playerIDs.indexOf(userID),
+        teams: teams,
+        bots: game.bots,
+      }
+    })
 }
 
 export async function getGamesLazy(sqlClient: pg.Pool, userID: number, first: number, limit: number, sortField: string | undefined, sortOrder: number | undefined) {
@@ -353,7 +343,7 @@ export async function performMoveAndReturnGame(sqlClient: pg.Pool, postMove: Mov
   if (game.game.gameEnded) {
     for (const id of game.playerIDs) {
       const socket = getSocketByUserID(id ?? -1)
-      socket != null && emitGamesUpdate(sqlClient, socket)
+      socket != null && emitRunningGamesOfUserUpdate(sqlClient, socket)
     }
     emitRunningGamesUpdate(sqlClient)
   }
@@ -388,7 +378,7 @@ export async function endNotProperlyEndedGames(sqlClient: pg.Pool) {
         }
         for (const id of game.playerIDs) {
           const socket = getSocketByUserID(id ?? -1)
-          socket != null && emitGamesUpdate(sqlClient, socket)
+          socket != null && emitRunningGamesOfUserUpdate(sqlClient, socket)
         }
         emitRunningGamesUpdate(sqlClient)
         sendUpdatesOfGameToPlayers(game)

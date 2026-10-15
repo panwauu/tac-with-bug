@@ -65,16 +65,8 @@ export interface UpdateDataType {
   teams: number[][]
 }
 
-export type GetGamesType = {
-  open: number
-  aborted: number
-  won: number
-  lost: number
-  team: number
-  history: (1 | 0 | 2)[]
-  runningGames: GameForOverview[]
-}
-
+// Every running game on the server, as the waiting overview shows them to everyone (no account needed).
+// Not to be confused with the running games of one user, which are GameForOverview and carry the full detail.
 export type GetRunningGamesType = {
   id: number
   teams: string[][]

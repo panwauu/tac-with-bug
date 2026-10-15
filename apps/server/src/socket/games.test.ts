@@ -15,12 +15,20 @@ describe('Games test suite via socket.io', () => {
   })
 
   describe('Test games events', () => {
-    test('Get games summary', async () => {
-      const gamesResult = userWithSocket.socket.oncePromise('games:getGames')
-      userWithSocket.socket.emit('games:getSummary')
+    test('Get the running games of the own account', async () => {
+      const gamesResult = userWithSocket.socket.oncePromise('games:runningGamesOfUser')
+      userWithSocket.socket.emit('games:getRunningGamesOfUser')
 
       const res = await gamesResult
-      expect(res.open).not.toBeUndefined()
+      expect(Array.isArray(res)).toBe(true)
+      expect(res.every((g) => g.running && g.status === 'running')).toBe(true)
+    })
+
+    test('An unauthenticated socket gets an empty list', async () => {
+      const gamesResult = unauthSocket.oncePromise('games:runningGamesOfUser')
+      unauthSocket.emit('games:getRunningGamesOfUser')
+
+      expect(await gamesResult).toStrictEqual([])
     })
 
     test('Table data should return error when data is missing', async () => {

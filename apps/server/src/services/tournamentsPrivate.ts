@@ -9,7 +9,7 @@ import type { GameForPlay } from '@repo/core/types'
 import { evaluateGameWinnerAndReturnEndedFlag, EvaluateGameWinnerAndReturnEndedFlagError, updateScore, createTournamentDataKO, CreateTournamentDataKOError } from './tournamentKO'
 import { pushChangedPrivateTournament } from '../socket/tournamentPrivate'
 import { getSocketByUserID } from '../socket/general'
-import { emitGamesUpdate, emitRunningGamesUpdate } from '../socket/games'
+import { emitRunningGamesOfUserUpdate, emitRunningGamesUpdate } from '../socket/games'
 import { switchFromTeamsOrderToGameOrder } from '@repo/core/game/teamUtils'
 
 interface GetPrivateTournamentCondition {
@@ -279,7 +279,7 @@ export async function startTournamentGame(
 
   for (const id of createdGame.playerIDs) {
     const socket = getSocketByUserID(id ?? -1)
-    socket != null && emitGamesUpdate(pgPool, socket)
+    socket != null && emitRunningGamesOfUserUpdate(pgPool, socket)
   }
 
   emitRunningGamesUpdate(pgPool)

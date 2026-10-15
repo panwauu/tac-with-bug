@@ -4,7 +4,7 @@ import type { GeneralSocketS } from '../sharedTypes/GeneralNamespaceDefinition'
 import Joi from 'joi'
 import logger from '../helpers/logger'
 
-import { getGamesSummary, getGamesLazy, getRunningGames } from '../services/game'
+import { getRunningGamesOfUser, getGamesLazy, getRunningGames } from '../services/game'
 import { getUser } from '../services/user'
 import { nspGeneral } from './general'
 
@@ -17,30 +17,23 @@ export async function emitRunningGamesUpdate(pgPool: pg.Pool, socket?: GeneralSo
   }
 }
 
-export async function emitGamesUpdate(pgPool: pg.Pool, socket: GeneralSocketS) {
+// The running games of the user behind this socket - nobody else's, and nothing about finished games.
+export async function emitRunningGamesOfUserUpdate(pgPool: pg.Pool, socket: GeneralSocketS) {
   if (socket.data.userID == null) {
-    socket.emit('games:getGames', {
-      open: 0,
-      aborted: 0,
-      won: 0,
-      lost: 0,
-      team: 0,
-      history: [],
-      runningGames: [],
-    })
+    socket.emit('games:runningGamesOfUser', [])
   } else {
-    socket.emit('games:getGames', await getGamesSummary(pgPool, socket.data.userID))
+    socket.emit('games:runningGamesOfUser', await getRunningGamesOfUser(pgPool, socket.data.userID))
   }
 }
 
 export async function initializeGames(pgPool: pg.Pool, socket: GeneralSocketS) {
-  emitGamesUpdate(pgPool, socket)
+  emitRunningGamesOfUserUpdate(pgPool, socket)
   emitRunningGamesUpdate(pgPool, socket)
 }
 
 export function registerGamesHandler(pgPool: pg.Pool, socket: GeneralSocketS) {
-  socket.on('games:getSummary', async () => {
-    emitGamesUpdate(pgPool, socket)
+  socket.on('games:getRunningGamesOfUser', async () => {
+    emitRunningGamesOfUserUpdate(pgPool, socket)
   })
 
   socket.on('games:getTableData', async (data, callback) => {

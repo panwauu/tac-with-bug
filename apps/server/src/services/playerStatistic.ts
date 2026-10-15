@@ -4,13 +4,13 @@ import type { GameForPlay, GameStatistic, GameStatisticActionsType, GameStatisti
 import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
 
 import { initalizeStatistic } from '@repo/core/game/statistic'
-import { getGames } from './game'
+import { getGamesByID } from './game'
 import { ballPlayer } from '@repo/core/game/ballUtils'
 import { isSubscribed } from '../paypal/paypal'
 import { getUser } from './user'
 import { isHofMember } from './hof'
 
-function intializePlayerStatistic(): tStatistic.PlayerStatistic {
+export function intializePlayerStatistic(): tStatistic.PlayerStatistic {
   return {
     ...initalizeStatistic(1)[0],
     ...{
@@ -145,15 +145,41 @@ function addCardsStatistic(playerStatistic: tStatistic.PlayerStatistic, gameStat
   }
 }
 
-export async function getPlayerStats(sqlClient: pg.Pool, userID: number) {
-  const games = await getGames(sqlClient, userID)
-  games.sort((a, b) => (a.lastPlayed > b.lastPlayed ? 1 : -1))
+export function addGameToPlayerStatistic(playerStatistic: tStatistic.PlayerStatistic, game: GameForPlay, userID: number) {
+  const playerIndex = game.playerIDs.indexOf(userID)
+  addActionStatistic(playerStatistic, game.game.statistic[playerIndex])
+  addCardsStatistic(playerStatistic, game.game.statistic[playerIndex])
+  addWLStatistic(playerStatistic, game, playerIndex)
+}
+
+// Games loaded at once for the profile. Each game with its full state takes about 15 KB of heap, so loading all games
+// of an account with thousands of games at once took tens of MB per call.
+export const PROFILE_GAMES_BATCH_SIZE = 200
+
+export async function getPlayerStats(sqlClient: pg.Pool, userID: number, batchSize: number = PROFILE_GAMES_BATCH_SIZE) {
+  // Same games in the same order as before: in id order (as returned by getGames), then sorted by the last move with the
+  // same comparison and the same Date.parse as in queryGamesByID, so that games with equal times keep their order.
+  const dbRes = await sqlClient.query(
+    'SELECT games.id, games.lastplayed FROM users_to_games JOIN games ON games.id = users_to_games.gameid WHERE users_to_games.userid = $1 ORDER BY games.id;',
+    [userID]
+  )
+  const order: Array<{ id: number; lastPlayed: number }> = dbRes.rows.map((row) => ({ id: row.id, lastPlayed: Date.parse(row.lastplayed) }))
+  order.sort((a, b) => (a.lastPlayed > b.lastPlayed ? 1 : -1))
+
   const sum = intializePlayerStatistic()
-  for (const game of games) {
-    const playerIndex = game.playerIDs.indexOf(userID)
-    addActionStatistic(sum, game.game.statistic[playerIndex])
-    addCardsStatistic(sum, game.game.statistic[playerIndex])
-    addWLStatistic(sum, game, playerIndex)
+  for (let start = 0; start < order.length; start += batchSize) {
+    const batch = order.slice(start, start + batchSize)
+    const loaded = await getGamesByID(
+      sqlClient,
+      batch.map((g) => g.id)
+    )
+    const gamesByID = new Map(loaded.map((game) => [game.id, game]))
+    for (const { id } of batch) {
+      const game = gamesByID.get(id)
+      if (game != null) {
+        addGameToPlayerStatistic(sum, game, userID)
+      }
+    }
   }
   return sum
 }
