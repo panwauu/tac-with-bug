@@ -4,6 +4,10 @@
     "check-format": {
       "dependsOn": ["^check-format"]
     },
+    "prettier:format": {
+      "dependsOn": ["^prettier:format"],
+      "outputs": ["*"]
+    },
     "check-locale-files": {
       "dependsOn": ["^check-locale-files"]
     },

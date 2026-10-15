@@ -115,13 +115,11 @@ function expandNode(node: EndNode): EndNode[] {
 
   // Filter moves where the ball is moved from house
   moves = moves.reduce((filteredMoves, m) => {
-    if (
-      !(
-        m.length === 4 &&
-        node.state.balls[m[2]].state === 'house' &&
-        filteredMoves.some((fm) => fm.length === 4 && node.state.balls[fm[2]].state === 'house' && fm[1] === m[1] && fm[3] === m[3])
-      )
-    ) {
+    if (!(
+      m.length === 4 &&
+      node.state.balls[m[2]].state === 'house' &&
+      filteredMoves.some((fm) => fm.length === 4 && node.state.balls[fm[2]].state === 'house' && fm[1] === m[1] && fm[3] === m[3])
+    )) {
       filteredMoves.push(m)
     }
     return filteredMoves
