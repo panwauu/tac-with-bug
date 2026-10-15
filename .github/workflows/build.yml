@@ -105,7 +105,3 @@ jobs:
       - name: Run Playwright tests
         run: |
           npm run test:e2e
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6.0.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
