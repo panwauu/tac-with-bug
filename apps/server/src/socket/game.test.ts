@@ -34,10 +34,12 @@ describe('Game test suite via socket.io', () => {
 
     test('Test with own game', async () => {
       gameSocket = await registerGameSocket(gameID, usersWithSockets[0].token)
+      expect(gameSocket).toBeDefined()
     })
 
     test('Test with other tournament game', async () => {
       gameSocket = await registerGameSocket(3, usersWithSockets[0].token)
+      expect(gameSocket).toBeDefined()
     })
   })
 
@@ -144,6 +146,7 @@ describe('Game test suite via socket.io', () => {
 
     test('Unregister last player', async () => {
       gameSocketOfPlayer3.disconnect()
+      expect(gameSocketOfPlayer3.connected).toBe(false)
     })
 
     test.todo('Test watching mode - online Players')

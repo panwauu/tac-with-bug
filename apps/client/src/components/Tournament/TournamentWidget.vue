@@ -3,13 +3,7 @@
   <div
     v-if="tournament != null"
     class="clickable"
-    @click="
-      () => {
-        if (tournament?.id != null) {
-          router.push({ name: 'PublicTournament', params: { id: tournament.id } })
-        }
-      }
-    "
+    @click="openTournament()"
   >
     <div class="TournamentHeading">{{ tournament.title }}:</div>
     <TournamentStatusBadge :status="tournament.status" />
@@ -63,6 +57,12 @@ const socket = injectStrict(SocketKey)
 
 const winners = getWinners()
 const tournament = ref<PublicTournament | null>(null)
+
+function openTournament() {
+  if (tournament.value?.id != null) {
+    router.push({ name: 'PublicTournament', params: { id: tournament.value.id } })
+  }
+}
 
 queryTournament()
 async function queryTournament() {

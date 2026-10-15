@@ -1,9 +1,12 @@
 import type pg from 'pg'
 import sharp from 'sharp'
 
-// https://avatars.dicebear.com/styles/bottts
-import { createAvatar } from '@dicebear/core'
-import { bottts } from '@dicebear/collection'
+// https://www.dicebear.com/styles/bottts/
+import { Avatar, Style } from '@dicebear/core'
+import botttsDefinition from '@dicebear/styles/bottts.json'
+
+// Validated once and reused across avatars, as recommended by @dicebear/core v10
+const bottts = new Style(botttsDefinition)
 
 import { resolveUserIdentifier } from '../services/user'
 import type { UserIdentifier } from '../sharedTypes/typesDBuser'
@@ -27,7 +30,7 @@ export async function queryProfilePicture(sqlClient: pg.Pool, identifier: UserId
 }
 
 export async function selectRandomProfilePicture(sqlClient: pg.Pool, userID: number) {
-  const svg = createAvatar(bottts, { seed: Date.now().toString() })
+  const svg = new Avatar(bottts, { seed: Date.now().toString() })
   const svgBuffer = Buffer.from(svg.toString(), 'utf8')
   const resizedBuffer = await sharp(svgBuffer).resize(profilePictureSize, profilePictureSize).toBuffer()
   await saveProfilePicture(sqlClient, resizedBuffer, userID)

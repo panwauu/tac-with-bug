@@ -86,7 +86,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(res.status).toBe(200)
 
       await Promise.all(promiseArray).then((val: any) => {
-        expect(val[0].registerTeams.length).toBe(1)
+        expect(val[0].registerTeams).toHaveLength(1)
         expect(val[0].registerTeams[0].players[0]).toBe(usersWithSockets[0].username)
         expect(val[0].registerTeams[0].activated[0]).toBe(true)
         tournament = val[0]
@@ -113,7 +113,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(res.status).toBe(200)
 
       return Promise.all(promiseArray).then((val: any) => {
-        expect(val[0].registerTeams.length).toBe(0)
+        expect(val[0].registerTeams).toHaveLength(0)
         tournament = val[0]
       })
     })
@@ -140,7 +140,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
 
       tournament = (await Promise.all(promiseArray))[0]
 
-      expect(tournament.registerTeams.length).toBe(1)
+      expect(tournament.registerTeams).toHaveLength(1)
       expect(tournament.registerTeams[0].players[0]).toBe(usersWithSockets[0].username)
       expect(tournament.registerTeams[0].players[1]).toBe(usersWithSockets[1].username)
       expect(tournament.registerTeams[0].activated[0]).toBe(true)
@@ -171,8 +171,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(res.status).toBe(200)
 
       return Promise.all(promiseArray).then((val: any) => {
-        expect(val[0].registerTeams.length).toBe(1)
-        expect(val[0].registerTeams[0].players.length).toBe(2)
+        expect(val[0].registerTeams).toHaveLength(1)
+        expect(val[0].registerTeams[0].players).toHaveLength(2)
         expect(val[0].registerTeams[0].players.includes(usersWithSockets[0].username)).toBe(true)
         expect(val[0].registerTeams[0].players.includes(usersWithSockets[1].username)).toBe(true)
         expect(val[0].registerTeams[0].activated[0]).toBe(true)
@@ -192,8 +192,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(res.status).toBe(200)
 
       return Promise.all(promiseArray).then((val: any) => {
-        expect(val[0].registerTeams.length).toBe(1)
-        expect(val[0].registerTeams[0].players.length).toBe(1)
+        expect(val[0].registerTeams).toHaveLength(1)
+        expect(val[0].registerTeams[0].players).toHaveLength(1)
         expect(val[0].registerTeams[0].players[0]).toBe(usersWithSockets[0].username)
         expect(val[0].registerTeams[0].activated[0]).toBe(true)
         tournament = val[0]
@@ -221,8 +221,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(res.status).toBe(200)
 
       return Promise.all(promiseArray).then((val: any) => {
-        expect(val[0].registerTeams.length).toBe(1)
-        expect(val[0].registerTeams[0].players.length).toBe(2)
+        expect(val[0].registerTeams).toHaveLength(1)
+        expect(val[0].registerTeams[0].players).toHaveLength(2)
         expect(val[0].registerTeams[0].players[0]).toBe(usersWithSockets[0].username)
         expect(val[0].registerTeams[0].players[1]).toBe(usersWithSockets[1].username)
         expect(val[0].registerTeams[0].activated[0]).toBe(true)
@@ -251,8 +251,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(res.status).toBe(200)
 
       await Promise.all(promiseArray).then((val: any) => {
-        expect(val[0].registerTeams.length).toBe(2)
-        expect(val[0].registerTeams[1].players.length).toBe(1)
+        expect(val[0].registerTeams).toHaveLength(2)
+        expect(val[0].registerTeams[1].players).toHaveLength(1)
         expect(val[0].registerTeams[1].players[0]).toBe(usersWithSockets[2].username)
         expect(val[0].registerTeams[1].activated[0]).toBe(true)
         tournament = val[0]
@@ -275,13 +275,13 @@ describe('TournamentPublic test suite via Socket.io', () => {
 
       return Promise.all(promiseArray).then((val: any) => {
         expect(val[0].status).toBe('signUpEnded')
-        expect(val[0].registerTeams.length).toBe(0)
-        expect(val[0].teams.length).toBe(2)
+        expect(val[0].registerTeams).toHaveLength(0)
+        expect(val[0].teams).toHaveLength(2)
         expect(val[0].data.brackets[0][0].teams.includes(-1)).toBe(false)
         tournament = val[0]
         expect(spyReminder).toBeCalledTimes(4)
         expect(spyReminder.mock.calls.map((c) => c[0].user.username).sort()).toEqual(usersWithSockets.map((uws) => uws.username).sort())
-        expect(spyReminder.mock.calls[0][0].ical).not.toBe(null)
+        expect(spyReminder.mock.calls[0][0].ical).not.toBeNull()
       })
     })
 
@@ -371,7 +371,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
 
       const tournament = await getPublicTournamentByID(testServer.pgPool, tournamentID)
       if (tournament.isOk()) expect(tournament.value.status).toBe('signUpFailed')
-      else expect(tournament.error).toBe(null)
+      else expect(tournament.error).toBeNull()
     })
   })
 
@@ -426,7 +426,7 @@ describe('TournamentPublic test suite via Socket.io', () => {
         usersWithSockets[i].socket.emitWithAck(5000, 'tournament:public:registerTeam', { players: [usersWithSockets[i].username], name: teamName.value, tournamentID })
 
         await Promise.all(promiseArray).then((val: any) => {
-          expect(val[0].registerTeams.length).toBe(i + 1)
+          expect(val[0].registerTeams).toHaveLength(i + 1)
           tournament = val[0]
           expect(tournament.id).toBe(tournamentID)
         })
@@ -447,8 +447,8 @@ describe('TournamentPublic test suite via Socket.io', () => {
 
       expect(tournament.id).toBe(tournamentID)
       expect(tournament.status).toBe('signUpEnded')
-      expect(tournament.registerTeams.length).toBe(0)
-      expect(tournament.teams.length).toBe(4)
+      expect(tournament.registerTeams).toHaveLength(0)
+      expect(tournament.teams).toHaveLength(4)
       expect(tournament.data.brackets.every((b: any) => b.every((m: any) => m.winner === -1 && m.gameID === -1 && isEqual(m.score, [0, 0])))).toBe(true)
       expect(tournament.data.brackets[1][0].teams).toStrictEqual([-1, -1])
       expect(

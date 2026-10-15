@@ -84,7 +84,7 @@ describe('TradeBot', () => {
     expect([0, 1]).toContain(move?.[1])
   })
 
-  test('Should trade 1/13 if more than two', () => {
+  test('Should trade 1/13 if more than two and partner has no 1/13', () => {
     const game = new Game(4, 2, true, false)
     game.cards.players[2] = ['2', '2', '2', '2', '2']
     game.cards.players[0] = ['13', '13', '2', '3', '3']

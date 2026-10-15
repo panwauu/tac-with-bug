@@ -187,7 +187,7 @@ describe('Settings-REST test', () => {
       const response = await testAgent.post('/gameApi/setColorScheme').set({ Authorization: userWithCredentials.authHeader }).send({ colorScheme: 'system' })
       expect(response.statusCode).toBe(204)
       const newLocale = await testServer.pgPool.query('SELECT prefers_dark_mode FROM users WHERE username=$1;', [userWithCredentials.username])
-      expect(newLocale.rows[0].prefers_dark_mode).toBe(null)
+      expect(newLocale.rows[0].prefers_dark_mode).toBeNull()
     })
   })
 })

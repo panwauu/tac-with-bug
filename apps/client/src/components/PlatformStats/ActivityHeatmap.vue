@@ -11,6 +11,7 @@
 <script setup lang="ts">
 import type { ActivityHeatmap } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 import VueApexCharts from 'vue3-apexcharts'
+import type { ApexOptions } from 'apexcharts'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -36,7 +37,7 @@ function updateHeatmapChart() {
   }
 }
 
-const activityHeatmapOptions = {
+const activityHeatmapOptions: ApexOptions = {
   states: {
     active: {
       filter: {
@@ -53,7 +54,7 @@ const activityHeatmapOptions = {
     foreColor: getComputedStyle(document.body).getPropertyValue('--text-color'),
   },
   theme: {
-    mode: (colorSchemeStore.isDark ? 'dark' : 'light') as 'light' | 'dark',
+    mode: colorSchemeStore.isDark ? 'dark' : 'light',
   },
   plotOptions: {
     heatmap: {

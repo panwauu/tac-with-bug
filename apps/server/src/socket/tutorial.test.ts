@@ -108,7 +108,7 @@ describe('Tutorial Test Suite via Socket.io', () => {
       expect(response.status).toBe(500)
     })
 
-    test('Progress should be saved for valid data - set to true', async () => {
+    test('Progress should be reseted for valid data', async () => {
       const setRes = await userWithSocket.socket.emitWithAck(5000, 'tutorial:changeTutorialStep', { tutorialID: 0, tutorialStep: 0, done: true })
       expect(setRes.status).toBe(200)
       expect(setRes.data?.progress).toEqual([[true, false, false, false, false, false, false, false, false, false, false]])
