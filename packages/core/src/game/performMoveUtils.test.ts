@@ -58,7 +58,7 @@ test('Test sevenReconstructPath', () => {
 })
 
 // -------- moveBallsBetweenPositionsToHouse(balls, nBall, goalPosition)
-test('Test moveBallToHouse', () => {
+test('Test moveBallsBetweenPositionsToHouse', () => {
   const balls = cloneDeep(ballsSample)
   balls[0].position = ballGoal(0, balls) - 3
   balls[0].state = 'valid'

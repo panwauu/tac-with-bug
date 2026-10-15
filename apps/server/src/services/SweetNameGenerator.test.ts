@@ -10,8 +10,8 @@ test('getDifferentName', () => {
   }
   expect(typeof name.value).toBe('string')
   const elements = name.value.split(' ')
-  expect(elements.length).toBe(2)
-  expect(elements[0][0] === elements[1][0]).toBe(true)
+  expect(elements).toHaveLength(2)
+  expect(elements[0][0]).toBe(elements[1][0])
 })
 
 test('getDifferentName Limit', () => {

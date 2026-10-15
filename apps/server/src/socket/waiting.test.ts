@@ -58,7 +58,7 @@ describe('Waiting game test suite via Socket.io', () => {
 
       const game = (await dataPromise)[0]
       expect(game).not.toBeUndefined()
-      expect(game.gameid).toBe(null)
+      expect(game.gameid).toBeNull()
       expect(game.nPlayers).toBe(gameData.nPlayers)
       expect(game.nTeams).toBe(gameData.nTeams)
       expect(game.meister).toBe(gameData.meister)
@@ -139,7 +139,7 @@ describe('Waiting game test suite via Socket.io', () => {
       expect(res.status).toBe(200)
       const game = (await promise)[0]
       expect(game).not.toBeUndefined()
-      expect(game.gameid).toBe(null)
+      expect(game.gameid).toBeNull()
       expect(game.admin).toBe(usersWithSockets[0].username)
       expect(game.playerIDs[1]).toBeGreaterThan(0)
       expect([game.playerIDs[0], ...game.playerIDs.splice(2, 6)].every((p) => p === null)).toBe(true)
@@ -253,7 +253,7 @@ describe('Waiting game test suite via Socket.io', () => {
       })
     })
 
-    test('Second player should join waiting game', async () => {
+    test('Second player should join waiting game again', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('waiting:getGames')
       })
@@ -363,7 +363,7 @@ describe('Waiting game test suite via Socket.io', () => {
       })
     })
 
-    test('Should add bot', async () => {
+    test('Should add bot again', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('waiting:getGames')
       })
@@ -444,7 +444,7 @@ describe('Waiting game test suite via Socket.io', () => {
       const startRes = await Promise.all(pStartGame)
       const runningGamesRes = await Promise.all(pRunningGames)
       expect(runningGamesRes.map((games) => games.some((g) => g.id === startRes[0].gameID))).toEqual(usersWithSockets.map(() => true))
-      expect(gamesRes[0].length).toBe(0)
+      expect(gamesRes[0]).toHaveLength(0)
       expect(startRes[0].gamePlayer).toBe(0)
       expect(startRes[1].gamePlayer).toBe(2)
       expect(startRes[2].gamePlayer).toBe(3)
@@ -517,7 +517,7 @@ describe('Waiting game test suite via Socket.io', () => {
       const res = await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:createGame', { nPlayers: 4, nTeams: 2, meister: true, private: false })
       expect(res.status).toBe(200)
       const waitForUserInGameRes = await Promise.all(waitForUserInGame)
-      expect(waitForUserInGameRes[0].length).toEqual(1)
+      expect(waitForUserInGameRes[0]).toHaveLength(1)
 
       const waitForGameUpdate = gameSocket.oncePromise('update')
       const error = await new Promise<Result<null, any>>((resolve) =>
@@ -535,7 +535,7 @@ describe('Waiting game test suite via Socket.io', () => {
       })
       usersWithSockets[1].socket.emitWithAck(5000, 'waiting:removePlayer', usersWithSockets[1].username)
       const waitForLeaveGameRes = await Promise.all(waitForLeaveGame)
-      expect(waitForLeaveGameRes[0].length).toEqual(0)
+      expect(waitForLeaveGameRes[0]).toHaveLength(0)
     })
 
     test('Unable to rematch if one player is not online', async () => {
@@ -569,7 +569,7 @@ describe('Waiting game test suite via Socket.io', () => {
       expect(result.ok).toBe(true)
 
       const res = await Promise.all(promises)
-      expect(res[0].length).toBe(1)
+      expect(res[0]).toHaveLength(1)
       expect(res[0][0].admin).toEqual(usersWithSockets[0].username)
       expect(res[0][0].ready.some((r: boolean) => r)).toEqual(false)
       expect(res[0][0].players).toContain(usersWithSockets[0].username)
@@ -585,7 +585,7 @@ describe('Waiting game test suite via Socket.io', () => {
       })
       usersWithSockets[1].socket.emitWithAck(5000, 'waiting:removePlayer', usersWithSockets[1].username)
       const waitForLeaveGameRes = await Promise.all(waitForLeaveGame)
-      expect(waitForLeaveGameRes[0].length).toEqual(0)
+      expect(waitForLeaveGameRes[0]).toHaveLength(0)
     })
 
     test('Rematch should not be created if rematch_open is false', async () => {

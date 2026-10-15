@@ -12,7 +12,7 @@ export default defineConfig({
   // instead of the client's package.json (npm sets npm_package_version to the
   // local package when running scripts inside the client folder).
   define: {
-    'import.meta.env.PACKAGE_VERSION': JSON.stringify(JSON.parse(readFileSync(resolve(__dirname, '../../package.json'), 'utf8')).version),
+    'import.meta.env.PACKAGE_VERSION': JSON.stringify(JSON.parse(readFileSync(resolve(import.meta.dirname, '../../package.json'), 'utf8')).version),
   },
   server: {
     port: 8080,
@@ -51,7 +51,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@repo/core': resolve(__dirname, '../../packages/core/src'),
+      '@repo/core': resolve(import.meta.dirname, '../../packages/core/src'),
     },
   },
   build: {

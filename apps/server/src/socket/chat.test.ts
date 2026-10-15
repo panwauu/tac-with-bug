@@ -101,7 +101,7 @@ describe('Test Suite via Socket.io', () => {
       const resultsChatUpdate = await Promise.all(promisesChatUpdate)
       resultsChatUpdate.forEach((resultChatUpdate) => {
         expect(resultChatUpdate.chatid).toBe(chatid)
-        expect(resultChatUpdate.messages.length).toBe(1)
+        expect(resultChatUpdate.messages).toHaveLength(1)
         expect(resultChatUpdate.messages[0].body).toBe('test')
         expect(resultChatUpdate.messages[0].sender).toBe('UserA')
       })
@@ -127,7 +127,7 @@ describe('Test Suite via Socket.io', () => {
       expect(res.status).toBe(200)
 
       const resultChatOverview = await promiseChatOverview
-      expect(resultChatOverview.length).toBe(1)
+      expect(resultChatOverview).toHaveLength(1)
       expect(resultChatOverview[0].chatid).toBe(chatid)
       expect(resultChatOverview[0].numberOfUnread).toBe(0)
     })
@@ -315,7 +315,7 @@ describe('Test Suite via Socket.io', () => {
       const resultsChatUpdate = await Promise.all(promisesChatUpdate)
       resultsChatUpdate.forEach((resultChatUpdate) => {
         expect(resultChatUpdate.chatid).toBe(chatid)
-        expect(resultChatUpdate.messages.length).toBe(1)
+        expect(resultChatUpdate.messages).toHaveLength(1)
         expect(resultChatUpdate.messages[0].body).toBe('test')
         expect(resultChatUpdate.messages[0].sender).toBe('UserA')
       })

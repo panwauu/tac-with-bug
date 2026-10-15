@@ -35,8 +35,8 @@ describe.skipIf(skipTests)('Test Suite via Socket.io', () => {
       const promise = userWithSocket.socket.oncePromise('subscription:get')
       userWithSocket.socket.emit('subscription:get')
       const data = await promise
-      expect(data.status).toBe(null)
-      expect(data.validuntil).toBe(null)
+      expect(data.status).toBeNull()
+      expect(data.validuntil).toBeNull()
     })
 
     test('new subscription - wrong id type', async () => {
@@ -57,7 +57,7 @@ describe.skipIf(skipTests)('Test Suite via Socket.io', () => {
       return Promise.all(promiseArray).then((val: any) => {
         expect(val[0].status).toBe(200)
         expect(val[1].status).toBe('running')
-        expect(val[1].validuntil).not.toBe(null)
+        expect(val[1].validuntil).not.toBeNull()
         expect(spyNewSubscription).toBeCalledTimes(1)
       })
     })
@@ -74,7 +74,7 @@ describe.skipIf(skipTests)('Test Suite via Socket.io', () => {
       userWithSocket.socket.emit('subscription:get')
       const data = await promise
       expect(data.status).toBe('running')
-      expect(data.validuntil).not.toBe(null)
+      expect(data.validuntil).not.toBeNull()
     })
 
     test.todo('cancel subscription')

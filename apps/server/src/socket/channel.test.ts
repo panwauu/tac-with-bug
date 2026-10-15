@@ -59,7 +59,7 @@ describe('Channel test suite via socket.io', () => {
       const results = await Promise.all(promises)
       for (let i = 0; i < results.length; i++) {
         expect(results[i].channel).toBe('general')
-        expect(results[i].messages.length).toBe(nMessagesBefore + 1)
+        expect(results[i].messages).toHaveLength(nMessagesBefore + 1)
       }
     })
   })

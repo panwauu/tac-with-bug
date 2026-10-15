@@ -14,7 +14,7 @@ describe('DiscardBot', () => {
     expect(move?.[1]).toBe(1)
   })
 
-  test('Should not discard tac', () => {
+  test('Should not discard trickser', () => {
     const data = {
       cardsWithMoves: [
         { title: '8', possible: true, ballActions: {}, textAction: 'abwerfen' },

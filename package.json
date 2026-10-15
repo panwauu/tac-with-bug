@@ -7,6 +7,7 @@
   "scripts": {
     "check-types": "turbo run check-types",
     "check-format": "turbo run check-format",
+    "prettier:format": "turbo run prettier:format",
     "check-locale-files": "turbo run check-locale-files",
     "lint": "turbo run lint",
     "build": "turbo run build",
@@ -16,7 +17,7 @@
   },
   "devDependencies": {
     "turbo": "^2.5.8",
-    "vitest": "^4.0.9"
+    "vitest": "^5.0.5"
   },
   "packageManager": "npm@11.5.2",
   "workspaces": [

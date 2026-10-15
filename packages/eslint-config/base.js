@@ -23,6 +23,8 @@ export const baseConfig = defineConfig([
       "no-throw-literal": "error",
       curly: ["error", "multi-line", "consistent"],
       "no-trailing-spaces": "error",
+      // Same intent as the disabled "sonarjs/no-dead-store" below
+      "no-useless-assignment": "off",
     },
   },
 
@@ -48,6 +50,8 @@ export const baseConfig = defineConfig([
       "sonarjs/no-ignored-exceptions": "off",
       "sonarjs/no-commented-code": "off",
       "sonarjs/no-dead-store": "off",
+      "sonarjs/parameterized-tests": "off",
+      "sonarjs/no-skipped-tests": "off",
     },
   },
 ]);

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test('Test login', async ({ page }) => {
   await page.goto('/')
-  await expect(page).toHaveURL(/.*\/#\/advert/)
+  await expect(page).toHaveURL(/\/#\/advert/)
 
   // Login
   await page.locator('#topElementLoginButton').click()
@@ -16,5 +16,5 @@ test('Test login', async ({ page }) => {
 
   await expect(page).toHaveURL(/\/advert/)
 
-  expect(page.locator('.userContainer')).toContainText('UserA')
+  await expect(page.locator('.userContainer')).toContainText('UserA')
 })

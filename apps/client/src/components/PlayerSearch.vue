@@ -1,7 +1,6 @@
 <template>
   <InputGroup>
     <AutoComplete
-      ref="PlayerSearchInputRef"
       v-model="selectedPlayer"
       aria-label="Playersearch"
       :suggestions="filteredPlayers"
@@ -14,7 +13,6 @@
       @keyup.enter="searchSubmit()"
     />
     <Button
-      ref="PlayerSearchButtonRef"
       aria-label="Player Search Submit"
       icon="pi pi-search"
       @click="searchSubmit()"
@@ -36,8 +34,6 @@ const { t } = useI18n()
 
 const selectedPlayer = ref<string>('')
 const filteredPlayers = ref<string[]>([])
-const PlayerSearchButtonRef = ref<any | null>(null)
-const PlayerSearchInputRef = ref<any | null>(null)
 
 const searchPlayers = () => {
   Service.searchPlayers(selectedPlayer.value, 4).then((d) => (filteredPlayers.value = d.map((e) => e.username)))

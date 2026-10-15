@@ -151,7 +151,7 @@ describe('Private tournament test suite via Socket.io', () => {
     expect(res.data?.registerTeams[0].activated).toEqual([true])
   })
 
-  test('Should add player 1 to first tournament team', async () => {
+  test('Should add player 1 to first tournament team again', async () => {
     const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:private:planAddPlayer', {
       tournamentID,
       usernameToAdd: usersWithSockets[1].username,
@@ -187,7 +187,7 @@ describe('Private tournament test suite via Socket.io', () => {
     expect(res.status).toBe(500)
   })
 
-  test('Should activate player 1', async () => {
+  test('Should activate player 1 after invalid attempts', async () => {
     const res = await usersWithSockets[1].socket.emitWithAck(5000, 'tournament:private:acceptParticipation', { tournamentID })
     expect(res.data).not.toBeNull()
     expect(res.data?.teams).toEqual([])
@@ -250,7 +250,7 @@ describe('Private tournament test suite via Socket.io', () => {
     expect(res.data?.registerTeams[0].activated.sort()).toEqual([true, true].sort())
   })
 
-  test('Should add player 2 to second tournament team', async () => {
+  test('Should add player 2 to second tournament team again', async () => {
     const res = await usersWithSockets[0].socket.emitWithAck(5000, 'tournament:private:planAddPlayer', {
       tournamentID,
       usernameToAdd: usersWithSockets[2].username,

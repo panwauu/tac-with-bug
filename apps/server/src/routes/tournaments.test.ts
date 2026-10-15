@@ -45,8 +45,8 @@ describe('Tournament API', () => {
       })
     expect(apiRes.statusCode).toBe(200)
     expect(apiRes.body.id).toBeGreaterThan(0)
-    expect(apiRes.body.data.brackets.length).toBe(1)
-    expect(apiRes.body.data.brackets[0].length).toBe(1)
+    expect(apiRes.body.data.brackets).toHaveLength(1)
+    expect(apiRes.body.data.brackets[0]).toHaveLength(1)
 
     const dbResBefore = await testServer.pgPool.query('DELETE FROM tournaments WHERE id = $1 RETURNING *;', [apiRes.body.id])
     expect(apiRes.body.id).toBe(dbResBefore.rows[0].id)
@@ -66,10 +66,10 @@ describe('Tournament API', () => {
       })
     expect(apiRes.statusCode).toBe(200)
     expect(apiRes.body.id).toBeGreaterThan(0)
-    expect(apiRes.body.data.brackets.length).toBe(3)
-    expect(apiRes.body.data.brackets[0].length).toBe(4)
-    expect(apiRes.body.data.brackets[1].length).toBe(2)
-    expect(apiRes.body.data.brackets[2].length).toBe(2)
+    expect(apiRes.body.data.brackets).toHaveLength(3)
+    expect(apiRes.body.data.brackets[0]).toHaveLength(4)
+    expect(apiRes.body.data.brackets[1]).toHaveLength(2)
+    expect(apiRes.body.data.brackets[2]).toHaveLength(2)
 
     const dbResBefore = await testServer.pgPool.query('DELETE FROM tournaments WHERE id = $1 RETURNING *;', [apiRes.body.id])
     expect(apiRes.body.id).toBe(dbResBefore.rows[0].id)
@@ -78,7 +78,7 @@ describe('Tournament API', () => {
   test('Generate Team Name', async () => {
     const apiRes = await testAgent.get('/gameApi/generateTeamName').query({ tournamentID: 1 }).set({ Authorization: userWithCredentials.authHeader })
     expect(apiRes.statusCode).toBe(200)
-    expect(apiRes.text).toMatch(/[a-zA-Z]+ [a-zA-Z]+/)
+    expect(apiRes.text).toMatch(/[a-zA-Z]{1,30} [a-zA-Z]{1,30}/)
   })
 
   test('Invalid exchange player in public tournament', async () => {
@@ -146,7 +146,7 @@ describe('Tournament API', () => {
       })
     expect(apiRes.statusCode).toBe(200)
     expect(apiRes.body.id).toBeGreaterThan(0)
-    expect(apiRes.body.data.brackets.length).toBe(3)
+    expect(apiRes.body.data.brackets).toHaveLength(3)
 
     const changeResFail = await testAgent.post('/gameApi/changeTournamentSignUpSize').set({ Authorization: userWithCredentials.authHeader }).send({
       nTeams: 3,
@@ -170,7 +170,7 @@ describe('Tournament API', () => {
       })
     expect(changeRes.statusCode).toBe(200)
     expect(changeRes.body.id).toBe(apiRes.body.id)
-    expect(changeRes.body.data.brackets.length).toBe(4)
+    expect(changeRes.body.data.brackets).toHaveLength(4)
 
     const changeResSmaller = await testAgent.post('/gameApi/changeTournamentSignUpSize').set({ Authorization: userWithCredentials.authHeader }).send({
       nTeams: 4,
@@ -178,6 +178,6 @@ describe('Tournament API', () => {
     })
     expect(changeResSmaller.statusCode).toBe(200)
     expect(changeResSmaller.body.id).toBe(apiRes.body.id)
-    expect(changeResSmaller.body.data.brackets.length).toBe(2)
+    expect(changeResSmaller.body.data.brackets).toHaveLength(2)
   })
 })

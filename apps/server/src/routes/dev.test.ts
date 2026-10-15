@@ -53,7 +53,7 @@ describe('Moderation test suite', () => {
       expect(response.statusCode).toBe(401)
     })
 
-    test('should return 401 if unauthorized', async () => {
+    test('should return 401 if non-admin', async () => {
       const response = await testAgent.post('/gameApi/moderation').set({ Authorization: nonAdminUser.authHeader }).send({ username: 'UserB', reason: 'Violation of rules' })
       expect(response.statusCode).toBe(401)
     })

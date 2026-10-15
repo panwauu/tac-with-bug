@@ -69,6 +69,6 @@ describe('Authentication Test Suite via Socket.io', () => {
     usersWithSockets[0].socket.auth.token = '1234'
     const logoutProm = usersWithSockets[0].socket.oncePromise('logged_out')
     await connectSocket(usersWithSockets[0].socket)
-    await logoutProm
+    await expect(logoutProm).resolves.toBeUndefined()
   })
 })

@@ -313,7 +313,7 @@ describe('Test game substitution of player by bot', () => {
     const game = await getGame(testServer.pgPool, gameID)
     expect(game.bots).toEqual([null, null, 3, null, null, null])
     expect(game.playerIDs).toEqual([1, 2, null, 4, 3])
-    expect(game.game.statistic.length).toBe(5)
+    expect(game.game.statistic).toHaveLength(5)
   })
 })
 
@@ -404,7 +404,7 @@ describe('Test game substitution of bot by player', () => {
     const game = await getGame(testServer.pgPool, gameID)
     expect(game.bots).toEqual([null, null, null, 3, null, null])
     expect(game.playerIDs).toEqual([1, 2, 3, null])
-    expect(game.game.statistic.length).toBe(5)
+    expect(game.game.statistic).toHaveLength(5)
   })
 })
 
@@ -439,7 +439,7 @@ describe('Test game substitution of bot by the replaced player', () => {
     expect(game.playerIDs).toEqual([1, 2, null, 4, 3])
     expect(game.bots[2]).toBe(3)
     expect(game.game.substitutedPlayerIndices).toEqual([2])
-    expect(game.game.statistic.length).toBe(5)
+    expect(game.game.statistic).toHaveLength(5)
     statisticOfReplacedPlayer = game.game.statistic[4]
     statisticOfBot = game.game.statistic[2]
   })
@@ -485,7 +485,7 @@ describe('Test game substitution of bot by the replaced player', () => {
   test('Should continue the statistic of the returned player and archive the one of the bot', async () => {
     const game = await getGame(testServer.pgPool, gameID)
     // No additional statistic entry - the returned player resumes his own one on his seat
-    expect(game.game.statistic.length).toBe(5)
+    expect(game.game.statistic).toHaveLength(5)
     expect(game.game.substitutedPlayerIndices).toEqual([2])
     expect(game.game.statistic[2]).toEqual(statisticOfReplacedPlayer)
     expect(game.game.statistic[4]).toEqual(statisticOfBot)
@@ -532,7 +532,7 @@ describe('Test game substitution of a replaced player on another seat', () => {
     const game = await getGame(testServer.pgPool, gameID)
     expect(game.playerIDs).toEqual([5, 3, 2, 4, 1])
     expect(game.game.substitutedPlayerIndices).toEqual([0])
-    expect(game.game.statistic.length).toBe(5)
+    expect(game.game.statistic).toHaveLength(5)
     statisticOfSeat0 = game.game.statistic[4]
     statisticOfSeat1 = game.game.statistic[1]
   })
@@ -575,7 +575,7 @@ describe('Test game substitution of a replaced player on another seat', () => {
   test('Should take the statistic of the returning player to his new seat', async () => {
     const game = await getGame(testServer.pgPool, gameID)
     // No additional statistic entry - the returning player reuses his archived slot for the seat he took over
-    expect(game.game.statistic.length).toBe(5)
+    expect(game.game.statistic).toHaveLength(5)
     expect(game.game.substitutedPlayerIndices).toEqual([1])
     expect(game.game.statistic[1]).toEqual(statisticOfSeat0)
     expect(game.game.statistic[4]).toEqual(statisticOfSeat1)
@@ -597,7 +597,7 @@ describe('Test game substitution of a replaced player on another seat', () => {
     expect(game.bots[2]).toBe(3)
     expect(game.playerIDs).toEqual([5, 1, null, 4, 3, 2])
     expect(game.game.substitutedPlayerIndices).toEqual([1, 2])
-    expect(game.game.statistic.length).toBe(6)
+    expect(game.game.statistic).toHaveLength(6)
   })
 
   test('Replaced player should be able to take a bot seat and resume his statistic there', async () => {
@@ -621,7 +621,7 @@ describe('Test game substitution of a replaced player on another seat', () => {
     expect(game.playerIDs).toEqual([5, 1, 3, 4, null, 2])
     // His archived slot is now used for the statistic of the bot and belongs to seat 2
     expect(game.game.substitutedPlayerIndices).toEqual([2, 2])
-    expect(game.game.statistic.length).toBe(6)
+    expect(game.game.statistic).toHaveLength(6)
     expect(game.game.statistic[2]).toEqual(statisticOfSeat1)
   })
 })
