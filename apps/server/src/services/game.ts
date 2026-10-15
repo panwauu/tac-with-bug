@@ -191,16 +191,22 @@ export async function abortGame(pgPool: pg.Pool, gameID: number) {
 
 export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promise<GetGamesType> {
   const games = await getGames(sqlClient, userID)
+  // A player who was substituted out holds no seat anymore - such a game counts as aborted and
+  // neither as won nor as lost, just as getStatusForOverview reports it
+  const isSeated = (game: GameForPlay) => game.playerIDs.indexOf(userID) >= 0 && game.playerIDs.indexOf(userID) < game.nPlayers
 
   return {
-    open: games.filter((g) => g.running && g.playerIDs.indexOf(userID) < g.nPlayers).length,
-    aborted: games.filter((g) => (!g.running && !g.game.gameEnded) || g.playerIDs.indexOf(userID) >= g.nPlayers).length,
-    won: games.filter((g) => !g.running && !g.game.coop && g.game.gameEnded && g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.indexOf(userID)))]).length,
-    lost: games.filter((g) => !g.running && !g.game.coop && g.game.gameEnded && !g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.indexOf(userID)))])
-      .length,
-    team: games.filter((g) => !g.running && g.game.coop && g.game.gameEnded).length,
+    open: games.filter((g) => g.running && isSeated(g)).length,
+    aborted: games.filter((g) => (!g.running && !g.game.gameEnded) || !isSeated(g)).length,
+    won: games.filter(
+      (g) => !g.running && !g.game.coop && g.game.gameEnded && isSeated(g) && g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.indexOf(userID)))]
+    ).length,
+    lost: games.filter(
+      (g) => !g.running && !g.game.coop && g.game.gameEnded && isSeated(g) && !g.game.winningTeams[g.game.teams.findIndex((t) => t.includes(g.playerIDs.indexOf(userID)))]
+    ).length,
+    team: games.filter((g) => !g.running && g.game.coop && g.game.gameEnded && isSeated(g)).length,
     history: games
-      .filter((g) => !g.running && g.game.gameEnded)
+      .filter((g) => !g.running && g.game.gameEnded && isSeated(g))
       .slice(-10)
       .map((g) => {
         if (g.game.coop) {
@@ -213,7 +219,7 @@ export async function getGamesSummary(sqlClient: pg.Pool, userID: number): Promi
         }
       }),
     runningGames: games
-      .filter((g) => g.running && g.playerIDs.indexOf(userID) < g.nPlayers)
+      .filter((g) => g.running && isSeated(g))
       .map((game) => {
         const teams = convertGameOrderToArrayPerTeam(
           game.players.slice(0, game.nPlayers).map((p, i) => p ?? getBotName(game.id, i)),

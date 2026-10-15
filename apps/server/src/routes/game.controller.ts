@@ -26,7 +26,7 @@ export class GameController extends Controller {
   @Delete('/abortGame')
   public async abortGame(@Request() request: express.Request, @Body() requestBody: { gameID: number }, @Res() authorizationError: TsoaResponse<403, any>): Promise<void> {
     const game = await getGame(request.app.locals.sqlClient, requestBody.gameID)
-    if (!game.playerIDs.includes(request.userData.userID)) {
+    if (!game.playerIDs.slice(0, game.nPlayers).includes(request.userData.userID)) {
       return authorizationError(403, 'You are not allowed to access this Game and Player')
     }
 
