@@ -81,5 +81,5 @@ jobs:
       - name: Sanity check of tac-with-bug
         uses: fjogeleit/http-request-action@master
         with:
-          url: "https://tac-with-bug.herokuapp.com"
+          url: "https://game.tac-with-bug.org/"
           method: "GET"
