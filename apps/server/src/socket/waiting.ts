@@ -18,7 +18,7 @@ import {
   createGameFromWaitingGame,
 } from '../services/waiting'
 import { getGame } from '../services/game'
-import { emitGamesUpdate, emitRunningGamesUpdate } from './games'
+import { emitRunningGamesOfUserUpdate, emitRunningGamesUpdate } from './games'
 import { sendUpdatesOfGameToPlayers } from './game'
 import { getUser } from '../services/user'
 import { nspGeneral } from './general'
@@ -194,11 +194,11 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
             nPlayers: createdGame.nPlayers,
             gamePlayer: createdGame.playerIDs.indexOf(userID),
           })
-          emitGamesUpdate(pgPool, value)
+          emitRunningGamesOfUserUpdate(pgPool, value)
         }
       }
+      emitRunningGamesUpdate(pgPool)
     }
-    emitRunningGamesUpdate(pgPool)
     emitGetGames()
     return cb?.({ status: 200 })
   })

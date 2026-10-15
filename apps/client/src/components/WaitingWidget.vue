@@ -8,16 +8,16 @@
   >
     <AccordionPanel
       :value="0"
-      :disabled="gamesSummary.runningGames.length === 0"
+      :disabled="runningGamesOfUser.games.length === 0"
     >
-      <AccordionHeader>{{ t('Landing.Waiting.openGames', { n: gamesSummary.runningGames.length }) }}</AccordionHeader>
+      <AccordionHeader>{{ t('Landing.Waiting.openGames', { n: runningGamesOfUser.games.length }) }}</AccordionHeader>
       <AccordionContent>
-        <p v-if="gamesSummary.runningGames.length === 0 && username != null">{{ t('Landing.Waiting.noGamesGoToWaiting') }}</p>
+        <p v-if="runningGamesOfUser.games.length === 0 && username != null">{{ t('Landing.Waiting.noGamesGoToWaiting') }}</p>
         <GamesTable
           v-else
           :loading="false"
-          :n-entries="gamesSummary.runningGames.length"
-          :games="gamesSummary.runningGames"
+          :n-entries="runningGamesOfUser.games.length"
+          :games="runningGamesOfUser.games"
           :username="username ?? ''"
           :paginator="false"
           @row-select="startGame"
@@ -28,12 +28,12 @@
       <AccordionHeader>{{ t('Landing.Waiting.waitingRoomsHeader') }}</AccordionHeader>
       <AccordionContent>
         <Message
-          v-if="gamesSummary.runningGames.length !== 0"
+          v-if="runningGamesOfUser.games.length !== 0"
           severity="error"
           icon="pi pi-times-circle"
           style="margin-top: 10px; margin-bottom: 10px"
         >
-          {{ t('Landing.Waiting.openGamesWarning', { openGames: gamesSummary.runningGames.length }) }}
+          {{ t('Landing.Waiting.openGamesWarning', { openGames: runningGamesOfUser.games.length }) }}
         </Message>
         <WaitingOverview />
       </AccordionContent>
@@ -52,20 +52,20 @@ import GamesTable from '@/components/GamesTable.vue'
 import Message from 'primevue/message'
 
 import { ref, watch } from 'vue'
-import { injectStrict, GamesSummaryKey } from '@/services/injections'
+import { injectStrict, RunningGamesOfUserKey } from '@/services/injections'
 import { isLoggedIn, username } from '@/services/useUser'
 import router from '@/router'
 
 const { t } = useI18n()
-const gamesSummary = injectStrict(GamesSummaryKey)
+const runningGamesOfUser = injectStrict(RunningGamesOfUserKey)
 
-gamesSummary.getGames()
+runningGamesOfUser.requestGames()
 
-const activeIndex = ref(gamesSummary.runningGames.length !== 0 ? 0 : 1)
+const activeIndex = ref(runningGamesOfUser.games.length !== 0 ? 0 : 1)
 watch(
-  () => gamesSummary.runningGames.length,
+  () => runningGamesOfUser.games.length,
   () => {
-    if (gamesSummary.runningGames.length !== 1) {
+    if (runningGamesOfUser.games.length !== 1) {
       activeIndex.value = 0
     }
   }

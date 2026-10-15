@@ -77,7 +77,11 @@ export async function createRematchGame(pgPool: pg.Pool, game: GameForPlay, user
   const waitingGames = await getWaitingGames(pgPool)
   await disableRematchOfGame(pgPool, game.id)
   game.rematch_open = false
-  if (waitingGames.some((g) => g.playerIDs.slice(0, game.nPlayers).some((waitingPlayerID) => waitingPlayerID != null && game.playerIDs.includes(waitingPlayerID)))) {
+  if (
+    waitingGames.some((g) =>
+      g.playerIDs.slice(0, game.nPlayers).some((waitingPlayerID) => waitingPlayerID != null && game.playerIDs.slice(0, game.nPlayers).includes(waitingPlayerID))
+    )
+  ) {
     return err('PLAYER_ALREADY_IN_WAITING_GAME')
   }
   if (game.playerIDs.slice(0, game.nPlayers).some((id) => id != null && !isUserOnline(id))) {

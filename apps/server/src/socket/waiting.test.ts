@@ -6,6 +6,7 @@ import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '.
 import { closeSockets, connectSocket } from '../test/handleSocket'
 import type { GameSocketC, GeneralSocketC } from '../test/socket'
 import { getBotName } from '@repo/core/bot/names'
+import { sleep } from '../helpers/sleep'
 const chance = new Chance()
 
 describe('Waiting game test suite via Socket.io', () => {
@@ -165,6 +166,20 @@ describe('Waiting game test suite via Socket.io', () => {
 
   describe('Test with multiple users', () => {
     let waitingGameID: number, usersWithSockets: UserWithSocket[], gameID: number
+
+    // A ready that does not start a game leaves the running games as they are, so their list is not sent to everyone.
+    function countRunningGamesEvents() {
+      const counts = usersWithSockets.map(() => 0)
+      const handlers = usersWithSockets.map((_, i) => () => {
+        counts[i] += 1
+      })
+      usersWithSockets.forEach((uWS, i) => uWS.socket.on('games:getRunningGames', handlers[i]))
+      return async () => {
+        await sleep(500)
+        usersWithSockets.forEach((uWS, i) => uWS.socket.off('games:getRunningGames', handlers[i]))
+        return counts
+      }
+    }
 
     beforeAll(async () => {
       usersWithSockets = await getUsersWithSockets({ ids: [1, 2, 3, 4, 5] })
@@ -383,26 +398,30 @@ describe('Waiting game test suite via Socket.io', () => {
       const promiseArray = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('waiting:getGames')
       })
+      const runningGamesEvents = countRunningGamesEvents()
 
       await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: waitingGameID })
 
-      return Promise.all(promiseArray).then((val: any) => {
+      await Promise.all(promiseArray).then((val: any) => {
         const game = val[0][0]
         expect(game.ready[0]).toBe(true)
       })
+      expect(await runningGamesEvents()).toEqual(usersWithSockets.map(() => 0))
     })
 
     test('Ready second player', async () => {
       const promiseArray = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('waiting:getGames')
       })
+      const runningGamesEvents = countRunningGamesEvents()
 
       await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: waitingGameID })
 
-      return Promise.all(promiseArray).then((val: any) => {
+      await Promise.all(promiseArray).then((val: any) => {
         const game = val[0][0]
         expect(game.ready[1]).toBe(true)
       })
+      expect(await runningGamesEvents()).toEqual(usersWithSockets.map(() => 0))
     })
 
     test('Ready last player', async () => {
@@ -414,12 +433,17 @@ describe('Waiting game test suite via Socket.io', () => {
         .map((uWS) => {
           return uWS.socket.oncePromise('waiting:startGame')
         })
+      const pRunningGames = usersWithSockets.map((uWS) => {
+        return uWS.socket.oncePromise('games:getRunningGames', 5000)
+      })
 
       const res = await usersWithSockets[2].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID: waitingGameID })
       expect(res.status).toBe(200)
 
       const gamesRes = await Promise.all(pGetGames)
       const startRes = await Promise.all(pStartGame)
+      const runningGamesRes = await Promise.all(pRunningGames)
+      expect(runningGamesRes.map((games) => games.some((g) => g.id === startRes[0].gameID))).toEqual(usersWithSockets.map(() => true))
       expect(gamesRes[0].length).toBe(0)
       expect(startRes[0].gamePlayer).toBe(0)
       expect(startRes[1].gamePlayer).toBe(2)

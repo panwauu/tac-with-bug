@@ -5,6 +5,7 @@
     :data="weekChartData"
     :height="400"
     :options="weekChartOptions"
+    :plugins="[yearMarkerPlugin]"
   />
 </template>
 
@@ -38,7 +39,8 @@ function updateWeekChart() {
   const weekData = normalizeWeekData(props.data)
 
   weekChartData.value.datasets = []
-  weekChartData.value.labels = weekData.map((x) => x[0])
+  weekKeys.value = weekData.map((x) => ({ year: x[4], week: x[0] }))
+  weekChartData.value.labels = weekKeys.value.map((key) => key.week)
   for (let i = 0; i < 2; i++) {
     weekChartData.value.datasets.push({
       data: weekData.map((x: any) => x[i + 1]),
@@ -89,16 +91,75 @@ function updateWeekChart() {
   weekChart.value?.refresh()
 }
 
-function normalizeWeekData(d: WeekDatasetType): Array<[string, number, number, number]> {
-  const weekData: Array<[string, number, number, number]> = []
+function normalizeWeekData(d: WeekDatasetType): Array<[string, number, number, number, string]> {
+  const weekData: Array<[string, number, number, number, string]> = []
 
   for (const y in d.data) {
     for (const w in d.data[y]) {
-      weekData.push([w, d.data[y][w][0], d.data[y][w][1], d.data[y][w][2]])
+      weekData.push([w, d.data[y][w][0], d.data[y][w][1], d.data[y][w][2], y])
     }
   }
 
   return weekData
+}
+
+const weekKeys = ref<Array<{ year: string; week: string }>>([])
+
+function isFirstWeekOfYear(index: number) {
+  if (weekKeys.value[index] === undefined) {
+    return false
+  }
+  return index === 0 || weekKeys.value[index].year !== weekKeys.value[index - 1].year
+}
+
+// The marker line is only drawn between two years, not at the very first (usually incomplete) one.
+function isYearBoundary(index: number) {
+  return index > 0 && isFirstWeekOfYear(index)
+}
+
+// Draws a vertical line at every year change, labelled with the year in vertical text at its top
+const yearMarkerPlugin = {
+  id: 'yearMarker',
+  afterDatasetsDraw: (chart: any) => {
+    const xScale = chart.scales.x
+    if (xScale === undefined) {
+      return
+    }
+
+    const ctx = chart.ctx
+    const color = getComputedStyle(document.body).getPropertyValue('--p-text-muted-color')
+
+    for (const [index, key] of weekKeys.value.entries()) {
+      if (!isYearBoundary(index)) {
+        continue
+      }
+
+      const x = xScale.getPixelForValue(index)
+      ctx.save()
+      ctx.strokeStyle = color
+      ctx.lineWidth = 1
+      ctx.setLineDash([4, 4])
+      ctx.beginPath()
+      ctx.moveTo(x, chart.chartArea.top)
+      ctx.lineTo(x, chart.chartArea.bottom)
+      ctx.stroke()
+
+      ctx.translate(x, chart.chartArea.top + 4)
+      ctx.rotate(Math.PI / 2)
+      ctx.setLineDash([])
+      ctx.fillStyle = color
+      ctx.font = '12px Avenir, Helvetica, Arial, sans-serif'
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'bottom'
+      ctx.fillText(key.year, 0, -3)
+      ctx.restore()
+    }
+  },
+}
+
+function formatWeekKey(index: number) {
+  const key = weekKeys.value[index]
+  return key === undefined ? '' : `${key.year}/${key.week.padStart(2, '0')}`
 }
 
 const weekChartData = ref({
@@ -110,6 +171,11 @@ const weekChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
+    tooltip: {
+      callbacks: {
+        title: (tooltipItems: any[]) => formatWeekKey(tooltipItems[0]?.dataIndex),
+      },
+    },
     legend: {
       display: true,
       labels: {
