@@ -31,6 +31,7 @@ const Advertisement = () => import('@/views/Home/AdvertisementView.vue')
 const ResetPassword = () => import('@/views/Home/ResetPassword.vue')
 
 const Ki = () => import('@/views/KiView.vue')
+const KiAuswahl = () => import('@/views/Home/KiAuswahlView.vue')
 const regexp = locales.join('|')
 const routes = [
   {
@@ -39,7 +40,7 @@ const routes = [
     component: Game,
   },
   {
-    path: `/:locale(${regexp})?/ki`,
+    path: `/:locale(${regexp})?/ki/spiel`,
     name: 'Ki',
     component: Ki,
   },
@@ -184,6 +185,11 @@ const routes = [
         name: 'ResetPassword',
         props: true,
         component: ResetPassword,
+      },
+      {
+        path: 'ki',
+        name: 'KiAuswahl',
+        component: KiAuswahl,
       },
       {
         path: '',

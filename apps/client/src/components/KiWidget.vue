@@ -12,6 +12,14 @@
       @click="router.push({ name: 'Ki', query: { stufe: s.name } })"
     />
   </div>
+  <Button
+    class="ki-widget-alle"
+    :label="t('Ki.alleModi')"
+    icon="pi pi-angle-right"
+    icon-pos="right"
+    link
+    @click="router.push({ name: 'KiAuswahl' })"
+  />
 </template>
 
 <script setup lang="ts">
@@ -29,5 +37,8 @@ const { t } = useI18n()
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+.ki-widget-alle {
+  margin-top: 8px;
 }
 </style>
