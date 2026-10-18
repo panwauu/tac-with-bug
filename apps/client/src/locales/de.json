@@ -1053,6 +1053,9 @@
       "drei": "3 gegen 3",
       "koop": "Kooperativ"
     },
-    "alleModi": "Alle Modi"
+    "widgetText": "Klassisch, 3 gegen 3 oder kooperativ: Spiel gegen die KI aus der TAC-App, direkt im Browser.",
+    "zurAuswahl": "KI-Gegner wählen",
+    "koopKarten": "Gespielte Karten",
+    "koopZiel": "Je weniger Karten, bis alle Kugeln im Haus sind, desto besser."
   }
 }

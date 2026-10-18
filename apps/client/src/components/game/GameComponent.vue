@@ -125,6 +125,12 @@
         :discard-pile-state="discardPileState"
         :perform-move="performMove"
       />
+      <div
+        v-if="$slots.seite"
+        class="gameSeite"
+      >
+        <slot name="seite" />
+      </div>
     </div>
     <div
       v-if="!miscState.gameRunning && !miscState.viewerMode"
@@ -504,6 +510,15 @@ function onResize() {
   justify-content: space-evenly;
 }
 
+.gameSeite {
+  order: 2;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .cardsContainer {
   width: 100%;
   position: relative;
@@ -519,6 +534,10 @@ function onResize() {
   order: 2 !important;
   max-width: 100% !important;
   width: 100% !important;
+}
+
+.sick-game-portrait-query .gameSeite {
+  display: none;
 }
 
 .sick-game-portrait-query .cardsContainer {

@@ -15,7 +15,27 @@
       :update-data="updateData"
       :neue-partie="neuesSpiel"
       @close-game="schliesse()"
-    />
+    >
+      <template
+        v-if="modus === 'koop'"
+        #seite
+      >
+        <div
+          ref="koopSeite"
+          class="koop-seite"
+        >
+          <div
+            v-if="koopSeiteBreit"
+            class="koop-zaehler p-card"
+          >
+            <Tag value="TEAM-TAC" />
+            <div class="koop-zahl">{{ miscState.coopCounter }}</div>
+            <div class="koop-titel">{{ t('Ki.koopKarten') }}</div>
+            <div class="koop-text">{{ t('Ki.koopZiel') }}</div>
+          </div>
+        </div>
+      </template>
+    </GameComponent>
   </div>
 </template>
 
@@ -24,7 +44,8 @@
 // aus dem gemeinsamen Kern, seine Spieloberflaeche, unsere KI im Web Worker.
 // Der Server ist an der Partie nicht beteiligt.
 import GameComponent from '@/components/game/GameComponent.vue'
-import { ref, onUnmounted, onMounted } from 'vue'
+import { ref, watch, onUnmounted, onMounted } from 'vue'
+import Tag from 'primevue/tag'
 import { Game } from '@repo/core/game/game'
 import { getCards, getPlayerUpdateFromGame } from '@repo/core/game/serverOutput'
 import { getAiData } from '@repo/core/bot/simulation/output'
@@ -61,6 +82,28 @@ const modus: KiModus = (['klassisch', 'drei', 'koop'] as const).find((m) => m ==
 const SITZ_ZAHL = SITZE[modus]
 const miscState = useMisc(SITZ_ZAHL)
 const positionStyles = usePositionStyles(miscState)
+// Kooperativ: der Kartenzaehler steht rechts neben dem Brett, wenn dort
+// genug Platz ist; sonst am rechten Brettrand.
+const koopSeite = ref<HTMLElement | null>(null)
+const koopSeiteBreit = ref(false)
+const berechnePositionen = positionStyles.recalculatePositionStyles
+positionStyles.recalculatePositionStyles = () => {
+  berechnePositionen()
+  if (modus === 'koop') {
+    positionStyles.stylePositionCoop = koopSeiteBreit.value ? 'display: none;' : 'left: 82%; top: 50%; transform: translate(-50%, -50%);'
+  }
+}
+const koopSeiteBeobachter = new ResizeObserver(() => {
+  const breit = (koopSeite.value?.clientWidth ?? 0) >= 180
+  if (breit === koopSeiteBreit.value) return
+  koopSeiteBreit.value = breit
+  positionStyles.recalculatePositionStyles()
+})
+watch(koopSeite, (el) => {
+  koopSeiteBeobachter.disconnect()
+  if (el != null) koopSeiteBeobachter.observe(el)
+})
+onUnmounted(() => koopSeiteBeobachter.disconnect())
 const statisticState = useStatistic()
 const discardPileState = useDiscardPile(miscState.gamePlayer)
 const ballsState = useBalls()
@@ -213,3 +256,33 @@ onUnmounted(() => {
   ki.beende()
 })
 </script>
+
+<style scoped>
+.koop-seite {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.koop-zaehler {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 240px;
+  padding: 16px;
+  text-align: center;
+}
+.koop-zahl {
+  font-size: 56px;
+  font-weight: bold;
+  line-height: 1.1;
+}
+.koop-titel {
+  font-weight: bold;
+}
+.koop-text {
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+</style>
