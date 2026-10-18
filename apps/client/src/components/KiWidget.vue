@@ -7,7 +7,7 @@
       :key="s.name"
       :label="s.titel"
       size="small"
-      :severity="s.stufe === 'meister' ? 'contrast' : 'secondary'"
+      severity="secondary"
       :title="t(`Ki.schwierigkeit.${s.stufe}`)"
       @click="router.push({ name: 'Ki', query: { stufe: s.name } })"
     />
