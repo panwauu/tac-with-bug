@@ -12,6 +12,8 @@ import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/
 import { getAiData } from '@repo/core/bot/simulation/output'
 import { projectMoveToGamePlayer } from '@repo/core/bot/normalize/normalize'
 import { getBotMove } from '@repo/core/bot/bots/bots'
+import { stufeFuerPartie } from '@repo/core/bot/netz/onlineStufen'
+import { kiZug } from '../services/kiServer'
 import { sleep } from '../helpers/sleep'
 
 export let nsp: GameNamespace
@@ -162,6 +164,14 @@ const BOT_TIME_TO_WAIT = 4000 as const
 const BOT_TIME_TO_WAIT_NARR = 0 as const
 const BOT_TIME_TO_WAIT_7 = 1500 as const
 
+/** Zug eines Bots: KI-Stufe der App im eigenen Thread, sonst Oskars Bots. */
+async function botZug(game: GameForPlay, gamePlayer: number): Promise<MoveTextOrBall> {
+  const botID = game.bots[gamePlayer] ?? 3
+  const stufe = stufeFuerPartie(botID, game.game.nPlayers, game.game.teams.length, game.game.coop)
+  const daten = getAiData(game.game, gamePlayer)
+  return stufe != null ? kiZug(game.id, gamePlayer, stufe, daten) : getBotMove(botID, daten)
+}
+
 async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
   const gameIDs: number[] = []
   for (const socket of nsp.sockets) {
@@ -197,7 +207,7 @@ async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
         continue
       }
 
-      const agentMove = await getBotMove(game.bots[gamePlayer] ?? 3, getAiData(game.game, gamePlayer))
+      const agentMove = await botZug(game, gamePlayer)
       move = projectMoveToGamePlayer(game.game, agentMove, gamePlayer)
       logger.info(`Bot took ${performance.now() - start}ms`)
       break

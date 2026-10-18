@@ -405,7 +405,8 @@
         "rejectButton": "Wechsel ablehnen",
         "acceptButton": "Wechsel akzeptieren",
         "placeholderSubstituted": "Spieler wählen",
-        "noPlayerToSubstitute": "Kein Wechsel möglich"
+        "noPlayerToSubstitute": "Kein Wechsel möglich",
+        "botLevel": "Welcher Bot einspringt"
       },
       "SubstitutedPlayersHeader": "Ausgewechselte Spieler:"
     },
@@ -1060,6 +1061,8 @@
       "langsam": "Langsam",
       "normal": "Normal",
       "schnell": "Schnell"
-    }
+    },
+    "futuro": "Futuro (Standard-Bot)",
+    "appKi": "KI der TAC-App"
   }
 }

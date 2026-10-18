@@ -405,7 +405,8 @@
         "rejectButton": "Reject substitution",
         "endOfferButton": "Withdraw substitution",
         "placeholderSubstituted": "Choose player",
-        "noPlayerToSubstitute": "No substitution possible"
+        "noPlayerToSubstitute": "No substitution possible",
+        "botLevel": "Which bot steps in"
       },
       "SubstitutedPlayersHeader": "Substituted players:"
     },
@@ -1060,6 +1061,8 @@
       "langsam": "Slow",
       "normal": "Normal",
       "schnell": "Fast"
-    }
+    },
+    "futuro": "Futuro (standard bot)",
+    "appKi": "AI from the TAC app"
   }
 }

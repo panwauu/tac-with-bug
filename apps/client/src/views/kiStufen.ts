@@ -1,3 +1,8 @@
+import { ONLINE_STUFEN, onlineModus } from '@repo/core/bot/netz/onlineStufen'
+
+/** Oskars staerkster Bot, bisher der einzige im Warteraum und beim Ersatz. */
+export const FUTURO = 3
+
 // Die KI-Stufen der TAC-App, nach gemessener Staerke (gegen Futuro, 15.10.2026).
 // Namen wie in der App; `stufe` ist die Schwierigkeit fuer die Anzeige.
 /** `kurz`: Name am Brett (dort ist wenig Platz, lange Namen ueberlappen). */
@@ -36,4 +41,25 @@ export const SITZE: Record<KiModus, number> = { klassisch: 4, drei: 6, koop: 4 }
 export function starteKiPartie(modus: KiModus, stufe: string) {
   window.location.hash = `#/ki/spiel?modus=${modus}&stufe=${stufe}`
   window.location.reload()
+}
+
+/**
+ * Bots fuer Online-Partien (Warteraum, Ersatz): Futuro und die Stufen der
+ * App, die zu dieser Partie passen. Bot-Nummern aus dem Kern.
+ */
+export function onlineBots(nPlayers: number, nTeams: number, coop: boolean): { id: number; stufe: KiStufe | null }[] {
+  const modus = onlineModus(nPlayers, nTeams, coop)
+  const liste = modus === 'drei' ? KI_STUFEN_DREI : modus === 'klassisch' ? KI_STUFEN : []
+  const app = ONLINE_STUFEN.filter((s) => s.modus === modus).map((s) => ({
+    id: s.id,
+    stufe: liste.find((k) => k.name === s.stufe) ?? null,
+  }))
+  return [{ id: FUTURO, stufe: null }, ...app]
+}
+
+/** Anzeigename eines Online-Bots, z. B. „Luise Langfinger (mittel)". */
+export function onlineBotName(b: { id: number; stufe: KiStufe | null }, t: (schluessel: string) => string): string {
+  if (b.id === FUTURO) return t('Ki.futuro')
+  if (b.stufe != null) return `${b.stufe.titel} (${t('Ki.schwierigkeit.' + b.stufe.stufe)})`
+  return t('Ki.modus.koop')
 }

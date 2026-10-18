@@ -101,7 +101,7 @@
               @click="toggle($event, playerIndex(Number(teamIndex), index))"
             />
             <PlayerWithPicture
-              :username="game.players[playerIndex(Number(teamIndex), index)] ?? t('Waiting.bot')"
+              :username="game.players[playerIndex(Number(teamIndex), index)] ?? botName(game.bots[playerIndex(Number(teamIndex), index)])"
               :hide-if-empty="true"
               :name-first="false"
               :clickable="active"
@@ -115,11 +115,13 @@
             </div>
           </div>
           <div v-else>
-            <Button
+            <BotWahl
               v-if="active && game.admin === username"
-              severity="secondary"
               :label="`+ ${t('Waiting.bot')}`"
-              @click="() => emit('add-bot', { gameID: game.id, botID: 3, playerIndex: playerIndex(Number(teamIndex), index) })"
+              :n-players="game.nPlayers"
+              :n-teams="game.nTeams"
+              :coop="game.nTeams === 1"
+              @waehle="(botID) => emit('add-bot', { gameID: game.id, botID, playerIndex: playerIndex(Number(teamIndex), index) })"
             />
           </div>
           <div class="playerControls">
@@ -195,6 +197,8 @@ import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button'
 import Popover from 'primevue/popover'
 import PlayerWithPicture from './PlayerWithPicture.vue'
+import BotWahl from './BotWahl.vue'
+import { FUTURO, onlineBots } from '@/views/kiStufen'
 import Brain from '@/components/icons/BrainSymbol.vue'
 import Heart from '@/components/icons/HeartSymbol.vue'
 import PlayersTwo from '@/components/icons/PlayersTwo.vue'
@@ -227,6 +231,13 @@ const opRef = ref<InstanceType<typeof Popover> | null>(null)
 const colors = computed(() => {
   return ['black', 'blackWhite', 'blue', 'green', 'orange', 'red', 'melone', 'white', 'turquoise', 'pink', 'yellow'].filter((c) => !props.game.balls.includes(c))
 })
+
+// Bot im Warteraum: mit Stufe, wenn es eine KI der App ist („Bot (Luise)")
+const botName = (botID: number | null | undefined) => {
+  const stufe = onlineBots(props.game.nPlayers, props.game.nTeams, props.game.nTeams === 1).find((b) => b.id === botID && b.id !== FUTURO)
+  if (stufe == null) return t('Waiting.bot')
+  return `${t('Waiting.bot')} (${stufe.stufe?.kurz ?? t('Ki.modus.koop')})`
+}
 
 const playerIndex = (teamIndex: number, index: number) => {
   return index + teamIndex * (props.game.nPlayers / props.game.nTeams)
