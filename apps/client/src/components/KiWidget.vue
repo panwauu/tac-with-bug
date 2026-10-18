@@ -1,44 +1,21 @@
 <template>
   <h2>{{ t('Ki.titel') }}</h2>
-  <p>{{ t('Ki.beschreibung') }}</p>
-  <div class="ki-widget-stufen">
+  <p>{{ t('Ki.widgetText') }}</p>
+  <div>
     <Button
-      v-for="s in KI_STUFEN"
-      :key="s.name"
-      :label="s.titel"
-      size="small"
-      severity="secondary"
-      :title="t(`Ki.schwierigkeit.${s.stufe}`)"
-      @click="router.push({ name: 'Ki', query: { stufe: s.name } })"
+      :label="t('Ki.zurAuswahl')"
+      icon="pi pi-angle-right"
+      icon-pos="right"
+      @click="router.push({ name: 'KiAuswahl' })"
     />
   </div>
-  <Button
-    class="ki-widget-alle"
-    :label="t('Ki.alleModi')"
-    icon="pi pi-angle-right"
-    icon-pos="right"
-    link
-    @click="router.push({ name: 'KiAuswahl' })"
-  />
 </template>
 
 <script setup lang="ts">
-// Kachel auf der Startseite: direkt in eine Partie gegen die KI.
+// Kachel auf der Startseite: führt zur Auswahl der KI-Gegner.
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
-import { KI_STUFEN } from '@/views/kiStufen'
 
 const { t } = useI18n()
 </script>
-
-<style scoped>
-.ki-widget-stufen {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.ki-widget-alle {
-  margin-top: 8px;
-}
-</style>
