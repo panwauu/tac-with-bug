@@ -8,7 +8,7 @@
 
 import type { MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
-import { getMovesFromCards } from '../simulation/simulation'
+import { getMovesFromCards } from '../simulation/moves'
 import { projectMoveToGamePlayer } from '../normalize/normalize'
 import { Game } from '../../game/game'
 import { getCards } from '../../game/serverOutput'

@@ -16,7 +16,8 @@
 
 import type { MoveText, MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
-import { type AiInterface, getMovesFromCards } from '../simulation/simulation'
+import type { AiInterface } from '../simulation/simulation'
+import { getMovesFromCards } from '../simulation/moves'
 import { Heuristik, besterZug, bewerte, swiftEigen, tauschKarte, teufelZug } from './heuristik'
 import {
   type Baelle,

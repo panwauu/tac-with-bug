@@ -13,7 +13,7 @@
 import type { MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
 import { previewMove } from '../simulation/previewMove'
-import { getMovesFromCards } from '../simulation/simulation'
+import { getMovesFromCards } from '../simulation/moves'
 import { grundkarte, siebenLaeuft } from './merkmale'
 import { type Baelle, imHaus, imZiel, kartenSchritte, mod, ringFeld, ringLaenge, zielFeld } from './lage'
 

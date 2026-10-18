@@ -12,7 +12,8 @@
 
 import type { MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
-import { type AiInterface, getMovesFromCards } from '../simulation/simulation'
+import type { AiInterface } from '../simulation/simulation'
+import { getMovesFromCards } from '../simulation/moves'
 import type { Game } from '../../game/game'
 import { Heuristik, tauschKarte, teufelZug } from './heuristik'
 import { siebenLaeuft } from './merkmale'

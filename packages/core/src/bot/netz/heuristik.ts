@@ -11,7 +11,8 @@
 
 import type { MoveText, MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
-import { type AiInterface, getMovesFromCards } from '../simulation/simulation'
+import type { AiInterface } from '../simulation/simulation'
+import { getMovesFromCards } from '../simulation/moves'
 import {
   type Baelle,
   Kartenzaehler,
