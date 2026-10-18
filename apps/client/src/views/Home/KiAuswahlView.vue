@@ -49,9 +49,12 @@ const { t } = useI18n()
 <style scoped>
 .ki-auswahl {
   max-width: 560px;
-  margin: 32px auto;
+  margin: 8px auto 32px;
   padding: 0 16px;
   text-align: center;
+}
+.ki-auswahl h2 {
+  margin-top: 0;
 }
 .ki-stufen {
   display: flex;

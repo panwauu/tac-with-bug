@@ -4,13 +4,13 @@
 export type KiStufe = { name: string; titel: string; kurz: string; stufe: 'leicht' | 'mittel' | 'schwer' | 'meister' }
 
 export const KI_STUFEN: KiStufe[] = [
-  { name: 'heuristik', titel: 'Bruno „Blech“', kurz: 'Bruno', stufe: 'leicht' },
-  { name: 'vorausschau', titel: 'Lena „Leichtfuß“', kurz: 'Lena', stufe: 'leicht' },
+  { name: 'heuristik', titel: 'Bruno Blech', kurz: 'Bruno', stufe: 'leicht' },
+  { name: 'vorausschau', titel: 'Lena Leichtfuß', kurz: 'Lena', stufe: 'leicht' },
   { name: 'netz', titel: 'Doktor Sommer', kurz: 'Dr. Sommer', stufe: 'mittel' },
-  { name: 'theo', titel: 'Theo „Zwei Daumen“', kurz: 'Theo', stufe: 'mittel' },
+  { name: 'theo', titel: 'Theo Zwei Daumen', kurz: 'Theo', stufe: 'mittel' },
   { name: 'buchhalter', titel: 'Der Buchhalter', kurz: 'Buchhalter', stufe: 'schwer' },
-  { name: 'alphatac', titel: 'Jakob „Nachtschicht“', kurz: 'Jakob', stufe: 'schwer' },
-  { name: 'legende', titel: 'Vera „Falschgeld“', kurz: 'Vera', stufe: 'schwer' },
+  { name: 'alphatac', titel: 'Jakob Nachtschicht', kurz: 'Jakob', stufe: 'schwer' },
+  { name: 'legende', titel: 'Vera Falschgeld', kurz: 'Vera', stufe: 'schwer' },
   { name: 'hybrid', titel: 'Isolde Voss', kurz: 'Isolde', stufe: 'meister' },
   { name: 'hybrid1600', titel: 'Die Unbekannte', kurz: 'Unbekannte', stufe: 'meister' },
   { name: 'schatten', titel: 'Der Schatten', kurz: 'Schatten', stufe: 'meister' },
