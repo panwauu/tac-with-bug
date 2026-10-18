@@ -191,6 +191,13 @@ function amZug(g: Game): { sitz: number; zug?: MoveTextOrBall } | null {
   return { sitz }
 }
 
+/** Frueheste Zeit fuer den naechsten KI-Zug, auch nach meinem eigenen Zug. */
+let fruehestens = 0
+function setzeFrist(zug: MoveTextOrBall) {
+  const teilschritt = game?.cardsWithMoves.some((c) => c.title.includes('-')) ?? false
+  fruehestens = Date.now() + (zug[2] === 'tauschen' ? 50 : auto ? 60 : teilschritt ? PAUSE_7 : PAUSE[settingsStore.kiTempo])
+}
+
 /** Spielt die Zuege der KI, bis ich wieder dran bin. */
 async function weiter() {
   if (laeuft || game == null) return
@@ -211,6 +218,9 @@ async function weiter() {
         if (beendet || game == null) return
         zug = projectMoveToGamePlayer(game, z, wer.sitz)
       }
+      // Rechenzeit zaehlt zur Pause: der Zug erscheint erst nach der Frist
+      await pause(Math.max(0, fruehestens - Date.now()))
+      if (beendet || game == null) return
       if (!game.checkMove(zug)) {
         console.error('KI-Zug abgelehnt', zug)
         break
@@ -218,8 +228,7 @@ async function weiter() {
       game.performAction(zug, 0)
       if (spiel) spiel.lastPlayed = Date.now()
       zeige()
-      const teilschritt = game.cardsWithMoves.some((c) => c.title.includes('-'))
-      await pause(zug[2] === 'tauschen' ? 50 : auto ? 60 : teilschritt ? PAUSE_7 : PAUSE[settingsStore.kiTempo])
+      setzeFrist(zug)
     }
     if (game?.gameEnded && spiel) {
       spiel.running = false
@@ -241,6 +250,7 @@ function spielerZug(aktion: PerformMoveAction) {
   }
   game.performAction(zug, 0)
   zeige()
+  setzeFrist(zug)
   weiter()
 }
 
