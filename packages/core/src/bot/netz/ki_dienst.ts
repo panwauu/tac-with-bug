@@ -10,7 +10,7 @@
 
 import type { MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
-import { getMovesFromCards } from '../simulation/simulation'
+import { getMovesFromCards } from '../simulation/moves'
 import { Heuristik } from './heuristik'
 
 type Offen = { ok: (z: MoveTextOrBall) => void; daten: AiData; uhr: ReturnType<typeof setTimeout> }

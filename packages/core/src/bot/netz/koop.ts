@@ -10,7 +10,8 @@
 
 import type { MoveText, MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
-import { type AiInterface, getMovesFromCards } from '../simulation/simulation'
+import type { AiInterface } from '../simulation/simulation'
+import { getMovesFromCards } from '../simulation/moves'
 import type { Game } from '../../game/game'
 import { Heuristik, teufelZug } from './heuristik'
 import { type Baelle, imHaus, istStartKarte, kartenSchritte, kugelnVon, mod, ringFeld, ringLaenge, startFeld, tauschEmpfaenger, zielFeld } from './lage'
