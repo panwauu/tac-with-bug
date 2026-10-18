@@ -28,3 +28,12 @@ export const KI_STUFEN_DREI: KiStufe[] = [
 
 export type KiModus = 'klassisch' | 'drei' | 'koop'
 export const SITZE: Record<KiModus, number> = { klassisch: 4, drei: 6, koop: 4 }
+
+/**
+ * Startet eine Partie gegen die KI (Vollbild-Ansicht KiView). Neu laden: die
+ * Spieloberflaeche ist beim Erzeugen auf eine Sitzzahl festgelegt.
+ */
+export function starteKiPartie(modus: KiModus, stufe: string) {
+  window.location.hash = `#/ki/spiel?modus=${modus}&stufe=${stufe}`
+  window.location.reload()
+}

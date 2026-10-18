@@ -1,45 +1,7 @@
 <template>
   <div style="width: 100%; height: 100%">
-    <div
-      v-if="stufe == null"
-      class="ki-auswahl"
-    >
-      <h2>{{ t('Ki.titel') }}</h2>
-      <h3>{{ t('Ki.modus.klassisch') }}</h3>
-      <p>{{ t('Ki.beschreibung') }}</p>
-      <div class="ki-stufen">
-        <Button
-          v-for="s in KI_STUFEN"
-          :key="s.name"
-          :label="`${s.titel} (${t(`Ki.schwierigkeit.${s.stufe}`)})`"
-          :severity="s.stufe === 'meister' ? 'contrast' : 'secondary'"
-          @click="starte('klassisch', s.name)"
-        />
-      </div>
-      <h3>{{ t('Ki.modus.drei') }}</h3>
-      <p>{{ t('Ki.beschreibungDrei') }}</p>
-      <div class="ki-stufen">
-        <Button
-          v-for="s in KI_STUFEN_DREI"
-          :key="s.name"
-          :label="`${s.titel} (${t(`Ki.schwierigkeit.${s.stufe}`)})`"
-          :severity="s.stufe === 'meister' ? 'contrast' : 'secondary'"
-          @click="starte('drei', s.name)"
-        />
-      </div>
-      <h3>{{ t('Ki.modus.koop') }}</h3>
-      <p>{{ t('Ki.beschreibungKoop') }}</p>
-      <div class="ki-stufen">
-        <Button
-          :label="t('Ki.modus.koop')"
-          severity="secondary"
-          @click="starte('koop', 'koop')"
-        />
-      </div>
-      <p class="ki-hinweis">{{ t('Ki.hinweis') }}</p>
-    </div>
     <GameComponent
-      v-else
+      v-if="stufe != null"
       v-model:modal-visible="modalVisible"
       v-model:modal-state="modalState"
       :position-styles="positionStyles"
@@ -62,7 +24,6 @@
 // aus dem gemeinsamen Kern, seine Spieloberflaeche, unsere KI im Web Worker.
 // Der Server ist an der Partie nicht beteiligt.
 import GameComponent from '@/components/game/GameComponent.vue'
-import Button from 'primevue/button'
 import { ref, onUnmounted, onMounted } from 'vue'
 import { Game } from '@repo/core/game/game'
 import { getCards, getPlayerUpdateFromGame } from '@repo/core/game/serverOutput'
@@ -134,12 +95,6 @@ function namen(kurz: string): string[] {
   if (modus === 'koop') return [t('Ki.du'), 'KI 1', 'KI 2', 'KI 3']
   if (modus === 'drei') return [t('Ki.du'), `${kurz} 1`, `${kurz} A`, `${kurz} 2`, `${kurz} B`, `${kurz} 3`]
   return [t('Ki.du'), `${kurz} 1`, kurz, `${kurz} 2`]
-}
-
-function starte(m: KiModus, name: string) {
-  // Neu laden: die Spieloberflaeche ist beim Erzeugen auf eine Sitzzahl festgelegt.
-  window.location.hash = `#/ki?modus=${m}&stufe=${name}`
-  window.location.reload()
 }
 
 function neuesSpiel() {
@@ -244,11 +199,13 @@ function spielerZug(aktion: PerformMoveAction) {
 
 function schliesse() {
   beendet = true
-  router.push({ name: 'Landing' })
+  router.push({ name: 'KiAuswahl' })
 }
 
 onMounted(() => {
-  if (stufe.value != null) neuesSpiel()
+  // Ohne Stufe gibt es nichts zu spielen: zur Auswahl.
+  if (stufe.value == null) router.replace({ name: 'KiAuswahl' })
+  else neuesSpiel()
 })
 
 onUnmounted(() => {
@@ -256,23 +213,3 @@ onUnmounted(() => {
   ki.beende()
 })
 </script>
-
-<style scoped>
-.ki-auswahl {
-  max-width: 560px;
-  margin: 48px auto;
-  padding: 0 16px;
-  text-align: center;
-}
-.ki-stufen {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin: 24px 0;
-}
-.ki-hinweis {
-  font-size: 0.85em;
-  opacity: 0.7;
-}
-</style>
