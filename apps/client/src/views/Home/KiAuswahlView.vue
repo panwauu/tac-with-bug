@@ -8,7 +8,7 @@
         v-for="s in KI_STUFEN"
         :key="s.name"
         :label="`${s.titel} (${t(`Ki.schwierigkeit.${s.stufe}`)})`"
-        :severity="s.stufe === 'meister' ? 'contrast' : 'secondary'"
+        severity="secondary"
         @click="starteKiPartie('klassisch', s.name)"
       />
     </div>
@@ -19,7 +19,7 @@
         v-for="s in KI_STUFEN_DREI"
         :key="s.name"
         :label="`${s.titel} (${t(`Ki.schwierigkeit.${s.stufe}`)})`"
-        :severity="s.stufe === 'meister' ? 'contrast' : 'secondary'"
+        severity="secondary"
         @click="starteKiPartie('drei', s.name)"
       />
     </div>
