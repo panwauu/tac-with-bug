@@ -62,6 +62,7 @@ import { type PerformMoveAction, usePerformMove } from '@/services/compositionGa
 import { useCards } from '@/services/compositionGame/useCards'
 import { useInstructions } from '@/services/compositionGame/useInstructions'
 import router from '@/router/index'
+import { useSettingsStore } from '@/store/settings'
 import { useI18n } from 'vue-i18n'
 import { KI_STUFEN, KI_STUFEN_DREI, SITZE, type KiModus } from '@/views/kiStufen'
 
@@ -73,9 +74,12 @@ const ZEITGRENZE = 2000
  * sein als die Kugel-Animation (1,2 s in GameBoard.vue), sonst startet der
  * naechste Teilschritt einer 7 mitten im Flug und die Kugel springt.
  * Oskars Server wartet bei der 7 aus demselben Grund 1,5 s.
+ * Ganze Zuege: je nach Einstellung „KI-Tempo"; die Teilschritte einer 7
+ * gehoeren zu einem Zug und bleiben knapp.
  */
-const PAUSE = 1400
+const PAUSE = { langsam: 3000, normal: 2000, schnell: 1400 } as const
 const PAUSE_7 = 1500
+const settingsStore = useSettingsStore()
 const ICH = 0
 
 const modus: KiModus = (['klassisch', 'drei', 'koop'] as const).find((m) => m === router.currentRoute.value.query.modus) ?? 'klassisch'
@@ -215,7 +219,7 @@ async function weiter() {
       if (spiel) spiel.lastPlayed = Date.now()
       zeige()
       const teilschritt = game.cardsWithMoves.some((c) => c.title.includes('-'))
-      await pause(zug[2] === 'tauschen' ? 50 : auto ? 60 : teilschritt ? PAUSE_7 : PAUSE)
+      await pause(zug[2] === 'tauschen' ? 50 : auto ? 60 : teilschritt ? PAUSE_7 : PAUSE[settingsStore.kiTempo])
     }
     if (game?.gameEnded && spiel) {
       spiel.running = false

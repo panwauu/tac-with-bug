@@ -1056,6 +1056,12 @@
     "widgetText": "Classic, 3 vs 3 or cooperative: play against the AI from the TAC app, right in your browser.",
     "zurAuswahl": "Choose an AI opponent",
     "koopKarten": "Cards played",
-    "koopZiel": "The fewer cards until all marbles are home, the better."
+    "koopZiel": "The fewer cards until all marbles are home, the better.",
+    "tempo": {
+      "titel": "AI speed",
+      "langsam": "Slow",
+      "normal": "Normal",
+      "schnell": "Fast"
+    }
   }
 }
