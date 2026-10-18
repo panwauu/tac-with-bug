@@ -1,5 +1,15 @@
 <template>
   <div style="max-width: min(600px, 100vw)">
+    <template v-if="$route.name === 'Ki'">
+      <h3>{{ t('Ki.tempo.titel') }}</h3>
+      <SelectButton
+        v-model="settingsStore.kiTempo"
+        :options="kiTempoOptionen"
+        option-label="name"
+        option-value="value"
+        :allow-empty="false"
+      />
+    </template>
     <h3>{{ t(`Game.GameModal.Settings.audioVolume`) }}</h3>
     <SettingsAudioVolume />
     <h3>{{ t(`Game.GameModal.Settings.colorScheme`) }}</h3>
@@ -67,6 +77,8 @@ const position = computed<number>({
     settingsStore.setDefaultPosition(value, props.nPlayers, true)
   },
 })
+
+const kiTempoOptionen = (['langsam', 'normal', 'schnell'] as const).map((value) => ({ name: t(`Ki.tempo.${value}`), value }))
 
 const colorBlindnessOptions = [
   {

@@ -1054,6 +1054,12 @@
     "widgetText": "Klassisch, 3 gegen 3 oder kooperativ: Spiel gegen die KI aus der TAC-App, direkt im Browser.",
     "zurAuswahl": "KI-Gegner wählen",
     "koopKarten": "Gespielte Karten",
-    "koopZiel": "Je weniger Karten, bis alle Kugeln im Haus sind, desto besser."
+    "koopZiel": "Je weniger Karten, bis alle Kugeln im Haus sind, desto besser.",
+    "tempo": {
+      "titel": "KI-Tempo",
+      "langsam": "Langsam",
+      "normal": "Normal",
+      "schnell": "Schnell"
+    }
   }
 }
