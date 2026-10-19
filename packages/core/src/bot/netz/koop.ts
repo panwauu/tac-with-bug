@@ -31,10 +31,12 @@ const K = { hausTiefe: 8, laufWert: 15, zielBonus: 400, tiefe: 8, schaetzungen: 
  * h: schrittweises Aussortieren (Sequential Halving) bei gleichem
  * Gesamtbudget s je Kandidat: Runde um Runde faellt die schlechtere
  * Haelfte weg, die Durchgaenge gehen an die engen Entscheidungen.
+ * tw: Tauschkarte per Vorausschau (`coopTauschWahl` der App) statt per
+ * Faustregel; Standard seit 19.10.: 162,4 statt 170,8 Karten (je n=160).
  */
-export type KoopOptionen = { s: number; t: number; crn: number; h: number }
+export type KoopOptionen = { s: number; t: number; crn: number; h: number; tw: number }
 export function koopOptionen(text = ''): KoopOptionen {
-  const o: KoopOptionen = { s: K.schaetzungen, t: K.tiefe, crn: 1, h: 0 }
+  const o: KoopOptionen = { s: K.schaetzungen, t: K.tiefe, crn: 1, h: 0, tw: 1 }
   for (const teil of text.split(',').filter(Boolean)) {
     const [k, v] = teil.split('=')
     if (!(k in o)) throw new Error(`unbekannter Koop-Schalter ${k}`)
@@ -72,7 +74,7 @@ export class Kooperativ implements AiInterface {
   }
 
   choose(d: AiData): MoveTextOrBall {
-    if (d.tradedCard == null) return koopTausch(d)
+    if (d.tradedCard == null) return this.o.tw ? this.tauschSuche(d) : koopTausch(d)
     if (d.teufelFlag) return teufelZug(d)
     const weiter = this.plan.weiter(d)
     if (weiter) return weiter
@@ -143,6 +145,38 @@ export class Kooperativ implements AiInterface {
     return im[0]
   }
 
+  /**
+   * Wie `coopTauschWahl` der App: jede Handkarte als Gabe, auf denselben
+   * Verteilungen; die anderen tauschen nach der Faustregel, dann wird die
+   * Runde `t` Karten weit angespielt und wie ein Zug bewertet.
+   */
+  private tauschSuche(d: AiData): MoveText {
+    const n = d.cardsWithMoves.length
+    if (n <= 1) return koopTausch(d)
+    const verteilungen = Array.from({ length: this.o.s }, () => tauschVerteilung(d))
+    let beste = 0,
+      besterWert = -Infinity
+    for (let i = 0; i < n; i++) {
+      let summe = 0
+      for (const v of verteilungen) {
+        const game = spielAus(d, v, d.activePlayer)
+        game.tradeFlag = true
+        game.tradedCards = game.tradedCards.map(() => null)
+        let ok = fuehreAus(game, [[0, i, 'tauschen']], 0)
+        for (let p = 1; ok && p < d.nPlayers; p++) {
+          game.updateCardsWithMoves()
+          ok = fuehreAus(game, [koopTausch(sicht(game, p))], p)
+        }
+        summe += ok ? this.ausspielen(game) : -1e6
+      }
+      if (summe > besterWert) {
+        besterWert = summe
+        beste = i
+      }
+    }
+    return [0, beste, 'tauschen']
+  }
+
   private ausspielen(game: Game): number {
     let karten = 0
     const T = this.o.t
@@ -177,6 +211,22 @@ function gierig(d: AiData): MoveTextOrBall {
 }
 
 // ── Tausch ──────────────────────────────────────────────────────────────
+
+/** Verteilung zur Tauschzeit: noch hat niemand gespielt, alle Haende gleich gross. */
+function tauschVerteilung(d: AiData): ReturnType<typeof verteilung> {
+  const v = verteilung(d)
+  const n = d.cardsWithMoves.length
+  const rest = [...v.stapel]
+  for (let p = 1; p < d.nPlayers; p++) {
+    while (v.haende[p].length < n) {
+      const karte = rest.pop()
+      if (karte === undefined) break
+      v.haende[p].push(karte)
+    }
+  }
+  rest.length -= rest.length % d.nPlayers
+  return { haende: v.haende, stapel: rest.length > 0 ? rest : v.stapel }
+}
 
 /**
  * Wie die App im Kooperativ-Modus: weg kommt die Karte, die beim Empfaenger

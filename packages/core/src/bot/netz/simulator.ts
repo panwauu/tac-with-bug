@@ -43,11 +43,12 @@ export function determinisiere(d: AiData): Game {
 export type Verteilung = { haende: string[][]; stapel: string[] }
 
 /** Spiel aus einer festen Verteilung (die Arrays werden kopiert). */
-export function spielAus(d: AiData, v: Verteilung): Game {
+export function spielAus(d: AiData, v: Verteilung, aktiv = 0): Game {
   return baueSpiel(
     d,
     v.haende.map((h) => [...h]),
-    [...v.stapel]
+    [...v.stapel],
+    aktiv
   )
 }
 
