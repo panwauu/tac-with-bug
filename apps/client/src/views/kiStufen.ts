@@ -4,26 +4,26 @@
 export type KiStufe = { name: string; titel: string; kurz: string; stufe: 'leicht' | 'mittel' | 'schwer' | 'meister' }
 
 export const KI_STUFEN: KiStufe[] = [
-  { name: 'heuristik', titel: 'Bruno Blech', kurz: 'Bruno', stufe: 'leicht' },
-  { name: 'vorausschau', titel: 'Lena Leichtfuß', kurz: 'Lena', stufe: 'leicht' },
-  { name: 'netz', titel: 'Doktor Sommer', kurz: 'Dr. Sommer', stufe: 'mittel' },
-  { name: 'theo', titel: 'Theo Zwei Daumen', kurz: 'Theo', stufe: 'mittel' },
-  { name: 'buchhalter', titel: 'Der Buchhalter', kurz: 'Buchhalter', stufe: 'schwer' },
-  { name: 'alphatac', titel: 'Jakob Nachtschicht', kurz: 'Jakob', stufe: 'schwer' },
-  { name: 'legende', titel: 'Vera Falschgeld', kurz: 'Vera', stufe: 'schwer' },
-  { name: 'hybrid', titel: 'Isolde Voss', kurz: 'Isolde', stufe: 'meister' },
+  { name: 'heuristik', titel: 'Nils Niemandsland', kurz: 'Nils', stufe: 'leicht' },
+  { name: 'vorausschau', titel: 'Kevin Kirschwasser', kurz: 'Kevin', stufe: 'leicht' },
+  { name: 'netz', titel: 'Anna Pokerface', kurz: 'Anna', stufe: 'mittel' },
+  { name: 'theo', titel: 'Luise Langfinger', kurz: 'Luise', stufe: 'mittel' },
+  { name: 'buchhalter', titel: 'Joker Jannik', kurz: 'Jannik', stufe: 'schwer' },
+  { name: 'alphatac', titel: 'Jakob Räuber', kurz: 'Jakob', stufe: 'schwer' },
+  { name: 'legende', titel: 'Lockvogel Levien', kurz: 'Levien', stufe: 'schwer' },
+  { name: 'hybrid', titel: 'Schlitzohr Fabian', kurz: 'Fabian', stufe: 'meister' },
   { name: 'hybrid1600', titel: 'Die Unbekannte', kurz: 'Unbekannte', stufe: 'meister' },
   { name: 'schatten', titel: 'Der Schatten', kurz: 'Schatten', stufe: 'meister' },
 ]
 
 /** 3 gegen 3: die Sechser-Leiter der App (`SixDifficulty`). */
 export const KI_STUFEN_DREI: KiStufe[] = [
-  { name: 'gruenschnabel', titel: 'Marlene Hoff', kurz: 'Marlene', stufe: 'leicht' },
-  { name: 'wanderer', titel: 'Piet Anker', kurz: 'Piet', stufe: 'leicht' },
-  { name: 'kundschafterin', titel: 'Frau Kubin', kurz: 'Kubin', stufe: 'leicht' },
-  { name: 'kartograf', titel: 'Der Kartograf', kurz: 'Kartograf', stufe: 'mittel' },
-  { name: 'verschollene', titel: 'Die Verschollene', kurz: 'Verschollene', stufe: 'schwer' },
-  { name: 'faehrtenleger', titel: 'Der Fährtenleger', kurz: 'Fährtenleger', stufe: 'meister' },
+  { name: 'gruenschnabel', titel: 'Kony Kaschmir', kurz: 'Kony', stufe: 'leicht' },
+  { name: 'wanderer', titel: 'Kapitän Emmanuel', kurz: 'Emmanuel', stufe: 'leicht' },
+  { name: 'kundschafterin', titel: 'Die Verschollene', kurz: 'Verschollene', stufe: 'leicht' },
+  { name: 'kartograf', titel: 'Professor Max', kurz: 'Professor Max', stufe: 'mittel' },
+  { name: 'verschollene', titel: 'Doktor J', kurz: 'Doktor J', stufe: 'schwer' },
+  { name: 'faehrtenleger', titel: 'Satoshi', kurz: 'Satoshi', stufe: 'meister' },
 ]
 
 export type KiModus = 'klassisch' | 'drei' | 'koop'

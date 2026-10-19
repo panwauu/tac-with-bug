@@ -1,5 +1,5 @@
 // Hi, I'm Netz,
-// ich bin Stufe 5 der App („Doktor Sommer"): jeden Zug probehalber ausfuehren,
+// ich bin Stufe 5 der App („Anna Pokerface"): jeden Zug probehalber ausfuehren,
 // die Stellung danach vom Wertnetz bewerten lassen, den besten nehmen.
 //
 // Machbarkeitsbeweis: die KI der iOS-App laeuft in Oskars Engine, ohne

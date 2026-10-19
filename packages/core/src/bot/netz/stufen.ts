@@ -1,10 +1,10 @@
 // Die KI-Stufen der App als Bots fuer Oskars Engine.
 //
-//   zufall      Stufe 0 „Frieda Fingerchen"   RandomAI
-//   heuristik   Stufe 1 „Bruno Blech"         HeuristicAI
+//   zufall      Stufe 0 „Dinah Dusel"         RandomAI
+//   heuristik   Stufe 1 „Nils Niemandsland"   HeuristicAI
 //   vorausschau Stufe 2                       LookaheadAI
-//   theo        Stufe 4 „Theo"                MCTSAI(200)
-//   buchhalter  Stufe 6 „Der Buchhalter"      MCTSAI(400)
+//   theo        Stufe 4 „Luise Langfinger"    MCTSAI(200)
+//   buchhalter  Stufe 6 „Joker Jannik"        MCTSAI(400)
 //   hybrid      Stufe 8 „Hybrid 400"          HybridMCTSAI(400), Wertnetz am Ende
 //   hybrid1600  Stufe 9 „Hybrid 1600"
 //   legende     Stufe 7 „Die Legende"         TreeMCTSAI, 16 Verteilungen
@@ -12,7 +12,7 @@
 //   schatten    Stufe 11 „Der Schatten"       HumanPolicyHybridAI(1600), Tausch per Wertnetz
 //   syndikat    Stufe 12 „Das Syndikat"       wie der Schatten
 //   koop        Kooperativ-Modus (eine KI, keine Leiter), Kooperativ-Netz
-//   netz        Stufe 5 „Doktor Sommer"       NeuralNetAI (siehe Netz.ts)
+//   netz        Stufe 5 „Anna Pokerface"      NeuralNetAI (siehe Netz.ts)
 
 import type { MoveText, MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'

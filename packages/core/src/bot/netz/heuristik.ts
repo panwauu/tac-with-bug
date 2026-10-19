@@ -1,4 +1,4 @@
-// Stufe 2 der App („Bruno Blech", `HeuristicAI`), klassischer Modus.
+// Stufe 2 der App („Nils Niemandsland", `HeuristicAI`), klassischer Modus.
 //
 // Jede Zahl hier ist aus `HeuristicAI.score` der App uebernommen. Bewertet
 // wird die Stellung VOR dem Zug plus das, was der Zug tut (siehe zuege.ts).
