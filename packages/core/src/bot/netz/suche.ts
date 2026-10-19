@@ -1,4 +1,4 @@
-// Stufe 4 „Theo" (200 Ausspielungen) und Stufe 6 „Der Buchhalter" (400):
+// Stufe 4 „Luise Langfinger" (200 Ausspielungen) und Stufe 6 „Joker Jannik" (400):
 // `MCTSAI` der App, eine Banditen-Suche ueber die eigenen Zuege.
 //
 // Je Durchgang: einen Zug waehlen (UCB1, erst jeder einmal), die unbekannten
