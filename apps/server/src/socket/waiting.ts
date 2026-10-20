@@ -16,12 +16,14 @@ import {
   moveBot,
   removeBot,
   createGameFromWaitingGame,
+  deleteExpiredWaitingGames,
+  waitingGameExpiryMinutes,
 } from '../services/waiting'
 import { getGame } from '../services/game'
 import { emitRunningGamesOfUserUpdate, emitRunningGamesUpdate } from './games'
 import { sendUpdatesOfGameToPlayers } from './game'
 import { getUser } from '../services/user'
-import { nspGeneral } from './general'
+import { getSocketByUserID, nspGeneral } from './general'
 import { transferLatestMessagesToOtherChannel } from '../services/channel'
 
 export async function initializeWaiting(pgPool: pg.Pool, socket: GeneralSocketS) {
@@ -34,6 +36,17 @@ export async function terminateWaiting(pgPool: pg.Pool, socket: GeneralSocketS) 
     if (!user.isErr()) {
       await removePlayer(pgPool, user.value.username, socket.data.userID)
     }
+  }
+  nspGeneral.emit('waiting:getGames', await getWaitingGames(pgPool))
+}
+
+/** Closes the waiting games without any change for a while and tells the players why their room is gone. */
+export async function expireWaitingGames(pgPool: pg.Pool) {
+  const userIDs = await deleteExpiredWaitingGames(pgPool)
+  if (userIDs.length === 0) return
+
+  for (const userID of userIDs) {
+    getSocketByUserID(userID)?.emit('waiting:expired', { minutes: waitingGameExpiryMinutes })
   }
   nspGeneral.emit('waiting:getGames', await getWaitingGames(pgPool))
 }

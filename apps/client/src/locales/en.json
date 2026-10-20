@@ -551,7 +551,9 @@
     "adminBadge": "Host",
     "bot": "Bot",
     "leaveButton": "Leave this waiting room",
-    "readyButton": "Ready to start"
+    "readyButton": "Ready to start",
+    "expiredSummary": "Waiting room closed",
+    "expiredDetail": "Nothing happened in the waiting room for {minutes} minutes, so it was closed. You can open a new room at any time."
   },
   "Login": {
     "username": "Username",
