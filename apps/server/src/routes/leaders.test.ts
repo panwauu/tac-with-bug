@@ -61,6 +61,28 @@ describe('Leaders Test Suite', () => {
     expect(response.body.winshare).toStrictEqual(['100.00', '100.00', '0.00', '0.00'])
   })
 
+  test('Test Winner Leaderboard without hidden accounts', async () => {
+    // External bot accounts can be left out of the wins (users.hidden_from_leaderboard); coop teams stay complete
+    const query = { offset: 0, limit: 100, startDate: 0, endDate: Date.parse('2020-01-01 22:00:00.000000+01') }
+    await testServer.pgPool.query("UPDATE users SET hidden_from_leaderboard = TRUE WHERE username = 'UserC';")
+    try {
+      let response = await testAgent.get('/gameApi/getWinnerLeaderboard/').query(query).set({ Authorization: userWithCredentials.authHeader })
+      expect(response.statusCode).toBe(200)
+      expect(response.body.nPlayers).toBe('3')
+      expect(response.body.username).toStrictEqual(['UserA', 'UserB', 'UserD'])
+      expect(response.body.wins).toStrictEqual(['1', '0', '0'])
+
+      response = await testAgent
+        .get('/gameApi/getCoopLeaderboard/')
+        .query({ ...query, nPlayers: 4 })
+        .set({ Authorization: userWithCredentials.authHeader })
+      expect(response.statusCode).toBe(200)
+      expect(response.body.team[0].sort()).toStrictEqual(['UserA', 'UserB', 'UserC', 'UserD'].sort())
+    } finally {
+      await testServer.pgPool.query("UPDATE users SET hidden_from_leaderboard = FALSE WHERE username = 'UserC';")
+    }
+  })
+
   test('Test Coop-4 Leaderboard', async () => {
     const response = await testAgent
       .get('/gameApi/getCoopLeaderboard/')
