@@ -135,7 +135,7 @@ import router from '@/router/index'
 import { uebung, txt, markiere, naechstes, training } from '@/training'
 import { baueSpiel, fuehreAus, ICH, kugel } from '@/training/spielstand'
 import { istGeloest, type Verlauf } from '@/training/pruefung'
-import { FARBEN } from '@/training/typen'
+import { FARBEN, type Uebung } from '@/training/typen'
 
 const { t, locale } = useI18n()
 
@@ -233,7 +233,35 @@ function starte(teil: 'start' | 'm03' = u.value?.id === 's_m03' ? 'm03' : 'start
     playerIDs: [null, null, null, null],
   }
   setTimeout(() => positionStyles.onResize(), 50)
-  zeige()
+  zeigeVorzug(x, teil)
+}
+
+/**
+ * Der letzte Zug vor der Übung (TAC-Aufgaben): erst das Brett davor zeigen,
+ * dann läuft der Zug sichtbar ab, wie in der App. So sieht man, was TAC
+ * gleich rückgängig macht.
+ */
+let vorzugUhr: ReturnType<typeof setTimeout> | null = null
+const vorzugLaeuft = ref(false)
+function zeigeVorzug(x: Uebung, teil: 'start' | 'm03') {
+  if (vorzugUhr) clearTimeout(vorzugUhr)
+  if (spiel == null || game == null || teil !== 'start' || x.kugelnVorher == null) {
+    vorzugLaeuft.value = false
+    zeige()
+    return
+  }
+  const echt = getPlayerUpdateFromGame(spiel, ICH)
+  updateData.value = {
+    ...echt,
+    balls: structuredClone(game.priorBalls),
+    discardPile: echt.discardPile.slice(0, -1),
+    cards: echt.cards.map((c) => ({ ...c, possible: false, ballActions: {}, textAction: '' })),
+  }
+  vorzugLaeuft.value = true
+  vorzugUhr = setTimeout(() => {
+    vorzugLaeuft.value = false
+    zeige()
+  }, 1400)
 }
 
 function loese() {
@@ -243,7 +271,7 @@ function loese() {
 
 /** Mein Zug aus der Oberfläche. */
 function spielerZug(aktion: PerformMoveAction) {
-  if (game == null || geloest.value || quiz.value) return
+  if (game == null || geloest.value || quiz.value || vorzugLaeuft.value) return
   const zug: MoveTextOrBall = performMove(aktion)
   if (!game.checkMove(zug)) {
     console.error('Zug abgelehnt', zug)

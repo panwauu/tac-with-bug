@@ -593,6 +593,11 @@ function onResize() {
   box-sizing: border-box;
 }
 
+/* Die Aufgabe im Training muss lesbar bleiben: lieber das Brett etwas kleiner. */
+.seite-hochkant .gameSeite {
+  min-width: 240px;
+}
+
 /* Mit der Spalte darunter darf der Kartenbereich nicht schrumpfen, sonst
    ragen die Karten über die Aufgabe; die Ansicht scrollt stattdessen. */
 .sick-game-portrait-query.seite-hochkant .gameAdditionalInfo {
