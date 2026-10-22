@@ -7,7 +7,7 @@
     <router-view class="RouterView" />
   </ChatWrapper>
   <!-- KI braucht keinen Server: kein Verbindungshinweis bei der KI -->
-  <ConnectionStatusOverlay v-if="$route.name !== 'Ki' && $route.name !== 'KiAuswahl'" />
+  <ConnectionStatusOverlay v-if="!['Ki', 'KiAuswahl', 'Training', 'TrainingLektion', 'TrainingUebung'].includes(String($route.name))" />
 
   <Menubar v-show="false" />
   <Card v-show="false" />

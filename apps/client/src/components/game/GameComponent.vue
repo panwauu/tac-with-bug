@@ -3,7 +3,7 @@
     id="gameView"
     ref="gameViewRef"
     class="gameView"
-    :class="[gameBoardPortrait ? 'sick-game-portrait-query' : '']"
+    :class="[gameBoardPortrait ? 'sick-game-portrait-query' : '', seiteHochkant ? 'seite-hochkant' : '']"
   >
     <Menubar
       class="portaitMenu"
@@ -269,6 +269,8 @@ const props = defineProps<{
   updateData: UpdateDataType | null
   /** Lokale Partie (gegen die KI): Knopf „Neue Partie" statt Revanche. */
   neuePartie?: () => void
+  /** Slot `seite` auch hochkant zeigen (unter dem Brett), z. B. die Aufgabe im Training. */
+  seiteHochkant?: boolean
 }>()
 
 watch(() => props.updateData, updateHandler, { deep: true })
@@ -580,6 +582,21 @@ function onResize() {
 
 .sick-game-portrait-query .gameSeite {
   display: none;
+}
+
+.sick-game-portrait-query.seite-hochkant .gameSeite {
+  display: flex;
+  order: 1;
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Mit der Spalte darunter darf der Kartenbereich nicht schrumpfen, sonst
+   ragen die Karten über die Aufgabe; die Ansicht scrollt stattdessen. */
+.sick-game-portrait-query.seite-hochkant .gameAdditionalInfo {
+  flex: 0 0 auto;
 }
 
 .sick-game-portrait-query .cardsContainer {

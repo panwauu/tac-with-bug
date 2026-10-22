@@ -32,6 +32,9 @@ const ResetPassword = () => import('@/views/Home/ResetPassword.vue')
 
 const Ki = () => import('@/views/KiView.vue')
 const KiAuswahl = () => import('@/views/Home/KiAuswahlView.vue')
+const Training = () => import('@/views/Home/TrainingView.vue')
+const TrainingLektion = () => import('@/views/Home/TrainingLektionView.vue')
+const TrainingUebung = () => import('@/views/TrainingUebungView.vue')
 const regexp = locales.join('|')
 const routes = [
   {
@@ -43,6 +46,11 @@ const routes = [
     path: `/:locale(${regexp})?/ki/spiel`,
     name: 'Ki',
     component: Ki,
+  },
+  {
+    path: `/:locale(${regexp})?/training/uebung`,
+    name: 'TrainingUebung',
+    component: TrainingUebung,
   },
   {
     path: `/:locale(${regexp})?/tutorial`,
@@ -190,6 +198,16 @@ const routes = [
         path: 'ki',
         name: 'KiAuswahl',
         component: KiAuswahl,
+      },
+      {
+        path: 'training',
+        name: 'Training',
+        component: Training,
+      },
+      {
+        path: 'training/lektion/:id',
+        name: 'TrainingLektion',
+        component: TrainingLektion,
       },
       {
         path: '',
