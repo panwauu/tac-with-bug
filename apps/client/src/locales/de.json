@@ -1152,7 +1152,9 @@
       "aussetzen": "Der Nächste setzt aus",
       "uebernehmen": "und nutzt die Karte selbst",
       "ausHaus": "TAC holt die Kugel aus dem Haus",
-      "wahl": "Freie Wahl bei Doppelfunktion"
+      "wahl": "Freie Wahl bei Doppelfunktion",
+      "kugeln16": "16 Kugeln",
+      "karten104": "104 Karten"
     }
   }
 }

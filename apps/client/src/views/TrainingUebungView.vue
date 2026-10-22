@@ -26,15 +26,6 @@
             v-if="quiz"
             class="quiz"
           >
-            <div
-              v-for="s in [0, 1, 2, 3]"
-              :key="s"
-              class="quiz-spieler"
-            >
-              <span>{{ farbname(s) }}</span>
-              <span v-if="u.zeigeMelden || u.quizMelden != null">{{ kannRaus(s) ? '✓' : '✕' }}</span>
-              <span v-if="u.quizRundenstart != null && s === u.quizRundenstart">☝️</span>
-            </div>
             <div class="quiz-antworten">
               <Button
                 v-for="a in quizAntworten"
@@ -165,11 +156,6 @@ const quiz = computed(() => u.value?.quizMelden != null || u.value?.quizRundenst
 
 function farbname(s: number) {
   return t(`Training.farbe.${FARBEN[s]}`)
-}
-
-function kannRaus(s: number) {
-  const hand = s === ICH ? u.value?.karten : u.value?.andereHaende?.[String(s)]
-  return (hand ?? []).some((c) => c === '1' || c === '13')
 }
 
 const quizAntworten = computed(() => {
@@ -351,19 +337,17 @@ onMounted(() => {
   font-size: 0.95em;
   opacity: 0.85;
 }
-.quiz-spieler {
-  display: flex;
-  gap: 10px;
-}
 .quiz-antworten {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 6px;
   margin-top: 6px;
 }
 .knoepfe {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 6px;
 }
 </style>

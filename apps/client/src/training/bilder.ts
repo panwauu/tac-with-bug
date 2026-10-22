@@ -6,13 +6,32 @@
 // 16…79, Haus 80…95. Sitz 0 Schwarz (Startfeld 16), 1 Blau (32), 2 Grün
 // (48), 3 Rot (64). Kugel j gehört Sitz j/4.
 
+/** Wo eine Karte unterwegs gerade ist: bei einem Sitz, in der Mitte oder auf dem Stapel des Gebers. */
+export type Ort = number | 'mitte' | { stapel: number }
+
 export interface Bild {
   /** Kugel → Position; nicht genannte Kugeln stehen im eigenen Vorfeld */
   pos: Record<number, number>
-  /** Karten in der Brettmitte (Oskars Schreibweise, "backside", "kannraus") */
+  /** Ablagestapel in der Mitte, übereinander (Oskars Schreibweise) */
   karten?: string[]
   /** Felder mit pulsierendem Ring */
   markiere?: number[]
+  /** Ganzer Bereich: der Spielkreis oder das eigene Vorfeld */
+  bereich?: 'kreis' | 'vorfeld'
+  /** Verdeckte Karten je Sitz, wie bei Tac-With-Bug neben den Namen */
+  haende?: number[]
+  /** Sitze, die beim Tauschen 1 oder 13 zeigen */
+  kannRaus?: number[]
+  /** Sitz am Zug: oberste Karte steht schräg */
+  aktiv?: number
+  /** Kartenstapel beim Geber */
+  geber?: number
+  /** Einzelne Karten unterwegs (gleiche id = dieselbe Karte, sie gleitet) */
+  flug?: { id: string; karte: string; ort: Ort }[]
+  /** Karten offen nebeneinander unter dem Brett */
+  auslage?: { text?: string; karten?: string[]; kugeln?: boolean; anzahl?: boolean }[]
+  ohneBrett?: boolean
+  ohneKugeln?: boolean
   /** Schlüssel unter Training.bild.* */
   text?: string
   /** Wie lange dieses Bild steht (ms) */
@@ -91,13 +110,13 @@ const VORFELD = (j: number) => j
 const szenen: Record<string, () => Bild[]> = {
   fullBoard: () => [b({}, 4000, { karten: ['1', '13', 'tac'] })],
   boardAreas: () => [
-    b({}, 1800, { markiere: [0, 1, 2, 3], text: 'vorfeld' }),
+    b({}, 1800, { bereich: 'vorfeld', text: 'vorfeld' }),
     b({}, 1800, { markiere: [R(0)], text: 'startfeld' }),
-    b({}, 1800, { markiere: [R(4), R(12), R(20), R(28), R(36), R(44), R(52), R(60)], text: 'kreis' }),
+    b({}, 1800, { bereich: 'kreis', text: 'kreis' }),
     b({}, 1800, { markiere: [H(0, 0), H(0, 1), H(0, 2), H(0, 3)], text: 'haus' }),
     b({}, 1800, { karten: ['5', '7'], text: 'ablage' }),
   ],
-  base: () => [b({}, 3000, { markiere: [0, 1, 2, 3], text: 'vorfeld' })],
+  base: () => [b({}, 3000, { bereich: 'vorfeld', text: 'vorfeld' })],
   startField: () => new Szene({}).zeige(1200, { karten: ['1'] }).setze({ [K(0, 0)]: R(0) }, 2200, { karten: ['1'], markiere: [R(0)], text: 'startfeld' }).bilder,
   home: () =>
     new Szene({ [K(0, 0)]: R(58) })
@@ -133,24 +152,13 @@ const szenen: Record<string, () => Bild[]> = {
       .zeige(1400, { karten: ['4'], text: 'rueckwaerts' }).bilder,
   marbleJourney: () =>
     new Szene({})
-      .zeige(800, { karten: ['1'] })
-      .setze({ [K(0, 0)]: R(0) }, 1000, { karten: ['1'], text: 'startfeld' })
+      .zeige(900, { text: 'vorfeld', bereich: 'vorfeld' })
+      .setze({ [K(0, 0)]: R(0) }, 1000, { text: 'startfeld' })
       .lauf(K(0, 0), ring(0, 63), { text: 'kreis' })
       .lauf(K(0, 0), [R(0), H(0, 0), H(0, 1), H(0, 2), H(0, 3)], { text: 'haus' })
       .zeige(1800, { text: 'haus' }).bilder,
-  roundPhases: () => [
-    b({}, 1700, { karten: ['backside', 'backside', 'backside'], text: 'geben' }),
-    b({}, 1700, { karten: ['kannraus'], text: 'melden' }),
-    b({}, 1700, { karten: ['backside', 'backside'], text: 'tauschen' }),
-    b({}, 1700, { karten: ['5'], text: 'spielen' }),
-  ],
-  cardOverview: () => [
-    b({}, 1800, { karten: ['2', '5', '9'], text: 'normal' }),
-    b({}, 1800, { karten: ['1', '4', '7'], text: 'sonder' }),
-    b({}, 1800, { karten: ['8', '13', 'trickser'], text: 'sonder' }),
-    b({}, 1800, { karten: ['teufel', 'krieger', 'narr', 'engel'], text: 'meister' }),
-    b({}, 1800, { karten: ['tac'], text: 'tac' }),
-  ],
+  roundPhases: () => rundenablauf(),
+  cardOverview: () => [b({}, 6000, { ohneBrett: true, auslage: KARTENGRUPPEN })],
   teamHome: () => {
     const p: Pos = {}
     for (const s of [0, 2]) for (let i = 0; i < 4; i++) p[K(s, i)] = H(s, i)
@@ -272,9 +280,9 @@ const szenen: Record<string, () => Bild[]> = {
     new Szene({ [K(0, 0)]: R(10), [K(1, 0)]: R(25) })
       .zeige(1400, { karten: ['krieger'] })
       .setze({ [K(0, 0)]: R(25), [K(1, 0)]: VORFELD(K(1, 0)) }, 2200, { karten: ['krieger'], text: 'krieger' }).bilder,
-  narrIcon: () => [b({}, 1500, { karten: ['narr'], text: 'narr' }), b({}, 1800, { karten: ['narr', 'backside', 'backside'], text: 'narr' })],
+  narrIcon: () => narr(),
   engelIcon: () => new Szene({}).zeige(1400, { karten: ['engel'] }).setze({ [K(1, 0)]: R(16) }, 2200, { karten: ['engel'], text: 'engel' }).bilder,
-  meisterQuad: () => [b({}, 3500, { karten: ['teufel', 'krieger', 'narr', 'engel'], text: 'meister' })],
+  meisterQuad: () => [b({}, 3500, { auslage: [{ text: 'meister', karten: ['teufel', 'krieger', 'narr', 'engel'] }] })],
   eightForward: () =>
     new Szene({ [K(0, 0)]: R(10) })
       .zeige(1000, { karten: ['8'] })
@@ -313,7 +321,111 @@ const szenen: Record<string, () => Bild[]> = {
       .setze({ [K(3, 0)]: R(45) }, 1500, { karten: ['5', 'tac'], text: 'ausHaus' })
       .lauf(K(0, 0), ring(10, 5), { karten: ['5', 'tac'] })
       .zeige(1500, { karten: ['5', 'tac'], text: 'ausHaus' }).bilder,
-  tacDualCards: () => [b({}, 3200, { karten: ['1', '8', '13'], text: 'wahl' })],
+  tacDualCards: () => [b({}, 3200, { karten: ['13', 'tac'], auslage: [{ karten: ['1', '8', '13'] }], text: 'wahl' })],
+}
+
+/** Die drei Kartengruppen, alle auf einmal. */
+const KARTENGRUPPEN = [
+  { text: 'normal', karten: ['2', '3', '5', '6', '9', '10', '12'] },
+  { text: 'sonder', karten: ['1', '4', '7', '8', '13', 'trickser', 'tac'] },
+  { text: 'meister', karten: ['engel', 'teufel', 'krieger', 'narr'] },
+]
+const ALLE_KARTEN = KARTENGRUPPEN.flatMap((g) => g.karten)
+
+/**
+ * Spielablauf einer Runde, wie man ihn bei Tac-With-Bug sieht: Rot gibt
+ * reihum fünf Karten, beim Tauschen zeigen 1 und 13 auf den verdeckten
+ * Karten, wer raus kann, jeder gibt eine Karte an den Partner, dann spielt
+ * reihum jeder eine Karte aus, angefangen beim Spieler nach dem Geber.
+ */
+function rundenablauf(): Bild[] {
+  const GEBER = 3
+  const bilder: Bild[] = []
+  const haende = [0, 0, 0, 0]
+  let pos: Pos = {}
+  const zeige = (dauer: number, extra: Partial<Bild> = {}) => bilder.push(b(pos, dauer, { geber: GEBER, haende: [...haende], ...extra }))
+
+  zeige(1000, { text: 'geben' })
+  for (let runde = 0; runde < 5; runde++) {
+    for (let i = 1; i <= 4; i++) {
+      const s = (GEBER + i) % 4
+      const id = `g${runde}-${s}`
+      zeige(40, { text: 'geben', flug: [{ id, karte: 'backside', ort: { stapel: GEBER } }] })
+      zeige(170, { text: 'geben', flug: [{ id, karte: 'backside', ort: s }] })
+      haende[s]++
+    }
+  }
+  zeige(900, { text: 'geben' })
+
+  // Melden und Tauschen: Schwarz, Grün und Rot haben eine 1 oder 13, Blau nicht.
+  const raus = [0, 2, 3]
+  zeige(2200, { text: 'melden', kannRaus: raus })
+  const tausch = [0, 1, 2, 3].map((s) => ({ id: `t${s}`, karte: 'backside' }))
+  for (let s = 0; s < 4; s++) haende[s]--
+  zeige(60, { text: 'tauschen', kannRaus: raus, flug: tausch.map((f, s) => ({ ...f, ort: s })) })
+  zeige(1100, { text: 'tauschen', kannRaus: raus, flug: tausch.map((f, s) => ({ ...f, ort: (s + 2) % 4 })) })
+  for (let s = 0; s < 4; s++) haende[s]++
+  zeige(1000, { text: 'tauschen' })
+
+  // Spielen: Schwarz fängt an (nach Rot), dann reihum. Blau hat von Rot die 13 bekommen.
+  const zuege: [number, string][] = [
+    [0, '1'],
+    [1, '13'],
+    [2, '13'],
+    [3, '1'],
+  ]
+  const ablage: string[] = []
+  zeige(1000, { text: 'spielen', aktiv: 0 })
+  for (const [s, karte] of zuege) {
+    haende[s]--
+    zeige(60, { text: 'spielen', aktiv: s, karten: [...ablage], flug: [{ id: `s${s}`, karte, ort: s }] })
+    zeige(650, { text: 'spielen', aktiv: s, karten: [...ablage], flug: [{ id: `s${s}`, karte, ort: 'mitte' }] })
+    ablage.push(karte)
+    pos = { ...pos, [K(s, 0)]: R(s * 16) }
+    zeige(1100, { text: 'spielen', aktiv: (s + 1) % 4, karten: [...ablage] })
+  }
+  zeige(1400, { text: 'spielen', aktiv: 0, karten: [...ablage] })
+  return bilder
+}
+
+/** Narr: Karte in die Mitte, dann gibt jeder seine Hand an den Nächsten. */
+function narr(): Bild[] {
+  const haende = [3, 4, 4, 4]
+  const flug = (verschoben: number) => [0, 1, 2, 3].map((s) => ({ id: `n${s}`, karte: 'backside', ort: (s + verschoben) % 4 }))
+  return [
+    b({}, 1300, { haende: [4, 4, 4, 4], aktiv: 0, text: 'narr' }),
+    b({}, 1200, { haende, karten: ['narr'], text: 'narr' }),
+    b({}, 60, { haende: [0, 0, 0, 0], karten: ['narr'], flug: flug(0), text: 'narr' }),
+    b({}, 1100, { haende: [0, 0, 0, 0], karten: ['narr'], flug: flug(1), text: 'narr' }),
+    b({}, 1600, { haende: [4, 3, 4, 4], karten: ['narr'], text: 'narr' }),
+  ]
+}
+
+/**
+ * Lektionen, deren Bild sich von dem der App unterscheidet, weil die App
+ * dasselbe Bild für mehrere Lektionen nutzt.
+ */
+const proLektion: Record<string, () => Bild[]> = {
+  // Spielmaterial: Brett, 16 Kugeln, alle Kartenarten mit Anzahl.
+  g02: () => [
+    b({}, 6000, {
+      ohneKugeln: true,
+      auslage: [
+        { text: 'kugeln16', kugeln: true },
+        { text: 'karten104', karten: ALLE_KARTEN, anzahl: true },
+      ],
+    }),
+  ],
+  // Dein Haus: mit der 10 genau auf das letzte Hausfeld.
+  g06: () =>
+    new Szene({ [K(0, 0)]: R(58) })
+      .zeige(1200)
+      .zeige(900, { karten: ['10'] })
+      .lauf(K(0, 0), zumHaus(58, 0, 3), { karten: ['10'] })
+      .zeige(2200, { karten: ['10'], markiere: [H(0, 0), H(0, 1), H(0, 2), H(0, 3)], text: 'haus' }).bilder,
+  // Spielkreis und Spielrichtung: eine Kugel läuft einmal herum, ohne Karte.
+  g08: () => new Szene({ [K(0, 0)]: R(0) }).zeige(700, { text: 'kreis' }).lauf(K(0, 0), ring(0, 64), { text: 'kreis' }).bilder,
+  g10: () => new Szene({ [K(0, 0)]: R(0) }).zeige(700, { text: 'uhrzeigersinn' }).lauf(K(0, 0), ring(0, 64), { text: 'uhrzeigersinn' }).bilder,
 }
 
 /** Lektionen ohne eigenes Bild in der App: hier wenigstens die Karten. */
@@ -327,7 +439,7 @@ const nurKarten: Record<string, string[]> = {
 }
 
 export function szeneFuer(lektionID: string, bild: string): Bild[] {
-  const s = szenen[bild]
+  const s = proLektion[lektionID] ?? szenen[bild]
   if (s) return s()
   return [b({}, 3000, { karten: nurKarten[lektionID] ?? ['tac'] })]
 }

@@ -77,6 +77,20 @@ export function baueSpiel(u: Uebung, phase: 'start' | 'm03' = 'start'): Game {
     g.tradeFlag = true
     g.tradedCards = [null, '2', '2', '2']
   }
+  // Quiz „Wer kann raus?": wie bei Tac-With-Bug während des Tauschens. Wer
+  // eine 1 oder 13 hat, zeigt das auf seinen verdeckten Karten.
+  if (u.id === 's_g12a') {
+    g.tradeFlag = true
+    g.tradedCards = [null, null, null, null]
+    g.cards.deck = Array.from({ length: 104 - 4 * u.karten.length }, () => '2')
+  }
+  // Quiz „Wer fängt an?": Rundenbeginn, alle haben volle Hände, Grün hat
+  // gegeben (Stapel bei Grün), Rot ist am Zug (oberste Karte steht schräg).
+  if (u.id === 's_g12c') {
+    g.cards.dealingPlayer = 2
+    g.cards.deck = Array.from({ length: 104 - 4 * u.karten.length }, () => '2')
+    g.activePlayer = 3
+  }
   g.updateCardsWithMoves()
   return g
 }

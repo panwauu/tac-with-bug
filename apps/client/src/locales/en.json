@@ -1152,7 +1152,9 @@
       "aussetzen": "The next player is skipped",
       "uebernehmen": "and uses the card yourself",
       "ausHaus": "TAC pulls the marble out of home",
-      "wahl": "Free choice with dual cards"
+      "wahl": "Free choice with dual cards",
+      "kugeln16": "16 marbles",
+      "karten104": "104 cards"
     }
   }
 }
