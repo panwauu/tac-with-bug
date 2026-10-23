@@ -9,6 +9,7 @@ export interface LeaderBoardType {
 export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, offset: number, startDate: Date, endDate: Date): Promise<LeaderBoardType> {
   // Read from game_results (one short row per finished game, see init_db_tac.sql), never from the game JSON.
   // A player wins a game if the seat is in winning_seats; substitutes who left keep a seat beyond the players.
+  // Accounts marked hidden_from_leaderboard (external bots) are left out; the coop leaderboard shows whole teams and keeps them.
   const query = `
     SELECT users.username, t2.wins, t2.ngames, t2.full_count FROM (
         SELECT userid, SUM(t.win) as wins, SUM(t.ngames) as ngames, count(*) OVER() AS full_count FROM (
@@ -17,7 +18,9 @@ export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, 
                 CASE WHEN users_to_games.player_index = ANY (game_results.winning_seats) THEN 1 ELSE 0 END as win,
                 1 as ngames
             FROM game_results JOIN users_to_games ON users_to_games.gameid = game_results.gameid
+            JOIN users ON users.id = users_to_games.userid
             WHERE game_results.coop = FALSE AND game_results.created >= $3 AND game_results.created <= $4
+              AND users.hidden_from_leaderboard = FALSE
         ) as t GROUP BY userid ORDER BY wins DESC, userid LIMIT $1 OFFSET $2
     ) as t2 LEFT JOIN users ON users.id = t2.userid ORDER BY t2.wins DESC, t2.userid;`
   const dbRes = await sqlClient.query(query, [limit, offset, startDate, endDate])
