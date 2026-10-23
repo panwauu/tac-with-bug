@@ -405,7 +405,8 @@
         "rejectButton": "Отклонить замену",
         "endOfferButton": "Отозвать предложение замены",
         "placeholderSubstituted": "Выбрать игрока",
-        "noPlayerToSubstitute": "Замена невозможна"
+        "noPlayerToSubstitute": "Замена невозможна",
+        "botLevel": "Какой бот заменит"
       },
       "SubstitutedPlayersHeader": "Замененные игроки:"
     },
@@ -1060,6 +1061,8 @@
       "langsam": "Медленно",
       "normal": "Обычно",
       "schnell": "Быстро"
-    }
+    },
+    "futuro": "Futuro (стандартный бот)",
+    "appKi": "ИИ из приложения TAC"
   }
 }
