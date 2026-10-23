@@ -28,8 +28,10 @@ export interface Bild {
   geber?: number
   /** Einzelne Karten unterwegs (gleiche id = dieselbe Karte, sie gleitet) */
   flug?: { id: string; karte: string; ort: Ort }[]
-  /** Karten offen nebeneinander unter dem Brett */
+  /** Karten offen nebeneinander unter dem Brett (oder darauf, siehe aufBrett) */
   auslage?: { text?: string; karten?: string[]; kugeln?: boolean; anzahl?: boolean }[]
+  /** Auslage auf das Brett legen statt darunter */
+  aufBrett?: boolean
   ohneBrett?: boolean
   ohneKugeln?: boolean
   /** Schlüssel unter Training.bild.* */
@@ -410,6 +412,7 @@ const proLektion: Record<string, () => Bild[]> = {
   g02: () => [
     b({}, 6000, {
       ohneKugeln: true,
+      aufBrett: true,
       auslage: [
         { text: 'kugeln16', kugeln: true },
         { text: 'karten104', karten: ALLE_KARTEN, anzahl: true },

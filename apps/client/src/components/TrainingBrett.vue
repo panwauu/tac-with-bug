@@ -119,6 +119,7 @@
     <div
       v-if="bild?.auslage"
       class="auslage"
+      :class="{ 'auf-brett': bild.aufBrett && !bild.ohneBrett }"
     >
       <div
         v-for="(gruppe, gi) in bild.auslage"
@@ -294,6 +295,8 @@ onUnmounted(() => {
 
 <style scoped>
 .brett-rahmen {
+  position: relative;
+  container-type: inline-size;
   width: 100%;
   max-width: 520px;
   margin: 0 auto;
@@ -471,6 +474,47 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 12px;
   margin-top: 10px;
+}
+.auslage.auf-brett {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1;
+  margin: 0;
+  padding: 0 19%;
+  box-sizing: border-box;
+  justify-content: center;
+  gap: 2%;
+  z-index: 5;
+}
+.auf-brett .auslage-titel {
+  font-size: 3.6cqw;
+  margin-bottom: 1cqw;
+  color: #3b2a14;
+  text-shadow: 0 0 4px rgba(255, 240, 210, 0.9);
+}
+.auf-brett .auslage-kugeln {
+  gap: 5%;
+}
+.auf-brett .kugelgruppe {
+  width: 11%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4%;
+}
+.auf-brett .auslage-kugel {
+  width: 100%;
+}
+.auf-brett .auslage-karten {
+  gap: 1.5% 2%;
+}
+.auf-brett .auslage-karte.eng {
+  width: 14%;
+  min-width: 0;
+  max-width: none;
+  font-size: 2.8cqw;
+  font-weight: bold;
+  color: #3b2a14;
 }
 .auslage-titel {
   font-weight: bold;
