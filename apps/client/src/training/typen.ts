@@ -70,3 +70,6 @@ export interface TrainingDaten {
 }
 
 export const FARBEN = ['black', 'blue', 'green', 'red'] as const
+
+/** Brett-Drehung im Training: Schwarz (Sitz 0, man selbst) immer unten, wie in der App, egal welche Sitzposition für Partien eingestellt ist. */
+export const DREHUNG_TRAINING = 0

@@ -184,32 +184,29 @@ import BallsImage from '@/components/assets/BallsImage.vue'
 import CardImage from '@/components/assets/CardImage.vue'
 import { buildStyles } from '@/js/buildCells'
 import { getDeckPositions, getPlayerCards, getPlayerName } from '@/js/getAnnotationStyles'
-import { getNRotation, rotatePosition } from '@/js/rotateBoard'
-import { useSettingsStore } from '@/store/settings'
+import { rotatePosition } from '@/js/rotateBoard'
 import { cardCount4erTac } from '@repo/core/game/cardUtils'
-import { FARBEN } from '@/training/typen'
+import { DREHUNG_TRAINING, FARBEN } from '@/training/typen'
 import type { Bild, Ort } from '@/training/bilder'
 
 const props = defineProps<{ szene: Bild[] }>()
 const { t } = useI18n()
-const settingsStore = useSettingsStore()
 
-// Dieselbe Drehung wie in der Partie: Schwarz (Sitz 0) sitzt, wo man selbst sitzt.
+// Wie in den Übungen: Schwarz (Sitz 0) immer unten, Startfeld in der Mitte der unteren Seite.
 const zellen = buildStyles(45.3)
-const drehung = computed(() => getNRotation(settingsStore.defaultPositions, 0, 4))
 function stil(pos: number): Record<string, string> {
-  const z = zellen[rotatePosition(pos, drehung.value, 4)]
+  const z = zellen[rotatePosition(pos, DREHUNG_TRAINING, 4)]
   return { top: z.top, left: z.left }
 }
 /** Ein Kreis um das ganze eigene Vorfeld statt vier einzelner. */
 const vorfeldStil = computed(() => {
-  const z = [0, 1, 2, 3].map((p) => zellen[rotatePosition(p, drehung.value, 4)])
+  const z = [0, 1, 2, 3].map((p) => zellen[rotatePosition(p, DREHUNG_TRAINING, 4)])
   const mittel = (k: 'top' | 'left') => z.reduce((s, x) => s + parseFloat(x[k]), 0) / 4
   return { top: `${mittel('top')}%`, left: `${mittel('left')}%` }
 })
 
 /** Sitz → Platz am Brett, wie PlayerInformation (rotateIndex). */
-const platz = (s: number) => (s + 4 - drehung.value) % 4
+const platz = (s: number) => (s + 4 - DREHUNG_TRAINING) % 4
 const HAENDE = getPlayerCards(4, false)
 const NAMEN = getPlayerName(4, false)
 const STAPEL = getDeckPositions(4, false)

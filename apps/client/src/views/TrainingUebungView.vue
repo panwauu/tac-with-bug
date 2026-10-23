@@ -126,12 +126,12 @@ import router from '@/router/index'
 import { uebung, txt, markiere, naechstes, training } from '@/training'
 import { baueSpiel, fuehreAus, ICH, kugel } from '@/training/spielstand'
 import { istGeloest, type Verlauf } from '@/training/pruefung'
-import { FARBEN, type Uebung } from '@/training/typen'
+import { DREHUNG_TRAINING, FARBEN, type Uebung } from '@/training/typen'
 
 const { t, locale } = useI18n()
 
 const miscState = useMisc(4)
-const positionStyles = usePositionStyles(miscState)
+const positionStyles = usePositionStyles(miscState, DREHUNG_TRAINING)
 const discardPileState = useDiscardPile(miscState.gamePlayer)
 const ballsState = useBalls()
 const cardsState = useCards(ballsState, miscState)
