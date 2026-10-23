@@ -73,6 +73,7 @@
                 :class="{
                   schraeg: c === n && bild.aktiv === s,
                   rechts: rechtsSitz(s),
+                  ueber: c > 1,
                 }"
                 :style="c > 1 ? `${rechtsSitz(s) ? 'right' : 'left'}: ${(c - 1) * 42}%;` : ''"
                 :card="c === 1 && bild.kannRaus?.includes(s) ? 'kannraus' : 'card'"
@@ -95,16 +96,20 @@
         />
       </div>
 
-      <!-- Ablagestapel: Karten übereinander, leicht gedreht -->
-      <div class="ablage">
+      <!-- Ablagestapel: Karten übereinander, leicht gedreht; neue fliegen von der Hand des Spielers ein -->
+      <transition-group
+        name="ablage"
+        tag="div"
+        class="ablage"
+      >
         <CardImage
           v-for="(k, i) in bild?.karten ?? []"
           :key="`c-${i}-${k}`"
           class="ablagekarte"
-          :style="`transform: translate(-50%, -50%) rotate(${DREHUNG[i % DREHUNG.length]}deg)`"
+          :style="ablageStil(i)"
           :card="kartenBild(k)"
         />
-      </div>
+      </transition-group>
       <!-- Karten unterwegs (geben, tauschen, ausspielen) -->
       <CardImage
         v-for="f in bild?.flug ?? []"
@@ -243,6 +248,24 @@ function flugStil(ort: Ort) {
 
 /** Feste Drehwinkel für die Ablage, damit nichts zittert. */
 const DREHUNG = [-8, 14, -21, 5, 27, -14, 9, -30, 19, -3, 33, -25]
+
+/** Karten des vorigen Bildes: was dazukommt, fliegt ein, mehrere nacheinander. */
+const vorher = ref<string[]>([])
+const neuAb = computed(() => {
+  const jetzt = bild.value?.karten ?? []
+  let i = 0
+  while (i < jetzt.length && i < vorher.value.length && jetzt[i] === vorher.value[i]) i++
+  return i
+})
+function ablageStil(i: number) {
+  const m = handMitte(bild.value?.von?.[i] ?? 0)
+  return {
+    '--drehung': `${DREHUNG[i % DREHUNG.length]}deg`,
+    '--von-x': `${m.left}%`,
+    '--von-y': `${m.top}%`,
+    animationDelay: `${Math.max(0, i - neuAb.value) * 0.45}s`,
+  }
+}
 const ANZAHL = cardCount4erTac as Record<string, number>
 
 const KARTEN: Record<string, string> = {
@@ -265,6 +288,13 @@ function kartenBild(k: string) {
 
 const nr = ref(0)
 const bild = computed<Bild | undefined>(() => props.szene[nr.value])
+watch(
+  bild,
+  (_, alt) => {
+    vorher.value = alt?.karten ?? []
+  },
+  { immediate: true }
+)
 /** Alle 16 Kugeln: was das Bild nicht nennt, steht im eigenen Vorfeld. */
 const positionen = computed(() => Array.from({ length: 16 }, (_, j) => bild.value?.pos[j] ?? j))
 
@@ -372,6 +402,10 @@ onUnmounted(() => {
   object-fit: contain;
   border-radius: 9%/5.42%;
 }
+/* Wie bei Oskar: 13 und 1 liegen auf der ersten Karte, die übrigen Karten darüber. */
+.handkarte.ueber {
+  z-index: 2;
+}
 .handkarte.schraeg {
   transform-origin: 100% 100%;
   transform: translate(-15%, 0) rotate(20deg);
@@ -444,14 +478,24 @@ onUnmounted(() => {
   left: 50%;
   top: 50%;
   width: 12.6%;
+  transform: translate(-50%, -50%) rotate(var(--drehung));
   border-radius: 9%/5.42%;
   box-shadow: 0 0 1.6cqw -0.8cqw black;
-  animation: ablegen 0.35s ease-out;
+  animation: einfliegen 0.6s ease-in-out backwards;
 }
-@keyframes ablegen {
+@keyframes einfliegen {
   from {
-    opacity: 0;
+    left: var(--von-x);
+    top: var(--von-y);
+    width: 3.6%;
+    transform: translate(-50%, -50%) rotate(0deg);
   }
+}
+.ablage-leave-active {
+  transition: opacity 0.3s;
+}
+.ablage-leave-to {
+  opacity: 0;
 }
 .flugkarte {
   position: absolute;

@@ -14,6 +14,8 @@ export interface Bild {
   pos: Record<number, number>
   /** Ablagestapel in der Mitte, übereinander (Oskars Schreibweise) */
   karten?: string[]
+  /** Sitz, von dem jede Karte der Ablage kommt (Standard: Schwarz); neue Karten fliegen von dort in die Mitte */
+  von?: number[]
   /** Felder mit pulsierendem Ring */
   markiere?: number[]
   /** Ganzer Bereich: der Spielkreis oder das eigene Vorfeld */
@@ -125,10 +127,13 @@ const szenen: Record<string, () => Bild[]> = {
       .zeige(900, { karten: ['9'] })
       .lauf(K(0, 0), zumHaus(58, 0, 2), { karten: ['9'] })
       .zeige(1800, { karten: ['9'], markiere: [H(0, 0), H(0, 1), H(0, 2), H(0, 3)], text: 'haus' }).bilder,
+  // Reihum legt jeder seine Karte auf die Ablage.
   center: () => [
-    b({}, 1600, { karten: ['5'], text: 'ablage' }),
-    b({}, 1600, { karten: ['5', 'tac'], text: 'ablage' }),
-    b({}, 1600, { karten: ['5', 'tac', '7'], text: 'ablage' }),
+    b({}, 1200, { haende: [5, 5, 5, 5], aktiv: 0, text: 'ablage' }),
+    b({}, 1600, { haende: [4, 5, 5, 5], aktiv: 1, karten: ['5'], von: [0], text: 'ablage' }),
+    b({}, 1600, { haende: [4, 4, 5, 5], aktiv: 2, karten: ['5', 'tac'], von: [0, 1], text: 'ablage' }),
+    b({}, 1600, { haende: [4, 4, 4, 5], aktiv: 3, karten: ['5', 'tac', '7'], von: [0, 1, 2], text: 'ablage' }),
+    b({}, 2000, { haende: [4, 4, 4, 4], aktiv: 0, karten: ['5', 'tac', '7', '3'], von: [0, 1, 2, 3], text: 'ablage' }),
   ],
   ring: () =>
     new Szene({ [K(0, 0)]: R(0) })
@@ -357,17 +362,18 @@ function rundenablauf(): Bild[] {
       haende[s]++
     }
   }
-  zeige(900, { text: 'geben' })
+  // Ab hier steht beim Startspieler (nach dem Geber) die oberste Karte schräg.
+  zeige(900, { text: 'geben', aktiv: 0 })
 
   // Melden und Tauschen: Schwarz, Grün und Rot haben eine 1 oder 13, Blau nicht.
   const raus = [0, 2, 3]
-  zeige(2200, { text: 'melden', kannRaus: raus })
+  zeige(2600, { text: 'melden', kannRaus: raus, aktiv: 0 })
   const tausch = [0, 1, 2, 3].map((s) => ({ id: `t${s}`, karte: 'backside' }))
   for (let s = 0; s < 4; s++) haende[s]--
-  zeige(60, { text: 'tauschen', kannRaus: raus, flug: tausch.map((f, s) => ({ ...f, ort: s })) })
-  zeige(1100, { text: 'tauschen', kannRaus: raus, flug: tausch.map((f, s) => ({ ...f, ort: (s + 2) % 4 })) })
+  zeige(60, { text: 'tauschen', kannRaus: raus, aktiv: 0, flug: tausch.map((f, s) => ({ ...f, ort: s })) })
+  zeige(1100, { text: 'tauschen', kannRaus: raus, aktiv: 0, flug: tausch.map((f, s) => ({ ...f, ort: (s + 2) % 4 })) })
   for (let s = 0; s < 4; s++) haende[s]++
-  zeige(1000, { text: 'tauschen' })
+  zeige(1000, { text: 'tauschen', aktiv: 0 })
 
   // Spielen: Schwarz fängt an (nach Rot), dann reihum. Blau hat von Rot die 13 bekommen.
   const zuege: [number, string][] = [
@@ -377,16 +383,17 @@ function rundenablauf(): Bild[] {
     [3, '1'],
   ]
   const ablage: string[] = []
+  const von: number[] = []
   zeige(1000, { text: 'spielen', aktiv: 0 })
   for (const [s, karte] of zuege) {
     haende[s]--
-    zeige(60, { text: 'spielen', aktiv: s, karten: [...ablage], flug: [{ id: `s${s}`, karte, ort: s }] })
-    zeige(650, { text: 'spielen', aktiv: s, karten: [...ablage], flug: [{ id: `s${s}`, karte, ort: 'mitte' }] })
     ablage.push(karte)
+    von.push(s)
+    zeige(700, { text: 'spielen', aktiv: s, karten: [...ablage], von: [...von] })
     pos = { ...pos, [K(s, 0)]: R(s * 16) }
-    zeige(1100, { text: 'spielen', aktiv: (s + 1) % 4, karten: [...ablage] })
+    zeige(1100, { text: 'spielen', aktiv: (s + 1) % 4, karten: [...ablage], von: [...von] })
   }
-  zeige(1400, { text: 'spielen', aktiv: 0, karten: [...ablage] })
+  zeige(1400, { text: 'spielen', aktiv: 0, karten: [...ablage], von: [...von] })
   return bilder
 }
 
@@ -441,10 +448,31 @@ const nurKarten: Record<string, string[]> = {
   m03: ['tac', 'tac', 'tac', 'tac'],
 }
 
+/** Wer die Karten der Ablage spielt, wo es nicht Schwarz allein ist (je Lektion oder Bild). */
+const kartenVon: Record<string, number[]> = {
+  fullBoard: [0, 1, 2],
+  boardAreas: [0, 1],
+  tacIcon: [1, 0],
+  tacCapture: [1, 0],
+  tacRingHome: [3, 0],
+  tacDualCards: [3, 0],
+  trickserSwapFour: [3, 0],
+  teufelIcon: [0, 1],
+  e09: [3, 0],
+  e09b: [3, 0],
+  e09c: [3, 0],
+  m01: [2, 3, 0],
+  m03: [0, 1, 2, 3],
+}
+
 export function szeneFuer(lektionID: string, bild: string): Bild[] {
   const s = proLektion[lektionID] ?? szenen[bild]
-  if (s) return s()
-  return [b({}, 3000, { karten: nurKarten[lektionID] ?? ['tac'] })]
+  let bilder = s ? s() : [b({}, 3000, { karten: nurKarten[lektionID] ?? ['tac'] })]
+  const von = kartenVon[lektionID] ?? kartenVon[bild]
+  if (von) bilder = bilder.map((x) => (x.karten && !x.von ? { ...x, von } : x))
+  // Liegt die Karte schon im ersten Bild, kurz ohne sie anfangen, damit sie bei jedem Durchlauf einfliegt.
+  if (bilder.length > 1 && bilder[0].karten?.length) bilder = [{ ...bilder[0], karten: [], dauer: 500 }, ...bilder]
+  return bilder
 }
 
 /** Für den Prüfstand: welche Bilder der App hier fehlen. */
