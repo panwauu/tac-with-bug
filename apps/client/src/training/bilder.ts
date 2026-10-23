@@ -36,6 +36,8 @@ export interface Bild {
   aufBrett?: boolean
   ohneBrett?: boolean
   ohneKugeln?: boolean
+  /** Karten liegen schon in der Mitte, ohne Einflug */
+  liegen?: boolean
   /** Schlüssel unter Training.bild.* */
   text?: string
   /** Wie lange dieses Bild steht (ms) */
@@ -112,7 +114,7 @@ class Szene {
 const VORFELD = (j: number) => j
 
 const szenen: Record<string, () => Bild[]> = {
-  fullBoard: () => [b({}, 4000, { karten: ['1', '13', 'tac'] })],
+  fullBoard: () => [b({}, 4000, { karten: ['1', '13', 'tac'], liegen: true })],
   boardAreas: () => [
     b({}, 1800, { bereich: 'vorfeld', text: 'vorfeld' }),
     b({}, 1800, { markiere: [R(0)], text: 'startfeld' }),
@@ -450,7 +452,6 @@ const nurKarten: Record<string, string[]> = {
 
 /** Wer die Karten der Ablage spielt, wo es nicht Schwarz allein ist (je Lektion oder Bild). */
 const kartenVon: Record<string, number[]> = {
-  fullBoard: [0, 1, 2],
   boardAreas: [0, 1],
   tacIcon: [1, 0],
   tacCapture: [1, 0],

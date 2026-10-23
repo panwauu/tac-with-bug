@@ -106,6 +106,7 @@
           v-for="(k, i) in bild?.karten ?? []"
           :key="`c-${i}-${k}`"
           class="ablagekarte"
+          :class="{ liegt: bild?.liegen }"
           :style="ablageStil(i)"
           :card="kartenBild(k)"
         />
@@ -168,11 +169,18 @@
       </div>
     </div>
 
+    <!-- Alle Beschriftungen der Szene übereinander, nur die aktuelle sichtbar: die Kachel behält ihre Höhe -->
     <div
-      v-if="bild?.text"
+      v-if="texte.length"
       class="beschriftung"
     >
-      {{ t(`Training.bild.${bild.text}`) }}
+      <span
+        v-for="x in texte"
+        :key="x"
+        :class="{ an: x === bild?.text }"
+      >
+        {{ t(`Training.bild.${x}`) }}
+      </span>
     </div>
   </div>
 </template>
@@ -246,8 +254,9 @@ function flugStil(ort: Ort) {
   return { left: `${m.left}%`, top: `${m.top}%` }
 }
 
-/** Drehwinkel der Ablage, bei Oskar zufällig 0…359°; hier fest, damit jeder Durchlauf gleich aussieht. */
-const DREHUNG = [37, 212, 118, 301, 74, 166, 259, 13, 341, 95, 228, 150]
+/** Drehwinkel der Ablage, bei Oskar zufällig über den ganzen Kreis; hier fest, damit jeder Durchlauf gleich aussieht.
+ *  Zwischen -180 und 180°, damit die Karte wie bei ihm auf dem kürzeren Weg dreht. */
+const DREHUNG = [37, -148, 118, -59, 74, 166, -101, 13, -19, 95, -132, 150]
 
 /** Karten des vorigen Bildes: was dazukommt, fliegt ein, mehrere nacheinander. */
 const vorher = ref<string[]>([])
@@ -289,6 +298,7 @@ function kartenBild(k: string) {
 
 const nr = ref(0)
 const bild = computed<Bild | undefined>(() => props.szene[nr.value])
+const texte = computed(() => [...new Set(props.szene.flatMap((x) => (x.text ? [x.text] : [])))])
 watch(
   bild,
   (_, alt) => {
@@ -484,13 +494,20 @@ onUnmounted(() => {
   box-shadow: 0 0 1.6cqw -0.8cqw black;
   animation: einfliegen 1.1s backwards;
 }
-/* Oskar: 300 ms beim Spieler stehen, dann 0,8 s ease-in-out in die Mitte (transform von translate zu rotate). */
+/* Oskar: 300 ms beim Spieler stehen, dann 0,8 s ease-in-out in die Mitte. Beide Enden mit gleichen
+   Funktionen, sonst zeichnet der Browser einen anderen Weg und die Karte springt am Ende. */
 @keyframes einfliegen {
   0%,
   27% {
-    transform: translate(-50%, -50%) translate(var(--von-x), var(--von-y));
+    transform: translate(-50%, -50%) translate(var(--von-x), var(--von-y)) rotate(0deg);
     animation-timing-function: ease-in-out;
   }
+  100% {
+    transform: translate(-50%, -50%) translate(0, 0) rotate(var(--drehung));
+  }
+}
+.ablagekarte.liegt {
+  animation: none;
 }
 .ablage-leave-active {
   transition: opacity 0.3s;
@@ -602,9 +619,17 @@ onUnmounted(() => {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 .beschriftung {
+  display: grid;
   text-align: center;
   font-weight: bold;
   margin-top: 6px;
   min-height: 1.4em;
+}
+.beschriftung > span {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+.beschriftung > span.an {
+  visibility: visible;
 }
 </style>
