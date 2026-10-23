@@ -551,7 +551,9 @@
     "leaveRematch": "Bist du dir sicher, dass du dieses Rematch verlassen möchtest?",
     "bot": "Bot",
     "leaveButton": "Diesen Warteraum verlassen",
-    "readyButton": "Bereit zum Starten"
+    "readyButton": "Bereit zum Starten",
+    "expiredSummary": "Warteraum geschlossen",
+    "expiredDetail": "Im Warteraum hat sich {minutes} Minuten lang nichts getan, deshalb wurde er geschlossen. Du kannst jederzeit einen neuen Raum eröffnen."
   },
   "Login": {
     "username": "Benutzername",

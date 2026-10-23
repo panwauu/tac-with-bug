@@ -159,6 +159,8 @@ export interface ServerToClientEvents {
 
   // waiting
   'waiting:getGames': (data: WaitingGame[]) => void
+  // Sent to the players of a waiting game that was closed after `minutes` without any change
+  'waiting:expired': (data: { minutes: number }) => void
   'waiting:startGame': (data: StartGameType) => void
 
   //info

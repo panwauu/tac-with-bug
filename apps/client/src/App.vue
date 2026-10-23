@@ -53,6 +53,15 @@ socket.on('logged_out', async () => {
   await logout(socket)
 })
 
+socket.on('waiting:expired', (data) => {
+  toast.add({
+    severity: 'info',
+    life: 15000,
+    summary: t('Waiting.expiredSummary'),
+    detail: t('Waiting.expiredDetail', { minutes: data.minutes }),
+  })
+})
+
 registerSocketToastHandlers(socket)
 initTournamentWinners(socket).catch((err) => console.error(err))
 

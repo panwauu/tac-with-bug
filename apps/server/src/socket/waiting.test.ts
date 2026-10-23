@@ -7,6 +7,8 @@ import { closeSockets, connectSocket } from '../test/handleSocket'
 import type { GameSocketC, GeneralSocketC } from '../test/socket'
 import { getBotName } from '@repo/core/bot/names'
 import { sleep } from '../helpers/sleep'
+import { expireWaitingGames } from './waiting'
+import { colors } from '../sharedDefinitions/colors'
 const chance = new Chance()
 
 describe('Waiting game test suite via Socket.io', () => {
@@ -607,6 +609,77 @@ describe('Waiting game test suite via Socket.io', () => {
       await testServer.pgPool.query("UPDATE games SET lastplayed=current_timestamp - interval '5 minutes', rematch_open=true WHERE id=$1;", [gameID])
       const ids = await disableRematchOfOldGames(testServer.pgPool)
       expect(ids).toContain(gameID)
+    })
+  })
+
+  describe('Expiry of waiting games without activity', () => {
+    let usersWithSockets: UserWithSocket[]
+
+    beforeAll(async () => {
+      usersWithSockets = await getUsersWithSockets({ n: 2 })
+    })
+
+    afterAll(async () => {
+      await testServer.pgPool.query('DELETE FROM waitinggames;')
+      await closeSockets(usersWithSockets)
+    })
+
+    async function createGameWithTwoPlayers() {
+      await testServer.pgPool.query('DELETE FROM waitinggames;')
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:createGame', { nPlayers: 4, nTeams: 2, meister: false, private: false })
+      expect(res.status).toBe(200)
+      const dbRes = await testServer.pgPool.query('SELECT id FROM waitinggames;')
+      const gameID: number = dbRes.rows[0].id
+      const resJoin = await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:joinGame', gameID)
+      expect(resJoin.status).toBe(200)
+      return gameID
+    }
+
+    async function makeOld(gameID: number) {
+      // Bypass the trigger, which would set the time of the change
+      await testServer.pgPool.query('ALTER TABLE waitinggames DISABLE TRIGGER waitinggames_touch;')
+      await testServer.pgPool.query("UPDATE waitinggames SET lastactivity = current_timestamp - interval '61 minutes' WHERE id = $1;", [gameID])
+      await testServer.pgPool.query('ALTER TABLE waitinggames ENABLE TRIGGER waitinggames_touch;')
+    }
+
+    test('Should keep a waiting game with recent activity', async () => {
+      const gameID = await createGameWithTwoPlayers()
+      await expireWaitingGames(testServer.pgPool)
+      const dbRes = await testServer.pgPool.query('SELECT id FROM waitinggames WHERE id = $1;', [gameID])
+      expect(dbRes.rowCount).toBe(1)
+    })
+
+    test('Should count every change as activity', async () => {
+      const gameID = await createGameWithTwoPlayers()
+      await makeOld(gameID)
+      const dbBalls = await testServer.pgPool.query('SELECT balls0, balls1 FROM waitinggames WHERE id = $1;', [gameID])
+      const color = colors.find((c) => c !== dbBalls.rows[0].balls0 && c !== dbBalls.rows[0].balls1)
+      const res = await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:switchColor', {
+        gameID,
+        username: usersWithSockets[1].username,
+        color,
+        botIndex: null,
+      } as any)
+      expect(res.status).toBe(200)
+      await expireWaitingGames(testServer.pgPool)
+      const dbRes = await testServer.pgPool.query('SELECT id FROM waitinggames WHERE id = $1;', [gameID])
+      expect(dbRes.rowCount).toBe(1)
+    })
+
+    test('Should close a waiting game without activity and tell all its players', async () => {
+      const gameID = await createGameWithTwoPlayers()
+      await makeOld(gameID)
+
+      const expiredPromises = usersWithSockets.map((u) => u.socket.oncePromise('waiting:expired'))
+      const gamesPromise = usersWithSockets[0].socket.oncePromise('waiting:getGames')
+      await expireWaitingGames(testServer.pgPool)
+
+      for (const data of await Promise.all(expiredPromises)) {
+        expect(data).toStrictEqual({ minutes: 60 })
+      }
+      expect((await gamesPromise).find((g: any) => g.id === gameID)).toBeUndefined()
+      const dbRes = await testServer.pgPool.query('SELECT id FROM waitinggames WHERE id = $1;', [gameID])
+      expect(dbRes.rowCount).toBe(0)
     })
   })
 
