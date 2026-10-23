@@ -271,8 +271,8 @@ function ablageStil(i: number) {
   const ecke = stil(4 * (bild.value?.von?.[i] ?? 0))
   return {
     '--drehung': `${DREHUNG[i % DREHUNG.length]}deg`,
-    '--von-x': `${parseFloat(ecke.left) - 50}cqw`,
-    '--von-y': `${parseFloat(ecke.top) - 50}cqw`,
+    '--von-x': ecke.left,
+    '--von-y': ecke.top,
     animationDelay: `${Math.max(0, i - neuAb.value) * 0.6}s`,
   }
 }
@@ -489,21 +489,23 @@ onUnmounted(() => {
   left: 50%;
   top: 50%;
   width: 12.6%;
-  transform: translate(-50%, -50%) rotate(var(--drehung));
+  /* translate/rotate als Einzeleigenschaften: erst um die Mitte drehen, dann zentrieren */
+  translate: -50% -50%;
+  rotate: var(--drehung);
   border-radius: 9%/5.42%;
   box-shadow: 0 0 1.6cqw -0.8cqw black;
   animation: einfliegen 1.1s backwards;
 }
-/* Oskar: 300 ms beim Spieler stehen, dann 0,8 s ease-in-out in die Mitte. Beide Enden mit gleichen
-   Funktionen, sonst zeichnet der Browser einen anderen Weg und die Karte springt am Ende. */
+/* Oskar: 300 ms beim Spieler stehen, dann 0,8 s ease-in-out in die Mitte. Position über left/top und
+   Drehung über rotate statt einer transform-Animation: die zeichnet WebKit auf eigener Ebene, und die
+   Karte kam nicht ganz an und sprang am Ende in die Mitte. */
 @keyframes einfliegen {
   0%,
   27% {
-    transform: translate(-50%, -50%) translate(var(--von-x), var(--von-y)) rotate(0deg);
+    left: var(--von-x);
+    top: var(--von-y);
+    rotate: 0deg;
     animation-timing-function: ease-in-out;
-  }
-  100% {
-    transform: translate(-50%, -50%) translate(0, 0) rotate(var(--drehung));
   }
 }
 .ablagekarte.liegt {
