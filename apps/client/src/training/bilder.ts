@@ -389,7 +389,7 @@ function rundenablauf(): Bild[] {
     haende[s]--
     ablage.push(karte)
     von.push(s)
-    zeige(700, { text: 'spielen', aktiv: s, karten: [...ablage], von: [...von] })
+    zeige(1200, { text: 'spielen', aktiv: s, karten: [...ablage], von: [...von] })
     pos = { ...pos, [K(s, 0)]: R(s * 16) }
     zeige(1100, { text: 'spielen', aktiv: (s + 1) % 4, karten: [...ablage], von: [...von] })
   }

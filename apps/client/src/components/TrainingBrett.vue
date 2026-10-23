@@ -75,7 +75,7 @@
                   rechts: rechtsSitz(s),
                   ueber: c > 1,
                 }"
-                :style="c > 1 ? `${rechtsSitz(s) ? 'right' : 'left'}: ${(c - 1) * 42}%;` : ''"
+                :style="`${rechtsSitz(s) ? 'right' : 'left'}: ${(c - 1) * 42}%;`"
                 :card="c === 1 && bild.kannRaus?.includes(s) ? 'kannraus' : 'card'"
               />
             </transition-group>
@@ -246,8 +246,8 @@ function flugStil(ort: Ort) {
   return { left: `${m.left}%`, top: `${m.top}%` }
 }
 
-/** Feste Drehwinkel für die Ablage, damit nichts zittert. */
-const DREHUNG = [-8, 14, -21, 5, 27, -14, 9, -30, 19, -3, 33, -25]
+/** Drehwinkel der Ablage, bei Oskar zufällig 0…359°; hier fest, damit jeder Durchlauf gleich aussieht. */
+const DREHUNG = [37, 212, 118, 301, 74, 166, 259, 13, 341, 95, 228, 150]
 
 /** Karten des vorigen Bildes: was dazukommt, fliegt ein, mehrere nacheinander. */
 const vorher = ref<string[]>([])
@@ -257,13 +257,14 @@ const neuAb = computed(() => {
   while (i < jetzt.length && i < vorher.value.length && jetzt[i] === vorher.value[i]) i++
   return i
 })
+/** Wie useDiscardPile: die Karte erscheint groß auf dem ersten Vorfeldfeld des Spielers und gleitet dann gedreht in die Mitte. */
 function ablageStil(i: number) {
-  const m = handMitte(bild.value?.von?.[i] ?? 0)
+  const ecke = stil(4 * (bild.value?.von?.[i] ?? 0))
   return {
     '--drehung': `${DREHUNG[i % DREHUNG.length]}deg`,
-    '--von-x': `${m.left}%`,
-    '--von-y': `${m.top}%`,
-    animationDelay: `${Math.max(0, i - neuAb.value) * 0.45}s`,
+    '--von-x': `${parseFloat(ecke.left) - 50}cqw`,
+    '--von-y': `${parseFloat(ecke.top) - 50}cqw`,
+    animationDelay: `${Math.max(0, i - neuAb.value) * 0.6}s`,
   }
 }
 const ANZAHL = cardCount4erTac as Record<string, number>
@@ -471,7 +472,7 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 3;
+  z-index: 15;
 }
 .ablagekarte {
   position: absolute;
@@ -481,14 +482,14 @@ onUnmounted(() => {
   transform: translate(-50%, -50%) rotate(var(--drehung));
   border-radius: 9%/5.42%;
   box-shadow: 0 0 1.6cqw -0.8cqw black;
-  animation: einfliegen 0.6s ease-in-out backwards;
+  animation: einfliegen 1.1s backwards;
 }
+/* Oskar: 300 ms beim Spieler stehen, dann 0,8 s ease-in-out in die Mitte (transform von translate zu rotate). */
 @keyframes einfliegen {
-  from {
-    left: var(--von-x);
-    top: var(--von-y);
-    width: 3.6%;
-    transform: translate(-50%, -50%) rotate(0deg);
+  0%,
+  27% {
+    transform: translate(-50%, -50%) translate(var(--von-x), var(--von-y));
+    animation-timing-function: ease-in-out;
   }
 }
 .ablage-leave-active {
