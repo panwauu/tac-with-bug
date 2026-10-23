@@ -5,7 +5,7 @@
 //   GET  /zustand  Auslastung (Threads, Schlange, mittlere Warte- und Rechenzeit)
 //
 // Umgebung: PORT (Vorgabe 3100), KI_THREADS (Vorgabe: Kerne minus 1),
-// KI_GEHEIMNIS (wenn gesetzt, muss der Spielserver es als Bearer mitschicken).
+// KI_GEHEIMNIS (muss der Spielserver als Bearer mitschicken; in Produktion Pflicht).
 // Start: node apps/server/dist/entrypoints/kiDienst.js, oder ueber
 // index.js mit KI_DIENST=1 (eine zweite Heroku-App mit demselben Code).
 
@@ -18,9 +18,13 @@ import { KiPool } from '../services/kiPool'
 const FRIST_MAX = 10000
 
 export function starteKiDienst(port = Number(process.env.PORT) || 3100) {
+  const geheimnis = process.env.KI_GEHEIMNIS
+  // Oeffentlich erreichbar (z. B. als Heroku-App) darf der Dienst nicht fuer jeden rechnen.
+  if (process.env.NODE_ENV === 'production' && !geheimnis) {
+    throw new Error('KI-Dienst: KI_GEHEIMNIS fehlt (in Produktion Pflicht)')
+  }
   const threads = Number(process.env.KI_THREADS) || Math.max(1, os.availableParallelism() - 1)
   const pool = new KiPool(threads, path.join(__dirname, '../services/kiServerWorker.js'))
-  const geheimnis = process.env.KI_GEHEIMNIS
 
   const server = http.createServer((req, res) => {
     const antworte = (code: number, daten: unknown) => {
