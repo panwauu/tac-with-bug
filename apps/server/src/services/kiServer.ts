@@ -1,66 +1,56 @@
 // Zuege der KI-Stufen der TAC-App fuer Online-Partien (Bot-Nummern ab 10,
-// siehe packages/core/src/bot/netz/onlineStufen.ts). Gerechnet wird in
-// kiServerWorker.ts in einem eigenen Thread. Antwortet der Thread nicht
-// rechtzeitig, wird er neu gestartet und Futuro zieht: die Partie bleibt
-// nie stehen.
+// siehe packages/core/src/bot/netz/onlineStufen.ts).
+//
+// Zwei Wege, gewaehlt ueber Umgebungsvariablen:
+// - KI_URL gesetzt: ein eigener KI-Dienst rechnet (entrypoints/kiDienst.ts,
+//   eigener Prozess, eigener Rechner moeglich). Last der KI kann das Spiel
+//   dann nicht ausbremsen, nur die Bots werden kuerzer rechnen.
+// - sonst: Threads in diesem Prozess (KI_THREADS, Vorgabe 1).
+// In beiden Faellen gilt: kommt kein Zug rechtzeitig, zieht Futuro. Die
+// Partie bleibt nie stehen.
 
 import path from 'node:path'
-import { Worker } from 'node:worker_threads'
 import type { MoveTextOrBall } from '@repo/core/types'
 import type { AiData } from '@repo/core/bot/simulation/output'
 import { Bot, getBotMove } from '@repo/core/bot/bots/bots'
 import logger from '../helpers/logger'
+import { KiPool, type KiAnfrage } from './kiPool'
 
-/** Suchzeit je Zug wie im Browser; starke Stufen nutzen sie aus. */
-const ZEITGRENZE = 2000
-/** Ab hier gilt der Thread als haengend. */
-const NOTFALL = ZEITGRENZE * 3 + 3000
+/** Bis wann ein KI-Zug da sein muss, ab Anfrage. */
+export const FRIST = 6000
 
-type Offen = { ok: (z: MoveTextOrBall | null) => void; uhr: ReturnType<typeof setTimeout> }
-
-let worker: Worker | null = null
-let naechste = 1
-const offen = new Map<number, Offen>()
-
-function starte(): Worker {
-  const w = new Worker(path.join(__dirname, 'kiServerWorker.js'))
-  w.on('message', (a: { id: number; zug?: MoveTextOrBall; fehler?: string }) => {
-    const o = offen.get(a.id)
-    if (!o) return
-    clearTimeout(o.uhr)
-    offen.delete(a.id)
-    if (a.fehler != null) logger.error(`KI-Zug fehlgeschlagen: ${a.fehler}`)
-    o.ok(a.zug ?? null)
-  })
-  w.on('error', (err) => {
-    logger.error(`KI-Thread abgestuerzt: ${String(err)}`)
-    neustart()
-  })
-  return w
+let pool: KiPool | null = null
+function lokal(): KiPool {
+  pool ??= new KiPool(Number(process.env.KI_THREADS) || 1, path.join(__dirname, 'kiServerWorker.js'))
+  return pool
 }
 
-function neustart() {
-  void worker?.terminate()
-  worker = null
-  for (const [, o] of offen) {
-    clearTimeout(o.uhr)
-    o.ok(null)
+let letzterFehler = 0
+async function fern(url: string, anfrage: KiAnfrage): Promise<MoveTextOrBall | null> {
+  try {
+    const r = await fetch(url.replace(/\/$/, '') + '/zug', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.KI_GEHEIMNIS ?? ''}` },
+      body: JSON.stringify({ ...anfrage, frist: FRIST }),
+      signal: AbortSignal.timeout(FRIST + 1000),
+    })
+    if (!r.ok) throw new Error(`KI-Dienst antwortet ${r.status}`)
+    const a = (await r.json()) as { zug: MoveTextOrBall | null }
+    return a.zug
+  } catch (err) {
+    // Faellt der Dienst aus, nicht bei jedem Zug ins Log schreiben.
+    if (Date.now() - letzterFehler > 60000) {
+      letzterFehler = Date.now()
+      logger.error(`KI-Dienst nicht erreichbar, Futuro zieht: ${String(err)}`)
+    }
+    return null
   }
-  offen.clear()
 }
 
 /** Zug der KI-Stufe `stufe` fuer Partie `gameID`, Sitz `sitz`. */
 export async function kiZug(gameID: number, sitz: number, stufe: string, daten: AiData): Promise<MoveTextOrBall> {
-  worker ??= starte()
-  const w = worker
-  const id = naechste++
-  const zug = await new Promise<MoveTextOrBall | null>((ok) => {
-    const uhr = setTimeout(() => {
-      logger.error(`KI-Thread antwortet nicht (Stufe ${stufe}), Neustart`)
-      neustart()
-    }, NOTFALL)
-    offen.set(id, { ok, uhr })
-    w.postMessage({ id, schluessel: `${gameID}|${sitz}|${stufe}`, stufe, daten, zeitGrenze: ZEITGRENZE })
-  })
+  const anfrage: KiAnfrage = { schluessel: `${gameID}|${sitz}|${stufe}`, stufe, daten }
+  const url = process.env.KI_URL
+  const zug = url ? await fern(url, anfrage) : await lokal().zug(anfrage, Date.now() + FRIST)
   return zug ?? getBotMove(Bot.Futuro, daten)
 }

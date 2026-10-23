@@ -1,0 +1,17 @@
+# KI-Dienst (apps/server/src/entrypoints/kiDienst.ts) als eigener Container,
+# getrennt vom Spielserver. Der Spielserver nutzt ihn mit KI_URL=http://<host>:3100.
+#   docker build -f Dockerfile.ki -t twb-ki .
+#   docker run --cpus 2 -e KI_THREADS=2 -e KI_GEHEIMNIS=... -p 3100:3100 twb-ki
+FROM node:24-slim
+WORKDIR /app
+COPY package.json package-lock.json turbo.json ./
+COPY packages ./packages
+COPY apps/server ./apps/server
+COPY apps/client/package.json ./apps/client/package.json
+COPY apps/client/public/netze ./apps/server/public/netze
+RUN npm ci --ignore-scripts \
+  && npm run build --workspace=@repo/core \
+  && cd apps/server && npx tsoa spec-and-routes && npx tsc
+ENV NODE_ENV=production PORT=3100 KI_THREADS=2
+EXPOSE 3100
+CMD ["node", "apps/server/dist/entrypoints/kiDienst.js"]

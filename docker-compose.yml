@@ -12,3 +12,18 @@ services:
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
       - ./apps/server/src/dbUtils/init_db_tac.sql:/docker-entrypoint-initdb.d/init_db_tac.sql
+
+  # KI-Dienst fuer die Online-Bots, getrennt vom Spiel (Spielserver mit KI_URL=http://localhost:3100 starten).
+  # Starten mit: docker compose --profile ki up -d
+  ki:
+    build:
+      context: .
+      dockerfile: Dockerfile.ki
+    container_name: twb-ki
+    profiles: ["ki"]
+    restart: always
+    cpus: 2
+    environment:
+      - KI_THREADS=2
+    ports:
+      - "3100:3100"
