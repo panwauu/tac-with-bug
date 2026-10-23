@@ -74,6 +74,10 @@
       "types": "./dist/bot/bots/bots.d.ts",
       "require": "./dist/bot/bots/bots.js"
     },
+    "./bot/netz/ki_dienst": {
+      "types": "./dist/bot/netz/ki_dienst.d.ts",
+      "require": "./dist/bot/netz/ki_dienst.js"
+    },
     "./bot/names": {
       "types": "./dist/bot/names.d.ts",
       "require": "./dist/bot/names.js"

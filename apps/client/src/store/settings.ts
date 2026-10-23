@@ -10,6 +10,8 @@ export const useSettingsStore = defineStore('settings', {
     colorblind: useStorage('TacSettingsColorblind', false, localStorage),
     defaultPositions: useStorage<[number, number]>('TacSettingsDefaultPositions', [1, 0], localStorage),
     blockedByModerationUntil: useStorage<string | null>('TacSettingsBlockedByModerationUntil', null, localStorage),
+    /** Partie gegen die KI: Pause nach jedem KI-Zug (nur in diesem Browser) */
+    kiTempo: useStorage<'langsam' | 'normal' | 'schnell'>('TacSettingsKiTempo', 'normal', localStorage),
   }),
   getters: {
     isBlockedByModeration(): boolean {

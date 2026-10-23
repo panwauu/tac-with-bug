@@ -1029,5 +1029,37 @@
   },
   "PlayerSearch": {
     "noResults": "Keine Spieler gefunden"
+  },
+  "Ki": {
+    "titel": "Gegen die KI spielen",
+    "beschreibung": "Du spielst mit deinem Partner gegenüber gegen zwei Gegner. Alle drei sind die KI aus der TAC-App.",
+    "hinweis": "Die KI rechnet in deinem Browser, nicht auf dem Server. Starke Stufen denken bis zu zwei Sekunden nach.",
+    "neuePartie": "Neue Partie",
+    "du": "Du",
+    "partner": "Partner",
+    "gegner": "Gegner",
+    "schwierigkeit": {
+      "leicht": "leicht",
+      "mittel": "mittel",
+      "schwer": "schwer",
+      "meister": "sehr schwer"
+    },
+    "beschreibungDrei": "Sechs Sitze: du mit zwei KI-Partnern gegen drei KI-Gegner, mit der 3-gegen-3-KI der App.",
+    "beschreibungKoop": "Du und drei KI-Mitspieler bringt gemeinsam alle Kugeln ins Ziel, mit möglichst wenigen Karten.",
+    "modus": {
+      "klassisch": "Klassisch (2 gegen 2)",
+      "drei": "3 gegen 3",
+      "koop": "Kooperativ"
+    },
+    "widgetText": "Klassisch, 3 gegen 3 oder kooperativ: Spiel gegen die KI aus der TAC-App, direkt im Browser.",
+    "zurAuswahl": "KI-Gegner wählen",
+    "koopKarten": "Gespielte Karten",
+    "koopZiel": "Je weniger Karten, bis alle Kugeln im Haus sind, desto besser.",
+    "tempo": {
+      "titel": "KI-Tempo",
+      "langsam": "Langsam",
+      "normal": "Normal",
+      "schnell": "Schnell"
+    }
   }
 }

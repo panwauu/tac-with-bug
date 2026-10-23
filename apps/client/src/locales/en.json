@@ -1029,5 +1029,37 @@
   },
   "PlayerSearch": {
     "noResults": "No players found"
+  },
+  "Ki": {
+    "titel": "Play against the AI",
+    "beschreibung": "You play with your partner opposite you against two opponents. All three are the AI from the TAC app.",
+    "hinweis": "The AI runs in your browser, not on the server. Strong levels think for up to two seconds.",
+    "neuePartie": "New game",
+    "du": "You",
+    "partner": "Partner",
+    "gegner": "Opponent",
+    "schwierigkeit": {
+      "leicht": "easy",
+      "mittel": "medium",
+      "schwer": "hard",
+      "meister": "very hard"
+    },
+    "beschreibungDrei": "Six seats: you and two AI partners against three AI opponents, with the app's 3 vs 3 AI.",
+    "beschreibungKoop": "You and three AI teammates bring all marbles home together, using as few cards as possible.",
+    "modus": {
+      "klassisch": "Classic (2 vs 2)",
+      "drei": "3 vs 3",
+      "koop": "Cooperative"
+    },
+    "widgetText": "Classic, 3 vs 3 or cooperative: play against the AI from the TAC app, right in your browser.",
+    "zurAuswahl": "Choose an AI opponent",
+    "koopKarten": "Cards played",
+    "koopZiel": "The fewer cards until all marbles are home, the better.",
+    "tempo": {
+      "titel": "AI speed",
+      "langsam": "Slow",
+      "normal": "Normal",
+      "schnell": "Fast"
+    }
   }
 }
