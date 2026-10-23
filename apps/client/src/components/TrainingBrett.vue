@@ -96,20 +96,19 @@
         />
       </div>
 
-      <!-- Ablagestapel: Karten übereinander, leicht gedreht; neue fliegen von der Hand des Spielers ein -->
-      <transition-group
-        name="ablage"
-        tag="div"
-        class="ablage"
-      >
-        <CardImage
+      <!-- Ablagestapel wie DiscardPile.vue: jede Karte mittig in einem Rahmen, neue fliegen vom Spieler ein -->
+      <transition-group name="ablage">
+        <div
           v-for="(k, i) in bild?.karten ?? []"
-          :key="`c-${i}-${k}`"
-          class="ablagekarte"
-          :class="{ liegt: bild?.liegen }"
-          :style="ablageStil(i)"
-          :card="kartenBild(k)"
-        />
+          :key="schluessel(i, k)"
+          class="ablage"
+        >
+          <CardImage
+            class="ablagekarte"
+            :style="ablageStil(i, k)"
+            :card="kartenBild(k)"
+          />
+        </div>
       </transition-group>
       <!-- Karten unterwegs (geben, tauschen, ausspielen) -->
       <CardImage
@@ -190,7 +189,7 @@
 // Folge von Bildern in Schleife (training/bilder.ts). Positionen in seiner
 // Zählung (Vorfeld 0…15, Ring 16…79, Haus 80…95), Sitz 0 Schwarz. Hände,
 // Kartenstapel und Ablage sehen aus wie in seiner Partie.
-import { computed, onUnmounted, ref, watch } from 'vue'
+import { computed, onUnmounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BoardImage from '@/components/assets/BoardImage.vue'
 import BallsImage from '@/components/assets/BallsImage.vue'
@@ -258,22 +257,44 @@ function flugStil(ort: Ort) {
  *  Zwischen -180 und 180°, damit die Karte wie bei ihm auf dem kürzeren Weg dreht. */
 const DREHUNG = [37, -148, 118, -59, 74, 166, -101, 13, -19, 95, -132, 150]
 
-/** Karten des vorigen Bildes: was dazukommt, fliegt ein, mehrere nacheinander. */
-const vorher = ref<string[]>([])
-const neuAb = computed(() => {
-  const jetzt = bild.value?.karten ?? []
-  let i = 0
-  while (i < jetzt.length && i < vorher.value.length && jetzt[i] === vorher.value[i]) i++
-  return i
-})
-/** Wie useDiscardPile: die Karte erscheint groß auf dem ersten Vorfeldfeld des Spielers und gleitet dann gedreht in die Mitte. */
-function ablageStil(i: number) {
+/** Ablagekarte in Prozent des Bretts (Kartenbild 142 × 236). */
+const KARTE_B = 12.6
+const KARTE_H = (KARTE_B * 236) / 142
+const schluessel = (i: number, k: string) => `c-${i}-${k}`
+
+/**
+ * Wie useDiscardPile: eine neue Karte steht 300 ms auf dem ersten Vorfeldfeld des Spielers
+ * (translate) und gleitet dann per transition in 0,8 s gedreht in die Mitte (rotate). Nur
+ * transform, wie bei Oskar; mehrere neue Karten nacheinander.
+ */
+const zustand = reactive(new Map<string, 'wartet' | 'start' | 'liegt'>())
+let flugUhren: ReturnType<typeof setTimeout>[] = []
+function ablageStil(i: number, k: string) {
+  const z = zustand.get(schluessel(i, k)) ?? 'liegt'
+  if (z === 'liegt') return { transform: `rotate(${DREHUNG[i % DREHUNG.length]}deg)` }
   const ecke = stil(4 * (bild.value?.von?.[i] ?? 0))
-  return {
-    '--drehung': `${DREHUNG[i % DREHUNG.length]}deg`,
-    '--von-x': ecke.left,
-    '--von-y': ecke.top,
-    animationDelay: `${Math.max(0, i - neuAb.value) * 0.6}s`,
+  const dx = ((parseFloat(ecke.left) - 50) / KARTE_B) * 100
+  const dy = ((parseFloat(ecke.top) - 50) / KARTE_H) * 100
+  return { transform: `translate(${dx}%, ${dy}%)`, visibility: z === 'wartet' ? 'hidden' : undefined }
+}
+let letzte: string[] = []
+function ablageNeu(jetzt: string[], liegen: boolean) {
+  const alt = letzte
+  letzte = jetzt
+  let ab = 0
+  while (ab < jetzt.length && ab < alt.length && jetzt[ab] === alt[ab]) ab++
+  const bleibt = new Set(jetzt.map((k, i) => schluessel(i, k)))
+  for (const s of [...zustand.keys()]) if (!bleibt.has(s)) zustand.delete(s)
+  for (let i = ab; i < jetzt.length; i++) {
+    const s = schluessel(i, jetzt[i])
+    if (liegen) {
+      zustand.set(s, 'liegt')
+      continue
+    }
+    const warten = (i - ab) * 600
+    zustand.set(s, warten ? 'wartet' : 'start')
+    if (warten) flugUhren.push(setTimeout(() => zustand.set(s, 'start'), warten))
+    flugUhren.push(setTimeout(() => zustand.set(s, 'liegt'), warten + 300))
   }
 }
 const ANZAHL = cardCount4erTac as Record<string, number>
@@ -299,13 +320,7 @@ function kartenBild(k: string) {
 const nr = ref(0)
 const bild = computed<Bild | undefined>(() => props.szene[nr.value])
 const texte = computed(() => [...new Set(props.szene.flatMap((x) => (x.text ? [x.text] : [])))])
-watch(
-  bild,
-  (_, alt) => {
-    vorher.value = alt?.karten ?? []
-  },
-  { immediate: true }
-)
+watch(nr, () => ablageNeu(bild.value?.karten ?? [], Boolean(bild.value?.liegen)))
 /** Alle 16 Kugeln: was das Bild nicht nennt, steht im eigenen Vorfeld. */
 const positionen = computed(() => Array.from({ length: 16 }, (_, j) => bild.value?.pos[j] ?? j))
 
@@ -321,13 +336,19 @@ watch(
   () => props.szene,
   () => {
     if (uhr) clearTimeout(uhr)
+    flugUhren.forEach(clearTimeout)
+    flugUhren = []
+    zustand.clear()
+    letzte = []
     nr.value = 0
+    ablageNeu(bild.value?.karten ?? [], Boolean(bild.value?.liegen))
     weiter()
   },
   { immediate: true }
 )
 onUnmounted(() => {
   if (uhr) clearTimeout(uhr)
+  flugUhren.forEach(clearTimeout)
 })
 </script>
 
@@ -481,35 +502,19 @@ onUnmounted(() => {
 .ablage {
   position: absolute;
   inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   pointer-events: none;
   z-index: 15;
 }
 .ablagekarte {
-  position: absolute;
-  left: 50%;
-  top: 50%;
   width: 12.6%;
-  /* translate/rotate als Einzeleigenschaften: erst um die Mitte drehen, dann zentrieren */
-  translate: -50% -50%;
-  rotate: var(--drehung);
+  /* Höhe schon vor dem Laden des Bildes, sonst greift translate in y ins Leere */
+  aspect-ratio: 142 / 236;
   border-radius: 9%/5.42%;
   box-shadow: 0 0 1.6cqw -0.8cqw black;
-  animation: einfliegen 1.1s backwards;
-}
-/* Oskar: 300 ms beim Spieler stehen, dann 0,8 s ease-in-out in die Mitte. Position über left/top und
-   Drehung über rotate statt einer transform-Animation: die zeichnet WebKit auf eigener Ebene, und die
-   Karte kam nicht ganz an und sprang am Ende in die Mitte. */
-@keyframes einfliegen {
-  0%,
-  27% {
-    left: var(--von-x);
-    top: var(--von-y);
-    rotate: 0deg;
-    animation-timing-function: ease-in-out;
-  }
-}
-.ablagekarte.liegt {
-  animation: none;
+  transition: transform 0.8s ease-in-out;
 }
 .ablage-leave-active {
   transition: opacity 0.3s;
