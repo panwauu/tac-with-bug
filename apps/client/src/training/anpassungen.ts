@@ -1,7 +1,7 @@
 // Texte, die im Browser anders lauten müssen als in der App, weil
 // Tac-With-Bug etwas anders anzeigt. Die App zeigt ✓/✕ und ☝️ neben den
 // Spielern; hier zeigt es Oskars Spieloberfläche selbst.
-import type { Text, Uebung } from './typen'
+import type { Lektion, Text, Uebung } from './typen'
 
 type Felder = Partial<Record<'titel' | 'aufgabe' | 'tipp' | 'erfolg', Text>>
 
@@ -92,4 +92,20 @@ export const nichtImBrowser = new Set(['a03b', 's_a03b'])
 export function passeAn(u: Uebung): Uebung {
   const a = anpassungen[u.id]
   return a ? { ...u, ...a } : u
+}
+
+/** Lektionstexte, die von der Bedienung der App ausgehen. */
+const lektionsAnpassungen: Record<string, Partial<Record<'text', Text>>> = {
+  a03c: {
+    text: {
+      de: 'Wenn du mehrere Kugeln auf dem Spielfeld hast, entscheidest du, welche zieht. Tippe auf eine Karte, dann auf die schwarze Kugel, die ziehen soll, und danach auf die Projektion.',
+      en: 'If you have several marbles on the board, you decide which one moves. Tap a card, then the black marble you want to move, and then the projection.',
+      ru: 'Если у тебя несколько шариков на поле, ты решаешь, какой из них пойдёт. Нажми на карту, затем на чёрный шарик, который должен пойти, а потом на проекцию.',
+    },
+  },
+}
+
+export function passeLektionAn(l: Lektion): Lektion {
+  const a = lektionsAnpassungen[l.id]
+  return a ? { ...l, ...a } : l
 }

@@ -438,6 +438,12 @@ const proLektion: Record<string, () => Bild[]> = {
       .zeige(2200, { karten: ['10'], markiere: [H(0, 0), H(0, 1), H(0, 2), H(0, 3)], text: 'haus' }).bilder,
   // Spielkreis und Spielrichtung: eine Kugel läuft einmal herum, ohne Karte.
   g08: () => new Szene({ [K(0, 0)]: R(0) }).zeige(700, { text: 'kreis' }).lauf(K(0, 0), ring(0, 64), { text: 'kreis' }).bilder,
+  // Kugel auswählen: drei schwarze Kugeln auf dem Spielfeld, eine davon zieht.
+  a03c: () =>
+    new Szene({ [K(0, 0)]: R(6), [K(0, 1)]: R(22), [K(0, 2)]: R(40) })
+      .zeige(1200, { karten: ['5'] })
+      .lauf(K(0, 1), ring(22, 5), { karten: ['5'], text: 'auswahl' })
+      .zeige(2000, { karten: ['5'], text: 'auswahl' }).bilder,
   // Übersprung-Regel im Haus: die eigene Kugel auf Hausfeld 2 versperrt den Weg, die 5 zieht am Haus vorbei.
   a11: () =>
     new Szene({ [K(0, 0)]: R(62), [K(0, 1)]: H(0, 1) })

@@ -1,13 +1,13 @@
 // Zugriff auf die Trainingsdaten und den Fortschritt (nur in diesem Browser).
 import { ref } from 'vue'
 import daten from './daten.json'
-import { nichtImBrowser, passeAn } from './anpassungen'
+import { nichtImBrowser, passeAn, passeLektionAn } from './anpassungen'
 import type { Lektion, Sprache, Text, TrainingDaten, Uebung } from './typen'
 
 const roh = daten as unknown as TrainingDaten
 export const training: TrainingDaten = {
   ...roh,
-  lektionen: roh.lektionen.filter((l) => !nichtImBrowser.has(l.id)),
+  lektionen: roh.lektionen.filter((l) => !nichtImBrowser.has(l.id)).map(passeLektionAn),
   uebungen: roh.uebungen.filter((u) => !nichtImBrowser.has(u.id)).map(passeAn),
 }
 
