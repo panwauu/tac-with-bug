@@ -18,6 +18,8 @@ export interface Bild {
   von?: number[]
   /** Felder mit pulsierendem Ring */
   markiere?: number[]
+  /** Kugeln, die auf ihrem Platz zittern (blockiert) */
+  zittern?: number[]
   /** Ganzer Bereich: der Spielkreis oder das eigene Vorfeld */
   bereich?: 'kreis' | 'vorfeld'
   /** Verdeckte Karten je Sitz, wie bei Tac-With-Bug neben den Namen */
@@ -173,12 +175,11 @@ const szenen: Record<string, () => Bild[]> = {
     for (const s of [0, 2]) for (let i = 0; i < 4; i++) p[K(s, i)] = H(s, i)
     return [b({ [K(1, 0)]: R(20), [K(3, 0)]: R(50) }, 1200), b({ ...p, [K(1, 0)]: R(20), [K(3, 0)]: R(50) }, 2600, { text: 'sieg' })]
   },
-  blocked: () =>
-    new Szene({ [K(0, 0)]: R(2), [K(1, 0)]: R(5) })
-      .zeige(1000, { karten: ['5'] })
-      .lauf(K(0, 0), ring(2, 2), { karten: ['5'] })
-      .zeige(1200, { karten: ['5'], markiere: [R(5)], text: 'blockiert' })
-      .setze({ [K(0, 0)]: R(2) }, 1200, { karten: ['5'], text: 'blockiert' }).bilder,
+  // Die Kugel bleibt stehen und zittert: an der fremden Kugel kommt sie nicht vorbei.
+  blocked: () => [
+    b({ [K(0, 0)]: R(2), [K(1, 0)]: R(5) }, 1000, { karten: ['5'] }),
+    b({ [K(0, 0)]: R(2), [K(1, 0)]: R(5) }, 2800, { karten: ['5'], markiere: [R(5)], zittern: [K(0, 0)], text: 'blockiert' }),
+  ],
   capture: () =>
     new Szene({ [K(0, 0)]: R(10), [K(1, 0)]: R(15) })
       .zeige(1000, { karten: ['5'] })
@@ -190,13 +191,15 @@ const szenen: Record<string, () => Bild[]> = {
       .zeige(1000, { karten: ['5'] })
       .lauf(K(0, 0), ring(3, 5), { karten: ['5'] })
       .zeige(2000, { karten: ['5'], markiere: [K(2, 0)], text: 'pflicht' }).bilder,
+  // Keine Kugel im Vorfeld: die 1 und die 13 ziehen auf dem Spielkreis.
   dualFunction: () =>
-    new Szene({})
-      .zeige(900, { karten: ['13'] })
-      .setze({ [K(0, 0)]: R(0) }, 1500, { karten: ['13'], text: 'heraus' })
-      .zeige(800, { karten: ['13'] })
-      .lauf(K(0, 0), ring(0, 13), { karten: ['13'], text: 'laufen' })
-      .zeige(1500, { karten: ['13'], text: 'laufen' }).bilder,
+    new Szene({ [K(0, 0)]: R(14), [K(0, 1)]: R(30), [K(0, 2)]: R(45), [K(0, 3)]: H(0, 3) })
+      .zeige(900, { karten: ['1'] })
+      .lauf(K(0, 0), ring(14, 1), { karten: ['1'], text: 'einsLaufen' })
+      .zeige(1400, { karten: ['1'], text: 'einsLaufen' })
+      .zeige(800, { karten: ['1', '13'] })
+      .lauf(K(0, 1), ring(30, 13), { karten: ['1', '13'], text: 'dreizehnLaufen' })
+      .zeige(1600, { karten: ['1', '13'], text: 'dreizehnLaufen' }).bilder,
   homeLock: () =>
     new Szene({ [K(0, 0)]: R(62) })
       .zeige(900, { karten: ['6'] })
@@ -227,12 +230,10 @@ const szenen: Record<string, () => Bild[]> = {
       .zeige(1000, { karten: ['4'] })
       .lauf(K(0, 0), ring(10, 4, -1), { karten: ['4'] })
       .zeige(1800, { karten: ['4'], text: 'geschlagen' }).bilder,
-  blockedBackward: () =>
-    new Szene({ [K(0, 0)]: R(10), [K(1, 0)]: R(8) })
-      .zeige(1000, { karten: ['4'] })
-      .lauf(K(0, 0), [R(9)], { karten: ['4'] })
-      .zeige(1200, { karten: ['4'], markiere: [R(8)], text: 'blockiert' })
-      .setze({ [K(0, 0)]: R(10) }, 1200, { karten: ['4'], text: 'blockiert' }).bilder,
+  blockedBackward: () => [
+    b({ [K(0, 0)]: R(10), [K(1, 0)]: R(8) }, 1000, { karten: ['4'] }),
+    b({ [K(0, 0)]: R(10), [K(1, 0)]: R(8) }, 2800, { karten: ['4'], markiere: [R(8)], zittern: [K(0, 0)], text: 'blockiert' }),
+  ],
   homeBlocked: () => [b({ [K(0, 0)]: H(0, 1) }, 3000, { karten: ['4'], markiere: [H(0, 1)], text: 'keinRaus' })],
   homeApproach: () =>
     new Szene({ [K(0, 0)]: R(62) })
@@ -437,6 +438,24 @@ const proLektion: Record<string, () => Bild[]> = {
       .zeige(2200, { karten: ['10'], markiere: [H(0, 0), H(0, 1), H(0, 2), H(0, 3)], text: 'haus' }).bilder,
   // Spielkreis und Spielrichtung: eine Kugel läuft einmal herum, ohne Karte.
   g08: () => new Szene({ [K(0, 0)]: R(0) }).zeige(700, { text: 'kreis' }).lauf(K(0, 0), ring(0, 64), { text: 'kreis' }).bilder,
+  // Übersprung-Regel im Haus: die eigene Kugel auf Hausfeld 2 versperrt den Weg, die 5 zieht am Haus vorbei.
+  a11: () =>
+    new Szene({ [K(0, 0)]: R(62), [K(0, 1)]: H(0, 1) })
+      .zeige(1000, { karten: ['5'] })
+      .zeige(2400, { karten: ['5'], markiere: [H(0, 1)], zittern: [K(0, 0)], text: 'hausBlockiert' })
+      .lauf(K(0, 0), ring(62, 5), { karten: ['5'], text: 'amHausVorbei' })
+      .zeige(1800, { karten: ['5'], text: 'amHausVorbei' }).bilder,
+  // Die große Abkürzung: mit der 1 heraus, mit der 4 rückwärts, mit der 6 ins Haus.
+  f03: () =>
+    new Szene({})
+      .zeige(900, { karten: ['1'] })
+      .setze({ [K(0, 0)]: R(0) }, 1400, { karten: ['1'], text: 'heraus' })
+      .zeige(800, { karten: ['1', '4'] })
+      .lauf(K(0, 0), ring(0, 4, -1), { karten: ['1', '4'], text: 'abkuerzung' })
+      .zeige(1300, { karten: ['1', '4'], text: 'abkuerzung' })
+      .zeige(800, { karten: ['1', '4', '6'] })
+      .lauf(K(0, 0), zumHaus(60, 0, 1), { karten: ['1', '4', '6'], text: 'abkuerzungHaus' })
+      .zeige(2000, { karten: ['1', '4', '6'], markiere: [H(0, 1)], text: 'abkuerzungHaus' }).bilder,
   g10: () => new Szene({ [K(0, 0)]: R(0) }).zeige(700, { text: 'uhrzeigersinn' }).lauf(K(0, 0), ring(0, 64), { text: 'uhrzeigersinn' }).bilder,
 }
 

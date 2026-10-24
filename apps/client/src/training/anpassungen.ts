@@ -42,6 +42,13 @@ export const anpassungen: Record<string, Felder> = {
       ru: 'Нажми на карту, затем на один из своих чёрных шариков на поле, а потом на белую проекцию, то есть на клетку, куда шарик пойдёт.',
     },
   },
+  s_a07: {
+    tipp: {
+      de: 'Du hast bereits eine Kugel auf Feld 5. Tippe auf die 1, dann auf eine schwarze Kugel in deinem Vorfeld und danach auf die weiße Projektion auf deinem Startfeld.',
+      en: 'You already have a marble on field 5. Tap the 1, then a black marble in your base, and then the white projection on your start field.',
+      ru: 'У тебя уже есть шарик на поле 5. Нажми на 1, затем на чёрный шарик в своей базе, а потом на белую проекцию на своём стартовом поле.',
+    },
+  },
   s_g12a: {
     aufgabe: {
       de: 'Es wird getauscht. Wer eine 1 oder 13 hat, kann raus. Das siehst du an der 13 bei seinen verdeckten Karten: Angezeigt wird immer nur eine 13, egal ob er eine 1 oder eine 13 hat. Wie viele Spieler können raus?',

@@ -37,7 +37,7 @@
           v-for="(pos, j) in positionen"
           :key="`k-${j}`"
           class="element kugel"
-          :class="{ schnell: bild?.schnell }"
+          :class="{ schnell: bild?.schnell, zittert: bild?.zittern?.includes(j) }"
           :style="stil(pos)"
           :color="FARBEN[Math.floor(j / 4)]"
         />
@@ -380,6 +380,17 @@ onUnmounted(() => {
 }
 .kugel.schnell {
   transition: all 0.16s linear;
+}
+.kugel.zittert {
+  animation: zittern 0.12s linear infinite alternate;
+}
+@keyframes zittern {
+  from {
+    transform: translate(calc(-50% - 0.5cqw), -50%);
+  }
+  to {
+    transform: translate(calc(-50% + 0.5cqw), -50%);
+  }
 }
 .markierung {
   aspect-ratio: 1;
