@@ -126,83 +126,126 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
   }
 }
 
+/**
+ * The timezone of the server. The statistics bucket the week and the day of the week in local time and the
+ * hour in UTC, as they always did, and the database needs to be told which timezone that is.
+ */
+const serverTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+interface DateBucket {
+  kind: 'week' | 'day' | 'hour' | 'heatmap' | 'total'
+  a: number | null
+  b: number | null
+  n: number
+}
+
+/**
+ * Counts the dates of one table per week (a = year of the monday, b = ISO week), per day of the week
+ * (a = day, monday is 0), per hour (a = hour) and in total, for the games also per day and hour of the
+ * week (a = day, b = hour: the heatmap).
+ *
+ * The rows are counted in the database, so that the result has a few hundred rows instead of one row per
+ * user and per game. $1 is the timezone of the server; the hour and the heatmap are in UTC.
+ */
+function dateBucketQuery(from: string, column: string, withHeatmap: boolean) {
+  return `
+    WITH dates AS MATERIALIZED (SELECT ${column} AT TIME ZONE $1 AS local, ${column} AT TIME ZONE 'UTC' AS utc FROM ${from})
+    SELECT 'week' AS kind, EXTRACT(year FROM date_trunc('week', local))::INT AS a, EXTRACT(week FROM local)::INT AS b, COUNT(*)::INT AS n FROM dates GROUP BY 2, 3
+    UNION ALL SELECT 'day', (EXTRACT(dow FROM local)::INT + 6) % 7, NULL, COUNT(*)::INT FROM dates GROUP BY 2
+    UNION ALL SELECT 'hour', EXTRACT(hour FROM utc)::INT, NULL, COUNT(*)::INT FROM dates GROUP BY 2
+    UNION ALL SELECT 'total', NULL, NULL, COUNT(*)::INT FROM dates${
+      withHeatmap
+        ? `
+    UNION ALL SELECT 'heatmap', (EXTRACT(dow FROM utc)::INT + 6) % 7, EXTRACT(hour FROM utc)::INT, COUNT(*)::INT FROM dates GROUP BY 2, 3`
+        : ''
+    };`
+}
+
+/**
+ * The players of one week are the distinct players of all games created in it, counted by the database.
+ *
+ * COUNT(DISTINCT userid) would make PostgreSQL sort all players of all games (and spill to disk); counting
+ * the rows of a DISTINCT instead lets it group them in memory, which is about twice as fast.
+ */
+const playersPerWeekQuery = `
+  SELECT year, week, COUNT(*)::INT AS n FROM (
+    SELECT DISTINCT
+      EXTRACT(year FROM date_trunc('week', games.created AT TIME ZONE $1))::INT AS year,
+      EXTRACT(week FROM games.created AT TIME ZONE $1)::INT AS week,
+      users_to_games.userid
+    FROM users_to_games LEFT JOIN games ON users_to_games.gameid = games.id
+  ) AS players GROUP BY year, week;`
+
+// The current week and the current point in it, in the same timezones as the datasets above
+const nowQuery = `
+  SELECT
+    EXTRACT(year FROM date_trunc('week', current_timestamp AT TIME ZONE $1))::INT AS year,
+    EXTRACT(week FROM current_timestamp AT TIME ZONE $1)::INT AS week,
+    (EXTRACT(dow FROM current_timestamp AT TIME ZONE $1)::INT + 6) % 7 AS day_from_monday,
+    EXTRACT(hour FROM current_timestamp AT TIME ZONE 'UTC')::INT AS utc_hour;`
+
+interface WeekCount {
+  year: number
+  week: number
+  n: number
+}
+interface NowInWeek {
+  year: number
+  week: number
+  day_from_monday: number
+  utc_hour: number
+}
+
+function bucketsOf(rows: DateBucket[], kind: DateBucket['kind']) {
+  return rows.filter((r) => r.kind === kind)
+}
+
+function totalOf(rows: DateBucket[]) {
+  return bucketsOf(rows, 'total')[0].n
+}
+
 function createWeekDataset(
-  userRegisterDates: { registered: string }[],
-  gamesCreatedDates: { created: string }[],
-  activePlayerRes: { created: string; userid: number }[],
+  userBuckets: DateBucket[],
+  gameBuckets: DateBucket[],
+  playersPerWeek: WeekCount[],
+  now: NowInWeek,
   dayDataset: DayDatasetType,
   hourDataset: HourDatasetType
 ) {
-  const dayIndexFromMonday = (new Date().getDay() + 6) % 7
-  const currentHour = new Date().getUTCHours()
   const weekDataset: WeekDatasetType = {
-    data: createWeekDatasetRegular(userRegisterDates, gamesCreatedDates, activePlayerRes),
-    passedRatio: getPassedRatio(dayIndexFromMonday, currentHour, dayDataset, hourDataset),
+    data: createWeekDatasetRegular(userBuckets, gameBuckets, playersPerWeek, now),
+    passedRatio: getPassedRatio(now.day_from_monday, now.utc_hour, dayDataset, hourDataset),
   }
   return weekDataset
 }
 
-function createWeekDatasetRegular(userRegisterDates: { registered: string }[], gamesCreatedDates: { created: string }[], activePlayerRes: { created: string; userid: number }[]) {
+function createWeekDatasetRegular(userBuckets: DateBucket[], gameBuckets: DateBucket[], playersPerWeek: WeekCount[], now: NowInWeek) {
   const weekDataset: WeekDatasetDataType = {}
 
-  userRegisterDates.forEach((r) => {
-    const k = getYearAndNumberOfWeek(new Date(r.registered))
-    if (!(k[0] in weekDataset)) {
-      weekDataset[k[0]] = {}
-    }
-    if (!(k[1] in weekDataset[k[0]])) {
-      weekDataset[k[0]][k[1]] = [0, 0, 0]
-    }
-    weekDataset[k[0]][k[1]][0] += 1
+  bucketsOf(userBuckets, 'week').forEach((r) => {
+    weekEntry(weekDataset, r.a as number, r.b as number)[0] = r.n
   })
-  gamesCreatedDates.forEach((r) => {
-    const k = getYearAndNumberOfWeek(new Date(r.created))
-    if (!(k[0] in weekDataset)) {
-      weekDataset[k[0]] = {}
-    }
-    if (!(k[1] in weekDataset[k[0]])) {
-      weekDataset[k[0]][k[1]] = [0, 0, 0]
-    }
-    weekDataset[k[0]][k[1]][1] += 1
+  bucketsOf(gameBuckets, 'week').forEach((r) => {
+    weekEntry(weekDataset, r.a as number, r.b as number)[1] = r.n
+  })
+  playersPerWeek.forEach((r) => {
+    weekEntry(weekDataset, r.year, r.week)[2] = r.n
   })
 
-  addPlayersPerWeek(activePlayerRes, weekDataset)
-
-  const k = getYearAndNumberOfWeek(new Date())
-  if (!(k[0] in weekDataset)) {
-    weekDataset[k[0]] = {}
-  }
-  if (!(k[1] in weekDataset[k[0]])) {
-    weekDataset[k[0]][k[1]] = [0, 0, 0]
-  }
+  // The current week is always part of the dataset, even when nothing has happened in it yet
+  weekEntry(weekDataset, now.year, now.week)
 
   return weekDataset
 }
 
-function addPlayersPerWeek(activePlayerRes: { created: string; userid: number }[], weekDataset: WeekDatasetDataType) {
-  // A Set per week, as every player of every game is looked up here
-  const playersPerWeek: { [key: string]: { [key: string]: Set<number> } } = {}
-  activePlayerRes.forEach((r) => {
-    const k = getYearAndNumberOfWeek(new Date(r.created))
-    if (!(k[0] in playersPerWeek)) {
-      playersPerWeek[k[0]] = {}
-    }
-    if (!(k[1] in playersPerWeek[k[0]])) {
-      playersPerWeek[k[0]][k[1]] = new Set()
-    }
-    playersPerWeek[k[0]][k[1]].add(r.userid)
-  })
-  for (const year in playersPerWeek) {
-    for (const week in playersPerWeek[year]) {
-      if (!(year in weekDataset)) {
-        weekDataset[year] = {}
-      }
-      if (!(week in weekDataset[year])) {
-        weekDataset[year][week] = [0, 0, 0]
-      }
-      weekDataset[year][week][2] = playersPerWeek[year][week].size
-    }
+function weekEntry(weekDataset: WeekDatasetDataType, year: number, week: number) {
+  if (!(year in weekDataset)) {
+    weekDataset[year] = {}
   }
+  if (!(week in weekDataset[year])) {
+    weekDataset[year][week] = [0, 0, 0]
+  }
+  return weekDataset[year][week]
 }
 
 export function getPassedRatio(dayIndexFromMonday: number, currentHour: number, dayDataset: DayDatasetType, hourDataset: HourDatasetType) {
@@ -233,57 +276,49 @@ export function getPassedRatio(dayIndexFromMonday: number, currentHour: number, 
   return [passedDayData[0] + currentDayData[0] * hourDataExtrapolation[0], passedDayData[1] + currentDayData[1] * hourDataExtrapolation[1], 0]
 }
 
-function createDayDataset(userRegisterDates: { registered: string }[], gamesCreatedDates: { created: string }[]) {
-  const dayDataset: DayDatasetType = [
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-  ]
-  userRegisterDates.forEach((r: any) => {
-    dayDataset[(new Date(r.registered).getDay() + 6) % 7][0] += 1
+function createDayDataset(userBuckets: DateBucket[], gameBuckets: DateBucket[]) {
+  const dayDataset: DayDatasetType = Array.from({ length: 7 }, () => [0, 0])
+  bucketsOf(userBuckets, 'day').forEach((r) => {
+    dayDataset[r.a as number][0] = r.n
   })
-  gamesCreatedDates.forEach((r: any) => {
-    dayDataset[(new Date(r.created).getDay() + 6) % 7][1] += 1
+  bucketsOf(gameBuckets, 'day').forEach((r) => {
+    dayDataset[r.a as number][1] = r.n
   })
+
+  const nUsers = totalOf(userBuckets)
+  const nGames = totalOf(gameBuckets)
   dayDataset.forEach((e) => {
-    e[0] = Math.round((e[0] / userRegisterDates.length) * 10000) / 10000
-    e[1] = Math.round((e[1] / gamesCreatedDates.length) * 10000) / 10000
+    e[0] = Math.round((e[0] / nUsers) * 10000) / 10000
+    e[1] = Math.round((e[1] / nGames) * 10000) / 10000
   })
   return dayDataset
 }
 
-function createHourDataset(userRegisterDates: { registered: string }[], gamesCreatedDates: { created: string }[]) {
-  const hourDataset: HourDatasetType = []
-  for (let i = 0; i < 24; i++) {
-    hourDataset.push([0, 0])
-  }
-  userRegisterDates.forEach((r: any) => {
-    hourDataset[new Date(r.registered).getUTCHours()][0] += 1
+function createHourDataset(userBuckets: DateBucket[], gameBuckets: DateBucket[]) {
+  const hourDataset: HourDatasetType = Array.from({ length: 24 }, () => [0, 0])
+  bucketsOf(userBuckets, 'hour').forEach((r) => {
+    hourDataset[r.a as number][0] = r.n
   })
-  gamesCreatedDates.forEach((r: any) => {
-    hourDataset[new Date(r.created).getUTCHours()][1] += 1
+  bucketsOf(gameBuckets, 'hour').forEach((r) => {
+    hourDataset[r.a as number][1] = r.n
   })
+
+  const nUsers = totalOf(userBuckets)
+  const nGames = totalOf(gameBuckets)
   hourDataset.forEach((e) => {
-    e[0] = Math.round((e[0] / userRegisterDates.length) * 10000) / 10000
-    e[1] = Math.round((e[1] / gamesCreatedDates.length) * 10000) / 10000
+    e[0] = Math.round((e[0] / nUsers) * 10000) / 10000
+    e[1] = Math.round((e[1] / nGames) * 10000) / 10000
   })
   return hourDataset
 }
 
-function createHeatmapDataset(gamesCreatedDates: { created: string }[]) {
+function createHeatmapDataset(gameBuckets: DateBucket[]) {
   const activityHeatmap: ActivityHeatmap = []
   for (let i = 0; i < 7; i++) {
     activityHeatmap.push(Array.from({ length: 24 }).fill(0) as number[])
   }
-  gamesCreatedDates.forEach((r: any) => {
-    const date = new Date(r.created)
-    const day = (date.getUTCDay() + 6) % 7
-    const hour = date.getUTCHours()
-    activityHeatmap[day][hour] += 1
+  bucketsOf(gameBuckets, 'heatmap').forEach((r) => {
+    activityHeatmap[r.a as number][r.b as number] = r.n
   })
   return activityHeatmap
 }
@@ -299,40 +334,22 @@ async function createLocaleDataset(pgPool: pg.Pool) {
 
 export async function calculatePlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
   // The queries do not depend on each other and run at the same time
-  const [userRes, activePlayerRes, gameRes, localeDataset, userAgentDataset] = await Promise.all([
-    pgPool.query<{ registered: string }>('SELECT registered FROM users WHERE activated=true;'),
-    pgPool.query<{ created: string; userid: number }>('SELECT userid, games.created FROM users_to_games LEFT JOIN games ON users_to_games.gameid=games.id;'),
-    // game_results holds exactly the finished games, with created as a column instead of a filter on the game JSON
-    pgPool.query<{ created: string }>('SELECT created FROM game_results;'),
+  const [userBuckets, gameBuckets, playersPerWeek, now, localeDataset, userAgentDataset] = await Promise.all([
+    pgPool.query<DateBucket>(dateBucketQuery('users WHERE activated = true', 'registered', false), [serverTimeZone]),
+    // game_results holds exactly the finished games (see init_db_tac.sql), so that the game JSON is not read
+    pgPool.query<DateBucket>(dateBucketQuery('game_results', 'created', true), [serverTimeZone]),
+    pgPool.query<WeekCount>(playersPerWeekQuery, [serverTimeZone]),
+    pgPool.query<NowInWeek>(nowQuery, [serverTimeZone]),
     createLocaleDataset(pgPool),
     getUserAgentAnalysis(pgPool),
   ])
 
-  const hourDataset = createHourDataset(userRes.rows, gameRes.rows)
-  const dayDataset = createDayDataset(userRes.rows, gameRes.rows)
-  const weekDataset = createWeekDataset(userRes.rows, gameRes.rows, activePlayerRes.rows, dayDataset, hourDataset)
-  const activityHeatmap = createHeatmapDataset(gameRes.rows)
+  const hourDataset = createHourDataset(userBuckets.rows, gameBuckets.rows)
+  const dayDataset = createDayDataset(userBuckets.rows, gameBuckets.rows)
+  const weekDataset = createWeekDataset(userBuckets.rows, gameBuckets.rows, playersPerWeek.rows, now.rows[0], dayDataset, hourDataset)
+  const activityHeatmap = createHeatmapDataset(gameBuckets.rows)
 
   return { weekDataset, dayDataset, hourDataset, activityHeatmap, localeDataset, userAgentDataset }
-}
-
-function getYearAndNumberOfWeek(date: Date): [number, number] {
-  const m = ISO8601_week_no(date)
-  const d = new Date(date)
-  const day = d.getDay()
-  return [new Date(d.setDate(d.getDate() - day + (day === 0 ? -6 : 1))).getFullYear(), m]
-}
-
-function ISO8601_week_no(dt: Date) {
-  const tdt = new Date(dt.valueOf())
-  const dayn = (dt.getDay() + 6) % 7
-  tdt.setDate(tdt.getDate() - dayn + 3)
-  const firstThursday = tdt.valueOf()
-  tdt.setMonth(0, 1)
-  if (tdt.getDay() !== 4) {
-    tdt.setMonth(0, 1 + ((4 - tdt.getDay() + 7) % 7))
-  }
-  return 1 + Math.ceil((firstThursday - tdt.valueOf()) / 604800000)
 }
 
 async function getUserAgentAnalysis(pgPool: pg.Pool): Promise<UserAgentAnalysisData> {
