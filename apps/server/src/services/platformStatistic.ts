@@ -11,34 +11,68 @@ import type {
   WeekDatasetDataType,
 } from '../sharedTypes/typesPlatformStatistic'
 
-const cacheDurationFunFactsInMS = 60 * 60e3 // Update once per hour
-let cachedPlatformFunFacts: Promise<{ data: PlatformFunFacts; date: number }> | null = null
+const cacheDurationInMS = 60 * 60e3 // Update once per hour
 
-export async function getPlatformFunFacts(pgPool: pg.Pool): Promise<PlatformFunFacts> {
-  if (cachedPlatformFunFacts == null) {
-    cachedPlatformFunFacts = calculatePlatformFunFacts(pgPool).then((res) => {
-      return { data: res, date: Date.now() }
+/**
+ * Both statistics aggregate the whole platform and are far too expensive to calculate per request.
+ * The result is kept for an hour; the first request after that calculates it again. Requests that
+ * arrive while a calculation is running share it instead of starting a second one.
+ */
+function hourlyCache<T>(calculate: (pgPool: pg.Pool) => Promise<T>) {
+  let cache: Promise<{ data: T; date: number }> | null = null
+
+  async function refresh(pgPool: pg.Pool): Promise<T> {
+    const calculation = calculate(pgPool).then((data) => {
+      return { data, date: Date.now() }
     })
+    cache = calculation
+
+    try {
+      return (await calculation).data
+    } catch (err) {
+      // A failed calculation is not kept, so that the next request tries again
+      if (cache === calculation) {
+        cache = null
+      }
+      throw err
+    }
   }
 
-  let platformFunFacts = await cachedPlatformFunFacts
+  async function get(pgPool: pg.Pool): Promise<T> {
+    const cached = cache
+    if (cached == null) return refresh(pgPool)
 
-  if (Date.now() - platformFunFacts.date > cacheDurationFunFactsInMS) {
-    cachedPlatformFunFacts = calculatePlatformFunFacts(pgPool).then((res) => {
-      return { data: res, date: Date.now() }
-    })
-    platformFunFacts = await cachedPlatformFunFacts
+    const entry = await cached
+    if (Date.now() - entry.date > cacheDurationInMS) return refresh(pgPool)
+    return entry.data
   }
 
-  return platformFunFacts.data
+  return { get, refresh }
+}
+
+const platformFunFactsCache = hourlyCache(calculatePlatformFunFacts)
+const platformStatisticCache = hourlyCache(calculatePlatformStatistic)
+
+export function getPlatformFunFacts(pgPool: pg.Pool): Promise<PlatformFunFacts> {
+  return platformFunFactsCache.get(pgPool)
+}
+
+export function getPlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
+  return platformStatisticCache.get(pgPool)
+}
+
+/** Calculates both statistics and stores them, so that no visitor has to wait for a stale cache. */
+export async function refreshPlatformStatisticCaches(pgPool: pg.Pool) {
+  await Promise.all([platformFunFactsCache.refresh(pgPool), platformStatisticCache.refresh(pgPool)])
 }
 
 export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
-  const dbResUsers = await pgPool.query<{ activated: number; color_blind: number }>(
+  const usersPromise = pgPool.query<{ activated: number; color_blind: number }>(
     'SELECT SUM(CASE WHEN activated=true THEN 1 ELSE 0 END)::int as activated, SUM(CASE WHEN color_blindness_flag=true THEN 1 ELSE 0 END)::int as color_blind FROM users;'
   )
 
-  const gamesRes = await pgPool.query<{
+  // game_results holds one short row per finished game (see init_db_tac.sql), so that the game JSON is not read
+  const gamesPromise = pgPool.query<{
     games4: number
     games6: number
     gamesteam: number
@@ -49,35 +83,30 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
     fastest_game: number
     longest_game: number
   }>(`
-    SELECT 
-        CAST(sum(games4flag) as INT) as games4,
-        CAST(sum(games6flag) as INT) as games6,
-        CAST(sum(gamesteamflag) as INT) as gamesteam,
-        CAST(min(CASE WHEN gamesteamflag = 1 THEN playedcards ELSE NULL END) as INTEGER) as teammincards,
-		CAST(avg(CASE WHEN gamesteamflag = 1 THEN playedcards ELSE NULL END) as INTEGER) as teamavgcards,
-		CAST(max(CASE WHEN gamesteamflag = 1 THEN playedcards ELSE NULL END) as INTEGER) as teammaxcards,
-        EXTRACT(epoch FROM avg(gameDuration))::INT as average_game_duration,
-        EXTRACT(epoch FROM min(gameDuration))::INT as fastest_game,
-        EXTRACT(epoch FROM max(gameDuration))::INT as longest_game
-    FROM
-        (SELECT 
-            CASE WHEN n_players = 4 THEN 1 ELSE 0 END as games4flag,
-            CASE WHEN n_players = 6 THEN 1 ELSE 0 END as games6flag,
-            CASE WHEN CAST(game->>'coop' AS BOOLEAN) = true THEN 1 ELSE 0 END as gamesteamflag,
-            lastplayed - created as gameDuration,
-            (SELECT SUM(cards) FROM (SELECT CAST(jsonb_extract_path(value, 'cards', 'total', '0') AS INTEGER) as cards 
-              FROM jsonb_array_elements(game->'statistic')) as tcards) as playedcards
-        FROM games WHERE running=FALSE AND (game->'gameEnded')::BOOLEAN=TRUE) as t;`)
+    SELECT
+        COUNT(*) FILTER (WHERE n_players = 4)::INT as games4,
+        COUNT(*) FILTER (WHERE n_players = 6)::INT as games6,
+        COUNT(*) FILTER (WHERE coop)::INT as gamesteam,
+        CAST(MIN(cards) FILTER (WHERE coop) AS INTEGER) as teammincards,
+        CAST(AVG(cards) FILTER (WHERE coop) AS INTEGER) as teamavgcards,
+        CAST(MAX(cards) FILTER (WHERE coop) AS INTEGER) as teammaxcards,
+        EXTRACT(epoch FROM AVG(lastplayed - created))::INT as average_game_duration,
+        EXTRACT(epoch FROM MIN(lastplayed - created))::INT as fastest_game,
+        EXTRACT(epoch FROM MAX(lastplayed - created))::INT as longest_game
+    FROM game_results;`)
 
-  const tutorialRes = await pgPool.query(`SELECT sum(tutorial)::INT as absolved_tutorial_steps FROM
+  const tutorialPromise = pgPool.query(`SELECT sum(tutorial)::INT as absolved_tutorial_steps FROM
 	(SELECT jsonb_array_elements(tutorial)::BOOLEAN::INT as tutorial FROM
 		(SELECT jsonb_array_elements(tutorial) as tutorial FROM users) as t) as t2;`)
 
-  const friendsRes = await pgPool.query('SELECT COUNT(*)::INT as number_friends FROM friendships WHERE pending_user IS NULL;')
+  const friendsPromise = pgPool.query('SELECT COUNT(*)::INT as number_friends FROM friendships WHERE pending_user IS NULL;')
 
-  const colorsRes = await pgPool.query<{ color: string; count: number }>(
+  const colorsPromise = pgPool.query<{ color: string; count: number }>(
     "SELECT json_array_elements(colors) #>> '{}' as color, COUNT(*)::int FROM games GROUP BY color ORDER BY count DESC;"
   )
+
+  // The queries do not depend on each other and run at the same time
+  const [dbResUsers, gamesRes, tutorialRes, friendsRes, colorsRes] = await Promise.all([usersPromise, gamesPromise, tutorialPromise, friendsPromise, colorsPromise])
 
   return {
     nGames4: gamesRes.rows[0].games4,
@@ -97,84 +126,130 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
   }
 }
 
+/**
+ * Every date of the statistics is bucketed in german local time, like the scheduled jobs (scheduledTasks.ts):
+ * a game played on monday at 00:30 belongs to monday and to the hour 0 in every dataset.
+ *
+ * The week and the day of the week used to be bucketed in the timezone of the server, but the hour and the
+ * heatmap in UTC, so the charts disagreed with each other: the hour was one or two hours off (summer time)
+ * and every game of the first hours of a day was shown on the day before in the heatmap.
+ */
+const statisticTimeZone = 'Europe/Berlin'
+
+interface DateBucket {
+  kind: 'week' | 'day' | 'hour' | 'heatmap' | 'total'
+  a: number | null
+  b: number | null
+  n: number
+}
+
+/**
+ * Counts the dates of one table per week (a = year of the monday, b = ISO week), per day of the week
+ * (a = day, monday is 0), per hour (a = hour) and in total, for the games also per day and hour of the
+ * week (a = day, b = hour: the heatmap). All of them in the timezone $1.
+ *
+ * The rows are counted in the database, so that the result has a few hundred rows instead of one row per
+ * user and per game.
+ */
+function dateBucketQuery(from: string, column: string, withHeatmap: boolean) {
+  return `
+    WITH dates AS MATERIALIZED (SELECT ${column} AT TIME ZONE $1 AS local FROM ${from})
+    SELECT 'week' AS kind, EXTRACT(year FROM date_trunc('week', local))::INT AS a, EXTRACT(week FROM local)::INT AS b, COUNT(*)::INT AS n FROM dates GROUP BY 2, 3
+    UNION ALL SELECT 'day', (EXTRACT(dow FROM local)::INT + 6) % 7, NULL, COUNT(*)::INT FROM dates GROUP BY 2
+    UNION ALL SELECT 'hour', EXTRACT(hour FROM local)::INT, NULL, COUNT(*)::INT FROM dates GROUP BY 2
+    UNION ALL SELECT 'total', NULL, NULL, COUNT(*)::INT FROM dates${
+      withHeatmap
+        ? `
+    UNION ALL SELECT 'heatmap', (EXTRACT(dow FROM local)::INT + 6) % 7, EXTRACT(hour FROM local)::INT, COUNT(*)::INT FROM dates GROUP BY 2, 3`
+        : ''
+    };`
+}
+
+/**
+ * The players of one week are the distinct players of all games created in it, counted by the database.
+ *
+ * COUNT(DISTINCT userid) would make PostgreSQL sort all players of all games (and spill to disk); counting
+ * the rows of a DISTINCT instead lets it group them in memory, which is about twice as fast.
+ */
+const playersPerWeekQuery = `
+  SELECT year, week, COUNT(*)::INT AS n FROM (
+    SELECT DISTINCT
+      EXTRACT(year FROM date_trunc('week', games.created AT TIME ZONE $1))::INT AS year,
+      EXTRACT(week FROM games.created AT TIME ZONE $1)::INT AS week,
+      users_to_games.userid
+    FROM users_to_games LEFT JOIN games ON users_to_games.gameid = games.id
+  ) AS players GROUP BY year, week;`
+
+// The current week and the current point in it, in the same timezone as the datasets above
+const nowQuery = `
+  SELECT
+    EXTRACT(year FROM date_trunc('week', current_timestamp AT TIME ZONE $1))::INT AS year,
+    EXTRACT(week FROM current_timestamp AT TIME ZONE $1)::INT AS week,
+    (EXTRACT(dow FROM current_timestamp AT TIME ZONE $1)::INT + 6) % 7 AS day_from_monday,
+    EXTRACT(hour FROM current_timestamp AT TIME ZONE $1)::INT AS hour;`
+
+interface WeekCount {
+  year: number
+  week: number
+  n: number
+}
+interface NowInWeek {
+  year: number
+  week: number
+  day_from_monday: number
+  hour: number
+}
+
+function bucketsOf(rows: DateBucket[], kind: DateBucket['kind']) {
+  return rows.filter((r) => r.kind === kind)
+}
+
+function totalOf(rows: DateBucket[]) {
+  return bucketsOf(rows, 'total')[0].n
+}
+
 function createWeekDataset(
-  userRegisterDates: { registered: string }[],
-  gamesCreatedDates: { created: string }[],
-  activePlayerRes: { created: string; userid: number }[],
+  userBuckets: DateBucket[],
+  gameBuckets: DateBucket[],
+  playersPerWeek: WeekCount[],
+  now: NowInWeek,
   dayDataset: DayDatasetType,
   hourDataset: HourDatasetType
 ) {
-  const dayIndexFromMonday = (new Date().getDay() + 6) % 7
-  const currentHour = new Date().getUTCHours()
   const weekDataset: WeekDatasetType = {
-    data: createWeekDatasetRegular(userRegisterDates, gamesCreatedDates, activePlayerRes),
-    passedRatio: getPassedRatio(dayIndexFromMonday, currentHour, dayDataset, hourDataset),
+    data: createWeekDatasetRegular(userBuckets, gameBuckets, playersPerWeek, now),
+    passedRatio: getPassedRatio(now.day_from_monday, now.hour, dayDataset, hourDataset),
   }
   return weekDataset
 }
 
-function createWeekDatasetRegular(userRegisterDates: { registered: string }[], gamesCreatedDates: { created: string }[], activePlayerRes: { created: string; userid: number }[]) {
+function createWeekDatasetRegular(userBuckets: DateBucket[], gameBuckets: DateBucket[], playersPerWeek: WeekCount[], now: NowInWeek) {
   const weekDataset: WeekDatasetDataType = {}
 
-  userRegisterDates.forEach((r) => {
-    const k = getYearAndNumberOfWeek(new Date(r.registered))
-    if (!(k[0] in weekDataset)) {
-      weekDataset[k[0]] = {}
-    }
-    if (!(k[1] in weekDataset[k[0]])) {
-      weekDataset[k[0]][k[1]] = [0, 0, 0]
-    }
-    weekDataset[k[0]][k[1]][0] += 1
+  bucketsOf(userBuckets, 'week').forEach((r) => {
+    weekEntry(weekDataset, r.a as number, r.b as number)[0] = r.n
   })
-  gamesCreatedDates.forEach((r) => {
-    const k = getYearAndNumberOfWeek(new Date(r.created))
-    if (!(k[0] in weekDataset)) {
-      weekDataset[k[0]] = {}
-    }
-    if (!(k[1] in weekDataset[k[0]])) {
-      weekDataset[k[0]][k[1]] = [0, 0, 0]
-    }
-    weekDataset[k[0]][k[1]][1] += 1
+  bucketsOf(gameBuckets, 'week').forEach((r) => {
+    weekEntry(weekDataset, r.a as number, r.b as number)[1] = r.n
+  })
+  playersPerWeek.forEach((r) => {
+    weekEntry(weekDataset, r.year, r.week)[2] = r.n
   })
 
-  addPlayersPerWeek(activePlayerRes, weekDataset)
-
-  const k = getYearAndNumberOfWeek(new Date())
-  if (!(k[0] in weekDataset)) {
-    weekDataset[k[0]] = {}
-  }
-  if (!(k[1] in weekDataset[k[0]])) {
-    weekDataset[k[0]][k[1]] = [0, 0, 0]
-  }
+  // The current week is always part of the dataset, even when nothing has happened in it yet
+  weekEntry(weekDataset, now.year, now.week)
 
   return weekDataset
 }
 
-function addPlayersPerWeek(activePlayerRes: { created: string; userid: number }[], weekDataset: WeekDatasetDataType) {
-  const playersPerWeek: { [key: string]: { [key: string]: number[] } } = {}
-  activePlayerRes.forEach((r) => {
-    const k = getYearAndNumberOfWeek(new Date(r.created))
-    if (!(k[0] in playersPerWeek)) {
-      playersPerWeek[k[0]] = {}
-    }
-    if (!(k[1] in playersPerWeek[k[0]])) {
-      playersPerWeek[k[0]][k[1]] = []
-    }
-    if (!playersPerWeek[k[0]][k[1]].includes(r.userid)) {
-      playersPerWeek[k[0]][k[1]].push(r.userid)
-    }
-  })
-  for (const year in playersPerWeek) {
-    for (const week in playersPerWeek[year]) {
-      if (!(year in weekDataset)) {
-        weekDataset[year] = {}
-      }
-      if (!(week in weekDataset[year])) {
-        weekDataset[year][week] = [0, 0, 0]
-      }
-      weekDataset[year][week][2] = playersPerWeek[year][week].length
-    }
+function weekEntry(weekDataset: WeekDatasetDataType, year: number, week: number) {
+  if (!(year in weekDataset)) {
+    weekDataset[year] = {}
   }
+  if (!(week in weekDataset[year])) {
+    weekDataset[year][week] = [0, 0, 0]
+  }
+  return weekDataset[year][week]
 }
 
 export function getPassedRatio(dayIndexFromMonday: number, currentHour: number, dayDataset: DayDatasetType, hourDataset: HourDatasetType) {
@@ -205,57 +280,49 @@ export function getPassedRatio(dayIndexFromMonday: number, currentHour: number, 
   return [passedDayData[0] + currentDayData[0] * hourDataExtrapolation[0], passedDayData[1] + currentDayData[1] * hourDataExtrapolation[1], 0]
 }
 
-function createDayDataset(userRegisterDates: { registered: string }[], gamesCreatedDates: { created: string }[]) {
-  const dayDataset: DayDatasetType = [
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-  ]
-  userRegisterDates.forEach((r: any) => {
-    dayDataset[(new Date(r.registered).getDay() + 6) % 7][0] += 1
+function createDayDataset(userBuckets: DateBucket[], gameBuckets: DateBucket[]) {
+  const dayDataset: DayDatasetType = Array.from({ length: 7 }, () => [0, 0])
+  bucketsOf(userBuckets, 'day').forEach((r) => {
+    dayDataset[r.a as number][0] = r.n
   })
-  gamesCreatedDates.forEach((r: any) => {
-    dayDataset[(new Date(r.created).getDay() + 6) % 7][1] += 1
+  bucketsOf(gameBuckets, 'day').forEach((r) => {
+    dayDataset[r.a as number][1] = r.n
   })
+
+  const nUsers = totalOf(userBuckets)
+  const nGames = totalOf(gameBuckets)
   dayDataset.forEach((e) => {
-    e[0] = Math.round((e[0] / userRegisterDates.length) * 10000) / 10000
-    e[1] = Math.round((e[1] / gamesCreatedDates.length) * 10000) / 10000
+    e[0] = Math.round((e[0] / nUsers) * 10000) / 10000
+    e[1] = Math.round((e[1] / nGames) * 10000) / 10000
   })
   return dayDataset
 }
 
-function createHourDataset(userRegisterDates: { registered: string }[], gamesCreatedDates: { created: string }[]) {
-  const hourDataset: HourDatasetType = []
-  for (let i = 0; i < 24; i++) {
-    hourDataset.push([0, 0])
-  }
-  userRegisterDates.forEach((r: any) => {
-    hourDataset[new Date(r.registered).getUTCHours()][0] += 1
+function createHourDataset(userBuckets: DateBucket[], gameBuckets: DateBucket[]) {
+  const hourDataset: HourDatasetType = Array.from({ length: 24 }, () => [0, 0])
+  bucketsOf(userBuckets, 'hour').forEach((r) => {
+    hourDataset[r.a as number][0] = r.n
   })
-  gamesCreatedDates.forEach((r: any) => {
-    hourDataset[new Date(r.created).getUTCHours()][1] += 1
+  bucketsOf(gameBuckets, 'hour').forEach((r) => {
+    hourDataset[r.a as number][1] = r.n
   })
+
+  const nUsers = totalOf(userBuckets)
+  const nGames = totalOf(gameBuckets)
   hourDataset.forEach((e) => {
-    e[0] = Math.round((e[0] / userRegisterDates.length) * 10000) / 10000
-    e[1] = Math.round((e[1] / gamesCreatedDates.length) * 10000) / 10000
+    e[0] = Math.round((e[0] / nUsers) * 10000) / 10000
+    e[1] = Math.round((e[1] / nGames) * 10000) / 10000
   })
   return hourDataset
 }
 
-function createHeatmapDataset(gamesCreatedDates: { created: string }[]) {
+function createHeatmapDataset(gameBuckets: DateBucket[]) {
   const activityHeatmap: ActivityHeatmap = []
   for (let i = 0; i < 7; i++) {
     activityHeatmap.push(Array.from({ length: 24 }).fill(0) as number[])
   }
-  gamesCreatedDates.forEach((r: any) => {
-    const date = new Date(r.created)
-    const day = (date.getUTCDay() + 6) % 7
-    const hour = date.getUTCHours()
-    activityHeatmap[day][hour] += 1
+  bucketsOf(gameBuckets, 'heatmap').forEach((r) => {
+    activityHeatmap[r.a as number][r.b as number] = r.n
   })
   return activityHeatmap
 }
@@ -269,41 +336,24 @@ async function createLocaleDataset(pgPool: pg.Pool) {
   return localeDataset
 }
 
-export async function getPlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
-  const userRes = await pgPool.query<{ registered: string }>('SELECT registered FROM users WHERE activated=true;')
-  const activePlayerRes = await pgPool.query<{ created: string; userid: number }>(
-    'SELECT userid, games.created FROM users_to_games LEFT JOIN games ON users_to_games.gameid=games.id;'
-  )
-  const gameRes = await pgPool.query<{ created: string }>("SELECT created FROM games WHERE running=FALSE AND (game->'gameEnded')::BOOLEAN=TRUE;")
+export async function calculatePlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
+  // The queries do not depend on each other and run at the same time
+  const [userBuckets, gameBuckets, playersPerWeek, now, localeDataset, userAgentDataset] = await Promise.all([
+    pgPool.query<DateBucket>(dateBucketQuery('users WHERE activated = true', 'registered', false), [statisticTimeZone]),
+    // game_results holds exactly the finished games (see init_db_tac.sql), so that the game JSON is not read
+    pgPool.query<DateBucket>(dateBucketQuery('game_results', 'created', true), [statisticTimeZone]),
+    pgPool.query<WeekCount>(playersPerWeekQuery, [statisticTimeZone]),
+    pgPool.query<NowInWeek>(nowQuery, [statisticTimeZone]),
+    createLocaleDataset(pgPool),
+    getUserAgentAnalysis(pgPool),
+  ])
 
-  const hourDataset = createHourDataset(userRes.rows, gameRes.rows)
-  const dayDataset = createDayDataset(userRes.rows, gameRes.rows)
-  const weekDataset = createWeekDataset(userRes.rows, gameRes.rows, activePlayerRes.rows, dayDataset, hourDataset)
-  const activityHeatmap = createHeatmapDataset(gameRes.rows)
-  const localeDataset = await createLocaleDataset(pgPool)
-  const userAgentDataset = await getUserAgentAnalysis(pgPool)
-  const botDataset = await getBotWins(pgPool)
+  const hourDataset = createHourDataset(userBuckets.rows, gameBuckets.rows)
+  const dayDataset = createDayDataset(userBuckets.rows, gameBuckets.rows)
+  const weekDataset = createWeekDataset(userBuckets.rows, gameBuckets.rows, playersPerWeek.rows, now.rows[0], dayDataset, hourDataset)
+  const activityHeatmap = createHeatmapDataset(gameBuckets.rows)
 
-  return { weekDataset, dayDataset, hourDataset, activityHeatmap, localeDataset, userAgentDataset, botDataset }
-}
-
-function getYearAndNumberOfWeek(date: Date): [number, number] {
-  const m = ISO8601_week_no(date)
-  const d = new Date(date)
-  const day = d.getDay()
-  return [new Date(d.setDate(d.getDate() - day + (day === 0 ? -6 : 1))).getFullYear(), m]
-}
-
-function ISO8601_week_no(dt: Date) {
-  const tdt = new Date(dt.valueOf())
-  const dayn = (dt.getDay() + 6) % 7
-  tdt.setDate(tdt.getDate() - dayn + 3)
-  const firstThursday = tdt.valueOf()
-  tdt.setMonth(0, 1)
-  if (tdt.getDay() !== 4) {
-    tdt.setMonth(0, 1 + ((4 - tdt.getDay() + 7) % 7))
-  }
-  return 1 + Math.ceil((firstThursday - tdt.valueOf()) / 604800000)
+  return { weekDataset, dayDataset, hourDataset, activityHeatmap, localeDataset, userAgentDataset }
 }
 
 async function getUserAgentAnalysis(pgPool: pg.Pool): Promise<UserAgentAnalysisData> {
@@ -330,31 +380,4 @@ async function getUserAgentAnalysis(pgPool: pg.Pool): Promise<UserAgentAnalysisD
   }
 
   return { deviceTypes, browserNames, osNames }
-}
-
-async function getBotWins(pgPool: pg.Pool) {
-  const res = await pgPool.query<{ total: number; won: number }>(`
-  SELECT 
-    COUNT(*)::INT as total,
-    SUM(won::int)::INT as won
-  FROM (
-    SELECT
-      (
-        SELECT (t2.winningteams->(teamIndex::INTEGER - 1))::BOOLEAN 
-        FROM jsonb_array_elements("teams") with ordinality as t1(team, teamIndex) 
-        WHERE (team->0)::INTEGER = t2.playerIndex OR (team->1)::INTEGER = t2.playerIndex OR (team->2)::INTEGER = t2.playerIndex
-      ) as won
-    FROM (
-      SELECT game->'teams' as teams, game->'winningTeams' as winningteams, playerIndex, created
-      FROM games 
-      CROSS JOIN LATERAL unnest(ARRAY[0,1,2,3,4,5]) as playerIndex 
-      WHERE 
-        playerindex < n_players AND bots[playerIndex + 1] IS NOT NULL 
-        AND running IS FALSE AND (game->'gameEnded')::BOOLEAN
-        AND (game->'coop')::BOOLEAN = FALSE
-        AND (game->'substitutedPlayerIndices' IS NULL OR jsonb_array_length(game->'substitutedPlayerIndices') = 0)
-    ) as t2 
-  ) as t3;`)
-
-  return res.rows[0]
 }

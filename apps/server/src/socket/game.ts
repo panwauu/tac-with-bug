@@ -12,6 +12,8 @@ import { endSubstitutionIfRunning, endSubstitutionsByUserID } from '../services/
 import { getAiData } from '@repo/core/bot/simulation/output'
 import { projectMoveToGamePlayer } from '@repo/core/bot/normalize/normalize'
 import { getBotMove } from '@repo/core/bot/bots/bots'
+import { stufeFuerPartie } from '@repo/core/bot/netz/onlineStufen'
+import { kiZug } from '../services/kiServer'
 import { sleep } from '../helpers/sleep'
 
 export let nsp: GameNamespace
@@ -162,6 +164,17 @@ const BOT_TIME_TO_WAIT = 4000 as const
 const BOT_TIME_TO_WAIT_NARR = 0 as const
 const BOT_TIME_TO_WAIT_7 = 1500 as const
 
+/** Zug eines Bots: KI-Stufe der App im eigenen Thread, sonst Oskars Bots. */
+async function botZug(game: GameForPlay, gamePlayer: number): Promise<MoveTextOrBall> {
+  const botID = game.bots[gamePlayer] ?? 3
+  const stufe = stufeFuerPartie(botID, game.game.nPlayers, game.game.teams.length, game.game.coop)
+  const daten = getAiData(game.game, gamePlayer)
+  return stufe != null ? kiZug(game.id, gamePlayer, stufe, daten) : getBotMove(botID, daten)
+}
+
+/** Partien, in denen gerade ein Bot rechnet oder zieht: die Schleife ueberspringt sie. */
+const botInArbeit = new Set<number>()
+
 async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
   const gameIDs: number[] = []
   for (const socket of nsp.sockets) {
@@ -171,6 +184,9 @@ async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
   }
 
   for (const gameID of gameIDs) {
+    if (botInArbeit.has(gameID)) {
+      continue
+    }
     const game = await getGame(pgPool, gameID)
     if (
       !game.running ||
@@ -183,32 +199,44 @@ async function CallBot(pgPool: pg.Pool, nspGame: GameNamespace) {
       continue
     }
 
-    const start = performance.now()
+    // Der Bot zieht nebenher: rechnet eine KI, warten die anderen Partien nicht darauf.
+    botInArbeit.add(gameID)
+    void botZiehtIn(pgPool, nspGame, game)
+      .catch((err) => {
+        logger.error(err)
+        logger.error('AI callback failed')
+      })
+      .finally(() => botInArbeit.delete(gameID))
+  }
+}
 
-    let move: MoveTextOrBall | null = null
-    const botIndices = game.bots.map((bot, i) => (bot != null ? i : null)).filter((i) => i != null) as number[]
-    for (const gamePlayer of botIndices) {
-      const cards = getCards(game.game, gamePlayer)
-      if (cards.length !== 0 && game.game.narrFlag.some((f) => f) && !game.game.narrFlag[gamePlayer]) {
-        move = [gamePlayer, 0, 'narr']
-        break
-      }
-      if (cards.every((c) => !c.possible)) {
-        continue
-      }
+async function botZiehtIn(pgPool: pg.Pool, nspGame: GameNamespace, game: GameForPlay) {
+  const gameID = game.id
+  const start = performance.now()
 
-      const agentMove = await getBotMove(game.bots[gamePlayer] ?? 3, getAiData(game.game, gamePlayer))
-      move = projectMoveToGamePlayer(game.game, agentMove, gamePlayer)
-      logger.info(`Bot took ${performance.now() - start}ms`)
+  let move: MoveTextOrBall | null = null
+  const botIndices = game.bots.map((bot, i) => (bot != null ? i : null)).filter((i) => i != null) as number[]
+  for (const gamePlayer of botIndices) {
+    const cards = getCards(game.game, gamePlayer)
+    if (cards.length !== 0 && game.game.narrFlag.some((f) => f) && !game.game.narrFlag[gamePlayer]) {
+      move = [gamePlayer, 0, 'narr']
       break
     }
-
-    if (move != null) {
-      const game = await performMoveAndReturnGame(pgPool, move, move[0], gameID)
-      for (const socketIterator of getSocketsInGame(nspGame, gameID)) {
-        socketIterator.emit('update', getPlayerUpdateFromGame(game, socketIterator.data.gamePlayer ?? -1))
-      }
-      await dealCardsIfNecessary(pgPool, nspGame, game.game.activePlayer, game)
+    if (cards.every((c) => !c.possible)) {
+      continue
     }
+
+    const agentMove = await botZug(game, gamePlayer)
+    move = projectMoveToGamePlayer(game.game, agentMove, gamePlayer)
+    logger.info(`Bot took ${performance.now() - start}ms`)
+    break
+  }
+
+  if (move != null) {
+    const nachher = await performMoveAndReturnGame(pgPool, move, move[0], gameID)
+    for (const socketIterator of getSocketsInGame(nspGame, gameID)) {
+      socketIterator.emit('update', getPlayerUpdateFromGame(nachher, socketIterator.data.gamePlayer ?? -1))
+    }
+    await dealCardsIfNecessary(pgPool, nspGame, nachher.game.activePlayer, nachher)
   }
 }

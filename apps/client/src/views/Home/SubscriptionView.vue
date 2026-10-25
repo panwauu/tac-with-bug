@@ -1,34 +1,76 @@
 <template>
   <div class="p-card subscriptionPage">
-    <div style="margin-bottom: 20px">
-      <img
-        src="@/assets/Oskar.webp"
-        style="width: 50%; border-radius: 5px"
-        alt="Foto von Oskar"
-      />
-      <h2>{{ t('Subscription.aboutMeHeader') }}</h2>
-      <p>{{ t('Subscription.aboutMe1') }}</p>
-      <p>{{ t('Subscription.aboutMe2') }}</p>
-      <div class="FeaturesAndPrice">
-        <div class="PriceTag">
-          <strong>{{ t('Subscription.price') }}</strong>
-        </div>
-        <div class="Features">
-          <SubscriptionTag
-            :clickable="false"
-            :sponsors-only="false"
+    <h2 class="handoverHeader">{{ t('Subscription.handoverHeader') }}</h2>
+    <Timeline
+      :value="timelineItems"
+      class="handoverTimeline"
+    >
+      <template #marker="{ item }">
+        <span :class="['timelineMarker', item.current ? 'timelineMarkerCurrent' : '']">
+          <i :class="item.icon" />
+        </span>
+      </template>
+      <template #content="{ item }">
+        <div :class="['timelineContent', item.current ? 'timelineContentCurrent' : '']">
+          <img
+            :src="item.image"
+            class="maintainerImage"
+            :alt="item.imageAlt"
           />
-          <div class="FeatureElement">
-            <YinYang class="FeatureIcon" />
-            <div class="FeatureText">
-              <strong>{{ t('Subscription.featureKarma1') }}</strong>
-              {{ t('Subscription.featureKarma2') }}
-            </div>
+          <div class="timelineText">
+            <h3 class="timelineTitle">
+              {{ item.title }}
+              <span class="timelineDate">{{ item.date }}</span>
+            </h3>
+
+            <template v-if="item.key === 'lorenz'">
+              <p>{{ t('Subscription.aboutLorenzHeader') }}</p>
+              <p>{{ t('Subscription.aboutLorenz1') }}</p>
+              <p>{{ t('Subscription.aboutLorenz2') }}</p>
+              <p>{{ t('Subscription.aboutLorenz3') }}</p>
+              <Button
+                style="text-decoration: none"
+                icon="pi pi-envelope"
+                label="lorenz@spieltac.de"
+                severity="secondary"
+                as="a"
+                href="mailto:lorenz@spieltac.de"
+              />
+              <p>{{ t('Subscription.aboutLorenzSignature') }}</p>
+            </template>
+
+            <template v-if="item.key === 'oskar'">
+              <p>{{ t('Subscription.aboutMeHeader') }}</p>
+              <p>{{ t('Subscription.aboutMe1') }}</p>
+              <p>{{ t('Subscription.aboutMe3') }}</p>
+              <p>{{ t('Subscription.aboutMeSignature') }}</p>
+            </template>
           </div>
-          <div class="FeatureElement">
-            <Luck class="FeatureIcon" />
-            <div class="FeatureText">{{ t('Subscription.featureLuck') }}</div>
+        </div>
+      </template>
+    </Timeline>
+
+    <p class="supportText">{{ t('Subscription.aboutMe2') }}</p>
+
+    <div class="FeaturesAndPrice">
+      <div class="PriceTag">
+        <strong>{{ t('Subscription.price') }}</strong>
+      </div>
+      <div class="Features">
+        <SubscriptionTag
+          :clickable="false"
+          :sponsors-only="false"
+        />
+        <div class="FeatureElement">
+          <YinYang class="FeatureIcon" />
+          <div class="FeatureText">
+            <strong>{{ t('Subscription.featureKarma1') }}</strong>
+            {{ t('Subscription.featureKarma2') }}
           </div>
+        </div>
+        <div class="FeatureElement">
+          <Luck class="FeatureIcon" />
+          <div class="FeatureText">{{ t('Subscription.featureLuck') }}</div>
         </div>
       </div>
     </div>
@@ -126,6 +168,7 @@ import YinYang from '@/components/icons/YinYang.vue'
 import Luck from '@/components/icons/LuckSymbol.vue'
 import SelectButton from 'primevue/selectbutton'
 import Message from 'primevue/message'
+import Timeline from 'primevue/timeline'
 
 import { loadScript, type PayPalButtonsComponent } from '@paypal/paypal-js'
 import { ref, onMounted, computed, onUnmounted, watch } from 'vue'
@@ -136,11 +179,35 @@ import { injectStrict, SocketKey } from '@/services/injections'
 import { isLoggedIn } from '@/services/useUser'
 import { useI18n } from 'vue-i18n'
 
+import lorenzImage from '@/assets/Lorenz.webp'
+import oskarImage from '@/assets/Oskar.webp'
+
 const { t } = useI18n()
 const toast = useToast()
 
 const socket = injectStrict(SocketKey)
 const subscriptionState = useSubscription(socket)
+
+const timelineItems = computed(() => [
+  {
+    key: 'lorenz',
+    icon: 'pi pi-users',
+    date: t('Subscription.Timeline.lorenzDate'),
+    title: t('Subscription.Timeline.lorenzTitle'),
+    image: lorenzImage,
+    imageAlt: 'Foto von Lorenz',
+    current: true,
+  },
+  {
+    key: 'oskar',
+    icon: 'pi pi-flag',
+    date: t('Subscription.Timeline.oskarDate'),
+    title: t('Subscription.Timeline.oskarTitle'),
+    image: oskarImage,
+    imageAlt: 'Foto von Oskar',
+    current: false,
+  },
+])
 
 const nSubscriptions = ref(0)
 const planModel = [
@@ -292,10 +359,95 @@ const paypalPercentageSeverity = computed(() => {
 .subscriptionPage {
   flex: 0 1 800px;
   max-width: 100%;
-  padding: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 15px;
+}
+
+.handoverHeader {
+  margin: 10px 0 15px 0;
+  text-align: center;
+}
+
+.handoverTimeline {
+  width: 100%;
+}
+
+/* The timeline line should sit at the left edge, so the unused opposite column is removed */
+.handoverTimeline :deep(.p-timeline-event-opposite) {
+  display: none;
+}
+
+.timelineMarker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: var(--p-content-background);
+  border: solid var(--p-content-border-color) 2px;
+  color: var(--p-text-muted-color);
+}
+
+.timelineMarkerCurrent {
+  background: var(--p-primary-color);
+  border-color: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+}
+
+.timelineContent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+  text-align: left;
+  padding-bottom: 30px;
+}
+
+.timelineContentCurrent {
+  padding: 15px;
+  margin-bottom: 30px;
+}
+
+.timelineText {
+  flex: 1 1 260px;
+}
+
+.timelineText p {
+  margin: 0 0 10px 0;
+}
+
+.maintainerImage {
+  flex: 0 1 180px;
+  width: 180px;
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.timelineTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 10px 0;
+}
+
+.timelineDate {
+  font-size: 0.8rem;
+  font-weight: normal;
+  white-space: nowrap;
+  border-radius: 5px;
+  padding: 2px 7px;
+  background: var(--p-content-border-color);
+  color: var(--p-text-muted-color);
+}
+
+.supportText {
+  text-align: left;
+  margin: 0;
 }
 
 .FeaturesAndPrice {

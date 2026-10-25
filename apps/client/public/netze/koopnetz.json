@@ -1,0 +1,52 @@
+{
+ "quelle": "TACCoopValueNet_v1.mlmodelc",
+ "bloecke": 3,
+ "tanh": false,
+ "schichten": [
+  {
+   "name": "input",
+   "aus": 256,
+   "ein": 160
+  },
+  {
+   "name": "block0.fc1",
+   "aus": 256,
+   "ein": 256
+  },
+  {
+   "name": "block0.fc2",
+   "aus": 256,
+   "ein": 256
+  },
+  {
+   "name": "block1.fc1",
+   "aus": 256,
+   "ein": 256
+  },
+  {
+   "name": "block1.fc2",
+   "aus": 256,
+   "ein": 256
+  },
+  {
+   "name": "block2.fc1",
+   "aus": 256,
+   "ein": 256
+  },
+  {
+   "name": "block2.fc2",
+   "aus": 256,
+   "ein": 256
+  },
+  {
+   "name": "head0",
+   "aus": 64,
+   "ein": 256
+  },
+  {
+   "name": "head2",
+   "aus": 1,
+   "ein": 64
+  }
+ ]
+}

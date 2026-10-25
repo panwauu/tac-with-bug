@@ -22,7 +22,9 @@ CREATE TABLE users (
   admin BOOLEAN NOT NULL DEFAULT FALSE,
   game_default_position INTEGER [2] NOT NULL DEFAULT '{1, 0}',
   user_description VARCHAR(200) NOT NULL DEFAULT '',
-  notification_settings BOOLEAN [] NOT NULL DEFAULT array_fill(TRUE, ARRAY [6]) CHECK (array_length(notification_settings, 1) = 6)
+  notification_settings BOOLEAN [] NOT NULL DEFAULT array_fill(TRUE, ARRAY [6]) CHECK (array_length(notification_settings, 1) = 6),
+  -- Account of an external bot that logs in like a user: its games are not on the leaderboards (set by hand, login is not affected)
+  bot_account BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE password_reset_requests (
@@ -512,6 +514,8 @@ CREATE TABLE waitingGames (
     ready5 = false
     OR player5 IS NOT NULL
   ),
+  -- Set on every change of the waiting game (trigger below); waiting games without a change for a while are closed
+  lastactivity timestamptz NOT NULL DEFAULT current_timestamp,
   CONSTRAINT unique_players CHECK (
     (
       player0 IS NULL
@@ -652,6 +656,16 @@ CREATE TABLE waitingGames (
   )
 );
 
+CREATE FUNCTION waitinggames_touch() RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+  NEW.lastactivity := current_timestamp;
+  RETURN NEW;
+END
+$$;
+
+-- Every change counts as activity: joining, leaving, ready, colors, order and bots
+CREATE TRIGGER waitinggames_touch BEFORE UPDATE ON waitinggames FOR EACH ROW EXECUTE FUNCTION waitinggames_touch();
+
 CREATE TABLE tutorials (id int PRIMARY KEY, data JSONB);
 
 CREATE TABLE hof (
@@ -661,7 +675,6 @@ CREATE TABLE hof (
     status = 'verlag'
     OR status = 'spende'
     OR status = 'translation'
-    OR status = 'family'
   )
 );
 

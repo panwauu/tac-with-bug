@@ -1,7 +1,7 @@
 import type { CardType } from '../../types/card'
 import type { MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
-import { getMovesFromCards } from '../simulation/simulation'
+import { getMovesFromCards } from '../simulation/moves'
 
 // Most valuable first, if not in array then it is discarded first
 const orderedMostValuableCards = ['tac', 'trickser', 'teufel', '1', '13', '4', '7']

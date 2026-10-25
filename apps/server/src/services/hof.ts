@@ -8,7 +8,6 @@ export async function getHofData(sqlClient: pg.Pool): Promise<hofTypes.HofData> 
     verlag: res.rows.filter((row) => row.status === 'verlag').map((row) => row.username),
     spende: res.rows.filter((row) => row.status === 'spende').map((row) => row.username),
     translation: res.rows.filter((row) => row.status === 'translation').map((row) => row.username),
-    family: res.rows.filter((row) => row.status === 'family').map((row) => row.username),
   }
 }
 

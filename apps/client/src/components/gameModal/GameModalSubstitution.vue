@@ -11,6 +11,15 @@
       :name-first="false"
       :clickable="false"
     />
+    <Select
+      v-if="!substitutionRunning && selfInGame"
+      v-model="ersatzBot"
+      class="substitutionPlayer"
+      :options="ersatzBots"
+      option-label="name"
+      option-value="id"
+      :aria-label="t('Game.GameModal.Substitution.botLevel')"
+    />
     <i
       class="pi pi-arrows-v"
       style="font-size: 2rem; padding: 10px"
@@ -143,6 +152,7 @@ import { inject, ref, computed, watch } from 'vue'
 import { username } from '@/services/useUser'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
+import { FUTURO, onlineBotName, onlineBots } from '@/views/kiStufen'
 
 const { t } = useI18n()
 
@@ -153,8 +163,7 @@ const toast = useToast()
 async function startSubstitution() {
   if (gameSocket == null || startSubstitutionPossible.value === false || selectedToSubstitute.value == null) return
 
-  const selfInGame = props.updateData?.players.findIndex((p) => p.name === username.value) !== -1
-  const res = await gameSocket.emitWithAck(2000, 'substitution:start', selectedToSubstitute.value.playerIndex, selfInGame ? 3 : null)
+  const res = await gameSocket.emitWithAck(2000, 'substitution:start', selectedToSubstitute.value.playerIndex, selfInGame.value ? ersatzBot.value : null)
   if (res.status !== 200) {
     toast.add({
       severity: 'error',
@@ -181,6 +190,15 @@ async function answerSubstitution(accept: boolean) {
 }
 
 const substitutionRunning = computed(() => props.updateData?.substitution != null)
+
+const selfInGame = computed(() => props.updateData?.players.findIndex((p) => p.name === username.value) !== -1)
+// Welcher Bot einspringt: Futuro oder eine passende KI-Stufe der App
+const ersatzBot = ref(FUTURO)
+const ersatzBots = computed(() => {
+  const d = props.updateData
+  if (d == null) return []
+  return onlineBots(d.players.length, d.teams.length, d.coopCounter !== -1).map((b) => ({ id: b.id, name: onlineBotName(b, t) }))
+})
 
 const inGeneralSubstitutionPossible = computed(
   () => props.updateData?.running && props.updateData.substitution == null && props.updateData.publicTournamentId == null && props.updateData.privateTournamentId == null

@@ -6,7 +6,8 @@
   <ChatWrapper>
     <router-view class="RouterView" />
   </ChatWrapper>
-  <ConnectionStatusOverlay />
+  <!-- KI braucht keinen Server: kein Verbindungshinweis bei der KI -->
+  <ConnectionStatusOverlay v-if="$route.name !== 'Ki' && $route.name !== 'KiAuswahl'" />
 
   <Menubar v-show="false" />
   <Card v-show="false" />
@@ -51,6 +52,15 @@ socket.on('logged_out', async () => {
     detail: t('Connection.ServerSideLogoutDetail'),
   })
   await logout(socket)
+})
+
+socket.on('waiting:expired', (data) => {
+  toast.add({
+    severity: 'info',
+    life: 15000,
+    summary: t('Waiting.expiredSummary'),
+    detail: t('Waiting.expiredDetail', { minutes: data.minutes }),
+  })
 })
 
 registerSocketToastHandlers(socket)

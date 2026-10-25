@@ -1,5 +1,6 @@
 import type { MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
+import { ONLINE_STUFEN } from '../netz/onlineStufen'
 
 // Export the Bot enum synchronously so other modules can reference it without
 // pulling in the implementations. The concrete bot implementations are
@@ -43,7 +44,9 @@ export async function getBotMove(botID: number, data: AiData): Promise<MoveTextO
 export function validBotIds(): number[] {
   // Use the enum to list IDs synchronously. Numeric enums create a reverse
   // mapping (number -> name), so filter values by number.
-  return Object.values(Bot).filter((v) => typeof v === 'number') as number[]
+  // Dazu die KI-Stufen der TAC-App (ab 10, siehe netz/onlineStufen.ts); die
+  // rechnet der Server in einem eigenen Thread, nicht ueber getBotMove.
+  return [...(Object.values(Bot).filter((v) => typeof v === 'number') as number[]), ...ONLINE_STUFEN.map((s) => s.id)]
 }
 
 export function validBotNames(): string[] {

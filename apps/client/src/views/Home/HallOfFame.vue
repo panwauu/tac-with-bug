@@ -45,16 +45,6 @@
         class="player"
       />
     </div>
-    <p>{{ t('HOF.privat') }}</p>
-    <div class="playersContainer">
-      <PlayerWithPicture
-        v-for="p in hofData.family"
-        :key="`Privat-${p}`"
-        :username="p"
-        :name-first="false"
-        class="player"
-      />
-    </div>
   </div>
 </template>
 
@@ -70,14 +60,12 @@ const hofData = reactive({
   verlag: [] as string[],
   spende: [] as string[],
   translation: [] as string[],
-  family: [] as string[],
 })
 
 Service.getHof().then((d) => {
   hofData.verlag = d.verlag
   hofData.spende = d.spende
   hofData.translation = d.translation
-  hofData.family = d.family
 })
 </script>
 
