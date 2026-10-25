@@ -106,6 +106,20 @@ describe('Platform Statistic Test Suite', () => {
     expect(response.body.dayDataset.map((r: any) => r[1]).reduce((a: number, b: number) => a + b)).toBeCloseTo(1, 1)
   })
 
+  test('The heatmap, the day dataset and the hour dataset agree with each other', async () => {
+    // All datasets bucket the dates in the same timezone, so the heatmap of the games adds up to both others
+    const stats = await getPlatformStatistic(testServer.pgPool)
+    const nGames = stats.activityHeatmap.flat().reduce((a, b) => a + b, 0)
+    expect(nGames).toBeGreaterThan(0)
+
+    stats.activityHeatmap.forEach((hours, day) => {
+      expect(hours.reduce((a, b) => a + b, 0) / nGames).toBeCloseTo(stats.dayDataset[day][1], 4)
+    })
+    for (let hour = 0; hour < 24; hour++) {
+      expect(stats.activityHeatmap.reduce((a, hours) => a + hours[hour], 0) / nGames).toBeCloseTo(stats.hourDataset[hour][1], 4)
+    }
+  })
+
   test('Get fun facts', async () => {
     const response = await testAgent.get('/gameApi/getPlatformFunFacts/')
     expect(response.statusCode).toBe(200)

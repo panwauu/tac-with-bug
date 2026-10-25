@@ -127,10 +127,14 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
 }
 
 /**
- * The timezone of the server. The statistics bucket the week and the day of the week in local time and the
- * hour in UTC, as they always did, and the database needs to be told which timezone that is.
+ * Every date of the statistics is bucketed in german local time, like the scheduled jobs (scheduledTasks.ts):
+ * a game played on monday at 00:30 belongs to monday and to the hour 0 in every dataset.
+ *
+ * The week and the day of the week used to be bucketed in the timezone of the server, but the hour and the
+ * heatmap in UTC, so the charts disagreed with each other: the hour was one or two hours off (summer time)
+ * and every game of the first hours of a day was shown on the day before in the heatmap.
  */
-const serverTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+const statisticTimeZone = 'Europe/Berlin'
 
 interface DateBucket {
   kind: 'week' | 'day' | 'hour' | 'heatmap' | 'total'
@@ -142,21 +146,21 @@ interface DateBucket {
 /**
  * Counts the dates of one table per week (a = year of the monday, b = ISO week), per day of the week
  * (a = day, monday is 0), per hour (a = hour) and in total, for the games also per day and hour of the
- * week (a = day, b = hour: the heatmap).
+ * week (a = day, b = hour: the heatmap). All of them in the timezone $1.
  *
  * The rows are counted in the database, so that the result has a few hundred rows instead of one row per
- * user and per game. $1 is the timezone of the server; the hour and the heatmap are in UTC.
+ * user and per game.
  */
 function dateBucketQuery(from: string, column: string, withHeatmap: boolean) {
   return `
-    WITH dates AS MATERIALIZED (SELECT ${column} AT TIME ZONE $1 AS local, ${column} AT TIME ZONE 'UTC' AS utc FROM ${from})
+    WITH dates AS MATERIALIZED (SELECT ${column} AT TIME ZONE $1 AS local FROM ${from})
     SELECT 'week' AS kind, EXTRACT(year FROM date_trunc('week', local))::INT AS a, EXTRACT(week FROM local)::INT AS b, COUNT(*)::INT AS n FROM dates GROUP BY 2, 3
     UNION ALL SELECT 'day', (EXTRACT(dow FROM local)::INT + 6) % 7, NULL, COUNT(*)::INT FROM dates GROUP BY 2
-    UNION ALL SELECT 'hour', EXTRACT(hour FROM utc)::INT, NULL, COUNT(*)::INT FROM dates GROUP BY 2
+    UNION ALL SELECT 'hour', EXTRACT(hour FROM local)::INT, NULL, COUNT(*)::INT FROM dates GROUP BY 2
     UNION ALL SELECT 'total', NULL, NULL, COUNT(*)::INT FROM dates${
       withHeatmap
         ? `
-    UNION ALL SELECT 'heatmap', (EXTRACT(dow FROM utc)::INT + 6) % 7, EXTRACT(hour FROM utc)::INT, COUNT(*)::INT FROM dates GROUP BY 2, 3`
+    UNION ALL SELECT 'heatmap', (EXTRACT(dow FROM local)::INT + 6) % 7, EXTRACT(hour FROM local)::INT, COUNT(*)::INT FROM dates GROUP BY 2, 3`
         : ''
     };`
 }
@@ -176,13 +180,13 @@ const playersPerWeekQuery = `
     FROM users_to_games LEFT JOIN games ON users_to_games.gameid = games.id
   ) AS players GROUP BY year, week;`
 
-// The current week and the current point in it, in the same timezones as the datasets above
+// The current week and the current point in it, in the same timezone as the datasets above
 const nowQuery = `
   SELECT
     EXTRACT(year FROM date_trunc('week', current_timestamp AT TIME ZONE $1))::INT AS year,
     EXTRACT(week FROM current_timestamp AT TIME ZONE $1)::INT AS week,
     (EXTRACT(dow FROM current_timestamp AT TIME ZONE $1)::INT + 6) % 7 AS day_from_monday,
-    EXTRACT(hour FROM current_timestamp AT TIME ZONE 'UTC')::INT AS utc_hour;`
+    EXTRACT(hour FROM current_timestamp AT TIME ZONE $1)::INT AS hour;`
 
 interface WeekCount {
   year: number
@@ -193,7 +197,7 @@ interface NowInWeek {
   year: number
   week: number
   day_from_monday: number
-  utc_hour: number
+  hour: number
 }
 
 function bucketsOf(rows: DateBucket[], kind: DateBucket['kind']) {
@@ -214,7 +218,7 @@ function createWeekDataset(
 ) {
   const weekDataset: WeekDatasetType = {
     data: createWeekDatasetRegular(userBuckets, gameBuckets, playersPerWeek, now),
-    passedRatio: getPassedRatio(now.day_from_monday, now.utc_hour, dayDataset, hourDataset),
+    passedRatio: getPassedRatio(now.day_from_monday, now.hour, dayDataset, hourDataset),
   }
   return weekDataset
 }
@@ -335,11 +339,11 @@ async function createLocaleDataset(pgPool: pg.Pool) {
 export async function calculatePlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
   // The queries do not depend on each other and run at the same time
   const [userBuckets, gameBuckets, playersPerWeek, now, localeDataset, userAgentDataset] = await Promise.all([
-    pgPool.query<DateBucket>(dateBucketQuery('users WHERE activated = true', 'registered', false), [serverTimeZone]),
+    pgPool.query<DateBucket>(dateBucketQuery('users WHERE activated = true', 'registered', false), [statisticTimeZone]),
     // game_results holds exactly the finished games (see init_db_tac.sql), so that the game JSON is not read
-    pgPool.query<DateBucket>(dateBucketQuery('game_results', 'created', true), [serverTimeZone]),
-    pgPool.query<WeekCount>(playersPerWeekQuery, [serverTimeZone]),
-    pgPool.query<NowInWeek>(nowQuery, [serverTimeZone]),
+    pgPool.query<DateBucket>(dateBucketQuery('game_results', 'created', true), [statisticTimeZone]),
+    pgPool.query<WeekCount>(playersPerWeekQuery, [statisticTimeZone]),
+    pgPool.query<NowInWeek>(nowQuery, [statisticTimeZone]),
     createLocaleDataset(pgPool),
     getUserAgentAnalysis(pgPool),
   ])
