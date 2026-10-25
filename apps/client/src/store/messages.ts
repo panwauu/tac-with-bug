@@ -24,6 +24,8 @@ export const useMessagesStore = defineStore('messages', {
     // Lazy loading: only the newest page of messages is loaded initially, older ones are fetched on demand
     hasOlderMessages: false,
     loadingOlderMessages: false,
+    // The channel of the finished game whose rematch lobby is currently open, see setRematchChannel
+    rematchChannel: null as null | string,
   }),
   getters: {
     getRecentChats: (state) => {
@@ -329,6 +331,30 @@ export const useMessagesStore = defineStore('messages', {
         this.channels.push({ id: channel, missedMessages: 0, endDate: endDate ?? null })
       }
     },
+    /**
+     * A rematch lobby chats in the channel of the finished game, so that channel has to stay
+     * available while the lobby is open. A game channel is otherwise only kept alive for
+     * `keepGameChannelAliveTime` after the game ended, which is shorter than a lobby may live.
+     */
+    setRematchChannel(channel: string | null) {
+      if (this.rematchChannel != null && this.rematchChannel !== channel) {
+        const previousChannel = this.channels.find((c) => c.id === this.rematchChannel)
+        if (previousChannel != null) {
+          previousChannel.endDate = Date.now() + keepGameChannelAliveTime
+        }
+      }
+
+      this.rematchChannel = channel
+      if (channel == null) {
+        return
+      }
+
+      this.addChannel(channel)
+      const currentChannel = this.channels.find((c) => c.id === channel)
+      if (currentChannel != null) {
+        currentChannel.endDate = null
+      }
+    },
     removeGameChannels() {
       if (this.channels.some((c) => c.id.startsWith('g-'))) {
         this.channels = this.channels.filter((c) => !c.id.startsWith('g-'))
@@ -359,7 +385,7 @@ export const useMessagesStore = defineStore('messages', {
           .includes(oldRouteGameID)
       ) {
         const channelIndex = this.channels.findIndex((c) => c.id === `g-${oldRouteGameID}`)
-        if (channelIndex !== -1 && this.channels[channelIndex].endDate == null) {
+        if (channelIndex !== -1 && this.channels[channelIndex].endDate == null && this.channels[channelIndex].id !== this.rematchChannel) {
           this.channels.splice(channelIndex, 1)
         }
       }
@@ -421,16 +447,30 @@ nextTick(() => {
   watch(
     () => waitingStore.ownGame?.id,
     (newID) => {
-      if (newID != null) {
-        // Bugfix: Auch beim direkten Wechsel von einem Warteraum in einen
-        // anderen (z. B. Revanche -> neues Spiel) dem neuen Warteraum-Chat
-        // folgen, statt in den allgemeinen Chat zu springen.
-        messagesStore.removeWaitingRoomChannels(`w-${newID.toString()}`)
-        messagesStore.addChannel(`w-${newID.toString()}`)
-        messagesStore.selectChat(true, `w-${newID.toString()}`)
-      } else {
+      if (newID == null) {
+        messagesStore.setRematchChannel(null)
         messagesStore.removeWaitingRoomChannels()
+        return
       }
+
+      // A rematch lobby continues the chat of the finished game instead of opening a channel of
+      // its own. Its messages are therefore still there once the lobby is gone, no matter whether
+      // it was declined, expired or started.
+      const rematchOfGameID = waitingStore.ownGame?.gameid
+      if (rematchOfGameID != null) {
+        messagesStore.removeWaitingRoomChannels()
+        messagesStore.setRematchChannel(`g-${rematchOfGameID.toString()}`)
+        messagesStore.selectChat(true, `g-${rematchOfGameID.toString()}`)
+        return
+      }
+
+      messagesStore.setRematchChannel(null)
+      // Bugfix: Auch beim direkten Wechsel von einem Warteraum in einen
+      // anderen (z. B. Revanche -> neues Spiel) dem neuen Warteraum-Chat
+      // folgen, statt in den allgemeinen Chat zu springen.
+      messagesStore.removeWaitingRoomChannels(`w-${newID.toString()}`)
+      messagesStore.addChannel(`w-${newID.toString()}`)
+      messagesStore.selectChat(true, `w-${newID.toString()}`)
     }
   )
 
