@@ -10,6 +10,10 @@ nextTick(() => {
   waitingStore.initStore()
 })
 
+function countPlayers(game: WaitingGame | null): number {
+  return game?.players.filter((player) => player != null).length ?? 0
+}
+
 export const useWaitingStore = defineStore('waiting', {
   state: () => ({
     games: [] as WaitingGame[],
@@ -29,16 +33,17 @@ export const useWaitingStore = defineStore('waiting', {
 
       const index = this.games.findIndex((g) => username.value != null && g.players.includes(username.value))
       if (index !== -1) {
-        if (
-          this.ownGame != null &&
-          this.ownGame.id === this.games[index].id &&
-          this.ownGame.players.filter((p: string) => p != null).length !== data[index].players.filter((p: string) => p != null).length &&
-          data[index].players.filter((p: string) => p != null).length === data[index].nPlayers
-        ) {
+        const newOwnGame = this.games[index]
+        const nPlayersBefore = countPlayers(this.ownGame)
+        const nPlayersNow = countPlayers(newOwnGame)
+
+        // Only the own game turning full is worth a notification - it may be emitted several times
+        // while other games change, so the number of players has to have changed as well
+        if (this.ownGame?.id === newOwnGame.id && nPlayersBefore !== nPlayersNow && nPlayersNow === newOwnGame.nPlayers) {
           sound.$play('noti')
         }
 
-        this.ownGame = this.games[index]
+        this.ownGame = newOwnGame
         this.games.splice(index, 1)
       } else {
         this.ownGame = null
