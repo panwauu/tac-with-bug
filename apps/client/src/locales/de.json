@@ -96,6 +96,7 @@
     "Landing": "Startseite"
   },
   "Leaders": {
+    "onlyHumans": "Es zählen nur Partien ohne Bots.",
     "wins": "Siege",
     "winshare": "Siegquote",
     "rank": "Rang",

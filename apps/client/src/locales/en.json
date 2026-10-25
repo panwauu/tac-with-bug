@@ -96,6 +96,7 @@
     "Landing": "Home page"
   },
   "Leaders": {
+    "onlyHumans": "Only games without bots count.",
     "wins": "Wins",
     "winshare": "Win Rate",
     "rank": "Rank",
