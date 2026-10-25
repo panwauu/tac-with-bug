@@ -242,8 +242,25 @@ export class Game implements GameData {
       return this.cards.players.every((p) => p.length === 0)
     }
 
+    if (move.length !== 3 && move.length !== 4) {
+      this.logger?.info('Move has invalid length')
+      return false
+    }
+
+    if (!Number.isInteger(move[0]) || move[0] < 0 || move[0] >= this.nPlayers) {
+      this.logger?.info('Player number is not in correct Range')
+      return false
+    }
+
     if (this.tradeFlag) {
-      return move.length === 3 && move[2] === 'tauschen' && move[1] >= 0 && move[1] < this.cards.players[move[0]].length && this.tradedCards[move[0]] == null
+      return (
+        move.length === 3 &&
+        move[2] === 'tauschen' &&
+        Number.isInteger(move[1]) &&
+        move[1] >= 0 &&
+        move[1] < this.cards.players[move[0]].length &&
+        this.tradedCards[move[0]] == null
+      )
     }
 
     if (this.narrFlag.some(Boolean)) {
@@ -255,7 +272,7 @@ export class Game implements GameData {
       return false
     }
 
-    const card = this.cardsWithMoves?.[move[1]]
+    const card = Number.isInteger(move[1]) ? this.cardsWithMoves?.[move[1]] : undefined
     if (card == null) {
       this.logger?.info('Card number is not in correct Range')
       return false
@@ -267,15 +284,13 @@ export class Game implements GameData {
     }
 
     if (move.length === 3) {
-      if (move[2] === '') {
-        this.logger?.info('textAction empty')
+      // textAction may contain several actions joined by '+' -> only an exact match of one of them is a valid move
+      if (!card.textAction.split('+').includes(move[2]) || move[2] === '') {
+        this.logger?.info(move[2] === '' ? 'textAction empty' : 'textAction not allowed')
         return false
       }
-      if (!card.textAction.includes(move[2])) {
-        this.logger?.info('textAction not allowed')
-        return false
-      }
-    } else if (card.ballActions[move[2]] == null || !card.ballActions[move[2]].includes(move[3])) {
+    } else if (!Number.isInteger(move[2]) || !Number.isInteger(move[3]) || card.ballActions[move[2]] == null || !card.ballActions[move[2]].includes(move[3])) {
+      this.logger?.info('ballAction not allowed')
       return false
     }
 
