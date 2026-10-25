@@ -7,6 +7,7 @@
       option-label="name"
       @click="changeTimeFrame()"
     />
+    <p class="onlyHumans">{{ t('Leaders.onlyHumans') }}</p>
     <Tabs value="tac">
       <TabList>
         <Tab value="tac">TAC</Tab>
@@ -322,6 +323,12 @@ function createDateString(seconds: number) {
 </script>
 
 <style scoped>
+.onlyHumans {
+  font-size: 0.85em;
+  opacity: 0.7;
+  margin: 0.5em 0 0 0;
+}
+
 .leaderBoardPage {
   flex: 0 1 800px;
   max-width: 100%;

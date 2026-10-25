@@ -61,26 +61,40 @@ describe('Leaders Test Suite', () => {
     expect(response.body.winshare).toStrictEqual(['100.00', '100.00', '0.00', '0.00'])
   })
 
-  test('Test Winner Leaderboard without hidden accounts', async () => {
-    // External bot accounts can be left out of the wins (users.hidden_from_leaderboard); coop teams stay complete
+  test('Test Leaderboards count only games of humans', async () => {
+    // A game with the account of an external bot (users.bot_account) or a bot of Tac-With-Bug (games.bots) is on no leaderboard
     const query = { offset: 0, limit: 100, startDate: 0, endDate: Date.parse('2020-01-01 22:00:00.000000+01') }
-    await testServer.pgPool.query("UPDATE users SET hidden_from_leaderboard = TRUE WHERE username = 'UserC';")
-    try {
-      let response = await testAgent.get('/gameApi/getWinnerLeaderboard/').query(query).set({ Authorization: userWithCredentials.authHeader })
-      expect(response.statusCode).toBe(200)
-      expect(response.body.nPlayers).toBe('3')
-      expect(response.body.username).toStrictEqual(['UserA', 'UserB', 'UserD'])
-      expect(response.body.wins).toStrictEqual(['1', '0', '0'])
-
-      response = await testAgent
+    const wins = () => testAgent.get('/gameApi/getWinnerLeaderboard/').query(query).set({ Authorization: userWithCredentials.authHeader })
+    const coop = (nPlayers: number) =>
+      testAgent
         .get('/gameApi/getCoopLeaderboard/')
-        .query({ ...query, nPlayers: 4 })
+        .query({ ...query, nPlayers })
         .set({ Authorization: userWithCredentials.authHeader })
+
+    await testServer.pgPool.query("UPDATE users SET bot_account = TRUE WHERE username = 'UserC';")
+    try {
+      const response = await wins()
       expect(response.statusCode).toBe(200)
-      expect(response.body.team[0].sort()).toStrictEqual(['UserA', 'UserB', 'UserC', 'UserD'].sort())
+      expect(response.body.username).toStrictEqual([])
+      expect((await coop(4)).body.team).toStrictEqual([])
+      expect((await coop(6)).body.team).toStrictEqual([])
     } finally {
-      await testServer.pgPool.query("UPDATE users SET hidden_from_leaderboard = FALSE WHERE username = 'UserC';")
+      await testServer.pgPool.query("UPDATE users SET bot_account = FALSE WHERE username = 'UserC';")
     }
+
+    const games = await testServer.pgPool.query('SELECT gameid FROM game_results WHERE created <= $1 AND n_players = 4;', [new Date(query.endDate)])
+    expect(games.rowCount).toBe(2)
+    await testServer.pgPool.query('UPDATE games SET bots[2] = 3 WHERE id = ANY($1);', [games.rows.map((r: any) => r.gameid)])
+    try {
+      expect((await wins()).body.username).toStrictEqual([])
+      expect((await coop(4)).body.team).toStrictEqual([])
+      expect((await coop(6)).body.team).toHaveLength(1)
+    } finally {
+      await testServer.pgPool.query('UPDATE games SET bots[2] = NULL WHERE id = ANY($1);', [games.rows.map((r: any) => r.gameid)])
+    }
+
+    const response = await wins()
+    expect(response.body.username).toStrictEqual(['UserA', 'UserC', 'UserB', 'UserD'])
   })
 
   test('Test Coop-4 Leaderboard', async () => {
