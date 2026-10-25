@@ -275,6 +275,8 @@ function spielerZug(aktion: PerformMoveAction) {
     setTimeout(() => starte('start'), 900)
     return
   }
+  // Mitten in einer 7 ist der Zug noch nicht vorbei (Kugeln rasten erst am Ende ein): erst danach prüfen.
+  if (game.sevenChosenPlayer != null) return
   const tausch = x.id === 's_g12b' && zug[2] === 'tauschen' && (karte === '13' || karte === '1')
   if (tausch || istGeloest(x, game, verlauf)) {
     loese()
