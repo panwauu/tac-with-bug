@@ -83,12 +83,7 @@
       "desktop": "Desktop",
       "others": "Others"
     },
-    "headerUserAgent": "Technical Devices of the Players",
-    "BotWinshare": {
-      "lost": "Lost",
-      "won": "Won"
-    },
-    "headerBotWinshare": "Results of bots"
+    "headerUserAgent": "Technical Devices of the Players"
   },
   "Home": {
     "Spielersuche": "Search Users",

@@ -83,12 +83,7 @@
       "desktop": "Компьютер",
       "others": "Другое"
     },
-    "headerUserAgent": "Технические устройства пользователей",
-    "BotWinshare": {
-      "lost": "Поражение",
-      "won": "Победа"
-    },
-    "headerBotWinshare": "Результаты ботов"
+    "headerUserAgent": "Технические устройства пользователей"
   },
   "Home": {
     "Spielersuche": "Поиск игрока",

@@ -306,13 +306,12 @@ async function createLocaleDataset(pgPool: pg.Pool) {
 
 export async function calculatePlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
   // The queries do not depend on each other and run at the same time
-  const [userRes, activePlayerRes, gameRes, localeDataset, userAgentDataset, botDataset] = await Promise.all([
+  const [userRes, activePlayerRes, gameRes, localeDataset, userAgentDataset] = await Promise.all([
     pgPool.query<{ registered: string }>('SELECT registered FROM users WHERE activated=true;'),
     pgPool.query<{ created: string; userid: number }>('SELECT userid, games.created FROM users_to_games LEFT JOIN games ON users_to_games.gameid=games.id;'),
     pgPool.query<{ created: string }>("SELECT created FROM games WHERE running=FALSE AND (game->'gameEnded')::BOOLEAN=TRUE;"),
     createLocaleDataset(pgPool),
     getUserAgentAnalysis(pgPool),
-    getBotWins(pgPool),
   ])
 
   const hourDataset = createHourDataset(userRes.rows, gameRes.rows)
@@ -320,7 +319,7 @@ export async function calculatePlatformStatistic(pgPool: pg.Pool): Promise<Platf
   const weekDataset = createWeekDataset(userRes.rows, gameRes.rows, activePlayerRes.rows, dayDataset, hourDataset)
   const activityHeatmap = createHeatmapDataset(gameRes.rows)
 
-  return { weekDataset, dayDataset, hourDataset, activityHeatmap, localeDataset, userAgentDataset, botDataset }
+  return { weekDataset, dayDataset, hourDataset, activityHeatmap, localeDataset, userAgentDataset }
 }
 
 function getYearAndNumberOfWeek(date: Date): [number, number] {
@@ -366,31 +365,4 @@ async function getUserAgentAnalysis(pgPool: pg.Pool): Promise<UserAgentAnalysisD
   }
 
   return { deviceTypes, browserNames, osNames }
-}
-
-async function getBotWins(pgPool: pg.Pool) {
-  const res = await pgPool.query<{ total: number; won: number }>(`
-  SELECT 
-    COUNT(*)::INT as total,
-    SUM(won::int)::INT as won
-  FROM (
-    SELECT
-      (
-        SELECT (t2.winningteams->(teamIndex::INTEGER - 1))::BOOLEAN 
-        FROM jsonb_array_elements("teams") with ordinality as t1(team, teamIndex) 
-        WHERE (team->0)::INTEGER = t2.playerIndex OR (team->1)::INTEGER = t2.playerIndex OR (team->2)::INTEGER = t2.playerIndex
-      ) as won
-    FROM (
-      SELECT game->'teams' as teams, game->'winningTeams' as winningteams, playerIndex, created
-      FROM games 
-      CROSS JOIN LATERAL unnest(ARRAY[0,1,2,3,4,5]) as playerIndex 
-      WHERE 
-        playerindex < n_players AND bots[playerIndex + 1] IS NOT NULL 
-        AND running IS FALSE AND (game->'gameEnded')::BOOLEAN
-        AND (game->'coop')::BOOLEAN = FALSE
-        AND (game->'substitutedPlayerIndices' IS NULL OR jsonb_array_length(game->'substitutedPlayerIndices') = 0)
-    ) as t2 
-  ) as t3;`)
-
-  return res.rows[0]
 }
