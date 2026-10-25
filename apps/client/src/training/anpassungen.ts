@@ -3,7 +3,7 @@
 // Spielern; hier zeigt es Oskars Spieloberfläche selbst.
 import type { Lektion, Text, Uebung } from './typen'
 
-type Felder = Partial<Record<'titel' | 'aufgabe' | 'tipp' | 'erfolg', Text>>
+type Felder = Partial<Record<'titel' | 'aufgabe' | 'tipp' | 'erfolg', Text>> & { karten?: string[] }
 
 export const anpassungen: Record<string, Felder> = {
   // Bedienung wie bei Tac-With-Bug: erst die Kugel, dann das Zielfeld; Abwerfen über den roten Knopf.
@@ -47,6 +47,15 @@ export const anpassungen: Record<string, Felder> = {
       de: 'Du hast bereits eine Kugel auf Feld 5. Tippe auf die 1, dann auf eine schwarze Kugel in deinem Vorfeld und danach auf die weiße Projektion auf deinem Startfeld.',
       en: 'You already have a marble on field 5. Tap the 1, then a black marble in your base, and then the white projection on your start field.',
       ru: 'У тебя уже есть шарик на поле 5. Нажми на 1, затем на чёрный шарик в своей базе, а потом на белую проекцию на своём стартовом поле.',
+    },
+  },
+  // Eine 2 als Ablenkung: sie bringt Schwarz auf Feld 47, das liegt nicht auf Rots Weg ins Haus.
+  s_f05b: {
+    karten: ['5', '2', '9', '12'],
+    tipp: {
+      de: 'Rot steht auf Feld 51, drei Felder vor seinem Startfeld. Mit der 4 rückwärts käme Rot direkt ins Haus. Spiele die 5 (45 → 50), um dich direkt hinter Rot zu stellen. So blockierst du die -4! Die 2 hilft nicht: Auf Feld 47 stehst du nicht zwischen Rot und seinem Haus.',
+      en: "Red is on field 51, three fields before its start field. With the 4 backward, Red would go straight into the home. Play the 5 (45 → 50) to position yourself right behind Red. That blocks the -4! The 2 doesn't help: on field 47 you are not between Red and its home.",
+      ru: 'Красный на поле 51, за три поля до своего стартового поля. С 4 назад Красный зашёл бы прямо в дом. Сыграй 5 (45 → 50), чтобы встать прямо за Красным. Так ты перекроешь -4! Двойка не поможет: на поле 47 ты не стоишь между Красным и его домом.',
     },
   },
   s_g12a: {
