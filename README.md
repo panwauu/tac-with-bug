@@ -85,6 +85,12 @@ The AI levels of the TAC app (bot numbers from 10, see `packages/core/src/bot/ne
 
 Every AI move has a deadline of 6 s. Under load the search time per move gets shorter (bots play a bit weaker, not slower); if a move does not arrive in time, Futuro plays instead, so a game never stalls. `GET /zustand` on the AI service shows threads, queue and average waiting and computing time.
 
+# Contributing
+
+Commit messages are not free-form: the subject line of a commit decides how the
+version number is bumped when it reaches `main`. Before you commit, read
+[Commits, Branches and Versioning](./docs/commits-and-versioning.md).
+
 # Moderation
 
 Go to [the swagger documentation](https://tac-with-bug.herokuapp.com/gameapi/api-docs/). Then:

@@ -19,9 +19,7 @@ INSERT INTO users (username, email, password, token, locale, activated, admin) V
 INSERT INTO hof (userid, status) VALUES
     (1, 'verlag'),
     (2, 'spende'),
-    (3, 'translation'),
-    (4, 'family'),
-    (5, 'family');
+    (3, 'translation');
 
 INSERT INTO tournaments (title, status, signup_begin, signup_deadline, creation_dates, creation_phase, time_per_game, n_teams, players_per_team, teams_per_match, tournament_type, data) VALUES
     ('TournamentA', 'ended', '2022-01-01 00:00:00+00', '2022-01-01 00:05:00+00', '{"2022-01-01 00:10:00+00","2022-01-01 00:15:00+00"}', 3, '00:01:00', 4, 2, 2, 'KO', '{"brackets":[[{"score":[0,0],"winner":2,"teams":[2,3],"gameID":3},{"score":[0,0],"winner":0,"teams":[1,0],"gameID":4}],[{"score":[0,0],"winner":2,"teams":[2,0],"gameID":5},{"score":[0,0],"winner":1,"teams":[3,1],"gameID":6}]]}'),

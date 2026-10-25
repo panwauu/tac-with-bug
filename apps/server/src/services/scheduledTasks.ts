@@ -11,6 +11,7 @@ import { sendUpdatesOfGameToPlayers } from '../socket/game'
 import { updateSubscriptions } from '../paypal/paypal'
 import { notifyUsersOfMissedMessages } from './chat'
 import { expireWaitingGames } from '../socket/waiting'
+import { refreshPlatformStatisticCaches } from './platformStatistic'
 
 const jobs: schedule.Job[] = []
 
@@ -45,6 +46,17 @@ export async function registerJobs(sqlClient: pg.Pool) {
     jobs.push(
       schedule.scheduleJob({ rule: '0 */5 * * * *', tz: 'Europe/Berlin' }, async () => {
         await expireWaitingGames(sqlClient)
+      })
+    )
+    jobs.push(
+      // The platform statistics are cached for an hour (see platformStatistic.ts). Calculating them here
+      // keeps the cache warm, so that no visitor of the statistics page has to wait for the calculation.
+      schedule.scheduleJob({ rule: '0 30 * * * *', tz: 'Europe/Berlin' }, async () => {
+        try {
+          await refreshPlatformStatisticCaches(sqlClient)
+        } catch (err) {
+          logger.error('Could not refresh the platform statistics', err)
+        }
       })
     )
     jobs.push(

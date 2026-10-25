@@ -6,14 +6,14 @@
     "buttonPlanMonthly": "Monat",
     "buttonPlanYearly": "Jahr",
     "buttonPlanQuaterly": "Quartal",
-    "headerAdditionalPay": "Ich freue mich natürlich auch über zusätzliche, einmalige Unterstützungen:",
+    "headerAdditionalPay": "Wir freuen uns natürlich auch über zusätzliche, einmalige Unterstützungen:",
     "buttonAdditionalPay": "Zusätzliches Karma",
     "paypalFeeDisclaimer": "% deiner Spende geht an PayPal**",
     "paymentPerTime": "Zahlung einmal im",
     "New": {
-      "successDetail": "Vielen Dank, dass du mich und Tac-With-Bug unterstützt! Genieße deine Vorteile und das zusätzliche Glück.",
+      "successDetail": "Vielen Dank, dass du uns und Tac-With-Bug unterstützt! Genieße deine Vorteile und das zusätzliche Glück.",
       "successSummary": "Abonnement eingetragen",
-      "errorDetail": "Entschuldigung! Beim Verbinden deines Abonnements mit deinem Account ist ein Fehler passiert. Bitte kontaktiere mich über das Impressum.",
+      "errorDetail": "Entschuldigung! Beim Verbinden deines Abonnements mit deinem Account ist ein Fehler passiert. Bitte kontaktiere uns über das Impressum.",
       "errorSummary": "Das hat nicht geklappt!",
       "bookingErrorDetail": "Entschuldigung! Buchen des Abonnements ist etwas schiefgegangen. Versuche es in einem Moment erneut.",
       "bookingErrorSummary": "Das hat nicht geklappt!"
@@ -27,22 +27,36 @@
       "errorSummary": "Das hat nicht geklappt!"
     },
     "aboutMeHeader": "Hallo Tac-Fan,",
-    "aboutMe1": "Ich bin Oskar, 24 Jahre alt und wohne in München. Während meines Maschinenbaustudiums habe ich das Programmieren gelernt. Als neue Herausforderung im November-Lockdown habe ich begonnen, mir das Programmieren von Websiten anzueignen, womit ich vorher noch keine Erfahrungen hatte. Nach einigen Tutorials bin ich gleich über Weihnachten in das Projekt Tac-With-Bug eingestiegen. Seitdem habe ich jede freie Minute neben meiner Arbeit als wissenschaftlicher Mitarbeiter der TU München in diese Website gesteckt.",
-    "aboutMe2": "Zusätzlich zu der ganzen Entwicklungsarbeit fallen auch laufende Kosten an. Eine Website hostet sich leider nicht von selbst. Um diesem Projekt weiter eine Zukunft zu geben, seid jetzt ihr gefragt! Mit eurer Unterstützung ermöglicht ihr mir das Betreiben der Seite und auch langfristig weitere Updates und Verbesserungen auf dem Weg zu Tac-Without-Bug.",
+    "aboutMe1": "Ich bin Oskar und habe Tac-With-Bug während meines Maschinenbaustudiums in München aufgebaut. Als neue Herausforderung im November-Lockdown habe ich begonnen, mir das Programmieren von Websites anzueignen, womit ich vorher noch keine Erfahrungen hatte. Nach einigen Tutorials bin ich gleich über Weihnachten in das Projekt Tac-With-Bug eingestiegen. Neben dem Studium ist seitdem jede freie Minute in diese Website geflossen.",
+    "aboutMe2": "Zusätzlich zu der ganzen Entwicklungsarbeit fallen auch laufende Kosten an. Eine Website hostet sich leider nicht von selbst. Um diesem Projekt weiter eine Zukunft zu geben, seid jetzt ihr gefragt! Mit eurer Unterstützung ermöglicht ihr uns das Betreiben der Seite und auch langfristig weitere Updates und Verbesserungen auf dem Weg zu Tac-Without-Bug.",
     "price": "2€ pro Monat*",
     "featureKarma1": "Karma:",
-    "featureKarma2": "Du hilfst mir meine Fixkosten zu decken und entschädigst mich für all meine Programmierstunden!**",
+    "featureKarma2": "Du hilfst uns die Fixkosten zu decken und entschädigst uns für all unsere Programmierstunden!**",
     "featureLuck": "Glücksgarantie***",
     "nSubscriptions": "Anzahl Sponsoren",
     "becomingSponsor": "Werde Sponsor:",
     "disclaimer1": "*: Das Abonnement kann natürlich jederzeit beendet werden",
-    "disclaimer2": "**: Paypal verlangt leider eine feste Gebühr von etwa 0,35€ pro Transaktion zusätzlich zu einem Prozentsatz von etwa 2,5%. Dies führt dazu, dass bei regelmäßigen, kleinen Zahlungen die Gebühr anteilsmäßig steigt. Es kommt also am meisten deiner Spende tatsächlich bei mir an, wenn du selten aber dafür einen hohen Betrag zahlst.",
+    "disclaimer2": "**: Paypal verlangt leider eine feste Gebühr von etwa 0,35€ pro Transaktion zusätzlich zu einem Prozentsatz von etwa 2,5%. Dies führt dazu, dass bei regelmäßigen, kleinen Zahlungen die Gebühr anteilsmäßig steigt. Es kommt also am meisten deiner Spende tatsächlich bei uns an, wenn du selten aber dafür einen hohen Betrag zahlst.",
     "disclaimer3": "***: Dies bezieht sich selbstverständlich lediglich auf persönliches Glück",
     "disclaimer3Link": "(Mehr Info)",
     "Tag": {
       "sponsor": "Sponsor",
       "sponsorsOnly": "Sponsor werden"
-    }
+    },
+    "handoverHeader": "Wer steckt hinter Tac-With-Bug?",
+    "Timeline": {
+      "oskarDate": "2020 – 2026",
+      "oskarTitle": "Oskar hat Tac-With-Bug aufgebaut",
+      "lorenzDate": "Seit 2026",
+      "lorenzTitle": "Lorenz übernimmt Schritt für Schritt"
+    },
+    "aboutLorenzHeader": "Hey TAC Community,",
+    "aboutLorenz1": "ich bin Lorenz und werde Tac-With-Bug in den nächsten Monaten Schritt für Schritt von Oskar übernehmen. Ich spiele selbst leidenschaftlich gern mit meinen Jungs TAC und habe in letzter Zeit vor allem an einer TAC-App und an Computergegnern für das Spiel gearbeitet.",
+    "aboutLorenz2": "In der Übergangszeit bleibt Oskar dabei: Er schaut sich jede Änderung an, bevor sie online geht. Online spielen bleibt kostenlos, und mit euren Konten und Daten gehe ich genauso sorgsam um wie Oskar bisher.",
+    "aboutLorenz3": "Sendet mir gerne eure Verbesserungsvorschläge, Wünsche oder Anmerkungen und ich schaue, ob sich die umsetzen lassen.",
+    "aboutLorenzSignature": "Viele Grüße, Lorenz",
+    "aboutMe3": "Inzwischen kann ich die Zeit nicht mehr aufbringen und Tac-With-Bug braucht neue Energie.",
+    "aboutMeSignature": "Vielen Dank an alle Tac-Spieler und an den Verlag für die schöne gemeinsame Zeit, Oskar"
   },
   "Stats": {
     "headerTable": "Tac-With-Bug in Zahlen",
@@ -96,6 +110,7 @@
     "Landing": "Startseite"
   },
   "Leaders": {
+    "onlyHumans": "Es zählen nur Partien ohne Bots.",
     "wins": "Siege",
     "winshare": "Siegquote",
     "rank": "Rang",
@@ -933,12 +948,11 @@
   },
   "HOF": {
     "header": "Hall of Fame",
-    "verlag1": "Besonders bedanken möchte ich mich beim ",
+    "verlag1": "Besonders bedanken möchten wir uns beim ",
     "verlagLink": "Tac-Verlag",
-    "verlag2": ", der mir die Entwicklung dieser Seite erlaubt und mich dabei unterstützt hat:",
-    "spende": "Neben all den Sponsoren, die mich mit regelmäßigen unterstützen, habe ich herausragend großzügige Spenden erhalten von:",
-    "lang": "Danke für das Helfen bei den Übersetzungen:",
-    "privat": "Zuletzt noch ein kleines Dankeschön an meine Familie und Freunde, die mich seitdem regelmäßig beraten und es aushalten, dass es kein anderes Thema mehr gibt:"
+    "verlag2": ", der das Projekt Tac-With-Bug unterstützt:",
+    "spende": "Neben all den Sponsoren, die uns regelmäßig unterstützen, haben wir herausragend großzügige Spenden erhalten von:",
+    "lang": "Danke für die Hilfe bei den Übersetzungen:"
   },
   "Friends": {
     "Toast": {

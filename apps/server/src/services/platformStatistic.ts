@@ -11,34 +11,67 @@ import type {
   WeekDatasetDataType,
 } from '../sharedTypes/typesPlatformStatistic'
 
-const cacheDurationFunFactsInMS = 60 * 60e3 // Update once per hour
-let cachedPlatformFunFacts: Promise<{ data: PlatformFunFacts; date: number }> | null = null
+const cacheDurationInMS = 60 * 60e3 // Update once per hour
 
-export async function getPlatformFunFacts(pgPool: pg.Pool): Promise<PlatformFunFacts> {
-  if (cachedPlatformFunFacts == null) {
-    cachedPlatformFunFacts = calculatePlatformFunFacts(pgPool).then((res) => {
-      return { data: res, date: Date.now() }
+/**
+ * Both statistics aggregate the whole platform and are far too expensive to calculate per request.
+ * The result is kept for an hour; the first request after that calculates it again. Requests that
+ * arrive while a calculation is running share it instead of starting a second one.
+ */
+function hourlyCache<T>(calculate: (pgPool: pg.Pool) => Promise<T>) {
+  let cache: Promise<{ data: T; date: number }> | null = null
+
+  async function refresh(pgPool: pg.Pool): Promise<T> {
+    const calculation = calculate(pgPool).then((data) => {
+      return { data, date: Date.now() }
     })
+    cache = calculation
+
+    try {
+      return (await calculation).data
+    } catch (err) {
+      // A failed calculation is not kept, so that the next request tries again
+      if (cache === calculation) {
+        cache = null
+      }
+      throw err
+    }
   }
 
-  let platformFunFacts = await cachedPlatformFunFacts
+  async function get(pgPool: pg.Pool): Promise<T> {
+    const cached = cache
+    if (cached == null) return refresh(pgPool)
 
-  if (Date.now() - platformFunFacts.date > cacheDurationFunFactsInMS) {
-    cachedPlatformFunFacts = calculatePlatformFunFacts(pgPool).then((res) => {
-      return { data: res, date: Date.now() }
-    })
-    platformFunFacts = await cachedPlatformFunFacts
+    const entry = await cached
+    if (Date.now() - entry.date > cacheDurationInMS) return refresh(pgPool)
+    return entry.data
   }
 
-  return platformFunFacts.data
+  return { get, refresh }
+}
+
+const platformFunFactsCache = hourlyCache(calculatePlatformFunFacts)
+const platformStatisticCache = hourlyCache(calculatePlatformStatistic)
+
+export function getPlatformFunFacts(pgPool: pg.Pool): Promise<PlatformFunFacts> {
+  return platformFunFactsCache.get(pgPool)
+}
+
+export function getPlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
+  return platformStatisticCache.get(pgPool)
+}
+
+/** Calculates both statistics and stores them, so that no visitor has to wait for a stale cache. */
+export async function refreshPlatformStatisticCaches(pgPool: pg.Pool) {
+  await Promise.all([platformFunFactsCache.refresh(pgPool), platformStatisticCache.refresh(pgPool)])
 }
 
 export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
-  const dbResUsers = await pgPool.query<{ activated: number; color_blind: number }>(
+  const usersPromise = pgPool.query<{ activated: number; color_blind: number }>(
     'SELECT SUM(CASE WHEN activated=true THEN 1 ELSE 0 END)::int as activated, SUM(CASE WHEN color_blindness_flag=true THEN 1 ELSE 0 END)::int as color_blind FROM users;'
   )
 
-  const gamesRes = await pgPool.query<{
+  const gamesPromise = pgPool.query<{
     games4: number
     games6: number
     gamesteam: number
@@ -69,15 +102,18 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
               FROM jsonb_array_elements(game->'statistic')) as tcards) as playedcards
         FROM games WHERE running=FALSE AND (game->'gameEnded')::BOOLEAN=TRUE) as t;`)
 
-  const tutorialRes = await pgPool.query(`SELECT sum(tutorial)::INT as absolved_tutorial_steps FROM
+  const tutorialPromise = pgPool.query(`SELECT sum(tutorial)::INT as absolved_tutorial_steps FROM
 	(SELECT jsonb_array_elements(tutorial)::BOOLEAN::INT as tutorial FROM
 		(SELECT jsonb_array_elements(tutorial) as tutorial FROM users) as t) as t2;`)
 
-  const friendsRes = await pgPool.query('SELECT COUNT(*)::INT as number_friends FROM friendships WHERE pending_user IS NULL;')
+  const friendsPromise = pgPool.query('SELECT COUNT(*)::INT as number_friends FROM friendships WHERE pending_user IS NULL;')
 
-  const colorsRes = await pgPool.query<{ color: string; count: number }>(
+  const colorsPromise = pgPool.query<{ color: string; count: number }>(
     "SELECT json_array_elements(colors) #>> '{}' as color, COUNT(*)::int FROM games GROUP BY color ORDER BY count DESC;"
   )
+
+  // The queries do not depend on each other and run at the same time
+  const [dbResUsers, gamesRes, tutorialRes, friendsRes, colorsRes] = await Promise.all([usersPromise, gamesPromise, tutorialPromise, friendsPromise, colorsPromise])
 
   return {
     nGames4: gamesRes.rows[0].games4,
@@ -151,18 +187,17 @@ function createWeekDatasetRegular(userRegisterDates: { registered: string }[], g
 }
 
 function addPlayersPerWeek(activePlayerRes: { created: string; userid: number }[], weekDataset: WeekDatasetDataType) {
-  const playersPerWeek: { [key: string]: { [key: string]: number[] } } = {}
+  // A Set per week, as every player of every game is looked up here
+  const playersPerWeek: { [key: string]: { [key: string]: Set<number> } } = {}
   activePlayerRes.forEach((r) => {
     const k = getYearAndNumberOfWeek(new Date(r.created))
     if (!(k[0] in playersPerWeek)) {
       playersPerWeek[k[0]] = {}
     }
     if (!(k[1] in playersPerWeek[k[0]])) {
-      playersPerWeek[k[0]][k[1]] = []
+      playersPerWeek[k[0]][k[1]] = new Set()
     }
-    if (!playersPerWeek[k[0]][k[1]].includes(r.userid)) {
-      playersPerWeek[k[0]][k[1]].push(r.userid)
-    }
+    playersPerWeek[k[0]][k[1]].add(r.userid)
   })
   for (const year in playersPerWeek) {
     for (const week in playersPerWeek[year]) {
@@ -172,7 +207,7 @@ function addPlayersPerWeek(activePlayerRes: { created: string; userid: number }[
       if (!(week in weekDataset[year])) {
         weekDataset[year][week] = [0, 0, 0]
       }
-      weekDataset[year][week][2] = playersPerWeek[year][week].length
+      weekDataset[year][week][2] = playersPerWeek[year][week].size
     }
   }
 }
@@ -269,20 +304,21 @@ async function createLocaleDataset(pgPool: pg.Pool) {
   return localeDataset
 }
 
-export async function getPlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
-  const userRes = await pgPool.query<{ registered: string }>('SELECT registered FROM users WHERE activated=true;')
-  const activePlayerRes = await pgPool.query<{ created: string; userid: number }>(
-    'SELECT userid, games.created FROM users_to_games LEFT JOIN games ON users_to_games.gameid=games.id;'
-  )
-  const gameRes = await pgPool.query<{ created: string }>("SELECT created FROM games WHERE running=FALSE AND (game->'gameEnded')::BOOLEAN=TRUE;")
+export async function calculatePlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
+  // The queries do not depend on each other and run at the same time
+  const [userRes, activePlayerRes, gameRes, localeDataset, userAgentDataset, botDataset] = await Promise.all([
+    pgPool.query<{ registered: string }>('SELECT registered FROM users WHERE activated=true;'),
+    pgPool.query<{ created: string; userid: number }>('SELECT userid, games.created FROM users_to_games LEFT JOIN games ON users_to_games.gameid=games.id;'),
+    pgPool.query<{ created: string }>("SELECT created FROM games WHERE running=FALSE AND (game->'gameEnded')::BOOLEAN=TRUE;"),
+    createLocaleDataset(pgPool),
+    getUserAgentAnalysis(pgPool),
+    getBotWins(pgPool),
+  ])
 
   const hourDataset = createHourDataset(userRes.rows, gameRes.rows)
   const dayDataset = createDayDataset(userRes.rows, gameRes.rows)
   const weekDataset = createWeekDataset(userRes.rows, gameRes.rows, activePlayerRes.rows, dayDataset, hourDataset)
   const activityHeatmap = createHeatmapDataset(gameRes.rows)
-  const localeDataset = await createLocaleDataset(pgPool)
-  const userAgentDataset = await getUserAgentAnalysis(pgPool)
-  const botDataset = await getBotWins(pgPool)
 
   return { weekDataset, dayDataset, hourDataset, activityHeatmap, localeDataset, userAgentDataset, botDataset }
 }
