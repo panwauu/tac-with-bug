@@ -56,8 +56,18 @@
     >
       <div class="chatBodyMessagesInner">
         <div
-          v-for="(messageGroup, messageGroupIndex) in messagesStore.getDateGroupedChatMessages"
-          :key="`chatGroup-${messageGroupIndex}`"
+          v-if="messagesStore.hasOlderMessages"
+          ref="loadOlderMessagesRef"
+          class="loadOlderMessages"
+        >
+          <i
+            class="pi pi-spinner pi-spin"
+            :aria-label="t('Chat.loadingOlderMessages')"
+          />
+        </div>
+        <div
+          v-for="messageGroup in messagesStore.getDateGroupedChatMessages"
+          :key="`chatGroup-${messageGroup.date}`"
         >
           <div class="chatMessagesDate">
             <div class="chatMessagesDateInner">{{ beautifyDate(messageGroup.date) }}</div>
@@ -65,7 +75,7 @@
           <TransitionGroup name="chatmessage">
             <div
               v-for="(message, messageIndex) in messageGroup.messages"
-              :key="`message-${String(messageIndex)}`"
+              :key="`message-${String(message.id)}`"
               :class="[
                 'chatMessageContainer',
                 message.sender === username ? 'chatMessageContOwn' : 'chatMessageContFor',
@@ -200,11 +210,11 @@ import Badge from 'primevue/badge'
 import BlockedByModerationMessage from '@/components/BlockedByModerationMessage.vue'
 import InputGroup from 'primevue/inputgroup'
 
-import { useScroll } from '@vueuse/core'
+import { useIntersectionObserver, useScroll } from '@vueuse/core'
 import { useChatStore } from '@/store/chat'
 import { useMessagesStore, formatChannelName } from '@/store/messages'
 import { isLoggedIn, username } from '@/services/useUser'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { currentLocale } from '@/services/i18n'
 import { useSettingsStore } from '@/store/settings'
 import type { ChatMessage } from '../../../../server/src/sharedTypes/chat'
@@ -269,6 +279,27 @@ const { y } = useScroll(chatBodyMessagesRef)
 function scrollDown() {
   chatBodyMessagesRef.value?.scroll(0, 0)
 }
+
+// Lazy loading: load the next page of older messages as soon as the top of the message list becomes visible.
+// The list is rendered with 'column-reverse', therefore prepended messages do not move the current scroll position.
+const loadOlderMessagesRef = ref<null | HTMLElement>()
+const loadOlderMessagesVisible = ref(false)
+useIntersectionObserver(
+  loadOlderMessagesRef,
+  ([entry]) => {
+    loadOlderMessagesVisible.value = entry?.isIntersecting ?? false
+  },
+  { root: chatBodyMessagesRef }
+)
+watch(
+  [loadOlderMessagesVisible, () => messagesStore.loadingOlderMessages, () => messagesStore.hasOlderMessages],
+  () => {
+    if (loadOlderMessagesVisible.value && !messagesStore.loadingOlderMessages && messagesStore.hasOlderMessages) {
+      messagesStore.loadOlderMessages()
+    }
+  },
+  { flush: 'post' }
+)
 </script>
 
 <style scoped>
@@ -313,6 +344,12 @@ function scrollDown() {
 
 .chatBodyMessagesInner {
   margin-bottom: auto;
+}
+
+.loadOlderMessages {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0px;
 }
 
 .chatMessageContainer {

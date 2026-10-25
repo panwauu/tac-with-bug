@@ -344,7 +344,8 @@
       "today": "Today",
       "yesterday": "Yesterday"
     },
-    "onlyAdminsOverlay": "In this channel only admins are allowed to post"
+    "onlyAdminsOverlay": "In this channel only admins are allowed to post",
+    "loadingOlderMessages": "Loading older messages"
   },
   "Game": {
     "viewerModeText": "You are in spectator mode. So you don't see any cards! You can read the game chat but you cannot send messages in it.",

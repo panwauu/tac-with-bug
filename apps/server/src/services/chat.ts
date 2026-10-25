@@ -1,8 +1,9 @@
 import type pg from 'pg'
-import type { ChatElement, ChatMessage } from '../sharedTypes/chat'
+import type { ChatElement, ChatMessagePage } from '../sharedTypes/chat'
 
 import { err, ok, Result } from 'neverthrow'
-import { maxUsersInChat } from '../sharedDefinitions/chat'
+import { maxUsersInChat, numberOfMessagesPerLoad } from '../sharedDefinitions/chat'
+import { buildMessagePage } from './chatPagination'
 import { sendUnreadMessagesReminder } from '../communicationUtils/email'
 
 export async function sanitizeChatDatabase(pgPool: pg.Pool) {
@@ -112,7 +113,8 @@ export async function markChatAsRead(pgPool: pg.Pool, userid: number, chatid: nu
 }
 
 export type LoadChatError = 'USER_NOT_PART_OF_CHAT'
-export async function loadChat(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<ChatMessage[], LoadChatError>> {
+/** Loads one page of messages. If `beforeMessageId` is given, only older messages are returned. */
+export async function loadChat(pgPool: pg.Pool, userid: number, chatid: number, beforeMessageId?: number): Promise<Result<ChatMessagePage, LoadChatError>> {
   const usersInChat = await getUsersInChat(pgPool, chatid)
   if (!usersInChat.includes(userid)) {
     return err('USER_NOT_PART_OF_CHAT')
@@ -124,12 +126,12 @@ export async function loadChat(pgPool: pg.Pool, userid: number, chatid: number):
         chat_messages.id, chat_messages.body, chat_messages.created, users.username as sender
       FROM chat_messages 
         LEFT JOIN users ON users.id = chat_messages.sender
-      WHERE chat_messages.chatid=$1 ORDER BY id DESC LIMIT 200
+      WHERE chat_messages.chatid=$1 AND ($2::INT IS NULL OR chat_messages.id < $2::INT) ORDER BY id DESC LIMIT $3
     ) sub ORDER BY id ASC;`,
-    [chatid]
+    [chatid, beforeMessageId ?? null, numberOfMessagesPerLoad + 1]
   )
 
-  return ok(res.rows)
+  return ok(buildMessagePage(res.rows))
 }
 
 export async function loadChatOverview(pgPool: pg.Pool, userid: number): Promise<ChatElement[]> {

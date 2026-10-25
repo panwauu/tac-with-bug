@@ -21,6 +21,9 @@ export const useMessagesStore = defineStore('messages', {
     expandedChats: [false, false, true],
     selectedChat: { type: 'channel' as 'channel' | 'chat', id: 'general' },
     chatMessages: [] as ChatMessage[],
+    // Lazy loading: only the newest page of messages is loaded initially, older ones are fetched on demand
+    hasOlderMessages: false,
+    loadingOlderMessages: false,
   }),
   getters: {
     getRecentChats: (state) => {
@@ -177,20 +180,51 @@ export const useMessagesStore = defineStore('messages', {
     },
     loadChatMessages() {
       this.chatMessages = []
+      this.hasOlderMessages = false
+      this.loadingOlderMessages = false
+
+      const requestedChat = chatKey(this.selectedChat)
       if (this.selectedChat.type === 'chat') {
         this.$state.socket.emitWithAck(20000, 'chat:singleChat:load', { chatid: Number.parseInt(this.selectedChat.id) }).then((data) => {
-          if (data.data == null) {
+          if (data.data == null || chatKey(this.selectedChat) !== requestedChat) {
             return
           }
-          this.handleSingleChatUpdate(data.data.chatid, data.data.messages)
+          this.chatMessages = data.data.messages
+          this.hasOlderMessages = data.data.hasOlderMessages
         })
       } else {
         this.$state.socket.emitWithAck(20000, 'channel:load', { channel: this.selectedChat.id }).then((data) => {
-          if (data.data == null) {
+          if (data.data == null || chatKey(this.selectedChat) !== requestedChat) {
             return
           }
-          this.handleChannelUpdate(data.data.channel, data.data.messages)
+          this.chatMessages = data.data.messages
+          this.hasOlderMessages = data.data.hasOlderMessages
         })
+      }
+    },
+    /** Prepends the page of messages that precedes the oldest currently loaded one. */
+    async loadOlderMessages() {
+      if (this.loadingOlderMessages || !this.hasOlderMessages || this.chatMessages.length === 0) {
+        return
+      }
+
+      const requestedChat = chatKey(this.selectedChat)
+      const beforeMessageId = this.chatMessages[0].id
+      this.loadingOlderMessages = true
+      try {
+        const data =
+          this.selectedChat.type === 'chat'
+            ? await this.$state.socket.emitWithAck(20000, 'chat:singleChat:load', { chatid: Number.parseInt(this.selectedChat.id), beforeMessageId })
+            : await this.$state.socket.emitWithAck(20000, 'channel:load', { channel: this.selectedChat.id, beforeMessageId })
+        if (data.data == null || chatKey(this.selectedChat) !== requestedChat) {
+          return
+        }
+        this.chatMessages = mergeMessages(this.chatMessages, data.data.messages)
+        this.hasOlderMessages = data.data.hasOlderMessages
+      } finally {
+        if (chatKey(this.selectedChat) === requestedChat) {
+          this.loadingOlderMessages = false
+        }
       }
     },
     async handleOverviewUpdate(overview: ChatElement[]) {
@@ -207,7 +241,8 @@ export const useMessagesStore = defineStore('messages', {
     },
     handleSingleChatUpdate(chatid: number, messages: ChatMessage[]) {
       if (this.selectedChat.type === 'chat' && chatid === Number.parseInt(this.selectedChat.id)) {
-        this.chatMessages = messages
+        // Merge instead of replace, as an update only contains the newest page of messages
+        this.chatMessages = mergeMessages(this.chatMessages, messages)
       }
     },
     handleChannelUpdate(channel: string, messages: ChatMessage[], updateFromServer?: boolean) {
@@ -224,7 +259,8 @@ export const useMessagesStore = defineStore('messages', {
       }
 
       if (this.selectedChat.type === 'channel' && this.selectedChat.id === channel) {
-        this.chatMessages = messages
+        // Merge instead of replace, as an update only contains the newest page of messages
+        this.chatMessages = mergeMessages(this.chatMessages, messages)
       }
     },
     expandChatGroup(index: number) {
@@ -417,6 +453,17 @@ nextTick(() => {
     { deep: true }
   )
 })
+
+function chatKey(selectedChat: { type: 'channel' | 'chat'; id: string }) {
+  return `${selectedChat.type}-${selectedChat.id}`
+}
+
+/** Combines both lists into one list without duplicates, sorted from oldest to newest message. */
+function mergeMessages(loadedMessages: ChatMessage[], newMessages: ChatMessage[]) {
+  const messagesById = new Map(loadedMessages.map((m) => [m.id, m]))
+  newMessages.forEach((m) => messagesById.set(m.id, m))
+  return [...messagesById.values()].sort((a, b) => a.id - b.id)
+}
 
 export function formatChannelName(channelName: string, isChannel: boolean) {
   if (isChannel && channelName.startsWith('g-')) {

@@ -1,6 +1,7 @@
 import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
 import { Chance } from 'chance'
+import { numberOfMessagesPerLoad } from '../sharedDefinitions/chat'
 import type { GeneralSocketC } from '../test/socket'
 const chance = Chance()
 
@@ -160,6 +161,35 @@ describe('Test Suite via Socket.io', () => {
       expect(res.data?.messages.length).toBe(1)
       expect(res.data?.messages[0].body).toBe('test')
       expect(res.data?.messages[0].sender).toBe('UserA')
+    })
+
+    test('Should load the chat lazily in pages', async () => {
+      for (let i = 0; i < numberOfMessagesPerLoad; i++) {
+        const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:sendMessage', { chatid, body: `lazy-${i}` })
+        expect(res.status).toBe(200)
+      }
+
+      const newestPage = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:singleChat:load', { chatid })
+      expect(newestPage.status).toBe(200)
+      expect(newestPage.data?.messages).toHaveLength(numberOfMessagesPerLoad)
+      expect(newestPage.data?.hasOlderMessages).toBe(true)
+      expect(newestPage.data?.messages.at(-1)?.body).toBe(`lazy-${numberOfMessagesPerLoad - 1}`)
+
+      const olderPage = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:singleChat:load', { chatid, beforeMessageId: newestPage.data?.messages[0].id })
+      expect(olderPage.status).toBe(200)
+      expect(olderPage.data?.messages).toHaveLength(1)
+      expect(olderPage.data?.hasOlderMessages).toBe(false)
+      expect(olderPage.data?.messages[0].body).toBe('test')
+
+      const beyondOldestPage = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:singleChat:load', { chatid, beforeMessageId: olderPage.data?.messages[0].id })
+      expect(beyondOldestPage.status).toBe(200)
+      expect(beyondOldestPage.data?.messages).toHaveLength(0)
+      expect(beyondOldestPage.data?.hasOlderMessages).toBe(false)
+    })
+
+    test('Should not load the chat with an invalid beforeMessageId', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'chat:singleChat:load', { chatid, beforeMessageId: 'invalid' } as any)
+      expect(res.status).toBe(500)
     })
 
     test('Should not add user to private Chat', async () => {

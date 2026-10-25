@@ -1,6 +1,7 @@
 import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { closeSockets } from '../test/handleSocket'
 import type { GeneralSocketC } from '../test/socket'
+import { numberOfMessagesPerLoad } from '../sharedDefinitions/chat'
 
 describe('Channel test suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[], socket: GeneralSocketC
@@ -59,8 +60,33 @@ describe('Channel test suite via socket.io', () => {
       const results = await Promise.all(promises)
       for (let i = 0; i < results.length; i++) {
         expect(results[i].channel).toBe('general')
-        expect(results[i].messages).toHaveLength(nMessagesBefore + 1)
+        expect(results[i].messages).toHaveLength(Math.min(nMessagesBefore + 1, numberOfMessagesPerLoad))
       }
+    })
+
+    test('Should load the channel lazily in pages', async () => {
+      const channel = `test-${Date.now()}`
+      for (let i = 0; i < numberOfMessagesPerLoad + 1; i++) {
+        const res = await usersWithSockets[0].socket.emitWithAck(5000, 'channel:sendMessage', { channel, body: `lazy-${i}` })
+        expect(res.status).toBe(200)
+      }
+
+      const newestPage = await usersWithSockets[0].socket.emitWithAck(5000, 'channel:load', { channel })
+      expect(newestPage.status).toBe(200)
+      expect(newestPage.data?.messages).toHaveLength(numberOfMessagesPerLoad)
+      expect(newestPage.data?.hasOlderMessages).toBe(true)
+      expect(newestPage.data?.messages.at(-1)?.body).toBe(`lazy-${numberOfMessagesPerLoad}`)
+
+      const olderPage = await usersWithSockets[0].socket.emitWithAck(5000, 'channel:load', { channel, beforeMessageId: newestPage.data?.messages[0].id })
+      expect(olderPage.status).toBe(200)
+      expect(olderPage.data?.messages).toHaveLength(1)
+      expect(olderPage.data?.hasOlderMessages).toBe(false)
+      expect(olderPage.data?.messages[0].body).toBe('lazy-0')
+    })
+
+    test('Should not load the channel with an invalid beforeMessageId', async () => {
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'channel:load', { channel: 'general', beforeMessageId: 'invalid' } as any)
+      expect(res.status).toBe(500)
     })
   })
 })

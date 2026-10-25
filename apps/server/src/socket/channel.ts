@@ -25,17 +25,17 @@ export function registerChannelHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     if (socket.data.blockedByModeration === true) return cb({ status: 400, error: 'BlockedByModeration' })
 
     await addChannelMessage(pgPool, socket.data.userID, data.body.trim(), data.channel)
-    const messages = await getChannelMessages(pgPool, data.channel)
-    nspGeneral.emit('channel:update', { channel: data.channel, messages })
+    const page = await getChannelMessages(pgPool, data.channel)
+    nspGeneral.emit('channel:update', { channel: data.channel, messages: page.messages })
     return cb({ status: 200 })
   })
 
   socket.on('channel:load', async (data, cb) => {
-    const schema = Joi.object({ channel: Joi.string().required() })
+    const schema = Joi.object({ channel: Joi.string().required(), beforeMessageId: Joi.number().min(0) })
     const { error } = schema.validate(data)
     if (error != null) return cb({ status: 500, error: error })
 
-    const messages = await getChannelMessages(pgPool, data.channel)
-    return cb({ status: 200, data: { channel: data.channel, messages } })
+    const page = await getChannelMessages(pgPool, data.channel, data.beforeMessageId)
+    return cb({ status: 200, data: { channel: data.channel, ...page } })
   })
 }
