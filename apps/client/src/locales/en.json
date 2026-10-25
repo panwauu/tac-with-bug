@@ -6,14 +6,14 @@
     "buttonPlanMonthly": "month",
     "buttonPlanYearly": "year",
     "buttonPlanQuaterly": "quarter",
-    "headerAdditionalPay": "Of course, I am also looking forward to additional, one-time support:",
+    "headerAdditionalPay": "Of course, we are also looking forward to additional, one-time support:",
     "buttonAdditionalPay": "Additional karma",
     "paypalFeeDisclaimer": "% of your donation goes to PayPal **",
     "paymentPerTime": "Payment once in",
     "New": {
-      "successDetail": "Thank you for supporting me and Tac-With-Bug! Enjoy your advantages and the extra luck.",
+      "successDetail": "Thank you for supporting us and Tac-With-Bug! Enjoy your advantages and the extra luck.",
       "successSummary": "Subscription registered",
-      "errorDetail": "Sorry! An error occurred while connecting your subscription to your account. Please contact me via the imprint.",
+      "errorDetail": "Sorry! An error occurred while connecting your subscription to your account. Please contact us via the imprint.",
       "errorSummary": "That didn`t work!",
       "bookingErrorDetail": "Sorry! Something went wrong booking the subscription. Try again in a moment.",
       "bookingErrorSummary": "That didn`t work!"
@@ -27,22 +27,36 @@
       "errorSummary": "That didn`t work!"
     },
     "aboutMeHeader": "Hello Tac-Fan,",
-    "aboutMe1": "I'm Oskar, 24 years old and live in Munich. I learned programming during my mechanical engineering degree. As a new challenge in the November lockdown, I started to learn how to program websites, something I had no experience with before. After a few tutorials, I started the Tac-With-Bug project over Christmas. Since then, I have put every free minute into this website alongside my work as a research assistant at the Technical University of Munich.",
-    "aboutMe2": "In addition to the entire development work, there are also running costs. Unfortunately, a website does not host itself. In order to give this project a future, you are now asked! With your support you will enable me to operate the site and also in the long term to make further updates and improvements on the way to Tac-Without-Bug.",
+    "aboutMe1": "I'm Oskar and I built Tac-With-Bug during my mechanical engineering studies in Munich. As a new challenge in the November lockdown, I started to learn how to program websites, something I had no experience with before. After a few tutorials, I started the Tac-With-Bug project over Christmas. Alongside my studies, every free minute has gone into this website ever since.",
+    "aboutMe2": "In addition to all the development work, there are also running costs. Unfortunately, a website does not host itself. To give this project a future, we now need you! With your support you enable us to run the site and, in the long term, to keep making updates and improvements on the way to Tac-Without-Bug.",
     "price": "€ 2 per month *",
     "featureKarma1": "Karma:",
-    "featureKarma2": "You help me to cover my fixed costs and compensate me for all my programming hours!",
+    "featureKarma2": "You help us to cover the fixed costs and compensate us for all our programming hours!",
     "featureLuck": "Happiness guarantee**",
     "nSubscriptions": "Number of sponsors",
     "becomingSponsor": "Become a sponsor:",
     "disclaimer1": "*: The subscription can of course be terminated at any time",
-    "disclaimer2": "**: PayPal unfortunately requires a fixed fee of around € 0.35 per transaction in addition to a percentage of around 2.5%. As a result, the fee increases proportionally for regular, small payments. So most of your donation actually reaches me if you rarely pay a large amount for it.",
+    "disclaimer2": "**: PayPal unfortunately requires a fixed fee of around € 0.35 per transaction in addition to a percentage of around 2.5%. As a result, the fee increases proportionally for regular, small payments. So most of your donation actually reaches us if you rarely pay a large amount for it.",
     "disclaimer3": "***: Of course, this only refers to personal happiness",
     "disclaimer3Link": "(More info)",
     "Tag": {
       "sponsor": "Sponsor",
       "sponsorsOnly": "Sponsors only"
-    }
+    },
+    "handoverHeader": "Who is behind Tac-With-Bug?",
+    "Timeline": {
+      "oskarDate": "2020 – 2026",
+      "oskarTitle": "Oskar built Tac-With-Bug",
+      "lorenzDate": "Since 2026",
+      "lorenzTitle": "Lorenz takes over step by step"
+    },
+    "aboutLorenzHeader": "Hey TAC community,",
+    "aboutLorenz1": "I'm Lorenz and over the next few months I will step by step take over Tac-With-Bug from Oskar. I love playing TAC with my friends myself and have recently been working mainly on a TAC app and on computer opponents for the game.",
+    "aboutLorenz2": "During the transition Oskar stays on board: he reviews every change before it goes live. Playing online stays free, and I will treat your accounts and data just as carefully as Oskar has so far.",
+    "aboutLorenz3": "Feel free to send me your suggestions, wishes or remarks and I will see whether they can be implemented.",
+    "aboutLorenzSignature": "Best regards, Lorenz",
+    "aboutMe3": "By now I can no longer find the time, and Tac-With-Bug needs fresh energy.",
+    "aboutMeSignature": "Thank you to all TAC players and to the publisher for the wonderful time together, Oskar"
   },
   "Stats": {
     "headerTable": "Tac-With-Bug in Numbers",

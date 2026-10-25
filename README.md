@@ -76,6 +76,12 @@ cd client
 npm run dev
 ```
 
+# Contributing
+
+Commit messages are not free-form: the subject line of a commit decides how the
+version number is bumped when it reaches `main`. Before you commit, read
+[Commits, Branches and Versioning](./docs/commits-and-versioning.md).
+
 # Moderation
 
 Go to [the swagger documentation](https://tac-with-bug.herokuapp.com/gameapi/api-docs/). Then:
