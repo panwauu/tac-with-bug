@@ -424,6 +424,8 @@
     "EndedOverlay": {
       "statistic": "Statistik",
       "backButton": "Zurück",
+      "hideButton": "Spielende ausblenden",
+      "showButton": "Spielende anzeigen",
       "wonInX": "Ihr habt in {X} Zügen gewonnen!",
       "aborted": "Das Spiel wurde abgebrochen",
       "wonWith": "Du hast mit {players} gewonnen!",

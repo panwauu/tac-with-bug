@@ -424,6 +424,8 @@
     "EndedOverlay": {
       "statistic": "Statistics",
       "backButton": "Back",
+      "hideButton": "Hide game result",
+      "showButton": "Show game result",
       "wonInX": "You won {X} moves!",
       "aborted": "The game was canceled",
       "wonWith": "You won with {players}!",

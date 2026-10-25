@@ -424,6 +424,8 @@
     "EndedOverlay": {
       "statistic": "Статистика",
       "backButton": "Назад",
+      "hideButton": "Скрыть результат игры",
+      "showButton": "Показать результат игры",
       "wonInX": "Вы выиграли за: {X} ходов!",
       "aborted": "Игра была отменена",
       "wonWith": "Вы выиграли с {players}!",

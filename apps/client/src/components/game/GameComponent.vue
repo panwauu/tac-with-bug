@@ -71,6 +71,7 @@
               severity="warn"
               class="landscapeMenuButton"
               rounded
+              :disabled="gameEnded"
               :class="updateData?.substitution != null ? 'blink-animation' : ''"
               @click="openModal('substitution')"
             />
@@ -106,7 +107,7 @@
           />
         </div>
         <div
-          v-if="!miscState.viewerMode"
+          v-if="!miscState.viewerMode && !gameEnded"
           class="instructions p-card"
         >
           <div
@@ -133,10 +134,18 @@
       </div>
     </div>
     <div
-      v-if="!miscState.gameRunning && !miscState.viewerMode"
+      v-if="endedOverlayVisible"
       class="endedOverlay"
     >
       <div class="endedCard p-card">
+        <Button
+          class="endedHideButton"
+          icon="pi pi-times"
+          rounded
+          text
+          :aria-label="t('Game.EndedOverlay.hideButton')"
+          @click="endedOverlayHidden = true"
+        />
         <div class="endedText">{{ miscState.gameEndedText }}</div>
         <Button
           class="endedButton"
@@ -175,6 +184,15 @@
         </Fieldset>
       </div>
     </div>
+
+    <Button
+      v-if="gameEnded && endedOverlayHidden"
+      class="endedShowButton"
+      icon="pi pi-flag"
+      rounded
+      :aria-label="t('Game.EndedOverlay.showButton')"
+      @click="endedOverlayHidden = false"
+    />
 
     <Dialog
       v-model:visible="modalVisibleLocal"
@@ -361,6 +379,14 @@ function getMenu(displayText: boolean) {
   ]
 }
 
+const gameEnded = computed(() => !props.miscState.gameRunning && !props.miscState.viewerMode)
+const endedOverlayHidden = ref(false)
+const endedOverlayVisible = computed(() => gameEnded.value && !endedOverlayHidden.value)
+
+watch(gameEnded, (ended) => {
+  if (!ended) endedOverlayHidden.value = false
+})
+
 const gameBoardPortrait = ref(false)
 const gameViewRef = ref<HTMLElement | null>()
 
@@ -480,6 +506,18 @@ function onResize() {
   max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.endedHideButton {
+  align-self: flex-end;
+  margin: -10px -10px 0 0;
+}
+
+.endedShowButton {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 1000;
 }
 
 .endedText {
