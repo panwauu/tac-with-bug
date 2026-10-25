@@ -71,6 +71,7 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
     'SELECT SUM(CASE WHEN activated=true THEN 1 ELSE 0 END)::int as activated, SUM(CASE WHEN color_blindness_flag=true THEN 1 ELSE 0 END)::int as color_blind FROM users;'
   )
 
+  // game_results holds one short row per finished game (see init_db_tac.sql), so that the game JSON is not read
   const gamesPromise = pgPool.query<{
     games4: number
     games6: number
@@ -82,25 +83,17 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
     fastest_game: number
     longest_game: number
   }>(`
-    SELECT 
-        CAST(sum(games4flag) as INT) as games4,
-        CAST(sum(games6flag) as INT) as games6,
-        CAST(sum(gamesteamflag) as INT) as gamesteam,
-        CAST(min(CASE WHEN gamesteamflag = 1 THEN playedcards ELSE NULL END) as INTEGER) as teammincards,
-		CAST(avg(CASE WHEN gamesteamflag = 1 THEN playedcards ELSE NULL END) as INTEGER) as teamavgcards,
-		CAST(max(CASE WHEN gamesteamflag = 1 THEN playedcards ELSE NULL END) as INTEGER) as teammaxcards,
-        EXTRACT(epoch FROM avg(gameDuration))::INT as average_game_duration,
-        EXTRACT(epoch FROM min(gameDuration))::INT as fastest_game,
-        EXTRACT(epoch FROM max(gameDuration))::INT as longest_game
-    FROM
-        (SELECT 
-            CASE WHEN n_players = 4 THEN 1 ELSE 0 END as games4flag,
-            CASE WHEN n_players = 6 THEN 1 ELSE 0 END as games6flag,
-            CASE WHEN CAST(game->>'coop' AS BOOLEAN) = true THEN 1 ELSE 0 END as gamesteamflag,
-            lastplayed - created as gameDuration,
-            (SELECT SUM(cards) FROM (SELECT CAST(jsonb_extract_path(value, 'cards', 'total', '0') AS INTEGER) as cards 
-              FROM jsonb_array_elements(game->'statistic')) as tcards) as playedcards
-        FROM games WHERE running=FALSE AND (game->'gameEnded')::BOOLEAN=TRUE) as t;`)
+    SELECT
+        COUNT(*) FILTER (WHERE n_players = 4)::INT as games4,
+        COUNT(*) FILTER (WHERE n_players = 6)::INT as games6,
+        COUNT(*) FILTER (WHERE coop)::INT as gamesteam,
+        CAST(MIN(cards) FILTER (WHERE coop) AS INTEGER) as teammincards,
+        CAST(AVG(cards) FILTER (WHERE coop) AS INTEGER) as teamavgcards,
+        CAST(MAX(cards) FILTER (WHERE coop) AS INTEGER) as teammaxcards,
+        EXTRACT(epoch FROM AVG(lastplayed - created))::INT as average_game_duration,
+        EXTRACT(epoch FROM MIN(lastplayed - created))::INT as fastest_game,
+        EXTRACT(epoch FROM MAX(lastplayed - created))::INT as longest_game
+    FROM game_results;`)
 
   const tutorialPromise = pgPool.query(`SELECT sum(tutorial)::INT as absolved_tutorial_steps FROM
 	(SELECT jsonb_array_elements(tutorial)::BOOLEAN::INT as tutorial FROM
@@ -309,7 +302,8 @@ export async function calculatePlatformStatistic(pgPool: pg.Pool): Promise<Platf
   const [userRes, activePlayerRes, gameRes, localeDataset, userAgentDataset] = await Promise.all([
     pgPool.query<{ registered: string }>('SELECT registered FROM users WHERE activated=true;'),
     pgPool.query<{ created: string; userid: number }>('SELECT userid, games.created FROM users_to_games LEFT JOIN games ON users_to_games.gameid=games.id;'),
-    pgPool.query<{ created: string }>("SELECT created FROM games WHERE running=FALSE AND (game->'gameEnded')::BOOLEAN=TRUE;"),
+    // game_results holds exactly the finished games, with created as a column instead of a filter on the game JSON
+    pgPool.query<{ created: string }>('SELECT created FROM game_results;'),
     createLocaleDataset(pgPool),
     getUserAgentAnalysis(pgPool),
   ])

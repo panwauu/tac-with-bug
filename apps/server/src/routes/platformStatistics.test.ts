@@ -106,6 +106,31 @@ describe('Platform Statistic Test Suite', () => {
     expect(response.body.dayDataset.map((r: any) => r[1]).reduce((a: number, b: number) => a + b)).toBeCloseTo(1, 1)
   })
 
+  test('Get fun facts', async () => {
+    const response = await testAgent.get('/gameApi/getPlatformFunFacts/')
+    expect(response.statusCode).toBe(200)
+
+    // The fun facts of the games are aggregated from game_results, not from the game JSON
+    const games = await testServer.pgPool.query<{ n_players: number; coop: boolean; cards: number | null }>('SELECT n_players, coop, cards FROM game_results;')
+    const coopGames = games.rows.filter((r) => r.coop)
+    const coopCards = coopGames.map((r) => r.cards).filter((c): c is number => c != null)
+
+    expect(response.body.nGames4).toBe(games.rows.filter((r) => r.n_players === 4).length)
+    expect(response.body.nGames6).toBe(games.rows.filter((r) => r.n_players === 6).length)
+    expect(response.body.nGamesTeam).toBe(coopGames.length)
+    expect(coopCards.length).toBeGreaterThan(0)
+    expect(response.body.bestTeamGame).toBe(Math.min(...coopCards))
+    expect(response.body.worstTeamGame).toBe(Math.max(...coopCards))
+    expect(response.body.averageTeamGame).toBeGreaterThanOrEqual(response.body.bestTeamGame)
+    expect(response.body.averageTeamGame).toBeLessThanOrEqual(response.body.worstTeamGame)
+
+    expect(response.body.fastestGame).toBeLessThanOrEqual(response.body.averagePlayingTime)
+    expect(response.body.averagePlayingTime).toBeLessThanOrEqual(response.body.longestGame)
+
+    expect(response.body.registeredUsers).toBeGreaterThan(0)
+    expect(response.body.colors.length).toBeGreaterThan(0)
+  })
+
   test('Test server version', async () => {
     // Get the root package.json for the version (!Not the server/package.json!)
     const packageJSON = JSON.parse(readFileSync(path.join(__dirname, '..', '..', '..', '..', 'package.json')).toString())
