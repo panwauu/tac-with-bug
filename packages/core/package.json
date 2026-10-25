@@ -78,6 +78,22 @@
       "types": "./dist/bot/netz/ki_dienst.d.ts",
       "require": "./dist/bot/netz/ki_dienst.js"
     },
+    "./bot/netz/onlineStufen": {
+      "types": "./dist/bot/netz/onlineStufen.d.ts",
+      "require": "./dist/bot/netz/onlineStufen.js"
+    },
+    "./bot/netz/stufen": {
+      "types": "./dist/bot/netz/stufen.d.ts",
+      "require": "./dist/bot/netz/stufen.js"
+    },
+    "./bot/netz/wertnetz": {
+      "types": "./dist/bot/netz/wertnetz.d.ts",
+      "require": "./dist/bot/netz/wertnetz.js"
+    },
+    "./bot/netz/politiknetz": {
+      "types": "./dist/bot/netz/politiknetz.d.ts",
+      "require": "./dist/bot/netz/politiknetz.js"
+    },
     "./bot/names": {
       "types": "./dist/bot/names.d.ts",
       "require": "./dist/bot/names.js"

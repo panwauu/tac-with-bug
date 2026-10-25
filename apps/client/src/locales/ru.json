@@ -420,7 +420,8 @@
         "rejectButton": "Отклонить замену",
         "endOfferButton": "Отозвать предложение замены",
         "placeholderSubstituted": "Выбрать игрока",
-        "noPlayerToSubstitute": "Замена невозможна"
+        "noPlayerToSubstitute": "Замена невозможна",
+        "botLevel": "Какой бот заменит"
       },
       "SubstitutedPlayersHeader": "Замененные игроки:"
     },

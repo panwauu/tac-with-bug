@@ -76,6 +76,15 @@ cd client
 npm run dev
 ```
 
+## AI service for the online bots
+
+The AI levels of the TAC app (bot numbers from 10, see `packages/core/src/bot/netz/onlineStufen.ts`) are computed outside the game loop, so a busy AI can never slow down the game itself:
+
+- Without configuration the game server computes them in worker threads of its own process (`KI_THREADS`, default 1).
+- With `KI_URL` set, a separate AI service computes them (`apps/server/src/entrypoints/kiDienst.ts`). It can run as its own process, container or machine. Start it with `node apps/server/dist/entrypoints/kiDienst.js`, with `docker compose --profile ki up -d`, or as a second Heroku app with the same code and `KI_DIENST=1`. Shared secret `KI_GEHEIMNIS` on both sides (required in production).
+
+Every AI move has a deadline of 6 s. Under load the search time per move gets shorter (bots play a bit weaker, not slower); if a move does not arrive in time, Futuro plays instead, so a game never stalls. `GET /zustand` on the AI service shows threads, queue and average waiting and computing time.
+
 # Contributing
 
 Commit messages are not free-form: the subject line of a commit decides how the
@@ -89,4 +98,3 @@ Go to [the swagger documentation](https://tac-with-bug.herokuapp.com/gameapi/api
 1. Find login endpoint and login
 2. Copy the token and paste it in the "Authorize" field (top of page)
 3. Use the endpoints tagged as DEV
-
