@@ -1068,8 +1068,6 @@
       "langsam": "Langsam",
       "normal": "Normal",
       "schnell": "Schnell"
-    },
-    "futuro": "Futuro (Standard-Bot)",
-    "appKi": "KI der TAC-App"
+    }
   }
 }

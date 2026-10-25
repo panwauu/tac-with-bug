@@ -59,7 +59,8 @@ export function onlineBots(nPlayers: number, nTeams: number, coop: boolean): { i
 
 /** Anzeigename eines Online-Bots, z. B. „Luise Langfinger (mittel)". */
 export function onlineBotName(b: { id: number; stufe: KiStufe | null }, t: (schluessel: string) => string): string {
-  if (b.id === FUTURO) return t('Ki.futuro')
+  // Futuro spielt etwa wie die leichten Stufen (gemessen: 46 % gegen Stufe 3 von 12 der App)
+  if (b.id === FUTURO) return `Futuro (${t('Ki.schwierigkeit.leicht')})`
   if (b.stufe != null) return `${b.stufe.titel} (${t('Ki.schwierigkeit.' + b.stufe.stufe)})`
   return t('Ki.modus.koop')
 }

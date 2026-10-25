@@ -1068,8 +1068,6 @@
       "langsam": "Slow",
       "normal": "Normal",
       "schnell": "Fast"
-    },
-    "futuro": "Futuro (standard bot)",
-    "appKi": "AI from the TAC app"
+    }
   }
 }
