@@ -1,6 +1,16 @@
 <template>
   <div class="ki-auswahl">
     <h2 class="ki-titel">{{ t('Ki.titel') }}</h2>
+    <div class="ki-info p-card">
+      <h3>{{ t('Ki.infoTitel') }}</h3>
+      <ul>
+        <li>{{ t('Ki.infoBrowser') }}</li>
+        <li>{{ t('Ki.infoStatistik') }}</li>
+        <li>{{ t('Ki.infoSpeichern') }}</li>
+        <li>{{ t('Ki.hinweis') }}</li>
+        <li>{{ t('Ki.infoMenschen') }}</li>
+      </ul>
+    </div>
     <div class="ki-kacheln">
       <div class="ki-kachel p-card">
         <h2>{{ t('Ki.modus.klassisch') }}</h2>
@@ -40,13 +50,12 @@
         </div>
       </div>
     </div>
-    <p class="ki-hinweis">{{ t('Ki.hinweis') }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
 // Auswahl der KI-Partie: eine normale Seite im Layout (Kopfleiste, Scrollen),
-// je Modus eine Kachel wie auf der Startseite.
+// je Modus eine Kachel wie auf der Startseite, darüber was eine KI-Partie bedeutet.
 // Die Partie selbst ist die Vollbild-Ansicht KiView.
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
@@ -85,8 +94,17 @@ const { t } = useI18n()
   flex-direction: column;
   gap: 8px;
 }
-.ki-hinweis {
-  font-size: 0.85em;
-  opacity: 0.7;
+.ki-info {
+  padding: 0px 15px 5px 15px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+.ki-info h3 {
+  margin-bottom: 0.4em;
+}
+.ki-info ul {
+  margin-top: 0;
+  padding-left: 1.2em;
+  line-height: 1.5;
 }
 </style>
