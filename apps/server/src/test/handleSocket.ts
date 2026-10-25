@@ -19,13 +19,34 @@ export async function connectSocket(socket: SupportedSockets): Promise<void> {
   })
 }
 
-export function waitForEventOnSockets(sockets: SupportedSockets[], event: string) {
-  return sockets.map((s) => {
-    return new Promise<any>((resolve) => {
-      ;(s as any).once(event as any, (data: any) => {
-        resolve(data)
-      })
-    })
+const DEFAULT_EVENT_TIMEOUT = 5000
+
+/** Register the listeners before triggering the action that leads to the event - an event that was
+ * emitted before cannot be caught afterwards and would run into the timeout */
+export function waitForEventOnSockets(sockets: SupportedSockets[], event: string, timeout: number = DEFAULT_EVENT_TIMEOUT) {
+  return sockets.map((s) => waitForEvent(s, event, () => true, timeout))
+}
+
+/** Waits for the first payload that fulfills the condition - for events that are emitted several
+ * times while the server settles, e.g. once per socket that leaves the game */
+export function waitForMatchingEventOnSockets(sockets: SupportedSockets[], event: string, condition: (data: any) => boolean, timeout: number = DEFAULT_EVENT_TIMEOUT) {
+  return sockets.map((s) => waitForEvent(s, event, condition, timeout))
+}
+
+function waitForEvent(socket: SupportedSockets, event: string, condition: (data: any) => boolean, timeout: number): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    const listener = (data: any) => {
+      if (!condition(data)) return
+      clearTimeout(timer)
+      ;(socket as any).off(event as any, listener)
+      resolve(data)
+    }
+
+    const timer = setTimeout(() => {
+      ;(socket as any).off(event as any, listener)
+      reject(new Error(`Timeout of ${timeout}ms while waiting for the event '${event}'`))
+    }, timeout)
+    ;(socket as any).on(event as any, listener)
   })
 }
 

@@ -115,14 +115,25 @@ export async function emitOnlinePlayersEvents(pgPool: pg.Pool, nsp: GameNamespac
   initializeInfo()
 }
 
+function cardsHaveToBeDealt(game: GameForPlay): boolean {
+  return game.running && game.game.gameEnded === false && !game.game.cards.players.some((player) => player.length > 0)
+}
+
+/** Partien, in denen gerade ausgeteilt wird: jeder Socket plant das Austeilen, es darf aber nur einmal passieren */
+const austeilenInArbeit = new Set<number>()
+
 async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePlayer: number, game: GameForPlay) {
-  if (game.running && game.game.gameEnded === false && !game.game.cards.players.some((player) => player.length > 0)) {
+  if (cardsHaveToBeDealt(game)) {
     const timeSinceLastPlayed = Date.now() - new Date(game.lastPlayed).getTime()
     const delay = Math.max(Math.min(2000 - timeSinceLastPlayed, 2000), 0)
 
     setTimeout(async () => {
+      if (austeilenInArbeit.has(game.id)) return
+      austeilenInArbeit.add(game.id)
       try {
-        // Re-fetch game state to avoid stale data after substitutions
+        // Die Partie kann inzwischen ausgeteilt oder durch eine Ersetzung veraendert worden sein
+        if (!cardsHaveToBeDealt(await getGame(pgPool, game.id))) return
+
         const newGame = await performMoveAndReturnGame(pgPool, 'dealCards', gamePlayer, game.id)
         for (const s of getSocketsInGame(nsp, game.id)) {
           if (!s.disconnected) {
@@ -131,6 +142,8 @@ async function dealCardsIfNecessary(pgPool: pg.Pool, nsp: GameNamespace, gamePla
         }
       } catch (err) {
         logger.error('Error dealing cards:', err)
+      } finally {
+        austeilenInArbeit.delete(game.id)
       }
     }, delay)
   }

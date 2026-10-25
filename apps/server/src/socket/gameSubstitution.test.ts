@@ -3,10 +3,14 @@ import type { GameStatistic, Substitution } from '@repo/core/types'
 
 import { UserWithSocket, getUsersWithSockets } from '../test/handleUserSockets'
 import { initiateGameSocket } from '../test/handleGameSocket'
-import { closeSockets, connectSocket, waitForEventOnSockets } from '../test/handleSocket'
+import { closeSockets, connectSocket, waitForEventOnSockets, waitForMatchingEventOnSockets } from '../test/handleSocket'
 import { sleep } from '../helpers/sleep'
 import { getBotName } from '@repo/core/bot/names'
 import { getGame } from '../services/game'
+
+// A substitution that was just started is at most a few milliseconds old - this only has to rule out
+// a stale startDate of an earlier substitution, so it stays far away from the timing of the runner
+const MAX_AGE_OF_FRESH_SUBSTITUTION = 30 * 1000
 
 describe('Test substitution start conditions with socket.io', () => {
   let usersWithSocket: UserWithSocket
@@ -98,7 +102,7 @@ describe('Test game substitution of player by player', () => {
     for (const update of updateData) {
       expect(update.substitutedPlayerIndices).toStrictEqual([])
       expect(update.substitution).toMatchObject(substitutionStates.afterOffer)
-      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(MAX_AGE_OF_FRESH_SUBSTITUTION)
     }
   })
 
@@ -140,7 +144,7 @@ describe('Test game substitution of player by player', () => {
     for (const update of updateData) {
       expect(update.substitutedPlayerIndices).toStrictEqual([])
       expect(update.substitution).toMatchObject(substitutionStates.afterOffer)
-      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(MAX_AGE_OF_FRESH_SUBSTITUTION)
     }
   })
 
@@ -154,7 +158,7 @@ describe('Test game substitution of player by player', () => {
     for (const update of updateData) {
       expect(update.substitutedPlayerIndices).toStrictEqual([])
       expect(update.substitution).toMatchObject(substitutionStates.afterAccept1)
-      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(MAX_AGE_OF_FRESH_SUBSTITUTION)
     }
   })
 
@@ -183,7 +187,7 @@ describe('Test game substitution of player by player', () => {
     for (const update of updateData) {
       expect(update.substitutedPlayerIndices).toStrictEqual([])
       expect(update.substitution).toMatchObject(substitutionStates.afterAccept2)
-      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(MAX_AGE_OF_FRESH_SUBSTITUTION)
     }
   })
 
@@ -194,6 +198,9 @@ describe('Test game substitution of player by player', () => {
       usersWithSockets.map((uWS) => uWS.socket),
       'games:getRunningGames'
     )
+    // The substituted player leaves the game, so the event is emitted several times until the
+    // players settle - wait for the state with the substitute on his seat and UserF still watching
+    const onlinePlayersPromise = waitForMatchingEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'game:online-players', (data) => data.nWatchingPlayers === 1)
 
     const acceptRes = await gameSockets[3].emitWithAck(5000, 'substitution:answer', { accept: true })
     expect(acceptRes.status).toBe(200)
@@ -216,7 +223,6 @@ describe('Test game substitution of player by player', () => {
 
     expect(gameSockets[2].disconnected).toBe(true)
 
-    const onlinePlayersPromise = waitForEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'game:online-players')
     const onlinePlayers = await Promise.all(onlinePlayersPromise)
     for (const onlinePlayer of onlinePlayers) {
       expect(onlinePlayer.onlineGamePlayers).toEqual(expect.arrayContaining([0, 1, 2, 3]))
@@ -272,7 +278,7 @@ describe('Test game substitution of player by bot', () => {
     for (const update of updateData) {
       expect(update.substitutedPlayerIndices).toStrictEqual([])
       expect(update.substitution).toMatchObject(substitutionStates.afterStart)
-      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(MAX_AGE_OF_FRESH_SUBSTITUTION)
     }
   })
 
@@ -286,12 +292,18 @@ describe('Test game substitution of player by bot', () => {
     for (const update of updateData) {
       expect(update.substitutedPlayerIndices).toStrictEqual([])
       expect(update.substitution).toMatchObject(substitutionStates.afterAccept2)
-      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(MAX_AGE_OF_FRESH_SUBSTITUTION)
     }
   })
 
   test('Should be accepted by player 3 and performed', async () => {
     const updateGamePromise = waitForEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'update')
+    // The substituted player leaves the game - wait for the state without him
+    const onlinePlayersPromise = waitForMatchingEventOnSockets(
+      [...gameSockets.slice(0, 2), ...gameSockets.slice(3)],
+      'game:online-players',
+      (data) => data.onlineGamePlayers.length === 3
+    )
 
     const acceptRes = await gameSockets[3].emitWithAck(5000, 'substitution:answer', { accept: true })
     expect(acceptRes.status).toBe(200)
@@ -304,7 +316,6 @@ describe('Test game substitution of player by bot', () => {
 
     expect(gameSockets[2].disconnected).toBe(true)
 
-    const onlinePlayersPromise = waitForEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'game:online-players')
     const onlinePlayers = await Promise.all(onlinePlayersPromise)
     for (const onlinePlayer of onlinePlayers) {
       expect(onlinePlayer.onlineGamePlayers).toEqual(expect.arrayContaining([0, 1, 3]))
@@ -362,7 +373,7 @@ describe('Test game substitution of bot by player', () => {
     for (const update of updateData) {
       expect(update.substitutedPlayerIndices).toStrictEqual([])
       expect(update.substitution).toMatchObject(substitutionStates.afterStart)
-      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(MAX_AGE_OF_FRESH_SUBSTITUTION)
     }
   })
 
@@ -376,13 +387,15 @@ describe('Test game substitution of bot by player', () => {
     for (const update of updateData) {
       expect(update.substitutedPlayerIndices).toStrictEqual([])
       expect(update.substitution).toMatchObject(substitutionStates.afterAccept1)
-      expect(Date.now() - update.substitution.startDate).toBeLessThan(1000)
+      expect(Date.now() - update.substitution.startDate).toBeLessThan(MAX_AGE_OF_FRESH_SUBSTITUTION)
     }
   })
 
   test('Should be accepted by player2 and performed', async () => {
     const updateGamePromise = waitForEventOnSockets(gameSockets, 'update')
     const changePlayerPromise = waitForEventOnSockets([gameSockets[2]], 'substitution:changeGamePlayer')
+    // The substitute takes the seat of the bot - wait for him to be counted as a player
+    const onlinePlayersPromise = waitForMatchingEventOnSockets(gameSockets.slice(0, 2), 'game:online-players', (data) => data.onlineGamePlayers.length === 3)
 
     const acceptRes = await gameSockets[1].emitWithAck(5000, 'substitution:answer', { accept: true })
     expect(acceptRes.status).toBe(200)
@@ -395,7 +408,6 @@ describe('Test game substitution of bot by player', () => {
 
     expect(await changePlayerPromise[0]).toBe(2)
 
-    const onlinePlayersPromise = waitForEventOnSockets([...gameSockets.slice(0, 2), ...gameSockets.slice(3)], 'game:online-players')
     const onlinePlayers = await Promise.all(onlinePlayersPromise)
     for (const onlinePlayer of onlinePlayers) {
       expect(onlinePlayer.onlineGamePlayers).toEqual(expect.arrayContaining([0, 1, 2]))
