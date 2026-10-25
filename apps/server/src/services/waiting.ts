@@ -402,6 +402,19 @@ export async function setPlayerReady(sqlClient: pg.Pool, waitingGameID: number, 
   return getWaitingGame(sqlClient, waitingGameID)
 }
 
+/** Waiting games without any change for this long are closed, so that nobody waits in an abandoned room. */
+export const waitingGameExpiryMinutes = 60
+
+/** Deletes the waiting games without any change for `minutes` and returns the users who were seated in them. */
+export async function deleteExpiredWaitingGames(sqlClient: pg.Pool, minutes: number = waitingGameExpiryMinutes): Promise<number[]> {
+  const res = await sqlClient.query(
+    `DELETE FROM waitinggames WHERE lastactivity < current_timestamp - make_interval(mins => $1)
+    RETURNING player0, player1, player2, player3, player4, player5;`,
+    [minutes]
+  )
+  return res.rows.flatMap((row) => ['player0', 'player1', 'player2', 'player3', 'player4', 'player5'].map((e) => row[e])).filter((id): id is number => id != null)
+}
+
 export async function deleteWaitingGame(sqlClient: pg.Pool, waitingGameID: number) {
   return sqlClient.query('DELETE FROM waitinggames WHERE id = $1;', [waitingGameID])
 }

@@ -512,6 +512,8 @@ CREATE TABLE waitingGames (
     ready5 = false
     OR player5 IS NOT NULL
   ),
+  -- Set on every change of the waiting game (trigger below); waiting games without a change for a while are closed
+  lastactivity timestamptz NOT NULL DEFAULT current_timestamp,
   CONSTRAINT unique_players CHECK (
     (
       player0 IS NULL
@@ -651,6 +653,16 @@ CREATE TABLE waitingGames (
     )
   )
 );
+
+CREATE FUNCTION waitinggames_touch() RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+  NEW.lastactivity := current_timestamp;
+  RETURN NEW;
+END
+$$;
+
+-- Every change counts as activity: joining, leaving, ready, colors, order and bots
+CREATE TRIGGER waitinggames_touch BEFORE UPDATE ON waitinggames FOR EACH ROW EXECUTE FUNCTION waitinggames_touch();
 
 CREATE TABLE tutorials (id int PRIMARY KEY, data JSONB);
 
