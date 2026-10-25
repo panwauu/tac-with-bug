@@ -228,7 +228,11 @@ async function botZiehtIn(pgPool: pg.Pool, nspGame: GameNamespace, game: GameFor
   const start = performance.now()
 
   let move: MoveTextOrBall | null = null
-  const botIndices = game.bots.map((bot, i) => (bot != null ? i : null)).filter((i) => i != null) as number[]
+  // Only the seats: the entries beyond them are the bots that were replaced in this game
+  const botIndices = game.bots
+    .slice(0, game.nPlayers)
+    .map((bot, i) => (bot != null ? i : null))
+    .filter((i) => i != null) as number[]
   for (const gamePlayer of botIndices) {
     const cards = getCards(game.game, gamePlayer)
     if (cards.length !== 0 && game.game.narrFlag.some((f) => f) && !game.game.narrFlag[gamePlayer]) {

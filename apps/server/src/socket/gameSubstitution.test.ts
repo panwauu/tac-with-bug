@@ -7,6 +7,7 @@ import { closeSockets, connectSocket, waitForEventOnSockets, waitForMatchingEven
 import { sleep } from '../helpers/sleep'
 import { getBotName } from '@repo/core/bot/names'
 import { getGame } from '../services/game'
+import { getPlayerUpdateFromGame } from '@repo/core/game/serverOutput'
 
 // A substitution that was just started is at most a few milliseconds old - this only has to rule out
 // a stale startDate of an earlier substitution, so it stays far away from the timing of the runner
@@ -325,6 +326,8 @@ describe('Test game substitution of player by bot', () => {
     expect(game.bots).toEqual([null, null, 3, null, null, null])
     expect(game.playerIDs).toEqual([1, 2, null, 4, 3])
     expect(game.game.statistic).toHaveLength(5)
+    // A player was replaced here, so the archived statistic is not the one of a bot
+    expect(getPlayerUpdateFromGame(game, 0).substitutedBots).toStrictEqual([false])
   })
 })
 
@@ -414,9 +417,24 @@ describe('Test game substitution of bot by player', () => {
     }
 
     const game = await getGame(testServer.pgPool, gameID)
-    expect(game.bots).toEqual([null, null, null, 3, null, null])
-    expect(game.playerIDs).toEqual([1, 2, 3, null])
+    // The replaced bot keeps its entry at the index of its archived statistic, the bot on seat 3 keeps playing
+    expect(game.bots).toEqual([null, null, null, 3, 3, null])
+    expect(game.playerIDs).toEqual([1, 2, 3, null, null])
     expect(game.game.statistic).toHaveLength(5)
+  })
+
+  test('Should keep the name the replaced bot played with', async () => {
+    const game = await getGame(testServer.pgPool, gameID)
+    expect(game.game.substitutedPlayerIndices).toEqual([2])
+    // The name of a bot follows its seat, so the archived bot is still the bot of seat 2
+    expect(game.players).toEqual(['UserA', 'UserB', 'UserC', getBotName(gameID, 3), getBotName(gameID, 2)])
+  })
+
+  test('Should mark the archived statistic of the bot as a bot in the update', async () => {
+    const update = getPlayerUpdateFromGame(await getGame(testServer.pgPool, gameID), 0)
+    expect(update.substitutedPlayerIndices).toStrictEqual([2])
+    expect(update.substitutedBots).toStrictEqual([true])
+    expect(update.playernames.at(-1)).toBe(getBotName(gameID, 2))
   })
 })
 
@@ -489,9 +507,9 @@ describe('Test game substitution of bot by the replaced player', () => {
 
     const game = await getGame(testServer.pgPool, gameID)
     expect(game.substitution).toBeNull()
-    expect(game.bots).toEqual([null, null, null, null, null, null])
-    // The stale entry at index 4 is gone - playerIDs holds the seats only
-    expect(game.playerIDs).toEqual([1, 2, 3, 4])
+    // The returning player freed the index of his archived statistic, the replaced bot took it over
+    expect(game.bots).toEqual([null, null, null, null, 3, null])
+    expect(game.playerIDs).toEqual([1, 2, 3, 4, null])
   })
 
   test('Should continue the statistic of the returned player and archive the one of the bot', async () => {
@@ -629,7 +647,8 @@ describe('Test game substitution of a replaced player on another seat', () => {
     expect(await changePlayerPromise[0]).toBe(2)
 
     const game = await getGame(testServer.pgPool, gameID)
-    expect(game.bots).toEqual([null, null, null, null, null, null])
+    // The slot he freed holds the statistic of the replaced bot, so it holds the bot as well
+    expect(game.bots).toEqual([null, null, null, null, 3, null])
     expect(game.playerIDs).toEqual([5, 1, 3, 4, null, 2])
     // His archived slot is now used for the statistic of the bot and belongs to seat 2
     expect(game.game.substitutedPlayerIndices).toEqual([2, 2])

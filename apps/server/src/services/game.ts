@@ -20,6 +20,13 @@ function mergeElementsWithIndices<T>(elements: T[], indices: number[], minLength
   })
 }
 
+/** The name of a bot follows the seat it plays on, so a replaced bot keeps the name it played with:
+ * its archived statistic knows the seat it was replaced on (substitutedPlayerIndices). */
+function botSeat(game: { nPlayers: number; substitutedPlayerIndices?: number[] }, index: number): number {
+  if (index < game.nPlayers) return index
+  return game.substitutedPlayerIndices?.[index - game.nPlayers] ?? index
+}
+
 async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
   const query = `
   SELECT 
@@ -36,6 +43,11 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
   const games: GameForPlay[] = []
 
   for (const dbGame of dbRes.rows) {
+    const bots: (number | null)[] = dbGame.bots
+    // A replaced bot keeps its entry at the index of its archived statistic, just like a replaced player keeps his
+    // users_to_games row there, so the names have to reach beyond the seats as well
+    const minLength = Math.max(dbGame.game.nPlayers, ...bots.map((b, i) => (b != null ? i + 1 : 0)))
+
     games.push({
       id: dbGame.id,
       running: dbGame.running,
@@ -46,15 +58,15 @@ async function queryGamesByID(sqlClient: pg.Pool, gameIDs: number[]) {
       lastPlayed: Date.parse(dbGame.lastplayed),
       publicTournamentId: dbGame.public_tournament_id,
       privateTournamentId: dbGame.private_tournament_id,
-      players: mergeElementsWithIndices(dbGame.players as string[], dbGame.player_indices, dbGame.game.nPlayers).map(
-        (p, i) => p ?? (dbGame.bots[i] != null ? getBotName(dbGame.id, i) : null)
+      players: mergeElementsWithIndices(dbGame.players as string[], dbGame.player_indices, minLength).map((p, i) =>
+        p != null ? p : bots[i] != null ? getBotName(dbGame.id, botSeat(dbGame.game, i)) : null
       ),
-      playerIDs: mergeElementsWithIndices(dbGame.playerids, dbGame.player_indices, dbGame.game.nPlayers),
+      playerIDs: mergeElementsWithIndices(dbGame.playerids, dbGame.player_indices, minLength),
       game: new Game(0, 0, false, false, dbGame.game),
       colors: dbGame.colors,
       rematch_open: dbGame.rematch_open,
       substitution: getSubstitution(dbGame.id),
-      bots: dbGame.bots,
+      bots: bots,
     })
   }
 

@@ -60,6 +60,8 @@ export interface UpdateDataType {
   lastPlayed: number
   rematch_open: boolean
   substitutedPlayerIndices: number[]
+  // Per archived statistic: whether a bot was replaced there instead of a player
+  substitutedBots: boolean[]
   substitution: Substitution | null
   playernames: (string | null)[]
   teams: number[][]

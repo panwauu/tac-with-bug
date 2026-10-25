@@ -1,8 +1,9 @@
 import type pg from 'pg'
 
 /**
- * The leaderboards count only games of humans: no bot of Tac-With-Bug on a seat (games.bots) and no account
- * of an external bot that logs in like a user (users.bot_account). Condition on game_results.gameid.
+ * The leaderboards count only games of humans: no bot of Tac-With-Bug in the game (games.bots, which keeps the
+ * bots that were replaced during the game, see substitution.ts) and no account of an external bot that logs in
+ * like a user (users.bot_account). Condition on game_results.gameid.
  */
 const HUMAN_GAMES = `
   NOT EXISTS (SELECT 1 FROM games WHERE games.id = game_results.gameid AND cardinality(array_remove(games.bots, NULL)) > 0)

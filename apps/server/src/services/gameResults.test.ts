@@ -57,12 +57,22 @@ async function previousLeaderboardCoop(sqlClient: pg.Pool, limit: number, offset
 }
 
 type StoredGame = Record<string, unknown>
-type GameRow = { running: boolean; nPlayers: 4 | 6; nTeams: 2 | 3; created: string; lastplayed: string; game: StoredGame; players: number[]; replaced?: number }
+type GameRow = {
+  running: boolean
+  nPlayers: 4 | 6
+  nTeams: 2 | 3
+  created: string
+  lastplayed: string
+  game: StoredGame
+  players: number[]
+  replaced?: number
+  bots?: (number | null)[]
+}
 
 async function insertGame(g: GameRow) {
   const res = await testServer.pgPool.query<{ id: number }>(
-    'INSERT INTO games (running, n_players, n_teams, created, lastplayed, game) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;',
-    [g.running, g.nPlayers, g.nTeams, g.created, g.lastplayed, JSON.stringify(g.game)]
+    'INSERT INTO games (running, n_players, n_teams, created, lastplayed, game, bots) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;',
+    [g.running, g.nPlayers, g.nTeams, g.created, g.lastplayed, JSON.stringify(g.game), g.bots ?? [null, null, null, null, null, null]]
   )
   const gameID = res.rows[0].id
   for (const [seat, userID] of g.players.entries()) {
@@ -409,6 +419,34 @@ describe('Leaderboards from game_results', () => {
       count: [null, null],
       lastplayed: expect.any(Array),
     })
+  })
+
+  test('keeps a game with a bot off the leaderboards, also after the bot was replaced', async () => {
+    const teams = TEAMS_4
+    const start = new Date('2029-08-01T00:00:00Z')
+    const end = new Date('2029-08-02T00:00:00Z')
+    const times = { created: '2029-08-01T00:00:00Z', lastplayed: '2029-08-01T00:30:00Z' }
+    const competitive = { ...template, coop: false, gameEnded: true, teams, winningTeams: [true, false] }
+    const coop = { ...template, coop: true, gameEnded: true, teams, winningTeams: [false, false], statistic: [10, 10, 10, 10].map((c) => ({ cards: { total: [c, 0, 0] } })) }
+
+    // A bot on a seat, a bot that was replaced during the game (it keeps the index of its archived statistic,
+    // see substitution.ts) and, as the control, the same games played by humans only
+    const withBotOnSeat = [null, null, 3, null, null, null]
+    const withReplacedBot = [null, null, null, null, 3, null]
+    for (const bots of [withBotOnSeat, withReplacedBot, undefined]) {
+      for (const game of [competitive, { ...coop, substitutedPlayerIndices: bots === withReplacedBot ? [2] : [] }]) {
+        await insertGame({ running: false, nPlayers: 4, nTeams: 2, ...times, game, players: [1, 2, 3, 4], bots })
+      }
+    }
+
+    // Only the two games without any bot count - one win for the seats 0 and 2 of the competitive game
+    const wins = await queryLeaderboardByWins(testServer.pgPool, 10, 0, start, end)
+    expect(wins.username).toEqual(['UserA', 'UserC', 'UserB', 'UserD'])
+    expect(wins.wins).toEqual(['1', '1', '0', '0'])
+    expect(wins.winshare).toEqual(['100.00', '100.00', '0.00', '0.00'])
+    const coopBoard = await queryLeaderboardCoop(testServer.pgPool, 10, 0, 4, start, end)
+    expect(coopBoard.nGames).toBe('1')
+    expect(coopBoard.count).toEqual([40])
   })
 
   test('saves a game even if its result cannot be written', async () => {

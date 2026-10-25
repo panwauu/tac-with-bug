@@ -125,12 +125,14 @@
       <h3>{{ t('Game.GameModal.SubstitutedPlayersHeader') }}</h3>
       <div
         v-for="(substitutedUsername, substitutionIndex) in updateData.playernames.filter((_, i) => i >= (updateData?.players.length ?? 0))"
-        :key="`substitutedUser_${substitutedUsername}`"
+        :key="`substitutedUser_${substitutionIndex}_${substitutedUsername}`"
         class="substitutedPlayerElement"
       >
         <PlayerWithPicture
           :username="substitutedUsername ?? ''"
           :name-first="false"
+          :bot="updateData.substitutedBots[substitutionIndex] ?? false"
+          :clickable="!(updateData.substitutedBots[substitutionIndex] ?? false)"
           style="margin-right: 15px"
         />
         <BallsImage :color="updateData.colors[updateData.substitutedPlayerIndices[substitutionIndex]]" />

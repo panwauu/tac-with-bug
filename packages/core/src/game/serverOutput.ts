@@ -35,6 +35,8 @@ export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: nu
     rematch_open: game.rematch_open,
     discardedFlag: game.game.cards.discardedFlag,
     substitutedPlayerIndices: game.game.substitutedPlayerIndices,
+    // The tutorial steps are stored games without substitutions and without bots
+    substitutedBots: (game.game.substitutedPlayerIndices ?? []).map((_, i) => game.bots?.[game.game.nPlayers + i] != null),
     substitution: game.substitution,
     playernames: game.players,
     teams: game.game.teams,
