@@ -456,14 +456,22 @@ const proLektion: Record<string, () => Bild[]> = {
       .lauf(K(0, 0), [R(1), R(0), H(0, 0), H(0, 1)], { karten: ['13', '2', '4'], text: 'rueckwaertsHaus' })
       .zeige(2000, { karten: ['13', '2', '4'], markiere: [H(0, 1)], text: 'rueckwaertsHaus' }).bilder,
   // Haus ordnen mit der 7: vier Schritte vor und zurück verbrauchen, dann rücken beide Kugeln nach hinten und rasten ein.
-  f11: () =>
-    new Szene({ [K(0, 0)]: H(0, 0), [K(0, 1)]: H(0, 2) })
+  f11: () => {
+    // Langsamer als ein normaler Lauf: jeder Schritt im Haus soll zu sehen sein.
+    const A = K(0, 0)
+    const B = K(0, 1)
+    const t = { karten: ['7'], text: 'vorZurueck' }
+    return new Szene({ [A]: H(0, 0), [B]: H(0, 2) })
       .zeige(1200, { karten: ['7'] })
-      .lauf(K(0, 1), [H(0, 1), H(0, 2), H(0, 1), H(0, 2)], { karten: ['7'], text: 'vorZurueck' })
-      .zeige(500, { karten: ['7'], text: 'vorZurueck' })
-      .lauf(K(0, 1), [H(0, 3)], { karten: ['7'], text: 'vorZurueck' })
-      .lauf(K(0, 0), [H(0, 1), H(0, 2)], { karten: ['7'], text: 'vorZurueck' })
-      .zeige(2200, { karten: ['7'], markiere: [H(0, 2), H(0, 3)], text: 'eingerastet' }).bilder,
+      .setze({ [B]: H(0, 1) }, 900, t)
+      .setze({ [B]: H(0, 2) }, 900, t)
+      .setze({ [B]: H(0, 1) }, 900, t)
+      .setze({ [B]: H(0, 2) }, 900, t)
+      .setze({ [B]: H(0, 3) }, 900, t)
+      .setze({ [A]: H(0, 1) }, 900, t)
+      .setze({ [A]: H(0, 2) }, 900, t)
+      .zeige(2400, { karten: ['7'], markiere: [H(0, 2), H(0, 3)], text: 'eingerastet' }).bilder
+  },
   // Übersprung-Regel im Haus: die eigene Kugel auf Hausfeld 2 versperrt den Weg, die 5 zieht am Haus vorbei.
   a11: () =>
     new Szene({ [K(0, 0)]: R(62), [K(0, 1)]: H(0, 1) })
