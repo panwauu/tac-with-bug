@@ -5,7 +5,5 @@ describe('HOF Test Suite', () => {
     expect(response.body.verlag).toContain('UserA')
     expect(response.body.spende).toContain('UserB')
     expect(response.body.translation).toContain('UserC')
-    expect(response.body.family).toContain('UserD')
-    expect(response.body.family).toContain('UserE')
   })
 })

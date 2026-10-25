@@ -947,12 +947,11 @@
   },
   "HOF": {
     "header": "Hall of Fame",
-    "verlag1": "Besonders bedanken möchte ich mich beim ",
+    "verlag1": "Besonders bedanken möchten wir uns beim ",
     "verlagLink": "Tac-Verlag",
-    "verlag2": ", der mir die Entwicklung dieser Seite erlaubt und mich dabei unterstützt hat:",
-    "spende": "Neben all den Sponsoren, die mich mit regelmäßigen unterstützen, habe ich herausragend großzügige Spenden erhalten von:",
-    "lang": "Danke für das Helfen bei den Übersetzungen:",
-    "privat": "Zuletzt noch ein kleines Dankeschön an meine Familie und Freunde, die mich seitdem regelmäßig beraten und es aushalten, dass es kein anderes Thema mehr gibt:"
+    "verlag2": ", der das Projekt Tac-With-Bug unterstützt:",
+    "spende": "Neben all den Sponsoren, die uns regelmäßig unterstützen, haben wir herausragend großzügige Spenden erhalten von:",
+    "lang": "Danke für die Hilfe bei den Übersetzungen:"
   },
   "Friends": {
     "Toast": {

@@ -675,7 +675,6 @@ CREATE TABLE hof (
     status = 'verlag'
     OR status = 'spende'
     OR status = 'translation'
-    OR status = 'family'
   )
 );
 
