@@ -2,12 +2,16 @@ import type pg from 'pg'
 import type { ChatElement, ChatMessagePage } from '../sharedTypes/chat'
 
 import { err, ok, Result } from 'neverthrow'
-import { maxUsersInChat, numberOfMessagesPerLoad } from '../sharedDefinitions/chat'
+import { maxUsersInChat, messageRetention, numberOfMessagesPerLoad } from '../sharedDefinitions/chat'
 import { buildMessagePage } from './chatPagination'
 import { sendUnreadMessagesReminder } from '../communicationUtils/email'
 
-export async function sanitizeChatDatabase(pgPool: pg.Pool) {
-  pgPool.query("DELETE FROM chat_messages WHERE current_timestamp - created > interval '1 year';")
+/** Deletes all chat messages that are older than the retention period.
+ * The timestamps are compared instead of the intervals, as an interval comparison would
+ * normalize a month to 30 days and therefore match a '1 year' retention already after 360 days. */
+export async function deleteOldChatMessages(pgPool: pg.Pool) {
+  const res = await pgPool.query(`DELETE FROM chat_messages WHERE created < current_timestamp - $1::interval;`, [messageRetention])
+  return res.rowCount ?? 0
 }
 
 export async function getUsersInChat(pgPool: pg.Pool, chatid: number) {

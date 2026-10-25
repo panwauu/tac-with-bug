@@ -1,7 +1,7 @@
 import type pg from 'pg'
 import type { ChatMessagePage } from '../sharedTypes/chat'
 
-import { numberOfMessagesPerLoad } from '../sharedDefinitions/chat'
+import { messageRetention, numberOfMessagesPerLoad } from '../sharedDefinitions/chat'
 import { buildMessagePage } from './chatPagination'
 
 /** Loads one page of messages. If `beforeMessageId` is given, only older messages are returned. */
@@ -20,6 +20,12 @@ export async function getChannelMessages(pgPool: pg.Pool, channel: string, befor
 
 export async function addChannelMessage(pgPool: pg.Pool, userID: number, body: string, channel: string) {
   await pgPool.query('INSERT INTO channel_messages (sender, body, channel) VALUES ($1, $2, $3);', [userID, body, channel])
+}
+
+/** Deletes all channel messages that are older than the retention period. */
+export async function deleteOldChannelMessages(pgPool: pg.Pool) {
+  const res = await pgPool.query(`DELETE FROM channel_messages WHERE created < current_timestamp - $1::interval;`, [messageRetention])
+  return res.rowCount ?? 0
 }
 
 export async function transferLatestMessagesToOtherChannel(pgPool: pg.Pool, channelTo: string, channelFrom: string) {

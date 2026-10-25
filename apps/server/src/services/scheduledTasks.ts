@@ -9,7 +9,9 @@ import { startSignUpOnCondition, endSignUpOnCondition } from './tournamentsRegis
 import type { PublicTournament } from '../sharedTypes/typesTournament'
 import { sendUpdatesOfGameToPlayers } from '../socket/game'
 import { updateSubscriptions } from '../paypal/paypal'
-import { notifyUsersOfMissedMessages } from './chat'
+import { deleteOldChatMessages, notifyUsersOfMissedMessages } from './chat'
+import { deleteOldChannelMessages } from './channel'
+import { messageRetention } from '../sharedDefinitions/chat'
 import { expireWaitingGames } from '../socket/waiting'
 import { refreshPlatformStatisticCaches } from './platformStatistic'
 
@@ -25,6 +27,11 @@ export async function registerJobs(sqlClient: pg.Pool) {
     jobs.push(
       schedule.scheduleJob({ rule: '0 0 0 * * *', tz: 'Europe/Berlin' }, async () => {
         await DeleteUnactivatedUsers(sqlClient)
+      })
+    )
+    jobs.push(
+      schedule.scheduleJob({ rule: '0 30 3 * * *', tz: 'Europe/Berlin' }, async () => {
+        await deleteOldMessages(sqlClient)
       })
     )
     jobs.push(
@@ -88,6 +95,16 @@ function removeDoneJobs() {
 
 async function DeleteUnactivatedUsers(sqlClient: pg.Pool) {
   await sqlClient.query("DELETE FROM users WHERE activated=false AND current_timestamp - lastlogin > interval '1 week';")
+}
+
+async function deleteOldMessages(sqlClient: pg.Pool) {
+  try {
+    const nChatMessages = await deleteOldChatMessages(sqlClient)
+    const nChannelMessages = await deleteOldChannelMessages(sqlClient)
+    logger.info(`Deleted messages older than ${messageRetention}: ${nChatMessages} chat messages, ${nChannelMessages} channel messages`)
+  } catch (err) {
+    logger.error('Could not delete the old messages', err)
+  }
 }
 
 async function registerTournamentJobs(sqlClient: pg.Pool) {
