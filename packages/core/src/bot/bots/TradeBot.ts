@@ -5,7 +5,7 @@ import { initalizeStatistic } from '../../game/statistic'
 import { Game } from '../../game/game'
 import { ballGoal, ballHome, ballPlayer } from '../../game/ballUtils'
 import { getDiscardScore } from './DiscardBot'
-import { getMovesFromCards } from '../simulation/simulation'
+import { getMovesFromCards } from '../simulation/moves'
 import { getCards } from '../../game/serverOutput'
 
 export function tradeBot(data: AiData, disallowedCards: number[]): MoveText {

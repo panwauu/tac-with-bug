@@ -1,10 +1,11 @@
 import type { MoveTextOrBall } from '../../types/ball'
-import type { CardType, PlayerCard } from '../../types/card'
+import type { CardType } from '../../types/card'
 import { getCards } from '../../game/serverOutput'
 import { Game } from '../../game/game'
 import { projectMoveToGamePlayer } from '../normalize/normalize'
 import { type AiData, getAiData } from './output'
 import { Bot, getBotMove } from '../bots/bots'
+import { getMovesFromCards } from './moves'
 
 export type AiInterface = {
   choose: (data: AiData) => MoveTextOrBall
@@ -17,27 +18,7 @@ export type AdditionalInformation = {
   previouslyUsedCards: CardType[]
 }
 
-export function getMovesFromCards(cards: PlayerCard[], gamePlayer: number): MoveTextOrBall[] {
-  const moves: MoveTextOrBall[] = []
-
-  for (const [cardIndex, card] of cards.entries()) {
-    if (!card.possible) continue
-
-    if (card.textAction !== '') {
-      for (const action of card.textAction.split('+').filter((a) => a != null && a.length > 0)) {
-        moves.push([gamePlayer, cardIndex, action])
-      }
-    }
-
-    for (const ballIndex of Object.keys(card.ballActions)) {
-      for (const action of card.ballActions[Number(ballIndex)]) {
-        moves.push([gamePlayer, cardIndex, Number(ballIndex), action])
-      }
-    }
-  }
-
-  return moves
-}
+export { getMovesFromCards }
 
 type SimulationResults = {
   status: 'waiting' | 'running' | 'finished' | 'error'

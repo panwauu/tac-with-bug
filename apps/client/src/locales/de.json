@@ -1032,5 +1032,42 @@
   },
   "PlayerSearch": {
     "noResults": "Keine Spieler gefunden"
+  },
+  "Ki": {
+    "titel": "Gegen die KI spielen",
+    "beschreibung": "Du spielst mit deinem Partner gegenüber gegen zwei Gegner. Partner und Gegner sind KI.",
+    "hinweis": "Starke Stufen denken bis zu zwei Sekunden nach.",
+    "infoMenschen": "Gegen andere Menschen spielst du online über den Warteraum. Nur Online-Partien zählen für deine Statistik.",
+    "infoSpeichern": "Sie wird nicht gespeichert: Wenn du die Seite schließt oder neu lädst, ist die Partie vorbei.",
+    "infoStatistik": "Sie zählt nicht für deine Statistik und nicht für die Bestenliste.",
+    "infoBrowser": "Du spielst allein mit KI-Mitspielern. Die Partie läuft nur in deinem Browser, du brauchst dafür kein Konto.",
+    "infoTitel": "So läuft eine Partie gegen die KI",
+    "neuePartie": "Neue Partie",
+    "du": "Du",
+    "partner": "Partner",
+    "gegner": "Gegner",
+    "schwierigkeit": {
+      "leicht": "leicht",
+      "mittel": "mittel",
+      "schwer": "schwer",
+      "meister": "sehr schwer"
+    },
+    "beschreibungDrei": "Sechs Sitze: du mit zwei KI-Partnern gegen drei KI-Gegner.",
+    "beschreibungKoop": "Du und drei KI-Mitspieler bringt gemeinsam alle Kugeln ins Ziel, mit möglichst wenigen Karten.",
+    "modus": {
+      "klassisch": "Klassisch (2 gegen 2)",
+      "drei": "3 gegen 3",
+      "koop": "Kooperativ"
+    },
+    "widgetText": "Klassisch, 3 gegen 3 oder kooperativ: Spiel allein gegen die KI, direkt im Browser und ohne Konto. Diese Partien zählen nicht für die Statistik.",
+    "zurAuswahl": "KI-Gegner wählen",
+    "koopKarten": "Gespielte Karten",
+    "koopZiel": "Je weniger Karten, bis alle Kugeln im Haus sind, desto besser.",
+    "tempo": {
+      "titel": "KI-Tempo",
+      "langsam": "Langsam",
+      "normal": "Normal",
+      "schnell": "Schnell"
+    }
   }
 }

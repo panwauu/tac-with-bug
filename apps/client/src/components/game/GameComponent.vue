@@ -125,6 +125,12 @@
         :discard-pile-state="discardPileState"
         :perform-move="performMove"
       />
+      <div
+        v-if="$slots.seite"
+        class="gameSeite"
+      >
+        <slot name="seite" />
+      </div>
     </div>
     <div
       v-if="!miscState.gameRunning && !miscState.viewerMode"
@@ -136,6 +142,12 @@
           class="endedButton"
           :label="t('Game.EndedOverlay.backButton')"
           @click="router.push({ name: 'Landing' })"
+        />
+        <Button
+          v-if="neuePartie != null"
+          class="endedButton"
+          :label="t('Ki.neuePartie')"
+          @click="neuePartie()"
         />
         <Fieldset
           :legend="t('Game.EndedOverlay.statistic')"
@@ -151,7 +163,7 @@
           />
         </Fieldset>
         <Fieldset
-          v-if="miscState.tournamentID === null"
+          v-if="miscState.tournamentID === null && neuePartie == null"
           :legend="t('Game.Rematch.title')"
           :toggleable="true"
           :collapsed="false"
@@ -238,6 +250,8 @@ const props = defineProps<{
   modalVisible: boolean
   modalState: string
   updateData: UpdateDataType | null
+  /** Lokale Partie (gegen die KI): Knopf „Neue Partie" statt Revanche. */
+  neuePartie?: () => void
 }>()
 
 watch(() => props.updateData, updateHandler, { deep: true })
@@ -496,6 +510,15 @@ function onResize() {
   justify-content: space-evenly;
 }
 
+.gameSeite {
+  order: 2;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .cardsContainer {
   width: 100%;
   position: relative;
@@ -511,6 +534,10 @@ function onResize() {
   order: 2 !important;
   max-width: 100% !important;
   width: 100% !important;
+}
+
+.sick-game-portrait-query .gameSeite {
+  display: none;
 }
 
 .sick-game-portrait-query .cardsContainer {
