@@ -41,3 +41,18 @@ export interface UserAgentAnalysisData {
   browserNames: Record<string, number>
   osNames: Record<string, number>
 }
+
+/**
+ * One bot of Tac-With-Bug (botID) or one account of an external bot that logs in like a user (username),
+ * counted over the finished games. Bots also play against bots, so their strength is only measured in
+ * the games where all opponents are humans.
+ */
+export interface BotStatistic {
+  botID: number | null
+  username: string | null
+  games: number
+  gamesLast30Days: number
+  humans: number
+  againstHumans: { games: number; wins: number }
+  coop: { games: number; averageCards: number | null }
+}
