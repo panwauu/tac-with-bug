@@ -573,6 +573,36 @@ const proLektion: Record<string, () => Bild[]> = {
       .zeige(1800, ab(['5', 'tac', 'tac'], [2, 3, 0], 'gruenBleibt', { markiere: [H(2, 2)] }))
       .lauf(K(0, 0), ring(10, 5), ab(['5', 'tac', 'tac'], [2, 3, 0], 'uebernehmen'))
       .zeige(1800, ab(['5', 'tac', 'tac'], [2, 3, 0], 'uebernehmen')).bilder,
+  // TAC verhindert den Siegeszug: Blau ist fertig, Rot zieht die letzte Kugel ins Haus, dein TAC holt sie zurück.
+  m05: () => {
+    const fertig: Pos = {}
+    for (let i = 0; i < 4; i++) fertig[K(1, i)] = H(1, i)
+    for (let i = 1; i < 4; i++) fertig[K(3, i)] = H(3, i)
+    return new Szene({ ...fertig, [K(3, 0)]: R(47), [K(0, 0)]: R(10) })
+      .zeige(1800, { markiere: [R(47)], text: 'rotLetzteKugel' })
+      .lauf(K(3, 0), zumHaus(47, 3, 0), ab(['2'], [3], 'rotLetzteKugel'))
+      .zeige(1800, ab(['2'], [3], 'siegeszug', { markiere: [H(3, 0), H(3, 1), H(3, 2), H(3, 3)] }))
+      .setze({ [K(3, 0)]: R(47) }, 2000, ab(['2', 'tac'], [3, 0], 'tacSieg', { markiere: [R(47)] }))
+      .lauf(K(0, 0), ring(10, 2), ab(['2', 'tac'], [3, 0], 'uebernehmen'))
+      .zeige(1800, ab(['2', 'tac'], [3, 0], 'uebernehmen')).bilder
+  },
+  // Nach vereiteltem Sieg: Grün zieht ins Haus, Rots TAC verhindert es, dein TAC geht nicht, du spielst die 12 für Grün.
+  m06: () => {
+    const fertig: Pos = {}
+    for (let i = 0; i < 4; i++) fertig[K(0, i)] = H(0, i)
+    for (let i = 1; i < 4; i++) fertig[K(2, i)] = H(2, i)
+    return new Szene({ ...fertig, [K(2, 0)]: R(23), [K(3, 0)]: R(48) })
+      .zeige(1000)
+      .lauf(K(2, 0), zumHaus(23, 2, 0), ab(['10'], [2], 'gruenSiegt'))
+      .zeige(1600, ab(['10'], [2], 'gruenSiegt', { markiere: [H(2, 0), H(2, 1), H(2, 2), H(2, 3)] }))
+      .setze({ [K(2, 0)]: R(23) }, 1500, ab(['10', 'tac'], [2, 3], 'rotVerhindert'))
+      .lauf(K(3, 0), ring(48, 10), ab(['10', 'tac'], [2, 3], 'rotVerhindert'))
+      .zeige(1400, ab(['10', 'tac'], [2, 3], 'rotVerhindert'))
+      .zeige(2600, ab(['10', 'tac'], [2, 3], 'tacGesperrt', { markiere: [H(0, 0), H(0, 1), H(0, 2), H(0, 3)] }))
+      .zeige(700, ab(['10', 'tac', '12'], [2, 3, 0], 'partner'))
+      .lauf(K(2, 0), ring(23, 12), ab(['10', 'tac', '12'], [2, 3, 0], 'partner'))
+      .zeige(1800, ab(['10', 'tac', '12'], [2, 3, 0], 'partner')).bilder
+  },
   // Spielmaterial: Brett, 16 Kugeln, alle Kartenarten mit Anzahl.
   g02: () => [
     b({}, 6000, {

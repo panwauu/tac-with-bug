@@ -238,7 +238,7 @@ function zeigeVorzug(x: Uebung, teil: 'start' | 'm03') {
     return
   }
   const echt = getPlayerUpdateFromGame(spiel, ICH)
-  // „Vier TACs in Folge" und „TAC nach abgelegter TAC": die anderen spielen ihre Karten einer nach dem anderen, im Tempo einer Partie.
+  // „Vier TACs in Folge", „TAC nach abgelegter TAC" und „TAC geht nicht": die anderen spielen ihre Karten einer nach dem anderen, im Tempo einer Partie.
   if (ZUG_FUER_ZUG.has(x.id) && x.vorzuege != null) {
     zeigeVorzuegeEinzeln(x, x.vorzuege, echt)
     return
@@ -258,7 +258,7 @@ function zeigeVorzug(x: Uebung, teil: 'start' | 'm03') {
 
 const VORZUG_TAKT = 1600
 const SCHRITT_TAKT = 250
-const ZUG_FUER_ZUG = new Set(['s_m03', 's_m04'])
+const ZUG_FUER_ZUG = new Set(['s_m03', 's_m04', 's_m06'])
 function zeigeVorzuegeEinzeln(x: Uebung, vorzuege: Vorzug[], echt: UpdateDataType) {
   if (game == null) return
   const g = game

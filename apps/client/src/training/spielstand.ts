@@ -35,10 +35,29 @@ export function baelleFuer(g: Game, kugeln: Kugel[] | null): BallsType {
   return balls
 }
 
+/** Felder, über die eine Kugel vom Ringfeld bis zu ihrem Ziel vorwärts zieht (ohne Ziel), oder null. */
+function weg(start: Kugel | undefined, ziel: Kugel): Pick<Kugel, 'ort' | 'pos'>[] | null {
+  if (start?.ort !== 'ring') return null
+  const felder: Pick<Kugel, 'ort' | 'pos'>[] = []
+  if (ziel.ort === 'ring') {
+    const n = (ziel.pos - start.pos + 64) % 64
+    if (n > 13) return null
+    for (let i = 1; i < n; i++) felder.push({ ort: 'ring', pos: (start.pos + i) % 64 })
+    return felder
+  }
+  if (ziel.ort === 'haus') {
+    const bisStart = (ziel.sitz * 16 - start.pos + 64) % 64
+    for (let i = 1; i <= bisStart; i++) felder.push({ ort: 'ring', pos: (start.pos + i) % 64 })
+    for (let h = 0; h < ziel.pos; h++) felder.push({ ort: 'haus', pos: h })
+    return felder
+  }
+  return null
+}
+
 /**
- * Zwischenstellungen, wenn zwischen zwei Stellungen genau eine Kugel vorwärts
- * zieht (auf dem Ring oder über ihr Startfeld ins Haus): Feld für Feld, ohne
- * die Endstellung. Sonst keine.
+ * Zwischenstellungen zwischen zwei Stellungen, ohne die Endstellung: Zieht
+ * eine Kugel vorwärts, Feld für Feld. Ändert sich daneben noch eine Kugel
+ * (TAC setzt sie zurück), springt die zuerst, dann läuft die andere.
  */
 export function zwischenschritte(vorher: Kugel[] | null, nachher: Kugel[] | null): Kugel[][] {
   if (vorher == null || nachher == null) return []
@@ -47,21 +66,16 @@ export function zwischenschritte(vorher: Kugel[] | null, nachher: Kugel[] | null
     const v = ort(vorher, k)
     return v == null || v.ort !== k.ort || v.pos !== k.pos
   })
-  if (anders.length !== 1) return []
-  const ziel = anders[0]
-  const start = ort(vorher, ziel)
-  if (start?.ort !== 'ring') return []
-  const felder: Pick<Kugel, 'ort' | 'pos'>[] = []
-  if (ziel.ort === 'ring') {
-    const n = (ziel.pos - start.pos + 64) % 64
-    for (let i = 1; i < n; i++) felder.push({ ort: 'ring', pos: (start.pos + i) % 64 })
-  } else if (ziel.ort === 'haus') {
-    const bisStart = (ziel.sitz * 16 - start.pos + 64) % 64
-    for (let i = 1; i <= bisStart; i++) felder.push({ ort: 'ring', pos: (start.pos + i) % 64 })
-    for (let h = 0; h < ziel.pos; h++) felder.push({ ort: 'haus', pos: h })
+  if (anders.length === 0 || anders.length > 2) return []
+  for (const ziel of anders) {
+    const start = ort(vorher, ziel)
+    const felder = weg(start, ziel)
+    if (start == null || felder == null) continue
+    const rest = nachher.filter((k) => k !== ziel)
+    const erst = anders.length > 1 ? [[...rest, start]] : []
+    return [...erst, ...felder.map((f) => [...rest, { ...ziel, ...f, gesperrt: false }])]
   }
-  const rest = nachher.filter((k) => k !== ziel)
-  return felder.map((f) => [...rest, { ...ziel, ...f, gesperrt: false }])
+  return []
 }
 
 /** Eine Übung als laufendes Spiel, Schwarz ist am Zug. */

@@ -1190,7 +1190,13 @@
       "tacKette": "TAC cancels the previous TAC",
       "kettenEnde": "The chain ends with you: the 13 is yours",
       "tacAbgelegt": "Red discards its TAC unused",
-      "gruenBleibt": "Your TAC uses Green's 5, Green stays home"
+      "gruenBleibt": "Your TAC uses Green's 5, Green stays home",
+      "rotLetzteKugel": "Blue is finished, Red needs just one more marble",
+      "siegeszug": "All of Blue's and Red's marbles are home: victory?",
+      "tacSieg": "Your TAC brings the marble back onto the track",
+      "gruenSiegt": "Green moves its last marble home: victory",
+      "rotVerhindert": "Red's TAC prevents the victory and uses the 10",
+      "tacGesperrt": "Your TAC doesn't work: all your marbles are home"
     }
   }
 }

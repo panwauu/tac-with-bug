@@ -1190,7 +1190,13 @@
       "tacKette": "TAC hebt den vorigen TAC auf",
       "kettenEnde": "Die Kette endet bei dir: die 13 gehört dir",
       "tacAbgelegt": "Rot legt seinen TAC ungenutzt ab",
-      "gruenBleibt": "Dein TAC nutzt Grüns 5, Grün bleibt im Haus"
+      "gruenBleibt": "Dein TAC nutzt Grüns 5, Grün bleibt im Haus",
+      "rotLetzteKugel": "Blau ist fertig, Rot fehlt nur noch eine Kugel",
+      "siegeszug": "Alle Kugeln von Blau und Rot im Haus: Sieg?",
+      "tacSieg": "Dein TAC holt die Kugel zurück auf den Spielkreis",
+      "gruenSiegt": "Grün zieht die letzte Kugel ins Haus: Sieg",
+      "rotVerhindert": "Rots TAC verhindert den Sieg und nutzt die 10",
+      "tacGesperrt": "Dein TAC geht nicht: alle deine Kugeln stehen im Haus"
     }
   }
 }
