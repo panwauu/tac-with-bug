@@ -115,6 +115,24 @@ class Szene {
 
 const VORFELD = (j: number) => j
 
+/** Ablage samt Herkunft jeder Karte (Sitz), dazu der Text */
+const ab = (karten: string[], von: number[], text?: string, extra: Partial<Bild> = {}): Partial<Bild> => ({ karten, von, text, ...extra })
+
+/** Neue Runde: der Geber gibt reihum fünf Karten, angefangen beim Spieler nach ihm. */
+function austeilen(s: Szene, geber: number, extra: Partial<Bild>) {
+  const haende = [0, 0, 0, 0]
+  for (let runde = 0; runde < 5; runde++) {
+    for (let i = 1; i <= 4; i++) {
+      const sitz = (geber + i) % 4
+      const id = `g${runde}-${sitz}`
+      s.zeige(40, { ...extra, geber, haende: [...haende], flug: [{ id, karte: 'backside', ort: { stapel: geber } }] })
+      s.zeige(150, { ...extra, geber, haende: [...haende], flug: [{ id, karte: 'backside', ort: sitz }] })
+      haende[sitz]++
+    }
+  }
+  return s
+}
+
 const szenen: Record<string, () => Bild[]> = {
   fullBoard: () => [b({}, 4000, { karten: ['1', '13', 'tac'], liegen: true })],
   boardAreas: () => [
@@ -414,6 +432,15 @@ function narr(): Bild[] {
   ]
 }
 
+/** Rot zieht mit der 8, dein TAC nimmt den Zug zurück. */
+function tacNachAcht() {
+  return new Szene({ [K(0, 0)]: R(10), [K(3, 0)]: R(20) })
+    .zeige(700)
+    .lauf(K(3, 0), ring(20, 8), ab(['8'], [3]))
+    .zeige(1000, ab(['8'], [3]))
+    .setze({ [K(3, 0)]: R(20) }, 1600, ab(['8', 'tac'], [3, 0], 'rueckgaengig'))
+}
+
 /**
  * Lektionen, deren Bild sich von dem der App unterscheidet, weil die App
  * dasselbe Bild für mehrere Lektionen nutzt.
@@ -438,6 +465,114 @@ const proLektion: Record<string, () => Bild[]> = {
       .zeige(1000, { karten: ['krieger'], markiere: [R(10)], zittern: [K(0, 0)], text: 'selbstwurf' })
       .setze({ [K(0, 0)]: VORFELD(K(0, 0)) }, 2200, { karten: ['krieger'], text: 'selbstwurf' }).bilder
   },
+  // TAC nur, wenn anwendbar: Rot zieht mit der 5, du hast keine Kugel draußen, also bleibt die 13.
+  e02: () =>
+    new Szene({ [K(3, 0)]: R(20) })
+      .zeige(700)
+      .lauf(K(3, 0), ring(20, 5), ab(['5'], [3]))
+      .zeige(2200, ab(['5'], [3], 'keineKugel', { bereich: 'vorfeld' }))
+      .setze({ [K(0, 0)]: R(0) }, 2400, ab(['5', '13'], [3, 0], 'dreizehnStatt', { markiere: [R(0)] })).bilder,
+  // TAC nach dem Austeilen: Rot spielt die letzte Karte der Runde, dann wird neu gegeben.
+  e08: () => {
+    const s = new Szene({ [K(0, 0)]: R(10), [K(3, 0)]: R(20) })
+      .zeige(900, { haende: [0, 0, 0, 1], aktiv: 3 })
+      .lauf(K(3, 0), ring(20, 5), ab(['5'], [3], 'letzteKarte', { haende: [0, 0, 0, 0] }))
+      .zeige(1400, ab(['5'], [3], 'letzteKarte', { haende: [0, 0, 0, 0] }))
+    return austeilen(s, 0, ab(['5'], [3], 'neueRunde')).zeige(3000, ab(['5'], [3], 'tacZuSpaet', { geber: 0, haende: [5, 5, 5, 5], aktiv: 1, markiere: [R(25)] })).bilder
+  },
+  // TAC + 7: Rot zieht 7, TAC nimmt es zurück, du teilst die 7 auf zwei Kugeln auf.
+  m14: () =>
+    new Szene({ [K(0, 0)]: R(10), [K(0, 1)]: R(50), [K(3, 0)]: R(20) })
+      .zeige(700)
+      .lauf(K(3, 0), ring(20, 7), ab(['7'], [3]))
+      .zeige(900, ab(['7'], [3]))
+      .setze({ [K(3, 0)]: R(20) }, 1400, ab(['7', 'tac'], [3, 0], 'rueckgaengig'))
+      .lauf(K(0, 0), ring(10, 3), ab(['7', 'tac'], [3, 0], 'drei'))
+      .zeige(700, ab(['7', 'tac'], [3, 0], 'drei'))
+      .lauf(K(0, 1), ring(50, 4), ab(['7', 'tac'], [3, 0], 'vier'))
+      .zeige(1800, ab(['7', 'tac'], [3, 0], 'vier')).bilder,
+  // TAC nach der 8: Rot läuft 8, TAC nimmt es zurück, du läufst selbst 8.
+  e09: () =>
+    tacNachAcht()
+      .lauf(K(0, 0), ring(10, 8), ab(['8', 'tac'], [3, 0], 'achtLaufen'))
+      .zeige(1800, ab(['8', 'tac'], [3, 0], 'achtLaufen')).bilder,
+  // Oder Blau aussetzen lassen: Blau muss eine Karte abwerfen.
+  e09b: () =>
+    tacNachAcht()
+      .zeige(1600, ab(['8', 'tac'], [3, 0], 'aussetzen', { aktiv: 1 }))
+      .zeige(2200, ab(['8', 'tac', '5'], [3, 0, 1], 'blauWirftAb')).bilder,
+  // TAC nach dem Engel: Rots Engel holt deine Kugel heraus, dein TAC schickt sie zurück und Blau kommt heraus.
+  e12: () =>
+    new Szene({ [K(3, 0)]: R(50) })
+      .zeige(700)
+      .setze({ [K(0, 0)]: R(0) }, 2000, ab(['engel'], [3], 'engelDich', { markiere: [R(0)] }))
+      .setze({ [K(0, 0)]: VORFELD(K(0, 0)), [K(1, 0)]: R(16) }, 2800, ab(['engel', 'tac'], [3, 0], 'tacEngel', { markiere: [R(16)] })).bilder,
+  // TAC nach dem Teufel: Rot spielt den Teufel und daraus deinen TAC, du spielst dafür eine Karte von Blau.
+  e13: () =>
+    new Szene({ [K(0, 0)]: R(10), [K(1, 0)]: R(20), [K(3, 0)]: R(50) })
+      .zeige(700)
+      .zeige(2000, ab(['teufel'], [3], 'rotTeufel'))
+      .zeige(2000, ab(['teufel', 'tac'], [3, 0], 'rotNimmtTac'))
+      .zeige(1600, ab(['teufel', 'tac'], [3, 0], 'duFuerBlau'))
+      .zeige(700, ab(['teufel', 'tac', '5'], [3, 0, 1], 'duFuerBlau'))
+      .lauf(K(1, 0), ring(20, 5), ab(['teufel', 'tac', '5'], [3, 0, 1], 'duFuerBlau'))
+      .zeige(1800, ab(['teufel', 'tac', '5'], [3, 0, 1], 'duFuerBlau')).bilder,
+  // TAC nach dem Narren: Rot zieht 5, du spielst den Narren, bekommst Blaus TAC und nimmst Rots Zug zurück.
+  f29: () => {
+    const narrFlug = (verschoben: number) => [1, 2, 3].map((s) => ({ id: `n${s}`, karte: 'backside', ort: s - verschoben }))
+    return new Szene({ [K(0, 0)]: R(10), [K(3, 0)]: R(15) })
+      .zeige(900, { haende: [1, 1, 1, 2], aktiv: 3 })
+      .lauf(K(3, 0), ring(15, 5), ab(['5'], [3], undefined, { haende: [1, 1, 1, 1] }))
+      .zeige(1000, ab(['5'], [3], undefined, { haende: [1, 1, 1, 1], aktiv: 0 }))
+      .zeige(1400, ab(['5', 'narr'], [3, 0], 'narr', { haende: [0, 1, 1, 1] }))
+      .zeige(60, ab(['5', 'narr'], [3, 0], 'narr', { haende: [0, 0, 0, 0], flug: narrFlug(0) }))
+      .zeige(1100, ab(['5', 'narr'], [3, 0], 'narr', { haende: [0, 0, 0, 0], flug: narrFlug(1) }))
+      .zeige(1600, ab(['5', 'narr'], [3, 0], 'tacVonBlau', { haende: [1, 1, 1, 0] }))
+      .setze({ [K(3, 0)]: R(15) }, 1800, ab(['5', 'narr', 'tac'], [3, 0, 0], 'vorDemNarren', { haende: [0, 1, 1, 0] }))
+      .lauf(K(0, 0), ring(10, 5), ab(['5', 'narr', 'tac'], [3, 0, 0], 'uebernehmen', { haende: [0, 1, 1, 0] }))
+      .zeige(1800, ab(['5', 'narr', 'tac'], [3, 0, 0], 'uebernehmen', { haende: [0, 1, 1, 0] })).bilder
+  },
+  // TAC nach TAC: Grün zieht ins Haus, Rots TAC holt Grün heraus, dein TAC stellt Grün zurück und du nutzt die 5.
+  m01: () =>
+    new Szene({ [K(0, 0)]: R(10), [K(2, 0)]: R(30), [K(3, 0)]: R(40) })
+      .zeige(700)
+      .lauf(K(2, 0), zumHaus(30, 2, 2), ab(['5'], [2], 'gruenInsHaus'))
+      .zeige(1200, ab(['5'], [2], 'gruenInsHaus'))
+      .setze({ [K(2, 0)]: R(30) }, 1400, ab(['5', 'tac'], [2, 3], 'rotTac'))
+      .lauf(K(3, 0), ring(40, 5), ab(['5', 'tac'], [2, 3], 'rotTac'))
+      .zeige(1200, ab(['5', 'tac'], [2, 3], 'rotTac'))
+      .setze({ [K(3, 0)]: R(40), [K(2, 0)]: H(2, 2) }, 2000, ab(['5', 'tac', 'tac'], [2, 3, 0], 'zweiterTac', { markiere: [H(2, 2)] }))
+      .lauf(K(0, 0), ring(10, 5), ab(['5', 'tac', 'tac'], [2, 3, 0], 'uebernehmen'))
+      .zeige(1800, ab(['5', 'tac', 'tac'], [2, 3, 0], 'uebernehmen')).bilder,
+  // Vier TACs: jeder TAC hebt den vorigen auf, Kugeln kommen abwechselnd heraus und gehen zurück.
+  m03: () =>
+    new Szene({})
+      .zeige(700)
+      .setze({ [K(0, 0)]: R(0) }, 1800, ab(['13'], [0], 'heraus', { markiere: [R(0)] }))
+      .setze({ [K(0, 0)]: VORFELD(K(0, 0)), [K(1, 0)]: R(16) }, 2000, ab(['13', 'tac'], [0, 1], 'tacKette', { markiere: [R(16)] }))
+      .setze({ [K(1, 0)]: VORFELD(K(1, 0)), [K(0, 0)]: R(0), [K(2, 0)]: R(32) }, 2000, ab(['13', 'tac', 'tac'], [0, 1, 2], 'tacKette', { markiere: [R(32)] }))
+      .setze(
+        { [K(2, 0)]: VORFELD(K(2, 0)), [K(0, 0)]: VORFELD(K(0, 0)), [K(1, 0)]: R(16), [K(3, 0)]: R(48) },
+        2000,
+        ab(['13', 'tac', 'tac', 'tac'], [0, 1, 2, 3], 'tacKette', { markiere: [R(48)] })
+      )
+      .setze(
+        { [K(3, 0)]: VORFELD(K(3, 0)), [K(1, 0)]: VORFELD(K(1, 0)), [K(0, 0)]: R(0), [K(2, 0)]: R(32) },
+        2000,
+        ab(['13', 'tac', 'tac', 'tac', 'tac'], [0, 1, 2, 3, 0], 'kettenEnde')
+      )
+      .lauf(K(0, 0), ring(0, 13), ab(['13', 'tac', 'tac', 'tac', 'tac'], [0, 1, 2, 3, 0], 'kettenEnde'))
+      .zeige(1800, ab(['13', 'tac', 'tac', 'tac', 'tac'], [0, 1, 2, 3, 0], 'kettenEnde')).bilder,
+  // TAC nach ungenutzter TAC: Grün zieht mit der 5 ins Haus, Rot legt TAC ab, dein TAC nutzt Grüns 5, Grün bleibt im Haus.
+  m04: () =>
+    new Szene({ [K(0, 0)]: R(10), [K(2, 0)]: R(30) })
+      .zeige(700)
+      .lauf(K(2, 0), zumHaus(30, 2, 2), ab(['5'], [2], 'gruenInsHaus'))
+      .zeige(1200, ab(['5'], [2], 'gruenInsHaus'))
+      .zeige(2000, ab(['5', 'tac'], [2, 3], 'tacAbgelegt'))
+      .zeige(1800, ab(['5', 'tac', 'tac'], [2, 3, 0], 'gruenBleibt', { markiere: [H(2, 2)] }))
+      .lauf(K(0, 0), ring(10, 5), ab(['5', 'tac', 'tac'], [2, 3, 0], 'uebernehmen'))
+      .zeige(1800, ab(['5', 'tac', 'tac'], [2, 3, 0], 'uebernehmen')).bilder,
   // Spielmaterial: Brett, 16 Kugeln, alle Kartenarten mit Anzahl.
   g02: () => [
     b({}, 6000, {
@@ -516,11 +651,7 @@ const proLektion: Record<string, () => Bild[]> = {
 /** Lektionen ohne eigenes Bild in der App: hier wenigstens die Karten. */
 const nurKarten: Record<string, string[]> = {
   a08: ['2'],
-  e09: ['8', 'tac'],
-  e09b: ['8', 'tac'],
   e09c: ['8', 'tac'],
-  m01: ['5', 'tac', 'tac'],
-  m03: ['tac', 'tac', 'tac', 'tac'],
 }
 
 /** Wer die Karten der Ablage spielt, wo es nicht Schwarz allein ist (je Lektion oder Bild). */
@@ -532,11 +663,7 @@ const kartenVon: Record<string, number[]> = {
   tacDualCards: [3, 0],
   trickserSwapFour: [3, 0],
   teufelIcon: [0, 1],
-  e09: [3, 0],
-  e09b: [3, 0],
   e09c: [3, 0],
-  m01: [2, 3, 0],
-  m03: [0, 1, 2, 3],
 }
 
 export function szeneFuer(lektionID: string, bild: string): Bild[] {

@@ -1169,7 +1169,28 @@
       "kurzVorHaus": "Blau steht kurz vor dem Haus",
       "engelDreizehn": "Der Engel lässt Blau 13 Felder ziehen",
       "kriegerSucht": "Der Krieger sucht die nächste Kugel",
-      "selbstwurf": "Nur deine: du wirfst dich selbst"
+      "selbstwurf": "Nur deine: du wirfst dich selbst",
+      "keineKugel": "Keine Kugel draußen: die 5 passt nicht, also kein TAC",
+      "dreizehnStatt": "Also die 13: heraus statt TAC",
+      "letzteKarte": "Rot spielt die letzte Karte der Runde",
+      "neueRunde": "Neue Runde: es wird gegeben",
+      "tacZuSpaet": "Nach dem Geben ist der Zug nicht mehr rücknehmbar",
+      "achtLaufen": "Du nutzt die 8: 8 Felder laufen",
+      "blauWirftAb": "Blau muss eine Karte abwerfen",
+      "engelDich": "Rots Engel holt deine Kugel heraus",
+      "tacEngel": "TAC: deine Kugel zurück, Blau kommt heraus",
+      "rotTeufel": "Rot spielt den Teufel und sieht deine Karten",
+      "rotNimmtTac": "Rot spielt aus deiner Hand den TAC",
+      "duFuerBlau": "Jetzt spielst du eine Karte von Blau",
+      "tacVonBlau": "Du bekommst Blaus TAC",
+      "vorDemNarren": "TAC nimmt den Zug vor dem Narren zurück",
+      "gruenInsHaus": "Grün zieht mit der 5 ins Haus",
+      "rotTac": "Rot: TAC holt Grün aus dem Haus",
+      "zweiterTac": "Dein TAC hebt Rots TAC auf: Grün wieder im Haus",
+      "tacKette": "TAC hebt den vorigen TAC auf",
+      "kettenEnde": "Die Kette endet bei dir: die 13 gehört dir",
+      "tacAbgelegt": "Rot legt seinen TAC ungenutzt ab",
+      "gruenBleibt": "Dein TAC nutzt Grüns 5, Grün bleibt im Haus"
     }
   }
 }

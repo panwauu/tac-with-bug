@@ -3,7 +3,7 @@
 // Spielern; hier zeigt es Oskars Spieloberfläche selbst.
 import type { Lektion, Text, Uebung } from './typen'
 
-type Felder = Partial<Record<'titel' | 'aufgabe' | 'tipp' | 'erfolg', Text>> & { karten?: string[] }
+type Felder = Partial<Record<'titel' | 'aufgabe' | 'tipp' | 'erfolg', Text>> & { karten?: string[]; andereHaende?: Record<string, string[]> }
 
 export const anpassungen: Record<string, Felder> = {
   // Bedienung wie bei Tac-With-Bug: erst die Kugel, dann das Zielfeld; Abwerfen über den roten Knopf.
@@ -64,6 +64,30 @@ export const anpassungen: Record<string, Felder> = {
       ru: 'Синий закончил, поэтому Ангел автоматически переходит к Красному. Красный должен вывести шарик. Нажми на красный шарик в базе Красного, а затем на стартовое поле Красного.',
     },
   },
+  // TAC kopiert die 8: bei Tac-With-Bug gibt es keinen Knopf „Laufen“, man zieht direkt über die Projektion.
+  s_e09a: {
+    tipp: {
+      de: 'Spiele TAC, um die 8 zu kopieren. Tippe dann auf deine schwarze Kugel und danach auf die Projektion, 8 Felder weiter auf Feld 18.',
+      en: 'Play TAC to copy the 8. Then tap your black marble and then the projection, 8 fields ahead on field 18.',
+      ru: 'Сыграй TAC, чтобы скопировать 8. Затем нажми на свой чёрный шарик, а потом на проекцию, на 8 полей дальше, на поле 18.',
+    },
+  },
+  s_e12: {
+    tipp: {
+      de: 'TAC ist deine einzige Karte und spielbar, also musst du sie spielen! TAC übernimmt den Engel: Tippe auf TAC, dann auf eine blaue Kugel in Blaus Vorfeld und danach auf das Startfeld von Blau. Leider schlecht für dich: Deine Kugel geht zurück ins Vorfeld und Blau (der nächste Spieler) kommt heraus. Manchmal schadet TAC dem eigenen Team.',
+      en: "TAC is your only card and it's playable, so you must play it! TAC takes over the Angel: tap TAC, then a blue marble in Blue's base, and then Blue's start field. Unfortunately bad for you: your marble goes back to the base and Blue (the next player) comes out. Sometimes TAC hurts your own team.",
+      ru: 'TAC, твоя единственная карта, и ею можно сыграть, поэтому ты обязан её разыграть! TAC перенимает Ангела: нажми на TAC, затем на синий шарик в базе Синего, а потом на стартовое поле Синего. Увы, для тебя это плохо: твой шарик возвращается в базу, а Синий (следующий игрок) выходит. Иногда TAC вредит собственной команде.',
+    },
+  },
+  // Blau hat nur den TAC: nach dem Narren hast du keine andere Karte und musst ihn spielen.
+  s_f29: {
+    andereHaende: { '1': ['tac'] },
+    tipp: {
+      de: 'Spiele den Narren. Alle geben ihre Karten weiter. Du erhältst durch den Tausch Blaus einzige Karte, einen TAC. Setze ihn ein, um den letzten Zug vor dem Narren rückgängig zu machen!',
+      en: "Play the Fool. Everyone passes their cards on. Through the swap you receive Blue's only card, a TAC. Use it to undo the last move before the Fool!",
+      ru: 'Сыграй Шута. Все передают карты. Благодаря обмену ты получаешь единственную карту Синего, TAC. Используй её, чтобы отменить последний ход перед Шутом!',
+    },
+  },
   // Eine 2 als Ablenkung: sie bringt Schwarz auf Feld 47, das liegt nicht auf Rots Weg ins Haus.
   s_f05b: {
     karten: ['5', '2', '9', '12'],
@@ -120,6 +144,14 @@ export function passeAn(u: Uebung): Uebung {
 
 /** Lektionstexte, die von der Bedienung der App ausgehen. */
 const lektionsAnpassungen: Record<string, Partial<Record<'text', Text>>> = {
+  // Teufel und TAC: Rot spielt erst den Teufel, dann aus deiner Hand den TAC, erst dadurch spielst du für Blau.
+  e13: {
+    text: {
+      de: 'Spezialregel: Rot spielt den Teufel. Damit darf Rot eine Karte aus deiner Hand für dich spielen und wählt deinen TAC. Der TAC macht den Teufel rückgängig und dreht ihn um: Jetzt darfst du den Teufel für Rots Teampartner Blau spielen. Du wählst eine Karte aus Blaus Hand und spielst sie für Blau. Eine seltene, aber mächtige Wendung!',
+      en: "Special rule: Red plays the Devil. That lets Red play a card from your hand for you, and Red picks your TAC. The TAC undoes the Devil and turns it around: now you may play the Devil for Red's teammate Blue. You choose a card from Blue's hand and play it for Blue. A rare but powerful twist!",
+      ru: 'Особое правило: Красный играет Дьявола. Так Красный может сыграть за тебя карту из твоей руки и выбирает твой TAC. TAC отменяет Дьявола и оборачивает его: теперь ты можешь сыграть Дьявола за напарника Красного, Синего. Ты выбираешь карту из руки Синего и играешь её за Синего. Редкий, но мощный поворот!',
+    },
+  },
   a03c: {
     text: {
       de: 'Wenn du mehrere Kugeln auf dem Spielfeld hast, entscheidest du, welche zieht. Tippe auf eine Karte, dann auf die schwarze Kugel, die ziehen soll, und danach auf die Projektion.',

@@ -124,9 +124,9 @@ import { useCards } from '@/services/compositionGame/useCards'
 import { useInstructions } from '@/services/compositionGame/useInstructions'
 import router from '@/router/index'
 import { uebung, txt, markiere, naechstes, training } from '@/training'
-import { baueSpiel, fuehreAus, ICH, kugel } from '@/training/spielstand'
+import { baelleFuer, baueSpiel, fuehreAus, ICH, kugel } from '@/training/spielstand'
 import { istGeloest, type Verlauf } from '@/training/pruefung'
-import { DREHUNG_TRAINING, FARBEN, type Uebung } from '@/training/typen'
+import { DREHUNG_TRAINING, FARBEN, type Uebung, type Vorzug } from '@/training/typen'
 
 const { t, locale } = useI18n()
 
@@ -134,7 +134,8 @@ const miscState = useMisc(4)
 const positionStyles = usePositionStyles(miscState, DREHUNG_TRAINING)
 const discardPileState = useDiscardPile(miscState.gamePlayer)
 const ballsState = useBalls()
-const cardsState = useCards(ballsState, miscState)
+// In den TAC-Lektionen (Meister-Stufe) wird die einzige Karte nicht von selbst gewählt: sonst zeigt das Brett gleich den TAC und man sieht den Zug davor nicht.
+const cardsState = useCards(ballsState, miscState, () => u.value?.stufe !== 4)
 const performMove = usePerformMove(cardsState, ballsState, miscState, discardPileState)
 const instructionsState = useInstructions(miscState, ballsState, cardsState)
 const updateData = ref<null | UpdateDataType>(null)
@@ -237,6 +238,11 @@ function zeigeVorzug(x: Uebung, teil: 'start' | 'm03') {
     return
   }
   const echt = getPlayerUpdateFromGame(spiel, ICH)
+  // „Vier TACs in Folge": Blau, Grün und Rot spielen ihren TAC einer nach dem anderen, im Tempo einer Partie.
+  if (x.id === 's_m03' && x.vorzuege != null) {
+    zeigeVorzuegeEinzeln(x, x.vorzuege, echt)
+    return
+  }
   updateData.value = {
     ...echt,
     balls: structuredClone(game.priorBalls),
@@ -248,6 +254,35 @@ function zeigeVorzug(x: Uebung, teil: 'start' | 'm03') {
     vorzugLaeuft.value = false
     zeige()
   }, 1400)
+}
+
+const VORZUG_TAKT = 1600
+function zeigeVorzuegeEinzeln(x: Uebung, vorzuege: Vorzug[], echt: UpdateDataType) {
+  if (game == null) return
+  const g = game
+  const n = vorzuege.length
+  const ohneZug = echt.cards.map((c) => ({ ...c, possible: false, ballActions: {}, textAction: '' }))
+  const bild = (i: number) => {
+    const balls = i === 0 ? x.kugelnVorVorzuegen : vorzuege[i - 1].kugelnDanach
+    updateData.value = {
+      ...echt,
+      balls: baelleFuer(g, balls),
+      discardPile: echt.discardPile.slice(0, echt.discardPile.length - n + i),
+      players: echt.players.map((p, s) => ({ ...p, discarded: i > 0 && s === vorzuege[i - 1].sitz })),
+      cards: ohneZug,
+    }
+  }
+  vorzugLaeuft.value = true
+  const schritt = (i: number) => {
+    if (i > n) {
+      vorzugLaeuft.value = false
+      zeige()
+      return
+    }
+    bild(i)
+    vorzugUhr = setTimeout(() => schritt(i + 1), VORZUG_TAKT)
+  }
+  schritt(0)
 }
 
 function loese() {

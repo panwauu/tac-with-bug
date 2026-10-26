@@ -1169,7 +1169,28 @@
       "kurzVorHaus": "Blue is just before its home",
       "engelDreizehn": "The Angel makes Blue move 13 fields",
       "kriegerSucht": "The Warrior looks for the next marble",
-      "selbstwurf": "Only yours: you knock yourself out"
+      "selbstwurf": "Only yours: you knock yourself out",
+      "keineKugel": "No marble out: the 5 is no use, so no TAC",
+      "dreizehnStatt": "So the 13: come out instead of TAC",
+      "letzteKarte": "Red plays the last card of the round",
+      "neueRunde": "New round: cards are dealt",
+      "tacZuSpaet": "After dealing, the move can no longer be undone",
+      "achtLaufen": "You use the 8: move 8 fields",
+      "blauWirftAb": "Blue has to discard a card",
+      "engelDich": "Red's Angel brings your marble out",
+      "tacEngel": "TAC: your marble goes back, Blue comes out",
+      "rotTeufel": "Red plays the Devil and sees your cards",
+      "rotNimmtTac": "From your hand, Red plays the TAC",
+      "duFuerBlau": "Now you play one of Blue's cards",
+      "tacVonBlau": "You get Blue's TAC",
+      "vorDemNarren": "TAC undoes the move before the Fool",
+      "gruenInsHaus": "Green moves into its home with the 5",
+      "rotTac": "Red: TAC pulls Green out of its home",
+      "zweiterTac": "Your TAC cancels Red's TAC: Green is home again",
+      "tacKette": "TAC cancels the previous TAC",
+      "kettenEnde": "The chain ends with you: the 13 is yours",
+      "tacAbgelegt": "Red discards its TAC unused",
+      "gruenBleibt": "Your TAC uses Green's 5, Green stays home"
     }
   }
 }

@@ -28,6 +28,13 @@ function setzeKugeln(balls: BallsType, kugeln: Kugel[] | null) {
   }
 }
 
+/** Die Kugeln eines Spiels, umgestellt auf eine Stellung der App (für Zwischenbilder). */
+export function baelleFuer(g: Game, kugeln: Kugel[] | null): BallsType {
+  const balls = structuredClone(g.balls)
+  setzeKugeln(balls, kugeln)
+  return balls
+}
+
 /** Eine Übung als laufendes Spiel, Schwarz ist am Zug. */
 export function baueSpiel(u: Uebung, phase: 'start' | 'm03' = 'start'): Game {
   const g = new Game(SITZE, 2, true, false)
