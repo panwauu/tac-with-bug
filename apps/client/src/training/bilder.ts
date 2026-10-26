@@ -403,13 +403,14 @@ function rundenablauf(): Bild[] {
 /** Narr: Karte in die Mitte, dann gibt jeder seine Hand an den Nächsten. */
 function narr(): Bild[] {
   const haende = [3, 4, 4, 4]
-  const flug = (verschoben: number) => [0, 1, 2, 3].map((s) => ({ id: `n${s}`, karte: 'backside', ort: (s + verschoben) % 4 }))
+  // Wie in Oskars Engine (narrCardSwap): jeder gibt an den vorigen Sitz, Schwarz bekommt die Karten von Blau
+  const flug = (verschoben: number) => [0, 1, 2, 3].map((s) => ({ id: `n${s}`, karte: 'backside', ort: (s + 4 - verschoben) % 4 }))
   return [
     b({}, 1300, { haende: [4, 4, 4, 4], aktiv: 0, text: 'narr' }),
     b({}, 1200, { haende, karten: ['narr'], text: 'narr' }),
     b({}, 60, { haende: [0, 0, 0, 0], karten: ['narr'], flug: flug(0), text: 'narr' }),
     b({}, 1100, { haende: [0, 0, 0, 0], karten: ['narr'], flug: flug(1), text: 'narr' }),
-    b({}, 1600, { haende: [4, 3, 4, 4], karten: ['narr'], text: 'narr' }),
+    b({}, 1600, { haende: [4, 4, 4, 3], karten: ['narr'], text: 'narr' }),
   ]
 }
 
@@ -418,6 +419,25 @@ function narr(): Bild[] {
  * dasselbe Bild für mehrere Lektionen nutzt.
  */
 const proLektion: Record<string, () => Bild[]> = {
+  // Engel, Empfänger fertig: Blau hat alle Kugeln im Haus, also kommt Rot (Blaus Partner) heraus.
+  f24: () =>
+    new Szene({ [K(1, 0)]: H(1, 0), [K(1, 1)]: H(1, 1), [K(1, 2)]: H(1, 2), [K(1, 3)]: H(1, 3) })
+      .zeige(1400, { karten: ['engel'], markiere: [H(1, 0), H(1, 1), H(1, 2), H(1, 3)], text: 'blauFertig' })
+      .setze({ [K(3, 0)]: R(48) }, 2600, { karten: ['engel'], markiere: [R(48)], text: 'engelPartner' }).bilder,
+  // Engel am Haus vorbei: Blau steht vor dem Haus, hat keine Kugel im Vorfeld und muss 13 ziehen.
+  f24b: () =>
+    new Szene({ [K(1, 0)]: R(12), [K(1, 1)]: H(1, 1), [K(1, 2)]: H(1, 2), [K(1, 3)]: H(1, 3) })
+      .zeige(1600, { karten: ['engel'], markiere: [R(12)], text: 'kurzVorHaus' })
+      .lauf(K(1, 0), ring(12, 13), { karten: ['engel'], text: 'engelDreizehn' })
+      .zeige(2200, { karten: ['engel'], text: 'amHausVorbei' }).bilder,
+  // Krieger allein auf dem Feld: die Suche läuft einmal herum und landet bei der eigenen Kugel.
+  f27: () => {
+    const s = new Szene({ [K(0, 0)]: R(10) }).zeige(1400, { karten: ['krieger'] })
+    for (let i = 1; i < 8; i++) s.zeige(180, { karten: ['krieger'], markiere: [R(10 + i * 8)], text: 'kriegerSucht' })
+    return s
+      .zeige(1000, { karten: ['krieger'], markiere: [R(10)], zittern: [K(0, 0)], text: 'selbstwurf' })
+      .setze({ [K(0, 0)]: VORFELD(K(0, 0)) }, 2200, { karten: ['krieger'], text: 'selbstwurf' }).bilder
+  },
   // Spielmaterial: Brett, 16 Kugeln, alle Kartenarten mit Anzahl.
   g02: () => [
     b({}, 6000, {

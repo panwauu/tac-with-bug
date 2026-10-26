@@ -49,6 +49,21 @@ export const anpassungen: Record<string, Felder> = {
       ru: 'У тебя уже есть шарик на поле 5. Нажми на 1, затем на чёрный шарик в своей базе, а потом на белую проекцию на своём стартовом поле.',
     },
   },
+  // Engel: bei Tac-With-Bug wählt man die Kugel des anderen im Vorfeld und dann sein Startfeld.
+  s_f23: {
+    tipp: {
+      de: 'Wähle den Engel. Der nächste Spieler (Blau) wird gezwungen, eine Kugel heraus zu holen. Tippe dazu auf eine blaue Kugel in Blaus Vorfeld und dann auf das Startfeld von Blau.',
+      en: "Choose the Angel. The next player (Blue) is forced to bring a marble out. Tap a blue marble in Blue's base, then Blue's start field.",
+      ru: 'Выбери Ангела. Следующий игрок (Синий) обязан вывести шарик. Нажми на синий шарик в базе Синего, а затем на стартовое поле Синего.',
+    },
+  },
+  s_f24: {
+    tipp: {
+      de: 'Blau ist fertig, der Engel geht automatisch an Rot weiter. Rot muss eine Kugel heraus holen. Tippe dazu auf eine rote Kugel in Rots Vorfeld und dann auf das Startfeld von Rot.',
+      en: "Blue is finished, so the Angel passes on to Red automatically. Red has to bring a marble out. Tap a red marble in Red's base, then Red's start field.",
+      ru: 'Синий закончил, поэтому Ангел автоматически переходит к Красному. Красный должен вывести шарик. Нажми на красный шарик в базе Красного, а затем на стартовое поле Красного.',
+    },
+  },
   // Eine 2 als Ablenkung: sie bringt Schwarz auf Feld 47, das liegt nicht auf Rots Weg ins Haus.
   s_f05b: {
     karten: ['5', '2', '9', '12'],

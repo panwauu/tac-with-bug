@@ -1163,7 +1163,13 @@
       "ausHaus": "TAC holt die Kugel aus dem Haus",
       "wahl": "Freie Wahl bei Doppelfunktion",
       "kugeln16": "16 Kugeln",
-      "karten104": "104 Karten"
+      "karten104": "104 Karten",
+      "blauFertig": "Blau ist schon fertig",
+      "engelPartner": "Also kommt Rot heraus, Blaus Partner",
+      "kurzVorHaus": "Blau steht kurz vor dem Haus",
+      "engelDreizehn": "Der Engel lässt Blau 13 Felder ziehen",
+      "kriegerSucht": "Der Krieger sucht die nächste Kugel",
+      "selbstwurf": "Nur deine: du wirfst dich selbst"
     }
   }
 }

@@ -1163,7 +1163,13 @@
       "ausHaus": "TAC pulls the marble out of home",
       "wahl": "Free choice with dual cards",
       "kugeln16": "16 marbles",
-      "karten104": "104 cards"
+      "karten104": "104 cards",
+      "blauFertig": "Blue is already finished",
+      "engelPartner": "So Red comes out, Blue's partner",
+      "kurzVorHaus": "Blue is just before its home",
+      "engelDreizehn": "The Angel makes Blue move 13 fields",
+      "kriegerSucht": "The Warrior looks for the next marble",
+      "selbstwurf": "Only yours: you knock yourself out"
     }
   }
 }
