@@ -75,6 +75,14 @@
               :class="updateData?.substitution != null ? 'blink-animation' : ''"
               @click="openModal('substitution')"
             />
+            <Button
+              v-if="gameEnded && endedOverlayHidden"
+              :aria-label="t('Game.EndedOverlay.showButton')"
+              icon="pi pi-flag"
+              class="landscapeMenuButton"
+              rounded
+              @click="endedOverlayHidden = false"
+            />
             <GameWatchingPlayers
               aria-label="Watching Players"
               :display-text="false"
@@ -184,15 +192,6 @@
         </Fieldset>
       </div>
     </div>
-
-    <Button
-      v-if="gameEnded && endedOverlayHidden"
-      class="endedShowButton"
-      icon="pi pi-flag"
-      rounded
-      :aria-label="t('Game.EndedOverlay.showButton')"
-      @click="endedOverlayHidden = false"
-    />
 
     <Dialog
       v-model:visible="modalVisibleLocal"
@@ -344,10 +343,22 @@ function openModal(str: string) {
   modalVisibleLocal.value = true
 }
 
-const portraitMenu = ref(getMenu(true))
+const menuDisplayText = ref(true)
+const portraitMenu = computed(() => getMenu(menuDisplayText.value))
 
 function getMenu(displayText: boolean) {
   return [
+    ...(gameEnded.value && endedOverlayHidden.value
+      ? [
+          {
+            label: displayText ? t('Game.EndedOverlay.showButton') : '',
+            icon: 'pi pi-flag',
+            command: () => {
+              endedOverlayHidden.value = false
+            },
+          },
+        ]
+      : []),
     {
       label: displayText ? t('Game.GameModal.title.statistic') : '',
       icon: 'pi pi-chart-bar',
@@ -405,7 +416,7 @@ function onResize() {
   }
 
   const gameViewBounding = gameViewRef.value.getBoundingClientRect()
-  portraitMenu.value = getMenu(gameViewBounding.width > 600)
+  menuDisplayText.value = gameViewBounding.width > 600
   gameBoardPortrait.value = gameViewBounding.height + 80 > gameViewBounding.width
 
   const gameboard = document.getElementById('gameboard')
@@ -511,13 +522,6 @@ function onResize() {
 .endedHideButton {
   align-self: flex-end;
   margin: -10px -10px 0 0;
-}
-
-.endedShowButton {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  z-index: 1000;
 }
 
 .endedText {

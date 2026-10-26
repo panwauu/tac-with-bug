@@ -345,6 +345,7 @@
       "yesterday": "Yesterday"
     },
     "onlyAdminsOverlay": "In this channel only admins are allowed to post",
+    "onlyPlayersOverlay": "In this channel only the players of the game are allowed to post",
     "loadingOlderMessages": "Loading older messages"
   },
   "Game": {

@@ -37,3 +37,16 @@ export async function transferLatestMessagesToOtherChannel(pgPool: pg.Pool, chan
     [channelFrom, channelTo]
   )
 }
+
+/** A game channel may only be written in by the players of that game, spectators may only read it.
+ * A rematch lobby chats in the channel of the finished game, so its players may write there as well. */
+export async function isPlayerOfGameChannel(pgPool: pg.Pool, gameID: number, userID: number) {
+  const res = await pgPool.query(
+    `SELECT 1 FROM users_to_games JOIN games ON games.id = users_to_games.gameid
+      WHERE users_to_games.gameid = $1 AND users_to_games.userid = $2 AND users_to_games.player_index < games.n_players
+    UNION ALL
+    SELECT 1 FROM waitinggames WHERE gameid = $1 AND $2 IN (player0, player1, player2, player3, player4, player5);`,
+    [gameID, userID]
+  )
+  return res.rows.length > 0
+}

@@ -53,7 +53,8 @@ export interface ClientToServerEvents extends Record<string, any> {
   'chat:overview:load': (cb: CallbackFunction<ChatElement[]>) => void
   'channel:sendMessage': (data: { channel: string; body: string }, cb: CallbackFunction<null>) => void
   // `beforeMessageId` loads the page of messages older than this message instead of the newest page
-  'channel:load': (data: { channel: string; beforeMessageId?: number }, cb: CallbackFunction<{ channel: string } & ChatMessagePage>) => void
+  // mayWrite is false for spectators in a game channel, for non-admins in the news channel and for unauthenticated users
+  'channel:load': (data: { channel: string; beforeMessageId?: number }, cb: CallbackFunction<{ channel: string; mayWrite: boolean } & ChatMessagePage>) => void
 
   //subscription
   'subscription:get': () => void

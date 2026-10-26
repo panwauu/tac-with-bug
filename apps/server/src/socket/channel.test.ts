@@ -6,15 +6,48 @@ import { numberOfMessagesPerLoad } from '../sharedDefinitions/chat'
 describe('Channel test suite via socket.io', () => {
   let usersWithSockets: UserWithSocket[], socket: GeneralSocketC
   let blockedUsersWithSockets: UserWithSocket[]
+  // The players of game 1 are the users with the ids 1 to 4
+  let playerOfGame: UserWithSocket[], spectatorOfGame: UserWithSocket[]
 
   beforeAll(async () => {
     usersWithSockets = await getUsersWithSockets({ n: 2 })
     blockedUsersWithSockets = await getUsersWithSockets({ ids: [15] })
+    playerOfGame = await getUsersWithSockets({ ids: [3] })
+    spectatorOfGame = await getUsersWithSockets({ ids: [9] })
     socket = await getUnauthenticatedSocket()
   })
 
   afterAll(async () => {
-    await closeSockets([...usersWithSockets, ...blockedUsersWithSockets, socket])
+    await closeSockets([...usersWithSockets, ...blockedUsersWithSockets, ...playerOfGame, ...spectatorOfGame, socket])
+  })
+
+  describe('Test the game channel of game 1', () => {
+    test('Should let a player of the game send a message', async () => {
+      const res = await playerOfGame[0].socket.emitWithAck(5000, 'channel:sendMessage', { channel: 'g-1', body: 'message of a player' })
+      expect(res.status).toBe(200)
+    })
+
+    test('Should let a spectator load the channel but not write in it', async () => {
+      const loadData = await spectatorOfGame[0].socket.emitWithAck(5000, 'channel:load', { channel: 'g-1' })
+      expect(loadData.status).toBe(200)
+      expect(loadData.data?.mayWrite).toBe(false)
+      expect(loadData.data?.messages.at(-1)?.body).toBe('message of a player')
+
+      const res = await spectatorOfGame[0].socket.emitWithAck(5000, 'channel:sendMessage', { channel: 'g-1', body: 'message of a spectator' })
+      expect(res.status).not.toBe(200)
+    })
+
+    test('Should signal a player that they may write in the channel', async () => {
+      const loadData = await playerOfGame[0].socket.emitWithAck(5000, 'channel:load', { channel: 'g-1' })
+      expect(loadData.status).toBe(200)
+      expect(loadData.data?.mayWrite).toBe(true)
+    })
+
+    test('Should not signal an unauthenticated user that they may write in a channel', async () => {
+      const loadData = await socket.emitWithAck(5000, 'channel:load', { channel: 'general' })
+      expect(loadData.status).toBe(200)
+      expect(loadData.data?.mayWrite).toBe(false)
+    })
   })
 
   describe('Test channel communication', () => {

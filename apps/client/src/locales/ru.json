@@ -345,6 +345,7 @@
       "yesterday": "Вчера"
     },
     "onlyAdminsOverlay": "В этом канале могут писать только админы",
+    "onlyPlayersOverlay": "В этом канале могут писать только игроки этой игры",
     "loadingOlderMessages": "Загрузка старых сообщений"
   },
   "Game": {

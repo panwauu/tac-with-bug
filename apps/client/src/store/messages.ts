@@ -26,6 +26,8 @@ export const useMessagesStore = defineStore('messages', {
     loadingOlderMessages: false,
     // The channel of the finished game whose rematch lobby is currently open, see setRematchChannel
     rematchChannel: null as null | string,
+    // Whether the server accepts messages in the currently selected channel, see 'channel:load'
+    mayWriteInSelectedChannel: true,
   }),
   getters: {
     getRecentChats: (state) => {
@@ -146,6 +148,10 @@ export const useMessagesStore = defineStore('messages', {
 
       return bannedPlayers.some((p) => chat.players.includes(p))
     },
+    /** A spectator of a game may read its channel but not write in it. */
+    isSpectatorInSelectedChannel: (state) => {
+      return state.selectedChat.type === 'channel' && state.selectedChat.id.startsWith('g-') && !state.mayWriteInSelectedChannel
+    },
     getDateGroupedChatMessages: (state) => {
       const messages: { date: string; messages: ChatMessage[] }[] = []
       for (const m of state.chatMessages) {
@@ -187,6 +193,7 @@ export const useMessagesStore = defineStore('messages', {
 
       const requestedChat = chatKey(this.selectedChat)
       if (this.selectedChat.type === 'chat') {
+        this.mayWriteInSelectedChannel = true
         this.$state.socket.emitWithAck(20000, 'chat:singleChat:load', { chatid: Number.parseInt(this.selectedChat.id) }).then((data) => {
           if (data.data == null || chatKey(this.selectedChat) !== requestedChat) {
             return
@@ -201,6 +208,7 @@ export const useMessagesStore = defineStore('messages', {
           }
           this.chatMessages = data.data.messages
           this.hasOlderMessages = data.data.hasOlderMessages
+          this.mayWriteInSelectedChannel = data.data.mayWrite
         })
       }
     },
@@ -301,6 +309,9 @@ export const useMessagesStore = defineStore('messages', {
       await this.$state.socket.emitWithAck(2000, 'channel:sendMessage', { channel: data.channel, body: data.emoji })
     },
     async sendMessage(text: string) {
+      if (this.selectedChat.type === 'channel' && !this.mayWriteInSelectedChannel) {
+        return
+      }
       if (this.selectedChat.type === 'chat' && !this.mayNotUseChat) {
         await this.$state.socket.emitWithAck(2000, 'chat:sendMessage', { chatid: Number.parseInt(this.selectedChat.id), body: text })
       } else {

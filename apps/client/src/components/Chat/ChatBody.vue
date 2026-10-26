@@ -133,6 +133,7 @@
         v-if="
           !messagesStore.mayNotUseChat &&
           !(messagesStore.selectedChat.type === 'channel' && messagesStore.selectedChat.id === 'news' && !settingsStore.admin) &&
+          !messagesStore.isSpectatorInSelectedChannel &&
           !settingsStore.isBlockedByModeration
         "
         style="height: 100%"
@@ -175,6 +176,14 @@
         icon="pi pi-exclamation-triangle"
       >
         {{ t('Chat.onlyAdminsOverlay') }}
+      </Message>
+      <Message
+        v-if="messagesStore.isSpectatorInSelectedChannel"
+        severity="warn"
+        size="small"
+        icon="pi pi-exclamation-triangle"
+      >
+        {{ t('Chat.onlyPlayersOverlay') }}
       </Message>
     </div>
 

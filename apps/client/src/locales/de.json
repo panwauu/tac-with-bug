@@ -345,6 +345,7 @@
       "yesterday": "Gestern"
     },
     "onlyAdminsOverlay": "In diesem Kanal dürfen leider nur Admins schreiben",
+    "onlyPlayersOverlay": "In diesem Kanal dürfen leider nur die Spieler des Spiels schreiben",
     "loadingOlderMessages": "Ältere Nachrichten werden geladen"
   },
   "Game": {
