@@ -29,6 +29,7 @@ export interface User {
   userDescription: string
   gameDefaultPositions: [number, number]
   admin: boolean
+  moderator: boolean
   blockedByModerationUntil: string | null
   prefersDarkMode: boolean | null
 }

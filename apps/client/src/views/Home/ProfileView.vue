@@ -37,6 +37,7 @@
           v-if="isLoggedIn"
           :username="username"
         />
+        <ReportButton :username="username" />
       </div>
     </div>
     <Tabs v-model:value="tabValueToName">
@@ -68,6 +69,7 @@ import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'
 import type { MenuItem } from 'primevue/menuitem'
 import FriendButton from '@/components/FriendButton.vue'
+import ReportButton from '@/components/ReportButton.vue'
 import ProfilePicture from '@/components/ProfilePicture.vue'
 import Sponsor from '@/components/SubscriptionTag.vue'
 import ProfileExplanation from '@/components/ProfileExplanation.vue'

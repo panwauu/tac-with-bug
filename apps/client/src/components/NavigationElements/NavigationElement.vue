@@ -30,8 +30,10 @@ import { ref, onMounted, watch } from 'vue'
 import router from '@/router/index'
 import { isLoggedIn } from '@/services/useUser'
 import { useI18n } from 'vue-i18n'
+import { useModerationStore } from '@/store/moderation'
 
 const { t } = useI18n()
+const moderationStore = useModerationStore()
 const emit = defineEmits<{ logout: [] }>()
 
 const menuRef = ref<null | InstanceType<typeof Menu>>(null)
@@ -103,6 +105,16 @@ function returnMenu() {
     },
   ]
 
+  if (isLoggedIn.value && moderationStore.moderator) {
+    menu.push({
+      label: moderationStore.openReports > 0 ? `${t('Moderation.titel')} (${moderationStore.openReports})` : t('Moderation.titel'),
+      icon: 'pi pi-shield',
+      command: () => {
+        router.push({ name: 'Moderation' })
+      },
+    })
+  }
+
   if (isLoggedIn.value) {
     menu.push({
       label: t('Home.signout'),
@@ -147,7 +159,7 @@ onMounted(() => {
 
   watch(
     () => {
-      return isLoggedIn.value
+      return [isLoggedIn.value, moderationStore.moderator, moderationStore.openReports]
     },
     () => {
       userMenu.value = returnMenu()
