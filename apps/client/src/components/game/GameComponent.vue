@@ -71,8 +71,17 @@
               severity="warn"
               class="landscapeMenuButton"
               rounded
+              :disabled="gameEnded"
               :class="updateData?.substitution != null ? 'blink-animation' : ''"
               @click="openModal('substitution')"
+            />
+            <Button
+              v-if="gameEnded && endedOverlayHidden"
+              :aria-label="t('Game.EndedOverlay.showButton')"
+              icon="pi pi-flag"
+              class="landscapeMenuButton"
+              rounded
+              @click="endedOverlayHidden = false"
             />
             <GameWatchingPlayers
               aria-label="Watching Players"
@@ -106,7 +115,7 @@
           />
         </div>
         <div
-          v-if="!miscState.viewerMode"
+          v-if="!miscState.viewerMode && !gameEnded"
           class="instructions p-card"
         >
           <div
@@ -133,10 +142,18 @@
       </div>
     </div>
     <div
-      v-if="!miscState.gameRunning && !miscState.viewerMode"
+      v-if="endedOverlayVisible"
       class="endedOverlay"
     >
       <div class="endedCard p-card">
+        <Button
+          class="endedHideButton"
+          icon="pi pi-times"
+          rounded
+          text
+          :aria-label="t('Game.EndedOverlay.hideButton')"
+          @click="endedOverlayHidden = true"
+        />
         <div class="endedText">{{ miscState.gameEndedText }}</div>
         <Button
           class="endedButton"
@@ -326,10 +343,22 @@ function openModal(str: string) {
   modalVisibleLocal.value = true
 }
 
-const portraitMenu = ref(getMenu(true))
+const menuDisplayText = ref(true)
+const portraitMenu = computed(() => getMenu(menuDisplayText.value))
 
 function getMenu(displayText: boolean) {
   return [
+    ...(gameEnded.value && endedOverlayHidden.value
+      ? [
+          {
+            label: displayText ? t('Game.EndedOverlay.showButton') : '',
+            icon: 'pi pi-flag',
+            command: () => {
+              endedOverlayHidden.value = false
+            },
+          },
+        ]
+      : []),
     {
       label: displayText ? t('Game.GameModal.title.statistic') : '',
       icon: 'pi pi-chart-bar',
@@ -361,6 +390,14 @@ function getMenu(displayText: boolean) {
   ]
 }
 
+const gameEnded = computed(() => !props.miscState.gameRunning && !props.miscState.viewerMode)
+const endedOverlayHidden = ref(false)
+const endedOverlayVisible = computed(() => gameEnded.value && !endedOverlayHidden.value)
+
+watch(gameEnded, (ended) => {
+  if (!ended) endedOverlayHidden.value = false
+})
+
 const gameBoardPortrait = ref(false)
 const gameViewRef = ref<HTMLElement | null>()
 
@@ -379,7 +416,7 @@ function onResize() {
   }
 
   const gameViewBounding = gameViewRef.value.getBoundingClientRect()
-  portraitMenu.value = getMenu(gameViewBounding.width > 600)
+  menuDisplayText.value = gameViewBounding.width > 600
   gameBoardPortrait.value = gameViewBounding.height + 80 > gameViewBounding.width
 
   const gameboard = document.getElementById('gameboard')
@@ -480,6 +517,11 @@ function onResize() {
   max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.endedHideButton {
+  align-self: flex-end;
+  margin: -10px -10px 0 0;
 }
 
 .endedText {

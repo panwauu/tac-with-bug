@@ -164,56 +164,14 @@ CREATE TABLE games (
   ),
   created timestamptz NOT NULL DEFAULT current_timestamp,
   lastPlayed timestamptz NOT NULL DEFAULT current_timestamp,
-  bots INT ARRAY [6] NOT NULL DEFAULT '{NULL,NULL,NULL,NULL,NULL,NULL}' CHECK (
-    (
-      (
-        bots [1] IS NOT NULL
-        AND public_tournament_id IS NULL
-        AND private_tournament_id IS NULL
-      )
-      OR bots [1] IS NULL
-    )
-    AND (
-      (
-        bots [2] IS NOT NULL
-        AND public_tournament_id IS NULL
-        AND private_tournament_id IS NULL
-      )
-      OR bots [2] IS NULL
-    )
-    AND (
-      (
-        bots [3] IS NOT NULL
-        AND public_tournament_id IS NULL
-        AND private_tournament_id IS NULL
-      )
-      OR bots [3] IS NULL
-    )
-    AND (
-      (
-        bots [4] IS NOT NULL
-        AND public_tournament_id IS NULL
-        AND private_tournament_id IS NULL
-      )
-      OR bots [4] IS NULL
-    )
-    AND (
-      (
-        bots [5] IS NOT NULL
-        AND public_tournament_id IS NULL
-        AND private_tournament_id IS NULL
-        AND n_players = 6
-      )
-      OR bots [5] IS NULL
-    )
-    AND (
-      (
-        bots [6] IS NOT NULL
-        AND public_tournament_id IS NULL
-        AND private_tournament_id IS NULL
-        AND n_players = 6
-      )
-      OR bots [6] IS NULL
+  -- A game with a bot of Tac-With-Bug is never a tournament game. The entries beyond the seats are the bots that
+  -- were replaced during the game: a replaced bot keeps the index of its archived statistic, so that a finished
+  -- game still shows that a bot played it (see substitution.ts and the leaderboards in leaders.ts).
+  bots INT ARRAY NOT NULL DEFAULT '{NULL,NULL,NULL,NULL,NULL,NULL}' CONSTRAINT games_bots_check CHECK (
+    cardinality(array_remove(bots, NULL)) = 0
+    OR (
+      public_tournament_id IS NULL
+      AND private_tournament_id IS NULL
     )
   ),
   game jsonb NOT NULL,

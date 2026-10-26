@@ -8,7 +8,7 @@
       @click="changeTimeFrame()"
     />
     <p class="onlyHumans">{{ t('Leaders.onlyHumans') }}</p>
-    <Tabs value="tac">
+    <Tabs v-model:value="selectedTab">
       <TabList>
         <Tab value="tac">TAC</Tab>
         <Tab value="4">4er Team-Tac</Tab>
@@ -182,8 +182,9 @@ import Column from 'primevue/column'
 import SelectButton from 'primevue/selectbutton'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index.ts'
+import router from '@/router'
 
 const rows = ref(10)
 const totalNumber = ref(0)
@@ -221,29 +222,63 @@ const dataCoop6 = ref(
 const loadingCoop6 = ref(false)
 
 const dateOptions = [
-  { name: t('Leaders.Time.alltime'), startDate: 0, endDate: null },
+  { key: 'alltime', name: t('Leaders.Time.alltime'), startDate: 0, endDate: null },
   {
+    key: 'year',
     name: t('Leaders.Time.thisYear'),
     startDate: new Date(new Date().getUTCFullYear(), 0, 1).getTime(),
     endDate: null,
   },
   {
+    key: 'month',
     name: t('Leaders.Time.thisMonth'),
     startDate: new Date(new Date().getUTCFullYear(), new Date().getUTCMonth(), 1).getTime(),
     endDate: null,
   },
   {
+    key: 'week',
     name: t('Leaders.Time.thisWeek'),
     startDate: getMonday().getTime(),
     endDate: null,
   },
 ]
 
-const selectedDate = ref(dateOptions[2])
+const tabKeys = ['tac', '4', '6'] as const
+type TabKey = (typeof tabKeys)[number]
+
+const initialQuery = router.currentRoute.value.query
+const selectedDate = ref(dateOptions.find((option) => option.key === initialQuery.timespan) ?? dateOptions[2])
+const selectedTab = ref<TabKey>(tabKeys.find((key) => key === initialQuery.tab) ?? 'tac')
+
+const initialPage = Number.parseInt(initialQuery.page as string)
+const initialFirst = Number.isNaN(initialPage) ? 0 : Math.max(initialPage - 1, 0) * rows.value
+if (selectedTab.value === '4') {
+  firstCoop4.value = initialFirst
+} else if (selectedTab.value === '6') {
+  firstCoop6.value = initialFirst
+} else {
+  first.value = initialFirst
+}
+
+watch([selectedDate, selectedTab, first, firstCoop4, firstCoop6], () => updateQuery())
 
 onPage()
 onPageCoop(4)
 onPageCoop(6)
+
+function updateQuery() {
+  const firstOfSelectedTab = selectedTab.value === '4' ? firstCoop4.value : selectedTab.value === '6' ? firstCoop6.value : first.value
+  const query = {
+    timespan: selectedDate.value.key,
+    tab: selectedTab.value,
+    page: (Math.floor(firstOfSelectedTab / rows.value) + 1).toString(),
+  }
+
+  const currentQuery = router.currentRoute.value.query
+  if (currentQuery.timespan === query.timespan && currentQuery.tab === query.tab && currentQuery.page === query.page) return
+
+  router.replace({ name: 'Leaders', query })
+}
 
 function getMonday() {
   const date = new Date()

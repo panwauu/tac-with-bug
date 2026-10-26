@@ -59,7 +59,7 @@ function addWLStatisticCoop(playerStatistic: tStatistic.PlayerStatistic, game: G
   }
 
   for (const [playerIndex, player] of game.players.entries()) {
-    if (playerIndex !== nPlayer && player != null) {
+    if (playerIndex !== nPlayer && player != null && game.bots[playerIndex] == null) {
       if (!(player in playerStatistic.wl.people)) {
         playerStatistic.wl.people[player] = [0, 0, 0, 0, 0]
       }

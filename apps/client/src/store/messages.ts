@@ -21,6 +21,13 @@ export const useMessagesStore = defineStore('messages', {
     expandedChats: [false, false, true],
     selectedChat: { type: 'channel' as 'channel' | 'chat', id: 'general' },
     chatMessages: [] as ChatMessage[],
+    // Lazy loading: only the newest page of messages is loaded initially, older ones are fetched on demand
+    hasOlderMessages: false,
+    loadingOlderMessages: false,
+    // The channel of the finished game whose rematch lobby is currently open, see setRematchChannel
+    rematchChannel: null as null | string,
+    // Whether the server accepts messages in the currently selected channel, see 'channel:load'
+    mayWriteInSelectedChannel: true,
   }),
   getters: {
     getRecentChats: (state) => {
@@ -141,6 +148,10 @@ export const useMessagesStore = defineStore('messages', {
 
       return bannedPlayers.some((p) => chat.players.includes(p))
     },
+    /** A spectator of a game may read its channel but not write in it. */
+    isSpectatorInSelectedChannel: (state) => {
+      return state.selectedChat.type === 'channel' && state.selectedChat.id.startsWith('g-') && !state.mayWriteInSelectedChannel
+    },
     getDateGroupedChatMessages: (state) => {
       const messages: { date: string; messages: ChatMessage[] }[] = []
       for (const m of state.chatMessages) {
@@ -177,20 +188,53 @@ export const useMessagesStore = defineStore('messages', {
     },
     loadChatMessages() {
       this.chatMessages = []
+      this.hasOlderMessages = false
+      this.loadingOlderMessages = false
+
+      const requestedChat = chatKey(this.selectedChat)
       if (this.selectedChat.type === 'chat') {
+        this.mayWriteInSelectedChannel = true
         this.$state.socket.emitWithAck(20000, 'chat:singleChat:load', { chatid: Number.parseInt(this.selectedChat.id) }).then((data) => {
-          if (data.data == null) {
+          if (data.data == null || chatKey(this.selectedChat) !== requestedChat) {
             return
           }
-          this.handleSingleChatUpdate(data.data.chatid, data.data.messages)
+          this.chatMessages = data.data.messages
+          this.hasOlderMessages = data.data.hasOlderMessages
         })
       } else {
         this.$state.socket.emitWithAck(20000, 'channel:load', { channel: this.selectedChat.id }).then((data) => {
-          if (data.data == null) {
+          if (data.data == null || chatKey(this.selectedChat) !== requestedChat) {
             return
           }
-          this.handleChannelUpdate(data.data.channel, data.data.messages)
+          this.chatMessages = data.data.messages
+          this.hasOlderMessages = data.data.hasOlderMessages
+          this.mayWriteInSelectedChannel = data.data.mayWrite
         })
+      }
+    },
+    /** Prepends the page of messages that precedes the oldest currently loaded one. */
+    async loadOlderMessages() {
+      if (this.loadingOlderMessages || !this.hasOlderMessages || this.chatMessages.length === 0) {
+        return
+      }
+
+      const requestedChat = chatKey(this.selectedChat)
+      const beforeMessageId = this.chatMessages[0].id
+      this.loadingOlderMessages = true
+      try {
+        const data =
+          this.selectedChat.type === 'chat'
+            ? await this.$state.socket.emitWithAck(20000, 'chat:singleChat:load', { chatid: Number.parseInt(this.selectedChat.id), beforeMessageId })
+            : await this.$state.socket.emitWithAck(20000, 'channel:load', { channel: this.selectedChat.id, beforeMessageId })
+        if (data.data == null || chatKey(this.selectedChat) !== requestedChat) {
+          return
+        }
+        this.chatMessages = mergeMessages(this.chatMessages, data.data.messages)
+        this.hasOlderMessages = data.data.hasOlderMessages
+      } finally {
+        if (chatKey(this.selectedChat) === requestedChat) {
+          this.loadingOlderMessages = false
+        }
       }
     },
     async handleOverviewUpdate(overview: ChatElement[]) {
@@ -207,7 +251,8 @@ export const useMessagesStore = defineStore('messages', {
     },
     handleSingleChatUpdate(chatid: number, messages: ChatMessage[]) {
       if (this.selectedChat.type === 'chat' && chatid === Number.parseInt(this.selectedChat.id)) {
-        this.chatMessages = messages
+        // Merge instead of replace, as an update only contains the newest page of messages
+        this.chatMessages = mergeMessages(this.chatMessages, messages)
       }
     },
     handleChannelUpdate(channel: string, messages: ChatMessage[], updateFromServer?: boolean) {
@@ -224,7 +269,8 @@ export const useMessagesStore = defineStore('messages', {
       }
 
       if (this.selectedChat.type === 'channel' && this.selectedChat.id === channel) {
-        this.chatMessages = messages
+        // Merge instead of replace, as an update only contains the newest page of messages
+        this.chatMessages = mergeMessages(this.chatMessages, messages)
       }
     },
     expandChatGroup(index: number) {
@@ -263,6 +309,9 @@ export const useMessagesStore = defineStore('messages', {
       await this.$state.socket.emitWithAck(2000, 'channel:sendMessage', { channel: data.channel, body: data.emoji })
     },
     async sendMessage(text: string) {
+      if (this.selectedChat.type === 'channel' && !this.mayWriteInSelectedChannel) {
+        return
+      }
       if (this.selectedChat.type === 'chat' && !this.mayNotUseChat) {
         await this.$state.socket.emitWithAck(2000, 'chat:sendMessage', { chatid: Number.parseInt(this.selectedChat.id), body: text })
       } else {
@@ -291,6 +340,30 @@ export const useMessagesStore = defineStore('messages', {
     addChannel(channel: string, endDate?: number) {
       if (!this.channels.some((c) => c.id === channel)) {
         this.channels.push({ id: channel, missedMessages: 0, endDate: endDate ?? null })
+      }
+    },
+    /**
+     * A rematch lobby chats in the channel of the finished game, so that channel has to stay
+     * available while the lobby is open. A game channel is otherwise only kept alive for
+     * `keepGameChannelAliveTime` after the game ended, which is shorter than a lobby may live.
+     */
+    setRematchChannel(channel: string | null) {
+      if (this.rematchChannel != null && this.rematchChannel !== channel) {
+        const previousChannel = this.channels.find((c) => c.id === this.rematchChannel)
+        if (previousChannel != null) {
+          previousChannel.endDate = Date.now() + keepGameChannelAliveTime
+        }
+      }
+
+      this.rematchChannel = channel
+      if (channel == null) {
+        return
+      }
+
+      this.addChannel(channel)
+      const currentChannel = this.channels.find((c) => c.id === channel)
+      if (currentChannel != null) {
+        currentChannel.endDate = null
       }
     },
     removeGameChannels() {
@@ -323,7 +396,7 @@ export const useMessagesStore = defineStore('messages', {
           .includes(oldRouteGameID)
       ) {
         const channelIndex = this.channels.findIndex((c) => c.id === `g-${oldRouteGameID}`)
-        if (channelIndex !== -1 && this.channels[channelIndex].endDate == null) {
+        if (channelIndex !== -1 && this.channels[channelIndex].endDate == null && this.channels[channelIndex].id !== this.rematchChannel) {
           this.channels.splice(channelIndex, 1)
         }
       }
@@ -385,16 +458,30 @@ nextTick(() => {
   watch(
     () => waitingStore.ownGame?.id,
     (newID) => {
-      if (newID != null) {
-        // Bugfix: Auch beim direkten Wechsel von einem Warteraum in einen
-        // anderen (z. B. Revanche -> neues Spiel) dem neuen Warteraum-Chat
-        // folgen, statt in den allgemeinen Chat zu springen.
-        messagesStore.removeWaitingRoomChannels(`w-${newID.toString()}`)
-        messagesStore.addChannel(`w-${newID.toString()}`)
-        messagesStore.selectChat(true, `w-${newID.toString()}`)
-      } else {
+      if (newID == null) {
+        messagesStore.setRematchChannel(null)
         messagesStore.removeWaitingRoomChannels()
+        return
       }
+
+      // A rematch lobby continues the chat of the finished game instead of opening a channel of
+      // its own. Its messages are therefore still there once the lobby is gone, no matter whether
+      // it was declined, expired or started.
+      const rematchOfGameID = waitingStore.ownGame?.gameid
+      if (rematchOfGameID != null) {
+        messagesStore.removeWaitingRoomChannels()
+        messagesStore.setRematchChannel(`g-${rematchOfGameID.toString()}`)
+        messagesStore.selectChat(true, `g-${rematchOfGameID.toString()}`)
+        return
+      }
+
+      messagesStore.setRematchChannel(null)
+      // Bugfix: Auch beim direkten Wechsel von einem Warteraum in einen
+      // anderen (z. B. Revanche -> neues Spiel) dem neuen Warteraum-Chat
+      // folgen, statt in den allgemeinen Chat zu springen.
+      messagesStore.removeWaitingRoomChannels(`w-${newID.toString()}`)
+      messagesStore.addChannel(`w-${newID.toString()}`)
+      messagesStore.selectChat(true, `w-${newID.toString()}`)
     }
   )
 
@@ -417,6 +504,17 @@ nextTick(() => {
     { deep: true }
   )
 })
+
+function chatKey(selectedChat: { type: 'channel' | 'chat'; id: string }) {
+  return `${selectedChat.type}-${selectedChat.id}`
+}
+
+/** Combines both lists into one list without duplicates, sorted from oldest to newest message. */
+function mergeMessages(loadedMessages: ChatMessage[], newMessages: ChatMessage[]) {
+  const messagesById = new Map(loadedMessages.map((m) => [m.id, m]))
+  newMessages.forEach((m) => messagesById.set(m.id, m))
+  return [...messagesById.values()].sort((a, b) => a.id - b.id)
+}
 
 export function formatChannelName(channelName: string, isChannel: boolean) {
   if (isChannel && channelName.startsWith('g-')) {

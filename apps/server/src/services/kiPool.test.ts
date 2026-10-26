@@ -40,7 +40,8 @@ describe('KiPool', () => {
   it('verkuerzt die Suchzeit, wenn hinter dem Zug weitere warten', async () => {
     const p = new KiPool(1, datei)
     pool = p
-    const zuege = await Promise.all([1, 2, 3, 4].map((i) => p.zug(anfrage('a' + i, 50), Date.now() + 6000)))
+    // Grosszuegige Frist: nur die Schlangenlaenge soll die Suchzeit kuerzen, nicht die Frist
+    const zuege = await Promise.all([1, 2, 3, 4].map((i) => p.zug(anfrage('a' + i, 50), Date.now() + 60000)))
     // Der erste startet sofort (Schlange leer), der zweite hat zwei hinter sich.
     const zeiten = zuege.map((z) => z?.[3] as number)
     expect(zeiten).toEqual([2000, 667, 1000, 2000])
@@ -57,11 +58,13 @@ describe('KiPool', () => {
 
   it('startet einen haengenden Thread neu und rechnet danach weiter', async () => {
     pool = new KiPool(1, datei)
-    // Frist knapp: Suchzeit 450 ms, Neustart nach 450 * 3 + 3000 ms
+    // Frist des Haengers knapp: Suchzeit 450 ms, also Neustart nach 450 * 3 + 3000 ms. Der Zug
+    // dahinter bekommt eine grosszuegige Frist, damit er den Neustart in jedem Fall abwartet,
+    // statt auf einem langsamen Runner als verspaetet verworfen zu werden
     const haenger = pool.zug(anfrage('a', -1), Date.now() + 750)
-    const danach = pool.zug(anfrage('a', 10), Date.now() + 8000)
+    const danach = pool.zug(anfrage('a', 10), Date.now() + 60000)
     expect(await haenger).toBeNull()
     expect(await danach).not.toBeNull()
     expect(pool.zustand().neustarts).toBe(1)
-  }, 15000)
+  }, 30000)
 })

@@ -6,7 +6,7 @@ import type { GameForOverview, GetRunningGamesType, UpdateDataType, GameForPlay,
 import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTournament, TournamentTableData, LastTournamentWinners } from './typesTournament'
 import type { Friend } from './typesFriends'
 import type { TutorialStepOutput } from './typesTutorial'
-import type { ChatElement, ChatMessage } from './chat'
+import type { ChatElement, ChatMessage, ChatMessagePage } from './chat'
 
 export type AckData<T> = { status: number; error?: any; data?: T }
 export type CallbackFunction<T> = (data: AckData<T>) => void
@@ -48,10 +48,13 @@ export interface ClientToServerEvents extends Record<string, any> {
   'chat:leaveChat': (data: { chatid: number }, cb: CallbackFunction<null>) => void
   'chat:markAsRead': (data: { chatid: number }, cb: CallbackFunction<null>) => void
   'chat:sendMessage': (data: { chatid: number; body: string }, cb: CallbackFunction<null>) => void
-  'chat:singleChat:load': (data: { chatid: number }, cb: CallbackFunction<{ chatid: number; messages: ChatMessage[] }>) => void
+  // `beforeMessageId` loads the page of messages older than this message instead of the newest page
+  'chat:singleChat:load': (data: { chatid: number; beforeMessageId?: number }, cb: CallbackFunction<{ chatid: number } & ChatMessagePage>) => void
   'chat:overview:load': (cb: CallbackFunction<ChatElement[]>) => void
   'channel:sendMessage': (data: { channel: string; body: string }, cb: CallbackFunction<null>) => void
-  'channel:load': (data: { channel: string }, cb: CallbackFunction<{ channel: string; messages: ChatMessage[] }>) => void
+  // `beforeMessageId` loads the page of messages older than this message instead of the newest page
+  // mayWrite is false for spectators in a game channel, for non-admins in the news channel and for unauthenticated users
+  'channel:load': (data: { channel: string; beforeMessageId?: number }, cb: CallbackFunction<{ channel: string; mayWrite: boolean } & ChatMessagePage>) => void
 
   //subscription
   'subscription:get': () => void

@@ -61,6 +61,10 @@ function checkSubstitutionConditions(
 }
 
 function canBeSubstituted(game: GameForPlay, playerIndexToSubstitute: number): boolean {
+  // Only an actual seat can be substituted: the indices beyond the seats hold the replaced players and
+  // bots of this game with their archived statistic
+  if (playerIndexToSubstitute < 0 || playerIndexToSubstitute >= game.nPlayers) return false
+
   return (
     (game.playerIDs.at(playerIndexToSubstitute) != null &&
       (playerShouldPlay(game, playerIndexToSubstitute) || playerShouldTrade(game, playerIndexToSubstitute)) &&
@@ -211,6 +215,9 @@ export async function acceptSubstitution(pgPool: pg.Pool, game: GameForPlay, use
     if (substitutionOfPlayer) {
       playerIndexMoves.push({ userID: game.playerIDs[playerIndexToSubstitute] as number, playerIndex: archivedStatisticIndex })
     } else {
+      // The bot keeps its entry at the index of its archived statistic, exactly as a replaced player keeps his
+      // users_to_games row there. Without it the finished game would no longer show that a bot ever played.
+      game.bots[archivedStatisticIndex] = game.bots[playerIndexToSubstitute]
       game.bots[playerIndexToSubstitute] = null
     }
 

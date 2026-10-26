@@ -562,6 +562,9 @@ describe('Waiting game test suite via Socket.io', () => {
     test('Rematch should be created', async () => {
       await testServer.pgPool.query('UPDATE games SET rematch_open=true WHERE id = $1;', [gameID])
 
+      const messageDuringGame = await usersWithSockets[0].socket.emitWithAck(5000, 'channel:sendMessage', { channel: `g-${gameID}`, body: 'message during the game' })
+      expect(messageDuringGame.status).toBe(200)
+
       const promises = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('waiting:getGames')
       })
@@ -581,6 +584,19 @@ describe('Waiting game test suite via Socket.io', () => {
       expect(dbRes.rows[0].rematch_open).toBe(false)
     })
 
+    test('Rematch lobby should chat in the channel of the finished game', async () => {
+      const waitingGames = await testServer.pgPool.query<{ id: number }>('SELECT id FROM waitinggames WHERE gameid = $1;', [gameID])
+      expect(waitingGames.rows).toHaveLength(1)
+
+      // No channel of its own is created for the lobby - not even a copy of the messages of the
+      // game - therefore nothing can be orphaned once the lobby is gone
+      const lobbyChannel = await usersWithSockets[0].socket.emitWithAck(5000, 'channel:load', { channel: `w-${waitingGames.rows[0].id}` })
+      expect(lobbyChannel.data?.messages).toHaveLength(0)
+
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'channel:sendMessage', { channel: `g-${gameID}`, body: 'rematch lobby message' })
+      expect(res.status).toBe(200)
+    })
+
     test('Rematch should be destroyed if one leaves the room', async () => {
       const waitForLeaveGame = usersWithSockets.map((uWS) => {
         return uWS.socket.oncePromise('waiting:getGames')
@@ -588,6 +604,12 @@ describe('Waiting game test suite via Socket.io', () => {
       usersWithSockets[1].socket.emitWithAck(5000, 'waiting:removePlayer', usersWithSockets[1].username)
       const waitForLeaveGameRes = await Promise.all(waitForLeaveGame)
       expect(waitForLeaveGameRes[0]).toHaveLength(0)
+    })
+
+    test('Messages of the destroyed rematch lobby should still be in the channel of the game', async () => {
+      const gameChannel = await usersWithSockets[0].socket.emitWithAck(5000, 'channel:load', { channel: `g-${gameID}` })
+      expect(gameChannel.status).toBe(200)
+      expect(gameChannel.data?.messages.map((m) => m.body)).toEqual(['message during the game', 'rematch lobby message'])
     })
 
     test('Rematch should not be created if rematch_open is false', async () => {

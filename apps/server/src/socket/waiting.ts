@@ -198,7 +198,9 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     if (game.value.ready.every((r, i) => r === true || i >= game.value.nPlayers || game.value.bots[i] != null)) {
       deleteWaitingGame(pgPool, data.gameID)
       const createdGame = await createGameFromWaitingGame(pgPool, game.value)
-      await transferLatestMessagesToOtherChannel(pgPool, `g-${createdGame.id}`, `w-${game.value.id}`)
+      // A rematch lobby chats in the channel of the finished game, every other waiting game in its own
+      const channelOfWaitingGame = game.value.gameid != null ? `g-${game.value.gameid}` : `w-${game.value.id}`
+      await transferLatestMessagesToOtherChannel(pgPool, `g-${createdGame.id}`, channelOfWaitingGame)
       for (const [, value] of nspGeneral.sockets.entries()) {
         const userID = value.data.userID
         if (userID != null && createdGame.playerIDs.includes(userID)) {
@@ -248,7 +250,6 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
       sendUpdatesOfGameToPlayers(game)
       if (rematchResult.isErr()) return cb({ ok: false, error: rematchResult.error })
 
-      await transferLatestMessagesToOtherChannel(pgPool, `w-${rematchResult.value}`, `g-${game.id}`)
       emitGetGames()
       return cb({ ok: true, value: null })
     } catch (e: any) {

@@ -6,7 +6,6 @@ import Joi from 'joi'
 import { getGame } from '../services/game'
 import { acceptSubstitution, checkSubstitutionsForTime, rejectSubstitution, startSubstitution } from '../services/substitution'
 import { getSocketsInGame, nsp, emitOnlinePlayersEvents } from './game'
-import { sleep } from '../helpers/sleep'
 
 export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocketS) {
   socket.on('substitution:start', async (playerIndexToSubstitute, substituteByBotID, cb) => {
@@ -31,11 +30,6 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
 
     await acceptSubstitution(pgPool, game, socket.data.userID)
     await emitOnlinePlayersEvents(pgPool, nsp, game.id)
-
-    // Schedule second emission without blocking the callback
-    sleep(1000)
-      .then(() => emitOnlinePlayersEvents(pgPool, nsp, game.id))
-      .catch((err) => logger.error('Error in delayed emitOnlinePlayersEvents:', err))
 
     return cb({ status: 200 })
   })
@@ -73,11 +67,6 @@ export function registerSubstitutionHandlers(pgPool: pg.Pool, socket: GameSocket
       }
 
       await emitOnlinePlayersEvents(pgPool, nsp, game.id)
-
-      // Schedule second emission without blocking the callback
-      sleep(1000)
-        .then(() => emitOnlinePlayersEvents(pgPool, nsp, game.id))
-        .catch((err) => logger.error('Error in delayed emitOnlinePlayersEvents:', err))
 
       return cb({ status: 200 })
     } catch (err) {

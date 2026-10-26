@@ -344,7 +344,9 @@
       "today": "Heute",
       "yesterday": "Gestern"
     },
-    "onlyAdminsOverlay": "In diesem Kanal dürfen leider nur Admins schreiben"
+    "onlyAdminsOverlay": "In diesem Kanal dürfen leider nur Admins schreiben",
+    "onlyPlayersOverlay": "In diesem Kanal dürfen leider nur die Spieler des Spiels schreiben",
+    "loadingOlderMessages": "Ältere Nachrichten werden geladen"
   },
   "Game": {
     "viewerModeText": "Du befindest dich im Zuschauermodus. Du siehst daher auch keine Karten! Du kannst den Spielchat lesen aber keine Nachrichten in diesem abschicken.",
@@ -423,6 +425,8 @@
     "EndedOverlay": {
       "statistic": "Statistik",
       "backButton": "Zurück",
+      "hideButton": "Spielende ausblenden",
+      "showButton": "Spielende anzeigen",
       "wonInX": "Ihr habt in {X} Zügen gewonnen!",
       "aborted": "Das Spiel wurde abgebrochen",
       "wonWith": "Du hast mit {players} gewonnen!",

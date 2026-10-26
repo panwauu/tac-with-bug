@@ -344,7 +344,9 @@
       "today": "Today",
       "yesterday": "Yesterday"
     },
-    "onlyAdminsOverlay": "In this channel only admins are allowed to post"
+    "onlyAdminsOverlay": "In this channel only admins are allowed to post",
+    "onlyPlayersOverlay": "In this channel only the players of the game are allowed to post",
+    "loadingOlderMessages": "Loading older messages"
   },
   "Game": {
     "viewerModeText": "You are in spectator mode. So you don't see any cards! You can read the game chat but you cannot send messages in it.",
@@ -423,6 +425,8 @@
     "EndedOverlay": {
       "statistic": "Statistics",
       "backButton": "Back",
+      "hideButton": "Hide game result",
+      "showButton": "Show game result",
       "wonInX": "You won {X} moves!",
       "aborted": "The game was canceled",
       "wonWith": "You won with {players}!",

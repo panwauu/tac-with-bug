@@ -683,6 +683,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
     "rematch_open": false,
     "running": true,
     "statistic": [],
+    "substitutedBots": [],
     "substitutedPlayerIndices": [],
     "teams": [
       [
@@ -1324,6 +1325,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
     "rematch_open": false,
     "running": true,
     "statistic": [],
+    "substitutedBots": [],
     "teams": [
       [
         0,
@@ -1966,6 +1968,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
     "rematch_open": false,
     "running": true,
     "statistic": [],
+    "substitutedBots": [],
     "teams": [
       [
         0,

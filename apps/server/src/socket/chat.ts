@@ -125,15 +125,15 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   socket.on('chat:singleChat:load', async (data, cb) => {
     if (socket.data.userID === undefined) return cb({ status: 500, error: 'UNAUTH' })
 
-    const schema = Joi.object({ chatid: Joi.number().required().min(0) })
+    const schema = Joi.object({ chatid: Joi.number().required().min(0), beforeMessageId: Joi.number().min(0) })
     const { error } = schema.validate(data)
     if (error != null) return cb({ status: 500, error })
 
-    const chat = await loadChat(pgPool, socket.data.userID, data.chatid)
+    const chat = await loadChat(pgPool, socket.data.userID, data.chatid, data.beforeMessageId)
     if (chat.isErr()) {
       return cb({ status: 500, error: chat.error })
     }
-    return cb({ status: 200, data: { chatid: data.chatid, messages: chat.value } })
+    return cb({ status: 200, data: { chatid: data.chatid, ...chat.value } })
   })
 
   socket.on('chat:overview:load', async (cb) => {
@@ -160,7 +160,7 @@ async function updateUsersAfterMessage(pgPool: pg.Pool, userIDs: number[], chati
     }
     const chatOverview = await loadChatOverview(pgPool, userID)
     const socket = getSocketByUserID(userID)
-    socket?.emit('chat:singleChat:update', { chatid, messages: messages.value })
+    socket?.emit('chat:singleChat:update', { chatid, messages: messages.value.messages })
     socket?.emit('chat:overview:update', chatOverview)
   }
 }
