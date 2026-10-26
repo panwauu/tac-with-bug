@@ -35,6 +35,35 @@ export function baelleFuer(g: Game, kugeln: Kugel[] | null): BallsType {
   return balls
 }
 
+/**
+ * Zwischenstellungen, wenn zwischen zwei Stellungen genau eine Kugel vorwärts
+ * zieht (auf dem Ring oder über ihr Startfeld ins Haus): Feld für Feld, ohne
+ * die Endstellung. Sonst keine.
+ */
+export function zwischenschritte(vorher: Kugel[] | null, nachher: Kugel[] | null): Kugel[][] {
+  if (vorher == null || nachher == null) return []
+  const ort = (l: Kugel[], k: Kugel) => l.find((x) => x.sitz === k.sitz && x.idx === k.idx)
+  const anders = nachher.filter((k) => {
+    const v = ort(vorher, k)
+    return v == null || v.ort !== k.ort || v.pos !== k.pos
+  })
+  if (anders.length !== 1) return []
+  const ziel = anders[0]
+  const start = ort(vorher, ziel)
+  if (start?.ort !== 'ring') return []
+  const felder: Pick<Kugel, 'ort' | 'pos'>[] = []
+  if (ziel.ort === 'ring') {
+    const n = (ziel.pos - start.pos + 64) % 64
+    for (let i = 1; i < n; i++) felder.push({ ort: 'ring', pos: (start.pos + i) % 64 })
+  } else if (ziel.ort === 'haus') {
+    const bisStart = (ziel.sitz * 16 - start.pos + 64) % 64
+    for (let i = 1; i <= bisStart; i++) felder.push({ ort: 'ring', pos: (start.pos + i) % 64 })
+    for (let h = 0; h < ziel.pos; h++) felder.push({ ort: 'haus', pos: h })
+  }
+  const rest = nachher.filter((k) => k !== ziel)
+  return felder.map((f) => [...rest, { ...ziel, ...f, gesperrt: false }])
+}
+
 /** Eine Übung als laufendes Spiel, Schwarz ist am Zug. */
 export function baueSpiel(u: Uebung, phase: 'start' | 'm03' = 'start'): Game {
   const g = new Game(SITZE, 2, true, false)

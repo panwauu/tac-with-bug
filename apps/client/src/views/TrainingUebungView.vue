@@ -124,9 +124,9 @@ import { useCards } from '@/services/compositionGame/useCards'
 import { useInstructions } from '@/services/compositionGame/useInstructions'
 import router from '@/router/index'
 import { uebung, txt, markiere, naechstes, training } from '@/training'
-import { baelleFuer, baueSpiel, fuehreAus, ICH, kugel } from '@/training/spielstand'
+import { baelleFuer, baueSpiel, fuehreAus, ICH, kugel, zwischenschritte } from '@/training/spielstand'
 import { istGeloest, type Verlauf } from '@/training/pruefung'
-import { DREHUNG_TRAINING, FARBEN, type Uebung, type Vorzug } from '@/training/typen'
+import { DREHUNG_TRAINING, FARBEN, type Kugel, type Uebung, type Vorzug } from '@/training/typen'
 
 const { t, locale } = useI18n()
 
@@ -238,8 +238,8 @@ function zeigeVorzug(x: Uebung, teil: 'start' | 'm03') {
     return
   }
   const echt = getPlayerUpdateFromGame(spiel, ICH)
-  // „Vier TACs in Folge": Blau, Grün und Rot spielen ihren TAC einer nach dem anderen, im Tempo einer Partie.
-  if (x.id === 's_m03' && x.vorzuege != null) {
+  // „Vier TACs in Folge" und „TAC nach abgelegter TAC": die anderen spielen ihre Karten einer nach dem anderen, im Tempo einer Partie.
+  if (ZUG_FUER_ZUG.has(x.id) && x.vorzuege != null) {
     zeigeVorzuegeEinzeln(x, x.vorzuege, echt)
     return
   }
@@ -257,30 +257,38 @@ function zeigeVorzug(x: Uebung, teil: 'start' | 'm03') {
 }
 
 const VORZUG_TAKT = 1600
+const SCHRITT_TAKT = 250
+const ZUG_FUER_ZUG = new Set(['s_m03', 's_m04'])
 function zeigeVorzuegeEinzeln(x: Uebung, vorzuege: Vorzug[], echt: UpdateDataType) {
   if (game == null) return
   const g = game
-  const n = vorzuege.length
   const ohneZug = echt.cards.map((c) => ({ ...c, possible: false, ballActions: {}, textAction: '' }))
-  const bild = (i: number) => {
-    const balls = i === 0 ? x.kugelnVorVorzuegen : vorzuege[i - 1].kugelnDanach
-    updateData.value = {
-      ...echt,
-      balls: baelleFuer(g, balls),
-      discardPile: echt.discardPile.slice(0, echt.discardPile.length - n + i),
-      players: echt.players.map((p, s) => ({ ...p, discarded: i > 0 && s === vorzuege[i - 1].sitz })),
-      cards: ohneZug,
-    }
-  }
+  const vorAblage = echt.discardPile.length - vorzuege.length
+  // Bilder: Stellung, Karten auf der Ablage, wer zuletzt gespielt hat, Dauer. Zieht eine Kugel, dann Feld für Feld.
+  const bilder: { kugeln: Kugel[] | null; ablage: number; sitz: number | null; dauer: number }[] = [
+    { kugeln: x.kugelnVorVorzuegen, ablage: vorAblage, sitz: null, dauer: VORZUG_TAKT },
+  ]
+  vorzuege.forEach((v, i) => {
+    const davor = i === 0 ? x.kugelnVorVorzuegen : vorzuege[i - 1].kugelnDanach
+    for (const k of zwischenschritte(davor, v.kugelnDanach)) bilder.push({ kugeln: k, ablage: vorAblage + i + 1, sitz: v.sitz, dauer: SCHRITT_TAKT })
+    bilder.push({ kugeln: v.kugelnDanach, ablage: vorAblage + i + 1, sitz: v.sitz, dauer: VORZUG_TAKT })
+  })
   vorzugLaeuft.value = true
   const schritt = (i: number) => {
-    if (i > n) {
+    if (i >= bilder.length) {
       vorzugLaeuft.value = false
       zeige()
       return
     }
-    bild(i)
-    vorzugUhr = setTimeout(() => schritt(i + 1), VORZUG_TAKT)
+    const bild = bilder[i]
+    updateData.value = {
+      ...echt,
+      balls: baelleFuer(g, bild.kugeln),
+      discardPile: echt.discardPile.slice(0, bild.ablage),
+      players: echt.players.map((p, s) => ({ ...p, discarded: s === bild.sitz })),
+      cards: ohneZug,
+    }
+    vorzugUhr = setTimeout(() => schritt(i + 1), bild.dauer)
   }
   schritt(0)
 }
