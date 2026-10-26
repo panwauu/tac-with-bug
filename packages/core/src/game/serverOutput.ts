@@ -4,6 +4,7 @@ import type { Player } from '../types/player'
 import type { Game } from './game'
 import type { UpdateDataType } from '../types/DBgame'
 import { getBotName } from '../bot/names'
+import { spielenderBot } from '../bot/netz/onlineStufen'
 
 export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: number): UpdateDataType {
   return {
@@ -43,6 +44,10 @@ export function getPlayerUpdateFromGame(game: dbGame.GameForPlay, gamePlayer: nu
   }
 }
 
+function botIDAmSitz(botID: number | null | undefined, game: Game): number | null {
+  return botID == null ? null : spielenderBot(botID, game.nPlayers, game.teams.length, game.coop)
+}
+
 function getPlayers(game: Game, names: (string | null)[], bots: (number | null)[], gameID: number) {
   const players: Player[] = []
   for (let i = 0; i < game.cards.players.length; i++) {
@@ -55,6 +60,7 @@ function getPlayers(game: Game, names: (string | null)[], bots: (number | null)[
       narrFlag: [game.narrFlag.includes(true), game.narrFlag[i]],
       discarded: game.cards.discardPlayer === i,
       bot: bots[i] != null,
+      botID: botIDAmSitz(bots[i], game),
     }
     if (game.tradeFlag) {
       player.tradeInformation = [

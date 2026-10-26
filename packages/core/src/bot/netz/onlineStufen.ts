@@ -50,3 +50,13 @@ export function stufeFuerPartie(botID: number, nPlayers: number, nTeams: number,
   const s = ONLINE_STUFEN.find((e) => e.id === botID)
   return s != null && s.modus === onlineModus(nPlayers, nTeams, coop) ? s.stufe : null
 }
+
+/**
+ * Welcher Bot an diesem Sitz tatsaechlich spielt: die Stufe, wenn sie zur
+ * Partie passt, sonst Oskars Bot mit dieser Nummer, sonst Futuro (3). So
+ * waehlt auch der Server den Zug (botZug in socket/game.ts).
+ */
+export function spielenderBot(botID: number, nPlayers: number, nTeams: number, coop: boolean): number {
+  if (stufeFuerPartie(botID, nPlayers, nTeams, coop) != null) return botID
+  return botID >= 0 && botID <= 3 ? botID : 3
+}
