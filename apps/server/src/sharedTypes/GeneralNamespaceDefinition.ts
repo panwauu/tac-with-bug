@@ -105,6 +105,9 @@ export interface ClientToServerEvents extends Record<string, any> {
   'friends:cancel': (username: string, cb: CallbackFunction<boolean>) => void
   'friends:ofUser': (username: string, cb: CallbackFunction<Friend[]>) => void
   'friends:isFriendOnline': (username: string, cb: CallbackFunction<boolean>) => void
+
+  // games against the AI in the browser: only the result, without account or name
+  'ki:result': (data: { mode: 'klassisch' | 'drei' | 'koop'; level: string; won: boolean; cards: number | null }, cb: CallbackFunction<null>) => void
 }
 
 export interface ServerToClientEvents {

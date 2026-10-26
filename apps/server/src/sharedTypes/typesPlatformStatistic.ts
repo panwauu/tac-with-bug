@@ -55,4 +55,6 @@ export interface BotStatistic {
   humans: number
   againstHumans: { games: number; wins: number }
   coop: { games: number; averageCards: number | null }
+  // Games against the AI in the browser (only levels of the AI): wins of the AI against the human, cards in coop
+  browser: { games: number; wins: number; averageCards: number | null }
 }

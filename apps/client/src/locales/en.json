@@ -86,7 +86,7 @@
     "headerUserAgent": "Technical Devices of the Players",
     "Bots": {
       "titel": "Bots",
-      "hinweis": "How often each bot was played and how strong it is. The win rate counts only games in which all opponents were humans, because games of bots against bots say little about it. In co-op the cards until all marbles are home count: the fewer, the better.",
+      "hinweis": "How often each bot was played and how strong it is. The win rate counts only games in which all opponents were humans, because games of bots against bots say little about it. In co-op the cards until all marbles are home count: the fewer, the better. The last column counts the games against the AI in the browser: how often the AI won against the human, in co-op the cards.",
       "bot": "Bot",
       "partien": "Games",
       "letzte30": "Last 30 days",
@@ -94,7 +94,8 @@
       "gegenMenschen": "Wins against humans",
       "koop": "Co-op: avg. cards",
       "partienKurz": "{n} games",
-      "konto": "Bot account"
+      "konto": "Bot account",
+      "browser": "In the browser"
     }
   },
   "Home": {
@@ -1064,7 +1065,7 @@
     "hinweis": "Strong levels think for up to two seconds.",
     "infoMenschen": "To play against other people, go online via “Find a game”. Only online games count for your statistics.",
     "infoSpeichern": "It is not saved: if you close or reload the page, the game is over.",
-    "infoStatistik": "It does not count for your statistics or the leaderboard.",
+    "infoStatistik": "It does not count for your statistics or the leaderboard. At the end only the level you played against and how the game ended go to the server, anonymously and without your account. This feeds the statistics of the bots.",
     "infoBrowser": "You play alone with AI players. The game runs only in your browser, no account needed.",
     "infoTitel": "How a game against the AI works",
     "neuePartie": "New game",
