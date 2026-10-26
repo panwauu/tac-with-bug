@@ -465,6 +465,32 @@ const proLektion: Record<string, () => Bild[]> = {
       .zeige(1000, { karten: ['krieger'], markiere: [R(10)], zittern: [K(0, 0)], text: 'selbstwurf' })
       .setze({ [K(0, 0)]: VORFELD(K(0, 0)) }, 2200, { karten: ['krieger'], text: 'selbstwurf' }).bilder
   },
+  // Wer kann, der muss: Rot zieht 10, du hast nur TAC und musst die 10 nehmen, auch wenn sie am Haus vorbeiführt.
+  e03: () =>
+    new Szene({ [K(0, 0)]: R(61), [K(0, 1)]: H(0, 1), [K(0, 2)]: H(0, 2), [K(0, 3)]: H(0, 3), [K(3, 0)]: R(20) })
+      .zeige(900)
+      .lauf(K(3, 0), ring(20, 10), ab(['10'], [3]))
+      .zeige(2000, ab(['10'], [3], 'nurTac'))
+      .setze({ [K(3, 0)]: R(20) }, 1600, ab(['10', 'tac'], [3, 0], 'pflicht'))
+      .lauf(K(0, 0), ring(61, 10), ab(['10', 'tac'], [3, 0], 'amHausVorbei'))
+      .zeige(2000, ab(['10', 'tac'], [3, 0], 'amHausVorbei', { markiere: [H(0, 0)] })).bilder,
+  // Doppelfunktion: Rot kommt mit der 13 heraus, dein TAC nimmt das zurück und du läufst stattdessen 13 Felder.
+  e06: () =>
+    new Szene({ [K(0, 0)]: R(10) })
+      .zeige(900)
+      .setze({ [K(3, 0)]: R(48) }, 1800, ab(['13'], [3], 'rotHeraus', { markiere: [R(48)] }))
+      .setze({ [K(3, 0)]: VORFELD(K(3, 0)) }, 1600, ab(['13', 'tac'], [3, 0], 'rueckgaengig'))
+      .zeige(2200, ab(['13', 'tac'], [3, 0], 'wahl', { auslage: [{ karten: ['1', '8', '13'] }] }))
+      .lauf(K(0, 0), ring(10, 13), ab(['13', 'tac'], [3, 0], 'dreizehnLaufen'))
+      .zeige(2000, ab(['13', 'tac'], [3, 0], 'dreizehnLaufen')).bilder,
+  // Ungenutzt abgelegt: Rot hat keine Kugel draußen und legt die 5 ab, dein TAC nutzt sie, nichts wird zurückgenommen.
+  e07: () =>
+    new Szene({ [K(0, 0)]: R(60) })
+      .zeige(900)
+      .zeige(2200, ab(['5'], [3], 'rotLegtAb'))
+      .zeige(1400, ab(['5', 'tac'], [3, 0], 'abgelegtNutzen'))
+      .lauf(K(0, 0), zumHaus(60, 0, 0), ab(['5', 'tac'], [3, 0], 'abgelegtNutzen'))
+      .zeige(2000, ab(['5', 'tac'], [3, 0], 'insHausTac', { markiere: [H(0, 0)] })).bilder,
   // TAC nur, wenn anwendbar: Rot zieht mit der 5, du hast keine Kugel draußen, also bleibt die 13.
   e02: () =>
     new Szene({ [K(3, 0)]: R(20) })

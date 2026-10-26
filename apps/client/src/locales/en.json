@@ -1196,7 +1196,12 @@
       "tacSieg": "Your TAC brings the marble back onto the track",
       "gruenSiegt": "Green moves its last marble home: victory",
       "rotVerhindert": "Red's TAC prevents the victory and uses the 10",
-      "tacGesperrt": "Your TAC doesn't work: all your marbles are home"
+      "tacGesperrt": "Your TAC doesn't work: all your marbles are home",
+      "nurTac": "All you have left is TAC",
+      "rotHeraus": "Red comes out with the 13",
+      "rotLegtAb": "Red has no marble out and discards the 5",
+      "abgelegtNutzen": "Your TAC uses the discarded 5",
+      "insHausTac": "Into the home with the 5"
     }
   }
 }

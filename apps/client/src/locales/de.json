@@ -1196,7 +1196,12 @@
       "tacSieg": "Dein TAC holt die Kugel zurück auf den Spielkreis",
       "gruenSiegt": "Grün zieht die letzte Kugel ins Haus: Sieg",
       "rotVerhindert": "Rots TAC verhindert den Sieg und nutzt die 10",
-      "tacGesperrt": "Dein TAC geht nicht: alle deine Kugeln stehen im Haus"
+      "tacGesperrt": "Dein TAC geht nicht: alle deine Kugeln stehen im Haus",
+      "nurTac": "Du hast nur noch TAC",
+      "rotHeraus": "Rot kommt mit der 13 heraus",
+      "rotLegtAb": "Rot hat keine Kugel draußen und legt die 5 ab",
+      "abgelegtNutzen": "Dein TAC nutzt die abgelegte 5",
+      "insHausTac": "Mit der 5 ins Haus"
     }
   }
 }
