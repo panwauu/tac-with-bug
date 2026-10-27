@@ -118,6 +118,9 @@
   },
   "Leaders": {
     "onlyHumans": "Only games without bots count.",
+    "withBots": "Include games with bots",
+    "botsMarked": "Games with bots count too. Team games with bots are marked with 🤖.",
+    "withBotsGame": "Game with bots",
     "wins": "Wins",
     "winshare": "Win Rate",
     "rank": "Rank",

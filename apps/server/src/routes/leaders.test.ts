@@ -78,6 +78,19 @@ describe('Leaders Test Suite', () => {
       expect(response.body.username).toStrictEqual([])
       expect((await coop(4)).body.team).toStrictEqual([])
       expect((await coop(6)).body.team).toStrictEqual([])
+
+      // With bots = true they count again, and the team games are marked
+      const withBots = await testAgent
+        .get('/gameApi/getWinnerLeaderboard/')
+        .query({ ...query, bots: true })
+        .set({ Authorization: userWithCredentials.authHeader })
+      expect(withBots.body.username).toStrictEqual(['UserA', 'UserC', 'UserB', 'UserD'])
+      const coopWithBots = await testAgent
+        .get('/gameApi/getCoopLeaderboard/')
+        .query({ ...query, nPlayers: 4, bots: true })
+        .set({ Authorization: userWithCredentials.authHeader })
+      expect(coopWithBots.body.count).toStrictEqual([130])
+      expect(coopWithBots.body.bots).toStrictEqual([true])
     } finally {
       await testServer.pgPool.query("UPDATE users SET bot_account = FALSE WHERE username = 'UserC';")
     }
@@ -113,6 +126,7 @@ describe('Leaders Test Suite', () => {
     expect(response.body.team).toHaveLength(1)
     expect(response.body.team[0].sort()).toStrictEqual(['UserA', 'UserB', 'UserC', 'UserD'].sort())
     expect(response.body.count).toStrictEqual([130])
+    expect(response.body.bots).toStrictEqual([false])
   })
 
   test('Test Coop-6 Leaderboard', async () => {
