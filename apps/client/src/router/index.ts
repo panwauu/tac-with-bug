@@ -209,6 +209,8 @@ const routes = [
         path: 'training/lektion/:id',
         name: 'TrainingLektion',
         component: TrainingLektion,
+      },
+      {
         path: 'bots',
         name: 'Bots',
         component: Bots,
@@ -227,18 +229,18 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
   // Redirect to Advert when first visited
   if (localStorage.getItem('alreadyVisited') == null) {
     localStorage.setItem('alreadyVisited', 'true')
     if (to.name === 'Landing') {
-      return next({ name: 'Advertisement' })
+      return { name: 'Advertisement' }
     }
   }
 
   //Redirect unnamed Routes to Landing to avoid unmatched Routes
   if (to.name == null) {
-    return next({ name: 'Landing' })
+    return { name: 'Landing' }
   }
 
   let toLocale = to.params?.locale as string | undefined
@@ -246,7 +248,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (fromLocale != null && toLocale === undefined) {
     to.params.locale = fromLocale
-    return next(to)
+    return to
   }
 
   if (toLocale == null || toLocale === '') {
@@ -260,7 +262,7 @@ router.beforeEach(async (to, from, next) => {
 
   setLocaleAndLoadMessages(toLocale)
 
-  return next()
+  return true
 })
 
 export default router
