@@ -2,10 +2,9 @@ import type { Socket as ServerSocket, Namespace } from 'socket.io'
 import type { Socket as ClientSocket } from 'socket.io-client'
 import type { CreateGameType, MovePlayerType, SwitchColorType, WaitingGame, StartGameType, MoveBotType } from './typesWaiting'
 import type { SubscriptionExport } from './typesSubscription'
-import type { GameForOverview, GetRunningGamesType, UpdateDataType, GameForPlay, MoveTextOrBall } from '@repo/core/types'
+import type { GameForOverview, GetRunningGamesType } from '@repo/core/types'
 import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTournament, TournamentTableData, LastTournamentWinners } from './typesTournament'
 import type { Friend } from './typesFriends'
-import type { TutorialStepOutput } from './typesTutorial'
 import type { ChatElement, ChatMessage, ChatMessagePage } from './chat'
 
 export type AckData<T> = { status: number; error?: any; data?: T }
@@ -18,13 +17,6 @@ export interface ClientToServerEvents extends Record<string, any> {
   //authentication
   login: (data: { token: string }, cb: CallbackFunction<null>) => void
   logout: (cb: CallbackFunction<null>) => void
-
-  //tutorial
-  'tutorial:loadProgress': (cb: CallbackFunction<{ progress: boolean[][] }>) => void
-  'tutorial:resetTutorial': (data: { tutorialID: number }, cb: CallbackFunction<{ progress: boolean[][] }>) => void
-  'tutorial:changeTutorialStep': (data: { tutorialID: number; tutorialStep: number; done: boolean }, cb: CallbackFunction<{ progress: boolean[][] }>) => void
-  'tutorial:load': (data: { tutorialID: number; tutorialStep: number }, cb: CallbackFunction<TutorialStepOutput>) => void
-  'tutorial:postMove': (data: { game: GameForPlay; move: MoveTextOrBall }, cb: CallbackFunction<{ game: GameForPlay; updateData: UpdateDataType }>) => void
 
   //games
   'games:getTableData': (
@@ -113,9 +105,6 @@ export interface ClientToServerEvents extends Record<string, any> {
 export interface ServerToClientEvents {
   //authentication
   logged_out: () => void
-
-  //tutorial
-  'tutorial:loadProgress': (progress: boolean[][]) => void
 
   //games
   // The running games the user is seated in, with full detail. Pushed at login and at every game start, game end,

@@ -67,7 +67,6 @@ const funfacts = reactive({
   },
   misc: {
     nFriends: 0,
-    nTutorials: 0,
   },
 })
 
@@ -84,7 +83,6 @@ Service.getPlatformFunFacts()
     funfacts.teamStats.worstTeamGame = res.worstTeamGame
     funfacts.teamStats.averageTeamGame = res.averageTeamGame
     funfacts.misc.nFriends = res.nFriends
-    funfacts.misc.nTutorials = res.nTutorials
     funfacts.colors.mostLoved = res.colors[0]
     funfacts.colors.leastLoved = res.colors[res.colors.length - 1]
     funfacts.colors.nColorBlinds = res.nColorBlind

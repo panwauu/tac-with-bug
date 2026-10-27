@@ -15,7 +15,6 @@ const Tournament = () => import('@/views/Home/TournamentView.vue')
 const TournamentsOverview = () => import('@/views/Home/Tournament/TournamentsOverview.vue')
 const PublicTournament = () => import('@/views/Home/Tournament/PublicTournament.vue')
 const PrivateTournament = () => import('@/views/Home/Tournament/PrivateTournament.vue')
-const Tutorial = () => import('@/views/TutorialView.vue')
 const Impressum = () => import('@/components/ImpressumInformation.vue')
 const Copyright = () => import('@/components/CopyrightInformation.vue')
 const Datenschutz = () => import('@/components/DatenschutzInformation.vue')
@@ -55,7 +54,8 @@ const routes = [
   {
     path: `/:locale(${regexp})?/tutorial`,
     name: 'Tutorial',
-    component: Tutorial,
+    // Das alte Tutorial ist jetzt das Training (alte Links führen dorthin)
+    redirect: { name: 'Training' },
   },
   {
     path: `/:locale(${regexp})?`,

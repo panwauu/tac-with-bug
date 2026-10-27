@@ -195,10 +195,6 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
         EXTRACT(epoch FROM MAX(lastplayed - created))::INT as longest_game
     FROM game_results;`)
 
-  const tutorialPromise = pgPool.query(`SELECT sum(tutorial)::INT as absolved_tutorial_steps FROM
-	(SELECT jsonb_array_elements(tutorial)::BOOLEAN::INT as tutorial FROM
-		(SELECT jsonb_array_elements(tutorial) as tutorial FROM users) as t) as t2;`)
-
   const friendsPromise = pgPool.query('SELECT COUNT(*)::INT as number_friends FROM friendships WHERE pending_user IS NULL;')
 
   const colorsPromise = pgPool.query<{ color: string; count: number }>(
@@ -206,7 +202,7 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
   )
 
   // The queries do not depend on each other and run at the same time
-  const [dbResUsers, gamesRes, tutorialRes, friendsRes, colorsRes] = await Promise.all([usersPromise, gamesPromise, tutorialPromise, friendsPromise, colorsPromise])
+  const [dbResUsers, gamesRes, friendsRes, colorsRes] = await Promise.all([usersPromise, gamesPromise, friendsPromise, colorsPromise])
 
   return {
     nGames4: gamesRes.rows[0].games4,
@@ -220,7 +216,6 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
     averageTeamGame: gamesRes.rows[0].teamavgcards,
     registeredUsers: dbResUsers.rows[0].activated,
     nFriends: friendsRes.rows[0].number_friends,
-    nTutorials: tutorialRes.rows[0].absolved_tutorial_steps,
     colors: colorsRes.rows.map((r) => r.color),
     nColorBlind: dbResUsers.rows[0].color_blind,
   }

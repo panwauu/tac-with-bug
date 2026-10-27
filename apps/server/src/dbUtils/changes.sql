@@ -10,3 +10,7 @@ CREATE TABLE IF NOT EXISTS offline_results (
   won BOOLEAN NOT NULL,
   cards INT
 );
+
+-- The old tutorial is replaced by the training in the browser
+DROP TABLE IF EXISTS tutorials;
+ALTER TABLE users DROP COLUMN IF EXISTS tutorial;

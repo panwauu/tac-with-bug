@@ -836,103 +836,6 @@
     },
     "menuCards": "Cards"
   },
-  "Tutorial": {
-    "0": {
-      "0": {
-        "title": "greeting",
-        "detail": "Hello, this tutorial is intended to introduce the player who already knows the TAC Original to the game on this website. Click on the arrow to start the tutorial."
-      },
-      "1": {
-        "title": "game settings",
-        "detail": "First you should adjust your settings. Find the setting in the game and check it out!"
-      },
-      "2": {
-        "title": "select map",
-        "detail": "You select a card by clicking on it. If she is selected, she looks out above the others. If you cannot play a card, it is dark gray. Choose a map to play!"
-      },
-      "3": {
-        "title": "move ball",
-        "detail": "You can either drag a ball to the target, or first click the ball and then the target field. Now move a ball!"
-      },
-      "4": {
-        "title": "change map",
-        "detail": "If you chose the wrong card, you can simply choose a different one. Select card '8'!"
-      },
-      "5": {
-        "title": "special functions",
-        "detail": "Sometimes you don't want to move a ball, but perform a special function. A text field is created in the middle of the playing field. Let the next player sit out!"
-      },
-      "6": {
-        "title": "expose",
-        "detail": "Now there are some quiz questions about the game interface. Which player has to sit out?",
-        "answer-0": "-Kai-",
-        "answer-1": "-Oskar-",
-        "answer-2": "-Sophia-",
-        "answer-3": "From"
-      },
-      "7": {
-        "title": "next player",
-        "detail": "Which player is it right now?",
-        "answer-0": "-Sophia-",
-        "answer-1": "-Oskar-",
-        "answer-2": "-Kai-",
-        "answer-3": "From"
-      },
-      "8": {
-        "title": "deck of cards",
-        "detail": "Which player will deal next and how many times will it be dealt before it has to be shuffled again?",
-        "answer-0": "-Oscar-, one more time",
-        "answer-1": "-Sophia-, 2 more times",
-        "answer-2": "-Kai-, next round will be reshuffled",
-        "answer-3": "You, 3 more times"
-      },
-      "9": {
-        "title": "quick start Guide",
-        "detail": "There is also an overview of the special cards here. Find the help box and check it out!"
-      },
-      "10": {
-        "title": "Here we go!",
-        "detail": "You are now ready for real gaming. Exit the game by clicking on the TAC logo in game and this will end this tutorial."
-      },
-      "title": "Introduction to Tac With Bug",
-      "time": "Duration: approx. 3 minutes",
-      "description": "This introduction is intended for people who already know the game TAC. It is a brief introduction to the operation of the game on this website."
-    },
-    "Encouragement": {
-      "0": "Congratulations!",
-      "1": "Bravo!",
-      "2": "Revolutionary!",
-      "3": "Outstanding!",
-      "4": "Very well done!",
-      "5": "Marvellous!",
-      "6": "Glorious!",
-      "7": "Well done!",
-      "8": "You're great!",
-      "9": "You're a champion!"
-    },
-    "nextQuestion": "Move on to the next question",
-    "quizWrongAnswer": "Your answer was wrong. Try one of the other answers!",
-    "quizSubmitButton": "Answer question",
-    "toGameButton": "To the game board",
-    "resetButton": "Reset to default",
-    "stopTutorial": "Cancel the tutorial",
-    "openTutorial": "Tutorial",
-    "ButtonStartOverwiew": {
-      "start": "Here we go!",
-      "restart": "To repeat",
-      "resume": "Continue"
-    },
-    "Basic": {
-      "title": "Basic spiel"
-    },
-    "Meister": {
-      "title": "Master cards"
-    },
-    "tutorialHeader": "Tutorials",
-    "moreTutorialsInFuture": "More tutorials are planned for the future to explain TAC to new players. Please be patient!",
-    "replaysInFuture": "To explain complex moves, these should be recorded and then repeated. Feel free to write me if you have any suggestions for such moves.",
-    "replayHeader": "Replay of Game Sequences"
-  },
   "FAQ": {
     "title": "frequently asked Questions",
     "Contribute": {
@@ -1031,7 +934,6 @@
       "fastestGame": "Fastest game:",
       "averagePlayingTime": "Average playing time:",
       "nFriends": "New Friendships:",
-      "nTutorials": "Completed tutorial steps:",
       "leastLoved": "Least used ball:",
       "mostLoved": "Most used ball:",
       "nColorBlinds": "Number of color blind players:",

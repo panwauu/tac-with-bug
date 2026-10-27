@@ -8,13 +8,6 @@ CREATE TABLE users (
   activated boolean NOT NULL DEFAULT false,
   token varchar(50) NOT NULL,
   profilepic bytea,
-  tutorial JSONB NOT NULL DEFAULT '[[false,false,false,false,false,false,false,false,false,false,false]]' :: jsonb,
-  CONSTRAINT tutorialCheck CHECK (
-    jsonb_typeof(tutorial) = 'array'
-    AND jsonb_array_length(tutorial) = 1
-    AND jsonb_typeof(tutorial -> 0) = 'array'
-    AND jsonb_array_length(tutorial -> 0) = 11
-  ),
   currentsubscription int,
   locale VARCHAR(2) NOT NULL DEFAULT 'de',
   color_blindness_flag BOOLEAN NOT NULL DEFAULT false,
@@ -623,8 +616,6 @@ $$;
 
 -- Every change counts as activity: joining, leaving, ready, colors, order and bots
 CREATE TRIGGER waitinggames_touch BEFORE UPDATE ON waitinggames FOR EACH ROW EXECUTE FUNCTION waitinggames_touch();
-
-CREATE TABLE tutorials (id int PRIMARY KEY, data JSONB);
 
 CREATE TABLE hof (
   id SERIAL PRIMARY KEY,

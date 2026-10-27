@@ -31,7 +31,6 @@ export interface PlatformFunFacts {
   worstTeamGame: number
   averageTeamGame: number
   nFriends: number
-  nTutorials: number
   colors: string[]
   nColorBlind: number
 }
