@@ -286,8 +286,8 @@ type TabKey = (typeof tabKeys)[number]
 const initialQuery = router.currentRoute.value.query
 const selectedDate = ref(dateOptions.find((option) => option.key === initialQuery.timespan) ?? dateOptions[2])
 const selectedTab = ref<TabKey>(tabKeys.find((key) => key === initialQuery.tab) ?? 'tac')
-// Off by default: only games of humans. On: games with bots count too, team games with bots are marked.
-const withBots = ref(initialQuery.bots === '1')
+// On by default: all games count, team games with bots are marked. Off (bots=0): only games of humans.
+const withBots = ref(initialQuery.bots !== '0')
 
 const initialPage = Number.parseInt(initialQuery.page as string)
 const initialFirst = Number.isNaN(initialPage) ? 0 : Math.max(initialPage - 1, 0) * rows.value
@@ -312,7 +312,7 @@ function updateQuery() {
     tab: selectedTab.value,
     page: (Math.floor(firstOfSelectedTab / rows.value) + 1).toString(),
   }
-  if (withBots.value) query.bots = '1'
+  if (!withBots.value) query.bots = '0'
 
   const currentQuery = router.currentRoute.value.query
   if (currentQuery.timespan === query.timespan && currentQuery.tab === query.tab && currentQuery.page === query.page && currentQuery.bots === query.bots) return
