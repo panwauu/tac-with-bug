@@ -117,6 +117,9 @@ export function baueSpiel(u: Uebung, phase: 'start' | 'm03' = 'start'): Game {
     g.aussetzenFlag = true
   }
   g.cards.discardPile = stapel
+  // Wer zuletzt gespielt hat: von dort fliegt die Karte auf die Ablage.
+  const zuletzt = u.vorzuege?.at(-1)?.sitz ?? u.vorSpieler
+  if (stapel.length > 0 && zuletzt != null) g.cards.discardPlayer = zuletzt
 
   // „TAC nach Teufel": Schwarz spielt eine Karte aus Blaus Hand für Blau.
   // Bei ihm ist das genau der Teufel-Folgezug (Karten des nächsten Sitzes).

@@ -491,6 +491,15 @@ const proLektion: Record<string, () => Bild[]> = {
       .zeige(1400, ab(['5', 'tac'], [3, 0], 'abgelegtNutzen'))
       .lauf(K(0, 0), zumHaus(60, 0, 0), ab(['5', 'tac'], [3, 0], 'abgelegtNutzen'))
       .zeige(2000, ab(['5', 'tac'], [3, 0], 'insHausTac', { markiere: [H(0, 0)] })).bilder,
+  // TAC nach dem Krieger: Rots Krieger schlägt Grün, dein TAC nimmt das zurück und dein Krieger schlägt Rot.
+  e14: () =>
+    new Szene({ [K(0, 0)]: R(10), [K(3, 0)]: R(20), [K(2, 0)]: R(30) })
+      .zeige(900)
+      .zeige(1200, ab(['krieger'], [3], 'krieger', { markiere: [R(30)] }))
+      .setze({ [K(3, 0)]: R(30), [K(2, 0)]: VORFELD(K(2, 0)) }, 1800, ab(['krieger'], [3], 'geschlagen'))
+      .setze({ [K(3, 0)]: R(20), [K(2, 0)]: R(30) }, 1800, ab(['krieger', 'tac'], [3, 0], 'rueckgaengig'))
+      .zeige(1200, ab(['krieger', 'tac'], [3, 0], 'krieger', { markiere: [R(20)] }))
+      .setze({ [K(0, 0)]: R(20), [K(3, 0)]: VORFELD(K(3, 0)) }, 2200, ab(['krieger', 'tac'], [3, 0], 'uebernehmen')).bilder,
   // TAC nur, wenn anwendbar: Rot zieht mit der 5, du hast keine Kugel draußen, also bleibt die 13.
   e02: () =>
     new Szene({ [K(3, 0)]: R(20) })

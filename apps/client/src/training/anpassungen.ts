@@ -3,7 +3,12 @@
 // Spielern; hier zeigt es Oskars Spieloberfläche selbst.
 import type { Lektion, Text, Uebung } from './typen'
 
-type Felder = Partial<Record<'titel' | 'aufgabe' | 'tipp' | 'erfolg', Text>> & { karten?: string[]; andereHaende?: Record<string, string[]> }
+type Felder = Partial<Record<'titel' | 'aufgabe' | 'tipp' | 'erfolg', Text>> & {
+  karten?: string[]
+  andereHaende?: Record<string, string[]>
+  /** Änderungen, die von den Daten der Übung abhängen */
+  aendere?: (u: Uebung) => Partial<Uebung>
+}
 
 export const anpassungen: Record<string, Felder> = {
   // Bedienung wie bei Tac-With-Bug: erst die Kugel, dann das Zielfeld; Abwerfen über den roten Knopf.
@@ -88,6 +93,20 @@ export const anpassungen: Record<string, Felder> = {
       ru: 'Сыграй Шута. Все передают карты. Благодаря обмену ты получаешь единственную карту Синего, TAC. Используй её, чтобы отменить последний ход перед Шутом!',
     },
   },
+  // Teufel + TAC: in der Aufgabe sagen, dass Rot deinen TAC gespielt hat.
+  s_e13: {
+    aufgabe: {
+      de: 'Rot hat den Teufel gespielt und danach aus deiner Hand (Schwarz) den TAC. Dadurch darfst du jetzt für Blau spielen: Spiele eine Karte von Blau!',
+      en: "Red played the Devil and then the TAC from your hand (Black). That lets you play for Blue now: play one of Blue's cards!",
+      ru: 'Красный сыграл Дьявола, а затем TAC из твоей руки (Чёрный). Поэтому теперь ты играешь за Синего: сыграй карту Синего!',
+    },
+  },
+  // Vier TACs: die 13 ist im ersten Teil gespielt, danach bleibt nur der TAC.
+  s_m03: { karten: ['tac'] },
+  // Siegeszug: Rot zieht mit der 2 genau ins Haus, also steht Rot vorher ein Feld vor seinem Startfeld (nicht zwei).
+  s_m05: {
+    aendere: (u) => ({ kugelnVorher: u.kugelnVorher?.map((k) => (k.sitz === 3 && k.ort === 'ring' ? { ...k, pos: 47 } : k)) ?? null }),
+  },
   // Eine 2 als Ablenkung: sie bringt Schwarz auf Feld 47, das liegt nicht auf Rots Weg ins Haus.
   s_f05b: {
     karten: ['5', '2', '9', '12'],
@@ -139,7 +158,10 @@ export const nichtImBrowser = new Set(['a03b', 's_a03b'])
 
 export function passeAn(u: Uebung): Uebung {
   const a = anpassungen[u.id]
-  return a ? { ...u, ...a } : u
+  if (!a) return u
+  const { aendere, ...felder } = a
+  const x = { ...u, ...felder }
+  return aendere ? { ...x, ...aendere(x) } : x
 }
 
 /** Lektionstexte, die von der Bedienung der App ausgehen. */

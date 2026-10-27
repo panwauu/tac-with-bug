@@ -7,8 +7,11 @@ import daten from './daten.json' with { type: 'json' }
 import type { TrainingDaten, Uebung } from './typen'
 import { baueSpiel, fuehreAus, ICH } from './spielstand'
 import { istGeloest, type Verlauf } from './pruefung'
+import { passeAn } from './anpassungen'
 
-const d = daten as unknown as TrainingDaten
+// Mit den Anpassungen für den Browser, so wie die Übungen dort laufen
+const roh = daten as unknown as TrainingDaten
+const d = { ...roh, uebungen: roh.uebungen.map(passeAn) }
 const kopie = (g: Game) => new Game(4, 2, true, false, JSON.parse(g.getJSON()))
 
 function zuege(g: Game): MoveTextOrBall[] {
@@ -49,7 +52,12 @@ for (const u of d.uebungen) {
       ok++
       continue
     }
-    const start = u.id === 's_m03' ? baueSpiel(u, 'm03') : baueSpiel(u)
+    // Vier TACs: erst herauskommen (eigener Teil), dann der eigentliche TAC nach den drei anderen
+    if (u.id === 's_m03') {
+      const teil1 = baueSpiel(u, 'm03')
+      if (!teil1.cardsWithMoves.some((c) => c.title === '13' && Object.keys(c.ballActions).length > 0)) throw new Error('13 im ersten Teil nicht spielbar')
+    }
+    const start = baueSpiel(u)
     const r = suche(u, start, { zuege: [], karten: [] }, 9, { n: 40000 })
     if (r) {
       ok++
