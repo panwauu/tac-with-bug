@@ -1223,6 +1223,8 @@
       "rotLegtAb": "Rot hat keine Kugel draußen und legt die 5 ab",
       "abgelegtNutzen": "Dein TAC nutzt die abgelegte 5",
       "insHausTac": "Mit der 5 ins Haus"
+    }
+  },
   "Bots": {
     "titel": "Die Bots",
     "einleitung": "Im Warteraum kann der Gastgeber freie Plätze mit Bots besetzen. Verlässt jemand eine laufende Partie, kann ein Bot für ihn einspringen. Welche Bots es gibt, hängt von der Spielart ab. Am Brett erkennst du einen Bot am 🤖. Fahre mit der Maus darüber oder tippe darauf, dann siehst du, welcher Bot es ist.",

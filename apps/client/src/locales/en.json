@@ -1223,6 +1223,8 @@
       "rotLegtAb": "Red has no marble out and discards the 5",
       "abgelegtNutzen": "Your TAC uses the discarded 5",
       "insHausTac": "Into the home with the 5"
+    }
+  },
   "Bots": {
     "titel": "The bots",
     "einleitung": "In the waiting room the host can fill free seats with bots. If someone leaves a running game, a bot can step in for them. Which bots are available depends on the game mode. On the board you can tell a bot by the 🤖. Hover over it or tap it to see which bot it is.",
