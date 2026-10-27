@@ -83,7 +83,19 @@
       "desktop": "Desktop",
       "others": "Others"
     },
-    "headerUserAgent": "Technical Devices of the Players"
+    "headerUserAgent": "Technical Devices of the Players",
+    "Bots": {
+      "titel": "Bots",
+      "hinweis": "How often each bot was played and how strong it is. The win rate counts only games in which all opponents were humans, because games of bots against bots say little about it. In co-op the cards until all marbles are home count: the fewer, the better.",
+      "bot": "Bot",
+      "partien": "Games",
+      "letzte30": "Last 30 days",
+      "spieler": "Humans",
+      "gegenMenschen": "Wins against humans",
+      "koop": "Co-op: avg. cards",
+      "partienKurz": "{n} games",
+      "konto": "Bot account"
+    }
   },
   "Home": {
     "Spielersuche": "Search Users",

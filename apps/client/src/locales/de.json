@@ -83,6 +83,18 @@
       "tablet": "Tablet",
       "desktop": "Desktop",
       "others": "Andere"
+    },
+    "Bots": {
+      "titel": "Bots",
+      "hinweis": "Wie oft jeder Bot gespielt wurde und wie stark er ist. Die Siegquote zählt nur Partien, in denen alle Gegner Menschen waren, denn Partien von Bots gegen Bots sagen wenig darüber aus. Bei Koop zählen die Karten, bis alle Kugeln im Haus sind: je weniger, desto besser.",
+      "bot": "Bot",
+      "partien": "Partien",
+      "letzte30": "Letzte 30 Tage",
+      "spieler": "Menschen",
+      "gegenMenschen": "Siege gegen Menschen",
+      "koop": "Koop: Ø Karten",
+      "partienKurz": "{n} Partien",
+      "konto": "Bot-Konto"
     }
   },
   "Home": {
