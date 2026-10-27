@@ -40,7 +40,8 @@ export const colorTranslator: { [key: string]: string } = {
   yellow: '#FFFF0080',
 }
 
-export function usePositionStyles(miscState: MiscStateType): PositionStylesState {
+/** festeDrehung: Brett immer so gedreht, unabhängig von der Sitz-Einstellung (Training: Schwarz unten). */
+export function usePositionStyles(miscState: MiscStateType, festeDrehung?: number): PositionStylesState {
   const onResize = () => {
     const gameViewBox = document.getElementById('gameView')?.getBoundingClientRect()
     const width = gameViewBox?.width ?? window.innerWidth
@@ -83,7 +84,7 @@ export function usePositionStyles(miscState: MiscStateType): PositionStylesState
         const turned = positionStyles.turned
 
         positionStyles.initialized = true
-        positionStyles.nRotate = miscState.viewerMode ? 0 : getNRotation(settingsStore.defaultPositions, miscState.gamePlayer, miscState.nPlayers)
+        positionStyles.nRotate = festeDrehung ?? (miscState.viewerMode ? 0 : getNRotation(settingsStore.defaultPositions, miscState.gamePlayer, miscState.nPlayers))
         positionStyles.positionStyles = miscState.nPlayers === 6 ? positionStyles6(turned) : buildStyles(45.3)
         positionStyles.stylePositionStart = getCircleStart(miscState.nPlayers, hexColors, positionStyles.nRotate)
         positionStyles.stylePositionHouse = getCircleHouse(miscState.nPlayers, hexColors, turned, positionStyles.nRotate)

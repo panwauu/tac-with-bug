@@ -45,7 +45,8 @@ export interface CardsStateType {
   removeAllCards: () => void
 }
 
-export function useCards(ballsState: BallsStateType, miscState: MiscStateType): CardsStateType {
+/** autoSelect: the only playable card is selected by itself (off in the TAC lessons of the training, so the last move stays visible) */
+export function useCards(ballsState: BallsStateType, miscState: MiscStateType, autoSelect: () => boolean = () => true): CardsStateType {
   const cardsState: CardsStateType = reactive({
     cards: [],
     ownCards: null,
@@ -206,7 +207,12 @@ export function useCards(ballsState: BallsStateType, miscState: MiscStateType): 
 
       // Handle preselected Card - Either as 7 is not finished or if already selected or if only one possible (or multiple cards with same name)
       const possibleCardIndex = cardsState.cards.findIndex((c) => c.possible)
-      if (cardsState.selectedCard === -1 && possibleCardIndex !== -1 && [...new Set(cardsState.cards.filter((c) => c.possible).map((c) => c.title))].length === 1) {
+      if (
+        autoSelect() &&
+        cardsState.selectedCard === -1 &&
+        possibleCardIndex !== -1 &&
+        [...new Set(cardsState.cards.filter((c) => c.possible).map((c) => c.title))].length === 1
+      ) {
         cardsState.selectedCard = possibleCardIndex
       }
 

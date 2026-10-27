@@ -1,38 +1,31 @@
 <template>
-  <h2>{{ t('Tutorial.tutorialHeader') }}</h2>
+  <h2>{{ t('Training.titel') }}</h2>
   <div
-    v-for="(data, index) in progressInEachTutorial"
-    :key="`TutorialWidget-${index}`"
+    v-for="(s, index) in training.stufen"
+    :key="`TutorialWidget-${s.nr}`"
   >
     <Divider v-if="index !== 0" />
     <div style="display: flex; justify-content: space-between">
-      <div>{{ t(`Tutorial.${index}.title`) }}</div>
-      <div>{{ data[0] }}/{{ data[1] }}</div>
+      <div>{{ txt(s.name, locale) }}</div>
+      <div>{{ anzahlErledigt(s.nr) }}/{{ pfad(s.nr).length }}</div>
     </div>
     <ProgressBar
-      :value="Math.round((data[0] / data[1]) * 100)"
+      :value="Math.round((anzahlErledigt(s.nr) / pfad(s.nr).length) * 100)"
       :show-value="false"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+// Kachel auf der Startseite: Fortschritt im Training (Lektionen und Übungen aus der App) je Stufe.
 import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 import ProgressBar from 'primevue/progressbar'
 import Divider from 'primevue/divider'
+import { training, txt, pfad, feldErledigt } from '@/training'
 
-import { injectStrict, SocketKey } from '@/services/injections'
-import { useTutorialStore } from '@/store/tutorial'
-import { computed } from 'vue'
-const tutorialStore = useTutorialStore()
-const socket = injectStrict(SocketKey)
+const { t, locale } = useI18n()
 
-tutorialStore.loadProgress(socket)
-const progressInEachTutorial = computed(() =>
-  tutorialStore.progress.map((p) => {
-    return [p.filter((e) => e).length, p.length]
-  })
-)
+function anzahlErledigt(stufe: number) {
+  return pfad(stufe).filter(feldErledigt).length
+}
 </script>

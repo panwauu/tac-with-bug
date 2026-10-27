@@ -22,7 +22,6 @@ const Datenschutz = () => import('@/components/DatenschutzInformation.vue')
 const Leaders = () => import('@/views/Home/LeadersView.vue')
 const Landing = () => import('@/views/Home/LandingView.vue')
 const Stats = () => import('@/views/Home/StatsView.vue')
-const TutorialOverview = () => import('@/views/Home/TutorialOverview.vue')
 const Subscription = () => import('@/views/Home/SubscriptionView.vue')
 const FAQ = () => import('@/views/Home/FAQ.vue')
 const HallOfFame = () => import('@/views/Home/HallOfFame.vue')
@@ -32,6 +31,9 @@ const ResetPassword = () => import('@/views/Home/ResetPassword.vue')
 
 const Ki = () => import('@/views/KiView.vue')
 const KiAuswahl = () => import('@/views/Home/KiAuswahlView.vue')
+const Training = () => import('@/views/Home/TrainingView.vue')
+const TrainingLektion = () => import('@/views/Home/TrainingLektionView.vue')
+const TrainingUebung = () => import('@/views/TrainingUebungView.vue')
 const Bots = () => import('@/views/Home/BotsView.vue')
 const regexp = locales.join('|')
 const routes = [
@@ -44,6 +46,11 @@ const routes = [
     path: `/:locale(${regexp})?/ki/spiel`,
     name: 'Ki',
     component: Ki,
+  },
+  {
+    path: `/:locale(${regexp})?/training/uebung`,
+    name: 'TrainingUebung',
+    component: TrainingUebung,
   },
   {
     path: `/:locale(${regexp})?/tutorial`,
@@ -154,7 +161,8 @@ const routes = [
       {
         path: 'tutorialoverview',
         name: 'TutorialOverview',
-        component: TutorialOverview,
+        // Die Tutorials sind jetzt das Training (alte Links führen dorthin)
+        redirect: { name: 'Training' },
       },
       {
         path: 'subscription',
@@ -193,6 +201,14 @@ const routes = [
         component: KiAuswahl,
       },
       {
+        path: 'training',
+        name: 'Training',
+        component: Training,
+      },
+      {
+        path: 'training/lektion/:id',
+        name: 'TrainingLektion',
+        component: TrainingLektion,
         path: 'bots',
         name: 'Bots',
         component: Bots,
