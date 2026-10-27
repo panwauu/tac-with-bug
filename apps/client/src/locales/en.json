@@ -1100,6 +1100,13 @@
     "ausgesetzt": "You were skipped by an 8.",
     "widgetText": "Learn TAC with short lessons and tasks on the board, from the basics to TAC chains.",
     "zumTraining": "Start training",
+    "feier": {
+      "stufeTitel": "Level complete!",
+      "stufeText": "{stufe} finished successfully!",
+      "allesTitel": "Training complete!",
+      "allesText": "You have mastered all lessons!",
+      "grossartig": "Great!"
+    },
     "farbe": {
       "black": "Black",
       "blue": "Blue",

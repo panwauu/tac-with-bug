@@ -1100,6 +1100,13 @@
     "ausgesetzt": "Du wurdest mit einer 8 ausgesetzt.",
     "widgetText": "Lerne TAC mit kurzen Lektionen und Aufgaben auf dem Brett, von den Grundlagen bis zu TAC-Ketten.",
     "zumTraining": "Zum Training",
+    "feier": {
+      "stufeTitel": "Stufe abgeschlossen!",
+      "stufeText": "{stufe} erfolgreich beendet!",
+      "allesTitel": "Training abgeschlossen!",
+      "allesText": "Du hast alle Lektionen gemeistert!",
+      "grossartig": "Großartig!"
+    },
     "farbe": {
       "black": "Schwarz",
       "blue": "Blau",

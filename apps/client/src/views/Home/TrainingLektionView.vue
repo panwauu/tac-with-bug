@@ -48,6 +48,7 @@
         <TrainingBrett :szene="szene" />
       </div>
     </div>
+    <TrainingFeier />
   </div>
 </template>
 
@@ -60,6 +61,7 @@ import Tag from 'primevue/tag'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import TrainingBrett from '@/components/TrainingBrett.vue'
+import TrainingFeier from '@/components/TrainingFeier.vue'
 import { lektion, txt, markiere, naechstes, training } from '@/training'
 import { szeneFuer } from '@/training/bilder'
 

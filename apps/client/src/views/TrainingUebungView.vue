@@ -99,6 +99,7 @@
         </div>
       </template>
     </GameComponent>
+    <TrainingFeier :verzoegerung="1200" />
   </div>
 </template>
 
@@ -107,6 +108,7 @@
 // Stellung, Karten und Erfolgsbedingung kommen aus der App; ob ein Zug
 // erlaubt ist, entscheidet Oskars Engine. Kein Server beteiligt.
 import GameComponent from '@/components/game/GameComponent.vue'
+import TrainingFeier from '@/components/TrainingFeier.vue'
 import { computed, ref, watch, onMounted } from 'vue'
 import Button from 'primevue/button'
 import Tag from 'primevue/tag'

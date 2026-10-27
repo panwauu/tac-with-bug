@@ -31,6 +31,7 @@
       </div>
     </div>
     <p class="training-hinweis">{{ t('Training.hinweis') }}</p>
+    <TrainingFeier />
   </div>
 </template>
 
@@ -41,6 +42,7 @@ import Button from 'primevue/button'
 import Tag from 'primevue/tag'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
+import TrainingFeier from '@/components/TrainingFeier.vue'
 import { training, txt, pfad, feldErledigt, lektion, uebung } from '@/training'
 
 const { t, locale } = useI18n()

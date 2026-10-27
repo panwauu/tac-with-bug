@@ -56,6 +56,7 @@ export function markiere(id: string) {
   } catch {
     // privates Fenster o. Ä.: Fortschritt gilt dann nur bis zum Neuladen
   }
+  pruefeFeier(lektion(id)?.stufe ?? uebung(id)?.stufe)
 }
 
 /** Ein Lernpfad-Feld ist erledigt, wenn die Lektion und alle ihre Übungen erledigt sind. */
@@ -70,4 +71,49 @@ export function naechstes(id: string): { art: 'lektion' | 'uebung'; id: string }
   const alle = training.stufen.flatMap((s) => pfad(s.nr))
   const i = alle.findIndex((f) => f.id === id)
   return i >= 0 && i + 1 < alle.length ? alle[i + 1] : null
+}
+
+export function stufeErledigt(stufe: number): boolean {
+  return pfad(stufe).every(feldErledigt)
+}
+
+// Abschlussfenster wie in der App: beim ersten Abschluss einer Stufe, danach
+// (oder allein) beim Abschluss des ganzen Trainings. Nie beim Wiederholen.
+export type Feier = { art: 'stufe'; stufe: number } | { art: 'alles' }
+
+const GEFEIERT = 'tac-training-gefeiert'
+function ladeGefeiert(): Set<string> {
+  try {
+    const gespeichert = localStorage.getItem(GEFEIERT)
+    if (gespeichert != null) return new Set(JSON.parse(gespeichert))
+  } catch {
+    return new Set()
+  }
+  // Erster Besuch mit dieser Funktion: was schon fertig ist, gilt als gefeiert
+  const schon = training.stufen.filter((s) => stufeErledigt(s.nr)).map((s) => `stufe_${s.nr}`)
+  if (schon.length === training.stufen.length) schon.push('alles')
+  return new Set(schon)
+}
+const gefeiert = ladeGefeiert()
+
+function merkeGefeiert(schluessel: string): boolean {
+  if (gefeiert.has(schluessel)) return false
+  gefeiert.add(schluessel)
+  try {
+    localStorage.setItem(GEFEIERT, JSON.stringify([...gefeiert]))
+  } catch {
+    // ohne Speicher: dann eben nur bis zum Neuladen gemerkt
+  }
+  return true
+}
+
+/** Noch zu zeigende Abschlussfenster, das erste ist sichtbar. */
+export const feiern = ref<Feier[]>([])
+
+function pruefeFeier(stufe: number | undefined) {
+  if (stufe == null || !stufeErledigt(stufe)) return
+  const neu: Feier[] = []
+  if (merkeGefeiert(`stufe_${stufe}`)) neu.push({ art: 'stufe', stufe })
+  if (training.stufen.every((s) => stufeErledigt(s.nr)) && merkeGefeiert('alles')) neu.push({ art: 'alles' })
+  if (neu.length > 0) feiern.value = [...feiern.value, ...neu]
 }
