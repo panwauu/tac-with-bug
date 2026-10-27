@@ -1,6 +1,7 @@
 import type pg from 'pg'
 import type {
   ActivityHeatmap,
+  BotStatistic,
   DayDatasetType,
   HourDatasetType,
   LocaleDataset,
@@ -52,6 +53,7 @@ function hourlyCache<T>(calculate: (pgPool: pg.Pool) => Promise<T>) {
 
 const platformFunFactsCache = hourlyCache(calculatePlatformFunFacts)
 const platformStatisticCache = hourlyCache(calculatePlatformStatistic)
+const botStatisticCache = hourlyCache(calculateBotStatistic)
 
 export function getPlatformFunFacts(pgPool: pg.Pool): Promise<PlatformFunFacts> {
   return platformFunFactsCache.get(pgPool)
@@ -61,9 +63,80 @@ export function getPlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
   return platformStatisticCache.get(pgPool)
 }
 
-/** Calculates both statistics and stores them, so that no visitor has to wait for a stale cache. */
+export function getBotStatistic(pgPool: pg.Pool): Promise<BotStatistic[]> {
+  return botStatisticCache.get(pgPool)
+}
+
+/** Calculates the statistics and stores them, so that no visitor has to wait for a stale cache. */
 export async function refreshPlatformStatisticCaches(pgPool: pg.Pool) {
-  await Promise.all([platformFunFactsCache.refresh(pgPool), platformStatisticCache.refresh(pgPool)])
+  await Promise.all([platformFunFactsCache.refresh(pgPool), platformStatisticCache.refresh(pgPool), botStatisticCache.refresh(pgPool)])
+}
+
+/**
+ * Statistics per bot (#251) from game_results and games.bots, without the game JSON, and only for the
+ * games with a bot or a bot account. A seat belongs to the team seat % n_teams (the order of
+ * initializeTeams). Strength counts only games whose opponents are all humans, because games of bots
+ * against bots say nothing about how a bot plays against people.
+ */
+export async function calculateBotStatistic(pgPool: pg.Pool): Promise<BotStatistic[]> {
+  const res = await pgPool.query<{
+    botid: number | null
+    username: string | null
+    games: number
+    games_last_30_days: number
+    humans: number
+    against_humans_games: number
+    against_humans_wins: number
+    coop_games: number
+    coop_cards: number | null
+  }>(`
+    WITH bot_games AS (
+      SELECT gr.gameid, gr.n_players, gr.coop, gr.cards, gr.winning_seats, gr.lastplayed, g.n_teams, g.bots
+      FROM game_results gr JOIN games g ON g.id = gr.gameid
+      WHERE cardinality(array_remove(g.bots[1:gr.n_players], NULL)) > 0
+        OR EXISTS (SELECT 1 FROM users_to_games utg JOIN users u ON u.id = utg.userid WHERE utg.gameid = gr.gameid AND u.bot_account)
+    ), seats AS (
+      SELECT bg.*, s.seat, bg.bots[s.seat + 1] AS botid, utg.userid, u.username,
+        (bg.bots[s.seat + 1] IS NULL AND utg.userid IS NOT NULL AND NOT u.bot_account) AS human
+      FROM bot_games bg
+      CROSS JOIN LATERAL generate_series(0, bg.n_players - 1) AS s(seat)
+      LEFT JOIN users_to_games utg ON utg.gameid = bg.gameid AND utg.player_index = s.seat
+      LEFT JOIN users u ON u.id = utg.userid
+    ), bot_seats AS (
+      SELECT t.*,
+        CASE WHEN t.botid IS NOT NULL THEN 'b' || t.botid ELSE 'a' || t.userid END AS key,
+        t.seat = ANY(t.winning_seats) AS won,
+        NOT EXISTS (SELECT 1 FROM seats o WHERE o.gameid = t.gameid AND o.seat % t.n_teams <> t.seat % t.n_teams AND NOT o.human) AS against_humans
+      FROM seats t
+      WHERE t.botid IS NOT NULL OR (t.userid IS NOT NULL AND NOT t.human)
+    ), per_game AS (
+      SELECT key, MAX(botid) AS botid, MAX(username) AS username, gameid, bool_or(coop) AS coop, MAX(cards) AS cards,
+        bool_or(won) AS won, bool_and(against_humans) AS against_humans, MAX(lastplayed) AS lastplayed
+      FROM bot_seats GROUP BY key, gameid
+    ), humans AS (
+      SELECT p.key, COUNT(DISTINCT h.userid)::int AS n FROM per_game p JOIN seats h ON h.gameid = p.gameid AND h.human GROUP BY p.key
+    )
+    SELECT MAX(p.botid) AS botid, MAX(p.username) AS username,
+      COUNT(*)::int AS games,
+      (COUNT(*) FILTER (WHERE p.lastplayed > NOW() - interval '30 days'))::int AS games_last_30_days,
+      COALESCE(MAX(h.n), 0)::int AS humans,
+      (COUNT(*) FILTER (WHERE p.coop IS FALSE AND p.against_humans))::int AS against_humans_games,
+      (COUNT(*) FILTER (WHERE p.coop IS FALSE AND p.against_humans AND p.won))::int AS against_humans_wins,
+      (COUNT(*) FILTER (WHERE p.coop))::int AS coop_games,
+      (AVG(p.cards) FILTER (WHERE p.coop))::float AS coop_cards
+    FROM per_game p LEFT JOIN humans h ON h.key = p.key
+    GROUP BY p.key
+    ORDER BY games DESC;`)
+
+  return res.rows.map((row) => ({
+    botID: row.botid,
+    username: row.botid == null ? row.username : null,
+    games: row.games,
+    gamesLast30Days: row.games_last_30_days,
+    humans: row.humans,
+    againstHumans: { games: row.against_humans_games, wins: row.against_humans_wins },
+    coop: { games: row.coop_games, averageCards: row.coop_cards },
+  }))
 }
 
 export async function calculatePlatformFunFacts(pgPool: pg.Pool) {

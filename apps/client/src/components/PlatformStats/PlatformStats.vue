@@ -28,6 +28,8 @@
   <div class="chart-container">
     <UserAgentStats :data="data?.userAgentDataset" />
   </div>
+  <h1>{{ t('Stats.Bots.titel') }}</h1>
+  <BotStats :data="botData" />
 </template>
 
 <script setup lang="ts">
@@ -40,14 +42,20 @@ import LocaleStats from './LocaleStats.vue'
 import StatsByHour from './StatsByHour.vue'
 import StatsByDay from './StatsByDay.vue'
 import UserAgentStats from './UserAgentStats.vue'
+import BotStats from './BotStats.vue'
 
-import type { PlatformStats } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
+import type { BotStatistic, PlatformStats } from '@/../../server/src/sharedTypes/typesPlatformStatistic'
 import { ref } from 'vue'
 import { DefaultService as Service } from '@/generatedClient/index.ts'
 
 const data = ref<PlatformStats | null>(null)
 Service.getPlatformStats().then((res) => {
   data.value = res
+})
+
+const botData = ref<BotStatistic[] | null>(null)
+Service.getBotStats().then((res) => {
+  botData.value = res
 })
 </script>
 

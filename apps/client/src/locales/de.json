@@ -83,6 +83,18 @@
       "tablet": "Tablet",
       "desktop": "Desktop",
       "others": "Andere"
+    },
+    "Bots": {
+      "titel": "Bots",
+      "hinweis": "Wie oft jeder Bot gespielt wurde und wie stark er ist. Die Siegquote zählt nur Partien, in denen alle Gegner Menschen waren, denn Partien von Bots gegen Bots sagen wenig darüber aus. Bei Koop zählen die Karten, bis alle Kugeln im Haus sind: je weniger, desto besser.",
+      "bot": "Bot",
+      "partien": "Partien",
+      "letzte30": "Letzte 30 Tage",
+      "spieler": "Menschen",
+      "gegenMenschen": "Siege gegen Menschen",
+      "koop": "Koop: Ø Karten",
+      "partienKurz": "{n} Partien",
+      "konto": "Bot-Konto"
     }
   },
   "Home": {
@@ -106,6 +118,9 @@
   },
   "Leaders": {
     "onlyHumans": "Es zählen nur Partien ohne Bots.",
+    "withBots": "Partien mit Bots einbeziehen",
+    "botsMarked": "Partien mit Bots zählen mit. Team-Partien mit Bots sind mit 🤖 markiert.",
+    "withBotsGame": "Partie mit Bots",
     "wins": "Siege",
     "winshare": "Siegquote",
     "rank": "Rang",
@@ -1208,6 +1223,36 @@
       "rotLegtAb": "Rot hat keine Kugel draußen und legt die 5 ab",
       "abgelegtNutzen": "Dein TAC nutzt die abgelegte 5",
       "insHausTac": "Mit der 5 ins Haus"
+  "Bots": {
+    "titel": "Die Bots",
+    "einleitung": "Im Warteraum kann der Gastgeber freie Plätze mit Bots besetzen. Verlässt jemand eine laufende Partie, kann ein Bot für ihn einspringen. Welche Bots es gibt, hängt von der Spielart ab. Am Brett erkennst du einen Bot am 🤖. Fahre mit der Maus darüber oder tippe darauf, dann siehst du, welcher Bot es ist.",
+    "andere": "Für alle anderen Spielarten, etwa drei Teams zu zweit, gibt es nur Futuro.",
+    "frueher": "Frühere Bots",
+    "frueherText": "Diese Bots kannst du nicht mehr wählen. In älteren Partien kannst du ihnen noch begegnen.",
+    "koopName": "Koop-KI",
+    "alleBots": "Alle Bots im Überblick",
+    "beschreibung": {
+      "b0": "Zieht rein zufällig.",
+      "b1": "Will nur Kugeln ins Haus bringen, alles andere ist ihm egal.",
+      "b2": "Bewertet jeden Zug nach festen Regeln.",
+      "b3": "Schaut ein paar Züge in die Zukunft und plant danach.",
+      "b10": "Solide Hausmannskost: bewertet jeden Zug nach festen Regeln.",
+      "b11": "Denkt einen Zug voraus.",
+      "b12": "Sieht die Stellung auf einen Blick: ein neuronales Netz wählt den Zug.",
+      "b13": "Lernt noch, mit Halbwissen: spielt 200 mögliche Verläufe durch.",
+      "b14": "Rechnet hunderte Verläufe durch, bevor er zieht.",
+      "b15": "Prüft jede Hand vierundsechzigmal: Suche mit neuronalem Netz über 64 mögliche Kartenverteilungen.",
+      "b16": "Hat das Vorausspielen gelernt: Suche, die ein neuronales Netz lenkt.",
+      "b17": "Kombiniert Instinkt und Kalkül: Suche, deren Stellungen ein neuronales Netz bewertet.",
+      "b18": "Niemand hat sie je besiegt: wie Schlitzohr Fabian, aber mit 1600 Verläufen pro Zug.",
+      "b19": "Hat Die Unbekannte besiegt: ein Netz, das aus Partien gegen sich selbst und aus Zügen von Menschen gelernt hat.",
+      "b20": "Weiß wohin, verliert aber den Faden: feste Regeln mit etwas Zufall.",
+      "b21": "Hält Kurs, ohne Umwege: feste Regeln für Dreierteams.",
+      "b22": "Seit Jahren keine Spur von ihr: feste Regeln, dazu zählt sie Karten.",
+      "b23": "Spielt jede Möglichkeit im Kopf durch: probiert die Züge in vielen Probepartien aus.",
+      "b24": "Rechnet mit der Antwort der anderen: wie Professor Max, nur doppelt so gründlich.",
+      "b25": "Legt Spuren, die ins Leere führen: die gründlichste Suche bei 3 gegen 3.",
+      "b30": "Plant mit den Mitspielern, damit alle Kugeln mit möglichst wenigen Karten ins Haus kommen."
     }
   }
 }

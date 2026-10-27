@@ -83,7 +83,19 @@
       "desktop": "Desktop",
       "others": "Others"
     },
-    "headerUserAgent": "Technical Devices of the Players"
+    "headerUserAgent": "Technical Devices of the Players",
+    "Bots": {
+      "titel": "Bots",
+      "hinweis": "How often each bot was played and how strong it is. The win rate counts only games in which all opponents were humans, because games of bots against bots say little about it. In co-op the cards until all marbles are home count: the fewer, the better.",
+      "bot": "Bot",
+      "partien": "Games",
+      "letzte30": "Last 30 days",
+      "spieler": "Humans",
+      "gegenMenschen": "Wins against humans",
+      "koop": "Co-op: avg. cards",
+      "partienKurz": "{n} games",
+      "konto": "Bot account"
+    }
   },
   "Home": {
     "Spielersuche": "Search Users",
@@ -106,6 +118,9 @@
   },
   "Leaders": {
     "onlyHumans": "Only games without bots count.",
+    "withBots": "Include games with bots",
+    "botsMarked": "Games with bots count too. Team games with bots are marked with 🤖.",
+    "withBotsGame": "Game with bots",
     "wins": "Wins",
     "winshare": "Win Rate",
     "rank": "Rank",
@@ -1208,6 +1223,36 @@
       "rotLegtAb": "Red has no marble out and discards the 5",
       "abgelegtNutzen": "Your TAC uses the discarded 5",
       "insHausTac": "Into the home with the 5"
+  "Bots": {
+    "titel": "The bots",
+    "einleitung": "In the waiting room the host can fill free seats with bots. If someone leaves a running game, a bot can step in for them. Which bots are available depends on the game mode. On the board you can tell a bot by the 🤖. Hover over it or tap it to see which bot it is.",
+    "andere": "For all other game modes, such as three teams of two, only Futuro is available.",
+    "frueher": "Former bots",
+    "frueherText": "You can no longer choose these bots. You may still meet them in older games.",
+    "koopName": "Co-op AI",
+    "alleBots": "All bots at a glance",
+    "beschreibung": {
+      "b0": "Moves completely at random.",
+      "b1": "Only wants to get marbles into the home, nothing else matters to it.",
+      "b2": "Rates every move by fixed rules.",
+      "b3": "Looks a few moves into the future and plans accordingly.",
+      "b10": "Solid and steady: rates every move by fixed rules.",
+      "b11": "Thinks one move ahead.",
+      "b12": "Reads the position at a glance: a neural network picks the move.",
+      "b13": "Still learning, with half-knowledge: plays through 200 possible lines.",
+      "b14": "Calculates hundreds of lines before moving.",
+      "b15": "Checks every hand sixty-four times: search with a neural network over 64 possible card distributions.",
+      "b16": "Has learned to play ahead: a search guided by a neural network.",
+      "b17": "Combines instinct and calculation: a search whose positions a neural network rates.",
+      "b18": "No one has ever beaten her: like Schlitzohr Fabian, but with 1600 lines per move.",
+      "b19": "Beat Die Unbekannte: a network that learned from games against itself and from moves of humans.",
+      "b20": "Knows where to go, but loses the thread: fixed rules with a bit of chance.",
+      "b21": "Holds course, no detours: fixed rules for teams of three.",
+      "b22": "No trace of her for years: fixed rules, and she counts cards.",
+      "b23": "Plays every option through in his head: tries the moves in many test games.",
+      "b24": "Counts on the others' reply: like Professor Max, only twice as thorough.",
+      "b25": "Lays trails that lead nowhere: the most thorough search in 3 vs 3.",
+      "b30": "Plans with its teammates so that all marbles get home with as few cards as possible."
     }
   }
 }

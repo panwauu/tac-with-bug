@@ -53,6 +53,8 @@ async function previousLeaderboardCoop(sqlClient: pg.Pool, limit: number, offset
     team: dbRes.rows.map((row: any) => row.team),
     count: dbRes.rows.map((row: any) => row.cards),
     lastplayed: dbRes.rows.map((row: any) => Date.parse(row.lastplayed)),
+    // These games have no bots
+    bots: dbRes.rows.map(() => false),
   }
 }
 
@@ -418,6 +420,7 @@ describe('Leaderboards from game_results', () => {
       team: expect.any(Array),
       count: [null, null],
       lastplayed: expect.any(Array),
+      bots: [false, false],
     })
   })
 
@@ -447,6 +450,13 @@ describe('Leaderboards from game_results', () => {
     const coopBoard = await queryLeaderboardCoop(testServer.pgPool, 10, 0, 4, start, end)
     expect(coopBoard.nGames).toBe('1')
     expect(coopBoard.count).toEqual([40])
+
+    // With bots all three games count, and the two with a bot are marked
+    const winsWithBots = await queryLeaderboardByWins(testServer.pgPool, 10, 0, start, end, true)
+    expect(winsWithBots.wins).toEqual(['3', '3', '0', '0'])
+    const coopWithBots = await queryLeaderboardCoop(testServer.pgPool, 10, 0, 4, start, end, true)
+    expect(coopWithBots.nGames).toBe('3')
+    expect([...coopWithBots.bots].sort()).toEqual([false, true, true])
   })
 
   test('saves a game even if its result cannot be written', async () => {

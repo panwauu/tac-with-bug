@@ -34,6 +34,7 @@ const KiAuswahl = () => import('@/views/Home/KiAuswahlView.vue')
 const Training = () => import('@/views/Home/TrainingView.vue')
 const TrainingLektion = () => import('@/views/Home/TrainingLektionView.vue')
 const TrainingUebung = () => import('@/views/TrainingUebungView.vue')
+const Bots = () => import('@/views/Home/BotsView.vue')
 const regexp = locales.join('|')
 const routes = [
   {
@@ -208,6 +209,9 @@ const routes = [
         path: 'training/lektion/:id',
         name: 'TrainingLektion',
         component: TrainingLektion,
+        path: 'bots',
+        name: 'Bots',
+        component: Bots,
       },
       {
         path: '',
