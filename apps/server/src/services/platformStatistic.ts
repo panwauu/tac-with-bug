@@ -11,6 +11,7 @@ import type {
   WeekDatasetType,
   WeekDatasetDataType,
 } from '../sharedTypes/typesPlatformStatistic'
+import { ONLINE_STUFEN } from '@repo/core/bot/netz/onlineStufen'
 
 const cacheDurationInMS = 60 * 60e3 // Update once per hour
 
@@ -128,7 +129,7 @@ export async function calculateBotStatistic(pgPool: pg.Pool): Promise<BotStatist
     GROUP BY p.key
     ORDER BY games DESC;`)
 
-  return res.rows.map((row) => ({
+  const stats: BotStatistic[] = res.rows.map((row) => ({
     botID: row.botid,
     username: row.botid == null ? row.username : null,
     games: row.games,
@@ -136,7 +137,33 @@ export async function calculateBotStatistic(pgPool: pg.Pool): Promise<BotStatist
     humans: row.humans,
     againstHumans: { games: row.against_humans_games, wins: row.against_humans_wins },
     coop: { games: row.coop_games, averageCards: row.coop_cards },
+    browser: { games: 0, wins: 0, averageCards: null },
   }))
+
+  // Games against the AI in the browser (offline_results): the level is the bot with the same number online
+  const browser = await pgPool.query<{ level: string; mode: string; games: number; wins: number; cards: number | null }>(
+    'SELECT level, mode, COUNT(*)::int AS games, (COUNT(*) FILTER (WHERE NOT won))::int AS wins, AVG(cards)::float AS cards FROM offline_results GROUP BY level, mode;'
+  )
+  for (const row of browser.rows) {
+    const botID = ONLINE_STUFEN.find((s) => s.stufe === row.level && s.modus === row.mode)?.id
+    if (botID == null) continue
+    let entry = stats.find((s) => s.botID === botID)
+    if (entry == null) {
+      entry = {
+        botID,
+        username: null,
+        games: 0,
+        gamesLast30Days: 0,
+        humans: 0,
+        againstHumans: { games: 0, wins: 0 },
+        coop: { games: 0, averageCards: null },
+        browser: { games: 0, wins: 0, averageCards: null },
+      }
+      stats.push(entry)
+    }
+    entry.browser = { games: row.games, wins: row.mode === 'koop' ? 0 : row.wins, averageCards: row.mode === 'koop' ? row.cards : null }
+  }
+  return stats
 }
 
 export async function calculatePlatformFunFacts(pgPool: pg.Pool) {

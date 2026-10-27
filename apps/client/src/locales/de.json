@@ -86,7 +86,7 @@
     },
     "Bots": {
       "titel": "Bots",
-      "hinweis": "Wie oft jeder Bot gespielt wurde und wie stark er ist. Die Siegquote zählt nur Partien, in denen alle Gegner Menschen waren, denn Partien von Bots gegen Bots sagen wenig darüber aus. Bei Koop zählen die Karten, bis alle Kugeln im Haus sind: je weniger, desto besser.",
+      "hinweis": "Wie oft jeder Bot gespielt wurde und wie stark er ist. Die Siegquote zählt nur Partien, in denen alle Gegner Menschen waren, denn Partien von Bots gegen Bots sagen wenig darüber aus. Bei Koop zählen die Karten, bis alle Kugeln im Haus sind: je weniger, desto besser. Die letzte Spalte zählt die Partien gegen die KI im Browser: wie oft die KI gegen den Menschen gewonnen hat, bei Koop die Karten.",
       "bot": "Bot",
       "partien": "Partien",
       "letzte30": "Letzte 30 Tage",
@@ -94,7 +94,8 @@
       "gegenMenschen": "Siege gegen Menschen",
       "koop": "Koop: Ø Karten",
       "partienKurz": "{n} Partien",
-      "konto": "Bot-Konto"
+      "konto": "Bot-Konto",
+      "browser": "Im Browser"
     }
   },
   "Home": {
@@ -1067,7 +1068,7 @@
     "hinweis": "Starke Stufen denken bis zu zwei Sekunden nach.",
     "infoMenschen": "Gegen andere Menschen spielst du online über den Warteraum. Nur Online-Partien zählen für deine Statistik.",
     "infoSpeichern": "Sie wird nicht gespeichert: Wenn du die Seite schließt oder neu lädst, ist die Partie vorbei.",
-    "infoStatistik": "Sie zählt nicht für deine Statistik und nicht für die Bestenliste.",
+    "infoStatistik": "Sie zählt nicht für deine Statistik und nicht für die Bestenliste. Am Ende geht nur anonym an den Server, gegen welche Stufe du gespielt hast und wie die Partie ausging, ohne dein Konto. Daraus entsteht die Statistik der Bots.",
     "infoBrowser": "Du spielst allein mit KI-Mitspielern. Die Partie läuft nur in deinem Browser, du brauchst dafür kein Konto.",
     "infoTitel": "So läuft eine Partie gegen die KI",
     "neuePartie": "Neue Partie",

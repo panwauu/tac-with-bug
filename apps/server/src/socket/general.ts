@@ -14,6 +14,7 @@ import { initializeInfo, terminateInfo } from './info'
 import { registerTournamentPublicHandler, registerTournamentBus } from './tournamentPublic'
 import { registerTournamentPrivateHandler } from './tournamentPrivate'
 import { registerChannelHandlers } from './channel'
+import { registerOfflineResultHandlers } from './offlineResults'
 
 export let nspGeneral: GeneralNamespace
 
@@ -40,6 +41,7 @@ export function registerSocketNspGeneral(nsp: GeneralNamespace, pgPool: pg.Pool)
     registerSubscriptionHandler(pgPool, socket)
     registerFriendsHandlers(pgPool, socket)
     registerChannelHandlers(pgPool, socket)
+    registerOfflineResultHandlers(pgPool, socket)
 
     await initializeSocket(pgPool, socket)
   })

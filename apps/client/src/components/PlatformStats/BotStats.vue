@@ -63,6 +63,23 @@
           <template v-else>–</template>
         </template>
       </Column>
+      <Column
+        field="browserSort"
+        :header="t('Stats.Bots.browser')"
+        sortable
+      >
+        <template #body="{ data: z }">
+          <template v-if="z.browser.games > 0 && z.browser.averageCards != null">
+            {{ Math.round(z.browser.averageCards) }}
+            <span class="bot-stats-zusatz">({{ t('Stats.Bots.partienKurz', { n: z.browser.games }) }})</span>
+          </template>
+          <template v-else-if="z.browser.games > 0">
+            {{ Math.round((z.browser.wins / z.browser.games) * 100) }} %
+            <span class="bot-stats-zusatz">({{ z.browser.wins }}/{{ z.browser.games }})</span>
+          </template>
+          <template v-else>–</template>
+        </template>
+      </Column>
     </DataTable>
   </div>
 </template>
@@ -70,6 +87,7 @@
 <script setup lang="ts">
 // Statistik je Bot (#251): wie oft gespielt, mit wie vielen Menschen, und Siege nur aus Partien,
 // in denen alle Gegner Menschen sind (Partien von Bots gegen Bots verzerren sonst die Stärke).
+// Dazu die Partien gegen die KI im Browser (#256), die der Browser am Ende anonym meldet.
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { computed } from 'vue'
@@ -90,6 +108,7 @@ const zeilen = computed(() =>
       // Zum Sortieren: ohne Partien gegen Menschen ans Ende
       quote: s.againstHumans.games > 0 ? s.againstHumans.wins / s.againstHumans.games : -1,
       karten: s.coop.averageCards ?? Number.POSITIVE_INFINITY,
+      browserSort: s.browser.games,
     }
   })
 )

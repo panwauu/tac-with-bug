@@ -697,3 +697,15 @@ CREATE TABLE moderation (
   blockeduntil timestamptz NOT NULL,
   reason varchar(200)
 );
+
+-- Games against the AI in the browser (#256): only how they ended, without any account or name. The game itself
+-- runs in the browser; the client reports the result at the end. mode: klassisch, drei or koop; level: the AI level
+-- (see onlineStufen.ts); won: whether the team of the human won; cards: the cards in coop.
+CREATE TABLE offline_results (
+  id SERIAL PRIMARY KEY,
+  created timestamptz NOT NULL DEFAULT current_timestamp,
+  mode varchar(10) NOT NULL,
+  level varchar(20) NOT NULL,
+  won BOOLEAN NOT NULL,
+  cards INT
+);

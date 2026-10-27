@@ -65,6 +65,7 @@ import router from '@/router/index'
 import { useSettingsStore } from '@/store/settings'
 import { useI18n } from 'vue-i18n'
 import { KI_STUFEN, KI_STUFEN_DREI, SITZE, type KiModus } from '@/views/kiStufen'
+import { injectStrict, SocketKey } from '@/services/injections'
 
 const { t } = useI18n()
 /** Zeitgrenze je KI-Zug: auf schnellen Geraeten rechnet sie wie in der App. */
@@ -126,6 +127,20 @@ let game: Game | null = null
 let spiel: GameForPlay | null = null
 let laeuft = false
 let beendet = false
+let gemeldet = false
+const socket = injectStrict(SocketKey)
+
+/**
+ * Am Ende der Partie nur den Ausgang an den Server (#256): Modus, Stufe, ob mein Team gewonnen hat
+ * und bei Koop die Karten. Kein Konto, kein Name; der Testmodus meldet nichts.
+ */
+function meldeErgebnis(g: Game) {
+  if (gemeldet || auto || stufe.value == null) return
+  gemeldet = true
+  const meinTeam = g.teams.findIndex((team) => team.includes(ICH))
+  const karten = modus === 'koop' ? g.statistic.reduce((summe, s) => summe + s.cards.total[0], 0) : null
+  socket.emitWithAck(5000, 'ki:result', { mode: modus, level: stufe.value, won: g.winningTeams[meinTeam] === true, cards: karten }).catch(() => {})
+}
 
 function zeige() {
   if (spiel) updateData.value = getPlayerUpdateFromGame(spiel, ICH)
@@ -147,6 +162,7 @@ function namen(kurz: string): string[] {
 function neuesSpiel() {
   const kurz = [...KI_STUFEN, ...KI_STUFEN_DREI].find((s) => s.name === stufe.value)?.kurz ?? 'KI'
   beendet = false
+  gemeldet = false
   game = new Game(SITZ_ZAHL, 2, true, modus === 'koop')
   spiel = {
     id: 0,
@@ -198,6 +214,14 @@ function setzeFrist(zug: MoveTextOrBall) {
   fruehestens = Date.now() + (zug[2] === 'tauschen' ? 50 : auto ? 60 : teilschritt ? PAUSE_7 : PAUSE[settingsStore.kiTempo])
 }
 
+/** Ist die Partie vorbei: Endbild zeigen und den Ausgang melden. */
+function partieEnde() {
+  if (!game?.gameEnded || spiel == null) return
+  spiel.running = false
+  zeige()
+  meldeErgebnis(game)
+}
+
 /** Spielt die Zuege der KI, bis ich wieder dran bin. */
 async function weiter() {
   if (laeuft || game == null) return
@@ -230,10 +254,7 @@ async function weiter() {
       zeige()
       setzeFrist(zug)
     }
-    if (game?.gameEnded && spiel) {
-      spiel.running = false
-      zeige()
-    }
+    partieEnde()
   } finally {
     laeuft = false
   }
