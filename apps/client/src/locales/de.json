@@ -1084,8 +1084,8 @@
     }
   },
   "Training": {
-    "titel": "Training",
-    "einleitung": "Lerne TAC Schritt für Schritt: kurze Lektionen und Aufgaben direkt auf dem Brett. Dasselbe Training wie in der TAC-App.",
+    "titel": "Tutorials",
+    "einleitung": "Lerne TAC Schritt für Schritt: kurze Lektionen und Aufgaben direkt auf dem Brett. Dieselben Lektionen wie in der TAC-App.",
     "hinweis": "Dein Fortschritt wird nur in diesem Browser gespeichert.",
     "uebersicht": "Übersicht",
     "weiter": "Weiter",
@@ -1098,12 +1098,11 @@
     "du": "Du",
     "vorherZug": "{wer} hat zuletzt {karte} gespielt.",
     "ausgesetzt": "Du wurdest mit einer 8 ausgesetzt.",
-    "widgetText": "Lerne TAC mit kurzen Lektionen und Aufgaben auf dem Brett, von den Grundlagen bis zu TAC-Ketten.",
-    "zumTraining": "Zum Training",
+    "zumTraining": "Zu den Tutorials",
     "feier": {
       "stufeTitel": "Stufe abgeschlossen!",
       "stufeText": "{stufe} erfolgreich beendet!",
-      "allesTitel": "Training abgeschlossen!",
+      "allesTitel": "Tutorials abgeschlossen!",
       "allesText": "Du hast alle Lektionen gemeistert!",
       "grossartig": "Großartig!"
     },

@@ -166,6 +166,14 @@ export function passeAn(u: Uebung): Uebung {
 
 /** Lektionstexte, die von der Bedienung der App ausgehen. */
 const lektionsAnpassungen: Record<string, Partial<Record<'text', Text>>> = {
+  // Auf Tac-With-Bug heißt das Training „Tutorials“
+  g02: {
+    text: {
+      de: '16 Glaskugeln in 4 Farben (je 4 Stück), 104 Spielkarten und ein rundes Spielbrett. Jede Farbe hat ihren eigenen Bereich auf dem Brett. Die Karten bestimmen, wie weit und wohin sich deine Kugeln bewegen. In allen Tutorials spielst du als Schwarz.',
+      en: '16 glass marbles in 4 colors (4 each), 104 playing cards and a round board. Each color has its own area on the board. The cards decide how far and where your marbles move. Throughout all tutorials you play as Black.',
+      ru: '16 стеклянных шаров 4 цветов (по 4), 104 карты и круглое поле. У каждого цвета своя зона на поле. Карты определяют, как далеко и куда двигаются твои шары. Во всех учебниках ты играешь за Чёрных.',
+    },
+  },
   // Teufel und TAC: Rot spielt erst den Teufel, dann aus deiner Hand den TAC, erst dadurch spielst du für Blau.
   e13: {
     text: {

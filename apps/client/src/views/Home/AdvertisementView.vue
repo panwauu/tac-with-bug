@@ -32,7 +32,7 @@
             class="advertButton"
             :label="t('Advertisement.tutorialButton')"
             icon="pi pi-question-circle"
-            @click="router.push({ name: 'TutorialOverview' })"
+            @click="router.push({ name: 'Training' })"
           />
           <Button
             class="advertButton"

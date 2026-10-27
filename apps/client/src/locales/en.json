@@ -1084,8 +1084,8 @@
     }
   },
   "Training": {
-    "titel": "Training",
-    "einleitung": "Learn TAC step by step: short lessons and tasks right on the board. The same training as in the TAC app.",
+    "titel": "Tutorials",
+    "einleitung": "Learn TAC step by step: short lessons and tasks right on the board. The same lessons as in the TAC app.",
     "hinweis": "Your progress is only stored in this browser.",
     "uebersicht": "Overview",
     "weiter": "Next",
@@ -1098,12 +1098,11 @@
     "du": "You",
     "vorherZug": "{wer} just played {karte}.",
     "ausgesetzt": "You were skipped by an 8.",
-    "widgetText": "Learn TAC with short lessons and tasks on the board, from the basics to TAC chains.",
-    "zumTraining": "Start training",
+    "zumTraining": "To the tutorials",
     "feier": {
       "stufeTitel": "Level complete!",
       "stufeText": "{stufe} finished successfully!",
-      "allesTitel": "Training complete!",
+      "allesTitel": "Tutorials complete!",
       "allesText": "You have mastered all lessons!",
       "grossartig": "Great!"
     },

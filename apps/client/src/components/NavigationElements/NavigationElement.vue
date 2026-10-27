@@ -70,7 +70,7 @@ function returnMenu() {
       label: t('Home.TutorialOverview'),
       icon: 'pi pi-question-circle',
       command: () => {
-        router.push({ name: 'TutorialOverview' })
+        router.push({ name: 'Training' })
       },
     },
     {

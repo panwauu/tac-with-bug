@@ -6,15 +6,12 @@
     <div class="landingPageElement kiWidget p-card">
       <KiWidget />
     </div>
-    <div class="landingPageElement lernWidget p-card">
-      <LernWidget />
-    </div>
     <div class="landingPageElement tournamentWidget p-card">
       <TournamentWidget />
     </div>
     <div
       class="landingPageElement tutorialWidget clickable p-card"
-      @click="router.push({ name: 'TutorialOverview' })"
+      @click="router.push({ name: 'Training' })"
     >
       <TutorialWidget />
     </div>
@@ -30,7 +27,6 @@ import RunningGamesWidget from '@/components/RunningGamesWidget.vue'
 import WaitingWidget from '@/components/WaitingWidget.vue'
 import TutorialWidget from '@/components/TutorialWidget.vue'
 import KiWidget from '@/components/KiWidget.vue'
-import LernWidget from '@/components/LernWidget.vue'
 import router from '@/router'
 </script>
 
@@ -44,13 +40,13 @@ import router from '@/router'
   grid-auto-columns: minmax(0, 1fr);
   grid-template-areas:
     'waiting waiting waiting'
-    'ki ki lernen'
+    'ki ki ki'
     'tournament games tutorial';
 }
 
 @media (max-width: 800px) {
   .landingPage {
-    grid-template-areas: 'waiting' 'ki' 'lernen' 'games' 'tournament' 'tutorial';
+    grid-template-areas: 'waiting' 'ki' 'games' 'tournament' 'tutorial';
   }
 }
 
@@ -67,10 +63,6 @@ import router from '@/router'
 
 .kiWidget {
   grid-area: ki;
-}
-
-.lernWidget {
-  grid-area: lernen;
 }
 
 .tournamentWidget {

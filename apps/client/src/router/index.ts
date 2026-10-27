@@ -22,7 +22,6 @@ const Datenschutz = () => import('@/components/DatenschutzInformation.vue')
 const Leaders = () => import('@/views/Home/LeadersView.vue')
 const Landing = () => import('@/views/Home/LandingView.vue')
 const Stats = () => import('@/views/Home/StatsView.vue')
-const TutorialOverview = () => import('@/views/Home/TutorialOverview.vue')
 const Subscription = () => import('@/views/Home/SubscriptionView.vue')
 const FAQ = () => import('@/views/Home/FAQ.vue')
 const HallOfFame = () => import('@/views/Home/HallOfFame.vue')
@@ -161,7 +160,8 @@ const routes = [
       {
         path: 'tutorialoverview',
         name: 'TutorialOverview',
-        component: TutorialOverview,
+        // Die Tutorials sind jetzt das Training (alte Links führen dorthin)
+        redirect: { name: 'Training' },
       },
       {
         path: 'subscription',

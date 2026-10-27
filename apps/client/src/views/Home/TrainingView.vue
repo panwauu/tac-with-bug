@@ -10,11 +10,13 @@
       >
         <div class="stufe-kopf">
           <h3>{{ txt(s.name, locale) }}</h3>
-          <Tag
-            :value="`${anzahlErledigt(s.nr)} / ${pfad(s.nr).length}`"
-            :severity="anzahlErledigt(s.nr) === pfad(s.nr).length ? 'success' : 'secondary'"
-          />
+          <div>{{ anzahlErledigt(s.nr) }}/{{ pfad(s.nr).length }}</div>
         </div>
+        <ProgressBar
+          class="stufe-fortschritt"
+          :value="Math.round((anzahlErledigt(s.nr) / pfad(s.nr).length) * 100)"
+          :show-value="false"
+        />
         <p class="stufe-kurz">{{ txt(s.kurz, locale) }}</p>
         <div class="stufe-felder">
           <Button
@@ -39,7 +41,7 @@
 // Das Training der TAC-App im Browser: fünf Stufen, je ein Lernpfad aus
 // Lektionen (lesen, Bild) und Übungen (auf dem Brett lösen).
 import Button from 'primevue/button'
-import Tag from 'primevue/tag'
+import ProgressBar from 'primevue/progressbar'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import TrainingFeier from '@/components/TrainingFeier.vue'
@@ -93,6 +95,9 @@ function oeffne(f: { art: 'lektion' | 'uebung'; id: string }) {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+}
+.stufe-fortschritt {
+  margin-bottom: 10px;
 }
 .stufe-kurz {
   margin-top: 0;
