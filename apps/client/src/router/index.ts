@@ -32,6 +32,7 @@ const ResetPassword = () => import('@/views/Home/ResetPassword.vue')
 
 const Ki = () => import('@/views/KiView.vue')
 const KiAuswahl = () => import('@/views/Home/KiAuswahlView.vue')
+const Bots = () => import('@/views/Home/BotsView.vue')
 const regexp = locales.join('|')
 const routes = [
   {
@@ -190,6 +191,11 @@ const routes = [
         path: 'ki',
         name: 'KiAuswahl',
         component: KiAuswahl,
+      },
+      {
+        path: 'bots',
+        name: 'Bots',
+        component: Bots,
       },
       {
         path: '',

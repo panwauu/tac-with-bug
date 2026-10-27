@@ -548,6 +548,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
       {
         "active": false,
         "bot": false,
+        "botID": null,
         "discarded": true,
         "name": "Du",
         "narrFlag": [
@@ -561,6 +562,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
       {
         "active": true,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "-Kai-",
         "narrFlag": [
@@ -574,6 +576,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
       {
         "active": false,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "-Oskar-",
         "narrFlag": [
@@ -587,6 +590,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Move should be abl
       {
         "active": false,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "-Sophia-",
         "narrFlag": [
@@ -1190,6 +1194,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       {
         "active": true,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "Du",
         "narrFlag": [
@@ -1203,6 +1208,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       {
         "active": false,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "-Kai-",
         "narrFlag": [
@@ -1216,6 +1222,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       {
         "active": false,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "-Oskar-",
         "narrFlag": [
@@ -1229,6 +1236,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       {
         "active": false,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "-Sophia-",
         "narrFlag": [
@@ -1833,6 +1841,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       {
         "active": true,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "Du",
         "narrFlag": [
@@ -1846,6 +1855,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       {
         "active": false,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "-Kai-",
         "narrFlag": [
@@ -1859,6 +1869,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       {
         "active": false,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "-Oskar-",
         "narrFlag": [
@@ -1872,6 +1883,7 @@ exports[`Tutorial Test Suite via Socket.io > Test Tutorials > Tutorial step shou
       {
         "active": false,
         "bot": false,
+        "botID": null,
         "discarded": false,
         "name": "-Sophia-",
         "narrFlag": [
