@@ -15,7 +15,8 @@ export class LeadersController extends Controller {
     @Query() limit: number,
     @Query() offset: number,
     @Query() startDate?: number,
-    @Query() endDate?: number
+    @Query() endDate?: number,
+    @Query() bots?: boolean
   ): Promise<LeaderBoardType> {
     if (!Number.isInteger(limit) || !Number.isInteger(offset)) {
       return validationError(409, 'limit and offset as integer required')
@@ -27,7 +28,7 @@ export class LeadersController extends Controller {
       return validationError(409, 'startDate should be smaller than endDate')
     }
 
-    return queryLeaderboardByWins(request.app.locals.sqlClient, limit, offset, startDateNormalized, endDateNormalized)
+    return queryLeaderboardByWins(request.app.locals.sqlClient, limit, offset, startDateNormalized, endDateNormalized, bots ?? false)
   }
 
   /**
@@ -41,7 +42,8 @@ export class LeadersController extends Controller {
     @Query() offset: number,
     @Query() nPlayers: number,
     @Query() startDate?: number,
-    @Query() endDate?: number
+    @Query() endDate?: number,
+    @Query() bots?: boolean
   ): Promise<CoopBoardType> {
     if (!Number.isInteger(limit) || !Number.isInteger(offset)) {
       return validationError(409, 'limit and offset as integer required')
@@ -57,7 +59,7 @@ export class LeadersController extends Controller {
       return validationError(409, 'startDate should be smaller than endDate')
     }
 
-    return queryLeaderboardCoop(request.app.locals.sqlClient, limit, offset, nPlayers, startDateNormalized, endDateNormalized)
+    return queryLeaderboardCoop(request.app.locals.sqlClient, limit, offset, nPlayers, startDateNormalized, endDateNormalized, bots ?? false)
   }
 }
 

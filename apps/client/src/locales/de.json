@@ -106,6 +106,9 @@
   },
   "Leaders": {
     "onlyHumans": "Es zählen nur Partien ohne Bots.",
+    "withBots": "Partien mit Bots einbeziehen",
+    "botsMarked": "Partien mit Bots zählen mit. Team-Partien mit Bots sind mit 🤖 markiert.",
+    "withBotsGame": "Partie mit Bots",
     "wins": "Siege",
     "winshare": "Siegquote",
     "rank": "Rang",
