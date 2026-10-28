@@ -1,4 +1,5 @@
 import { ONLINE_STUFEN, onlineModus } from '@repo/core/bot/netz/onlineStufen'
+import router from '@/router'
 
 /** Oskars staerkster Bot, bisher der einzige im Warteraum und beim Ersatz. */
 export const FUTURO = 3
@@ -36,10 +37,12 @@ export const SITZE: Record<KiModus, number> = { klassisch: 4, drei: 6, koop: 4 }
 
 /**
  * Startet eine Partie gegen die KI (Vollbild-Ansicht KiView). Neu laden: die
- * Spieloberflaeche ist beim Erzeugen auf eine Sitzzahl festgelegt.
+ * Spieloberflaeche ist beim Erzeugen auf eine Sitzzahl festgelegt. Die Adresse
+ * behaelt die Sprache, sonst faellt die Partie nach dem Neuladen auf Deutsch zurueck.
  */
 export function starteKiPartie(modus: KiModus, stufe: string) {
-  window.location.hash = `#/ki/spiel?modus=${modus}&stufe=${stufe}`
+  const locale = router.currentRoute.value.params.locale
+  window.location.hash = router.resolve({ name: 'Ki', params: { locale }, query: { modus, stufe } }).href
   window.location.reload()
 }
 
