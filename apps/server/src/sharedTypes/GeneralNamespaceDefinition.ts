@@ -6,6 +6,7 @@ import type { GameForOverview, GetRunningGamesType } from '@repo/core/types'
 import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTournament, TournamentTableData, LastTournamentWinners } from './typesTournament'
 import type { Friend } from './typesFriends'
 import type { ChatElement, ChatMessage, ChatMessagePage } from './chat'
+import type { ModerationStatus, ReportCategory, ReportedUser } from './typesReports'
 
 export type AckData<T> = { status: number; error?: any; data?: T }
 export type CallbackFunction<T> = (data: AckData<T>) => void
@@ -100,6 +101,15 @@ export interface ClientToServerEvents extends Record<string, any> {
 
   // games against the AI in the browser: only the result, without account or name
   'ki:result': (data: { mode: 'klassisch' | 'drei' | 'koop'; level: string; won: boolean; cards: number | null }, cb: CallbackFunction<null>) => void
+  // moderation
+  'moderation:status': (cb: CallbackFunction<ModerationStatus>) => void
+  'moderation:report': (data: { username: string; category: ReportCategory; body: string }, cb: CallbackFunction<null>) => void
+  'moderation:reports': (cb: CallbackFunction<ReportedUser[]>) => void
+  'moderation:block': (data: { username: string; days: number; reason: string; resetProfile: boolean }, cb: CallbackFunction<null>) => void
+  'moderation:unblock': (username: string, cb: CallbackFunction<null>) => void
+  'moderation:dismiss': (username: string, cb: CallbackFunction<null>) => void
+  'moderation:moderators': (cb: CallbackFunction<string[]>) => void
+  'moderation:setModerator': (data: { username: string; moderator: boolean }, cb: CallbackFunction<string[]>) => void
 }
 
 export interface ServerToClientEvents {
@@ -168,6 +178,9 @@ export interface ServerToClientEvents {
   'friends:friend-withdrew': (data: { username: string }) => void
   'friends:friend-declined': (data: { username: string }) => void
   'friends:friend-cancelled': (data: { username: string }) => void
+
+  // moderation: only to moderators and admins
+  'moderation:status': (data: ModerationStatus) => void
 }
 
 interface SocketData {

@@ -17,7 +17,9 @@ CREATE TABLE users (
   user_description VARCHAR(200) NOT NULL DEFAULT '',
   notification_settings BOOLEAN [] NOT NULL DEFAULT array_fill(TRUE, ARRAY [6]) CHECK (array_length(notification_settings, 1) = 6),
   -- Account of an external bot that logs in like a user: its games are not on the leaderboards (set by hand, login is not affected)
-  bot_account BOOLEAN NOT NULL DEFAULT FALSE
+  bot_account BOOLEAN NOT NULL DEFAULT FALSE,
+  -- Trusted member of the community: handles reports and can block users (admins can do the same)
+  moderator BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE password_reset_requests (
@@ -699,4 +701,16 @@ CREATE TABLE offline_results (
   level varchar(20) NOT NULL,
   won BOOLEAN NOT NULL,
   cards INT
+);
+
+-- Reports of users about other users (name, picture, profile text, chat). Moderators handle them.
+CREATE TABLE reports (
+  id SERIAL PRIMARY KEY,
+  reporterid INT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  userid INT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  category varchar(20) NOT NULL,
+  body varchar(500) NOT NULL DEFAULT '',
+  created timestamptz NOT NULL DEFAULT current_timestamp,
+  handled timestamptz,
+  handledbyuserid INT REFERENCES users (id) ON DELETE SET NULL
 );
