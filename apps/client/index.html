@@ -77,7 +77,8 @@
   <script>
     ;(function () {
       let scheme = localStorage.getItem('color-scheme')
-      if (scheme === 'dark' || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      // A stored choice wins over the system preference, also "light" on a dark system
+      if (scheme === 'dark' || (scheme !== 'light' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('tac-with-bug-dark')
       } else {
         document.documentElement.classList.remove('tac-with-bug-dark')
