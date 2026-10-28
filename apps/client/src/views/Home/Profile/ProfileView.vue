@@ -198,7 +198,7 @@
           <div v-else-if="slotProps.data === 'coop'">
             <table class="carousel-element">
               <tbody>
-                <tr>
+                <tr v-if="props.gameFilter !== 'bots'">
                   <th>{{ t('Profile.mostFrequentCoop') + ':' }}</th>
                   <td
                     class="games-with clickable"
@@ -326,19 +326,21 @@
 <script setup lang="ts">
 import ProfileRadar from '@/components/ProfileRadar.vue'
 import UserGamesDougnut from '@/components/UserGamesDougnut.vue'
-import type { PlayerFrontendStatistic } from '@/generatedClient'
+import type { PlayerFrontendStatistic, ProfileGames } from '@/generatedClient'
 import { useI18n } from 'vue-i18n'
 import GamesHistoryBadge from '@/components/icons/GamesHistoryBadge.vue'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import Carousel from 'primevue/carousel'
 import Popover from 'primevue/popover'
-import { ref, useTemplateRef, nextTick } from 'vue'
+import { computed, ref, useTemplateRef, nextTick } from 'vue'
 import StatsWithPlayer from '@/components/StatsWithPlayer.vue'
 
 const { t } = useI18n()
-const props = defineProps<{ username: string; playerStats: PlayerFrontendStatistic; myStats: PlayerFrontendStatistic }>()
+const props = defineProps<{ username: string; playerStats: PlayerFrontendStatistic; myStats: PlayerFrontendStatistic; gameFilter: ProfileGames }>()
 
-const carouselOptions = ['games', 'winshares', 'streaks', 'coop', 'actions', 'balls', 'oopsies']
+const carouselOptions = computed(() =>
+  props.gameFilter === 'bots' ? ['streaks', 'coop', 'actions', 'balls', 'oopsies'] : ['games', 'winshares', 'streaks', 'coop', 'actions', 'balls', 'oopsies']
+)
 
 // Get the biggest element e[0] in props.playersStats.players
 const mostFrequent: string | undefined = Object.keys(props.playerStats.people).reduce(

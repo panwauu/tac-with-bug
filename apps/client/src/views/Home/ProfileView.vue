@@ -53,9 +53,9 @@
       </TabList>
     </Tabs>
     <SelectButton
-      v-model="games"
+      v-model="gameFilter"
       class="gamesFilter"
-      :options="gamesOptions"
+      :options="gameFilterOptions"
       option-label="label"
       option-value="value"
       :allow-empty="false"
@@ -65,6 +65,7 @@
       style="padding-top: 15px"
       :player-stats="playerStats"
       :my-stats="myStats"
+      :game-filter="gameFilter"
       :radar-data="playerStats?.table ?? []"
     />
   </div>
@@ -103,13 +104,13 @@ const playerStats = ref<PlayerFrontendStatistic | null>(null)
 const myStats = ref<PlayerFrontendStatistic | null>(null)
 
 // Which games count (#267): all, only against humans or only with bots. Applies to both, so that the comparison is fair.
-const games = ref<ProfileGames>('all')
-const gamesOptions = computed(() => [
+const gameFilter = ref<ProfileGames>('all')
+const gameFilterOptions = computed(() => [
   { label: t('Profile.gamesAll'), value: 'all' },
   { label: t('Profile.gamesHumans'), value: 'humans' },
   { label: t('Profile.gamesBots'), value: 'bots' },
 ])
-watch(games, () => {
+watch(gameFilter, () => {
   updateData()
   loadMyStats()
 })
@@ -123,7 +124,7 @@ watch(
 async function updateData() {
   try {
     playerStats.value = null
-    const usernameStats = await Service.getPlayerStats(props.username, games.value)
+    const usernameStats = await Service.getPlayerStats(props.username, gameFilter.value)
     playerStats.value = usernameStats
   } catch (err) {
     console.log(err)
@@ -138,7 +139,7 @@ async function loadMyStats() {
   try {
     myStats.value = null
     if (loggedInUsername.value != null) {
-      const myUsernameStats = await Service.getPlayerStats(loggedInUsername.value, games.value)
+      const myUsernameStats = await Service.getPlayerStats(loggedInUsername.value, gameFilter.value)
       myStats.value = myUsernameStats
     }
   } catch (err) {
