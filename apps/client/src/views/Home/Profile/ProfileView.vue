@@ -1,5 +1,14 @@
 <template>
   <div class="profileSection">
+    <ProfileExplanation />
+    <SelectButton
+      v-model="gameFilter"
+      class="gamesFilter"
+      :options="gameFilterOptions"
+      option-label="label"
+      option-value="value"
+      :allow-empty="false"
+    />
     <div>
       <Carousel
         style="max-width: 700px; margin: 0 auto"
@@ -198,7 +207,7 @@
           <div v-else-if="slotProps.data === 'coop'">
             <table class="carousel-element">
               <tbody>
-                <tr v-if="props.gameFilter !== 'bots'">
+                <tr v-if="gameFilter !== 'bots'">
                   <th>{{ t('Profile.mostFrequentCoop') + ':' }}</th>
                   <td
                     class="games-with clickable"
@@ -325,21 +334,29 @@
 
 <script setup lang="ts">
 import ProfileRadar from '@/components/ProfileRadar.vue'
+import ProfileExplanation from '@/components/ProfileExplanation.vue'
 import UserGamesDougnut from '@/components/UserGamesDougnut.vue'
 import type { PlayerFrontendStatistic, ProfileGames } from '@/generatedClient'
 import { useI18n } from 'vue-i18n'
 import GamesHistoryBadge from '@/components/icons/GamesHistoryBadge.vue'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import Carousel from 'primevue/carousel'
+import SelectButton from 'primevue/selectbutton'
 import Popover from 'primevue/popover'
 import { computed, ref, useTemplateRef, nextTick } from 'vue'
 import StatsWithPlayer from '@/components/StatsWithPlayer.vue'
 
 const { t } = useI18n()
-const props = defineProps<{ username: string; playerStats: PlayerFrontendStatistic; myStats: PlayerFrontendStatistic; gameFilter: ProfileGames }>()
+const props = defineProps<{ username: string; playerStats: PlayerFrontendStatistic; myStats: PlayerFrontendStatistic }>()
+const gameFilter = defineModel<ProfileGames>('gameFilter', { required: true })
+const gameFilterOptions = computed(() => [
+  { label: t('Profile.gamesAll'), value: 'all' },
+  { label: t('Profile.gamesHumans'), value: 'humans' },
+  { label: t('Profile.gamesBots'), value: 'bots' },
+])
 
 const carouselOptions = computed(() =>
-  props.gameFilter === 'bots' ? ['streaks', 'coop', 'actions', 'balls', 'oopsies'] : ['games', 'winshares', 'streaks', 'coop', 'actions', 'balls', 'oopsies']
+  gameFilter.value === 'bots' ? ['streaks', 'coop', 'actions', 'balls', 'oopsies'] : ['games', 'winshares', 'streaks', 'coop', 'actions', 'balls', 'oopsies']
 )
 
 // Get the biggest element e[0] in props.playersStats.players
@@ -485,6 +502,16 @@ const showPopover = (event: any, username: string | undefined) => {
 </script>
 
 <style scoped>
+.profileSection {
+  position: relative;
+}
+
+.gamesFilter {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+}
+
 .carousel-element {
   display: flex;
   justify-content: center;

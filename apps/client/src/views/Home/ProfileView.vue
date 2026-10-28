@@ -3,7 +3,6 @@
     ref="profileContainer"
     class="p-card profilePage"
   >
-    <ProfileExplanation />
     <div class="profileInformation">
       <div class="profilePictureContainer">
         <ProfilePicture
@@ -52,14 +51,6 @@
         </Tab>
       </TabList>
     </Tabs>
-    <SelectButton
-      v-model="gameFilter"
-      class="gamesFilter"
-      :options="gameFilterOptions"
-      option-label="label"
-      option-value="value"
-      :allow-empty="false"
-    />
     <router-view
       v-if="!loading"
       style="padding-top: 15px"
@@ -67,6 +58,7 @@
       :my-stats="myStats"
       :game-filter="gameFilter"
       :radar-data="playerStats?.table ?? []"
+      @update:game-filter="gameFilter = $event"
     />
   </div>
 </template>
@@ -76,13 +68,11 @@ import { useI18n } from 'vue-i18n'
 import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'
-import SelectButton from 'primevue/selectbutton'
 import type { MenuItem } from 'primevue/menuitem'
 import FriendButton from '@/components/FriendButton.vue'
 import ReportButton from '@/components/ReportButton.vue'
 import ProfilePicture from '@/components/ProfilePicture.vue'
 import Sponsor from '@/components/SubscriptionTag.vue'
-import ProfileExplanation from '@/components/ProfileExplanation.vue'
 import HofBadge from '@/components/icons/HofBadge.vue'
 
 import { watch, ref, computed } from 'vue'
@@ -105,11 +95,6 @@ const myStats = ref<PlayerFrontendStatistic | null>(null)
 
 // Which games count (#267): all, only against humans or only with bots. Applies to both, so that the comparison is fair.
 const gameFilter = ref<ProfileGames>('all')
-const gameFilterOptions = computed(() => [
-  { label: t('Profile.gamesAll'), value: 'all' },
-  { label: t('Profile.gamesHumans'), value: 'humans' },
-  { label: t('Profile.gamesBots'), value: 'bots' },
-])
 watch(gameFilter, () => {
   updateData()
   loadMyStats()
@@ -203,12 +188,6 @@ const loading = computed(() => {
 </script>
 
 <style scoped>
-.gamesFilter {
-  display: flex;
-  justify-content: center;
-  padding-top: 15px;
-}
-
 .profilePage {
   position: relative;
   padding: 10px;

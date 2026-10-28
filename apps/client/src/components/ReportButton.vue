@@ -7,6 +7,7 @@
     :label="t('Moderation.melden')"
     icon="pi pi-flag"
     @click="visible = true"
+    style="margin-top: 10px"
   />
   <Dialog
     v-model:visible="visible"
