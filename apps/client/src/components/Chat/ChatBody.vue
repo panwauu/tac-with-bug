@@ -102,6 +102,20 @@
                 </div>
                 <div class="chatMessageBody">{{ message.body }}</div>
                 <div class="chatMessageFooter">
+                  <button
+                    v-if="isLoggedIn && message.sender != null && message.sender !== username"
+                    type="button"
+                    class="chatReportButton"
+                    :title="t('Moderation.nachrichtMelden')"
+                    :aria-label="t('Moderation.nachrichtMelden')"
+                    @click.stop="meldungOeffnen(message)"
+                  >
+                    <i
+                      class="pi pi-flag"
+                      aria-hidden="true"
+                      style="font-size: 10px"
+                    />
+                  </button>
                   {{
                     new Date(message.created).toLocaleTimeString(currentLocale, {
                       hour: 'numeric',
@@ -187,6 +201,14 @@
       </Message>
     </div>
 
+    <ReportDialog
+      v-if="gemeldeteNachricht != null"
+      v-model:visible="meldungSichtbar"
+      :username="gemeldeteNachricht.sender ?? ''"
+      :message="{ type: gemeldeteNachrichtTyp, id: gemeldeteNachricht.id }"
+      :message-text="gemeldeteNachricht.body"
+    />
+
     <Popover
       ref="overlayPanelRef"
       :show-close-icon="true"
@@ -217,6 +239,7 @@ import PrivateChatEditor from './PrivateChatEditor.vue'
 import Message from 'primevue/message'
 import Badge from 'primevue/badge'
 import BlockedByModerationMessage from '@/components/BlockedByModerationMessage.vue'
+import ReportDialog from '@/components/ReportDialog.vue'
 import InputGroup from 'primevue/inputgroup'
 
 import { useIntersectionObserver, useScroll } from '@vueuse/core'
@@ -232,6 +255,16 @@ const { t } = useI18n()
 const chatStore = useChatStore()
 const messagesStore = useMessagesStore()
 const settingsStore = useSettingsStore()
+
+// Jede fremde Nachricht lässt sich melden (#254); das Fähnchen erscheint erst beim Darüberfahren
+const gemeldeteNachricht = ref<ChatMessage | null>(null)
+const gemeldeteNachrichtTyp = ref<'chat' | 'channel'>('channel')
+const meldungSichtbar = ref(false)
+function meldungOeffnen(message: ChatMessage) {
+  gemeldeteNachricht.value = message
+  gemeldeteNachrichtTyp.value = messagesStore.selectedChat.type
+  meldungSichtbar.value = true
+}
 
 function displaySenderAndTime(
   messageGroup: {
@@ -461,10 +494,40 @@ watch(
 }
 
 .chatMessageFooter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: xx-small;
   font-weight: bold;
   float: right;
   margin: 2px -2px -5px 4px;
+}
+
+.chatReportButton {
+  border: none;
+  background: none;
+  padding: 0 2px;
+  color: inherit;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.chatMessage:hover .chatReportButton,
+.chatReportButton:focus-visible {
+  opacity: 0.5;
+}
+
+.chatReportButton:hover {
+  opacity: 1 !important;
+}
+
+/* Touch screens have no hover: a faint flag stays visible */
+@media (hover: none) {
+  .chatReportButton {
+    opacity: 0.3;
+  }
 }
 
 .chatMessageNotEnlarged {

@@ -1,4 +1,5 @@
 import { ONLINE_STUFEN, onlineModus } from '@repo/core/bot/netz/onlineStufen'
+import router from '@/router'
 
 /** Oskars staerkster Bot, bisher der einzige im Warteraum und beim Ersatz. */
 export const FUTURO = 3
@@ -36,10 +37,12 @@ export const SITZE: Record<KiModus, number> = { klassisch: 4, drei: 6, koop: 4 }
 
 /**
  * Startet eine Partie gegen die KI (Vollbild-Ansicht KiView). Neu laden: die
- * Spieloberflaeche ist beim Erzeugen auf eine Sitzzahl festgelegt.
+ * Spieloberflaeche ist beim Erzeugen auf eine Sitzzahl festgelegt. Die Adresse
+ * behaelt die Sprache, sonst faellt die Partie nach dem Neuladen auf Deutsch zurueck.
  */
 export function starteKiPartie(modus: KiModus, stufe: string) {
-  window.location.hash = `#/ki/spiel?modus=${modus}&stufe=${stufe}`
+  const locale = router.currentRoute.value.params.locale
+  window.location.hash = router.resolve({ name: 'Ki', params: { locale }, query: { modus, stufe } }).href
   window.location.reload()
 }
 
@@ -63,4 +66,20 @@ export function onlineBotName(b: { id: number; stufe: KiStufe | null }, t: (schl
   if (b.id === FUTURO) return `Futuro (${t('Ki.schwierigkeit.leicht')})`
   if (b.stufe != null) return `${b.stufe.titel} (${t('Ki.schwierigkeit.' + b.stufe.stufe)})`
   return t('Ki.modus.koop')
+}
+
+/** Oskars Bots (0 bis 3); im Warteraum steht davon nur noch Futuro zur Wahl. */
+const OSKARS_BOTS: Record<number, string> = { 0: 'Raindom', 1: 'Greedy', 2: 'Ruby', 3: 'Futuro' }
+
+/**
+ * Wer an einem Bot-Sitz spielt, fuer Anzeige und Uebersicht: Name, Schwierigkeit
+ * (falls bekannt) und Beschreibung (Schluessel `Bots.beschreibung.b<Nummer>`).
+ */
+export function botInfo(botID: number, t: (schluessel: string) => string): { name: string; schwierigkeit: string | null; beschreibung: string } {
+  const beschreibung = t(`Bots.beschreibung.b${botID}`)
+  if (botID in OSKARS_BOTS) return { name: OSKARS_BOTS[botID], schwierigkeit: botID === FUTURO ? t('Ki.schwierigkeit.leicht') : null, beschreibung }
+  const s = ONLINE_STUFEN.find((e) => e.id === botID)
+  const stufe = [...KI_STUFEN, ...KI_STUFEN_DREI].find((k) => k.name === s?.stufe)
+  if (stufe != null) return { name: stufe.titel, schwierigkeit: t('Ki.schwierigkeit.' + stufe.stufe), beschreibung }
+  return { name: t('Bots.koopName'), schwierigkeit: null, beschreibung }
 }

@@ -93,6 +93,10 @@ version number is bumped when it reaches `main`. Before you commit, read
 
 # Moderation
 
+Players report other players on their profile page. Moderators and admins handle the reports on the page `/moderation` (in the menu once you are a moderator): block for some days, reset picture and profile text, unblock or close the reports. Admins name the moderators on the same page. Reports never block anybody by themselves, so that a few accounts or bots cannot silence a player; only moderators and admins block.
+
+Blocks can also be managed directly:
+
 Go to [the swagger documentation](https://tac-with-bug.herokuapp.com/gameapi/api-docs/). Then:
 
 1. Find login endpoint and login

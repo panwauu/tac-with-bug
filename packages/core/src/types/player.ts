@@ -8,4 +8,6 @@ export interface Player {
   tradeInformation?: [boolean, boolean]
   discarded: boolean
   bot: boolean
+  // The bot that actually plays on this seat (see spielenderBot), null for humans
+  botID: number | null
 }

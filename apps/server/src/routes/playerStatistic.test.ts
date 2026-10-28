@@ -45,6 +45,30 @@ describe('Platform PlayerStatistic Test Suite', () => {
     expect(response.body).toMatchSnapshot()
   })
 
+  test('Counts all games, only games of humans or only games with bots', async () => {
+    const get = (games?: string) => testAgent.get('/gameApi/profile/getPlayerStats/').query({ username: 'UserA', ...(games != null ? { games } : {}) })
+    const all = await get()
+    const humans = await get('humans')
+    const bots = await get('bots')
+    expect([all.status, humans.status, bots.status]).toEqual([200, 200, 200])
+
+    // Every game is either a game of humans or a game with bots
+    expect(humans.body.history.length + bots.body.history.length).toBe(all.body.history.length)
+    expect(bots.body.history.length).toBeGreaterThan(0)
+    expect((await get('all')).body).toEqual(all.body)
+
+    // Bot accounts make a game a game with bots, too
+    const humansBefore = humans.body.history.length
+    await testServer.pgPool.query("UPDATE users SET bot_account = TRUE WHERE username = 'UserB';")
+    try {
+      expect((await get('humans')).body.history.length).toBeLessThan(humansBefore)
+    } finally {
+      await testServer.pgPool.query("UPDATE users SET bot_account = FALSE WHERE username = 'UserB';")
+    }
+
+    expect((await get('robots')).status).toBe(422)
+  })
+
   test('Should return tournamentParticipations of existing player', async () => {
     const response = await testAgent.get('/gameApi/profile/userTournamentParticipations/').query({ username: 'UserA' })
     expect(response.status).toBe(200)

@@ -21,7 +21,7 @@ export function resolveUserIdentifier(identifier: UserIdentifier, insertionIndex
 export type GetUserErrors = 'USER_NOT_FOUND_IN_DB'
 export async function getUser(sqlClient: pg.Pool, identifier: UserIdentifier): Promise<Result<User, GetUserErrors>> {
   const queryIdent = resolveUserIdentifier(identifier, 1)
-  const query = `SELECT id, email, username, password, token, activated, locale, color_blindness_flag, lastlogin, registered, user_description, game_default_position, admin,
+  const query = `SELECT id, email, username, password, token, activated, locale, color_blindness_flag, lastlogin, registered, user_description, game_default_position, admin, moderator,
   	(SELECT MAX(m.blockeduntil) FROM moderation m WHERE (m.userid = users.id OR m.email = users.email) AND m.blockeduntil > NOW()) AS blockedByModerationUntil, prefers_dark_mode
   FROM users WHERE ${queryIdent.sql};`
   const res = await sqlClient.query(query, [queryIdent.value])
@@ -42,6 +42,7 @@ export async function getUser(sqlClient: pg.Pool, identifier: UserIdentifier): P
     userDescription: res.rows[0].user_description,
     gameDefaultPositions: res.rows[0].game_default_position,
     admin: res.rows[0].admin,
+    moderator: res.rows[0].moderator,
     blockedByModerationUntil: res.rows[0].blockedbymoderationuntil,
     prefersDarkMode: res.rows[0].prefers_dark_mode,
   })
@@ -141,6 +142,7 @@ export async function signUpUser(sqlClient: pg.Pool, username: string, email: st
       userDescription: res.rows[0].user_description,
       gameDefaultPositions: res.rows[0].game_default_position,
       admin: res.rows[0].admin,
+      moderator: res.rows[0].moderator,
       blockedByModerationUntil: null,
       prefersDarkMode: null,
     }

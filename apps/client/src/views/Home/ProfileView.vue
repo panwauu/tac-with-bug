@@ -3,7 +3,6 @@
     ref="profileContainer"
     class="p-card profilePage"
   >
-    <ProfileExplanation />
     <div class="profileInformation">
       <div class="profilePictureContainer">
         <ProfilePicture
@@ -37,6 +36,7 @@
           v-if="isLoggedIn"
           :username="username"
         />
+        <ReportButton :username="username" />
       </div>
     </div>
     <Tabs v-model:value="tabValueToName">
@@ -56,7 +56,9 @@
       style="padding-top: 15px"
       :player-stats="playerStats"
       :my-stats="myStats"
+      :game-filter="gameFilter"
       :radar-data="playerStats?.table ?? []"
+      @update:game-filter="gameFilter = $event"
     />
   </div>
 </template>
@@ -68,13 +70,13 @@ import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'
 import type { MenuItem } from 'primevue/menuitem'
 import FriendButton from '@/components/FriendButton.vue'
+import ReportButton from '@/components/ReportButton.vue'
 import ProfilePicture from '@/components/ProfilePicture.vue'
 import Sponsor from '@/components/SubscriptionTag.vue'
-import ProfileExplanation from '@/components/ProfileExplanation.vue'
 import HofBadge from '@/components/icons/HofBadge.vue'
 
 import { watch, ref, computed } from 'vue'
-import { type PlayerFrontendStatistic, DefaultService as Service } from '@/generatedClient/index.ts'
+import { type PlayerFrontendStatistic, type ProfileGames, DefaultService as Service } from '@/generatedClient/index.ts'
 import router from '@/router/index'
 import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue'
 import { useResizeObserver } from '@vueuse/core'
@@ -91,6 +93,13 @@ const profileContainer = ref<null | HTMLElement>(null)
 const playerStats = ref<PlayerFrontendStatistic | null>(null)
 const myStats = ref<PlayerFrontendStatistic | null>(null)
 
+// Which games count (#267): all, only against humans or only with bots. Applies to both, so that the comparison is fair.
+const gameFilter = ref<ProfileGames>('all')
+watch(gameFilter, () => {
+  updateData()
+  loadMyStats()
+})
+
 updateData()
 watch(
   () => props.username,
@@ -100,7 +109,7 @@ watch(
 async function updateData() {
   try {
     playerStats.value = null
-    const usernameStats = await Service.getPlayerStats(props.username)
+    const usernameStats = await Service.getPlayerStats(props.username, gameFilter.value)
     playerStats.value = usernameStats
   } catch (err) {
     console.log(err)
@@ -115,7 +124,7 @@ async function loadMyStats() {
   try {
     myStats.value = null
     if (loggedInUsername.value != null) {
-      const myUsernameStats = await Service.getPlayerStats(loggedInUsername.value)
+      const myUsernameStats = await Service.getPlayerStats(loggedInUsername.value, gameFilter.value)
       myStats.value = myUsernameStats
     }
   } catch (err) {

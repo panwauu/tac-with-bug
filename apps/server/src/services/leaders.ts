@@ -1,7 +1,7 @@
 import type pg from 'pg'
 
 /**
- * The leaderboards count only games of humans: no bot of Tac-With-Bug in the game (games.bots, which keeps the
+ * By default the leaderboards count only games of humans: no bot of Tac-With-Bug in the game (games.bots, which keeps the
  * bots that were replaced during the game, see substitution.ts) and no account of an external bot that logs in
  * like a user (users.bot_account). Condition on game_results.gameid.
  */
@@ -12,16 +12,21 @@ const HUMAN_GAMES = `
     WHERE players.gameid = game_results.gameid AND bot.bot_account
   )`
 
+/** With bots = true every game counts, the games with bots are marked (CoopBoardType.bots). */
+function gameFilter(bots: boolean) {
+  return bots ? 'TRUE' : HUMAN_GAMES
+}
+
 export interface LeaderBoardType {
   username: string[]
   wins: number[]
   winshare: string[]
   nPlayers: number
 }
-export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, offset: number, startDate: Date, endDate: Date): Promise<LeaderBoardType> {
+export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, offset: number, startDate: Date, endDate: Date, bots = false): Promise<LeaderBoardType> {
   // Read from game_results (one short row per finished game, see init_db_tac.sql), never from the game JSON.
   // A player wins a game if the seat is in winning_seats; substitutes who left keep a seat beyond the players.
-  // Only games of humans count (see HUMAN_GAMES).
+  // Only games of humans count, unless bots is set (see HUMAN_GAMES).
   const query = `
     SELECT users.username, t2.wins, t2.ngames, t2.full_count FROM (
         SELECT userid, SUM(t.win) as wins, SUM(t.ngames) as ngames, count(*) OVER() AS full_count FROM (
@@ -31,7 +36,7 @@ export async function queryLeaderboardByWins(sqlClient: pg.Pool, limit: number, 
                 1 as ngames
             FROM game_results JOIN users_to_games ON users_to_games.gameid = game_results.gameid
             WHERE game_results.coop = FALSE AND game_results.created >= $3 AND game_results.created <= $4
-              AND ${HUMAN_GAMES}
+              AND ${gameFilter(bots)}
         ) as t GROUP BY userid ORDER BY wins DESC, userid LIMIT $1 OFFSET $2
     ) as t2 LEFT JOIN users ON users.id = t2.userid ORDER BY t2.wins DESC, t2.userid;`
   const dbRes = await sqlClient.query(query, [limit, offset, startDate, endDate])
@@ -49,16 +54,26 @@ export interface CoopBoardType {
   team: string[][]
   count: number[]
   lastplayed: number[]
+  /** Whether a bot played in the game; only true with bots = true */
+  bots: boolean[]
 }
-export async function queryLeaderboardCoop(sqlClient: pg.Pool, limit: number, offset: number, nPlayers: number, startDate: Date, endDate: Date): Promise<CoopBoardType> {
+export async function queryLeaderboardCoop(
+  sqlClient: pg.Pool,
+  limit: number,
+  offset: number,
+  nPlayers: number,
+  startDate: Date,
+  endDate: Date,
+  bots = false
+): Promise<CoopBoardType> {
   // Read from game_results (cards = sum of the cards of all players, see init_db_tac.sql), never from the game JSON.
   // Equal cards are ordered by the last move and then by game id, so that every page is well defined.
-  // Only games of humans count (see HUMAN_GAMES).
+  // Only games of humans count, unless bots is set (see HUMAN_GAMES).
   const query = `
-    SELECT games.id, max(games.cards) as cards, array_agg(users.username ORDER BY users_to_games.player_index) as team, max(games.lastplayed) as lastplayed, max(games.full_count) as full_count FROM (
-        SELECT gameid AS id, lastplayed, cards, count(*) OVER() AS full_count
+    SELECT games.id, max(games.cards) as cards, bool_or(games.with_bots) as with_bots, array_agg(users.username ORDER BY users_to_games.player_index) as team, max(games.lastplayed) as lastplayed, max(games.full_count) as full_count FROM (
+        SELECT gameid AS id, lastplayed, cards, count(*) OVER() AS full_count, NOT (${HUMAN_GAMES}) AS with_bots
         FROM game_results
-        WHERE coop = TRUE AND n_players = $3 AND created >= $4 AND created <= $5 AND ${HUMAN_GAMES}
+        WHERE coop = TRUE AND n_players = $3 AND created >= $4 AND created <= $5 AND ${gameFilter(bots)}
         ORDER BY cards, lastplayed, gameid LIMIT $1 OFFSET $2
     ) as games
     LEFT JOIN users_to_games ON users_to_games.gameid = games.id
@@ -71,5 +86,6 @@ export async function queryLeaderboardCoop(sqlClient: pg.Pool, limit: number, of
     team: dbRes.rows.map((row: any) => row.team),
     count: dbRes.rows.map((row: any) => row.cards),
     lastplayed: dbRes.rows.map((row: any) => Date.parse(row.lastplayed)),
+    bots: dbRes.rows.map((row: any) => row.with_bots),
   }
 }

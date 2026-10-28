@@ -1,7 +1,6 @@
 import path from 'node:path'
 import fs from 'node:fs'
 import logger from '../helpers/logger'
-import intro from '../dbUtils/intro.json'
 import { initTestDatabaseClient } from '../dbUtils/initdBUtils'
 
 export async function prepareTestDatabase(databaseName: string, dropIfExists: boolean = false) {
@@ -59,7 +58,6 @@ async function initAndPopulateTestDatabase(databaseName: string): Promise<void> 
 
     await pgClient.query(initTacDatabaseSQL)
     await pgClient.query(populateTestDatabaseSQL)
-    await pgClient.query('INSERT INTO tutorials (id, data) VALUES (0, $1);', [JSON.stringify(intro)])
     await pgClient.end()
   } catch (err) {
     await pgClient.end()

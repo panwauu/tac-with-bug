@@ -17,6 +17,9 @@ export interface GameStatisticCardsType {
   '4': number[] // [number, number, number] removed because of tsoa
 }
 
+/** Which games the profile counts: all, only games of humans, or only games with bots (see GAME_WITH_BOTS) */
+export type ProfileGames = 'all' | 'humans' | 'bots'
+
 export interface PlayerFrontendStatistic {
   /**
    * All games of a player from oldest to newest

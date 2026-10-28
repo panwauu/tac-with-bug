@@ -1,6 +1,7 @@
 import type pg from 'pg'
 import type {
   ActivityHeatmap,
+  BotStatistic,
   DayDatasetType,
   HourDatasetType,
   LocaleDataset,
@@ -10,6 +11,7 @@ import type {
   WeekDatasetType,
   WeekDatasetDataType,
 } from '../sharedTypes/typesPlatformStatistic'
+import { ONLINE_STUFEN } from '@repo/core/bot/netz/onlineStufen'
 
 const cacheDurationInMS = 60 * 60e3 // Update once per hour
 
@@ -52,6 +54,7 @@ function hourlyCache<T>(calculate: (pgPool: pg.Pool) => Promise<T>) {
 
 const platformFunFactsCache = hourlyCache(calculatePlatformFunFacts)
 const platformStatisticCache = hourlyCache(calculatePlatformStatistic)
+const botStatisticCache = hourlyCache(calculateBotStatistic)
 
 export function getPlatformFunFacts(pgPool: pg.Pool): Promise<PlatformFunFacts> {
   return platformFunFactsCache.get(pgPool)
@@ -61,9 +64,114 @@ export function getPlatformStatistic(pgPool: pg.Pool): Promise<PlatformStats> {
   return platformStatisticCache.get(pgPool)
 }
 
-/** Calculates both statistics and stores them, so that no visitor has to wait for a stale cache. */
+export function getBotStatistic(pgPool: pg.Pool): Promise<BotStatistic[]> {
+  return botStatisticCache.get(pgPool)
+}
+
+/** Calculates the statistics and stores them, so that no visitor has to wait for a stale cache. */
 export async function refreshPlatformStatisticCaches(pgPool: pg.Pool) {
-  await Promise.all([platformFunFactsCache.refresh(pgPool), platformStatisticCache.refresh(pgPool)])
+  await Promise.all([platformFunFactsCache.refresh(pgPool), platformStatisticCache.refresh(pgPool), botStatisticCache.refresh(pgPool)])
+}
+
+/**
+ * Statistics per bot (#251) from game_results and games.bots, without the game JSON, and only for the
+ * games with a bot or a bot account. A seat belongs to the team seat % n_teams (the order of
+ * initializeTeams). Strength counts only games whose opponents are all humans, because games of bots
+ * against bots say nothing about how a bot plays against people.
+ */
+export async function calculateBotStatistic(pgPool: pg.Pool): Promise<BotStatistic[]> {
+  const res = await pgPool.query<{
+    botid: number | null
+    username: string | null
+    games: number
+    games_last_30_days: number
+    humans: number
+    against_humans_games: number
+    against_humans_wins: number
+    coop_games: number
+    coop_cards: number | null
+  }>(`
+    WITH bot_account_games AS (
+      SELECT DISTINCT utg.gameid FROM users_to_games utg JOIN users u ON u.id = utg.userid WHERE u.bot_account
+    ), bot_games AS (
+      SELECT gr.gameid, gr.n_players, gr.coop, gr.cards, gr.winning_seats, gr.lastplayed, g.n_teams, g.bots
+      FROM game_results gr JOIN games g ON g.id = gr.gameid
+      WHERE cardinality(array_remove(g.bots[1:gr.n_players], NULL)) > 0
+        OR gr.gameid IN (SELECT gameid FROM bot_account_games)
+    ), seats AS (
+      SELECT bg.*, s.seat, bg.bots[s.seat + 1] AS botid, utg.userid, u.username,
+        (bg.bots[s.seat + 1] IS NULL AND utg.userid IS NOT NULL AND NOT u.bot_account) AS human
+      FROM bot_games bg
+      CROSS JOIN LATERAL generate_series(0, bg.n_players - 1) AS s(seat)
+      LEFT JOIN users_to_games utg ON utg.gameid = bg.gameid AND utg.player_index = s.seat
+      LEFT JOIN users u ON u.id = utg.userid
+    ), counted_seats AS (
+      -- A seat plays against humans only if all non-humans of the game sit in its own team. Counting them per game
+      -- and per team with window functions keeps this linear; a lookup into the other seats per seat was quadratic.
+      SELECT t.*,
+        COUNT(*) FILTER (WHERE NOT t.human) OVER (PARTITION BY t.gameid)
+          = COUNT(*) FILTER (WHERE NOT t.human) OVER (PARTITION BY t.gameid, t.seat % t.n_teams) AS against_humans
+      FROM seats t
+    ), bot_seats AS (
+      SELECT t.*,
+        CASE WHEN t.botid IS NOT NULL THEN 'b' || t.botid ELSE 'a' || t.userid END AS key,
+        t.seat = ANY(t.winning_seats) AS won
+      FROM counted_seats t
+      WHERE t.botid IS NOT NULL OR (t.userid IS NOT NULL AND NOT t.human)
+    ), per_game AS (
+      SELECT key, MAX(botid) AS botid, MAX(username) AS username, gameid, bool_or(coop) AS coop, MAX(cards) AS cards,
+        bool_or(won) AS won, bool_and(against_humans) AS against_humans, MAX(lastplayed) AS lastplayed
+      FROM bot_seats GROUP BY key, gameid
+    ), humans AS (
+      SELECT p.key, COUNT(DISTINCT h.userid)::int AS n FROM per_game p JOIN seats h ON h.gameid = p.gameid AND h.human GROUP BY p.key
+    )
+    SELECT MAX(p.botid) AS botid, MAX(p.username) AS username,
+      COUNT(*)::int AS games,
+      (COUNT(*) FILTER (WHERE p.lastplayed > NOW() - interval '30 days'))::int AS games_last_30_days,
+      COALESCE(MAX(h.n), 0)::int AS humans,
+      (COUNT(*) FILTER (WHERE p.coop IS FALSE AND p.against_humans))::int AS against_humans_games,
+      (COUNT(*) FILTER (WHERE p.coop IS FALSE AND p.against_humans AND p.won))::int AS against_humans_wins,
+      (COUNT(*) FILTER (WHERE p.coop))::int AS coop_games,
+      (AVG(p.cards) FILTER (WHERE p.coop))::float AS coop_cards
+    FROM per_game p LEFT JOIN humans h ON h.key = p.key
+    GROUP BY p.key
+    ORDER BY games DESC;`)
+
+  const stats: BotStatistic[] = res.rows.map((row) => ({
+    botID: row.botid,
+    username: row.botid == null ? row.username : null,
+    games: row.games,
+    gamesLast30Days: row.games_last_30_days,
+    humans: row.humans,
+    againstHumans: { games: row.against_humans_games, wins: row.against_humans_wins },
+    coop: { games: row.coop_games, averageCards: row.coop_cards },
+    browser: { games: 0, wins: 0, averageCards: null },
+  }))
+
+  // Games against the AI in the browser (offline_results): the level is the bot with the same number online
+  const browser = await pgPool.query<{ level: string; mode: string; games: number; wins: number; cards: number | null }>(
+    'SELECT level, mode, COUNT(*)::int AS games, (COUNT(*) FILTER (WHERE NOT won))::int AS wins, AVG(cards)::float AS cards FROM offline_results GROUP BY level, mode;'
+  )
+  for (const row of browser.rows) {
+    const botID = ONLINE_STUFEN.find((s) => s.stufe === row.level && s.modus === row.mode)?.id
+    if (botID == null) continue
+    let entry = stats.find((s) => s.botID === botID)
+    if (entry == null) {
+      entry = {
+        botID,
+        username: null,
+        games: 0,
+        gamesLast30Days: 0,
+        humans: 0,
+        againstHumans: { games: 0, wins: 0 },
+        coop: { games: 0, averageCards: null },
+        browser: { games: 0, wins: 0, averageCards: null },
+      }
+      stats.push(entry)
+    }
+    entry.browser = { games: row.games, wins: row.mode === 'koop' ? 0 : row.wins, averageCards: row.mode === 'koop' ? row.cards : null }
+  }
+  return stats
 }
 
 export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
@@ -95,10 +203,6 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
         EXTRACT(epoch FROM MAX(lastplayed - created))::INT as longest_game
     FROM game_results;`)
 
-  const tutorialPromise = pgPool.query(`SELECT sum(tutorial)::INT as absolved_tutorial_steps FROM
-	(SELECT jsonb_array_elements(tutorial)::BOOLEAN::INT as tutorial FROM
-		(SELECT jsonb_array_elements(tutorial) as tutorial FROM users) as t) as t2;`)
-
   const friendsPromise = pgPool.query('SELECT COUNT(*)::INT as number_friends FROM friendships WHERE pending_user IS NULL;')
 
   const colorsPromise = pgPool.query<{ color: string; count: number }>(
@@ -106,7 +210,7 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
   )
 
   // The queries do not depend on each other and run at the same time
-  const [dbResUsers, gamesRes, tutorialRes, friendsRes, colorsRes] = await Promise.all([usersPromise, gamesPromise, tutorialPromise, friendsPromise, colorsPromise])
+  const [dbResUsers, gamesRes, friendsRes, colorsRes] = await Promise.all([usersPromise, gamesPromise, friendsPromise, colorsPromise])
 
   return {
     nGames4: gamesRes.rows[0].games4,
@@ -120,7 +224,6 @@ export async function calculatePlatformFunFacts(pgPool: pg.Pool) {
     averageTeamGame: gamesRes.rows[0].teamavgcards,
     registeredUsers: dbResUsers.rows[0].activated,
     nFriends: friendsRes.rows[0].number_friends,
-    nTutorials: tutorialRes.rows[0].absolved_tutorial_steps,
     colors: colorsRes.rows.map((r) => r.color),
     nColorBlind: dbResUsers.rows[0].color_blind,
   }
