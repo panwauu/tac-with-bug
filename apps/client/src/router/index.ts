@@ -15,14 +15,12 @@ const Tournament = () => import('@/views/Home/TournamentView.vue')
 const TournamentsOverview = () => import('@/views/Home/Tournament/TournamentsOverview.vue')
 const PublicTournament = () => import('@/views/Home/Tournament/PublicTournament.vue')
 const PrivateTournament = () => import('@/views/Home/Tournament/PrivateTournament.vue')
-const Tutorial = () => import('@/views/TutorialView.vue')
 const Impressum = () => import('@/components/ImpressumInformation.vue')
 const Copyright = () => import('@/components/CopyrightInformation.vue')
 const Datenschutz = () => import('@/components/DatenschutzInformation.vue')
 const Leaders = () => import('@/views/Home/LeadersView.vue')
 const Landing = () => import('@/views/Home/LandingView.vue')
 const Stats = () => import('@/views/Home/StatsView.vue')
-const TutorialOverview = () => import('@/views/Home/TutorialOverview.vue')
 const Subscription = () => import('@/views/Home/SubscriptionView.vue')
 const FAQ = () => import('@/views/Home/FAQ.vue')
 const HallOfFame = () => import('@/views/Home/HallOfFame.vue')
@@ -32,6 +30,10 @@ const ResetPassword = () => import('@/views/Home/ResetPassword.vue')
 
 const Ki = () => import('@/views/KiView.vue')
 const KiAuswahl = () => import('@/views/Home/KiAuswahlView.vue')
+const Training = () => import('@/views/Home/TrainingView.vue')
+const TrainingLektion = () => import('@/views/Home/TrainingLektionView.vue')
+const TrainingUebung = () => import('@/views/TrainingUebungView.vue')
+const Bots = () => import('@/views/Home/BotsView.vue')
 const Moderation = () => import('@/views/Home/ModerationView.vue')
 const regexp = locales.join('|')
 const routes = [
@@ -46,9 +48,15 @@ const routes = [
     component: Ki,
   },
   {
+    path: `/:locale(${regexp})?/training/uebung`,
+    name: 'TrainingUebung',
+    component: TrainingUebung,
+  },
+  {
     path: `/:locale(${regexp})?/tutorial`,
     name: 'Tutorial',
-    component: Tutorial,
+    // Das alte Tutorial ist jetzt das Training (alte Links führen dorthin)
+    redirect: { name: 'Training' },
   },
   {
     path: `/:locale(${regexp})?`,
@@ -154,7 +162,8 @@ const routes = [
       {
         path: 'tutorialoverview',
         name: 'TutorialOverview',
-        component: TutorialOverview,
+        // Die Tutorials sind jetzt das Training (alte Links führen dorthin)
+        redirect: { name: 'Training' },
       },
       {
         path: 'subscription',
@@ -193,6 +202,21 @@ const routes = [
         component: KiAuswahl,
       },
       {
+        path: 'training',
+        name: 'Training',
+        component: Training,
+      },
+      {
+        path: 'training/lektion/:id',
+        name: 'TrainingLektion',
+        component: TrainingLektion,
+      },
+      {
+        path: 'bots',
+        name: 'Bots',
+        component: Bots,
+      },
+      {
         path: 'moderation',
         name: 'Moderation',
         component: Moderation,
@@ -211,18 +235,18 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
   // Redirect to Advert when first visited
   if (localStorage.getItem('alreadyVisited') == null) {
     localStorage.setItem('alreadyVisited', 'true')
     if (to.name === 'Landing') {
-      return next({ name: 'Advertisement' })
+      return { name: 'Advertisement' }
     }
   }
 
   //Redirect unnamed Routes to Landing to avoid unmatched Routes
   if (to.name == null) {
-    return next({ name: 'Landing' })
+    return { name: 'Landing' }
   }
 
   let toLocale = to.params?.locale as string | undefined
@@ -230,7 +254,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (fromLocale != null && toLocale === undefined) {
     to.params.locale = fromLocale
-    return next(to)
+    return to
   }
 
   if (toLocale == null || toLocale === '') {
@@ -244,7 +268,7 @@ router.beforeEach(async (to, from, next) => {
 
   setLocaleAndLoadMessages(toLocale)
 
-  return next()
+  return true
 })
 
 export default router

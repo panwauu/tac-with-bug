@@ -7,7 +7,15 @@
       option-label="name"
       @click="changeTimeFrame()"
     />
-    <p class="onlyHumans">{{ t('Leaders.onlyHumans') }}</p>
+    <div class="withBots">
+      <ToggleSwitch
+        v-model="withBots"
+        input-id="leadersWithBots"
+        @change="changeTimeFrame()"
+      />
+      <label for="leadersWithBots">{{ t('Leaders.withBots') }}</label>
+    </div>
+    <p class="onlyHumans">{{ withBots ? t('Leaders.botsMarked') : t('Leaders.onlyHumans') }}</p>
     <Tabs v-model:value="selectedTab">
       <TabList>
         <Tab value="tac">TAC</Tab>
@@ -97,7 +105,20 @@
             <Column
               field="count"
               :header="t('Leaders.cards')"
-            />
+            >
+              <template #body="slotProps">
+                <span class="cards">
+                  {{ slotProps.data.count }}
+                  <span
+                    v-if="slotProps.data.bots"
+                    v-tooltip="t('Leaders.withBotsGame')"
+                    :aria-label="t('Leaders.withBotsGame')"
+                  >
+                    🤖
+                  </span>
+                </span>
+              </template>
+            </Column>
             <Column
               field="lastplayed"
               :header="t('Leaders.date')"
@@ -152,7 +173,20 @@
             <Column
               field="count"
               :header="t('Leaders.cards')"
-            />
+            >
+              <template #body="slotProps">
+                <span class="cards">
+                  {{ slotProps.data.count }}
+                  <span
+                    v-if="slotProps.data.bots"
+                    v-tooltip="t('Leaders.withBotsGame')"
+                    :aria-label="t('Leaders.withBotsGame')"
+                  >
+                    🤖
+                  </span>
+                </span>
+              </template>
+            </Column>
             <Column
               field="lastplayed"
               :header="t('Leaders.teams')"
@@ -180,6 +214,7 @@ import TabPanel from 'primevue/tabpanel'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import SelectButton from 'primevue/selectbutton'
+import ToggleSwitch from 'primevue/toggleswitch'
 import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 
 import { ref, watch } from 'vue'
@@ -206,6 +241,7 @@ const dataCoop4 = ref(
     count: number
     index: number
     lastplayed: number
+    bots: boolean
   }[]
 )
 const loadingCoop4 = ref(false)
@@ -217,6 +253,7 @@ const dataCoop6 = ref(
     count: number
     index: number
     lastplayed: number
+    bots: boolean
   }[]
 )
 const loadingCoop6 = ref(false)
@@ -249,6 +286,8 @@ type TabKey = (typeof tabKeys)[number]
 const initialQuery = router.currentRoute.value.query
 const selectedDate = ref(dateOptions.find((option) => option.key === initialQuery.timespan) ?? dateOptions[2])
 const selectedTab = ref<TabKey>(tabKeys.find((key) => key === initialQuery.tab) ?? 'tac')
+// On by default: all games count, team games with bots are marked. Off (bots=0): only games of humans.
+const withBots = ref(initialQuery.bots !== '0')
 
 const initialPage = Number.parseInt(initialQuery.page as string)
 const initialFirst = Number.isNaN(initialPage) ? 0 : Math.max(initialPage - 1, 0) * rows.value
@@ -260,7 +299,7 @@ if (selectedTab.value === '4') {
   first.value = initialFirst
 }
 
-watch([selectedDate, selectedTab, first, firstCoop4, firstCoop6], () => updateQuery())
+watch([selectedDate, selectedTab, first, firstCoop4, firstCoop6, withBots], () => updateQuery())
 
 onPage()
 onPageCoop(4)
@@ -268,14 +307,15 @@ onPageCoop(6)
 
 function updateQuery() {
   const firstOfSelectedTab = selectedTab.value === '4' ? firstCoop4.value : selectedTab.value === '6' ? firstCoop6.value : first.value
-  const query = {
+  const query: Record<string, string> = {
     timespan: selectedDate.value.key,
     tab: selectedTab.value,
     page: (Math.floor(firstOfSelectedTab / rows.value) + 1).toString(),
   }
+  if (!withBots.value) query.bots = '0'
 
   const currentQuery = router.currentRoute.value.query
-  if (currentQuery.timespan === query.timespan && currentQuery.tab === query.tab && currentQuery.page === query.page) return
+  if (currentQuery.timespan === query.timespan && currentQuery.tab === query.tab && currentQuery.page === query.page && currentQuery.bots === query.bots) return
 
   router.replace({ name: 'Leaders', query })
 }
@@ -299,7 +339,7 @@ function changeTimeFrame() {
 
 async function onPage() {
   loading.value = true
-  Service.getWinnerLeaderboard(rows.value, first.value, selectedDate.value.startDate, selectedDate.value.endDate ?? undefined).then((res) => {
+  Service.getWinnerLeaderboard(rows.value, first.value, selectedDate.value.startDate, selectedDate.value.endDate ?? undefined, withBots.value).then((res) => {
     data.value = []
     for (const [index, username] of res.username.entries()) {
       data.value.push({
@@ -322,7 +362,7 @@ async function onPageCoop(nPlayers: number) {
   } else {
     loadingCoop4.value = true
   }
-  Service.getCoopLeaderboard(rows.value, firstCoop, nPlayers, selectedDate.value.startDate, selectedDate.value.endDate ?? undefined).then((res) => {
+  Service.getCoopLeaderboard(rows.value, firstCoop, nPlayers, selectedDate.value.startDate, selectedDate.value.endDate ?? undefined, withBots.value).then((res) => {
     if (nPlayers === 6) {
       dataCoop6.value = []
     } else {
@@ -334,6 +374,7 @@ async function onPageCoop(nPlayers: number) {
         count: count,
         index: index + 1 + firstCoop,
         lastplayed: res.lastplayed[index],
+        bots: res.bots[index],
       }
       if (nPlayers === 6) {
         dataCoop6.value.push(dataToPush)
@@ -362,6 +403,17 @@ function createDateString(seconds: number) {
   font-size: 0.85em;
   opacity: 0.7;
   margin: 0.5em 0 0 0;
+}
+
+.cards {
+  white-space: nowrap;
+}
+
+.withBots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 10px;
 }
 
 .leaderBoardPage {

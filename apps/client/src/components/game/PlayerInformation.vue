@@ -60,16 +60,36 @@
     />
     <div
       v-if="player.bot === true"
+      v-tooltip.top="{ value: botTitel(player.botID), disabled: botTitel(player.botID) == null }"
       :class="`posAbsolute playerPicture ${miscState.players.length === 6 ? `playerPicture6${positionStyles.turned ? 'turned' : ''}` : ''} ${
         index === miscState.gamePlayer && !miscState.viewerMode && router.currentRoute.value.name === 'Game' ? 'clickable' : ''
       }`"
       class="botPicture"
       :style="positionStyles.stylePositionPictures?.[rotateIndex(Number(index))]"
-      @click="toggle($event, Number(index))"
+      @click="botZeigen($event, player.botID)"
     >
       🤖
     </div>
   </div>
+
+  <Popover
+    ref="botRef"
+    style="max-width: 300px"
+  >
+    <div
+      v-if="gezeigterBot != null"
+      class="botFenster"
+    >
+      <strong>{{ botTitel(gezeigterBot) }}</strong>
+      <p>{{ botInfo(gezeigterBot, t).beschreibung }}</p>
+      <a
+        :href="router.resolve({ name: 'Bots' }).href"
+        target="_blank"
+      >
+        {{ t('Bots.alleBots') }}
+      </a>
+    </div>
+  </Popover>
 
   <Popover
     ref="opRef"
@@ -92,9 +112,14 @@ import EmojiSelector from './EmojiSelector.vue'
 import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
 import type { MiscStateType } from '@/services/compositionGame/useMisc'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import router from '@/router'
+import { botInfo } from '@/views/kiStufen'
 
+const { t } = useI18n()
 const opRef = ref<undefined | InstanceType<typeof Popover>>()
+const botRef = ref<undefined | InstanceType<typeof Popover>>()
+const gezeigterBot = ref<number | null>(null)
 
 const props = defineProps<{
   positionStyles: PositionStylesState
@@ -107,6 +132,20 @@ function hasOneOrThirteen(index: number): boolean {
 
 function rotateIndex(index: number) {
   return (index + props.miscState.players.length - props.positionStyles.nRotate) % props.miscState.players.length
+}
+
+// Welcher Bot an einem Sitz spielt (#252). Nur in Online-Partien: in der KI-Partie im Browser
+// und in der Vorschau auf der Startseite stehen an den Sitzen nur Platzhalter.
+function botTitel(botID: number | null): string | undefined {
+  if (botID == null || router.currentRoute.value.name !== 'Game') return undefined
+  const b = botInfo(botID, t)
+  return b.schwierigkeit == null ? b.name : `${b.name} (${b.schwierigkeit})`
+}
+
+function botZeigen(event: Event, botID: number | null) {
+  if (botTitel(botID) == null) return
+  gezeigterBot.value = botID
+  botRef.value?.toggle(event)
 }
 
 function toggle(event: Event, index: number) {
@@ -220,7 +259,12 @@ function toggle(event: Event, index: number) {
   transform: none;
 }
 
+.botFenster p {
+  margin: 6px 0;
+}
+
 .botPicture {
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -83,7 +83,20 @@
       "desktop": "Desktop",
       "others": "Others"
     },
-    "headerUserAgent": "Technical Devices of the Players"
+    "headerUserAgent": "Technical Devices of the Players",
+    "Bots": {
+      "titel": "Bots",
+      "hinweis": "How often each bot was played and how strong it is. The win rate counts only games in which all opponents were humans, because games of bots against bots say little about it. In co-op the cards until all marbles are home count: the fewer, the better. The last column counts the games against the AI in the browser: how often the AI won against the human, in co-op the cards.",
+      "bot": "Bot",
+      "partien": "Games",
+      "letzte30": "Last 30 days",
+      "spieler": "Humans",
+      "gegenMenschen": "Wins against humans",
+      "koop": "Co-op: avg. cards",
+      "partienKurz": "{n} games",
+      "konto": "Bot account",
+      "browser": "In the browser"
+    }
   },
   "Home": {
     "Spielersuche": "Search Users",
@@ -106,6 +119,9 @@
   },
   "Leaders": {
     "onlyHumans": "Only games without bots count.",
+    "withBots": "Include games with bots",
+    "botsMarked": "Games with bots count too. Team games with bots are marked with 🤖.",
+    "withBotsGame": "Game with bots",
     "wins": "Wins",
     "winshare": "Win Rate",
     "rank": "Rank",
@@ -820,103 +836,6 @@
     },
     "menuCards": "Cards"
   },
-  "Tutorial": {
-    "0": {
-      "0": {
-        "title": "greeting",
-        "detail": "Hello, this tutorial is intended to introduce the player who already knows the TAC Original to the game on this website. Click on the arrow to start the tutorial."
-      },
-      "1": {
-        "title": "game settings",
-        "detail": "First you should adjust your settings. Find the setting in the game and check it out!"
-      },
-      "2": {
-        "title": "select map",
-        "detail": "You select a card by clicking on it. If she is selected, she looks out above the others. If you cannot play a card, it is dark gray. Choose a map to play!"
-      },
-      "3": {
-        "title": "move ball",
-        "detail": "You can either drag a ball to the target, or first click the ball and then the target field. Now move a ball!"
-      },
-      "4": {
-        "title": "change map",
-        "detail": "If you chose the wrong card, you can simply choose a different one. Select card '8'!"
-      },
-      "5": {
-        "title": "special functions",
-        "detail": "Sometimes you don't want to move a ball, but perform a special function. A text field is created in the middle of the playing field. Let the next player sit out!"
-      },
-      "6": {
-        "title": "expose",
-        "detail": "Now there are some quiz questions about the game interface. Which player has to sit out?",
-        "answer-0": "-Kai-",
-        "answer-1": "-Oskar-",
-        "answer-2": "-Sophia-",
-        "answer-3": "From"
-      },
-      "7": {
-        "title": "next player",
-        "detail": "Which player is it right now?",
-        "answer-0": "-Sophia-",
-        "answer-1": "-Oskar-",
-        "answer-2": "-Kai-",
-        "answer-3": "From"
-      },
-      "8": {
-        "title": "deck of cards",
-        "detail": "Which player will deal next and how many times will it be dealt before it has to be shuffled again?",
-        "answer-0": "-Oscar-, one more time",
-        "answer-1": "-Sophia-, 2 more times",
-        "answer-2": "-Kai-, next round will be reshuffled",
-        "answer-3": "You, 3 more times"
-      },
-      "9": {
-        "title": "quick start Guide",
-        "detail": "There is also an overview of the special cards here. Find the help box and check it out!"
-      },
-      "10": {
-        "title": "Here we go!",
-        "detail": "You are now ready for real gaming. Exit the game by clicking on the TAC logo in game and this will end this tutorial."
-      },
-      "title": "Introduction to Tac With Bug",
-      "time": "Duration: approx. 3 minutes",
-      "description": "This introduction is intended for people who already know the game TAC. It is a brief introduction to the operation of the game on this website."
-    },
-    "Encouragement": {
-      "0": "Congratulations!",
-      "1": "Bravo!",
-      "2": "Revolutionary!",
-      "3": "Outstanding!",
-      "4": "Very well done!",
-      "5": "Marvellous!",
-      "6": "Glorious!",
-      "7": "Well done!",
-      "8": "You're great!",
-      "9": "You're a champion!"
-    },
-    "nextQuestion": "Move on to the next question",
-    "quizWrongAnswer": "Your answer was wrong. Try one of the other answers!",
-    "quizSubmitButton": "Answer question",
-    "toGameButton": "To the game board",
-    "resetButton": "Reset to default",
-    "stopTutorial": "Cancel the tutorial",
-    "openTutorial": "Tutorial",
-    "ButtonStartOverwiew": {
-      "start": "Here we go!",
-      "restart": "To repeat",
-      "resume": "Continue"
-    },
-    "Basic": {
-      "title": "Basic spiel"
-    },
-    "Meister": {
-      "title": "Master cards"
-    },
-    "tutorialHeader": "Tutorials",
-    "moreTutorialsInFuture": "More tutorials are planned for the future to explain TAC to new players. Please be patient!",
-    "replaysInFuture": "To explain complex moves, these should be recorded and then repeated. Feel free to write me if you have any suggestions for such moves.",
-    "replayHeader": "Replay of Game Sequences"
-  },
   "FAQ": {
     "title": "frequently asked Questions",
     "Contribute": {
@@ -1015,7 +934,6 @@
       "fastestGame": "Fastest game:",
       "averagePlayingTime": "Average playing time:",
       "nFriends": "New Friendships:",
-      "nTutorials": "Completed tutorial steps:",
       "leastLoved": "Least used ball:",
       "mostLoved": "Most used ball:",
       "nColorBlinds": "Number of color blind players:",
@@ -1093,7 +1011,7 @@
     "hinweis": "Strong levels think for up to two seconds.",
     "infoMenschen": "To play against other people, go online via “Find a game”. Only online games count for your statistics.",
     "infoSpeichern": "It is not saved: if you close or reload the page, the game is over.",
-    "infoStatistik": "It does not count for your statistics or the leaderboard.",
+    "infoStatistik": "It does not count for your statistics or the leaderboard. At the end only the level you played against and how the game ended go to the server, anonymously and without your account. This feeds the statistics of the bots.",
     "infoBrowser": "You play alone with AI players. The game runs only in your browser, no account needed.",
     "infoTitel": "How a game against the AI works",
     "neuePartie": "New game",
@@ -1122,6 +1040,165 @@
       "langsam": "Slow",
       "normal": "Normal",
       "schnell": "Fast"
+    }
+  },
+  "Training": {
+    "titel": "Tutorials",
+    "einleitung": "Learn TAC step by step: short lessons and tasks right on the board. The same lessons as in the TAC app.",
+    "hinweis": "Your progress is only stored in this browser.",
+    "uebersicht": "Overview",
+    "weiter": "Next",
+    "nochmal": "Try again",
+    "tipp": "Hint",
+    "tippZu": "Hide hint",
+    "falsch": "Not quite. Take another close look.",
+    "sackgasse": "That does not work. Use “Try again” and choose a different move.",
+    "zurUebung": "To the exercise",
+    "du": "You",
+    "vorherZug": "{wer} just played {karte}.",
+    "ausgesetzt": "You were skipped by an 8.",
+    "zumTraining": "To the tutorials",
+    "feier": {
+      "stufeTitel": "Level complete!",
+      "stufeText": "{stufe} finished successfully!",
+      "allesTitel": "Tutorials complete!",
+      "allesText": "You have mastered all lessons!",
+      "grossartig": "Great!"
+    },
+    "farbe": {
+      "black": "Black",
+      "blue": "Blue",
+      "green": "Green",
+      "red": "Red"
+    },
+    "bild": {
+      "vorfeld": "Starting area",
+      "startfeld": "Start field",
+      "kreis": "Track",
+      "haus": "Home",
+      "ablage": "Discard pile",
+      "team1": "Team Black and Green",
+      "team2": "Team Blue and Red",
+      "uhrzeigersinn": "Clockwise",
+      "rueckwaerts": "The 4: backwards",
+      "geben": "Deal",
+      "melden": "Announce: the 13 shows who can get out (1 or 13)",
+      "tauschen": "Swap",
+      "spielen": "Play",
+      "normal": "Number cards",
+      "sonder": "Special cards",
+      "meister": "Master cards",
+      "tac": "TAC",
+      "sieg": "All 8 marbles home: victory!",
+      "blockiert": "Blocked: no jumping",
+      "geschlagen": "Captured: back to the start",
+      "zweiteKugel": "Second marble in play",
+      "pflicht": "If you can, you must",
+      "heraus": "Come out",
+      "laufen": "Or move",
+      "eingerastet": "Locked in",
+      "partner": "Now for your partner",
+      "exakt": "Exactly into home",
+      "keinRaus": "No moving backwards out of home",
+      "rueckwaertsHaus": "Backwards into home with the 4",
+      "gesperrt": "Locked: cannot move",
+      "vorbeiziehen": "The 7 captures in passing",
+      "drei": "3 steps",
+      "vier": "and 4 steps",
+      "insHaus": "Into home with the 7",
+      "tausch": "Places swapped",
+      "rueckgaengig": "TAC undoes the move",
+      "scharf": "Fresh marble becomes active",
+      "teufel": "The Devil",
+      "fuerDich": "You play the next player's card",
+      "krieger": "The Warrior captures the next marble",
+      "einsLaufen": "The 1 moves 1 field forward",
+      "dreizehnLaufen": "The 13 moves 13 fields forward",
+      "hausBlockiert": "Blocked in the home: no skipping",
+      "amHausVorbei": "So move past the home",
+      "abkuerzung": "The 4 backward: almost home",
+      "abkuerzungHaus": "Into the home with the 6",
+      "auswahl": "You choose which marble moves",
+      "zweiVor": "The 2 moves it off the start field",
+      "vorZurueck": "The 7 moves back and forth in the home",
+      "narr": "Everyone passes their cards",
+      "engel": "The next player comes out",
+      "aussetzen": "The next player is skipped",
+      "uebernehmen": "and uses the card yourself",
+      "ausHaus": "TAC pulls the marble out of home",
+      "wahl": "Free choice with dual cards",
+      "kugeln16": "16 marbles",
+      "karten104": "104 cards",
+      "blauFertig": "Blue is already finished",
+      "engelPartner": "So Red comes out, Blue's partner",
+      "kurzVorHaus": "Blue is just before its home",
+      "engelDreizehn": "The Angel makes Blue move 13 fields",
+      "kriegerSucht": "The Warrior looks for the next marble",
+      "selbstwurf": "Only yours: you knock yourself out",
+      "keineKugel": "No marble out: the 5 is no use, so no TAC",
+      "dreizehnStatt": "So the 13: come out instead of TAC",
+      "letzteKarte": "Red plays the last card of the round",
+      "neueRunde": "New round: cards are dealt",
+      "tacZuSpaet": "After dealing, the move can no longer be undone",
+      "achtLaufen": "You use the 8: move 8 fields",
+      "blauWirftAb": "Blue has to discard a card",
+      "engelDich": "Red's Angel brings your marble out",
+      "tacEngel": "TAC: your marble goes back, Blue comes out",
+      "rotTeufel": "Red plays the Devil and sees your cards",
+      "rotNimmtTac": "From your hand, Red plays the TAC",
+      "duFuerBlau": "Now you play one of Blue's cards",
+      "tacVonBlau": "You get Blue's TAC",
+      "vorDemNarren": "TAC undoes the move before the Fool",
+      "gruenInsHaus": "Green moves into its home with the 5",
+      "rotTac": "Red: TAC pulls Green out of its home",
+      "zweiterTac": "Your TAC cancels Red's TAC: Green is home again",
+      "tacKette": "TAC cancels the previous TAC",
+      "kettenEnde": "The chain ends with you: the 13 is yours",
+      "tacAbgelegt": "Red discards its TAC unused",
+      "gruenBleibt": "Your TAC uses Green's 5, Green stays home",
+      "rotLetzteKugel": "Blue is finished, Red needs just one more marble",
+      "siegeszug": "All of Blue's and Red's marbles are home: victory?",
+      "tacSieg": "Your TAC brings the marble back onto the track",
+      "gruenSiegt": "Green moves its last marble home: victory",
+      "rotVerhindert": "Red's TAC prevents the victory and uses the 10",
+      "tacGesperrt": "Your TAC doesn't work: all your marbles are home",
+      "nurTac": "All you have left is TAC",
+      "rotHeraus": "Red comes out with the 13",
+      "rotLegtAb": "Red has no marble out and discards the 5",
+      "abgelegtNutzen": "Your TAC uses the discarded 5",
+      "insHausTac": "Into the home with the 5"
+    }
+  },
+  "Bots": {
+    "titel": "The bots",
+    "einleitung": "In the waiting room the host can fill free seats with bots. If someone leaves a running game, a bot can step in for them. Which bots are available depends on the game mode. On the board you can tell a bot by the 🤖. Hover over it or tap it to see which bot it is.",
+    "andere": "For all other game modes, such as three teams of two, only Futuro is available.",
+    "frueher": "Former bots",
+    "frueherText": "You can no longer choose these bots. You may still meet them in older games.",
+    "koopName": "Co-op AI",
+    "alleBots": "All bots at a glance",
+    "beschreibung": {
+      "b0": "Moves completely at random.",
+      "b1": "Only wants to get marbles into the home, nothing else matters to it.",
+      "b2": "Rates every move by fixed rules.",
+      "b3": "Looks a few moves into the future and plans accordingly.",
+      "b10": "Solid and steady: rates every move by fixed rules.",
+      "b11": "Thinks one move ahead.",
+      "b12": "Reads the position at a glance: a neural network picks the move.",
+      "b13": "Still learning, with half-knowledge: plays through 200 possible lines.",
+      "b14": "Calculates hundreds of lines before moving.",
+      "b15": "Checks every hand sixty-four times: search with a neural network over 64 possible card distributions.",
+      "b16": "Has learned to play ahead: a search guided by a neural network.",
+      "b17": "Combines instinct and calculation: a search whose positions a neural network rates.",
+      "b18": "No one has ever beaten her: like Schlitzohr Fabian, but with 1600 lines per move.",
+      "b19": "Beat Die Unbekannte: a network that learned from games against itself and from moves of humans.",
+      "b20": "Knows where to go, but loses the thread: fixed rules with a bit of chance.",
+      "b21": "Holds course, no detours: fixed rules for teams of three.",
+      "b22": "No trace of her for years: fixed rules, and she counts cards.",
+      "b23": "Plays every option through in his head: tries the moves in many test games.",
+      "b24": "Counts on the others' reply: like Professor Max, only twice as thorough.",
+      "b25": "Lays trails that lead nowhere: the most thorough search in 3 vs 3.",
+      "b30": "Plans with its teammates so that all marbles get home with as few cards as possible."
     }
   }
 }

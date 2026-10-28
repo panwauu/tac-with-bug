@@ -22,7 +22,6 @@ import swaggerDoc from '../swagger.json'
 import { cancelAllJobs, registerJobs } from '../services/scheduledTasks'
 
 import { initdBUtils } from '../dbUtils/initdBUtils'
-import { loadTutorialLevels } from '../services/tutorial'
 import logger, { attachPostgresLogger } from '../helpers/logger'
 
 export type ServerOptions = {
@@ -84,7 +83,6 @@ export class TacServer {
 
   async listen(port?: number) {
     await registerJobs(this.pgPool)
-    await loadTutorialLevels(this.pgPool)
 
     const portToListen = port ?? (process.env.PORT != null ? Number.parseInt(process.env.PORT) : 3000)
     this.httpServer.listen(portToListen)

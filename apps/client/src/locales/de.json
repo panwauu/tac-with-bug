@@ -83,6 +83,19 @@
       "tablet": "Tablet",
       "desktop": "Desktop",
       "others": "Andere"
+    },
+    "Bots": {
+      "titel": "Bots",
+      "hinweis": "Wie oft jeder Bot gespielt wurde und wie stark er ist. Die Siegquote zählt nur Partien, in denen alle Gegner Menschen waren, denn Partien von Bots gegen Bots sagen wenig darüber aus. Bei Koop zählen die Karten, bis alle Kugeln im Haus sind: je weniger, desto besser. Die letzte Spalte zählt die Partien gegen die KI im Browser: wie oft die KI gegen den Menschen gewonnen hat, bei Koop die Karten.",
+      "bot": "Bot",
+      "partien": "Partien",
+      "letzte30": "Letzte 30 Tage",
+      "spieler": "Menschen",
+      "gegenMenschen": "Siege gegen Menschen",
+      "koop": "Koop: Ø Karten",
+      "partienKurz": "{n} Partien",
+      "konto": "Bot-Konto",
+      "browser": "Im Browser"
     }
   },
   "Home": {
@@ -106,6 +119,9 @@
   },
   "Leaders": {
     "onlyHumans": "Es zählen nur Partien ohne Bots.",
+    "withBots": "Partien mit Bots einbeziehen",
+    "botsMarked": "Partien mit Bots zählen mit. Team-Partien mit Bots sind mit 🤖 markiert.",
+    "withBotsGame": "Partie mit Bots",
     "wins": "Siege",
     "winshare": "Siegquote",
     "rank": "Rang",
@@ -820,103 +836,6 @@
       "noCards": "Bisher keine Spiele"
     }
   },
-  "Tutorial": {
-    "0": {
-      "0": {
-        "title": "Begrüßung",
-        "detail": "Hallo, dieses Tutorial soll den Spieler, der das TAC-Original bereits kennt, in das Spiel auf dieser Website einführen. Klicke auf den Pfeil, um mit dem Tutorial zu beginnen."
-      },
-      "1": {
-        "title": "Spieleinstellungen",
-        "detail": "Zuerst solltest du deine Einstellungen anpassen. Finde im Spiel die Einstellungen und sieh dir diese an!"
-      },
-      "2": {
-        "title": "Karte auswählen",
-        "detail": "Du wählst eine Karte an, indem du sie anklickst. Ist sie ausgewählt, schaut sie oben aus den anderen heraus. Kannst du eine Karte nicht spielen, ist sie dunkelgrau. Wähle eine Karte aus, die du spielen kannst!"
-      },
-      "3": {
-        "title": "Kugel bewegen",
-        "detail": "Du kannst eine Kugel entweder zum Ziel ziehen oder zuerst die Kugel und dann das Zielfeld anklicken. Bewege jetzt eine Kugel!"
-      },
-      "4": {
-        "title": "Karte ändern",
-        "detail": "Hast du die falsche Karte ausgewählt, kannst du einfach wieder eine andere auswählen. Wähle die Karte '8' aus!"
-      },
-      "5": {
-        "title": "Sonderfunktionen",
-        "detail": "Manchmal möchtest du nicht eine Kugel bewegen, sondern eine Sonderfunktion ausführen. Dafür entsteht ein Textfeld in der Mitte des Spielfeldes. Lasse den nächsten Spieler aussetzen!"
-      },
-      "6": {
-        "title": "Aussetzen",
-        "detail": "Jetzt gibt es noch einige Quizfragen zur Spieloberfläche. Welcher Spieler muss aussetzen?",
-        "answer-0": "-Kai-",
-        "answer-1": "-Oskar-",
-        "answer-2": "-Sophia-",
-        "answer-3": "Du"
-      },
-      "7": {
-        "title": "Nächster Spieler",
-        "detail": "Welcher Spieler ist gerade dran?",
-        "answer-0": "-Sophia-",
-        "answer-1": "-Oskar-",
-        "answer-2": "-Kai-",
-        "answer-3": "Du"
-      },
-      "8": {
-        "title": "Kartenstapel",
-        "detail": "Welcher Spieler teilt als nächstes aus und wie oft wird noch ausgeteilt, bis wieder gemischt werden muss?",
-        "answer-0": "-Oskar-, noch 1 mal",
-        "answer-1": "-Sophia-, noch 2 mal",
-        "answer-2": "-Kai-, nächste Runde wird neu gemischt",
-        "answer-3": "Du, noch 3 mal"
-      },
-      "9": {
-        "title": "Kurzanleitung",
-        "detail": "Auch hier gibt es eine Übersicht zu den Sonderkarten. Suche das Hilfefeld und sehe es dir an!"
-      },
-      "10": {
-        "title": "Los gehts!",
-        "detail": "Du bist jetzt bereit für das echte Spielen. Verlasse das Spiel, indem du auf das TAC-Logo im Spiel klickst, und beende so dieses Tutorial."
-      },
-      "title": "Einführung in Tac-With-Bug",
-      "time": "Dauer: ca. 3 Minuten",
-      "description": "Diese Einführung richtet sich an Personen, die das Spiel TAC bereits kennen. Es handelt sich um eine kurze Einführung in die Bedienung des Spiels auf dieser Website."
-    },
-    "Encouragement": {
-      "0": "Fabelhaft!",
-      "1": "Bravo!",
-      "2": "Super!",
-      "3": "Klasse!",
-      "4": "Sehr gut gemacht!",
-      "5": "Mega!",
-      "6": "Top!",
-      "7": "Gut gemacht!",
-      "8": "Du bist Spitze!",
-      "9": "Traumhaft!"
-    },
-    "nextQuestion": "Mache mit der nächsten Frage weiter!",
-    "quizWrongAnswer": "Deine Antwort war falsch. Probiere eine der anderen Antworten!",
-    "quizSubmitButton": "Frage beantworten",
-    "toGameButton": "Zum Spielbrett",
-    "resetButton": "Zurücksetzen",
-    "stopTutorial": "Tutorial abbrechen",
-    "openTutorial": "Tutorial",
-    "ButtonStartOverwiew": {
-      "start": "Los gehts!",
-      "restart": "Wiederholen",
-      "resume": "Fortsetzen"
-    },
-    "Basic": {
-      "title": "Basisspiel"
-    },
-    "Meister": {
-      "title": "Meisterkarten"
-    },
-    "tutorialHeader": "Tutorials",
-    "moreTutorialsInFuture": "Für die Zukunft sind hier weitere Tutorials geplant, um auch neuen Spielern das TAC näherzubringen. Bitte habe noch etwas Geduld!",
-    "replaysInFuture": "Zur Erklärung komplexer Spielzüge sollen diese aufgezeichnet und dann wiederholt werden. Schreib mir gerne, wenn du Vorschläge für solche Spielzüge hast.",
-    "replayHeader": "Spielzugwiederholung"
-  },
   "FAQ": {
     "title": "Häufig gestellte Fragen",
     "Contribute": {
@@ -1015,7 +934,6 @@
       "fastestGame": "Schnellstes Spiel:",
       "averagePlayingTime": "Durchschnittliche Spieldauer:",
       "nFriends": "Geschlossene Freundschaften:",
-      "nTutorials": "Absolvierte Tutorialschritte:",
       "mostLoved": "Am meisten genutzte Kugel:",
       "leastLoved": "Am wenigsten genutzte Kugel:",
       "nColorBlinds": "Anzahl farbenblinder Spieler:",
@@ -1093,7 +1011,7 @@
     "hinweis": "Starke Stufen denken bis zu zwei Sekunden nach.",
     "infoMenschen": "Gegen andere Menschen spielst du online über den Warteraum. Nur Online-Partien zählen für deine Statistik.",
     "infoSpeichern": "Sie wird nicht gespeichert: Wenn du die Seite schließt oder neu lädst, ist die Partie vorbei.",
-    "infoStatistik": "Sie zählt nicht für deine Statistik und nicht für die Bestenliste.",
+    "infoStatistik": "Sie zählt nicht für deine Statistik und nicht für die Bestenliste. Am Ende geht nur anonym an den Server, gegen welche Stufe du gespielt hast und wie die Partie ausging, ohne dein Konto. Daraus entsteht die Statistik der Bots.",
     "infoBrowser": "Du spielst allein mit KI-Mitspielern. Die Partie läuft nur in deinem Browser, du brauchst dafür kein Konto.",
     "infoTitel": "So läuft eine Partie gegen die KI",
     "neuePartie": "Neue Partie",
@@ -1122,6 +1040,165 @@
       "langsam": "Langsam",
       "normal": "Normal",
       "schnell": "Schnell"
+    }
+  },
+  "Training": {
+    "titel": "Tutorials",
+    "einleitung": "Lerne TAC Schritt für Schritt: kurze Lektionen und Aufgaben direkt auf dem Brett. Dieselben Lektionen wie in der TAC-App.",
+    "hinweis": "Dein Fortschritt wird nur in diesem Browser gespeichert.",
+    "uebersicht": "Übersicht",
+    "weiter": "Weiter",
+    "nochmal": "Nochmal",
+    "tipp": "Tipp",
+    "tippZu": "Tipp ausblenden",
+    "falsch": "Leider nicht. Schau noch einmal genau hin.",
+    "sackgasse": "So klappt es nicht. Versuch es mit „Nochmal“ und einem anderen Zug.",
+    "zurUebung": "Zur Übung",
+    "du": "Du",
+    "vorherZug": "{wer} hat zuletzt {karte} gespielt.",
+    "ausgesetzt": "Du wurdest mit einer 8 ausgesetzt.",
+    "zumTraining": "Zu den Tutorials",
+    "feier": {
+      "stufeTitel": "Stufe abgeschlossen!",
+      "stufeText": "{stufe} erfolgreich beendet!",
+      "allesTitel": "Tutorials abgeschlossen!",
+      "allesText": "Du hast alle Lektionen gemeistert!",
+      "grossartig": "Großartig!"
+    },
+    "farbe": {
+      "black": "Schwarz",
+      "blue": "Blau",
+      "green": "Grün",
+      "red": "Rot"
+    },
+    "bild": {
+      "vorfeld": "Vorfeld",
+      "startfeld": "Startfeld",
+      "kreis": "Spielkreis",
+      "haus": "Haus",
+      "ablage": "Ablage",
+      "team1": "Team Schwarz und Grün",
+      "team2": "Team Blau und Rot",
+      "uhrzeigersinn": "Im Uhrzeigersinn",
+      "rueckwaerts": "Die 4: rückwärts",
+      "geben": "Geben",
+      "melden": "Melden: die 13 zeigt, wer raus kann (1 oder 13)",
+      "tauschen": "Tauschen",
+      "spielen": "Spielen",
+      "normal": "Normalkarten",
+      "sonder": "Sonderkarten",
+      "meister": "Meisterkarten",
+      "tac": "TAC",
+      "sieg": "Alle 8 Kugeln im Haus: Sieg!",
+      "blockiert": "Blockiert: nicht überspringen",
+      "geschlagen": "Geschlagen: zurück ins Vorfeld",
+      "zweiteKugel": "Zweite Kugel im Spiel",
+      "pflicht": "Wer kann, der muss",
+      "heraus": "Herauskommen",
+      "laufen": "Oder laufen",
+      "eingerastet": "Eingerastet",
+      "partner": "Jetzt für den Partner",
+      "exakt": "Genau passend ins Haus",
+      "keinRaus": "Aus dem Haus geht es nicht rückwärts",
+      "rueckwaertsHaus": "Mit der 4 rückwärts ins Haus",
+      "gesperrt": "Eingerastet: unbeweglich",
+      "vorbeiziehen": "Die 7 schlägt im Vorbeiziehen",
+      "drei": "3 Schritte",
+      "vier": "und 4 Schritte",
+      "insHaus": "Mit der 7 ins Haus",
+      "tausch": "Plätze getauscht",
+      "rueckgaengig": "TAC macht den Zug rückgängig",
+      "scharf": "Frische Kugel wird scharf",
+      "teufel": "Der Teufel",
+      "fuerDich": "Du spielst die Karte des Nächsten",
+      "krieger": "Der Krieger schlägt die nächste Kugel",
+      "einsLaufen": "Die 1 zieht 1 Feld vor",
+      "dreizehnLaufen": "Die 13 zieht 13 Felder vor",
+      "hausBlockiert": "Im Haus blockiert: nicht überspringen",
+      "amHausVorbei": "Also am Haus vorbei",
+      "abkuerzung": "Die 4 rückwärts: fast am Haus",
+      "abkuerzungHaus": "Mit der 6 ins Haus",
+      "auswahl": "Du wählst, welche Kugel zieht",
+      "zweiVor": "Mit der 2 weg vom Startfeld",
+      "vorZurueck": "Die 7 zieht im Haus vor und zurück",
+      "narr": "Alle geben ihre Karten weiter",
+      "engel": "Der Nächste kommt heraus",
+      "aussetzen": "Der Nächste setzt aus",
+      "uebernehmen": "und nutzt die Karte selbst",
+      "ausHaus": "TAC holt die Kugel aus dem Haus",
+      "wahl": "Freie Wahl bei Doppelfunktion",
+      "kugeln16": "16 Kugeln",
+      "karten104": "104 Karten",
+      "blauFertig": "Blau ist schon fertig",
+      "engelPartner": "Also kommt Rot heraus, Blaus Partner",
+      "kurzVorHaus": "Blau steht kurz vor dem Haus",
+      "engelDreizehn": "Der Engel lässt Blau 13 Felder ziehen",
+      "kriegerSucht": "Der Krieger sucht die nächste Kugel",
+      "selbstwurf": "Nur deine: du wirfst dich selbst",
+      "keineKugel": "Keine Kugel draußen: die 5 passt nicht, also kein TAC",
+      "dreizehnStatt": "Also die 13: heraus statt TAC",
+      "letzteKarte": "Rot spielt die letzte Karte der Runde",
+      "neueRunde": "Neue Runde: es wird gegeben",
+      "tacZuSpaet": "Nach dem Geben ist der Zug nicht mehr rücknehmbar",
+      "achtLaufen": "Du nutzt die 8: 8 Felder laufen",
+      "blauWirftAb": "Blau muss eine Karte abwerfen",
+      "engelDich": "Rots Engel holt deine Kugel heraus",
+      "tacEngel": "TAC: deine Kugel zurück, Blau kommt heraus",
+      "rotTeufel": "Rot spielt den Teufel und sieht deine Karten",
+      "rotNimmtTac": "Rot spielt aus deiner Hand den TAC",
+      "duFuerBlau": "Jetzt spielst du eine Karte von Blau",
+      "tacVonBlau": "Du bekommst Blaus TAC",
+      "vorDemNarren": "TAC nimmt den Zug vor dem Narren zurück",
+      "gruenInsHaus": "Grün zieht mit der 5 ins Haus",
+      "rotTac": "Rot: TAC holt Grün aus dem Haus",
+      "zweiterTac": "Dein TAC hebt Rots TAC auf: Grün wieder im Haus",
+      "tacKette": "TAC hebt den vorigen TAC auf",
+      "kettenEnde": "Die Kette endet bei dir: die 13 gehört dir",
+      "tacAbgelegt": "Rot legt seinen TAC ungenutzt ab",
+      "gruenBleibt": "Dein TAC nutzt Grüns 5, Grün bleibt im Haus",
+      "rotLetzteKugel": "Blau ist fertig, Rot fehlt nur noch eine Kugel",
+      "siegeszug": "Alle Kugeln von Blau und Rot im Haus: Sieg?",
+      "tacSieg": "Dein TAC holt die Kugel zurück auf den Spielkreis",
+      "gruenSiegt": "Grün zieht die letzte Kugel ins Haus: Sieg",
+      "rotVerhindert": "Rots TAC verhindert den Sieg und nutzt die 10",
+      "tacGesperrt": "Dein TAC geht nicht: alle deine Kugeln stehen im Haus",
+      "nurTac": "Du hast nur noch TAC",
+      "rotHeraus": "Rot kommt mit der 13 heraus",
+      "rotLegtAb": "Rot hat keine Kugel draußen und legt die 5 ab",
+      "abgelegtNutzen": "Dein TAC nutzt die abgelegte 5",
+      "insHausTac": "Mit der 5 ins Haus"
+    }
+  },
+  "Bots": {
+    "titel": "Die Bots",
+    "einleitung": "Im Warteraum kann der Gastgeber freie Plätze mit Bots besetzen. Verlässt jemand eine laufende Partie, kann ein Bot für ihn einspringen. Welche Bots es gibt, hängt von der Spielart ab. Am Brett erkennst du einen Bot am 🤖. Fahre mit der Maus darüber oder tippe darauf, dann siehst du, welcher Bot es ist.",
+    "andere": "Für alle anderen Spielarten, etwa drei Teams zu zweit, gibt es nur Futuro.",
+    "frueher": "Frühere Bots",
+    "frueherText": "Diese Bots kannst du nicht mehr wählen. In älteren Partien kannst du ihnen noch begegnen.",
+    "koopName": "Koop-KI",
+    "alleBots": "Alle Bots im Überblick",
+    "beschreibung": {
+      "b0": "Zieht rein zufällig.",
+      "b1": "Will nur Kugeln ins Haus bringen, alles andere ist ihm egal.",
+      "b2": "Bewertet jeden Zug nach festen Regeln.",
+      "b3": "Schaut ein paar Züge in die Zukunft und plant danach.",
+      "b10": "Solide Hausmannskost: bewertet jeden Zug nach festen Regeln.",
+      "b11": "Denkt einen Zug voraus.",
+      "b12": "Sieht die Stellung auf einen Blick: ein neuronales Netz wählt den Zug.",
+      "b13": "Lernt noch, mit Halbwissen: spielt 200 mögliche Verläufe durch.",
+      "b14": "Rechnet hunderte Verläufe durch, bevor er zieht.",
+      "b15": "Prüft jede Hand vierundsechzigmal: Suche mit neuronalem Netz über 64 mögliche Kartenverteilungen.",
+      "b16": "Hat das Vorausspielen gelernt: Suche, die ein neuronales Netz lenkt.",
+      "b17": "Kombiniert Instinkt und Kalkül: Suche, deren Stellungen ein neuronales Netz bewertet.",
+      "b18": "Niemand hat sie je besiegt: wie Schlitzohr Fabian, aber mit 1600 Verläufen pro Zug.",
+      "b19": "Hat Die Unbekannte besiegt: ein Netz, das aus Partien gegen sich selbst und aus Zügen von Menschen gelernt hat.",
+      "b20": "Weiß wohin, verliert aber den Faden: feste Regeln mit etwas Zufall.",
+      "b21": "Hält Kurs, ohne Umwege: feste Regeln für Dreierteams.",
+      "b22": "Seit Jahren keine Spur von ihr: feste Regeln, dazu zählt sie Karten.",
+      "b23": "Spielt jede Möglichkeit im Kopf durch: probiert die Züge in vielen Probepartien aus.",
+      "b24": "Rechnet mit der Antwort der anderen: wie Professor Max, nur doppelt so gründlich.",
+      "b25": "Legt Spuren, die ins Leere führen: die gründlichste Suche bei 3 gegen 3.",
+      "b30": "Plant mit den Mitspielern, damit alle Kugeln mit möglichst wenigen Karten ins Haus kommen."
     }
   }
 }

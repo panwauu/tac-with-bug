@@ -1,7 +1,7 @@
 import type express from 'express'
-import type { PlatformFunFacts, PlatformStats } from '../sharedTypes/typesPlatformStatistic'
+import type { BotStatistic, PlatformFunFacts, PlatformStats } from '../sharedTypes/typesPlatformStatistic'
 import { Controller, Get, Route, Request, Res, TsoaResponse } from 'tsoa'
-import { getPlatformStatistic, getPlatformFunFacts } from '../services/platformStatistic'
+import { getPlatformStatistic, getPlatformFunFacts, getBotStatistic } from '../services/platformStatistic'
 import { getRootPackageVersion } from '../entrypoints/version'
 
 @Route('/')
@@ -20,6 +20,14 @@ export class PlatformStatisticController extends Controller {
   @Get('/getPlatformStats')
   public async getPlatformStats(@Request() request: express.Request): Promise<PlatformStats> {
     return getPlatformStatistic(request.app.locals.sqlClient)
+  }
+
+  /**
+   * Get statistics per bot: games, players and wins against humans
+   */
+  @Get('/getBotStats')
+  public async getBotStats(@Request() request: express.Request): Promise<BotStatistic[]> {
+    return getBotStatistic(request.app.locals.sqlClient)
   }
 
   /**

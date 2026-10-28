@@ -11,7 +11,7 @@
     </div>
     <div
       class="landingPageElement tutorialWidget clickable p-card"
-      @click="router.push({ name: 'TutorialOverview' })"
+      @click="router.push({ name: 'Training' })"
     >
       <TutorialWidget />
     </div>

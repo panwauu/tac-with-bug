@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { ONLINE_STUFEN, onlineModus, stufeFuerPartie } from './onlineStufen'
+import { ONLINE_STUFEN, onlineModus, stufeFuerPartie, spielenderBot } from './onlineStufen'
 import { validBotIds } from '../bots/bots'
 import { stufenBot } from './stufen'
 
@@ -31,5 +31,14 @@ describe('KI-Stufen online', () => {
     expect(stufeFuerPartie(25, 6, 2, false)).toBe('faehrtenleger')
     expect(stufeFuerPartie(30, 4, 2, true)).toBe('koop')
     expect(stufeFuerPartie(3, 4, 2, false)).toBeNull()
+  })
+
+  test('spielender Bot: passende Stufe, sonst Oskars Bot, sonst Futuro', () => {
+    expect(spielenderBot(13, 4, 2, false)).toBe(13)
+    expect(spielenderBot(13, 6, 2, false)).toBe(3)
+    expect(spielenderBot(25, 6, 2, false)).toBe(25)
+    expect(spielenderBot(0, 4, 2, false)).toBe(0)
+    expect(spielenderBot(3, 6, 3, false)).toBe(3)
+    expect(spielenderBot(30, 4, 2, false)).toBe(3)
   })
 })

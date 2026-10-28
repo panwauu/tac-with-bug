@@ -8,13 +8,6 @@ CREATE TABLE users (
   activated boolean NOT NULL DEFAULT false,
   token varchar(50) NOT NULL,
   profilepic bytea,
-  tutorial JSONB NOT NULL DEFAULT '[[false,false,false,false,false,false,false,false,false,false,false]]' :: jsonb,
-  CONSTRAINT tutorialCheck CHECK (
-    jsonb_typeof(tutorial) = 'array'
-    AND jsonb_array_length(tutorial) = 1
-    AND jsonb_typeof(tutorial -> 0) = 'array'
-    AND jsonb_array_length(tutorial -> 0) = 11
-  ),
   currentsubscription int,
   locale VARCHAR(2) NOT NULL DEFAULT 'de',
   color_blindness_flag BOOLEAN NOT NULL DEFAULT false,
@@ -626,8 +619,6 @@ $$;
 -- Every change counts as activity: joining, leaving, ready, colors, order and bots
 CREATE TRIGGER waitinggames_touch BEFORE UPDATE ON waitinggames FOR EACH ROW EXECUTE FUNCTION waitinggames_touch();
 
-CREATE TABLE tutorials (id int PRIMARY KEY, data JSONB);
-
 CREATE TABLE hof (
   id SERIAL PRIMARY KEY,
   userid INT NOT NULL REFERENCES users (id),
@@ -698,6 +689,18 @@ CREATE TABLE moderation (
   email varchar(255),
   blockeduntil timestamptz NOT NULL,
   reason varchar(200)
+);
+
+-- Games against the AI in the browser (#256): only how they ended, without any account or name. The game itself
+-- runs in the browser; the client reports the result at the end. mode: klassisch, drei or koop; level: the AI level
+-- (see onlineStufen.ts); won: whether the team of the human won; cards: the cards in coop.
+CREATE TABLE offline_results (
+  id SERIAL PRIMARY KEY,
+  created timestamptz NOT NULL DEFAULT current_timestamp,
+  mode varchar(10) NOT NULL,
+  level varchar(20) NOT NULL,
+  won BOOLEAN NOT NULL,
+  cards INT
 );
 
 -- Reports of users about other users (name, picture, profile text, chat). Moderators handle them.
