@@ -980,7 +980,7 @@
       "other": "Other"
     },
     "keinZugang": "This page is only for moderators.",
-    "einleitung": "Here are all players with open reports. If three different players report the same player within 24 hours, that player is blocked automatically for 24 hours until you decide. Blocked players cannot chat and cannot change their profile picture or profile text.",
+    "einleitung": "Here are all players with open reports. Reports never block anybody by themselves, you decide. Blocked players cannot chat and cannot change their profile picture or profile text.",
     "keineMeldungen": "No open reports.",
     "gesperrtBis": "blocked until {datum}",
     "geloeschterNutzer": "deleted account",

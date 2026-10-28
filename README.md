@@ -93,7 +93,7 @@ version number is bumped when it reaches `main`. Before you commit, read
 
 # Moderation
 
-Players report other players on their profile page. Moderators and admins handle the reports on the page `/moderation` (in the menu once you are a moderator): block for some days, reset picture and profile text, unblock or close the reports. Admins name the moderators on the same page. If three different players report the same player within 24 hours, that player is blocked for 24 hours automatically until a moderator decides.
+Players report other players on their profile page. Moderators and admins handle the reports on the page `/moderation` (in the menu once you are a moderator): block for some days, reset picture and profile text, unblock or close the reports. Admins name the moderators on the same page. Reports never block anybody by themselves, so that a few accounts or bots cannot silence a player; only moderators and admins block.
 
 Blocks can also be managed directly:
 

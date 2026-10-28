@@ -1,7 +1,6 @@
 import type pg from 'pg'
 import { Result, err, ok } from 'neverthrow'
 import type { ReportCategory, ReportedUser } from '../sharedTypes/typesReports'
-import { autoBlockDurationHours, autoBlockReporters, autoBlockWindow, automaticModeratorID } from '../sharedDefinitions/reports'
 import { editUserDescription, getUser } from './user'
 import { resetModerationDataOfUser, setModerationData } from './moderation'
 import { selectRandomProfilePicture } from './picture'
@@ -15,16 +14,10 @@ export async function isModerator(pgPool: pg.Pool, userID: number): Promise<bool
 export type AddReportError = 'USER_NOT_FOUND' | 'SELF_REPORT' | 'ALREADY_REPORTED'
 
 /**
- * Stores a report. A reporter can have only one open report per user. When enough different users
- * report the same user within the window, that user is blocked automatically for a short time.
+ * Stores a report. A reporter can have only one open report per user. Reports never block anybody
+ * by themselves: a few accounts, or bots, could otherwise silence any player. Only moderators block.
  */
-export async function addReport(
-  pgPool: pg.Pool,
-  reporterID: number,
-  username: string,
-  category: ReportCategory,
-  body: string
-): Promise<Result<{ userID: number; autoBlocked: boolean }, AddReportError>> {
+export async function addReport(pgPool: pg.Pool, reporterID: number, username: string, category: ReportCategory, body: string): Promise<Result<number, AddReportError>> {
   const user = await getUser(pgPool, { username })
   if (user.isErr()) return err('USER_NOT_FOUND')
   if (user.value.id === reporterID) return err('SELF_REPORT')
@@ -34,20 +27,7 @@ export async function addReport(
 
   await pgPool.query('INSERT INTO reports (reporterid, userid, category, body) VALUES ($1, $2, $3, $4);', [reporterID, user.value.id, category, body])
 
-  let autoBlocked = false
-  if (user.value.blockedByModerationUntil == null) {
-    const reporters = await pgPool.query<{ n: number }>(
-      `SELECT COUNT(DISTINCT reporterid)::int AS n FROM reports WHERE userid = $1 AND handled IS NULL AND created > NOW() - interval '${autoBlockWindow}';`,
-      [user.value.id]
-    )
-    if (reporters.rows[0].n >= autoBlockReporters) {
-      const until = new Date(Date.now() + autoBlockDurationHours * 60 * 60 * 1000).toISOString()
-      const res = await setModerationData(pgPool, user.value.id, user.value.email, `Automatic: ${autoBlockReporters} reports`, until, automaticModeratorID)
-      autoBlocked = res.isOk()
-    }
-  }
-
-  return ok({ userID: user.value.id, autoBlocked })
+  return ok(user.value.id)
 }
 
 export async function countOpenReports(pgPool: pg.Pool): Promise<number> {

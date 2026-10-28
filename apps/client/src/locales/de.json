@@ -980,7 +980,7 @@
       "other": "Sonstiges"
     },
     "keinZugang": "Diese Seite ist nur für Moderatoren.",
-    "einleitung": "Hier stehen alle Spieler mit offenen Meldungen. Melden drei verschiedene Spieler denselben Spieler innerhalb von 24 Stunden, wird er automatisch für 24 Stunden gesperrt, bis ihr entscheidet. Gesperrte Spieler können nicht chatten und Profilbild und Profiltext nicht ändern.",
+    "einleitung": "Hier stehen alle Spieler mit offenen Meldungen. Meldungen sperren niemanden von selbst, das entscheidet ihr. Gesperrte Spieler können nicht chatten und Profilbild und Profiltext nicht ändern.",
     "keineMeldungen": "Keine offenen Meldungen.",
     "gesperrtBis": "gesperrt bis {datum}",
     "geloeschterNutzer": "gelöschtes Konto",

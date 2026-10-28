@@ -71,28 +71,21 @@ describe('Moderation test suite via socket.io', () => {
     expect(reports.data).toEqual([])
   })
 
-  test('Three different reporters block a user automatically, at once and only until a moderator unblocks', async () => {
+  test('Reports alone never block a user, however many there are', async () => {
     const target = usersWithSockets[5]
-    const before = await target.socket.emitWithAck(5000, 'channel:sendMessage', { channel: 'general', body: 'hello' })
-    expect(before.status).toBe(200)
-
-    for (const i of [1, 2, 3]) {
+    for (const i of [1, 2, 3, 4]) {
       expect((await report(i, target.username, 'chat', 'insults')).status).toBe(200)
     }
 
-    const blocked = await target.socket.emitWithAck(5000, 'channel:sendMessage', { channel: 'general', body: 'hello' })
-    expect(blocked.status).toBe(400)
-    expect(blocked.error).toBe('BlockedByModeration')
+    const message = await target.socket.emitWithAck(5000, 'channel:sendMessage', { channel: 'general', body: 'hello' })
+    expect(message.status).toBe(200)
 
     const reports = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:reports')
     const entry = reports.data?.find((r) => r.username === target.username)
-    expect(entry?.reports).toHaveLength(3)
-    expect(entry?.blockedUntil).not.toBeNull()
+    expect(entry?.reports).toHaveLength(4)
+    expect(entry?.blockedUntil).toBeNull()
 
-    const unblock = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:unblock', target.username)
-    expect(unblock.status).toBe(200)
-    const after = await target.socket.emitWithAck(5000, 'channel:sendMessage', { channel: 'general', body: 'hello again' })
-    expect(after.status).toBe(200)
+    await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:dismiss', target.username)
   })
 
   test('A moderator blocks a user and resets the profile text', async () => {

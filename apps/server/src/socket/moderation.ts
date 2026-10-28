@@ -60,7 +60,6 @@ export function registerModerationHandlers(pgPool: pg.Pool, socket: GeneralSocke
     try {
       const res = await addReport(pgPool, socket.data.userID, data.username, data.category, data.body)
       if (res.isErr()) return cb({ status: 400, error: res.error })
-      if (res.value.autoBlocked) setBlockedOnSockets(res.value.userID, true)
       await updateModerators(pgPool)
       return cb({ status: 200, data: null })
     } catch (err) {
