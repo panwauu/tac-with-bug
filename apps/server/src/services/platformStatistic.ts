@@ -91,11 +91,13 @@ export async function calculateBotStatistic(pgPool: pg.Pool): Promise<BotStatist
     coop_games: number
     coop_cards: number | null
   }>(`
-    WITH bot_games AS (
+    WITH bot_account_games AS (
+      SELECT DISTINCT utg.gameid FROM users_to_games utg JOIN users u ON u.id = utg.userid WHERE u.bot_account
+    ), bot_games AS (
       SELECT gr.gameid, gr.n_players, gr.coop, gr.cards, gr.winning_seats, gr.lastplayed, g.n_teams, g.bots
       FROM game_results gr JOIN games g ON g.id = gr.gameid
       WHERE cardinality(array_remove(g.bots[1:gr.n_players], NULL)) > 0
-        OR EXISTS (SELECT 1 FROM users_to_games utg JOIN users u ON u.id = utg.userid WHERE utg.gameid = gr.gameid AND u.bot_account)
+        OR gr.gameid IN (SELECT gameid FROM bot_account_games)
     ), seats AS (
       SELECT bg.*, s.seat, bg.bots[s.seat + 1] AS botid, utg.userid, u.username,
         (bg.bots[s.seat + 1] IS NULL AND utg.userid IS NOT NULL AND NOT u.bot_account) AS human
@@ -103,12 +105,18 @@ export async function calculateBotStatistic(pgPool: pg.Pool): Promise<BotStatist
       CROSS JOIN LATERAL generate_series(0, bg.n_players - 1) AS s(seat)
       LEFT JOIN users_to_games utg ON utg.gameid = bg.gameid AND utg.player_index = s.seat
       LEFT JOIN users u ON u.id = utg.userid
+    ), counted_seats AS (
+      -- A seat plays against humans only if all non-humans of the game sit in its own team. Counting them per game
+      -- and per team with window functions keeps this linear; a lookup into the other seats per seat was quadratic.
+      SELECT t.*,
+        COUNT(*) FILTER (WHERE NOT t.human) OVER (PARTITION BY t.gameid)
+          = COUNT(*) FILTER (WHERE NOT t.human) OVER (PARTITION BY t.gameid, t.seat % t.n_teams) AS against_humans
+      FROM seats t
     ), bot_seats AS (
       SELECT t.*,
         CASE WHEN t.botid IS NOT NULL THEN 'b' || t.botid ELSE 'a' || t.userid END AS key,
-        t.seat = ANY(t.winning_seats) AS won,
-        NOT EXISTS (SELECT 1 FROM seats o WHERE o.gameid = t.gameid AND o.seat % t.n_teams <> t.seat % t.n_teams AND NOT o.human) AS against_humans
-      FROM seats t
+        t.seat = ANY(t.winning_seats) AS won
+      FROM counted_seats t
       WHERE t.botid IS NOT NULL OR (t.userid IS NOT NULL AND NOT t.human)
     ), per_game AS (
       SELECT key, MAX(botid) AS botid, MAX(username) AS username, gameid, bool_or(coop) AS coop, MAX(cards) AS cards,
