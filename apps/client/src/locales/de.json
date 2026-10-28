@@ -790,6 +790,9 @@
     "menuGames": "Spiele",
     "menuFriends": "Freunde",
     "menuSocials": "Soziales",
+    "gamesAll": "Alle Partien",
+    "gamesHumans": "Gegen Menschen",
+    "gamesBots": "Mit Bots",
     "Friends": {
       "username": "Benutzername",
       "friendssince": "Freunde seit",

@@ -790,6 +790,9 @@
     "menuGames": "Игры",
     "menuFriends": "Друзья",
     "menuSocials": "Социальное",
+    "gamesAll": "Все игры",
+    "gamesHumans": "Против людей",
+    "gamesBots": "С ботами",
     "Friends": {
       "username": "Имя пользователя",
       "friendssince": "Друзья с",

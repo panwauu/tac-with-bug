@@ -1,7 +1,7 @@
 import type pg from 'pg'
 import type * as tStatistic from '../sharedTypes/typesPlayerStatistic'
 import type { GameForPlay, GameStatistic, GameStatisticActionsType, GameStatisticCardsType } from '@repo/core/types'
-import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
+import type { PlayerFrontendStatistic, ProfileGames } from '../sharedTypes/typesPlayerStatistic'
 
 import { initalizeStatistic } from '@repo/core/game/statistic'
 import { getGamesByID } from './game'
@@ -156,11 +156,26 @@ export function addGameToPlayerStatistic(playerStatistic: tStatistic.PlayerStati
 // of an account with thousands of games at once took tens of MB per call.
 export const PROFILE_GAMES_BATCH_SIZE = 200
 
-export async function getPlayerStats(sqlClient: pg.Pool, userID: number, batchSize: number = PROFILE_GAMES_BATCH_SIZE) {
+/**
+ * A game with bots has a bot of Tac-With-Bug (games.bots, which keeps the bots that were replaced during the game) or the
+ * account of an external bot that logs in like a user (users.bot_account), the same rule as for the leaderboards.
+ */
+const GAME_WITH_BOTS = `(
+  cardinality(array_remove(games.bots, NULL)) > 0
+  OR EXISTS (SELECT 1 FROM users_to_games AS players JOIN users AS bot ON bot.id = players.userid WHERE players.gameid = games.id AND bot.bot_account)
+)`
+
+const GAMES_FILTER: Record<ProfileGames, string> = {
+  all: 'TRUE',
+  humans: `NOT ${GAME_WITH_BOTS}`,
+  bots: GAME_WITH_BOTS,
+}
+
+export async function getPlayerStats(sqlClient: pg.Pool, userID: number, batchSize: number = PROFILE_GAMES_BATCH_SIZE, games: ProfileGames = 'all') {
   // Same games in the same order as before: in id order (as returned by getGames), then sorted by the last move with the
   // same comparison and the same Date.parse as in queryGamesByID, so that games with equal times keep their order.
   const dbRes = await sqlClient.query(
-    'SELECT games.id, games.lastplayed FROM users_to_games JOIN games ON games.id = users_to_games.gameid WHERE users_to_games.userid = $1 ORDER BY games.id;',
+    `SELECT games.id, games.lastplayed FROM users_to_games JOIN games ON games.id = users_to_games.gameid WHERE users_to_games.userid = $1 AND ${GAMES_FILTER[games]} ORDER BY games.id;`,
     [userID]
   )
   const order: Array<{ id: number; lastPlayed: number }> = dbRes.rows.map((row) => ({ id: row.id, lastPlayed: Date.parse(row.lastplayed) }))
@@ -184,13 +199,13 @@ export async function getPlayerStats(sqlClient: pg.Pool, userID: number, batchSi
   return sum
 }
 
-export async function getDataForProfilePage(sqlClient: pg.Pool, username: string): Promise<PlayerFrontendStatistic> {
+export async function getDataForProfilePage(sqlClient: pg.Pool, username: string, games: ProfileGames = 'all'): Promise<PlayerFrontendStatistic> {
   const user = await getUser(sqlClient, { username: username })
   if (user.isErr()) {
     throw new Error(user.error)
   }
 
-  const stat = await getPlayerStats(sqlClient, user.value.id)
+  const stat = await getPlayerStats(sqlClient, user.value.id, PROFILE_GAMES_BATCH_SIZE, games)
 
   const sub = await isSubscribed(sqlClient, username, false)
   const subscribed = sub.isErr() ? false : sub.value
