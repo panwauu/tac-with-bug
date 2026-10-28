@@ -1,178 +1,238 @@
 <template>
   <div class="moderation">
-    <h2 class="moderation-titel">{{ t('Moderation.titel') }}</h2>
-    <div
-      v-if="!moderationStore.moderator"
-      class="p-card moderation-karte"
-    >
-      <p>{{ t('Moderation.keinZugang') }}</p>
+    <div class="moderation-kopfzeile">
+      <h2>{{ t('Moderation.titel') }}</h2>
+      <PlayersAutoComplete
+        v-if="moderationStore.moderator"
+        v-model:username="gesuchterSpieler"
+        class="moderation-suche"
+      />
     </div>
-    <template v-else>
-      <div class="p-card moderation-karte">
-        <p>{{ t('Moderation.einleitung') }}</p>
-      </div>
 
-      <p
-        v-if="reportedUsers.length === 0"
-        class="moderation-leer"
-      >
-        {{ t('Moderation.keineMeldungen') }}
-      </p>
-      <div
-        v-for="u in reportedUsers"
-        :key="u.username"
-        class="p-card moderation-karte"
-      >
-        <div class="moderation-kopf">
-          <ProfilePicture
-            :username="u.username"
-            class="moderation-bild"
-          />
-          <div>
-            <router-link :to="{ name: 'Profile', params: { username: u.username } }">
-              <strong>{{ u.username }}</strong>
-            </router-link>
-            <Tag
-              v-if="u.blockedUntil != null"
-              severity="danger"
-              class="moderation-tag"
-              :value="t('Moderation.gesperrtBis', { datum: new Date(u.blockedUntil).toLocaleString() })"
-            />
-            <p
-              v-if="u.userDescription !== ''"
-              class="moderation-profiltext"
-            >
-              {{ u.userDescription }}
-            </p>
-          </div>
-        </div>
-        <ul class="moderation-meldungen">
-          <li
-            v-for="(r, i) in u.reports"
-            :key="i"
-          >
-            <strong>{{ t(`Moderation.kategorie.${r.category}`) }}</strong>
-            · {{ r.reporter ?? t('Moderation.geloeschterNutzer') }} · {{ new Date(r.created).toLocaleString() }}
-            <div v-if="r.body !== ''">{{ r.body }}</div>
-          </li>
-        </ul>
-        <div class="moderation-aktionen">
-          <Select
-            v-model="tage[u.username]"
-            :options="dauerOptionen"
-            option-label="label"
-            option-value="value"
-            :placeholder="t('Moderation.dauer')"
-          />
-          <InputText
-            v-model="grund[u.username]"
-            :placeholder="t('Moderation.sperrgrund')"
-            maxlength="200"
-          />
-          <div class="moderation-check">
-            <Checkbox
-              v-model="zuruecksetzen[u.username]"
-              :input-id="`reset-${u.username}`"
-              binary
-            />
-            <label :for="`reset-${u.username}`">{{ t('Moderation.profilZuruecksetzen') }}</label>
-          </div>
-          <Button
+    <p v-if="!moderationStore.moderator">{{ t('Moderation.keinZugang') }}</p>
+    <Tabs
+      v-else
+      v-model:value="tab"
+    >
+      <TabList>
+        <Tab value="meldungen">
+          {{ t('Moderation.meldungen') }}
+          <Badge
+            v-if="reportedUsers.length > 0"
+            :value="reportedUsers.length"
             severity="danger"
-            icon="pi pi-ban"
-            :label="t('Moderation.sperren')"
-            :disabled="tage[u.username] == null || (grund[u.username] ?? '').trim() === ''"
-            @click="sperren(u.username)"
-          />
-          <Button
-            v-if="u.blockedUntil != null"
-            severity="secondary"
-            icon="pi pi-unlock"
-            :label="t('Moderation.entsperren')"
-            @click="aktion('moderation:unblock', u.username)"
-          />
-          <Button
-            severity="secondary"
-            text
-            icon="pi pi-check"
-            :label="t('Moderation.ablehnen')"
-            @click="aktion('moderation:dismiss', u.username)"
-          />
-        </div>
-      </div>
-
-      <div
-        v-if="moderationStore.admin"
-        class="p-card moderation-karte"
-      >
-        <h3>{{ t('Moderation.moderatoren') }}</h3>
-        <p v-if="moderatoren.length === 0">{{ t('Moderation.keineModeratoren') }}</p>
-        <div
-          v-for="m in moderatoren"
-          :key="m"
-          class="moderation-moderator"
-        >
-          <router-link :to="{ name: 'Profile', params: { username: m } }">{{ m }}</router-link>
-          <Button
             size="small"
-            text
-            severity="danger"
-            icon="pi pi-times"
-            :aria-label="t('Moderation.entfernen')"
-            @click="setzeModerator(m, false)"
           />
-        </div>
-        <div class="moderation-aktionen">
-          <InputText
-            v-model="neuerModerator"
-            :placeholder="t('Moderation.benutzername')"
-          />
-          <Button
-            icon="pi pi-plus"
-            :label="t('Moderation.ernennen')"
-            :disabled="neuerModerator.trim() === ''"
-            @click="setzeModerator(neuerModerator.trim(), true)"
-          />
-        </div>
-      </div>
-    </template>
+        </Tab>
+        <Tab value="gesperrt">
+          {{ t('Moderation.gesperrteSpieler') }}
+          <span
+            v-if="gesperrte.length > 0"
+            class="moderation-zahl"
+          >
+            {{ gesperrte.length }}
+          </span>
+        </Tab>
+        <Tab
+          v-if="moderationStore.admin"
+          value="moderatoren"
+        >
+          {{ t('Moderation.moderatoren') }}
+        </Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel value="meldungen">
+          <p class="moderation-hinweis">{{ t('Moderation.einleitung') }}</p>
+          <p
+            v-if="reportedUsers.length === 0"
+            class="moderation-leer"
+          >
+            {{ t('Moderation.keineMeldungen') }}
+          </p>
+          <div
+            v-for="u in reportedUsers"
+            :key="u.username"
+            class="moderation-eintrag"
+          >
+            <div class="moderation-zeile">
+              <button
+                type="button"
+                class="moderation-name"
+                @click="verlaufOeffnen(u.username)"
+              >
+                <PlayerWithPicture
+                  :username="u.username"
+                  :name-first="false"
+                  :clickable="false"
+                />
+              </button>
+              <Tag
+                v-if="u.blockedUntil != null"
+                severity="danger"
+                :value="t('Moderation.gesperrtBis', { datum: datum(u.blockedUntil) })"
+              />
+              <div class="moderation-aktionen">
+                <Button
+                  size="small"
+                  severity="danger"
+                  outlined
+                  :label="t('Moderation.pruefen')"
+                  @click="verlaufOeffnen(u.username)"
+                />
+                <Button
+                  size="small"
+                  severity="secondary"
+                  text
+                  :label="t('Moderation.ablehnen')"
+                  @click="aktion('moderation:dismiss', u.username)"
+                />
+              </div>
+            </div>
+            <ReportList :reports="u.reports" />
+          </div>
+        </TabPanel>
+
+        <TabPanel value="gesperrt">
+          <p
+            v-if="gesperrte.length === 0"
+            class="moderation-leer"
+          >
+            {{ t('Moderation.keineGesperrten') }}
+          </p>
+          <div
+            v-for="b in gesperrte"
+            :key="b.username"
+            class="moderation-eintrag moderation-zeile"
+          >
+            <button
+              type="button"
+              class="moderation-name"
+              @click="verlaufOeffnen(b.username)"
+            >
+              <PlayerWithPicture
+                :username="b.username"
+                :name-first="false"
+                :clickable="false"
+              />
+            </button>
+            <span class="moderation-leise">
+              {{ t('Moderation.bis', { datum: datum(b.blockedUntil) }) }}
+              <template v-if="b.reason != null && b.reason !== ''">· {{ b.reason }}</template>
+            </span>
+            <Button
+              class="moderation-aktionen"
+              size="small"
+              severity="secondary"
+              text
+              icon="pi pi-unlock"
+              :label="t('Moderation.entsperren')"
+              @click="aktion('moderation:unblock', b.username)"
+            />
+          </div>
+        </TabPanel>
+
+        <TabPanel
+          v-if="moderationStore.admin"
+          value="moderatoren"
+        >
+          <p
+            v-if="moderatoren.length === 0"
+            class="moderation-leer"
+          >
+            {{ t('Moderation.keineModeratoren') }}
+          </p>
+          <div
+            v-for="m in moderatoren"
+            :key="m"
+            class="moderation-eintrag moderation-zeile"
+          >
+            <PlayerWithPicture
+              :username="m"
+              :name-first="false"
+            />
+            <Button
+              class="moderation-aktionen"
+              size="small"
+              text
+              severity="secondary"
+              icon="pi pi-times"
+              :aria-label="t('Moderation.entfernen')"
+              @click="setzeModerator(m, false)"
+            />
+          </div>
+          <form
+            class="moderation-zeile moderation-neu"
+            @submit.prevent="setzeModerator(neuerModerator ?? '', true)"
+          >
+            <PlayersAutoComplete
+              v-model:username="neuerModerator"
+              :players-to-avoid="moderatoren"
+              class="moderation-suche"
+            />
+            <Button
+              type="submit"
+              size="small"
+              :label="t('Moderation.ernennen')"
+              :disabled="neuerModerator == null || neuerModerator === ''"
+            />
+          </form>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
+
+    <ModerationUserDialog
+      v-if="verlaufSpieler != null"
+      v-model:visible="verlaufSichtbar"
+      :username="verlaufSpieler"
+      @changed="laden"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-// Moderation (#254): offene Meldungen ansehen, sperren, entsperren oder ablehnen.
-// Nur für Moderatoren und Admins; Admins ernennen hier auch die Moderatoren.
+// Moderation (#254): offene Meldungen, gesperrte Spieler und (für Admins) die Moderatoren.
+// Sperren, Entsperren und der Verlauf eines Spielers liegen im Dialog, damit die Liste übersichtlich bleibt.
+import Badge from 'primevue/badge'
 import Button from 'primevue/button'
-import Checkbox from 'primevue/checkbox'
-import InputText from 'primevue/inputtext'
-import Select from 'primevue/select'
+import Tab from 'primevue/tab'
+import TabList from 'primevue/tablist'
+import TabPanel from 'primevue/tabpanel'
+import TabPanels from 'primevue/tabpanels'
+import Tabs from 'primevue/tabs'
 import Tag from 'primevue/tag'
 import { useToast } from 'primevue/usetoast'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import ProfilePicture from '@/components/ProfilePicture.vue'
+import ModerationUserDialog from '@/components/Moderation/ModerationUserDialog.vue'
+import ReportList from '@/components/Moderation/ReportList.vue'
+import PlayersAutoComplete from '@/components/PlayersAutoComplete.vue'
+import PlayerWithPicture from '@/components/PlayerWithPicture.vue'
 import { injectStrict, SocketKey } from '@/services/injections'
 import { useModerationStore } from '@/store/moderation'
-import type { ReportedUser } from '@/../../server/src/sharedTypes/typesReports'
+import type { BlockedUser, ReportedUser } from '@/../../server/src/sharedTypes/typesReports'
 
 const { t } = useI18n()
 const toast = useToast()
 const socket = injectStrict(SocketKey)
 const moderationStore = useModerationStore()
 
+const tab = ref('meldungen')
 const reportedUsers = ref<ReportedUser[]>([])
+const gesperrte = ref<BlockedUser[]>([])
 const moderatoren = ref<string[]>([])
-const tage = ref<Record<string, number | undefined>>({})
-const grund = ref<Record<string, string>>({})
-const zuruecksetzen = ref<Record<string, boolean>>({})
-const neuerModerator = ref('')
+const neuerModerator = ref<string | null>(null)
+const gesuchterSpieler = ref<string | null>(null)
+const verlaufSpieler = ref<string | null>(null)
+const verlaufSichtbar = ref(false)
 
-const dauerOptionen = [1, 7, 30, 365].map((d) => ({ value: d, label: t(`Moderation.dauerTage.d${d}`) }))
+const datum = (d: string) => new Date(d).toLocaleDateString()
 
 async function laden() {
   if (!moderationStore.moderator) return
   const res = await socket.emitWithAck(5000, 'moderation:reports')
   if (res.status === 200 && res.data != null) reportedUsers.value = res.data
+  const b = await socket.emitWithAck(5000, 'moderation:blocked')
+  if (b.status === 200 && b.data != null) gesperrte.value = b.data
   if (moderationStore.admin) {
     const m = await socket.emitWithAck(5000, 'moderation:moderators')
     if (m.status === 200 && m.data != null) moderatoren.value = m.data
@@ -182,19 +242,20 @@ async function laden() {
 // Neu laden, wenn der Status kommt oder sich die Zahl der Meldungen ändert
 watch(() => [moderationStore.moderator, moderationStore.openReports], laden, { immediate: true })
 
-function ergebnis(status: number) {
-  if (status !== 200) toast.add({ severity: 'error', life: 5000, summary: t('Moderation.fehler') })
+// Ein Spieler aus der Suche öffnet gleich seinen Verlauf
+watch(gesuchterSpieler, (name) => {
+  if (name == null || name === '') return
+  verlaufOeffnen(name)
+  gesuchterSpieler.value = null
+})
+
+function verlaufOeffnen(username: string) {
+  verlaufSpieler.value = username
+  verlaufSichtbar.value = true
 }
 
-async function sperren(username: string) {
-  const res = await socket.emitWithAck(5000, 'moderation:block', {
-    username,
-    days: tage.value[username] ?? 1,
-    reason: (grund.value[username] ?? '').trim(),
-    resetProfile: zuruecksetzen.value[username] ?? false,
-  })
-  ergebnis(res.status)
-  await laden()
+function ergebnis(status: number) {
+  if (status !== 200) toast.add({ severity: 'error', life: 5000, summary: t('Moderation.fehler') })
 }
 
 async function aktion(ereignis: 'moderation:unblock' | 'moderation:dismiss', username: string) {
@@ -204,73 +265,94 @@ async function aktion(ereignis: 'moderation:unblock' | 'moderation:dismiss', use
 }
 
 async function setzeModerator(username: string, moderator: boolean) {
+  if (username === '') return
   const res = await socket.emitWithAck(5000, 'moderation:setModerator', { username, moderator })
   ergebnis(res.status)
   if (res.status === 200 && res.data != null) {
     moderatoren.value = res.data
-    neuerModerator.value = ''
+    neuerModerator.value = null
   }
 }
 </script>
 
 <style scoped>
 .moderation {
-  flex: 0 1 900px;
+  flex: 0 1 800px;
   max-width: 100%;
   padding: 10px;
   text-align: left;
 }
-.moderation-titel {
-  margin-top: 0;
-  text-align: center;
+.moderation-kopfzeile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
 }
-.moderation-karte {
-  padding: 5px 15px 15px 15px;
-  margin-bottom: 15px;
+.moderation-kopfzeile h2 {
+  margin: 0;
+}
+.moderation-suche {
+  flex: 0 1 260px;
+}
+.moderation-hinweis {
+  margin: 0 0 12px 0;
+  font-size: small;
+  opacity: 0.7;
 }
 .moderation-leer {
   text-align: center;
   opacity: 0.7;
+  padding: 20px 0;
 }
-.moderation-kopf {
+.moderation-zahl {
+  margin-left: 6px;
+  opacity: 0.6;
+}
+.moderation-eintrag {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--p-content-border-color);
+}
+.moderation-eintrag:last-of-type {
+  border-bottom: none;
+}
+.moderation-zeile {
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  padding-top: 10px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-.moderation-bild {
-  width: 56px;
-  height: 56px;
-  flex: 0 0 56px;
+.moderation-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
 }
-.moderation-tag {
-  margin-left: 8px;
+.moderation-name:hover {
+  text-decoration: underline;
 }
-.moderation-profiltext {
-  margin: 6px 0 0 0;
-  font-style: italic;
-  overflow-wrap: anywhere;
-}
-.moderation-meldungen {
-  padding-left: 1.2em;
-  line-height: 1.5;
+.moderation-leise {
+  font-size: small;
+  opacity: 0.7;
   overflow-wrap: anywhere;
 }
 .moderation-aktionen {
+  margin-left: auto;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
+  gap: 4px;
 }
-.moderation-check {
-  display: flex;
-  gap: 6px;
-  align-items: center;
+.moderation-eintrag :deep(.meldungen) {
+  margin-top: 8px;
+  padding-left: 35px;
 }
-.moderation-moderator {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 300px;
+.moderation-neu {
+  margin-top: 12px;
 }
 </style>

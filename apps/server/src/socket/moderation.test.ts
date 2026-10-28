@@ -109,6 +109,96 @@ describe('Moderation test suite via socket.io', () => {
     await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:unblock', target.username)
   })
 
+  test('The history of a user shows all blocks and reports, the blocked list shows running blocks', async () => {
+    const target = usersWithSockets[4]
+    const normal = await usersWithSockets[1].socket.emitWithAck(5000, 'moderation:history', target.username)
+    expect(normal.status).toBe(403)
+    const unknown = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:history', 'NoSuchUserAtAll')
+    expect(unknown.status).toBe(400)
+    expect(unknown.error).toBe('USER_NOT_FOUND')
+
+    // The block of the previous test was lifted again: the history keeps it, the blocked list does not show the user
+    const lifted = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:history', target.username)
+    expect(lifted.status).toBe(200)
+    expect(lifted.data?.blockedUntil).toBeNull()
+    expect(lifted.data?.blocks).toHaveLength(1)
+    expect(lifted.data?.blocks[0]).toMatchObject({ reason: 'Profile text', moderator: usersWithSockets[0].username })
+    expect(lifted.data?.reports).toHaveLength(1)
+    expect(lifted.data?.reports[0]).toMatchObject({ reporter: usersWithSockets[1].username, category: 'description', handledBy: usersWithSockets[0].username })
+    expect(lifted.data?.reports[0].handled).not.toBeNull()
+
+    const notBlocked = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:blocked')
+    expect(notBlocked.status).toBe(200)
+    expect(notBlocked.data?.find((b) => b.username === target.username)).toBeUndefined()
+
+    // A new block appears in the history and in the blocked list, with the moderator and the reason
+    const res = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:block', { username: target.username, days: 30, reason: 'Chat: insults', resetProfile: false })
+    expect(res.status).toBe(200)
+    const history = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:history', target.username)
+    expect(history.data?.blockedUntil).not.toBeNull()
+    expect(history.data?.blocks).toHaveLength(2)
+    expect(history.data?.blocks[0].reason).toBe('Chat: insults')
+    expect(history.data?.blocks[0].blockedUntil).toBe(history.data?.blockedUntil)
+
+    const blocked = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:blocked')
+    expect(blocked.data?.find((b) => b.username === target.username)).toMatchObject({ reason: 'Chat: insults', moderator: usersWithSockets[0].username })
+    const forbidden = await usersWithSockets[1].socket.emitWithAck(5000, 'moderation:blocked')
+    expect(forbidden.status).toBe(403)
+
+    // Unblocking without open reports works as well and removes the user from the blocked list
+    const unblock = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:unblock', target.username)
+    expect(unblock.status).toBe(200)
+    const afterwards = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:blocked')
+    expect(afterwards.data?.find((b) => b.username === target.username)).toBeUndefined()
+    const message = await target.socket.emitWithAck(5000, 'channel:sendMessage', { channel: 'general', body: 'hello again' })
+    expect(message.status).toBe(200)
+  })
+
+  test('A chat message can be reported; the server stores a copy, but only of messages the reporter can see', async () => {
+    const target = usersWithSockets[2]
+    expect((await target.socket.emitWithAck(5000, 'channel:sendMessage', { channel: 'general', body: 'reported words' })).status).toBe(200)
+    const sent = await testServer.pgPool.query('SELECT id FROM channel_messages WHERE sender = $1 ORDER BY id DESC LIMIT 1;', [target.id])
+    const channelMessage = { type: 'channel' as const, id: sent.rows[0].id }
+
+    // Not written by the reported user
+    const wrongUser = await usersWithSockets[3].socket.emitWithAck(5000, 'moderation:report', {
+      username: usersWithSockets[1].username,
+      category: 'chat',
+      body: '',
+      message: channelMessage,
+    })
+    expect(wrongUser.error).toBe('MESSAGE_NOT_FOUND')
+
+    // A private chat of others can not be pulled into a report
+    const chat = await testServer.pgPool.query<{ id: number }>('INSERT INTO chats (group_chat) VALUES (FALSE) RETURNING id;')
+    await testServer.pgPool.query('INSERT INTO users_to_chats (userid, chatid) VALUES ($1, $3), ($2, $3);', [target.id, usersWithSockets[4].id, chat.rows[0].id])
+    const privat = await testServer.pgPool.query<{ id: number }>("INSERT INTO chat_messages (sender, chatid, body) VALUES ($1, $2, 'private words') RETURNING id;", [
+      target.id,
+      chat.rows[0].id,
+    ])
+    const outsider = await usersWithSockets[3].socket.emitWithAck(5000, 'moderation:report', {
+      username: target.username,
+      category: 'chat',
+      body: '',
+      message: { type: 'chat', id: privat.rows[0].id },
+    })
+    expect(outsider.error).toBe('MESSAGE_NOT_FOUND')
+
+    const res = await usersWithSockets[3].socket.emitWithAck(5000, 'moderation:report', {
+      username: target.username,
+      category: 'chat',
+      body: 'please check',
+      message: channelMessage,
+    })
+    expect(res.status).toBe(200)
+    const reports = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:reports')
+    const report = reports.data?.find((r) => r.username === target.username)?.reports[0]
+    expect(report).toMatchObject({ category: 'chat', body: 'please check', message: 'reported words' })
+    expect(report?.messageCreated).not.toBeNull()
+
+    await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:dismiss', target.username)
+  })
+
   test('Only admins name moderators, who then see the reports', async () => {
     const notAdmin = await usersWithSockets[1].socket.emitWithAck(5000, 'moderation:setModerator', { username: usersWithSockets[1].username, moderator: true })
     expect(notAdmin.status).toBe(403)

@@ -5,7 +5,19 @@ import { reportCategories, type ModerationStatus } from '../sharedTypes/typesRep
 import { maxReportBodyLength } from '../sharedDefinitions/reports'
 import logger from '../helpers/logger'
 import { isAdmin } from '../helpers/authentication'
-import { addReport, blockUser, countOpenReports, dismissReports, getModerators, getOpenReports, isModerator, setModerator, unblockUser } from '../services/reports'
+import {
+  addReport,
+  blockUser,
+  countOpenReports,
+  dismissReports,
+  getBlockedUsers,
+  getModerators,
+  getOpenReports,
+  getUserHistory,
+  isModerator,
+  setModerator,
+  unblockUser,
+} from '../services/reports'
 import { nspGeneral } from './general'
 
 async function getModerationStatus(pgPool: pg.Pool, userID: number | undefined): Promise<ModerationStatus> {
@@ -53,12 +65,13 @@ export function registerModerationHandlers(pgPool: pg.Pool, socket: GeneralSocke
         .valid(...reportCategories)
         .required(),
       body: Joi.string().allow('').max(maxReportBodyLength).required(),
+      message: Joi.object({ type: Joi.string().valid('chat', 'channel').required(), id: Joi.number().integer().required() }),
     })
     const { error } = schema.validate(data)
     if (error != null) return cb({ status: 422, error })
 
     try {
-      const res = await addReport(pgPool, socket.data.userID, data.username, data.category, data.body)
+      const res = await addReport(pgPool, socket.data.userID, data.username, data.category, data.body, data.message)
       if (res.isErr()) return cb({ status: 400, error: res.error })
       await updateModerators(pgPool)
       return cb({ status: 200, data: null })
@@ -140,6 +153,31 @@ export function registerModerationHandlers(pgPool: pg.Pool, socket: GeneralSocke
       return cb({ status: 200, data: null })
     } catch (err) {
       logger.error('Error in moderation:dismiss', err)
+      return cb({ status: 500, error: err })
+    }
+  })
+
+  socket.on('moderation:blocked', async (cb) => {
+    if (!(await onlyModerators(cb))) return
+    try {
+      return cb({ status: 200, data: await getBlockedUsers(pgPool) })
+    } catch (err) {
+      logger.error('Error in moderation:blocked', err)
+      return cb({ status: 500, error: err })
+    }
+  })
+
+  socket.on('moderation:history', async (username, cb) => {
+    if (!(await onlyModerators(cb))) return
+    const { error } = Joi.string().required().validate(username)
+    if (error != null) return cb({ status: 422, error })
+
+    try {
+      const res = await getUserHistory(pgPool, username)
+      if (res.isErr()) return cb({ status: 400, error: res.error })
+      return cb({ status: 200, data: res.value })
+    } catch (err) {
+      logger.error('Error in moderation:history', err)
       return cb({ status: 500, error: err })
     }
   })

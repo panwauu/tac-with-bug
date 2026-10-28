@@ -688,7 +688,8 @@ CREATE TABLE moderation (
   userid INT,
   email varchar(255),
   blockeduntil timestamptz NOT NULL,
-  reason varchar(200)
+  reason varchar(200),
+  created timestamptz NOT NULL DEFAULT current_timestamp
 );
 
 -- Games against the AI in the browser (#256): only how they ended, without any account or name. The game itself
@@ -712,5 +713,7 @@ CREATE TABLE reports (
   body varchar(500) NOT NULL DEFAULT '',
   created timestamptz NOT NULL DEFAULT current_timestamp,
   handled timestamptz,
-  handledbyuserid INT REFERENCES users (id) ON DELETE SET NULL
+  handledbyuserid INT REFERENCES users (id) ON DELETE SET NULL,
+  message TEXT,
+  message_created timestamptz
 );

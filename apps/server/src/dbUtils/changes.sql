@@ -30,3 +30,11 @@ CREATE TABLE IF NOT EXISTS reports (
   handled timestamptz,
   handledbyuserid INT REFERENCES users (id) ON DELETE SET NULL
 );
+
+-- When a block was issued, for the moderation history of a user. Blocks from before this column get the
+-- time of the migration, not their real date.
+ALTER TABLE moderation ADD COLUMN IF NOT EXISTS created timestamptz NOT NULL DEFAULT current_timestamp;
+
+-- A report can quote a chat or channel message. The server copies the text, because messages expire.
+ALTER TABLE reports ADD COLUMN IF NOT EXISTS message TEXT;
+ALTER TABLE reports ADD COLUMN IF NOT EXISTS message_created timestamptz;

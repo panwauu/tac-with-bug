@@ -983,7 +983,7 @@
       "other": "Sonstiges"
     },
     "keinZugang": "Diese Seite ist nur für Moderatoren.",
-    "einleitung": "Hier stehen alle Spieler mit offenen Meldungen. Meldungen sperren niemanden von selbst, das entscheidet ihr. Gesperrte Spieler können nicht chatten und Profilbild und Profiltext nicht ändern.",
+    "einleitung": "Meldungen sperren niemanden von selbst, das entscheidet ihr.",
     "keineMeldungen": "Keine offenen Meldungen.",
     "gesperrtBis": "gesperrt bis {datum}",
     "geloeschterNutzer": "gelöschtes Konto",
@@ -1001,9 +1001,20 @@
     "ablehnen": "Erledigt, keine Sperre",
     "moderatoren": "Moderatoren",
     "keineModeratoren": "Noch keine Moderatoren.",
-    "benutzername": "Benutzername",
     "ernennen": "Zum Moderator machen",
-    "entfernen": "Entfernen"
+    "entfernen": "Entfernen",
+    "gesperrt": "{username} wurde gesperrt.",
+    "verlauf": "Verlauf",
+    "nutzerNichtGefunden": "Spieler nicht gefunden.",
+    "offen": "offen",
+    "gesperrteSpieler": "Gesperrte Spieler",
+    "keineGesperrten": "Zurzeit ist niemand gesperrt.",
+    "meldungen": "Meldungen",
+    "pruefen": "Prüfen",
+    "bis": "bis {datum}",
+    "keinVerlauf": "Noch nie gemeldet oder gesperrt.",
+    "sperre": "Sperre",
+    "nachrichtMelden": "Nachricht melden"
   },
   "PlayerSearch": {
     "noResults": "Keine Spieler gefunden"

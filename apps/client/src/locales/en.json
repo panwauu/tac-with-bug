@@ -983,7 +983,7 @@
       "other": "Other"
     },
     "keinZugang": "This page is only for moderators.",
-    "einleitung": "Here are all players with open reports. Reports never block anybody by themselves, you decide. Blocked players cannot chat and cannot change their profile picture or profile text.",
+    "einleitung": "Reports never block anybody by themselves, you decide.",
     "keineMeldungen": "No open reports.",
     "gesperrtBis": "blocked until {datum}",
     "geloeschterNutzer": "deleted account",
@@ -1001,9 +1001,20 @@
     "ablehnen": "Done, no block",
     "moderatoren": "Moderators",
     "keineModeratoren": "No moderators yet.",
-    "benutzername": "Username",
     "ernennen": "Make moderator",
-    "entfernen": "Remove"
+    "entfernen": "Remove",
+    "gesperrt": "{username} has been blocked.",
+    "verlauf": "History",
+    "nutzerNichtGefunden": "Player not found.",
+    "offen": "open",
+    "gesperrteSpieler": "Blocked players",
+    "keineGesperrten": "Nobody is blocked at the moment.",
+    "meldungen": "Reports",
+    "pruefen": "Review",
+    "bis": "until {datum}",
+    "keinVerlauf": "Never reported or blocked.",
+    "sperre": "Block",
+    "nachrichtMelden": "Report message"
   },
   "PlayerSearch": {
     "noResults": "No players found"
