@@ -1,6 +1,6 @@
 import type express from 'express'
 import type { TournamentParticipation } from '../sharedTypes/typesTournament'
-import type { PlayerFrontendStatistic } from '../sharedTypes/typesPlayerStatistic'
+import type { PlayerFrontendStatistic, ProfileGames } from '../sharedTypes/typesPlayerStatistic'
 import { Controller, Get, Query, Route, Request } from 'tsoa'
 import { getDataForProfilePage } from '../services/playerStatistic'
 import { getTournamentParticipations } from '../services/tournaments'
@@ -9,10 +9,11 @@ import { getTournamentParticipations } from '../services/tournaments'
 export class PlayerStatisticController extends Controller {
   /**
    * Get statistics of one player
+   * @param games all games (default), only games of humans or only games with bots
    */
   @Get('/getPlayerStats')
-  public async getPlayerStats(@Request() request: express.Request, @Query() username: string): Promise<PlayerFrontendStatistic> {
-    return getDataForProfilePage(request.app.locals.sqlClient, username)
+  public async getPlayerStats(@Request() request: express.Request, @Query() username: string, @Query() games?: ProfileGames): Promise<PlayerFrontendStatistic> {
+    return getDataForProfilePage(request.app.locals.sqlClient, username, games ?? 'all')
   }
 
   /**

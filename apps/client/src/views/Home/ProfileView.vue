@@ -51,6 +51,14 @@
         </Tab>
       </TabList>
     </Tabs>
+    <SelectButton
+      v-model="games"
+      class="gamesFilter"
+      :options="gamesOptions"
+      option-label="label"
+      option-value="value"
+      :allow-empty="false"
+    />
     <router-view
       v-if="!loading"
       style="padding-top: 15px"
@@ -66,6 +74,7 @@ import { useI18n } from 'vue-i18n'
 import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'
+import SelectButton from 'primevue/selectbutton'
 import type { MenuItem } from 'primevue/menuitem'
 import FriendButton from '@/components/FriendButton.vue'
 import ProfilePicture from '@/components/ProfilePicture.vue'
@@ -74,7 +83,7 @@ import ProfileExplanation from '@/components/ProfileExplanation.vue'
 import HofBadge from '@/components/icons/HofBadge.vue'
 
 import { watch, ref, computed } from 'vue'
-import { type PlayerFrontendStatistic, DefaultService as Service } from '@/generatedClient/index.ts'
+import { type PlayerFrontendStatistic, type ProfileGames, DefaultService as Service } from '@/generatedClient/index.ts'
 import router from '@/router/index'
 import ProfileDescriptionText from '@/components/ProfileDescriptionText.vue'
 import { useResizeObserver } from '@vueuse/core'
@@ -91,6 +100,18 @@ const profileContainer = ref<null | HTMLElement>(null)
 const playerStats = ref<PlayerFrontendStatistic | null>(null)
 const myStats = ref<PlayerFrontendStatistic | null>(null)
 
+// Which games count (#267): all, only against humans or only with bots. Applies to both, so that the comparison is fair.
+const games = ref<ProfileGames>('all')
+const gamesOptions = computed(() => [
+  { label: t('Profile.gamesAll'), value: 'all' },
+  { label: t('Profile.gamesHumans'), value: 'humans' },
+  { label: t('Profile.gamesBots'), value: 'bots' },
+])
+watch(games, () => {
+  updateData()
+  loadMyStats()
+})
+
 updateData()
 watch(
   () => props.username,
@@ -100,7 +121,7 @@ watch(
 async function updateData() {
   try {
     playerStats.value = null
-    const usernameStats = await Service.getPlayerStats(props.username)
+    const usernameStats = await Service.getPlayerStats(props.username, games.value)
     playerStats.value = usernameStats
   } catch (err) {
     console.log(err)
@@ -115,7 +136,7 @@ async function loadMyStats() {
   try {
     myStats.value = null
     if (loggedInUsername.value != null) {
-      const myUsernameStats = await Service.getPlayerStats(loggedInUsername.value)
+      const myUsernameStats = await Service.getPlayerStats(loggedInUsername.value, games.value)
       myStats.value = myUsernameStats
     }
   } catch (err) {
@@ -179,6 +200,12 @@ const loading = computed(() => {
 </script>
 
 <style scoped>
+.gamesFilter {
+  display: flex;
+  justify-content: center;
+  padding-top: 15px;
+}
+
 .profilePage {
   position: relative;
   padding: 10px;
