@@ -44,8 +44,10 @@ import router from '@/router'
 const { t } = useI18n()
 const socket = injectStrict(SocketKey)
 
-const loading = ref(true)
-const connected = ref(false)
+// The overlay is not shown on the pages without server (AI, training) and is created again when leaving them.
+// By then the socket is long connected and no 'connect' event follows, so start from its current state.
+const loading = ref(!socket.connected)
+const connected = ref(socket.connected)
 const reconnecting = ref(false)
 
 const reconnectionAttemptNumber = ref(0)
