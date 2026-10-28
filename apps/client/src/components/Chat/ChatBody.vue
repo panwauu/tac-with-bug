@@ -113,6 +113,7 @@
                     <i
                       class="pi pi-flag"
                       aria-hidden="true"
+                      style="font-size: 10px"
                     />
                   </button>
                   {{
@@ -507,7 +508,6 @@ watch(
   background: none;
   padding: 0 2px;
   color: inherit;
-  font-size: 0.55rem;
   line-height: 1;
   cursor: pointer;
   opacity: 0;
