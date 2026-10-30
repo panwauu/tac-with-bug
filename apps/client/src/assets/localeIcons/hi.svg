@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-hi" viewBox="0 0 640 480">
+  <path fill="#f93" d="M0 0h640v160H0z"/>
+  <path fill="#fff" d="M0 160h640v160H0z"/>
+  <path fill="#128807" d="M0 320h640v160H0z"/>
+  <g fill="none" stroke="#008" stroke-width="6">
+    <circle cx="320" cy="240" r="60"/>
+  </g>
+  <g stroke="#008" stroke-width="3"><path d="M320 240 L320.0 184.0"/><path d="M320 240 L334.5 185.9"/><path d="M320 240 L348.0 191.5"/><path d="M320 240 L359.6 200.4"/><path d="M320 240 L368.5 212.0"/><path d="M320 240 L374.1 225.5"/><path d="M320 240 L376.0 240.0"/><path d="M320 240 L374.1 254.5"/><path d="M320 240 L368.5 268.0"/><path d="M320 240 L359.6 279.6"/><path d="M320 240 L348.0 288.5"/><path d="M320 240 L334.5 294.1"/><path d="M320 240 L320.0 296.0"/><path d="M320 240 L305.5 294.1"/><path d="M320 240 L292.0 288.5"/><path d="M320 240 L280.4 279.6"/><path d="M320 240 L271.5 268.0"/><path d="M320 240 L265.9 254.5"/><path d="M320 240 L264.0 240.0"/><path d="M320 240 L265.9 225.5"/><path d="M320 240 L271.5 212.0"/><path d="M320 240 L280.4 200.4"/><path d="M320 240 L292.0 191.5"/><path d="M320 240 L305.5 185.9"/></g>
+  <circle cx="320" cy="240" r="10" fill="#008"/>
+</svg>
