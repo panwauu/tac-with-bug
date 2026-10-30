@@ -1,7 +1,7 @@
 // Das Training der TAC-App als Daten. daten.json entsteht aus der App
 // (TACTrainer/twb_client/training/export.sh im TAC-Repo), nicht von Hand ändern.
 
-export type Sprache = 'de' | 'en' | 'ru'
+export type Sprache = 'de' | 'en' | 'ru' | 'fr' | 'es' | 'it' | 'hi' | 'sv' | 'fi' | 'nb' | 'da' | 'tr'
 export type Text = Record<Sprache, string>
 
 /** Eine Kugel in der Zählung der App: Sitz 0 Schwarz, 1 Blau, 2 Grün, 3 Rot; Ring 0…63 ab Schwarz' Startfeld. */

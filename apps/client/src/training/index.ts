@@ -14,7 +14,7 @@ export const training: TrainingDaten = {
 /** Text in der Sprache der Oberfläche; fehlt die Sprache, Deutsch. */
 export function txt(t: Text | null | undefined, sprache: string): string {
   if (t == null) return ''
-  return t[(['de', 'en', 'ru'].includes(sprache) ? sprache : 'de') as Sprache] ?? t.de
+  return t[sprache as Sprache] ?? t.de
 }
 
 export function lektion(id: string): Lektion | undefined {
