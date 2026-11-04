@@ -524,6 +524,11 @@
       "substitution-stopped-detail": "Der Spielerwechsel hat nicht stattgefunden. Vielleicht hat nicht jeder dem Wechsel zugestimmt oder die Anfrage wurde zurückgezogen.",
       "substitution-possible-summary": "Spielerwechsel möglich",
       "substitution-possible-detail": "Der aktive Spieler hat schon etwas länger nicht mehr gespielt. Ein Spieler aus den Zuschauern kann jetzt gegen diesen ausgetauscht werden. Viel Glück beim Suchen!"
+    },
+    "Profile": {
+      "games": "{n} Partie | {n} Partien",
+      "winRate": "{n} % Siege",
+      "openProfile": "Profil öffnen"
     }
   },
   "Games": {
