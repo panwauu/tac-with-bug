@@ -634,6 +634,60 @@ describe('Waiting game test suite via Socket.io', () => {
     })
   })
 
+  describe('Simultaneous ready calls', () => {
+    let usersWithSockets: UserWithSocket[]
+
+    beforeAll(async () => {
+      usersWithSockets = await getUsersWithSockets({ n: 2 })
+    })
+
+    afterAll(async () => {
+      await testServer.pgPool.query('DELETE FROM waitinggames;')
+      await closeSockets(usersWithSockets)
+    })
+
+    async function fullGame() {
+      await testServer.pgPool.query('DELETE FROM waitinggames;')
+      const res = await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:createGame', { nPlayers: 4, nTeams: 2, meister: true, private: false })
+      expect(res.status).toBe(200)
+      const dbRes = await testServer.pgPool.query('SELECT id FROM waitinggames;')
+      const gameID: number = dbRes.rows[0].id
+      expect((await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:joinGame', gameID)).status).toBe(200)
+      for (const index of [2, 3]) {
+        expect((await usersWithSockets[0].socket.emitWithAck(5000, 'waiting:addBot', gameID, 0, index)).status).toBe(200)
+      }
+      return gameID
+    }
+
+    async function countGamesOf(userID: number) {
+      const res = await testServer.pgPool.query('SELECT count(*) AS n FROM users_to_games WHERE userid = $1;', [userID])
+      return Number(res.rows[0].n)
+    }
+
+    test('Should start only one game when the last players are ready at the same time', async () => {
+      const gameID = await fullGame()
+      const before = await countGamesOf(usersWithSockets[0].id)
+      await Promise.all([
+        usersWithSockets[0].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID }),
+        usersWithSockets[1].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID }),
+      ])
+      await sleep(300)
+      expect(await countGamesOf(usersWithSockets[0].id)).toBe(before + 1)
+    })
+
+    test('Should start only one game when the same ready is sent twice', async () => {
+      const gameID = await fullGame()
+      expect((await usersWithSockets[1].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID })).status).toBe(200)
+      const before = await countGamesOf(usersWithSockets[0].id)
+      await Promise.all([
+        usersWithSockets[0].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID }),
+        usersWithSockets[0].socket.emitWithAck(5000, 'waiting:readyPlayer', { gameID }),
+      ])
+      await sleep(300)
+      expect(await countGamesOf(usersWithSockets[0].id)).toBe(before + 1)
+    })
+  })
+
   describe('Expiry of waiting games without activity', () => {
     let usersWithSockets: UserWithSocket[]
 
