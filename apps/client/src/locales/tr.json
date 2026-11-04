@@ -524,6 +524,11 @@
       "substitution-stopped-detail": "Oyuncu değişikliği gerçekleşmedi. Belki herkes onaylamadı ya da istek geri çekildi.",
       "substitution-possible-summary": "Oyuncu değişikliği mümkün",
       "substitution-possible-detail": "Aktif oyuncu bir süredir oynamadı. Artık izleyicilerden biri onun yerine geçebilir. Aramada bol şans!"
+    },
+    "Profile": {
+      "games": "{n} oyun",
+      "winRate": "%{n} galibiyet",
+      "openProfile": "Profili aç"
     }
   },
   "Games": {
