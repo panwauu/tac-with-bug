@@ -9,7 +9,7 @@
 import type { MoveText, MoveTextOrBall } from '../../types/ball'
 import type { AiData } from '../simulation/output'
 import type { AiInterface } from '../simulation/simulation'
-import { Heuristik, bewerte, tauschKarte, teufelZug } from './heuristik'
+import { Heuristik, bewerte, rauskommerZumTeilen, tauschKarte, teufelZug } from './heuristik'
 import { determinisiere, fuehreAus, merkmaleSicht, merkmaleStand, simStatistik, spielNachTausch, spieleWeiter, stellungsWert } from './simulator'
 import { type Politiknetz, zugWahrscheinlichkeiten } from './politiknetz'
 import { istStartKarte, kugelnVon, tauschEmpfaenger } from './lage'
@@ -164,6 +164,8 @@ export function tiefTausch(d: AiData, netz: Wertnetz, proben = 6, horizont = 8, 
     const i = hand.findIndex(istStartKarte)
     if (i >= 0) return [0, i, 'tauschen']
   }
+  const teilen = rauskommerZumTeilen(hand, ich, er)
+  if (teilen >= 0) return [0, teilen, 'tauschen']
   let kandidaten = hand.map((_, i) => i)
   if (ich) {
     const ohne = kandidaten.filter((i) => !istStartKarte(hand[i]))

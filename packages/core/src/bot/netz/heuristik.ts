@@ -70,6 +70,22 @@ export function besterZug(zuege: Zug[], _d: AiData, wert: (z: Zug) => number, zu
 
 // ── Tausch ────────────────────────────────────────────────────────────
 
+/**
+ * Rauskommer teilen: Wer selbst noch keine Kugel draußen hat, aber zwei oder mehr
+ * Rauskommer (1, 13) auf der Hand, gibt dem Partner einen ab, wenn der auch noch
+ * keine Kugel draußen hat. Einen behält er, damit er selbst herauskommt.
+ * Vorher blieben alle Rauskommer auf der Hand (Rückmeldung eines Spielers, im
+ * Nachtlauf bestätigt: 0 von 303 solcher Tausche). Abschaltbar für den Vergleich.
+ */
+export const tauschRegeln = { rauskommerTeilen: true }
+
+/** Index eines Rauskommers zum Abgeben, wenn die Regel oben greift, sonst -1. */
+export function rauskommerZumTeilen(hand: string[], ichDrin: boolean, partnerDrin: boolean): number {
+  if (!tauschRegeln.rauskommerTeilen || !ichDrin || !partnerDrin) return -1
+  if (hand.filter(istStartKarte).length < 2) return -1
+  return hand.findIndex(istStartKarte)
+}
+
 /** Wie `HeuristicAI.chooseSwapCard`. Die Karte geht an den Partner. */
 export function tauschKarte(d: AiData): MoveText {
   const hand = d.cardsWithMoves.map((c) => c.title)
@@ -81,7 +97,10 @@ export function tauschKarte(d: AiData): MoveText {
   const wert = (i: number) => kartenWert(hand[i])
   const idx = [...hand.keys()]
   let wahl: number
-  if (!ich && er && hand.some(istStartKarte)) {
+  const teilen = rauskommerZumTeilen(hand, ich, er)
+  if (teilen >= 0) {
+    wahl = teilen
+  } else if (!ich && er && hand.some(istStartKarte)) {
     wahl = hand.findIndex(istStartKarte)
   } else if (ich && idx.some((i) => !istStartKarte(hand[i]))) {
     wahl = idx.filter((i) => !istStartKarte(hand[i])).reduce((a, i) => (wert(i) > wert(a) ? i : a))
