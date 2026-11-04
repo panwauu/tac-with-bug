@@ -78,8 +78,10 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
-import VueCropper, { type VueCropperMethods } from 'vue-cropperjs'
+import VueCropperModule, { type VueCropperMethods } from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
+// Since Vite 8 the default import of this CommonJS package is the module object, not the component
+const VueCropper = ((VueCropperModule as any).default ?? VueCropperModule) as typeof VueCropperModule
 import FileUpload from 'primevue/fileupload'
 import { deleteProfilePic, requestProfilePic } from '../../services/useProfilePicture'
 import { DefaultService as Service } from '@/generatedClient/index.ts'
