@@ -10,10 +10,13 @@
     "prettier:format": "turbo run prettier:format",
     "check-locale-files": "turbo run check-locale-files",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "build": "turbo run build",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
-    "dev": "turbo run dev"
+    "dev": "turbo run dev",
+    "validate": "turbo run lint check-format check-types check-locale-files test",
+    "validate-and-fix": "turbo run lint:fix && turbo run prettier:format && npm run validate"
   },
   "devDependencies": {
     "turbo": "^2.5.8",

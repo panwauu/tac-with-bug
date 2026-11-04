@@ -9,6 +9,7 @@
     "build": "vue-tsc --build --noEmit && vite build --emptyOutDir",
     "preview": "vite preview",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "prettier:format": "prettier --config .prettierrc.json --write .",
     "check-format": "prettier --config .prettierrc.json --check ."
   },

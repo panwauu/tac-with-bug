@@ -26,6 +26,7 @@
     "dev": "tsc -w",
     "test": "vitest run",
     "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
     "prettier:format": "prettier --config .prettierrc --write .",
     "check-format": "prettier --config .prettierrc --check ."
   },
