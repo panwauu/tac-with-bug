@@ -524,6 +524,11 @@
       "substitution-stopped-detail": "Le remplacement n'a pas eu lieu. Peut-être que tout le monde n'a pas accepté ou que la demande a été retirée.",
       "substitution-possible-summary": "Remplacement possible",
       "substitution-possible-detail": "Le joueur actif n'a pas joué depuis un moment. Un spectateur peut maintenant le remplacer. Bonne chance pour la recherche !"
+    },
+    "Profile": {
+      "games": "{n} partie | {n} parties",
+      "winRate": "{n} % de victoires",
+      "openProfile": "Ouvrir le profil"
     }
   },
   "Games": {

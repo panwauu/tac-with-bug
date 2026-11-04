@@ -524,6 +524,11 @@
       "substitution-stopped-detail": "खिलाड़ी नहीं बदला गया। शायद सभी सहमत नहीं हुए या अनुरोध वापस ले लिया गया।",
       "substitution-possible-summary": "खिलाड़ी बदलना संभव",
       "substitution-possible-detail": "सक्रिय खिलाड़ी ने काफ़ी देर से नहीं खेला। अब कोई दर्शक उसकी जगह ले सकता है। खोज के लिए शुभकामनाएँ!"
+    },
+    "Profile": {
+      "games": "{n} खेल",
+      "winRate": "{n} % जीते",
+      "openProfile": "प्रोफ़ाइल खोलें"
     }
   },
   "Games": {

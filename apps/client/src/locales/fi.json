@@ -524,6 +524,11 @@
       "substitution-stopped-detail": "Pelaajanvaihtoa ei tehty. Ehkä kaikki eivät hyväksyneet vaihtoa tai pyyntö peruttiin.",
       "substitution-possible-summary": "Pelaajanvaihto mahdollinen",
       "substitution-possible-detail": "Vuorossa oleva pelaaja ei ole pelannut hetkeen. Nyt katsoja voidaan vaihtaa hänen tilalleen. Onnea etsintään!"
+    },
+    "Profile": {
+      "games": "{n} peli | {n} peliä",
+      "winRate": "{n} % voitettu",
+      "openProfile": "Avaa profiili"
     }
   },
   "Games": {

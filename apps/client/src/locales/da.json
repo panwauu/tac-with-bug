@@ -524,6 +524,11 @@
       "substitution-stopped-detail": "Spillerudskiftningen blev ikke gennemført. Måske godkendte ikke alle udskiftningen, eller anmodningen blev trukket tilbage.",
       "substitution-possible-summary": "Spillerudskiftning mulig",
       "substitution-possible-detail": "Den aktive spiller har ikke spillet i et stykke tid. Nu kan en tilskuer skiftes ind i stedet. Held og lykke med søgningen!"
+    },
+    "Profile": {
+      "games": "{n} spil",
+      "winRate": "{n} % vundet",
+      "openProfile": "Åbn profil"
     }
   },
   "Games": {

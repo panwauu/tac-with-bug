@@ -524,6 +524,11 @@
       "substitution-stopped-detail": "Spelarbytet blev inte av. Kanske godkände inte alla bytet eller så drogs förfrågan tillbaka.",
       "substitution-possible-summary": "Spelarbyte möjligt",
       "substitution-possible-detail": "Den aktiva spelaren har inte spelat på en stund. Nu kan en åskådare bytas in i stället. Lycka till med letandet!"
+    },
+    "Profile": {
+      "games": "{n} parti | {n} partier",
+      "winRate": "{n} % vunna",
+      "openProfile": "Öppna profil"
     }
   },
   "Games": {

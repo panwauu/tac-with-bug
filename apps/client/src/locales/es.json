@@ -524,6 +524,11 @@
       "substitution-stopped-detail": "El cambio no se ha realizado. Quizá no todos lo aceptaron o se retiró la solicitud.",
       "substitution-possible-summary": "Cambio de jugador posible",
       "substitution-possible-detail": "El jugador activo lleva un rato sin jugar. Ahora un espectador puede sustituirle. ¡Suerte con la búsqueda!"
+    },
+    "Profile": {
+      "games": "{n} partida | {n} partidas",
+      "winRate": "{n} % ganadas",
+      "openProfile": "Abrir perfil"
     }
   },
   "Games": {
