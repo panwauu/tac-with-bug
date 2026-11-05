@@ -16,7 +16,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@repo/core': resolve(__dirname, '../../packages/core/src'),
+      '@repo/core': resolve(import.meta.dirname, '../../packages/core/src'),
     },
   },
 })
