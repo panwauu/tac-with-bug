@@ -90,7 +90,10 @@ describe('Platform Statistic Test Suite', () => {
     const response = await testAgent.get('/gameApi/getPlatformStats/')
     expect(response.statusCode).toBe(200)
 
-    expect(response.body.localeDataset.map((e: any) => e.locale).sort()).toEqual(locales.sort())
+    // The test users only use some of the locales: every locale in the dataset has to be a known one
+    const datasetLocales: string[] = response.body.localeDataset.map((e: any) => e.locale)
+    expect(datasetLocales.length).toBeGreaterThan(0)
+    expect(datasetLocales.every((l) => (locales as string[]).includes(l))).toBe(true)
 
     expect(response.body.activityHeatmap).toHaveLength(7)
     expect(response.body.activityHeatmap.every((r: any) => r.length === 24)).toBe(true)

@@ -135,9 +135,9 @@
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://www.npmjs.com/package/vue-cropperjs"
+              href="https://www.npmjs.com/package/cropperjs"
             >
-              vue-cropperjs
+              cropperjs
             </a>
           </div>
         </AccordionContent>

@@ -4,8 +4,9 @@
     :key="`playerNameCards-${String(index)}`"
   >
     <h2
-      :class="`posAbsolute playerName `"
+      :class="`posAbsolute playerName ${profileClickable(Number(index)) ? 'clickable' : ''}`"
       :style="positionStyles.stylePositionNames?.[rotateIndex(Number(index))]"
+      @click="showProfile($event, Number(index))"
     >
       {{ player.name }}
     </h2>
@@ -52,7 +53,7 @@
       v-if="player.bot === false"
       :username="String(player.name)"
       :class="`posAbsolute playerPicture ${miscState.players.length === 6 ? `playerPicture6${positionStyles.turned ? 'turned' : ''}` : ''} ${
-        index === miscState.gamePlayer && !miscState.viewerMode && router.currentRoute.value.name === 'Game' ? 'clickable' : ''
+        (index === miscState.gamePlayer && !miscState.viewerMode && router.currentRoute.value.name === 'Game') || profileClickable(Number(index)) ? 'clickable' : ''
       }`"
       :style="positionStyles.stylePositionPictures?.[rotateIndex(Number(index))]"
       :online="Boolean(miscState.onlineGamePlayers.includes(index))"
@@ -92,6 +93,43 @@
   </Popover>
 
   <Popover
+    ref="profileRef"
+    style="width: 260px"
+  >
+    <div
+      v-if="shownPlayer != null"
+      class="profileWindow"
+    >
+      <div class="profileHead">
+        <ProfilePicture
+          :username="shownPlayer"
+          class="profileWindowPicture"
+        />
+        <strong>{{ shownPlayer }}</strong>
+      </div>
+      <p
+        v-if="shownStats?.userDescription"
+        class="profileDescription"
+      >
+        {{ shownStats.userDescription }}
+      </p>
+      <div
+        v-if="shownStats != null"
+        class="profileNumbers"
+      >
+        <span>{{ t('Game.Profile.games', playedGames) }}</span>
+        <span v-if="playedGames > 0">{{ t('Game.Profile.winRate', { n: winRate }) }}</span>
+      </div>
+      <a
+        :href="router.resolve({ name: 'Profile', params: { username: shownPlayer } }).href"
+        target="_blank"
+      >
+        {{ t('Game.Profile.openProfile') }}
+      </a>
+    </div>
+  </Popover>
+
+  <Popover
     ref="opRef"
     style="max-width: 300px"
   >
@@ -111,7 +149,8 @@ import EmojiSelector from './EmojiSelector.vue'
 
 import type { PositionStylesState } from '@/services/compositionGame/usePositionStyles'
 import type { MiscStateType } from '@/services/compositionGame/useMisc'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { type PlayerFrontendStatistic, DefaultService as Service } from '@/generatedClient/index.ts'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import { botInfo } from '@/views/kiStufen'
@@ -151,11 +190,84 @@ function botZeigen(event: Event, botID: number | null) {
 function toggle(event: Event, index: number) {
   if (index === props.miscState.gamePlayer && !props.miscState.viewerMode && router.currentRoute.value.name === 'Game') {
     opRef.value?.toggle(event)
+  } else {
+    showProfile(event, index)
   }
 }
+
+// Profile of the other players during the game (#281), without leaving the game.
+// Only in online games: in the browser AI game and the preview the seats are placeholders.
+const profileRef = ref<undefined | InstanceType<typeof Popover>>()
+const shownPlayer = ref<string | null>(null)
+const shownStats = ref<PlayerFrontendStatistic | null>(null)
+
+function profileClickable(index: number): boolean {
+  const player = props.miscState.players[index]
+  const own = index === props.miscState.gamePlayer && !props.miscState.viewerMode
+  return router.currentRoute.value.name === 'Game' && player != null && player.bot === false && !own && player.name !== ''
+}
+
+async function showProfile(event: Event, index: number) {
+  if (!profileClickable(index)) return
+  const name = String(props.miscState.players[index].name)
+  const sameOpen = shownPlayer.value === name
+  profileRef.value?.toggle(event)
+  if (sameOpen) return
+  shownPlayer.value = name
+  shownStats.value = null
+  try {
+    const stats = await Service.getPlayerStats(name)
+    if (shownPlayer.value === name) shownStats.value = stats
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const playedGames = computed(() => {
+  const g = shownStats.value?.gamesDistribution
+  return g == null ? 0 : g.won4 + g.lost4 + g.won6 + g.lost6
+})
+const winRate = computed(() => {
+  const g = shownStats.value?.gamesDistribution
+  return g == null || playedGames.value === 0 ? 0 : Math.round((100 * (g.won4 + g.won6)) / playedGames.value)
+})
 </script>
 
 <style scoped>
+.clickable {
+  cursor: pointer;
+}
+
+.profileWindow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profileHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profileWindowPicture {
+  width: 48px;
+  height: 48px;
+  border-radius: 20%;
+}
+
+.profileDescription {
+  margin: 0;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+}
+
+.profileNumbers {
+  display: flex;
+  gap: 12px;
+  font-size: 0.9em;
+}
+
 .posAbsolute {
   position: absolute;
 }

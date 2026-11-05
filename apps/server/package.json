@@ -20,6 +20,7 @@
     "test:watch": "vitest watch",
     "test:e2e": "playwright test --config=src/test/e2e/playwright.config.ts",
     "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
     "prettier:format": "prettier --config .prettierrc --write .",
     "check-format": "prettier --config .prettierrc --check .",
     "check-locale-files": "node ./dist/entrypoints/checkLocales.js ../../email/locales && node ./dist/entrypoints/checkLocales.js ../../../client/src/locales",

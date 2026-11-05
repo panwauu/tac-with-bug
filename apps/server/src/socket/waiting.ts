@@ -195,8 +195,11 @@ export function registerWaitingHandlers(pgPool: pg.Pool, socket: GeneralSocketS)
     const game = await setPlayerReady(pgPool, data.gameID, socket.data.userID)
     if (game.isErr()) return cb?.({ status: 500, error: game.error })
 
-    if (game.value.ready.every((r, i) => r === true || i >= game.value.nPlayers || game.value.bots[i] != null)) {
-      deleteWaitingGame(pgPool, data.gameID)
+    // Only the call that removes the waiting game may start it. Two ready calls at the same time
+    // (both last players at once, a double tap or a resend after a reconnect) would otherwise both
+    // see everyone ready and start the same players in two games.
+    const allReady = game.value.ready.every((r, i) => r === true || i >= game.value.nPlayers || game.value.bots[i] != null)
+    if (allReady && (await deleteWaitingGame(pgPool, data.gameID)).rowCount === 1) {
       const createdGame = await createGameFromWaitingGame(pgPool, game.value)
       // A rematch lobby chats in the channel of the finished game, every other waiting game in its own
       const channelOfWaitingGame = game.value.gameid != null ? `g-${game.value.gameid}` : `w-${game.value.id}`
