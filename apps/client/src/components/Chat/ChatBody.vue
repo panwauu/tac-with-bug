@@ -18,7 +18,14 @@
           size="small"
         />
       </div>
+      <img
+        v-if="currentGroupPicture"
+        class="groupPicture"
+        :src="currentGroupPicture"
+        alt=""
+      />
       <i
+        v-else
         style="font-size: 1fr"
         :class="`pi pi-${messagesStore.getChatIcon}`"
         aria-hidden="true"
@@ -230,6 +237,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { getGroupPictureSrc } from '@/services/useGroupPicture'
 import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
 import ProfilePicture from '../ProfilePicture.vue'
@@ -246,7 +254,7 @@ import { useIntersectionObserver, useScroll } from '@vueuse/core'
 import { useChatStore } from '@/store/chat'
 import { useMessagesStore, formatChannelName } from '@/store/messages'
 import { isLoggedIn, username } from '@/services/useUser'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { currentLocale } from '@/services/i18n'
 import { useSettingsStore } from '@/store/settings'
 import type { ChatMessage } from '../../../../server/src/sharedTypes/chat'
@@ -254,6 +262,10 @@ import type { ChatMessage } from '../../../../server/src/sharedTypes/chat'
 const { t } = useI18n()
 const chatStore = useChatStore()
 const messagesStore = useMessagesStore()
+const currentGroupPicture = computed(() => {
+  const chat = messagesStore.getCurrentChat
+  return chat?.groupChat ? getGroupPictureSrc(chat.chatid, chat.groupPicture) : undefined
+})
 const settingsStore = useSettingsStore()
 
 // Jede fremde Nachricht lässt sich melden (#254); das Fähnchen erscheint erst beim Darüberfahren
@@ -345,6 +357,13 @@ watch(
 </script>
 
 <style scoped>
+.groupPicture {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
 .topbar {
   position: relative;
   display: flex;

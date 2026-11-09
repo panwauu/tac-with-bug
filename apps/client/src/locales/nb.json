@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Legg til spiller",
-      "leaveButton": "Forlat chatten"
+      "leaveButton": "Forlat chatten",
+      "changePicture": "Bytt bilde",
+      "removePicture": "Fjern bilde",
+      "pictureError": "Bildet kunne ikke lagres."
     },
     "ChatCreator": {
       "startButton": "Start chat",

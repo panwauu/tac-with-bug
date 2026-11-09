@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Добавить игрока",
-      "leaveButton": "Покинуть группу"
+      "leaveButton": "Покинуть группу",
+      "changePicture": "Сменить картинку",
+      "removePicture": "Удалить картинку",
+      "pictureError": "Не удалось сохранить картинку."
     },
     "ChatCreator": {
       "startButton": "Начать Чат",

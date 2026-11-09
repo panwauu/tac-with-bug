@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Oyuncu ekle",
-      "leaveButton": "Sohbetten ayrıl"
+      "leaveButton": "Sohbetten ayrıl",
+      "changePicture": "Resmi değiştir",
+      "removePicture": "Resmi kaldır",
+      "pictureError": "Resim kaydedilemedi."
     },
     "ChatCreator": {
       "startButton": "Sohbet başlat",
