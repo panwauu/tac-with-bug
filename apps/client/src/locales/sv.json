@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Lägg till spelare",
-      "leaveButton": "Lämna chatten"
+      "leaveButton": "Lämna chatten",
+      "changePicture": "Byt bild",
+      "removePicture": "Ta bort bild",
+      "pictureError": "Bilden kunde inte sparas."
     },
     "ChatCreator": {
       "startButton": "Starta chatt",

@@ -144,7 +144,7 @@ export function registerChatHandlers(pgPool: pg.Pool, socket: GeneralSocketS) {
   })
 }
 
-async function updateOverviewForAll(pgPool: pg.Pool, userIDs: number[]) {
+export async function updateOverviewForAll(pgPool: pg.Pool, userIDs: number[]) {
   for (const userID of userIDs) {
     const chatOverview = await loadChatOverview(pgPool, userID)
     const socket = getSocketByUserID(userID)

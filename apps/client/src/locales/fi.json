@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Lisää pelaaja",
-      "leaveButton": "Poistu keskustelusta"
+      "leaveButton": "Poistu keskustelusta",
+      "changePicture": "Vaihda kuva",
+      "removePicture": "Poista kuva",
+      "pictureError": "Kuvaa ei voitu tallentaa."
     },
     "ChatCreator": {
       "startButton": "Aloita keskustelu",
