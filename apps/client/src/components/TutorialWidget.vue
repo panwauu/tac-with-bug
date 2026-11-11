@@ -18,12 +18,16 @@
 
 <script setup lang="ts">
 // Kachel auf der Startseite: Fortschritt im Training (Lektionen und Übungen aus der App) je Stufe.
+import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ProgressBar from 'primevue/progressbar'
 import Divider from 'primevue/divider'
 import { training, txt, pfad, feldErledigt } from '@/training'
+import { gleicheAb } from '@/training/konto'
 
 const { t, locale } = useI18n()
+
+onMounted(() => gleicheAb(true))
 
 function anzahlErledigt(stufe: number) {
   return pfad(stufe).filter(feldErledigt).length

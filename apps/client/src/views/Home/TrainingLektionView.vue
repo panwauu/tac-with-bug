@@ -63,6 +63,8 @@ import router from '@/router'
 import TrainingBrett from '@/components/TrainingBrett.vue'
 import TrainingFeier from '@/components/TrainingFeier.vue'
 import { lektion, txt, markiere, naechstes, training } from '@/training'
+// Meldet Erledigtes dem Konto, auch wenn diese Seite direkt geöffnet wurde
+import '@/training/konto'
 import { szeneFuer } from '@/training/bilder'
 
 const { t, locale } = useI18n()
