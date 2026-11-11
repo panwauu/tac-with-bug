@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <p class="training-hinweis">{{ t('Training.hinweis') }}</p>
+    <p class="training-hinweis">{{ t(isLoggedIn ? 'Training.hinweisKonto' : 'Training.hinweis') }}</p>
     <TrainingFeier />
   </div>
 </template>
@@ -40,14 +40,20 @@
 <script setup lang="ts">
 // Das Training der TAC-App im Browser: fünf Stufen, je ein Lernpfad aus
 // Lektionen (lesen, Bild) und Übungen (auf dem Brett lösen).
+import { onMounted } from 'vue'
 import Button from 'primevue/button'
 import ProgressBar from 'primevue/progressbar'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import TrainingFeier from '@/components/TrainingFeier.vue'
+import { isLoggedIn } from '@/services/useUser'
 import { training, txt, pfad, feldErledigt, lektion, uebung } from '@/training'
+import { gleicheAb } from '@/training/konto'
 
 const { t, locale } = useI18n()
+
+// Was in der App oder in einem anderen Browser erledigt wurde, steht im Konto
+onMounted(() => gleicheAb(true))
 
 function titel(f: { art: 'lektion' | 'uebung'; id: string }) {
   return txt(f.art === 'lektion' ? lektion(f.id)?.titel : uebung(f.id)?.titel, locale.value)
