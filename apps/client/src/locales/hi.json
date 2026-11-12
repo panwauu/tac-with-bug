@@ -1028,7 +1028,20 @@
     "bis": "{datum} तक",
     "keinVerlauf": "कभी रिपोर्ट या ब्लॉक नहीं हुआ।",
     "sperre": "ब्लॉक",
-    "nachrichtMelden": "संदेश की रिपोर्ट करें"
+    "nachrichtMelden": "संदेश की रिपोर्ट करें",
+    "kontext": {
+      "zeigen": "चैट इतिहास दिखाएँ",
+      "ausblenden": "चैट इतिहास छिपाएँ",
+      "laedt": "लोड हो रहा है …",
+      "nichtGefunden": "यह संदेश अब चैट में नहीं मिल रहा।",
+      "aeltere": "पुराने संदेश नहीं दिखाए गए",
+      "neuere": "नए संदेश नहीं दिखाए गए",
+      "partie": "खेल चैट, खेल {nr}",
+      "warteraum": "वेटिंग रूम की चैट",
+      "kanal": "सार्वजनिक चैट “{name}”",
+      "privat": "निजी चैट: {leute}",
+      "gruppe": "ग्रुप चैट “{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "कोई खिलाड़ी नहीं मिला"

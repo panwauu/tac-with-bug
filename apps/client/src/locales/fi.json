@@ -1028,7 +1028,20 @@
     "bis": "{datum} asti",
     "keinVerlauf": "Ei koskaan ilmiannettu eikä estetty.",
     "sperre": "Esto",
-    "nachrichtMelden": "Ilmianna viesti"
+    "nachrichtMelden": "Ilmianna viesti",
+    "kontext": {
+      "zeigen": "Näytä keskusteluhistoria",
+      "ausblenden": "Piilota keskusteluhistoria",
+      "laedt": "Ladataan …",
+      "nichtGefunden": "Viestiä ei enää löydy keskustelusta.",
+      "aeltere": "Vanhempia viestejä ei näytetä",
+      "neuere": "Uudempia viestejä ei näytetä",
+      "partie": "Pelin chat, peli {nr}",
+      "warteraum": "Odotushuoneen chat",
+      "kanal": "Julkinen chat ”{name}”",
+      "privat": "Yksityinen chat: {leute}",
+      "gruppe": "Ryhmächat ”{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Pelaajia ei löytynyt"

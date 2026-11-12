@@ -8,6 +8,7 @@ export interface ReportedMessageRef {
 }
 
 export interface Report {
+  id: number
   reporter: string | null
   category: ReportCategory
   body: string
@@ -15,6 +16,28 @@ export interface Report {
   /** Copy of the reported chat message, if the report came from the chat */
   message: string | null
   messageCreated: string | null
+}
+
+/** One message in the context of a reported message */
+export interface ReportContextMessage {
+  sender: string | null
+  body: string
+  created: string
+  /** The reported message itself */
+  reported: boolean
+}
+
+/** Where a reported message was written */
+export type ReportContextPlace =
+  { type: 'game'; gameID: number } | { type: 'waiting' } | { type: 'channel'; channel: string } | { type: 'chat'; group: boolean; groupName: string | null; members: string[] }
+
+/** The chat around a reported message, for moderators */
+export interface ReportContext {
+  place: ReportContextPlace
+  messages: ReportContextMessage[]
+  /** There are older or newer messages than shown */
+  moreBefore: boolean
+  moreAfter: boolean
 }
 
 /** A user with open reports, as the moderation page shows it */

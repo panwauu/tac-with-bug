@@ -1028,7 +1028,20 @@
     "bis": "bis {datum}",
     "keinVerlauf": "Noch nie gemeldet oder gesperrt.",
     "sperre": "Sperre",
-    "nachrichtMelden": "Nachricht melden"
+    "nachrichtMelden": "Nachricht melden",
+    "kontext": {
+      "zeigen": "Chatverlauf zeigen",
+      "ausblenden": "Chatverlauf ausblenden",
+      "laedt": "Lädt …",
+      "nichtGefunden": "Die Nachricht ist nicht mehr im Chat zu finden.",
+      "aeltere": "Ältere Nachrichten nicht gezeigt",
+      "neuere": "Neuere Nachrichten nicht gezeigt",
+      "partie": "Partie-Chat, Partie {nr}",
+      "warteraum": "Chat im Warteraum",
+      "kanal": "Öffentlicher Chat „{name}“",
+      "privat": "Privater Chat: {leute}",
+      "gruppe": "Gruppenchat „{name}“: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Keine Spieler gefunden"

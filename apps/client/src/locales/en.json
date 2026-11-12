@@ -1028,7 +1028,20 @@
     "bis": "until {datum}",
     "keinVerlauf": "Never reported or blocked.",
     "sperre": "Block",
-    "nachrichtMelden": "Report message"
+    "nachrichtMelden": "Report message",
+    "kontext": {
+      "zeigen": "Show chat history",
+      "ausblenden": "Hide chat history",
+      "laedt": "Loading …",
+      "nichtGefunden": "The message can no longer be found in the chat.",
+      "aeltere": "Older messages not shown",
+      "neuere": "Newer messages not shown",
+      "partie": "Game chat, game {nr}",
+      "warteraum": "Chat in the waiting room",
+      "kanal": "Public chat “{name}”",
+      "privat": "Private chat: {leute}",
+      "gruppe": "Group chat “{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "No players found"

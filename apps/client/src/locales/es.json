@@ -1028,7 +1028,20 @@
     "bis": "hasta el {datum}",
     "keinVerlauf": "Nunca denunciado ni bloqueado.",
     "sperre": "Bloqueo",
-    "nachrichtMelden": "Denunciar mensaje"
+    "nachrichtMelden": "Denunciar mensaje",
+    "kontext": {
+      "zeigen": "Mostrar historial del chat",
+      "ausblenden": "Ocultar historial del chat",
+      "laedt": "Cargando …",
+      "nichtGefunden": "El mensaje ya no se encuentra en el chat.",
+      "aeltere": "Mensajes anteriores no mostrados",
+      "neuere": "Mensajes posteriores no mostrados",
+      "partie": "Chat de partida, partida {nr}",
+      "warteraum": "Chat de la sala de espera",
+      "kanal": "Chat público «{name}»",
+      "privat": "Chat privado: {leute}",
+      "gruppe": "Chat de grupo «{name}»: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "No se encontraron jugadores"

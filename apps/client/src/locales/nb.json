@@ -1028,7 +1028,20 @@
     "bis": "til {datum}",
     "keinVerlauf": "Aldri rapportert eller sperret.",
     "sperre": "Sperring",
-    "nachrichtMelden": "Rapporter melding"
+    "nachrichtMelden": "Rapporter melding",
+    "kontext": {
+      "zeigen": "Vis chattehistorikk",
+      "ausblenden": "Skjul chattehistorikk",
+      "laedt": "Laster …",
+      "nichtGefunden": "Meldingen finnes ikke lenger i chatten.",
+      "aeltere": "Eldre meldinger vises ikke",
+      "neuere": "Nyere meldinger vises ikke",
+      "partie": "Partichat, parti {nr}",
+      "warteraum": "Chat i venterommet",
+      "kanal": "Offentlig chat «{name}»",
+      "privat": "Privat chat: {leute}",
+      "gruppe": "Gruppechat «{name}»: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Ingen spillere funnet"

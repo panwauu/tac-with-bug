@@ -1028,7 +1028,20 @@
     "bis": "jusqu'au {datum}",
     "keinVerlauf": "Jamais signalé ni bloqué.",
     "sperre": "Blocage",
-    "nachrichtMelden": "Signaler le message"
+    "nachrichtMelden": "Signaler le message",
+    "kontext": {
+      "zeigen": "Afficher l'historique du chat",
+      "ausblenden": "Masquer l'historique du chat",
+      "laedt": "Chargement …",
+      "nichtGefunden": "Le message est introuvable dans le chat.",
+      "aeltere": "Messages plus anciens non affichés",
+      "neuere": "Messages plus récents non affichés",
+      "partie": "Chat de partie, partie {nr}",
+      "warteraum": "Chat de la salle d'attente",
+      "kanal": "Chat public « {name} »",
+      "privat": "Chat privé : {leute}",
+      "gruppe": "Chat de groupe « {name} » : {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Aucun joueur trouvé"

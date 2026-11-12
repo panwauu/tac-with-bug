@@ -1028,7 +1028,20 @@
     "bis": "indtil {datum}",
     "keinVerlauf": "Aldrig anmeldt eller spærret.",
     "sperre": "Spærring",
-    "nachrichtMelden": "Anmeld besked"
+    "nachrichtMelden": "Anmeld besked",
+    "kontext": {
+      "zeigen": "Vis chathistorik",
+      "ausblenden": "Skjul chathistorik",
+      "laedt": "Indlæser …",
+      "nichtGefunden": "Beskeden findes ikke længere i chatten.",
+      "aeltere": "Ældre beskeder vises ikke",
+      "neuere": "Nyere beskeder vises ikke",
+      "partie": "Spilchat, spil {nr}",
+      "warteraum": "Chat i venteværelset",
+      "kanal": "Offentlig chat »{name}«",
+      "privat": "Privat chat: {leute}",
+      "gruppe": "Gruppechat »{name}«: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Ingen spillere fundet"
