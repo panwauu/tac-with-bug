@@ -1,6 +1,17 @@
 import type pg from 'pg'
 import { Result, err, ok } from 'neverthrow'
-import type { BlockedUser, ModerationBlock, HandledReport, ReportCategory, ReportedMessageRef, ReportedUser, UserModerationHistory } from '../sharedTypes/typesReports'
+import type {
+  BlockedUser,
+  ModerationBlock,
+  HandledReport,
+  ReportCategory,
+  ReportContext,
+  ReportContextMessage,
+  ReportContextPlace,
+  ReportedMessageRef,
+  ReportedUser,
+  UserModerationHistory,
+} from '../sharedTypes/typesReports'
 import { editUserDescription, getUser } from './user'
 import { resetModerationDataOfUser, setModerationData } from './moderation'
 import { selectRandomProfilePicture } from './picture'
@@ -75,12 +86,12 @@ export async function getOpenReports(pgPool: pg.Pool): Promise<ReportedUser[]> {
     username: string
     user_description: string
     blockeduntil: string | null
-    reports: { reporter: string | null; category: ReportCategory; body: string; created: string; message: string | null; messageCreated: string | null }[]
+    reports: { id: number; reporter: string | null; category: ReportCategory; body: string; created: string; message: string | null; messageCreated: string | null }[]
   }>(
     `SELECT u.username, u.user_description,
       (SELECT MAX(m.blockeduntil) FROM moderation m WHERE (m.userid = u.id OR m.email = u.email) AND m.blockeduntil > NOW()) AS blockeduntil,
       json_agg(
-        json_build_object('reporter', r2.username, 'category', r.category, 'body', r.body, 'created', r.created, 'message', r.message, 'messageCreated', r.message_created)
+        json_build_object('id', r.id, 'reporter', r2.username, 'category', r.category, 'body', r.body, 'created', r.created, 'message', r.message, 'messageCreated', r.message_created)
         ORDER BY r.created DESC
       ) AS reports
     FROM reports r
@@ -127,6 +138,7 @@ export async function getUserHistory(pgPool: pg.Pool, username: string): Promise
     [user.value.id, user.value.email]
   )
   const reports = await pgPool.query<{
+    id: number
     reporter: string | null
     category: ReportCategory
     body: string
@@ -136,7 +148,7 @@ export async function getUserHistory(pgPool: pg.Pool, username: string): Promise
     message: string | null
     message_created: string | null
   }>(
-    `SELECT r1.username AS reporter, r.category, r.body, r.created, r.handled, r2.username AS handledby, r.message, r.message_created
+    `SELECT r.id, r1.username AS reporter, r.category, r.body, r.created, r.handled, r2.username AS handledby, r.message, r.message_created
     FROM reports r
     LEFT JOIN users r1 ON r1.id = r.reporterid
     LEFT JOIN users r2 ON r2.id = r.handledbyuserid
@@ -154,6 +166,7 @@ export async function getUserHistory(pgPool: pg.Pool, username: string): Promise
     blockedUntil,
     blocks: blocks.rows.map((b): ModerationBlock => ({ created: b.created, blockedUntil: b.blockeduntil, reason: b.reason, moderator: b.moderator })),
     reports: reports.rows.map((r): HandledReport => ({
+      id: r.id,
       reporter: r.reporter,
       category: r.category,
       body: r.body,
@@ -163,6 +176,79 @@ export async function getUserHistory(pgPool: pg.Pool, username: string): Promise
       message: r.message,
       messageCreated: r.message_created,
     })),
+  })
+}
+
+/** Messages shown before and after a reported message */
+const contextBefore = 25
+const contextAfter = 10
+
+/**
+ * The chat around a reported message, so that moderators see what led to it and how it went on.
+ * The report keeps only a copy of the message and its time; the message is found again by its sender
+ * and time (to the millisecond) and, among several in that millisecond, by its text; this also works for
+ * reports made before this existed.
+ * Only the chat that the reporter was part of is shown, never other chats of the reported user.
+ */
+export async function getReportContext(pgPool: pg.Pool, reportID: number): Promise<Result<ReportContext, 'REPORT_NOT_FOUND' | 'MESSAGE_NOT_FOUND'>> {
+  const report = await pgPool.query<{ has_message: boolean }>('SELECT message_created IS NOT NULL AS has_message FROM reports WHERE id = $1;', [reportID])
+  if (report.rowCount !== 1) return err('REPORT_NOT_FOUND')
+  if (!report.rows[0].has_message) return err('MESSAGE_NOT_FOUND')
+
+  type Row = { id: number; sender: string | null; body: string; created: string }
+  const zeilen = (rows: Row[], reportedID: number): ReportContextMessage[] =>
+    rows.map((r) => ({ sender: r.sender, body: r.body, created: r.created, reported: r.id === reportedID }))
+
+  // The report stores the time cut to milliseconds (it passed through a JavaScript date): search that millisecond
+  const channelMessage = await pgPool.query<{ id: number; channel: string }>(
+    `SELECT m.id, m.channel FROM channel_messages m JOIN reports r ON r.userid = m.sender AND m.created >= r.message_created AND m.created < r.message_created + INTERVAL '1 millisecond'
+    WHERE r.id = $1 ORDER BY (m.body = r.message) DESC, m.id LIMIT 1;`,
+    [reportID]
+  )
+  if (channelMessage.rowCount === 1) {
+    const { id, channel } = channelMessage.rows[0]
+    const query = (op: string, order: string, limit: number) =>
+      pgPool.query<Row>(
+        `SELECT m.id, u.username AS sender, m.body, m.created FROM channel_messages m LEFT JOIN users u ON u.id = m.sender
+        WHERE m.channel = $1 AND m.id ${op} $2 ORDER BY m.id ${order} LIMIT $3;`,
+        [channel, id, limit + 1]
+      )
+    const [before, after] = await Promise.all([query('<', 'DESC', contextBefore), query('>=', 'ASC', contextAfter + 1)])
+    const game = /^g-(\d+)$/.exec(channel)
+    const place: ReportContextPlace =
+      game != null ? { type: 'game', gameID: Number.parseInt(game[1]) } : /^w-\d+$/.test(channel) ? { type: 'waiting' } : { type: 'channel', channel }
+    return ok({
+      place,
+      messages: zeilen([...before.rows.slice(0, contextBefore).reverse(), ...after.rows.slice(0, contextAfter + 1)], id),
+      moreBefore: before.rows.length > contextBefore,
+      moreAfter: after.rows.length > contextAfter + 1,
+    })
+  }
+
+  const chatMessage = await pgPool.query<{ id: number; chatid: number; group_chat: boolean; group_name: string | null }>(
+    `SELECT m.id, m.chatid, c.group_chat, c.group_name FROM chat_messages m JOIN chats c ON c.id = m.chatid
+    JOIN reports r ON r.userid = m.sender AND m.created >= r.message_created AND m.created < r.message_created + INTERVAL '1 millisecond'
+    WHERE r.id = $1 ORDER BY (m.body = r.message) DESC, m.id LIMIT 1;`,
+    [reportID]
+  )
+  if (chatMessage.rowCount !== 1) return err('MESSAGE_NOT_FOUND')
+  const { id, chatid, group_chat, group_name } = chatMessage.rows[0]
+  const query = (op: string, order: string, limit: number) =>
+    pgPool.query<Row>(
+      `SELECT m.id, u.username AS sender, m.body, m.created FROM chat_messages m LEFT JOIN users u ON u.id = m.sender
+      WHERE m.chatid = $1 AND m.id ${op} $2 ORDER BY m.id ${order} LIMIT $3;`,
+      [chatid, id, limit + 1]
+    )
+  const [before, after, members] = await Promise.all([
+    query('<', 'DESC', contextBefore),
+    query('>=', 'ASC', contextAfter + 1),
+    pgPool.query<{ username: string }>('SELECT u.username FROM users_to_chats utc JOIN users u ON u.id = utc.userid WHERE utc.chatid = $1 ORDER BY u.username;', [chatid]),
+  ])
+  return ok({
+    place: { type: 'chat', group: group_chat, groupName: group_name, members: members.rows.map((m) => m.username) },
+    messages: zeilen([...before.rows.slice(0, contextBefore).reverse(), ...after.rows.slice(0, contextAfter + 1)], id),
+    moreBefore: before.rows.length > contextBefore,
+    moreAfter: after.rows.length > contextAfter + 1,
   })
 }
 

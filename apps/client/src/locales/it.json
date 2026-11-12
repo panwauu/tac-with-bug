@@ -1028,7 +1028,20 @@
     "bis": "fino al {datum}",
     "keinVerlauf": "Mai segnalato né bloccato.",
     "sperre": "Blocco",
-    "nachrichtMelden": "Segnala messaggio"
+    "nachrichtMelden": "Segnala messaggio",
+    "kontext": {
+      "zeigen": "Mostra cronologia chat",
+      "ausblenden": "Nascondi cronologia chat",
+      "laedt": "Caricamento …",
+      "nichtGefunden": "Il messaggio non si trova più nella chat.",
+      "aeltere": "Messaggi precedenti non mostrati",
+      "neuere": "Messaggi successivi non mostrati",
+      "partie": "Chat della partita, partita {nr}",
+      "warteraum": "Chat della sala d'attesa",
+      "kanal": "Chat pubblica «{name}»",
+      "privat": "Chat privata: {leute}",
+      "gruppe": "Chat di gruppo «{name}»: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Nessun giocatore trovato"

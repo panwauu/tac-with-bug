@@ -1028,7 +1028,20 @@
     "bis": "{datum} tarihine kadar",
     "keinVerlauf": "Hiç bildirilmedi ya da engellenmedi.",
     "sperre": "Engelleme",
-    "nachrichtMelden": "Mesajı bildir"
+    "nachrichtMelden": "Mesajı bildir",
+    "kontext": {
+      "zeigen": "Sohbet geçmişini göster",
+      "ausblenden": "Sohbet geçmişini gizle",
+      "laedt": "Yükleniyor …",
+      "nichtGefunden": "Mesaj artık sohbette bulunamıyor.",
+      "aeltere": "Daha eski mesajlar gösterilmiyor",
+      "neuere": "Daha yeni mesajlar gösterilmiyor",
+      "partie": "Oyun sohbeti, oyun {nr}",
+      "warteraum": "Bekleme odası sohbeti",
+      "kanal": "Genel sohbet “{name}”",
+      "privat": "Özel sohbet: {leute}",
+      "gruppe": "Grup sohbeti “{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Oyuncu bulunamadı"

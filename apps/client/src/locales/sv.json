@@ -1028,7 +1028,20 @@
     "bis": "till {datum}",
     "keinVerlauf": "Aldrig anmäld eller spärrad.",
     "sperre": "Spärr",
-    "nachrichtMelden": "Anmäl meddelande"
+    "nachrichtMelden": "Anmäl meddelande",
+    "kontext": {
+      "zeigen": "Visa chatthistorik",
+      "ausblenden": "Dölj chatthistorik",
+      "laedt": "Laddar …",
+      "nichtGefunden": "Meddelandet finns inte längre i chatten.",
+      "aeltere": "Äldre meddelanden visas inte",
+      "neuere": "Nyare meddelanden visas inte",
+      "partie": "Partichatt, parti {nr}",
+      "warteraum": "Chatt i väntrummet",
+      "kanal": "Offentlig chatt ”{name}”",
+      "privat": "Privat chatt: {leute}",
+      "gruppe": "Gruppchatt ”{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Inga spelare hittades"
