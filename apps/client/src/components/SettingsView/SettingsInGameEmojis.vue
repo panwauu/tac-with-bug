@@ -2,7 +2,7 @@
   <div>
     <div>{{ t('Settings.InGameEmojis.explanation') }}</div>
     <div
-      v-if="!subscriptionState.isSub()"
+      v-if="!darf"
       class="emojiHinweis"
     >
       <span>{{ t('Settings.InGameEmojis.onlySubscribers') }}</span>
@@ -85,9 +85,8 @@ const { t } = useI18n()
 const router = useRouter()
 const socket = injectStrict(SocketKey)
 const subscriptionState = useSubscription(socket)
-const { eigeneEmojis, aktiv } = useInGameEmojis(() => subscriptionState.isSub())
+const { eigeneEmojis, aktiv, darf } = useInGameEmojis(() => subscriptionState.isSub())
 
-const darf = computed(() => subscriptionState.isSub())
 const liste = computed(() => (darf.value ? eigeneEmojis.value : aktiv.value))
 
 const neu = ref('')
