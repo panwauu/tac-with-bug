@@ -744,6 +744,16 @@
       "light": "Ljust",
       "dark": "Mörkt",
       "explanation": "Färgschemat bestämmer hur programmet ser ut. ”Ljust” visar en ljus design, ”Mörkt” aktiverar mörkt läge och ”System” anpassar färgschemat automatiskt efter enhetens inställningar."
+    },
+    "InGameEmojis": {
+      "header": "Emojis i spelet",
+      "explanation": "Dessa emojis kan du skicka under ett parti. Urvalet gäller på den här enheten.",
+      "onlySubscribers": "Supportrar kan sätta ihop sina egna emojis. Utan prenumeration gäller standardemojierna.",
+      "toSubscription": "Till prenumerationen",
+      "add": "Lägg till emoji",
+      "remove": "Ta bort",
+      "moveLeft": "Flytta åt vänster",
+      "reset": "Återställ standard"
     }
   },
   "Profile": {

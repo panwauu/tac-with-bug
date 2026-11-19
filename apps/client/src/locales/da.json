@@ -744,6 +744,16 @@
       "light": "Lyst",
       "dark": "Mørkt",
       "explanation": "Farvetemaet bestemmer, hvordan programmet ser ud. »Lyst« viser et lyst design, »Mørkt« slår mørk tilstand til, og »System« tilpasser automatisk farvetemaet til indstillingerne på din enhed."
+    },
+    "InGameEmojis": {
+      "header": "Emojis i spillet",
+      "explanation": "Disse emojis kan du sende under et spil. Valget gælder på denne enhed.",
+      "onlySubscribers": "Støtter kan sammensætte deres egne emojis. Uden abonnement gælder standard-emojierne.",
+      "toSubscription": "Til abonnementet",
+      "add": "Tilføj emoji",
+      "remove": "Fjern",
+      "moveLeft": "Flyt til venstre",
+      "reset": "Gendan standard"
     }
   },
   "Profile": {

@@ -744,6 +744,16 @@
       "light": "Hell",
       "dark": "Dunkel",
       "explanation": "Das Farbschema bestimmt das Aussehen der Anwendung. Mit „Hell“ wird ein helles Design angezeigt, „Dunkel“ aktiviert den dunklen Modus, und „System“ passt das Farbschema automatisch an die Einstellungen deines Geräts an."
+    },
+    "InGameEmojis": {
+      "header": "Emojis im Spiel",
+      "explanation": "Diese Emojis kannst du in einer Partie verschicken. Die Auswahl gilt auf diesem Gerät.",
+      "onlySubscribers": "Eigene Emojis zusammenstellen können Unterstützer. Ohne Abo gelten die Standard-Emojis.",
+      "toSubscription": "Zum Abo",
+      "add": "Emoji hinzufügen",
+      "remove": "Entfernen",
+      "moveLeft": "Nach links",
+      "reset": "Standard wiederherstellen"
     }
   },
   "Profile": {

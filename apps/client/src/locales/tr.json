@@ -744,6 +744,16 @@
       "light": "Açık",
       "dark": "Koyu",
       "explanation": "Renk şeması uygulamanın görünümünü belirler. “Açık” aydınlık bir tasarım gösterir, “Koyu” karanlık modu açar ve “Sistem” renk şemasını cihazının ayarlarına göre otomatik uyarlar."
+    },
+    "InGameEmojis": {
+      "header": "Oyunda emojiler",
+      "explanation": "Bu emojileri bir oyun sırasında gönderebilirsin. Seçim bu cihaz için geçerlidir.",
+      "onlySubscribers": "Destekçiler kendi emojilerini seçebilir. Abonelik olmadan standart emojiler geçerlidir.",
+      "toSubscription": "Aboneliğe git",
+      "add": "Emoji ekle",
+      "remove": "Kaldır",
+      "moveLeft": "Sola taşı",
+      "reset": "Varsayılana dön"
     }
   },
   "Profile": {

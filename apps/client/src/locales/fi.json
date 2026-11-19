@@ -744,6 +744,16 @@
       "light": "Vaalea",
       "dark": "Tumma",
       "explanation": "Värimaailma määrää sovelluksen ulkoasun. ”Vaalea” näyttää vaalean ulkoasun, ”Tumma” ottaa tumman tilan käyttöön ja ”Järjestelmä” mukauttaa värit automaattisesti laitteesi asetuksiin."
+    },
+    "InGameEmojis": {
+      "header": "Emojit pelissä",
+      "explanation": "Voit lähettää näitä emojeja pelin aikana. Valinta koskee tätä laitetta.",
+      "onlySubscribers": "Tukijat voivat koota omat emojinsa. Ilman tilausta käytetään vakioemojeja.",
+      "toSubscription": "Tilaukseen",
+      "add": "Lisää emoji",
+      "remove": "Poista",
+      "moveLeft": "Siirrä vasemmalle",
+      "reset": "Palauta oletus"
     }
   },
   "Profile": {

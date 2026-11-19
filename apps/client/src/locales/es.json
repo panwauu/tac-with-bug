@@ -744,6 +744,16 @@
       "light": "Claro",
       "dark": "Oscuro",
       "explanation": "El esquema de colores determina el aspecto de la aplicación. «Claro» muestra un diseño claro, «Oscuro» activa el modo oscuro y «Sistema» adapta el esquema automáticamente a los ajustes de tu dispositivo."
+    },
+    "InGameEmojis": {
+      "header": "Emojis en la partida",
+      "explanation": "Puedes enviar estos emojis durante una partida. La selección se aplica a este dispositivo.",
+      "onlySubscribers": "Los mecenas pueden elegir sus propios emojis. Sin suscripción se usan los emojis estándar.",
+      "toSubscription": "Ir a la suscripción",
+      "add": "Añadir emoji",
+      "remove": "Quitar",
+      "moveLeft": "Mover a la izquierda",
+      "reset": "Restablecer"
     }
   },
   "Profile": {
