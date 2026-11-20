@@ -1,4 +1,5 @@
-// Zugriff auf die Trainingsdaten und den Fortschritt (nur in diesem Browser).
+// Zugriff auf die Trainingsdaten und den Fortschritt. Er liegt in diesem Browser;
+// wer angemeldet ist, hat ihn zusätzlich im Konto (konto.ts).
 import { ref } from 'vue'
 import daten from './daten.json'
 import { nichtImBrowser, passeAn, passeLektionAn } from './anpassungen'
@@ -48,14 +49,18 @@ function lade(): string[] {
 /** Erledigte Lektionen und Übungen (IDs). */
 export const erledigt = ref<Set<string>>(new Set(lade()))
 
-export function markiere(id: string) {
-  if (erledigt.value.has(id)) return
-  erledigt.value = new Set([...erledigt.value, id])
+function merke(schluessel: string, ids: Iterable<string>) {
   try {
-    localStorage.setItem(SCHLUESSEL, JSON.stringify([...erledigt.value]))
+    localStorage.setItem(schluessel, JSON.stringify([...ids]))
   } catch {
     // privates Fenster o. Ä.: Fortschritt gilt dann nur bis zum Neuladen
   }
+}
+
+export function markiere(id: string) {
+  if (erledigt.value.has(id)) return
+  erledigt.value = new Set([...erledigt.value, id])
+  merke(SCHLUESSEL, erledigt.value)
   pruefeFeier(lektion(id)?.stufe ?? uebung(id)?.stufe)
 }
 
@@ -99,12 +104,25 @@ const gefeiert = ladeGefeiert()
 function merkeGefeiert(schluessel: string): boolean {
   if (gefeiert.has(schluessel)) return false
   gefeiert.add(schluessel)
-  try {
-    localStorage.setItem(GEFEIERT, JSON.stringify([...gefeiert]))
-  } catch {
-    // ohne Speicher: dann eben nur bis zum Neuladen gemerkt
-  }
+  merke(GEFEIERT, gefeiert)
   return true
+}
+
+/** Schon gezeigte Abschlussfenster ("stufe_<nr>", "alles"). */
+export function gefeierteFenster(): string[] {
+  return [...gefeiert]
+}
+
+/** Ersetzt den Fortschritt dieses Browsers (Abgleich mit dem Konto, konto.ts). */
+export function setzeFortschritt(ids: Iterable<string>, fenster: Iterable<string>) {
+  const neu = new Set(ids)
+  if (neu.size !== erledigt.value.size || [...neu].some((id) => !erledigt.value.has(id))) {
+    erledigt.value = neu
+    merke(SCHLUESSEL, neu)
+  }
+  gefeiert.clear()
+  for (const k of fenster) gefeiert.add(k)
+  merke(GEFEIERT, gefeiert)
 }
 
 /** Noch zu zeigende Abschlussfenster, das erste ist sichtbar. */
