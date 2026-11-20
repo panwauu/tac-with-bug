@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Ajouter un joueur",
-      "leaveButton": "Quitter le chat"
+      "leaveButton": "Quitter le chat",
+      "changePicture": "Changer l'image",
+      "removePicture": "Supprimer l'image",
+      "pictureError": "L'image n'a pas pu être enregistrée."
     },
     "ChatCreator": {
       "startButton": "Démarrer le chat",

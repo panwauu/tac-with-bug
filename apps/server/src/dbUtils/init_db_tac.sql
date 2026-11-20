@@ -639,7 +639,12 @@ CREATE TABLE chats (
   id SERIAL PRIMARY KEY,
   group_chat Boolean DEFAULT(false),
   group_name VARCHAR(25),
-  created timestamptz NOT NULL DEFAULT current_timestamp
+  created timestamptz NOT NULL DEFAULT current_timestamp,
+  group_picture bytea,
+  group_picture_changed timestamptz,
+  group_picture_by INTEGER REFERENCES users (id) ON DELETE
+  SET
+    NULL
 );
 
 CREATE TABLE chat_messages (

@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Añadir jugador",
-      "leaveButton": "Salir del chat"
+      "leaveButton": "Salir del chat",
+      "changePicture": "Cambiar imagen",
+      "removePicture": "Quitar imagen",
+      "pictureError": "No se pudo guardar la imagen."
     },
     "ChatCreator": {
       "startButton": "Iniciar chat",

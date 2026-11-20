@@ -20,4 +20,6 @@ export interface ChatElement {
   lastMessage: string
   players: string[]
   numberOfUnread: number
+  /** Time of the last change of the group picture in ms (to refresh a cached picture), null without picture */
+  groupPicture: number | null
 }
