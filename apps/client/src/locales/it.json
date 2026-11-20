@@ -747,6 +747,16 @@
       "light": "Chiaro",
       "dark": "Scuro",
       "explanation": "Lo schema di colori determina l'aspetto dell'applicazione. «Chiaro» mostra un design chiaro, «Scuro» attiva la modalità scura e «Sistema» adatta automaticamente lo schema alle impostazioni del tuo dispositivo."
+    },
+    "InGameEmojis": {
+      "header": "Emoji in partita",
+      "explanation": "Puoi inviare queste emoji durante una partita. La selezione vale su questo dispositivo.",
+      "onlySubscribers": "I sostenitori possono scegliere le proprie emoji. Senza abbonamento valgono le emoji standard.",
+      "toSubscription": "Vai all’abbonamento",
+      "add": "Aggiungi emoji",
+      "remove": "Rimuovi",
+      "moveLeft": "Sposta a sinistra",
+      "reset": "Ripristina predefinite"
     }
   },
   "Profile": {

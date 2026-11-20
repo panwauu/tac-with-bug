@@ -747,6 +747,16 @@
       "light": "Light",
       "dark": "Dark",
       "explanation": "The color scheme determines the appearance of the application. 'Light' displays a bright design, 'Dark' activates dark mode, and 'System' automatically adapts the color scheme to your device settings."
+    },
+    "InGameEmojis": {
+      "header": "Emojis in game",
+      "explanation": "You can send these emojis during a game. The selection applies to this device.",
+      "onlySubscribers": "Supporters can put together their own emojis. Without a subscription, the standard emojis apply.",
+      "toSubscription": "To the subscription",
+      "add": "Add emoji",
+      "remove": "Remove",
+      "moveLeft": "Move left",
+      "reset": "Restore default"
     }
   },
   "Profile": {

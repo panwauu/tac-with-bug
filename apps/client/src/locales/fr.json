@@ -747,6 +747,16 @@
       "light": "Clair",
       "dark": "Sombre",
       "explanation": "Le thème de couleurs détermine l'apparence de l'application. « Clair » affiche un design clair, « Sombre » active le mode sombre et « Système » adapte automatiquement le thème aux réglages de ton appareil."
+    },
+    "InGameEmojis": {
+      "header": "Émojis en partie",
+      "explanation": "Tu peux envoyer ces émojis pendant une partie. La sélection s’applique à cet appareil.",
+      "onlySubscribers": "Les soutiens peuvent composer leurs propres émojis. Sans abonnement, les émojis standard s’appliquent.",
+      "toSubscription": "Vers l’abonnement",
+      "add": "Ajouter un émoji",
+      "remove": "Retirer",
+      "moveLeft": "Déplacer à gauche",
+      "reset": "Rétablir par défaut"
     }
   },
   "Profile": {
