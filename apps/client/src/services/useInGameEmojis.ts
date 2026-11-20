@@ -5,8 +5,8 @@ import { username } from '@/services/useUser'
 
 /** Die Emojis, die jeder in der Partie verschicken kann. Gleiche Liste in den Apps. */
 export const STANDARD_EMOJIS = ['👋', '😁', '🥰', '😜', '😭', '🥱', '💩']
-/** Mehr passt in der Partie nicht sinnvoll in die Leiste (gleiche Grenze in den Apps). */
-export const MAX_EMOJIS = 20
+/** Höchstzahl der eigenen Auswahl: so viele wie die Standardliste (gleiche Grenze in den Apps). */
+export const MAX_EMOJIS = 7
 /**
  * Konten, die vor diesem Zeitpunkt angelegt wurden, dürfen ihre Emojis weiter
  * ohne Abo zusammenstellen (das konnte vorher jeder). Gleicher Wert in den Apps;
@@ -43,6 +43,6 @@ export const altesKonto = computed(() => registriert.value != null && registrier
 /** Eigene Auswahl (Einstellungen). Gilt mit Abo oder für alte Konten, sonst die Standard-Emojis. */
 export function useInGameEmojis(isSub: () => boolean) {
   const darf = computed(() => isSub() || altesKonto.value)
-  const aktiv = computed(() => (darf.value && eigeneEmojis.value.length > 0 ? eigeneEmojis.value : STANDARD_EMOJIS))
+  const aktiv = computed(() => (darf.value && eigeneEmojis.value.length > 0 ? eigeneEmojis.value.slice(0, MAX_EMOJIS) : STANDARD_EMOJIS))
   return { eigeneEmojis, aktiv, darf }
 }
