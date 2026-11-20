@@ -83,7 +83,16 @@ CREATE TABLE tournaments (
     OR teams_per_match = 3
   ) DEFAULT 2,
   tournament_type varchar(50) NOT NULL CHECK(tournament_type = 'KO') DEFAULT 'KO',
-  data JSON
+  data JSON,
+  -- NULL for a tournament with a fixed size, otherwise n_teams is the maximum and the tournament starts with at least min_teams
+  min_teams INTEGER,
+  CONSTRAINT tournaments_min_teams_check CHECK(
+    min_teams IS NULL
+    OR (
+      min_teams >= 2
+      AND min_teams <= n_teams
+    )
+  )
 );
 
 CREATE TABLE users_to_tournaments (

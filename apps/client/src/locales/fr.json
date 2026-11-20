@@ -149,8 +149,11 @@
     "signUpDeadline": "Clôture des inscriptions",
     "gameTime": "Partie",
     "timePerGame": "Temps par partie",
+    "fluidSize": "Taille du tournoi : de {min} à {max} équipes. Avec moins d'équipes, les derniers tours sont supprimés et certaines équipes sont exemptées du premier tour.",
+    "conditionalRound": "n'a lieu qu'à partir de {n} équipes",
     "waitingPlayers": "Liste d'attente des joueurs",
     "registrationList": "Liste des inscrits ({x} équipes manquent encore)",
+    "registrationListFluid": "Liste d'inscription ({x} équipes complètes, au moins {min}, au plus {max})",
     "otherTeams": "Autres équipes",
     "signUpConfirmationText": "Es-tu sûr d'être disponible aux dates des parties ? C'est très important pour l'expérience de tous !",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Quart de finale",
       "bracketList3": "Huitième de finale",
       "bracketList4": "Seizième de finale",
-      "bracketTBDTeam": "Pas encore connu"
+      "bracketTBDTeam": "Pas encore connu",
+      "bye": "Exempt"
     },
     "Toast": {
       "you-created-a-team-summary": "Équipe créée",
@@ -252,6 +256,29 @@
       "nTeams": "Nombre d'équipes :",
       "createPrivateButton": "Créer le tournoi"
     },
+    "CreatePublic": {
+      "title": "Nom du tournoi",
+      "titleInvalid": "Le nom du tournoi doit comporter entre 8 et 50 caractères.",
+      "nTeams": "Nombre d'équipes",
+      "maxTeams": "Nombre maximal d'équipes",
+      "minTeams": "Nombre minimal d'équipes",
+      "minutesPerGame": "Temps par partie",
+      "fluidSize": "Taille de tournoi flexible",
+      "fluidSizeHint": "Si moins d'équipes s'inscrivent avant la date limite, le tournoi commence avec moins de tours, à condition que le minimum soit atteint. Les équipes exemptées du premier tour sont tirées au sort.",
+      "roundDates": "Dates des parties",
+      "round": "Tour {n}",
+      "preview": "Déroulement du tournoi",
+      "previewLine": "{teams} équipes : {rounds} tours, exemptions : {byes}",
+      "createButton": "Créer le tournoi",
+      "createdSummary": "Tournoi créé",
+      "createdDetail": "L'inscription commence automatiquement à la date d'ouverture.",
+      "createError": "Le tournoi n'a pas pu être créé : {error}",
+      "errors": {
+        "missing": "Veuillez indiquer toutes les dates et le temps par partie.",
+        "order": "Les dates doivent se suivre : début des inscriptions, date limite, tour 1, tour 2, …",
+        "overlap": "Un tour commence avant la fin du temps du tour précédent."
+      }
+    },
     "TournamentsTable": {
       "title": "Titre du tournoi",
       "date": "Date de début"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Aperçu des tournois",
       "tournaments": "Tournois",
-      "createPrivate": "Créer un tournoi privé"
+      "createPrivate": "Créer un tournoi privé",
+      "createPublic": "Créer un tournoi public"
     },
     "EditPrivate": {
       "notCompleteMessage": "Il manque encore des équipes, les équipes ne sont pas encore complètes ou tous les participants n'ont pas encore confirmé leur participation.",

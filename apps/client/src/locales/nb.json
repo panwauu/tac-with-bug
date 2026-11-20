@@ -149,8 +149,11 @@
     "signUpDeadline": "Påmeldingsfrist",
     "gameTime": "Parti",
     "timePerGame": "Tid per parti",
+    "fluidSize": "Turneringsstørrelse: {min} til {max} lag. Med færre lag faller de siste rundene bort, og noen lag får walkover i første runde.",
+    "conditionalRound": "spilles kun med {n} lag eller flere",
     "waitingPlayers": "Venteliste for spillere",
     "registrationList": "Påmeldingsliste ({x} lag mangler fortsatt)",
+    "registrationListFluid": "Påmeldingsliste ({x} lag komplette, minst {min}, maks {max})",
     "otherTeams": "Andre lag",
     "signUpConfirmationText": "Er du sikker på at du har tid på kampdatoene? Det er svært viktig for alles opplevelse!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Kvartfinale",
       "bracketList3": "Åttedelsfinale",
       "bracketList4": "Sekstendedelsfinale",
-      "bracketTBDTeam": "Ikke kjent ennå"
+      "bracketTBDTeam": "Ikke kjent ennå",
+      "bye": "Walkover"
     },
     "Toast": {
       "you-created-a-team-summary": "Lag opprettet",
@@ -252,6 +256,29 @@
       "nTeams": "Antall lag:",
       "createPrivateButton": "Opprett turnering"
     },
+    "CreatePublic": {
+      "title": "Turneringsnavn",
+      "titleInvalid": "Turneringsnavnet må ha 8 til 50 tegn.",
+      "nTeams": "Antall lag",
+      "maxTeams": "Maksimalt antall lag",
+      "minTeams": "Minimalt antall lag",
+      "minutesPerGame": "Tid per spill",
+      "fluidSize": "Fleksibel turneringsstørrelse",
+      "fluidSizeHint": "Hvis færre lag melder seg på innen fristen, starter turneringen med færre runder, så lenge minimumsantallet er nådd. Lagene som får walkover i første runde trekkes tilfeldig.",
+      "roundDates": "Spilletidspunkter",
+      "round": "Runde {n}",
+      "preview": "Turneringsforløp",
+      "previewLine": "{teams} lag: {rounds} runder, walkover: {byes}",
+      "createButton": "Opprett turnering",
+      "createdSummary": "Turnering opprettet",
+      "createdDetail": "Påmeldingen starter automatisk ved påmeldingsstart.",
+      "createError": "Turneringen kunne ikke opprettes: {error}",
+      "errors": {
+        "missing": "Oppgi alle tidspunkter og tiden per spill.",
+        "order": "Tidspunktene må følge etter hverandre: påmeldingsstart, påmeldingsfrist, runde 1, runde 2, …",
+        "overlap": "En runde starter før tiden for forrige runde er ute."
+      }
+    },
     "TournamentsTable": {
       "title": "Turneringstittel",
       "date": "Startdato"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Turneringsoversikt",
       "tournaments": "Turneringer",
-      "createPrivate": "Opprett privat turnering"
+      "createPrivate": "Opprett privat turnering",
+      "createPublic": "Opprett offentlig turnering"
     },
     "EditPrivate": {
       "notCompleteMessage": "Det mangler fortsatt lag, lagene er ikke komplette, eller ikke alle deltakerne har bekreftet deltakelsen.",

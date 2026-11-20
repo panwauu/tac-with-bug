@@ -149,8 +149,11 @@
     "signUpDeadline": "Anmeldeschluss",
     "gameTime": "Spiel",
     "timePerGame": "Zeit pro Spiel",
+    "fluidSize": "Turniergröße: {min} bis {max} Teams. Bei weniger Teams entfallen die letzten Runden und einige Teams erhalten in der ersten Runde ein Freilos.",
+    "conditionalRound": "findet ab {n} Teams statt",
     "waitingPlayers": "Spieler Warteliste",
     "registrationList": "Anmeldeliste ({x} Teams fehlen noch)",
+    "registrationListFluid": "Anmeldeliste ({x} Teams vollständig, mindestens {min}, höchstens {max})",
     "otherTeams": "Andere Teams",
     "signUpConfirmationText": "Bist du dir sicher, dass du an den Spielterminen Zeit hast? Dies ist für das Erlebnis aller sehr wichtig!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Viertelfinale",
       "bracketList3": "Achtelfinale",
       "bracketList4": "Sechzehntelfinale",
-      "bracketTBDTeam": "Noch nicht bekannt"
+      "bracketTBDTeam": "Noch nicht bekannt",
+      "bye": "Freilos"
     },
     "Toast": {
       "you-created-a-team-summary": "Team erstellt",
@@ -252,6 +256,29 @@
       "nTeams": "Anzahl Teams:",
       "createPrivateButton": "Turnier erstellen"
     },
+    "CreatePublic": {
+      "title": "Turniername",
+      "titleInvalid": "Der Turniername muss 8 bis 50 Zeichen lang sein.",
+      "nTeams": "Anzahl Teams",
+      "maxTeams": "Maximale Anzahl Teams",
+      "minTeams": "Mindestanzahl Teams",
+      "minutesPerGame": "Zeit pro Spiel",
+      "fluidSize": "Flexible Turniergröße",
+      "fluidSizeHint": "Melden sich bis zum Anmeldeschluss weniger Teams an, startet das Turnier mit weniger Runden, sofern die Mindestanzahl erreicht ist. Die Teams, die in der ersten Runde ein Freilos erhalten, werden zufällig ausgelost.",
+      "roundDates": "Spieltermine",
+      "round": "Runde {n}",
+      "preview": "Turnierverlauf",
+      "previewLine": "{teams} Teams: {rounds} Runden, Freilose: {byes}",
+      "createButton": "Turnier erstellen",
+      "createdSummary": "Turnier erstellt",
+      "createdDetail": "Die Anmeldung startet automatisch zum Anmeldestart.",
+      "createError": "Das Turnier konnte nicht erstellt werden: {error}",
+      "errors": {
+        "missing": "Bitte alle Termine und die Zeit pro Spiel angeben.",
+        "order": "Die Termine müssen aufeinander folgen: Anmeldestart, Anmeldeschluss, Runde 1, Runde 2, …",
+        "overlap": "Eine Runde beginnt, bevor die Spielzeit der vorherigen Runde abgelaufen ist."
+      }
+    },
     "TournamentsTable": {
       "title": "Turniertitel",
       "date": "Startdatum"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Turnierübersicht",
       "tournaments": "Turniere",
-      "createPrivate": "Privates Turnier erstellen"
+      "createPrivate": "Privates Turnier erstellen",
+      "createPublic": "Öffentliches Turnier erstellen"
     },
     "EditPrivate": {
       "notCompleteMessage": "Es fehlen noch Teams, die Teams sind noch nicht vollständing oder es haben noch nicht alle Teilnehmer ihre Teilnahme bestätigt.",

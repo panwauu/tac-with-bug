@@ -149,8 +149,11 @@
     "signUpDeadline": "Registration deadline",
     "gameTime": "game",
     "timePerGame": "Time per game",
+    "fluidSize": "Tournament size: {min} to {max} teams. With fewer teams the last rounds are dropped and some teams get a bye in the first round.",
+    "conditionalRound": "only takes place with {n} teams or more",
     "waitingPlayers": "Player waiting list",
     "registrationList": "Registration list ({x} more teams are required)",
+    "registrationListFluid": "Registration list ({x} teams complete, at least {min}, at most {max})",
     "otherTeams": "Other teams",
     "signUpConfirmationText": "Are you sure you have time on game dates? This is very important for everyone's experience!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Quarter finals",
       "bracketList3": "Round of 16",
       "bracketList4": "Round of 16",
-      "bracketTBDTeam": "Not yet known"
+      "bracketTBDTeam": "Not yet known",
+      "bye": "Bye"
     },
     "Toast": {
       "you-created-a-team-summary": "Team created",
@@ -252,6 +256,29 @@
       "nTeams": "Number of teams:",
       "createPrivateButton": "Create Tournament"
     },
+    "CreatePublic": {
+      "title": "Tournament name",
+      "titleInvalid": "The tournament name must have 8 to 50 characters.",
+      "nTeams": "Number of teams",
+      "maxTeams": "Maximum number of teams",
+      "minTeams": "Minimum number of teams",
+      "minutesPerGame": "Time per game",
+      "fluidSize": "Flexible tournament size",
+      "fluidSizeHint": "If fewer teams sign up until the deadline, the tournament starts with fewer rounds as long as the minimum is reached. The teams that get a bye in the first round are drawn randomly.",
+      "roundDates": "Game dates",
+      "round": "Round {n}",
+      "preview": "Tournament course",
+      "previewLine": "{teams} teams: {rounds} rounds, byes: {byes}",
+      "createButton": "Create tournament",
+      "createdSummary": "Tournament created",
+      "createdDetail": "Registration opens automatically at the configured start date.",
+      "createError": "The tournament could not be created: {error}",
+      "errors": {
+        "missing": "Please enter all dates and the time per game.",
+        "order": "The dates must follow each other: sign up start, sign up deadline, round 1, round 2, …",
+        "overlap": "A round starts before the time of the previous round is over."
+      }
+    },
     "TournamentsTable": {
       "title": "Tournament title",
       "date": "Start date"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Tournament Overview",
       "tournaments": "Tournaments",
-      "createPrivate": "Create private tournament"
+      "createPrivate": "Create private tournament",
+      "createPublic": "Create public tournament"
     },
     "EditPrivate": {
       "notCompleteMessage": "Teams are still missing, the teams are not yet complete or not all participants have confirmed their participation.",

@@ -149,8 +149,11 @@
     "signUpDeadline": "Tilmeldingsfrist",
     "gameTime": "Spil",
     "timePerGame": "Tid pr. spil",
+    "fluidSize": "Turneringsstørrelse: {min} til {max} hold. Med færre hold bortfalder de sidste runder, og nogle hold får en bye i første runde.",
+    "conditionalRound": "spilles kun med {n} hold eller flere",
     "waitingPlayers": "Venteliste for spillere",
     "registrationList": "Tilmeldingsliste ({x} hold mangler stadig)",
+    "registrationListFluid": "Tilmeldingsliste ({x} hold komplette, mindst {min}, højst {max})",
     "otherTeams": "Andre hold",
     "signUpConfirmationText": "Er du sikker på, at du har tid på spilledatoerne? Det er meget vigtigt for alles oplevelse!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Kvartfinale",
       "bracketList3": "Ottendedelsfinale",
       "bracketList4": "Sekstendedelsfinale",
-      "bracketTBDTeam": "Endnu ikke kendt"
+      "bracketTBDTeam": "Endnu ikke kendt",
+      "bye": "Bye"
     },
     "Toast": {
       "you-created-a-team-summary": "Hold oprettet",
@@ -252,6 +256,29 @@
       "nTeams": "Antal hold:",
       "createPrivateButton": "Opret turnering"
     },
+    "CreatePublic": {
+      "title": "Turneringsnavn",
+      "titleInvalid": "Turneringsnavnet skal have 8 til 50 tegn.",
+      "nTeams": "Antal hold",
+      "maxTeams": "Maksimalt antal hold",
+      "minTeams": "Minimalt antal hold",
+      "minutesPerGame": "Tid pr. spil",
+      "fluidSize": "Fleksibel turneringsstørrelse",
+      "fluidSizeHint": "Hvis færre hold tilmelder sig inden fristen, starter turneringen med færre runder, så længe minimumsantallet er nået. Holdene, der får en bye i første runde, trækkes tilfældigt.",
+      "roundDates": "Spilletidspunkter",
+      "round": "Runde {n}",
+      "preview": "Turneringsforløb",
+      "previewLine": "{teams} hold: {rounds} runder, byes: {byes}",
+      "createButton": "Opret turnering",
+      "createdSummary": "Turnering oprettet",
+      "createdDetail": "Tilmeldingen starter automatisk ved tilmeldingsstart.",
+      "createError": "Turneringen kunne ikke oprettes: {error}",
+      "errors": {
+        "missing": "Angiv venligst alle tidspunkter og tiden pr. spil.",
+        "order": "Tidspunkterne skal følge efter hinanden: tilmeldingsstart, tilmeldingsfrist, runde 1, runde 2, …",
+        "overlap": "En runde starter, før tiden for den forrige runde er udløbet."
+      }
+    },
     "TournamentsTable": {
       "title": "Turneringstitel",
       "date": "Startdato"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Turneringsoverblik",
       "tournaments": "Turneringer",
-      "createPrivate": "Opret privat turnering"
+      "createPrivate": "Opret privat turnering",
+      "createPublic": "Opret offentlig turnering"
     },
     "EditPrivate": {
       "notCompleteMessage": "Der mangler stadig hold, holdene er ikke fuldtallige, eller ikke alle deltagere har bekræftet deres deltagelse.",

@@ -1,7 +1,7 @@
 import type express from 'express'
 import { Controller, Get, Post, Body, Route, Request, Security, Query, TsoaResponse, Res } from 'tsoa'
 
-import { createTournament } from '../services/tournamentsManualEditing'
+import { createTournament, validateTournamentInput, type CreateTournamentInput } from '../services/tournamentsManualEditing'
 import { endSignupIfComplete } from '../services/tournamentsRegister'
 import { getDifferentName } from '../services/SweetNameGenerator'
 import type { PublicTournament } from '../sharedTypes/typesTournament'
@@ -58,24 +58,39 @@ export class TournamentsController extends Controller {
        */
       secondsPerGame: number
       /**
+       * Maximum number of teams. The number of creationDates is the number of rounds for this number of teams.
        * @example 8
        */
       nTeams: number
+      /**
+       * Minimum number of teams for a tournament with a fluid size. If fewer than nTeams teams sign up until the deadline,
+       * the tournament starts with fewer rounds (the last creationDates are dropped) and some teams get a bye in the first round.
+       * Omit it (or use nTeams) for a fixed size.
+       * @example 4
+       */
+      minTeams?: number
     },
+    @Res() validationError: TsoaResponse<400, { message: string; details?: any }>,
     @Res() serverError: TsoaResponse<500, { message: string; details?: any }>
   ): Promise<PublicTournament> {
-    const tournament = await createTournament(
-      request.app.locals.sqlClient,
-      requestBody.title,
-      requestBody.begin,
-      requestBody.deadline,
-      requestBody.creationDates,
-      requestBody.secondsPerGame,
-      requestBody.nTeams,
-      2,
-      2,
-      'KO'
-    )
+    const input: CreateTournamentInput = {
+      title: requestBody.title,
+      begin: requestBody.begin,
+      deadline: requestBody.deadline,
+      creationDates: requestBody.creationDates,
+      secondsPerGame: requestBody.secondsPerGame,
+      nTeams: requestBody.nTeams,
+      minTeams: requestBody.minTeams,
+      playersPerTeam: 2,
+      teamsPerMatch: 2,
+      tournamentType: 'KO',
+    }
+    const validation = validateTournamentInput(input)
+    if (validation.isErr()) {
+      return validationError(400, { message: validation.error })
+    }
+
+    const tournament = await createTournament(request.app.locals.sqlClient, input)
     if (tournament.isErr()) {
       return serverError(500, { message: 'Internal Server Error', details: tournament.error })
     }
@@ -128,7 +143,7 @@ export class TournamentsController extends Controller {
   }
 
   /**
-   * Exchange user in tournament
+   * Change the (maximum) number of teams of a tournament in the sign up
    */
   @Security('jwt', ['admin'])
   @Post('/changeTournamentSignUpSize')
@@ -152,7 +167,7 @@ export class TournamentsController extends Controller {
     if (newCreationDates.length !== tournamentDataKO.value.brackets.length) return serverError(500, { message: 'wrong creation date length' })
 
     const updateRes = await request.app.locals.sqlClient.query(
-      "UPDATE tournaments SET n_teams = $1, data = $3, creation_dates = $4 WHERE (status = 'signUp' OR  status = 'signUpWaiting') AND id = $2;",
+      "UPDATE tournaments SET n_teams = $1, min_teams = LEAST(min_teams, $1), data = $3, creation_dates = $4 WHERE (status = 'signUp' OR  status = 'signUpWaiting') AND id = $2;",
       [requestBody.nTeams, requestBody.tournamentID, JSON.stringify(tournamentDataKO.value), newCreationDates]
     )
     if (updateRes.rowCount !== 1) return serverError(500, { message: 'Could not Update Database' })

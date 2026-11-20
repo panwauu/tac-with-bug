@@ -75,6 +75,56 @@ describe('Tournament API', () => {
     expect(apiRes.body.id).toBe(dbResBefore.rows[0].id)
   })
 
+  describe('Create Tournament - validation', () => {
+    const valid = {
+      title: 'TestTournament',
+      begin: '2021-01-01 00:00:00+02',
+      deadline: '2021-01-02 00:00:00+02',
+      creationDates: ['2021-01-03 00:00:00+02', '2021-01-04 00:00:00+02', '2021-01-05 00:00:00+02'],
+      secondsPerGame: 5400,
+      nTeams: 8,
+    }
+
+    test.each([
+      ['minTeams above nTeams', { minTeams: 9 }, 'MIN_TEAMS_NOT_VALID'],
+      ['minTeams of three', { minTeams: 3 }, 'MIN_TEAMS_NOT_VALID'],
+      ['three teams', { nTeams: 3, creationDates: valid.creationDates.slice(0, 2) }, 'N_TEAMS_NOT_VALID_FOR_KO'],
+      ['too many teams', { nTeams: 33 }, 'N_TEAMS_NOT_VALID_FOR_KO'],
+      ['wrong number of rounds', { creationDates: valid.creationDates.slice(0, 2) }, 'KO_ROUNDS_AND_CREATIONDATES_NOT_SAME_LENGTH'],
+      ['deadline before begin', { deadline: '2020-12-31 00:00:00+02' }, 'DATES_NOT_IN_ORDER'],
+      ['rounds not in order', { creationDates: ['2021-01-03 00:00:00+02', '2021-01-05 00:00:00+02', '2021-01-04 00:00:00+02'] }, 'DATES_NOT_IN_ORDER'],
+      ['rounds overlap', { creationDates: ['2021-01-03 00:00:00+02', '2021-01-03 01:00:00+02', '2021-01-05 00:00:00+02'] }, 'ROUNDS_OVERLAP'],
+      ['invalid date', { begin: 'tomorrow' }, 'DATES_NOT_VALID'],
+      ['empty title', { title: '  ' }, 'TITLE_NOT_VALID'],
+    ])('Reject %s', async (_, change, message) => {
+      const apiRes = await testAgent
+        .post('/gameApi/createTournament')
+        .set({ Authorization: userWithCredentials.authHeader })
+        .send({ ...valid, ...change })
+      expect(apiRes.statusCode).toBe(400)
+      expect(apiRes.body.message).toBe(message)
+    })
+
+    test('Fluid size with 6 to 12 teams', async () => {
+      const apiRes = await testAgent
+        .post('/gameApi/createTournament')
+        .set({ Authorization: userWithCredentials.authHeader })
+        .send({ ...valid, nTeams: 12, minTeams: 6, creationDates: [...valid.creationDates, '2021-01-06 00:00:00+02'] })
+      expect(apiRes.statusCode).toBe(200)
+      expect(apiRes.body.nTeams).toBe(12)
+      expect(apiRes.body.minTeams).toBe(6)
+      expect(apiRes.body.data.brackets).toHaveLength(4)
+      await testServer.pgPool.query('DELETE FROM tournaments WHERE id = $1;', [apiRes.body.id])
+    })
+
+    test('Fixed size has minTeams equal to nTeams', async () => {
+      const apiRes = await testAgent.post('/gameApi/createTournament').set({ Authorization: userWithCredentials.authHeader }).send(valid)
+      expect(apiRes.statusCode).toBe(200)
+      expect(apiRes.body.minTeams).toBe(8)
+      await testServer.pgPool.query('DELETE FROM tournaments WHERE id = $1;', [apiRes.body.id])
+    })
+  })
+
   test('Generate Team Name', async () => {
     const apiRes = await testAgent.get('/gameApi/generateTeamName').query({ tournamentID: 1 }).set({ Authorization: userWithCredentials.authHeader })
     expect(apiRes.statusCode).toBe(200)

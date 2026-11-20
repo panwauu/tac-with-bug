@@ -149,8 +149,11 @@
     "signUpDeadline": "Kayıt bitişi",
     "gameTime": "Oyun",
     "timePerGame": "Oyun başına süre",
+    "fluidSize": "Turnuva büyüklüğü: {min} ile {max} takım arası. Daha az takımla son turlar kaldırılır ve bazı takımlar ilk turu bay geçer.",
+    "conditionalRound": "yalnızca {n} veya daha fazla takımla oynanır",
     "waitingPlayers": "Oyuncu bekleme listesi",
     "registrationList": "Kayıt listesi ({x} takım daha gerekli)",
+    "registrationListFluid": "Kayıt listesi ({x} takım tamamlandı, en az {min}, en fazla {max})",
     "otherTeams": "Diğer takımlar",
     "signUpConfirmationText": "Oyun tarihlerinde vaktin olduğundan emin misin? Bu herkesin deneyimi için çok önemli!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Çeyrek final",
       "bracketList3": "Son 16",
       "bracketList4": "Son 32",
-      "bracketTBDTeam": "Henüz belli değil"
+      "bracketTBDTeam": "Henüz belli değil",
+      "bye": "Bay"
     },
     "Toast": {
       "you-created-a-team-summary": "Takım oluşturuldu",
@@ -252,6 +256,29 @@
       "nTeams": "Takım sayısı:",
       "createPrivateButton": "Turnuva oluştur"
     },
+    "CreatePublic": {
+      "title": "Turnuva adı",
+      "titleInvalid": "Turnuva adı 8 ile 50 karakter arasında olmalıdır.",
+      "nTeams": "Takım sayısı",
+      "maxTeams": "Maksimum takım sayısı",
+      "minTeams": "Minimum takım sayısı",
+      "minutesPerGame": "Oyun başına süre",
+      "fluidSize": "Esnek turnuva büyüklüğü",
+      "fluidSizeHint": "Son kayıt tarihine kadar daha az takım kaydolursa, minimuma ulaşıldığı sürece turnuva daha az turla başlar. İlk turu bay geçen takımlar kurayla belirlenir.",
+      "roundDates": "Oyun tarihleri",
+      "round": "Tur {n}",
+      "preview": "Turnuva akışı",
+      "previewLine": "{teams} takım: {rounds} tur, bay: {byes}",
+      "createButton": "Turnuva oluştur",
+      "createdSummary": "Turnuva oluşturuldu",
+      "createdDetail": "Kayıt, kayıt başlangıcında otomatik olarak başlar.",
+      "createError": "Turnuva oluşturulamadı: {error}",
+      "errors": {
+        "missing": "Lütfen tüm tarihleri ve oyun başına süreyi girin.",
+        "order": "Tarihler sırayla olmalıdır: kayıt başlangıcı, son kayıt tarihi, tur 1, tur 2, …",
+        "overlap": "Bir tur, önceki turun süresi dolmadan başlıyor."
+      }
+    },
     "TournamentsTable": {
       "title": "Turnuva başlığı",
       "date": "Başlangıç tarihi"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Turnuvalara genel bakış",
       "tournaments": "Turnuvalar",
-      "createPrivate": "Özel turnuva oluştur"
+      "createPrivate": "Özel turnuva oluştur",
+      "createPublic": "Herkese açık turnuva oluştur"
     },
     "EditPrivate": {
       "notCompleteMessage": "Hâlâ eksik takımlar var, takımlar tamamlanmadı ya da tüm katılımcılar katılımlarını onaylamadı.",
