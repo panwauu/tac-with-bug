@@ -6,7 +6,7 @@ import type { GameForOverview, GetRunningGamesType } from '@repo/core/types'
 import type { RegisterTeam, PublicTournament, Team as TournamentTeam, PrivateTournament, TournamentTableData, LastTournamentWinners } from './typesTournament'
 import type { Friend } from './typesFriends'
 import type { ChatElement, ChatMessage, ChatMessagePage } from './chat'
-import type { BlockedUser, ModerationStatus, ReportCategory, ReportedMessageRef, ReportedUser, UserModerationHistory } from './typesReports'
+import type { BlockedUser, ModerationStatus, ReportCategory, ReportContext, ReportedMessageRef, ReportedUser, UserModerationHistory } from './typesReports'
 
 export type AckData<T> = { status: number; error?: any; data?: T }
 export type CallbackFunction<T> = (data: AckData<T>) => void
@@ -110,6 +110,7 @@ export interface ClientToServerEvents extends Record<string, any> {
   'moderation:dismiss': (username: string, cb: CallbackFunction<null>) => void
   'moderation:blocked': (cb: CallbackFunction<BlockedUser[]>) => void
   'moderation:history': (username: string, cb: CallbackFunction<UserModerationHistory>) => void
+  'moderation:reportContext': (reportID: number, cb: CallbackFunction<ReportContext>) => void
   'moderation:moderators': (cb: CallbackFunction<string[]>) => void
   'moderation:setModerator': (data: { username: string; moderator: boolean }, cb: CallbackFunction<string[]>) => void
 }

@@ -26,17 +26,41 @@
       >
         {{ r.body }}
       </div>
+      <button
+        v-if="r.message != null"
+        type="button"
+        class="verlauf-knopf"
+        @click="umschalten(r.id)"
+      >
+        <i :class="offen.has(r.id) ? 'pi pi-chevron-up' : 'pi pi-comments'" />
+        {{ offen.has(r.id) ? t('Moderation.kontext.ausblenden') : t('Moderation.kontext.zeigen') }}
+      </button>
+      <ReportContextView
+        v-if="r.message != null && offen.has(r.id)"
+        :report-i-d="r.id"
+        :username="username"
+      />
     </li>
   </ul>
 </template>
 
 <script setup lang="ts">
-// Kompakte Liste von Meldungen: Kategorie, Melder, Datum, die gemeldete Chatnachricht und der Text des Melders
+// Kompakte Liste von Meldungen: Kategorie, Melder, Datum, die gemeldete Chatnachricht und der Text des Melders.
+// Bei Chatnachrichten lässt sich der Chat darum aufklappen (ReportContextView).
+import { reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ReportContextView from './ReportContextView.vue'
 import type { HandledReport, Report } from '@/../../server/src/sharedTypes/typesReports'
 
-defineProps<{ reports: (Report | HandledReport)[] }>()
+defineProps<{ reports: (Report | HandledReport)[]; username: string }>()
 const { t } = useI18n()
+
+// Meldungen, deren Chatverlauf gerade aufgeklappt ist
+const offen = reactive(new Set<number>())
+function umschalten(id: number) {
+  if (offen.has(id)) offen.delete(id)
+  else offen.add(id)
+}
 </script>
 
 <style scoped>
@@ -72,5 +96,18 @@ const { t } = useI18n()
 .text {
   margin-top: 2px;
   opacity: 0.85;
+}
+.verlauf-knopf {
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--p-primary-color);
+  font-size: small;
+  cursor: pointer;
+}
+.verlauf-knopf i {
+  font-size: 0.85em;
+  margin-right: 3px;
 }
 </style>

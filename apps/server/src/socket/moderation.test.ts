@@ -199,6 +199,74 @@ describe('Moderation test suite via socket.io', () => {
     await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:dismiss', target.username)
   })
 
+  test('Moderators see the chat around a reported message, in a channel and in a private chat', async () => {
+    const target = usersWithSockets[2]
+    const reporter = usersWithSockets[4]
+    // The game channel g-424242 does not exist, so the messages go straight into the database
+    const insert = (sender: number, body: string) =>
+      testServer.pgPool.query<{ id: number }>("INSERT INTO channel_messages (channel, sender, body) VALUES ('g-424242', $1, $2) RETURNING id;", [sender, body])
+    await insert(reporter.id, 'before one')
+    await insert(target.id, 'before two')
+    const reported = await insert(target.id, 'the reported words')
+    await insert(reporter.id, 'after one')
+
+    const res = await reporter.socket.emitWithAck(5000, 'moderation:report', {
+      username: target.username,
+      category: 'chat',
+      body: '',
+      message: { type: 'channel', id: reported.rows[0].id },
+    })
+    expect(res.status).toBe(200)
+    const reports = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:reports')
+    const reportID = reports.data?.find((r) => r.username === target.username)?.reports[0].id
+    expect(reportID).toBeGreaterThan(0)
+
+    const normal = await reporter.socket.emitWithAck(5000, 'moderation:reportContext', reportID ?? 0)
+    expect(normal.status).toBe(403)
+
+    const context = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:reportContext', reportID ?? 0)
+    expect(context.status).toBe(200)
+    expect(context.data?.place).toEqual({ type: 'game', gameID: 424242 })
+    expect(context.data?.messages.map((m) => m.body)).toEqual(['before one', 'before two', 'the reported words', 'after one'])
+    expect(context.data?.messages.map((m) => m.reported)).toEqual([false, false, true, false])
+    expect(context.data?.messages[0].sender).toBe(reporter.username)
+    expect(context.data?.moreBefore).toBe(false)
+    expect(context.data?.moreAfter).toBe(false)
+    await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:dismiss', target.username)
+
+    // Private chat: the members are named, only this chat is shown
+    const chat = await testServer.pgPool.query<{ id: number }>('INSERT INTO chats (group_chat) VALUES (FALSE) RETURNING id;')
+    await testServer.pgPool.query('INSERT INTO users_to_chats (userid, chatid) VALUES ($1, $3), ($2, $3);', [target.id, reporter.id, chat.rows[0].id])
+    const inChat = (sender: number, body: string) =>
+      testServer.pgPool.query<{ id: number }>('INSERT INTO chat_messages (sender, chatid, body) VALUES ($1, $2, $3) RETURNING id;', [sender, chat.rows[0].id, body])
+    await inChat(reporter.id, 'hello')
+    const rude = await inChat(target.id, 'rude answer')
+    const res2 = await reporter.socket.emitWithAck(5000, 'moderation:report', {
+      username: target.username,
+      category: 'chat',
+      body: '',
+      message: { type: 'chat', id: rude.rows[0].id },
+    })
+    expect(res2.status).toBe(200)
+    const reports2 = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:reports')
+    const reportID2 = reports2.data?.find((r) => r.username === target.username)?.reports[0].id ?? 0
+    const context2 = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:reportContext', reportID2)
+    expect(context2.data?.place).toEqual({ type: 'chat', group: false, groupName: null, members: [reporter.username, target.username].sort() })
+    expect(context2.data?.messages.map((m) => [m.body, m.reported])).toEqual([
+      ['hello', false],
+      ['rude answer', true],
+    ])
+
+    // A report without a chat message has no context
+    await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:dismiss', target.username)
+    await reporter.socket.emitWithAck(5000, 'moderation:report', { username: target.username, category: 'username', body: '' })
+    const reports3 = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:reports')
+    const reportID3 = reports3.data?.find((r) => r.username === target.username)?.reports[0].id ?? 0
+    const context3 = await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:reportContext', reportID3)
+    expect(context3.error).toBe('MESSAGE_NOT_FOUND')
+    await usersWithSockets[0].socket.emitWithAck(5000, 'moderation:dismiss', target.username)
+  })
+
   test('Only admins name moderators, who then see the reports', async () => {
     const notAdmin = await usersWithSockets[1].socket.emitWithAck(5000, 'moderation:setModerator', { username: usersWithSockets[1].username, moderator: true })
     expect(notAdmin.status).toBe(403)
