@@ -45,7 +45,7 @@
               href="https://nodejs.org/en/"
             >
               <img
-                src="https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg"
+                src="@/assets/techLogos/nodejs.svg"
                 class="logo"
                 alt="NodeJS Logo"
               />
@@ -56,7 +56,7 @@
               href="https://expressjs.com/"
             >
               <img
-                src="https://www.vectorlogo.zone/logos/expressjs/expressjs-ar21.svg"
+                src="@/assets/techLogos/express.svg"
                 class="logo"
                 alt="ExpressJS Logo"
               />
@@ -67,7 +67,7 @@
               href="https://socket.io/"
             >
               <img
-                src="https://cdn.worldvectorlogo.com/logos/socket-io.svg"
+                src="@/assets/techLogos/socketio.svg"
                 class="logo"
                 alt="Socket.io Logo"
               />
@@ -78,7 +78,7 @@
               href="https://www.primefaces.org/primevue/"
             >
               <img
-                src="https://raw.githubusercontent.com/primefaces/primevue/master/assets/images/logo.svg"
+                src="@/assets/techLogos/primevue.svg"
                 class="logo"
                 alt="Primevue Logo"
               />
@@ -89,7 +89,7 @@
               href="https://nodemailer.com/about/"
             >
               <img
-                src="https://nodemailer.com/nm_logo_200x136.png"
+                src="@/assets/techLogos/nodemailer.png"
                 class="logo"
                 alt="Nodemailer Logo"
               />
@@ -100,7 +100,7 @@
               href="https://kazupon.github.io/vue-i18n/"
             >
               <img
-                src="https://kazupon.github.io/vue-i18n/vue-i18n-logo.png"
+                src="@/assets/techLogos/vue-i18n.png"
                 class="logo"
                 alt="vue-i18n Logo"
               />
@@ -111,7 +111,7 @@
               href="https://www.postgresql.org/"
             >
               <img
-                src="https://www.postgresql.org/media/img/about/press/elephant.png"
+                src="@/assets/techLogos/postgres.png"
                 class="logo"
                 alt="Postgres Logo"
               />
@@ -121,7 +121,7 @@
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://socket.io/"
+              href="https://www.npmjs.com/package/splitpanes"
             >
               Splitpanes
             </a>
