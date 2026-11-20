@@ -89,6 +89,7 @@
             <ReportList
               v-else
               :reports="[e.meldung]"
+              :username="username"
             />
           </div>
         </li>

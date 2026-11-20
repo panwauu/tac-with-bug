@@ -36,6 +36,11 @@ export async function selectRandomProfilePicture(sqlClient: pg.Pool, userID: num
   await saveProfilePicture(sqlClient, resizedBuffer, userID)
 }
 
+/** Group pictures have the size of profile pictures and are always stored as JPEG */
+export async function resizeGroupPicture(buffer: Buffer): Promise<Buffer> {
+  return sharp(buffer).resize(profilePictureSize, profilePictureSize).jpeg({ quality: 85 }).toBuffer()
+}
+
 export async function loadProfilePictureToDB(sqlClient: pg.Pool, userID: number, buffer: Buffer) {
   const resizedBuffer = await sharp(buffer).resize(profilePictureSize, profilePictureSize).toBuffer()
   await saveProfilePicture(sqlClient, resizedBuffer, userID)

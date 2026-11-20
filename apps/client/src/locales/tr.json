@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Oyuncu ekle",
-      "leaveButton": "Sohbetten ayrıl"
+      "leaveButton": "Sohbetten ayrıl",
+      "changePicture": "Resmi değiştir",
+      "removePicture": "Resmi kaldır",
+      "pictureError": "Resim kaydedilemedi."
     },
     "ChatCreator": {
       "startButton": "Sohbet başlat",
@@ -744,6 +747,16 @@
       "light": "Açık",
       "dark": "Koyu",
       "explanation": "Renk şeması uygulamanın görünümünü belirler. “Açık” aydınlık bir tasarım gösterir, “Koyu” karanlık modu açar ve “Sistem” renk şemasını cihazının ayarlarına göre otomatik uyarlar."
+    },
+    "InGameEmojis": {
+      "header": "Oyunda emojiler",
+      "explanation": "Bu emojileri bir oyun sırasında gönderebilirsin. Seçim bu cihaz için geçerlidir.",
+      "onlySubscribers": "Destekçiler kendi emojilerini seçebilir. Abonelik olmadan standart emojiler geçerlidir.",
+      "toSubscription": "Aboneliğe git",
+      "add": "Emoji ekle",
+      "remove": "Kaldır",
+      "moveLeft": "Sola taşı",
+      "reset": "Varsayılana dön"
     }
   },
   "Profile": {
@@ -1028,7 +1041,20 @@
     "bis": "{datum} tarihine kadar",
     "keinVerlauf": "Hiç bildirilmedi ya da engellenmedi.",
     "sperre": "Engelleme",
-    "nachrichtMelden": "Mesajı bildir"
+    "nachrichtMelden": "Mesajı bildir",
+    "kontext": {
+      "zeigen": "Sohbet geçmişini göster",
+      "ausblenden": "Sohbet geçmişini gizle",
+      "laedt": "Yükleniyor …",
+      "nichtGefunden": "Mesaj artık sohbette bulunamıyor.",
+      "aeltere": "Daha eski mesajlar gösterilmiyor",
+      "neuere": "Daha yeni mesajlar gösterilmiyor",
+      "partie": "Oyun sohbeti, oyun {nr}",
+      "warteraum": "Bekleme odası sohbeti",
+      "kanal": "Genel sohbet “{name}”",
+      "privat": "Özel sohbet: {leute}",
+      "gruppe": "Grup sohbeti “{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Oyuncu bulunamadı"
@@ -1074,6 +1100,7 @@
     "titel": "Eğitimler",
     "einleitung": "TAC'ı adım adım öğren: kısa dersler ve doğrudan tahta üzerinde görevler. TAC uygulamasındaki derslerin aynısı.",
     "hinweis": "İlerlemen yalnızca bu tarayıcıda kaydedilir.",
+    "hinweisKonto": "İlerlemen hesabına kaydedilir.",
     "uebersicht": "Genel bakış",
     "weiter": "İleri",
     "nochmal": "Tekrar",

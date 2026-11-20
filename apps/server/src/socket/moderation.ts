@@ -13,6 +13,7 @@ import {
   getBlockedUsers,
   getModerators,
   getOpenReports,
+  getReportContext,
   getUserHistory,
   isModerator,
   setModerator,
@@ -163,6 +164,22 @@ export function registerModerationHandlers(pgPool: pg.Pool, socket: GeneralSocke
       return cb({ status: 200, data: await getBlockedUsers(pgPool) })
     } catch (err) {
       logger.error('Error in moderation:blocked', err)
+      return cb({ status: 500, error: err })
+    }
+  })
+
+  // The chat around a reported message: what led to it and how it went on
+  socket.on('moderation:reportContext', async (reportID, cb) => {
+    if (!(await onlyModerators(cb))) return
+    const { error } = Joi.number().integer().min(1).required().validate(reportID)
+    if (error != null) return cb({ status: 422, error })
+
+    try {
+      const res = await getReportContext(pgPool, reportID)
+      if (res.isErr()) return cb({ status: 400, error: res.error })
+      return cb({ status: 200, data: res.value })
+    } catch (err) {
+      logger.error('Error in moderation:reportContext', err)
       return cb({ status: 500, error: err })
     }
   })

@@ -144,15 +144,22 @@ export async function loadChatOverview(pgPool: pg.Pool, userid: number): Promise
     SELECT 
     (SELECT created FROM chat_messages WHERE chatid=chatids.id ORDER BY id DESC LIMIT 1) as last_message,
         chatids.id as chatid, group_chat, group_name, created,
+        (EXTRACT(EPOCH FROM group_picture_changed) * 1000)::BIGINT as group_picture,
         (SELECT array_agg(users.username) FROM users_to_chats 
           JOIN users ON users_to_chats.userid = users.id WHERE chatid = chatids.id AND users_to_chats.userid != $1 GROUP BY chatid) as players,
         (SELECT COUNT(*)::INT FROM chat_messages_unread 
           JOIN users_to_chats ON chat_messages_unread.users_to_chats_id = users_to_chats.id WHERE userid=$1 AND chatid = chatids.id) as number_of_unread
     FROM chatids JOIN chats ON chatids.id = chats.id;`
-  const res = await pgPool.query<{ last_message: string; chatid: number; group_chat: boolean; group_name: string; created: string; players: string[]; number_of_unread: number }>(
-    query,
-    [userid]
-  )
+  const res = await pgPool.query<{
+    last_message: string
+    chatid: number
+    group_chat: boolean
+    group_name: string
+    created: string
+    group_picture: string | null
+    players: string[]
+    number_of_unread: number
+  }>(query, [userid])
 
   return res.rows.map((r) => {
     return {
@@ -163,6 +170,7 @@ export async function loadChatOverview(pgPool: pg.Pool, userid: number): Promise
       lastMessage: r.last_message,
       players: r.players,
       numberOfUnread: r.number_of_unread,
+      groupPicture: r.group_picture == null ? null : Number(r.group_picture),
     }
   })
 }
@@ -178,4 +186,40 @@ export async function notifyUsersOfMissedMessages(pgPool: pg.Pool) {
   for (const entry of res.rows) {
     await sendUnreadMessagesReminder(entry)
   }
+}
+
+export type GroupPictureError = 'USER_NOT_PART_OF_GROUP_CHAT' | 'NO_GROUP_PICTURE'
+/** Only members of a group chat may see or change its picture */
+async function checkGroupMember(pgPool: pg.Pool, userid: number, chatid: number): Promise<boolean> {
+  const res = await pgPool.query(
+    'SELECT 1 FROM users_to_chats JOIN chats ON chats.id = users_to_chats.chatid WHERE users_to_chats.userid = $1 AND chats.id = $2 AND chats.group_chat = TRUE;',
+    [userid, chatid]
+  )
+  return res.rows.length === 1
+}
+
+/** Saves (or with null removes) the picture of a group chat and returns the members to notify */
+export async function setGroupPicture(pgPool: pg.Pool, userid: number, chatid: number, picture: Buffer | null): Promise<Result<number[], GroupPictureError>> {
+  if (!(await checkGroupMember(pgPool, userid, chatid))) {
+    return err('USER_NOT_PART_OF_GROUP_CHAT')
+  }
+  await pgPool.query('UPDATE chats SET group_picture = $2, group_picture_changed = $3, group_picture_by = $4 WHERE id = $1;', [
+    chatid,
+    picture,
+    picture == null ? null : new Date(),
+    picture == null ? null : userid,
+  ])
+  return ok(await getUsersInChat(pgPool, chatid))
+}
+
+export async function queryGroupPicture(pgPool: pg.Pool, userid: number, chatid: number): Promise<Result<string, GroupPictureError>> {
+  if (!(await checkGroupMember(pgPool, userid, chatid))) {
+    return err('USER_NOT_PART_OF_GROUP_CHAT')
+  }
+  const res = await pgPool.query<{ group_picture: Buffer | null }>('SELECT group_picture FROM chats WHERE id = $1;', [chatid])
+  const picture = res.rows[0]?.group_picture
+  if (picture == null) {
+    return err('NO_GROUP_PICTURE')
+  }
+  return ok(picture.toString('base64'))
 }

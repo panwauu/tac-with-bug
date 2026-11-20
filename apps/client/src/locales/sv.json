@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Lägg till spelare",
-      "leaveButton": "Lämna chatten"
+      "leaveButton": "Lämna chatten",
+      "changePicture": "Byt bild",
+      "removePicture": "Ta bort bild",
+      "pictureError": "Bilden kunde inte sparas."
     },
     "ChatCreator": {
       "startButton": "Starta chatt",
@@ -744,6 +747,16 @@
       "light": "Ljust",
       "dark": "Mörkt",
       "explanation": "Färgschemat bestämmer hur programmet ser ut. ”Ljust” visar en ljus design, ”Mörkt” aktiverar mörkt läge och ”System” anpassar färgschemat automatiskt efter enhetens inställningar."
+    },
+    "InGameEmojis": {
+      "header": "Emojis i spelet",
+      "explanation": "Dessa emojis kan du skicka under ett parti. Urvalet gäller på den här enheten.",
+      "onlySubscribers": "Supportrar kan sätta ihop sina egna emojis. Utan prenumeration gäller standardemojierna.",
+      "toSubscription": "Till prenumerationen",
+      "add": "Lägg till emoji",
+      "remove": "Ta bort",
+      "moveLeft": "Flytta åt vänster",
+      "reset": "Återställ standard"
     }
   },
   "Profile": {
@@ -1028,7 +1041,20 @@
     "bis": "till {datum}",
     "keinVerlauf": "Aldrig anmäld eller spärrad.",
     "sperre": "Spärr",
-    "nachrichtMelden": "Anmäl meddelande"
+    "nachrichtMelden": "Anmäl meddelande",
+    "kontext": {
+      "zeigen": "Visa chatthistorik",
+      "ausblenden": "Dölj chatthistorik",
+      "laedt": "Laddar …",
+      "nichtGefunden": "Meddelandet finns inte längre i chatten.",
+      "aeltere": "Äldre meddelanden visas inte",
+      "neuere": "Nyare meddelanden visas inte",
+      "partie": "Partichatt, parti {nr}",
+      "warteraum": "Chatt i väntrummet",
+      "kanal": "Offentlig chatt ”{name}”",
+      "privat": "Privat chatt: {leute}",
+      "gruppe": "Gruppchatt ”{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Inga spelare hittades"
@@ -1074,6 +1100,7 @@
     "titel": "Handledningar",
     "einleitung": "Lär dig TAC steg för steg: korta lektioner och uppgifter direkt på brädet. Samma lektioner som i TAC-appen.",
     "hinweis": "Dina framsteg sparas bara i den här webbläsaren.",
+    "hinweisKonto": "Dina framsteg sparas i ditt konto.",
     "uebersicht": "Översikt",
     "weiter": "Nästa",
     "nochmal": "Igen",

@@ -88,7 +88,10 @@
                 />
               </div>
             </div>
-            <ReportList :reports="u.reports" />
+            <ReportList
+              :reports="u.reports"
+              :username="u.username"
+            />
           </div>
         </TabPanel>
 

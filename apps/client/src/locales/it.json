@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Aggiungi giocatore",
-      "leaveButton": "Lascia la chat"
+      "leaveButton": "Lascia la chat",
+      "changePicture": "Cambia immagine",
+      "removePicture": "Rimuovi immagine",
+      "pictureError": "Non è stato possibile salvare l'immagine."
     },
     "ChatCreator": {
       "startButton": "Avvia chat",
@@ -744,6 +747,16 @@
       "light": "Chiaro",
       "dark": "Scuro",
       "explanation": "Lo schema di colori determina l'aspetto dell'applicazione. «Chiaro» mostra un design chiaro, «Scuro» attiva la modalità scura e «Sistema» adatta automaticamente lo schema alle impostazioni del tuo dispositivo."
+    },
+    "InGameEmojis": {
+      "header": "Emoji in partita",
+      "explanation": "Puoi inviare queste emoji durante una partita. La selezione vale su questo dispositivo.",
+      "onlySubscribers": "I sostenitori possono scegliere le proprie emoji. Senza abbonamento valgono le emoji standard.",
+      "toSubscription": "Vai all’abbonamento",
+      "add": "Aggiungi emoji",
+      "remove": "Rimuovi",
+      "moveLeft": "Sposta a sinistra",
+      "reset": "Ripristina predefinite"
     }
   },
   "Profile": {
@@ -1028,7 +1041,20 @@
     "bis": "fino al {datum}",
     "keinVerlauf": "Mai segnalato né bloccato.",
     "sperre": "Blocco",
-    "nachrichtMelden": "Segnala messaggio"
+    "nachrichtMelden": "Segnala messaggio",
+    "kontext": {
+      "zeigen": "Mostra cronologia chat",
+      "ausblenden": "Nascondi cronologia chat",
+      "laedt": "Caricamento …",
+      "nichtGefunden": "Il messaggio non si trova più nella chat.",
+      "aeltere": "Messaggi precedenti non mostrati",
+      "neuere": "Messaggi successivi non mostrati",
+      "partie": "Chat della partita, partita {nr}",
+      "warteraum": "Chat della sala d'attesa",
+      "kanal": "Chat pubblica «{name}»",
+      "privat": "Chat privata: {leute}",
+      "gruppe": "Chat di gruppo «{name}»: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Nessun giocatore trovato"
@@ -1074,6 +1100,7 @@
     "titel": "Tutorial",
     "einleitung": "Impara TAC passo dopo passo: brevi lezioni ed esercizi direttamente sul tabellone. Le stesse lezioni dell'app TAC.",
     "hinweis": "I tuoi progressi vengono salvati solo in questo browser.",
+    "hinweisKonto": "I tuoi progressi vengono salvati nel tuo account.",
     "uebersicht": "Panoramica",
     "weiter": "Avanti",
     "nochmal": "Riprova",

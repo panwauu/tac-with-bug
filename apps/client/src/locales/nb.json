@@ -347,7 +347,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Legg til spiller",
-      "leaveButton": "Forlat chatten"
+      "leaveButton": "Forlat chatten",
+      "changePicture": "Bytt bilde",
+      "removePicture": "Fjern bilde",
+      "pictureError": "Bildet kunne ikke lagres."
     },
     "ChatCreator": {
       "startButton": "Start chat",
@@ -744,6 +747,16 @@
       "light": "Lyst",
       "dark": "Mørkt",
       "explanation": "Fargetemaet bestemmer hvordan programmet ser ut. «Lyst» viser et lyst design, «Mørkt» slår på mørk modus, og «System» tilpasser fargetemaet automatisk til innstillingene på enheten din."
+    },
+    "InGameEmojis": {
+      "header": "Emojier i spillet",
+      "explanation": "Disse emojiene kan du sende under et parti. Utvalget gjelder på denne enheten.",
+      "onlySubscribers": "Støttespillere kan sette sammen sine egne emojier. Uten abonnement gjelder standardemojiene.",
+      "toSubscription": "Til abonnementet",
+      "add": "Legg til emoji",
+      "remove": "Fjern",
+      "moveLeft": "Flytt til venstre",
+      "reset": "Gjenopprett standard"
     }
   },
   "Profile": {
@@ -1028,7 +1041,20 @@
     "bis": "til {datum}",
     "keinVerlauf": "Aldri rapportert eller sperret.",
     "sperre": "Sperring",
-    "nachrichtMelden": "Rapporter melding"
+    "nachrichtMelden": "Rapporter melding",
+    "kontext": {
+      "zeigen": "Vis chattehistorikk",
+      "ausblenden": "Skjul chattehistorikk",
+      "laedt": "Laster …",
+      "nichtGefunden": "Meldingen finnes ikke lenger i chatten.",
+      "aeltere": "Eldre meldinger vises ikke",
+      "neuere": "Nyere meldinger vises ikke",
+      "partie": "Partichat, parti {nr}",
+      "warteraum": "Chat i venterommet",
+      "kanal": "Offentlig chat «{name}»",
+      "privat": "Privat chat: {leute}",
+      "gruppe": "Gruppechat «{name}»: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Ingen spillere funnet"
@@ -1074,6 +1100,7 @@
     "titel": "Opplæringer",
     "einleitung": "Lær TAC steg for steg: korte leksjoner og oppgaver rett på brettet. De samme leksjonene som i TAC-appen.",
     "hinweis": "Fremgangen din lagres bare i denne nettleseren.",
+    "hinweisKonto": "Fremgangen din lagres i kontoen din.",
     "uebersicht": "Oversikt",
     "weiter": "Neste",
     "nochmal": "Igjen",
