@@ -68,7 +68,8 @@ const bedingungen: Record<string, (l: Lage) => boolean> = {
     const plaetze = l.imHaus.map((m) => m.haus)
     return plaetze.includes(2) && plaetze.includes(3)
   },
-  s_f11b: (l) => insHaus(l) && l.gespielt,
+  // The task asks for the last home field, not any home field
+  s_f11b: (l) => l.gespielt && l.imHaus.some((m) => m.haus === 3),
   s_f14: (l) => l.gespielt && [13, 38, 8, 16].some(l.schwarzAuf),
   s_f15: aussetzen,
   s_f17: (l) => l.gespielt && l.schwarz[0].ring === 50,
