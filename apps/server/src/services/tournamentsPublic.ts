@@ -99,7 +99,7 @@ export async function getPublicTournament(sqlClient: pg.Pool, condition?: GetTou
             WHERE tournaments_register.tournamentid = tournaments.id
             GROUP BY tournaments_register.team_name
         ) as tRegister ) as register_teams,
-        id, n_teams, players_per_team, teams_per_match, tournament_type, title, status, signup_begin, signup_deadline, creation_dates, creation_phase,
+        id, n_teams, COALESCE(min_teams, n_teams) as min_teams, players_per_team, teams_per_match, tournament_type, title, status, signup_begin, signup_deadline, creation_dates, creation_phase,
         TO_CHAR(time_per_game,'HH24:MI') as time_per_game, data
     FROM tournaments ${whereClause}`,
       values
@@ -122,6 +122,7 @@ export async function getPublicTournament(sqlClient: pg.Pool, condition?: GetTou
       teams: row.teams,
       registerTeams: row.register_teams,
       nTeams: row.n_teams,
+      minTeams: row.min_teams,
       playersPerTeam: row.players_per_team,
       tournamentType: row.tournament_type,
       teamsPerMatch: row.teams_per_match,
@@ -161,15 +162,17 @@ export async function startTournament(sqlClient: pg.Pool) {
 
 export type CreateGamesTournamentError = 'GAMES_ALREADY_CREATED_OR_NOT_ALL_ENDED'
 async function createGamesTournament(sqlClient: pg.Pool, tournament: tTournament.PublicTournament): Promise<Result<tTournament.PublicTournament, CreateGamesTournamentError>> {
+  // Teams with a bye advance without a game
+  const matches = tournament.data.brackets[tournament.creationPhase - 1].filter((b) => b.bye !== true)
   if (
-    tournament.data.brackets[tournament.creationPhase - 1].some((b) => {
+    matches.some((b) => {
       return b.teams.includes(-1) || b.gameID !== -1
     })
   ) {
     return err('GAMES_ALREADY_CREATED_OR_NOT_ALL_ENDED')
   }
 
-  for (const bracket of tournament.data.brackets[tournament.creationPhase - 1]) {
+  for (const bracket of matches) {
     let playerids: number[] = []
     for (const t of bracket.teams) {
       playerids = playerids.concat(tournament.teams[t].playerids)

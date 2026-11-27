@@ -2,7 +2,10 @@ import { err, ok, Result } from 'neverthrow'
 import type pg from 'pg'
 import type * as tTournament from '../sharedTypes/typesTournament'
 
+import logger from '../helpers/logger'
 import { tournamentBus } from './tournaments'
+import { createTournamentDataKO } from './tournamentKO'
+import { pushChangedPublicTournament, sendInvitationToAll } from '../socket/tournamentPublic'
 import { getPublicTournamentByID, getPublicTournament, GetTournamentByIDError } from './tournamentsPublic'
 
 function alreadyRegistered(tournament: tTournament.PublicTournament, userID: number) {
@@ -200,17 +203,32 @@ export async function leaveTournament(
   return ok({ tournament: tournament.value, registerTeamForNotification })
 }
 
-export async function endSignupIfComplete(sqlClient: pg.Pool, tournament: tTournament.PublicTournament) {
-  if (tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length === tournament.playersPerTeam).length < tournament.nTeams) {
+function isCompleteRegisterTeam(tournament: tTournament.PublicTournament, team: tTournament.RegisterTeam) {
+  return team.activated.filter((a) => a === true).length === tournament.playersPerTeam
+}
+
+// Ends the sign up as soon as the maximum number of teams is complete. At the deadline (deadlineReached) the minimum number of teams
+// is enough. The bracket is drawn with the participating teams: with fewer teams than places some teams get a bye in the first
+// round, and the rounds that are not needed anymore are removed from the end of the schedule.
+export async function endSignupIfComplete(sqlClient: pg.Pool, tournament: tTournament.PublicTournament, deadlineReached = false) {
+  const completeTeams = tournament.registerTeams.filter((t) => isCompleteRegisterTeam(tournament, t))
+  if (completeTeams.length < (deadlineReached ? tournament.minTeams : tournament.nTeams)) {
     return tournament
   }
 
-  tournament.teams = tournament.registerTeams
-    .filter((t) => t.activated.filter((a) => a === true).length === tournament.playersPerTeam)
-    .map((r) => {
-      return { name: r.name, players: r.players, playerids: r.playerids }
-    })
-  tournament.registerTeams = tournament.registerTeams.filter((t) => t.activated.filter((a) => a === true).length !== tournament.playersPerTeam)
+  const participatingTeams = completeTeams.slice(0, tournament.nTeams)
+  const data = createTournamentDataKO(participatingTeams.length, tournament.teamsPerMatch)
+  if (data.isErr()) {
+    logger.error(`Could not draw the bracket of tournament ${tournament.id}: ${data.error}`)
+    return tournament
+  }
+  tournament.data = data.value
+  tournament.creationDates = tournament.creationDates.slice(0, data.value.brackets.length)
+
+  tournament.teams = participatingTeams.map((r) => {
+    return { name: r.name, players: r.players, playerids: r.playerids }
+  })
+  tournament.registerTeams = tournament.registerTeams.filter((t) => !participatingTeams.includes(t))
 
   tournament.status = 'signUpEnded'
   const dataForUsersToTournaments: { userid: number; tournamentid: number; team_name: string; team_number: number }[] = []
@@ -220,7 +238,7 @@ export async function endSignupIfComplete(sqlClient: pg.Pool, tournament: tTourn
     }
   }
 
-  await sqlClient.query('UPDATE tournaments SET status=$1 WHERE id=$2;', [tournament.status, tournament.id])
+  await sqlClient.query('UPDATE tournaments SET status=$1, data=$2, creation_dates=$3 WHERE id=$4;', [tournament.status, tournament.data, tournament.creationDates, tournament.id])
   await sqlClient.query('INSERT INTO users_to_tournaments SELECT m.* FROM json_populate_recordset(null::users_to_tournaments_type, $1::json) AS m;', [
     JSON.stringify(dataForUsersToTournaments),
   ])
@@ -236,8 +254,10 @@ export async function endSignUpOnCondition(sqlClient: pg.Pool) {
   const tournaments = await getPublicTournament(sqlClient, { status: 'signUp', signup_deadline: '<' })
 
   for (let tournament of tournaments) {
-    tournament = await endSignupIfComplete(sqlClient, tournament)
+    tournament = await endSignupIfComplete(sqlClient, tournament, true)
     if (tournament.status === 'signUpEnded') {
+      pushChangedPublicTournament(tournament)
+      await sendInvitationToAll(sqlClient, tournament)
       tournamentBus.emit('signUpEnded-you-partizipate', {
         tournamentTitle: tournament.title,
         playerids: tournament.teams.flatMap((r) => r.playerids),
@@ -259,6 +279,7 @@ export async function endSignUpOnCondition(sqlClient: pg.Pool) {
       }
 
       await sqlClient.query("UPDATE tournaments SET status='signUpFailed' WHERE id = $1;", [tournament.id])
+      pushChangedPublicTournament(tournament)
       tournamentBus.emit('signUp-failed', { tournamentTitle: tournament.title, playerids: playerids })
     }
   }

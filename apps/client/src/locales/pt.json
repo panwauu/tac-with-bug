@@ -149,8 +149,11 @@
     "signUpDeadline": "Fim das inscrições",
     "gameTime": "Jogo",
     "timePerGame": "Tempo por jogo",
+    "fluidSize": "Tamanho do torneio: de {min} a {max} equipes. Com menos equipes, as últimas rodadas são eliminadas e algumas equipes passam direto para a segunda rodada.",
+    "conditionalRound": "só acontece com {n} equipes ou mais",
     "waitingPlayers": "Lista de espera de jogadores",
     "registrationList": "Lista de inscrições (ainda faltam {x} equipes)",
+    "registrationListFluid": "Lista de inscrições ({x} equipes completas, no mínimo {min}, no máximo {max})",
     "otherTeams": "Outras equipes",
     "signUpConfirmationText": "Tem certeza de que terá tempo nas datas dos jogos? Isso é muito importante para a experiência de todos!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Quartas de final",
       "bracketList3": "Oitavas de final",
       "bracketList4": "Dezesseis avos de final",
-      "bracketTBDTeam": "Ainda não definido"
+      "bracketTBDTeam": "Ainda não definido",
+      "bye": "Passa direto"
     },
     "Toast": {
       "you-created-a-team-summary": "Equipe criada",
@@ -252,6 +256,29 @@
       "nTeams": "Número de equipes:",
       "createPrivateButton": "Criar torneio"
     },
+    "CreatePublic": {
+      "title": "Nome do torneio",
+      "titleInvalid": "O nome do torneio precisa ter de 8 a 50 caracteres.",
+      "nTeams": "Número de equipes",
+      "maxTeams": "Número máximo de equipes",
+      "minTeams": "Número mínimo de equipes",
+      "minutesPerGame": "Tempo por jogo",
+      "fluidSize": "Tamanho flexível do torneio",
+      "fluidSizeHint": "Se menos equipes se inscreverem até o fim das inscrições, o torneio começa com menos rodadas, desde que o número mínimo seja atingido. As equipes que passam direto na primeira rodada são sorteadas.",
+      "roundDates": "Datas dos jogos",
+      "round": "Rodada {n}",
+      "preview": "Andamento do torneio",
+      "previewLine": "{teams} equipes: {rounds} rodadas, passam direto: {byes}",
+      "createButton": "Criar torneio",
+      "createdSummary": "Torneio criado",
+      "createdDetail": "As inscrições abrem automaticamente na data de início definida.",
+      "createError": "Não foi possível criar o torneio: {error}",
+      "errors": {
+        "missing": "Informe todas as datas e o tempo por jogo.",
+        "order": "As datas precisam estar em sequência: início das inscrições, fim das inscrições, rodada 1, rodada 2, …",
+        "overlap": "Uma rodada começa antes de terminar o tempo da rodada anterior."
+      }
+    },
     "TournamentsTable": {
       "title": "Título do torneio",
       "date": "Data de início"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Visão geral dos torneios",
       "tournaments": "Torneios",
-      "createPrivate": "Criar torneio privado"
+      "createPrivate": "Criar torneio privado",
+      "createPublic": "Criar torneio público"
     },
     "EditPrivate": {
       "notCompleteMessage": "Ainda faltam equipes, as equipes ainda não estão completas ou nem todos os participantes confirmaram a participação.",

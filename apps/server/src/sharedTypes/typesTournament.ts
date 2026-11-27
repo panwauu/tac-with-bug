@@ -20,6 +20,8 @@ export interface KoBracket {
   score: Array<number>
   gameID: number
   winner: number
+  // The only team of the match advances without a game, because the tournament has less teams than the bracket has places
+  bye?: boolean
 }
 
 export interface TournamentPrototype {
@@ -35,6 +37,9 @@ export interface TournamentPrototype {
 }
 
 export interface PublicTournament extends TournamentPrototype {
+  // nTeams is the maximum. If fewer teams sign up, the tournament starts with at least minTeams teams and fewer rounds.
+  // Equal to nTeams for a tournament with a fixed size.
+  minTeams: number
   status: 'signUpWaiting' | 'signUp' | 'signUpFailed' | 'signUpEnded' | 'ended' | 'running'
   signupBegin: string
   signupDeadline: string

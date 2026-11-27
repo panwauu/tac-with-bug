@@ -149,8 +149,11 @@
     "signUpDeadline": "Cierre de inscripción",
     "gameTime": "Partida",
     "timePerGame": "Tiempo por partida",
+    "fluidSize": "Tamaño del torneo: de {min} a {max} equipos. Con menos equipos se eliminan las últimas rondas y algunos equipos pasan la primera ronda sin jugar.",
+    "conditionalRound": "solo se juega con {n} equipos o más",
     "waitingPlayers": "Lista de espera de jugadores",
     "registrationList": "Lista de inscritos (faltan {x} equipos)",
+    "registrationListFluid": "Lista de inscripción ({x} equipos completos, mínimo {min}, máximo {max})",
     "otherTeams": "Otros equipos",
     "signUpConfirmationText": "¿Seguro que tienes tiempo en las fechas de las partidas? ¡Es muy importante para la experiencia de todos!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Cuartos de final",
       "bracketList3": "Octavos de final",
       "bracketList4": "Dieciseisavos de final",
-      "bracketTBDTeam": "Aún por determinar"
+      "bracketTBDTeam": "Aún por determinar",
+      "bye": "Pase directo"
     },
     "Toast": {
       "you-created-a-team-summary": "Equipo creado",
@@ -252,6 +256,29 @@
       "nTeams": "Número de equipos:",
       "createPrivateButton": "Crear torneo"
     },
+    "CreatePublic": {
+      "title": "Nombre del torneo",
+      "titleInvalid": "El nombre del torneo debe tener entre 8 y 50 caracteres.",
+      "nTeams": "Número de equipos",
+      "maxTeams": "Número máximo de equipos",
+      "minTeams": "Número mínimo de equipos",
+      "minutesPerGame": "Tiempo por partida",
+      "fluidSize": "Tamaño de torneo flexible",
+      "fluidSizeHint": "Si se inscriben menos equipos hasta el cierre, el torneo empieza con menos rondas, siempre que se alcance el mínimo. Los equipos con pase directo en la primera ronda se sortean al azar.",
+      "roundDates": "Fechas de juego",
+      "round": "Ronda {n}",
+      "preview": "Desarrollo del torneo",
+      "previewLine": "{teams} equipos: {rounds} rondas, pases directos: {byes}",
+      "createButton": "Crear torneo",
+      "createdSummary": "Torneo creado",
+      "createdDetail": "La inscripción comienza automáticamente en la fecha de inicio.",
+      "createError": "No se pudo crear el torneo: {error}",
+      "errors": {
+        "missing": "Indica todas las fechas y el tiempo por partida.",
+        "order": "Las fechas deben ir en orden: inicio de inscripción, cierre de inscripción, ronda 1, ronda 2, …",
+        "overlap": "Una ronda empieza antes de que termine el tiempo de la ronda anterior."
+      }
+    },
     "TournamentsTable": {
       "title": "Título del torneo",
       "date": "Fecha de inicio"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Resumen de torneos",
       "tournaments": "Torneos",
-      "createPrivate": "Crear torneo privado"
+      "createPrivate": "Crear torneo privado",
+      "createPublic": "Crear torneo público"
     },
     "EditPrivate": {
       "notCompleteMessage": "Todavía faltan equipos, los equipos no están completos o no todos los participantes han confirmado su participación.",

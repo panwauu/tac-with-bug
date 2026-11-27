@@ -88,8 +88,9 @@
                   <div
                     :class="[
                       'bracket-match-team-body',
-                      match.winner === teamIndex && match.winner !== -1 ? 'bracket-match-team-body-won' : '',
+                      match.winner === teamIndex && match.winner !== -1 && match.bye !== true ? 'bracket-match-team-body-won' : '',
                       match.winner !== teamIndex && match.winner !== -1 ? 'bracket-match-team-body-lost' : '',
+                      match.bye === true ? 'bracket-match-team-body-running' : '',
                       match.winner === -1 && !match.teams.every((t) => t === -1) ? 'bracket-match-team-body-running' : '',
                     ]"
                   >
@@ -119,6 +120,16 @@
                       class="bracket-match-team-placeholder"
                     >
                       {{ t('Tournament.Brackets.bracketTBDTeam') }}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  v-if="match.bye === true"
+                  class="bracket-match-team"
+                >
+                  <div class="bracket-match-team-body bracket-match-team-body-bye">
+                    <div class="bracket-match-team-placeholder">
+                      {{ t('Tournament.Brackets.bye') }}
                     </div>
                   </div>
                 </div>
@@ -307,6 +318,12 @@ async function startGame(tournamentRound: number, roundGame: number) {
 
 .bracket-match-team-body-running {
   border-left: 8px transparent solid;
+}
+
+.bracket-match-team-body-bye {
+  border-left: 8px transparent solid;
+  font-style: italic;
+  opacity: 0.7;
 }
 
 .bracket-match-team-placeholder {

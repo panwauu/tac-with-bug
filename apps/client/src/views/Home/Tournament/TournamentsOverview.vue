@@ -13,6 +13,15 @@
         <CreatePrivateTournament />
       </AccordionContent>
     </AccordionPanel>
+    <AccordionPanel
+      v-if="moderationStore.admin"
+      :value="2"
+    >
+      <AccordionHeader>{{ t('Tournament.Overview.createPublic') }}</AccordionHeader>
+      <AccordionContent>
+        <CreatePublicTournament />
+      </AccordionContent>
+    </AccordionPanel>
   </Accordion>
 </template>
 
@@ -23,7 +32,10 @@ import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
 import CreatePrivateTournament from '@/components/Tournament/CreatePrivateTournament.vue'
 import TournamentsTable from '@/components/Tournament/TournamentsTable.vue'
+import CreatePublicTournament from '@/components/Tournament/CreatePublicTournament.vue'
 import { useI18n } from 'vue-i18n'
+import { useModerationStore } from '@/store/moderation'
 
 const { t } = useI18n()
+const moderationStore = useModerationStore()
 </script>

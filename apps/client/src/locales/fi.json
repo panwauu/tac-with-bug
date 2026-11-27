@@ -149,8 +149,11 @@
     "signUpDeadline": "Ilmoittautuminen päättyy",
     "gameTime": "Peli",
     "timePerGame": "Aika peliä kohden",
+    "fluidSize": "Turnauksen koko: {min}–{max} joukkuetta. Pienemmällä joukkuemäärällä viimeiset kierrokset jäävät pois ja osa joukkueista pääsee ensimmäisen kierroksen ohi vapaalipulla.",
+    "conditionalRound": "pelataan vain, jos joukkueita on vähintään {n}",
     "waitingPlayers": "Pelaajien jonotuslista",
     "registrationList": "Ilmoittautuneet ({x} joukkuetta puuttuu vielä)",
+    "registrationListFluid": "Ilmoittautumislista ({x} joukkuetta valmiina, vähintään {min}, enintään {max})",
     "otherTeams": "Muut joukkueet",
     "signUpConfirmationText": "Oletko varma, että ehdit pelipäivinä? Se on tosi tärkeää kaikkien kokemukselle!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Puolivälierä",
       "bracketList3": "Neljännesvälierä",
       "bracketList4": "Kuudesosavälierä",
-      "bracketTBDTeam": "Ei vielä tiedossa"
+      "bracketTBDTeam": "Ei vielä tiedossa",
+      "bye": "Vapaalippu"
     },
     "Toast": {
       "you-created-a-team-summary": "Joukkue luotu",
@@ -252,6 +256,29 @@
       "nTeams": "Joukkueiden määrä:",
       "createPrivateButton": "Luo turnaus"
     },
+    "CreatePublic": {
+      "title": "Turnauksen nimi",
+      "titleInvalid": "Turnauksen nimessä on oltava 8–50 merkkiä.",
+      "nTeams": "Joukkueiden määrä",
+      "maxTeams": "Joukkueiden enimmäismäärä",
+      "minTeams": "Joukkueiden vähimmäismäärä",
+      "minutesPerGame": "Aika per peli",
+      "fluidSize": "Joustava turnauksen koko",
+      "fluidSizeHint": "Jos määräaikaan mennessä ilmoittautuu vähemmän joukkueita, turnaus alkaa vähemmillä kierroksilla, kunhan vähimmäismäärä täyttyy. Ensimmäisen kierroksen vapaaliput arvotaan.",
+      "roundDates": "Peliajat",
+      "round": "Kierros {n}",
+      "preview": "Turnauksen kulku",
+      "previewLine": "{teams} joukkuetta: {rounds} kierrosta, vapaalippuja: {byes}",
+      "createButton": "Luo turnaus",
+      "createdSummary": "Turnaus luotu",
+      "createdDetail": "Ilmoittautuminen alkaa automaattisesti ilmoittautumisen alkaessa.",
+      "createError": "Turnausta ei voitu luoda: {error}",
+      "errors": {
+        "missing": "Anna kaikki ajankohdat ja aika per peli.",
+        "order": "Ajankohtien on oltava järjestyksessä: ilmoittautumisen alku, määräaika, kierros 1, kierros 2, …",
+        "overlap": "Kierros alkaa ennen kuin edellisen kierroksen peliaika on päättynyt."
+      }
+    },
     "TournamentsTable": {
       "title": "Turnauksen nimi",
       "date": "Alkamispäivä"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Turnausten yleiskatsaus",
       "tournaments": "Turnaukset",
-      "createPrivate": "Luo yksityinen turnaus"
+      "createPrivate": "Luo yksityinen turnaus",
+      "createPublic": "Luo julkinen turnaus"
     },
     "EditPrivate": {
       "notCompleteMessage": "Joukkueita puuttuu vielä, joukkueet eivät ole täynnä tai kaikki osallistujat eivät ole vahvistaneet osallistumistaan.",
