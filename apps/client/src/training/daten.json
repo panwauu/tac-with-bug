@@ -11302,18 +11302,18 @@
     "tr": "Mavi'nin bilyesini evin önünden geçirt."
    },
    "tipp": {
-    "de": "Blau hat 3 Kugeln im Haus (Plätze 2 bis 4), aber Platz 1 ist noch frei. Spiele den Engel und setze die 13 ein, damit Blaus Kugel am Haus vorbeizieht!",
-    "en": "Blue has 3 marbles in the home (spots 2 to 4), but spot 1 is still free. Play the Angel and use the 13 so that Blue's marble moves past the home!",
-    "ru": "У Синего 3 шарика в доме (места со 2 по 4), но место 1 ещё свободно. Сыграй Ангела и используй 13, чтобы шарик Синего прошёл мимо дома!",
-    "fr": "Bleu a 3 billes dans la maison (places 2 à 4), mais la place 1 est encore libre. Joue l'Ange et utilise le 13 pour que la bille de Bleu passe devant la maison !",
-    "es": "Azul tiene 3 bolas en la casa (lugares 2 a 4), pero el lugar 1 sigue libre. ¡Juega el Ángel y usa el 13 para que la bola de Azul pase de largo la casa!",
-    "it": "Blu ha 3 biglie nella casa (posti da 2 a 4), ma il posto 1 è ancora libero. Gioca l'Angelo e usa il 13 in modo che la biglia di Blu oltrepassi la casa!",
-    "hi": "नीले की 3 गोलियाँ घर में हैं (स्थान 2 से 4), पर स्थान 1 अब भी खाली है। फ़रिश्ता खेलें और 13 का उपयोग करें ताकि नीले की गोली घर के आगे से निकल जाए!",
-    "sv": "Blå har 3 kulor i hemmet (plats 2 till 4), men plats 1 är fortfarande ledig. Spela Ängeln och använd 13:an så att Blås kula drar förbi hemmet!",
-    "fi": "Sinisellä on 3 kuulaa kotona (paikat 2, 3 ja 4), mutta paikka 1 on vielä vapaa. Pelaa Enkeli ja käytä 13:ta niin, että Sinisen kuula kulkee kodin ohi!",
-    "nb": "Blå har 3 kuler i hjemmet (plass 2 til 4), men plass 1 er fortsatt ledig. Spill Engelen og bruk 13-kortet slik at Blås kule passerer hjemmet!",
-    "da": "Blå har 3 kugler i hjemmet (pladser 2 til 4), men plads 1 er stadig fri. Spil Englen og brug 13-kortet, så Blås kugle passerer hjemmet!",
-    "tr": "Mavi'nin evde 3 bilyesi var (2., 3. ve 4. sıralar) ama 1. sıra hâlâ boş. Melek'i oyna ve 13'ü kullan ki Mavi'nin bilyesi evin önünden geçsin!"
+    "de": "Blau hat 3 Kugeln im Haus (Plätze 2–4), aber Platz 1 ist noch frei. Spiele den Engel und setze die 13 ein, damit Blaus Kugel am Haus vorbeizieht!",
+    "en": "Blue has 3 marbles in the home (spots 2–4), but spot 1 is still free. Play the Angel and use the 13 so that Blue's marble moves past the home!",
+    "ru": "У Синего 3 шарика в доме (места 2–4), но место 1 ещё свободно. Сыграй Ангела и используй 13, чтобы шарик Синего прошёл мимо дома!",
+    "fr": "Bleu a 3 billes dans la maison (places 2–4), mais la place 1 est encore libre. Joue l'Ange et utilise le 13 pour que la bille de Bleu passe devant la maison !",
+    "es": "Azul tiene 3 bolas en la casa (lugares 2–4), pero el lugar 1 sigue libre. ¡Juega el Ángel y usa el 13 para que la bola de Azul pase de largo la casa!",
+    "it": "Blu ha 3 biglie nella casa (posti 2–4), ma il posto 1 è ancora libero. Gioca l'Angelo e usa il 13 in modo che la biglia di Blu oltrepassi la casa!",
+    "hi": "नीले की 3 गोलियाँ घर में हैं (स्थान 2–4), पर स्थान 1 अब भी खाली है। फ़रिश्ता खेलें और 13 का उपयोग करें ताकि नीले की गोली घर के आगे से निकल जाए!",
+    "sv": "Blå har 3 kulor i hemmet (plats 2–4), men plats 1 är fortfarande ledig. Spela Ängeln och använd 13:an så att Blås kula drar förbi hemmet!",
+    "fi": "Sinisellä on 3 kuulaa kotona (paikat 2–4), mutta paikka 1 on vielä vapaa. Pelaa Enkeli ja käytä 13:ta niin, että Sinisen kuula kulkee kodin ohi!",
+    "nb": "Blå har 3 kuler i hjemmet (plass 2–4), men plass 1 er fortsatt ledig. Spill Engelen og bruk 13-kortet slik at Blås kule passerer hjemmet!",
+    "da": "Blå har 3 kugler i hjemmet (pladser 2–4), men plads 1 er stadig fri. Spil Englen og brug 13-kortet, så Blås kugle passerer hjemmet!",
+    "tr": "Mavi'nin evde 3 bilyesi var (2–4. sıralar) ama 1. sıra hâlâ boş. Melek'i oyna ve 13'ü kullan ki Mavi'nin bilyesi evin önünden geçsin!"
    },
    "erfolg": {
     "de": "Taktisch! Mit dem Engel hast du Blau am Hauseinzug gehindert.",
