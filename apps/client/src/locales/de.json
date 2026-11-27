@@ -149,8 +149,11 @@
     "signUpDeadline": "Anmeldeschluss",
     "gameTime": "Spiel",
     "timePerGame": "Zeit pro Spiel",
+    "fluidSize": "Turniergröße: {min} bis {max} Teams. Bei weniger Teams entfallen die letzten Runden und einige Teams erhalten in der ersten Runde ein Freilos.",
+    "conditionalRound": "findet ab {n} Teams statt",
     "waitingPlayers": "Spieler Warteliste",
     "registrationList": "Anmeldeliste ({x} Teams fehlen noch)",
+    "registrationListFluid": "Anmeldeliste ({x} Teams vollständig, mindestens {min}, höchstens {max})",
     "otherTeams": "Andere Teams",
     "signUpConfirmationText": "Bist du dir sicher, dass du an den Spielterminen Zeit hast? Dies ist für das Erlebnis aller sehr wichtig!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Viertelfinale",
       "bracketList3": "Achtelfinale",
       "bracketList4": "Sechzehntelfinale",
-      "bracketTBDTeam": "Noch nicht bekannt"
+      "bracketTBDTeam": "Noch nicht bekannt",
+      "bye": "Freilos"
     },
     "Toast": {
       "you-created-a-team-summary": "Team erstellt",
@@ -247,10 +251,33 @@
       "tournamentNameInvalid": "Der Turniername muss mindestens 8 Zeichen haben.",
       "playersAndTeams": "Spieler und Teams:",
       "4p": "4 Spieler pro Spiel",
-      "6p2t": "6 Spieler pro Spiel - 2 Teams pro Spiel",
-      "6p3t": "6 Spieler pro Spiel - 3 Teams pro Spiel",
+      "6p2t": "6 Spieler pro Spiel, 2 Teams pro Spiel",
+      "6p3t": "6 Spieler pro Spiel, 3 Teams pro Spiel",
       "nTeams": "Anzahl Teams:",
       "createPrivateButton": "Turnier erstellen"
+    },
+    "CreatePublic": {
+      "title": "Turniername",
+      "titleInvalid": "Der Turniername muss 8 bis 50 Zeichen lang sein.",
+      "nTeams": "Anzahl Teams",
+      "maxTeams": "Maximale Anzahl Teams",
+      "minTeams": "Mindestanzahl Teams",
+      "minutesPerGame": "Zeit pro Spiel",
+      "fluidSize": "Flexible Turniergröße",
+      "fluidSizeHint": "Melden sich bis zum Anmeldeschluss weniger Teams an, startet das Turnier mit weniger Runden, sofern die Mindestanzahl erreicht ist. Die Teams, die in der ersten Runde ein Freilos erhalten, werden zufällig ausgelost.",
+      "roundDates": "Spieltermine",
+      "round": "Runde {n}",
+      "preview": "Turnierverlauf",
+      "previewLine": "{teams} Teams: {rounds} Runden, Freilose: {byes}",
+      "createButton": "Turnier erstellen",
+      "createdSummary": "Turnier erstellt",
+      "createdDetail": "Die Anmeldung startet automatisch zum Anmeldestart.",
+      "createError": "Das Turnier konnte nicht erstellt werden: {error}",
+      "errors": {
+        "missing": "Bitte alle Termine und die Zeit pro Spiel angeben.",
+        "order": "Die Termine müssen aufeinander folgen: Anmeldestart, Anmeldeschluss, Runde 1, Runde 2, …",
+        "overlap": "Eine Runde beginnt, bevor die Spielzeit der vorherigen Runde abgelaufen ist."
+      }
     },
     "TournamentsTable": {
       "title": "Turniertitel",
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Turnierübersicht",
       "tournaments": "Turniere",
-      "createPrivate": "Privates Turnier erstellen"
+      "createPrivate": "Privates Turnier erstellen",
+      "createPublic": "Öffentliches Turnier erstellen"
     },
     "EditPrivate": {
       "notCompleteMessage": "Es fehlen noch Teams, die Teams sind noch nicht vollständing oder es haben noch nicht alle Teilnehmer ihre Teilnahme bestätigt.",
@@ -347,7 +375,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Spieler hinzufügen",
-      "leaveButton": "Chat verlassen"
+      "leaveButton": "Chat verlassen",
+      "changePicture": "Bild ändern",
+      "removePicture": "Bild entfernen",
+      "pictureError": "Das Bild konnte nicht gespeichert werden."
     },
     "ChatCreator": {
       "startButton": "Chat starten",
@@ -503,7 +534,7 @@
       "narrWaitingFor": "Es müssen noch ihre Karten weitergeben: ",
       "currentlyPlaying": "Es spielt gerade: ",
       "needToSkip": "Du musst aussetzen!",
-      "needToTeufel": "Du hast einen Teufel gespielt - Spiele jetzt für {name}!",
+      "needToTeufel": "Du hast einen Teufel gespielt. Spiele jetzt für {name}!",
       "yourTurn": "Du bist dran!",
       "needToDiscard": "Du musst eine Karte abwerfen!",
       "buttonOrOtherCard": "Betätige den Button in der Mitte oder wähle eine andere Karte",
@@ -710,6 +741,7 @@
       "nb": "Norwegisch",
       "da": "Dänisch",
       "tr": "Türkisch",
+      "pt": "Portugiesisch",
       "applicationLanguage": "Sprache der Anwendung:",
       "originCountry": "Land für das Profil"
     },
@@ -744,6 +776,16 @@
       "light": "Hell",
       "dark": "Dunkel",
       "explanation": "Das Farbschema bestimmt das Aussehen der Anwendung. Mit „Hell“ wird ein helles Design angezeigt, „Dunkel“ aktiviert den dunklen Modus, und „System“ passt das Farbschema automatisch an die Einstellungen deines Geräts an."
+    },
+    "InGameEmojis": {
+      "header": "Emojis im Spiel",
+      "explanation": "Diese Emojis kannst du in einer Partie verschicken. Die Auswahl gilt auf diesem Gerät.",
+      "onlySubscribers": "Eigene Emojis zusammenstellen können Unterstützer. Ohne Abo gelten die Standard-Emojis.",
+      "toSubscription": "Zum Abo",
+      "add": "Emoji hinzufügen",
+      "remove": "Entfernen",
+      "moveLeft": "Nach links",
+      "reset": "Standard wiederherstellen"
     }
   },
   "Profile": {
@@ -858,7 +900,7 @@
     "Contribute": {
       "header": "Zu Tac-With-Bug beitragen",
       "localesQ": "Wie kann ich Fehler in einzelnen Sprache verbessern?",
-      "localesA": "Die einzelnen Textelemente können Open-Source von allen Spielern verwaltet werden. Ich freue mich sehr, wenn alle Sprachen verbessert werden! Dafür braucht ihr einen GitHub Account - Weitere Informationen dafür findet ihr <a target='_blank' rel='noopener noreferrer' href='{link}'>hier</a>. Wenn ihr euch andere Sprachen wünscht, dann könnt ihr mir einfach schreiben.",
+      "localesA": "Die einzelnen Textelemente können Open-Source von allen Spielern verwaltet werden. Ich freue mich sehr, wenn alle Sprachen verbessert werden! Dafür braucht ihr einen GitHub Account. Weitere Informationen dafür findet ihr <a target='_blank' rel='noopener noreferrer' href='{link}'>hier</a>. Wenn ihr euch andere Sprachen wünscht, dann könnt ihr mir einfach schreiben.",
       "bugsQ": "Was kann ich tun, wenn ich Fehler entdecke?",
       "bugsA": "Fehler werden von Zeit zu Zeit auftreten. Entschuldigung dafür. Meist löst ein Neuladen der Seite das Problem. Wenn dir ein Fehler mehrfach auffällt, dann schreibe mir einfach eine Mail (oskar@spieltac.de) oder erstelle ein Github-Issue (https://github.com/panwauu/tac-with-bug). Bitte beschreibe den Fehler möglichst genau und füge hinzu welchen Browser du benutzt."
     },
@@ -1028,7 +1070,20 @@
     "bis": "bis {datum}",
     "keinVerlauf": "Noch nie gemeldet oder gesperrt.",
     "sperre": "Sperre",
-    "nachrichtMelden": "Nachricht melden"
+    "nachrichtMelden": "Nachricht melden",
+    "kontext": {
+      "zeigen": "Chatverlauf zeigen",
+      "ausblenden": "Chatverlauf ausblenden",
+      "laedt": "Lädt …",
+      "nichtGefunden": "Die Nachricht ist nicht mehr im Chat zu finden.",
+      "aeltere": "Ältere Nachrichten nicht gezeigt",
+      "neuere": "Neuere Nachrichten nicht gezeigt",
+      "partie": "Partie-Chat, Partie {nr}",
+      "warteraum": "Chat im Warteraum",
+      "kanal": "Öffentlicher Chat „{name}“",
+      "privat": "Privater Chat: {leute}",
+      "gruppe": "Gruppenchat „{name}“: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Keine Spieler gefunden"
@@ -1074,6 +1129,7 @@
     "titel": "Tutorials",
     "einleitung": "Lerne TAC Schritt für Schritt: kurze Lektionen und Aufgaben direkt auf dem Brett. Dieselben Lektionen wie in der TAC-App.",
     "hinweis": "Dein Fortschritt wird nur in diesem Browser gespeichert.",
+    "hinweisKonto": "Dein Fortschritt wird in deinem Account gespeichert.",
     "uebersicht": "Übersicht",
     "weiter": "Weiter",
     "nochmal": "Nochmal",
@@ -1110,7 +1166,7 @@
       "uhrzeigersinn": "Im Uhrzeigersinn",
       "rueckwaerts": "Die 4: rückwärts",
       "geben": "Geben",
-      "melden": "Melden: die 13 zeigt, wer raus kann (1 oder 13)",
+      "melden": "Melden: Die 13 zeigt, wer raus kann (1 oder 13)",
       "tauschen": "Tauschen",
       "spielen": "Spielen",
       "normal": "Normalkarten",
@@ -1162,11 +1218,11 @@
       "kurzVorHaus": "Blau steht kurz vor dem Haus",
       "engelDreizehn": "Der Engel lässt Blau 13 Felder ziehen",
       "kriegerSucht": "Der Krieger sucht die nächste Kugel",
-      "selbstwurf": "Nur deine: du wirfst dich selbst",
-      "keineKugel": "Keine Kugel draußen: die 5 passt nicht, also kein TAC",
+      "selbstwurf": "Nur deine: Du wirfst dich selbst",
+      "keineKugel": "Keine Kugel draußen: Die 5 passt nicht, also kein TAC",
       "dreizehnStatt": "Also die 13: heraus statt TAC",
       "letzteKarte": "Rot spielt die letzte Karte der Runde",
-      "neueRunde": "Neue Runde: es wird gegeben",
+      "neueRunde": "Neue Runde: Es wird gegeben",
       "tacZuSpaet": "Nach dem Geben ist der Zug nicht mehr rücknehmbar",
       "achtLaufen": "Du nutzt die 8: 8 Felder laufen",
       "blauWirftAb": "Blau muss eine Karte abwerfen",
@@ -1181,7 +1237,7 @@
       "rotTac": "Rot: TAC holt Grün aus dem Haus",
       "zweiterTac": "Dein TAC hebt Rots TAC auf: Grün wieder im Haus",
       "tacKette": "TAC hebt den vorigen TAC auf",
-      "kettenEnde": "Die Kette endet bei dir: die 13 gehört dir",
+      "kettenEnde": "Die Kette endet bei dir: Die 13 gehört dir",
       "tacAbgelegt": "Rot legt seinen TAC ungenutzt ab",
       "gruenBleibt": "Dein TAC nutzt Grüns 5, Grün bleibt im Haus",
       "rotLetzteKugel": "Blau ist fertig, Rot fehlt nur noch eine Kugel",
@@ -1189,7 +1245,7 @@
       "tacSieg": "Dein TAC holt die Kugel zurück auf den Spielkreis",
       "gruenSiegt": "Grün zieht die letzte Kugel ins Haus: Sieg",
       "rotVerhindert": "Rots TAC verhindert den Sieg und nutzt die 10",
-      "tacGesperrt": "Dein TAC geht nicht: alle deine Kugeln stehen im Haus",
+      "tacGesperrt": "Dein TAC geht nicht: Alle deine Kugeln stehen im Haus",
       "nurTac": "Du hast nur noch TAC",
       "rotHeraus": "Rot kommt mit der 13 heraus",
       "rotLegtAb": "Rot hat keine Kugel draußen und legt die 5 ab",
@@ -1212,7 +1268,7 @@
       "b3": "Schaut ein paar Züge in die Zukunft und plant danach.",
       "b10": "Solide Hausmannskost: bewertet jeden Zug nach festen Regeln.",
       "b11": "Denkt einen Zug voraus.",
-      "b12": "Sieht die Stellung auf einen Blick: ein neuronales Netz wählt den Zug.",
+      "b12": "Sieht die Stellung auf einen Blick: Ein neuronales Netz wählt den Zug.",
       "b13": "Lernt noch, mit Halbwissen: spielt 200 mögliche Verläufe durch.",
       "b14": "Rechnet hunderte Verläufe durch, bevor er zieht.",
       "b15": "Prüft jede Hand vierundsechzigmal: Suche mit neuronalem Netz über 64 mögliche Kartenverteilungen.",

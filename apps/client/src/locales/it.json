@@ -149,8 +149,11 @@
     "signUpDeadline": "Chiusura iscrizioni",
     "gameTime": "Partita",
     "timePerGame": "Tempo per partita",
+    "fluidSize": "Dimensione del torneo: da {min} a {max} squadre. Con meno squadre gli ultimi turni vengono eliminati e alcune squadre passano il primo turno senza giocare.",
+    "conditionalRound": "si gioca solo con almeno {n} squadre",
     "waitingPlayers": "Lista d'attesa giocatori",
     "registrationList": "Lista iscritti (mancano ancora {x} squadre)",
+    "registrationListFluid": "Lista iscrizioni ({x} squadre complete, almeno {min}, al massimo {max})",
     "otherTeams": "Altre squadre",
     "signUpConfirmationText": "Sei sicuro di avere tempo nelle date delle partite? È molto importante per l'esperienza di tutti!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Quarti di finale",
       "bracketList3": "Ottavi di finale",
       "bracketList4": "Sedicesimi di finale",
-      "bracketTBDTeam": "Non ancora noto"
+      "bracketTBDTeam": "Non ancora noto",
+      "bye": "Turno libero"
     },
     "Toast": {
       "you-created-a-team-summary": "Squadra creata",
@@ -252,6 +256,29 @@
       "nTeams": "Numero di squadre:",
       "createPrivateButton": "Crea torneo"
     },
+    "CreatePublic": {
+      "title": "Nome del torneo",
+      "titleInvalid": "Il nome del torneo deve avere da 8 a 50 caratteri.",
+      "nTeams": "Numero di squadre",
+      "maxTeams": "Numero massimo di squadre",
+      "minTeams": "Numero minimo di squadre",
+      "minutesPerGame": "Tempo per partita",
+      "fluidSize": "Dimensione del torneo flessibile",
+      "fluidSizeHint": "Se entro la scadenza si iscrivono meno squadre, il torneo inizia con meno turni, purché sia raggiunto il minimo. Le squadre con turno libero nel primo turno vengono sorteggiate.",
+      "roundDates": "Date delle partite",
+      "round": "Turno {n}",
+      "preview": "Svolgimento del torneo",
+      "previewLine": "{teams} squadre: {rounds} turni, turni liberi: {byes}",
+      "createButton": "Crea torneo",
+      "createdSummary": "Torneo creato",
+      "createdDetail": "Le iscrizioni iniziano automaticamente alla data di apertura.",
+      "createError": "Impossibile creare il torneo: {error}",
+      "errors": {
+        "missing": "Inserisci tutte le date e il tempo per partita.",
+        "order": "Le date devono susseguirsi: inizio iscrizioni, scadenza iscrizioni, turno 1, turno 2, …",
+        "overlap": "Un turno inizia prima che sia scaduto il tempo del turno precedente."
+      }
+    },
     "TournamentsTable": {
       "title": "Titolo del torneo",
       "date": "Data di inizio"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Panoramica dei tornei",
       "tournaments": "Tornei",
-      "createPrivate": "Crea torneo privato"
+      "createPrivate": "Crea torneo privato",
+      "createPublic": "Crea torneo pubblico"
     },
     "EditPrivate": {
       "notCompleteMessage": "Mancano ancora squadre, le squadre non sono complete o non tutti i partecipanti hanno confermato.",
@@ -347,7 +375,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Aggiungi giocatore",
-      "leaveButton": "Lascia la chat"
+      "leaveButton": "Lascia la chat",
+      "changePicture": "Cambia immagine",
+      "removePicture": "Rimuovi immagine",
+      "pictureError": "Non è stato possibile salvare l'immagine."
     },
     "ChatCreator": {
       "startButton": "Avvia chat",
@@ -710,6 +741,7 @@
       "nb": "Norvegese",
       "da": "Danese",
       "tr": "Turco",
+      "pt": "Portoghese",
       "applicationLanguage": "Lingua dell'applicazione:",
       "originCountry": "Paese del profilo"
     },
@@ -744,6 +776,16 @@
       "light": "Chiaro",
       "dark": "Scuro",
       "explanation": "Lo schema di colori determina l'aspetto dell'applicazione. «Chiaro» mostra un design chiaro, «Scuro» attiva la modalità scura e «Sistema» adatta automaticamente lo schema alle impostazioni del tuo dispositivo."
+    },
+    "InGameEmojis": {
+      "header": "Emoji in partita",
+      "explanation": "Puoi inviare queste emoji durante una partita. La selezione vale su questo dispositivo.",
+      "onlySubscribers": "I sostenitori possono scegliere le proprie emoji. Senza abbonamento valgono le emoji standard.",
+      "toSubscription": "Vai all’abbonamento",
+      "add": "Aggiungi emoji",
+      "remove": "Rimuovi",
+      "moveLeft": "Sposta a sinistra",
+      "reset": "Ripristina predefinite"
     }
   },
   "Profile": {
@@ -1028,7 +1070,20 @@
     "bis": "fino al {datum}",
     "keinVerlauf": "Mai segnalato né bloccato.",
     "sperre": "Blocco",
-    "nachrichtMelden": "Segnala messaggio"
+    "nachrichtMelden": "Segnala messaggio",
+    "kontext": {
+      "zeigen": "Mostra cronologia chat",
+      "ausblenden": "Nascondi cronologia chat",
+      "laedt": "Caricamento …",
+      "nichtGefunden": "Il messaggio non si trova più nella chat.",
+      "aeltere": "Messaggi precedenti non mostrati",
+      "neuere": "Messaggi successivi non mostrati",
+      "partie": "Chat della partita, partita {nr}",
+      "warteraum": "Chat della sala d'attesa",
+      "kanal": "Chat pubblica «{name}»",
+      "privat": "Chat privata: {leute}",
+      "gruppe": "Chat di gruppo «{name}»: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Nessun giocatore trovato"
@@ -1074,6 +1129,7 @@
     "titel": "Tutorial",
     "einleitung": "Impara TAC passo dopo passo: brevi lezioni ed esercizi direttamente sul tabellone. Le stesse lezioni dell'app TAC.",
     "hinweis": "I tuoi progressi vengono salvati solo in questo browser.",
+    "hinweisKonto": "I tuoi progressi vengono salvati nel tuo account.",
     "uebersicht": "Panoramica",
     "weiter": "Avanti",
     "nochmal": "Riprova",

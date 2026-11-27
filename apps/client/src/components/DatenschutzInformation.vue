@@ -1,183 +1,260 @@
 <template>
   <div>
-    <h1>Datenschutz&shy;erkl&auml;rung</h1>
-    <h2>1. Datenschutz auf einen Blick</h2>
-    <h3>Allgemeine Hinweise</h3>
-    <p>
-      Die folgenden Hinweise geben einen einfachen &Uuml;berblick dar&uuml;ber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen.
-      Personenbezogene Daten sind alle Daten, mit denen Sie pers&ouml;nlich identifiziert werden k&ouml;nnen. Ausf&uuml;hrliche Informationen zum Thema Datenschutz entnehmen
-      Sie unserer unter diesem Text aufgef&uuml;hrten Datenschutzerkl&auml;rung.
-    </p>
-    <h3>Datenerfassung auf dieser Website</h3>
-    <h4>Wer ist verantwortlich f&uuml;r die Datenerfassung auf dieser Website?</h4>
-    <p>
-      Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten k&ouml;nnen Sie dem Abschnitt &bdquo;Hinweis zur Verantwortlichen
-      Stelle&ldquo; in dieser Datenschutzerkl&auml;rung entnehmen.
-    </p>
-    <h4>Wie erfassen wir Ihre Daten?</h4>
-    <p>
-      Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z.&nbsp;B. um Daten handeln, die Sie in ein Kontaktformular eingeben.
-    </p>
-    <p>
-      Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z.&nbsp;B.
-      Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs). Die Erfassung dieser Daten erfolgt automatisch, sobald Sie diese Website betreten.
-    </p>
-    <h4>Wof&uuml;r nutzen wir Ihre Daten?</h4>
-    <p>
-      Ein Teil der Daten wird erhoben, um eine fehlerfreie Bereitstellung der Website zu gew&auml;hrleisten. Andere Daten k&ouml;nnen zur Analyse Ihres Nutzerverhaltens
-      verwendet werden.
-    </p>
-    <h4>Welche Rechte haben Sie bez&uuml;glich Ihrer Daten?</h4>
-    <p>
-      Sie haben jederzeit das Recht, unentgeltlich Auskunft &uuml;ber Herkunft, Empf&auml;nger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben
-      au&szlig;erdem ein Recht, die Berichtigung oder L&ouml;schung dieser Daten zu verlangen. Wenn Sie eine Einwilligung zur Datenverarbeitung erteilt haben, k&ouml;nnen Sie
-      diese Einwilligung jederzeit f&uuml;r die Zukunft widerrufen. Au&szlig;erdem haben Sie das Recht, unter bestimmten Umst&auml;nden die Einschr&auml;nkung der Verarbeitung
-      Ihrer personenbezogenen Daten zu verlangen. Des Weiteren steht Ihnen ein Beschwerderecht bei der zust&auml;ndigen Aufsichtsbeh&ouml;rde zu.
-    </p>
-    <p>Hierzu sowie zu weiteren Fragen zum Thema Datenschutz k&ouml;nnen Sie sich jederzeit an uns wenden.</p>
-    <h2>2. Hosting und Content Delivery Networks (CDN)</h2>
-    <h3>Externes Hosting</h3>
-    <p>
-      Diese Website wird bei einem externen Dienstleister gehostet (Hoster). Die personenbezogenen Daten, die auf dieser Website erfasst werden, werden auf den Servern des
-      Hosters gespeichert. Hierbei kann es sich v. a. um IP-Adressen, Kontaktanfragen, Meta- und Kommunikationsdaten, Vertragsdaten, Kontaktdaten, Namen, Websitezugriffe und
-      sonstige Daten, die &uuml;ber eine Website generiert werden, handeln.
-    </p>
-    <p>
-      Der Einsatz des Hosters erfolgt zum Zwecke der Vertragserf&uuml;llung gegen&uuml;ber unseren potenziellen und bestehenden Kunden (Art. 6 Abs. 1 lit. b DSGVO) und im
-      Interesse einer sicheren, schnellen und effizienten Bereitstellung unseres Online-Angebots durch einen professionellen Anbieter (Art. 6 Abs. 1 lit. f DSGVO).
-    </p>
-    <p>
-      Unser Hoster wird Ihre Daten nur insoweit verarbeiten, wie dies zur Erf&uuml;llung seiner Leistungspflichten erforderlich ist und unsere Weisungen in Bezug auf diese
-      Daten befolgen.
-    </p>
-    <p>Wir setzen folgenden Hoster ein:</p>
-    <p>Heroku - Salesforce Data Protection Officer (Salesforce Privacy Team), 415 Mission St., 3rd Floor, San Francisco, CA 94105, USA</p>
-    <h2>3. Allgemeine Hinweise und Pflicht&shy;informationen</h2>
-    <h3>Datenschutz</h3>
-    <p>
-      Die Betreiber dieser Seiten nehmen den Schutz Ihrer pers&ouml;nlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der
-      gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerkl&auml;rung.
-    </p>
-    <p>
-      Wenn Sie diese Website benutzen, werden verschiedene personenbezogene Daten erhoben. Personenbezogene Daten sind Daten, mit denen Sie pers&ouml;nlich identifiziert
-      werden k&ouml;nnen. Die vorliegende Datenschutzerkl&auml;rung erl&auml;utert, welche Daten wir erheben und wof&uuml;r wir sie nutzen. Sie erl&auml;utert auch, wie und zu
-      welchem Zweck das geschieht.
-    </p>
-    <p>
-      Wir weisen darauf hin, dass die Daten&uuml;bertragung im Internet (z.&nbsp;B. bei der Kommunikation per E-Mail) Sicherheitsl&uuml;cken aufweisen kann. Ein
-      l&uuml;ckenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht m&ouml;glich.
-    </p>
-    <h3>Hinweis zur verantwortlichen Stelle</h3>
-    <p>Die verantwortliche Stelle f&uuml;r die Datenverarbeitung auf dieser Website ist:</p>
+    <h1>Datenschutz&shy;erklärung</h1>
+    <p>Stand: November 2026</p>
+
+    <h2>1. Verantwortlicher</h2>
     <p>
       Oskar Baumann
       <br />
       Oskar-von-Miller-Straße 7, 92224 Amberg, Deutschland
+      <br />
+      E-Mail:
+      <a href="mailto:oskar@spieltac.de">oskar@spieltac.de</a>
+    </p>
+    <p>Tac-With-Bug ist ein privat betriebenes Online-Spiel. Ein Datenschutzbeauftragter ist nicht benannt, da keine Pflicht dazu besteht.</p>
+
+    <h2>2. Überblick</h2>
+    <p>
+      Wir verarbeiten nur die Daten, die für das Spielen, das Benutzerkonto und die Sicherheit der Plattform nötig sind, sowie die Daten, die Sie freiwillig angeben (zum
+      Beispiel Profilbild, Profiltext oder Chatnachrichten). Wir setzen keine Analyse- oder Tracking-Werkzeuge ein, zeigen keine Werbung und setzen keine Cookies zu
+      Tracking-Zwecken. Ihre Daten werden nicht verkauft.
     </p>
 
-    <p>E-Mail: &#91;oskar@spieltac.de&#93;</p>
+    <h2>3. Hosting und Server-Logs</h2>
     <p>
-      Verantwortliche Stelle ist die nat&uuml;rliche oder juristische Person, die allein oder gemeinsam mit anderen &uuml;ber die Zwecke und Mittel der Verarbeitung von
-      personenbezogenen Daten (z.&nbsp;B. Namen, E-Mail-Adressen o. &Auml;.) entscheidet.
+      Die Website, der Spielserver und die Datenbank werden bei Heroku betrieben: Salesforce, Inc., 415 Mission Street, 3rd Floor, San Francisco, CA 94105, USA. Heroku
+      verarbeitet die Daten in unserem Auftrag (Art. 28 DSGVO). Da Salesforce ein US-Unternehmen ist, können Daten in die USA übermittelt werden. Salesforce ist unter dem
+      EU-U.S. Data Privacy Framework zertifiziert (Angemessenheitsbeschluss der EU-Kommission, Art. 45 DSGVO); zusätzlich gelten die Standardvertragsklauseln der
+      EU-Kommission.
+    </p>
+    <p>
+      Bei jedem Aufruf verarbeitet der Hoster technisch notwendige Verbindungsdaten: IP-Adresse, Datum und Uhrzeit, aufgerufene Adresse, Statuscode und übertragene Datenmenge.
+      Diese Router-Logs werden nur kurzzeitig vorgehalten und nicht mit anderen Daten zusammengeführt. Rechtsgrundlage ist unser berechtigtes Interesse an einem sicheren und
+      stabilen Betrieb (Art. 6 Abs. 1 lit. f DSGVO).
     </p>
 
-    <h3>Speicherdauer</h3>
+    <h2>4. Benutzerkonto</h2>
     <p>
-      Soweit innerhalb dieser Datenschutzerkl&auml;rung keine speziellere Speicherdauer genannt wurde, verbleiben Ihre personenbezogenen Daten bei uns, bis der Zweck f&uuml;r
-      die Datenverarbeitung entf&auml;llt. Wenn Sie ein berechtigtes L&ouml;schersuchen geltend machen oder eine Einwilligung zur Datenverarbeitung widerrufen, werden Ihre
-      Daten gel&ouml;scht, sofern wir keine anderen rechtlich zul&auml;ssigen&nbsp; Gr&uuml;nde f&uuml;r die Speicherung Ihrer personenbezogenen Daten haben (z.B. steuer- oder
-      handelsrechtliche Aufbewahrungsfristen); im letztgenannten Fall erfolgt die L&ouml;schung nach Fortfall dieser Gr&uuml;nde.
-    </p>
-    <h3>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h3>
-    <p>
-      Viele Datenverarbeitungsvorg&auml;nge sind nur mit Ihrer ausdr&uuml;cklichen Einwilligung m&ouml;glich. Sie k&ouml;nnen eine bereits erteilte Einwilligung jederzeit
-      widerrufen. Die Rechtm&auml;&szlig;igkeit der bis zum Widerruf erfolgten Datenverarbeitung bleibt vom Widerruf unber&uuml;hrt.
-    </p>
-    <h3>Widerspruchsrecht gegen die Datenerhebung in besonderen F&auml;llen sowie gegen Direktwerbung (Art. 21 DSGVO)</h3>
-    <p>
-      WENN DIE DATENVERARBEITUNG AUF GRUNDLAGE VON ART. 6 ABS. 1 LIT. E ODER F DSGVO ERFOLGT, HABEN SIE JEDERZEIT DAS RECHT, AUS GR&Uuml;NDEN, DIE SICH AUS IHRER BESONDEREN
-      SITUATION ERGEBEN, GEGEN DIE VERARBEITUNG IHRER PERSONENBEZOGENEN DATEN WIDERSPRUCH EINZULEGEN; DIES GILT AUCH F&Uuml;R EIN AUF DIESE BESTIMMUNGEN GEST&Uuml;TZTES
-      PROFILING. DIE JEWEILIGE RECHTSGRUNDLAGE, AUF DENEN EINE VERARBEITUNG BERUHT, ENTNEHMEN SIE DIESER DATENSCHUTZERKL&Auml;RUNG. WENN SIE WIDERSPRUCH EINLEGEN, WERDEN WIR
-      IHRE BETROFFENEN PERSONENBEZOGENEN DATEN NICHT MEHR VERARBEITEN, ES SEI DENN, WIR K&Ouml;NNEN ZWINGENDE SCHUTZW&Uuml;RDIGE GR&Uuml;NDE F&Uuml;R DIE VERARBEITUNG
-      NACHWEISEN, DIE IHRE INTERESSEN, RECHTE UND FREIHEITEN &Uuml;BERWIEGEN ODER DIE VERARBEITUNG DIENT DER GELTENDMACHUNG, AUS&Uuml;BUNG ODER VERTEIDIGUNG VON
-      RECHTSANSPR&Uuml;CHEN (WIDERSPRUCH NACH ART. 21 ABS. 1 DSGVO).
+      Für die Registrierung benötigen wir einen Benutzernamen, eine E-Mail-Adresse und ein Passwort. Das Passwort speichern wir nur als sicheren Hash (bcrypt), nie im
+      Klartext. Außerdem speichern wir Registrierungsdatum, letzten Login, Spracheinstellung und Ihre Einstellungen (zum Beispiel Farbschema, Farbenblind-Modus,
+      E-Mail-Benachrichtigungen). Ohne diese Angaben können wir kein Konto anlegen.
     </p>
     <p>
-      WERDEN IHRE PERSONENBEZOGENEN DATEN VERARBEITET, UM DIREKTWERBUNG ZU BETREIBEN, SO HABEN SIE DAS RECHT, JEDERZEIT WIDERSPRUCH GEGEN DIE VERARBEITUNG SIE BETREFFENDER
-      PERSONENBEZOGENER DATEN ZUM ZWECKE DERARTIGER WERBUNG EINZULEGEN; DIES GILT AUCH F&Uuml;R DAS PROFILING, SOWEIT ES MIT SOLCHER DIREKTWERBUNG IN VERBINDUNG STEHT. WENN
-      SIE WIDERSPRECHEN, WERDEN IHRE PERSONENBEZOGENEN DATEN ANSCHLIESSEND NICHT MEHR ZUM ZWECKE DER DIREKTWERBUNG VERWENDET (WIDERSPRUCH NACH ART. 21 ABS. 2 DSGVO).
+      Nach der Registrierung senden wir eine E-Mail zur Aktivierung. Konten, die nicht innerhalb einer Woche aktiviert werden, löschen wir automatisch. Wenn Sie Ihr Passwort
+      vergessen, senden wir einen Link zum Zurücksetzen. Er ist 15 Minuten gültig und wird danach gelöscht.
     </p>
-    <h3>Beschwerde&shy;recht bei der zust&auml;ndigen Aufsichts&shy;beh&ouml;rde</h3>
+    <p>Rechtsgrundlage ist die Erfüllung des Nutzungsvertrags (Art. 6 Abs. 1 lit. b DSGVO).</p>
+    <h3>Konto löschen</h3>
     <p>
-      Im Falle von Verst&ouml;&szlig;en gegen die DSGVO steht den Betroffenen ein Beschwerderecht bei einer Aufsichtsbeh&ouml;rde, insbesondere in dem Mitgliedstaat ihres
-      gew&ouml;hnlichen Aufenthalts, ihres Arbeitsplatzes oder des Orts des mutma&szlig;lichen Versto&szlig;es zu. Das Beschwerderecht besteht unbeschadet anderweitiger
-      verwaltungsrechtlicher oder gerichtlicher Rechtsbehelfe.
+      Sie können Ihr Konto jederzeit in den Einstellungen selbst löschen. Dabei werden Ihr Profil, Ihre Freundschaften, Turnieranmeldungen, Abodaten, Ihr Fortschritt und Ihre
+      Zuordnung zu Partien gelöscht. Partien, an denen andere Spieler beteiligt waren, und Ihre Chatnachrichten bleiben für die anderen Teilnehmer bis zum Ablauf ihrer
+      Speicherfrist erhalten, sind aber nicht mehr Ihrem Konto zugeordnet.
     </p>
-    <h3>Recht auf Daten&shy;&uuml;bertrag&shy;barkeit</h3>
+
+    <h2>5. Öffentliches Profil und Spielbetrieb</h2>
     <p>
-      Sie haben das Recht, Daten, die wir auf Grundlage Ihrer Einwilligung oder in Erf&uuml;llung eines Vertrags automatisiert verarbeiten, an sich oder an einen Dritten in
-      einem g&auml;ngigen, maschinenlesbaren Format aush&auml;ndigen zu lassen. Sofern Sie die direkte &Uuml;bertragung der Daten an einen anderen Verantwortlichen verlangen,
-      erfolgt dies nur, soweit es technisch machbar ist.
+      Für andere Spieler sichtbar sind: Benutzername, Profilbild, Profiltext, Spielstatistiken, Ranglisten-Platzierungen, Freunde, Turnierteilnahmen und Team-Namen sowie
+      gegebenenfalls ein Eintrag in der Hall of Fame (zum Beispiel für Unterstützer oder Übersetzer). Wenn Sie kein eigenes Profilbild hochladen, erzeugen wir auf unserem
+      Server ein zufälliges Bild.
     </p>
-    <h3>SSL- bzw. TLS-Verschl&uuml;sselung</h3>
     <p>
-      Diese Seite nutzt aus Sicherheitsgr&uuml;nden und zum Schutz der &Uuml;bertragung vertraulicher Inhalte, wie zum Beispiel Bestellungen oder Anfragen, die Sie an uns als
-      Seitenbetreiber senden, eine SSL- bzw. TLS-Verschl&uuml;sselung. Eine verschl&uuml;sselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von
-      &bdquo;http://&ldquo; auf &bdquo;https://&ldquo; wechselt und an dem Schloss-Symbol in Ihrer Browserzeile.
+      Wir speichern die Partien, die Sie spielen (Spielverlauf, Ergebnis, Mitspieler), um laufende Partien fortzusetzen, Statistiken und Ranglisten zu berechnen und Turniere
+      durchzuführen. Züge der Computergegner berechnet ein eigener Dienst von uns; dabei wird nur der Spielstand übertragen, keine Namen oder Kontodaten.
     </p>
-    <p>Wenn die SSL- bzw. TLS-Verschl&uuml;sselung aktiviert ist, k&ouml;nnen die Daten, die Sie an uns &uuml;bermitteln, nicht von Dritten mitgelesen werden.</p>
-    <h3>Auskunft, L&ouml;schung und Berichtigung</h3>
     <p>
-      Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf unentgeltliche Auskunft &uuml;ber Ihre gespeicherten personenbezogenen Daten, deren
-      Herkunft und Empf&auml;nger und den Zweck der Datenverarbeitung und ggf. ein Recht auf Berichtigung oder L&ouml;schung dieser Daten. Hierzu sowie zu weiteren Fragen zum
-      Thema personenbezogene Daten k&ouml;nnen Sie sich jederzeit an uns wenden.
+      Wenn Sie angemeldet sind, speichern wir außerdem Ihren Fortschritt außerhalb der Online-Partien mit Ihrem Konto: Statistiken Ihrer Partien gegen den Computer, Erfolge
+      und abgeschlossene Lektionen. So steht er Ihnen auf allen Geräten zur Verfügung.
     </p>
-    <h3>Recht auf Einschr&auml;nkung der Verarbeitung</h3>
+    <p>Rechtsgrundlage ist die Erfüllung des Nutzungsvertrags (Art. 6 Abs. 1 lit. b DSGVO).</p>
+
+    <h2>6. Chat und Kanäle</h2>
     <p>
-      Sie haben das Recht, die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Hierzu k&ouml;nnen Sie sich jederzeit an uns wenden. Das Recht
-      auf Einschr&auml;nkung der Verarbeitung besteht in folgenden F&auml;llen:
+      Nachrichten im Chat und in den öffentlichen Kanälen speichern wir mit Absender und Zeitpunkt, damit die Teilnehmer sie lesen können. Für Gruppenchats speichern wir
+      außerdem den Namen und ein Gruppenbild, falls eines hochgeladen wurde, mit dem Zeitpunkt und dem Mitglied, das es geändert hat. Nachrichten löschen wir automatisch nach
+      einem Jahr. Über ungelesene Nachrichten können wir Sie per E-Mail erinnern (abschaltbar, siehe Abschnitt 8). Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.
+    </p>
+
+    <h2>7. Meldungen und Moderation</h2>
+    <p>
+      Spieler können andere Spieler melden, zum Beispiel wegen ihres Namens, Bildes, Profiltextes oder einer Chatnachricht. Wir speichern dazu den meldenden und den gemeldeten
+      Spieler, die Kategorie, die Begründung und, falls eine Nachricht gemeldet wurde, eine Kopie davon. Die Meldenden bleiben für die gemeldete Person anonym; nur Moderatoren
+      sehen die Meldungen.
+    </p>
+    <p>
+      Damit Moderatoren eine gemeldete Nachricht einordnen können, sehen sie den Verlauf um diese Nachricht herum (die 25 Nachrichten davor und die 10 danach), den Ort (zum
+      Beispiel Spiel, Warteraum, Kanal oder Chat) und die Mitglieder des Chats. Das gilt auch für private Chats und Gruppenchats, aber nur rund um eine gemeldete Nachricht und
+      nur in Chats, in denen die meldende Person selbst Mitglied ist.
+    </p>
+    <p>
+      Moderatoren können Spieler befristet sperren. Für eine Sperre speichern wir Konto, E-Mail-Adresse, Grund, Dauer und den Moderator. Die E-Mail-Adresse speichern wir,
+      damit eine Sperre nicht durch ein neues Konto mit derselben Adresse umgangen werden kann.
+    </p>
+    <p>
+      Sperren löschen wir ein Jahr nach ihrem Ende, bearbeitete Meldungen ein Jahr nach ihrer Bearbeitung. So können Moderatoren wiederholte Verstöße erkennen. Rechtsgrundlage
+      ist unser berechtigtes Interesse an einem respektvollen und sicheren Spielbetrieb (Art. 6 Abs. 1 lit. f DSGVO).
+    </p>
+
+    <h2>8. E-Mails</h2>
+    <p>
+      Unsere E-Mails versenden wir über den Mailserver der Hetzner Online GmbH, Industriestr. 25, 91710 Gunzenhausen, Deutschland, die in unserem Auftrag tätig ist (Art. 28
+      DSGVO).
     </p>
     <ul>
+      <li>Immer, weil sie für das Konto nötig sind: Aktivierung, Zurücksetzen des Passworts, Bestätigungen zum Abo (Art. 6 Abs. 1 lit. b DSGVO).</li>
       <li>
-        Wenn Sie die Richtigkeit Ihrer bei uns gespeicherten personenbezogenen Daten bestreiten, ben&ouml;tigen wir in der Regel Zeit, um dies zu &uuml;berpr&uuml;fen.
-        F&uuml;r die Dauer der Pr&uuml;fung haben Sie das Recht, die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.
-      </li>
-      <li>
-        Wenn die Verarbeitung Ihrer personenbezogenen Daten unrechtm&auml;&szlig;ig geschah/geschieht, k&ouml;nnen Sie statt der L&ouml;schung die Einschr&auml;nkung der
-        Datenverarbeitung verlangen.
-      </li>
-      <li>
-        Wenn wir Ihre personenbezogenen Daten nicht mehr ben&ouml;tigen, Sie sie jedoch zur Aus&uuml;bung, Verteidigung oder Geltendmachung von Rechtsanspr&uuml;chen
-        ben&ouml;tigen, haben Sie das Recht, statt der L&ouml;schung die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.
-      </li>
-      <li>
-        Wenn Sie einen Widerspruch nach Art. 21 Abs. 1 DSGVO eingelegt haben, muss eine Abw&auml;gung zwischen Ihren und unseren Interessen vorgenommen werden. Solange noch
-        nicht feststeht, wessen Interessen &uuml;berwiegen, haben Sie das Recht, die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.
+        Abschaltbar in den Einstellungen: Erinnerungen an ungelesene Nachrichten, Freundschaftsanfragen, Turnier-Einladungen und -Erinnerungen (mit Kalenderdatei), Neuigkeiten
+        zu Tac-With-Bug und zu Turnieren sowie Updates zu Ihrem Sponsoring.
       </li>
     </ul>
     <p>
-      Wenn Sie die Verarbeitung Ihrer personenbezogenen Daten eingeschr&auml;nkt haben, d&uuml;rfen diese Daten &ndash; von ihrer Speicherung abgesehen &ndash; nur mit Ihrer
-      Einwilligung oder zur Geltendmachung, Aus&uuml;bung oder Verteidigung von Rechtsanspr&uuml;chen oder zum Schutz der Rechte einer anderen nat&uuml;rlichen oder
-      juristischen Person oder aus Gr&uuml;nden eines wichtigen &ouml;ffentlichen Interesses der Europ&auml;ischen Union oder eines Mitgliedstaats verarbeitet werden.
+      Neuigkeiten zu Tac-With-Bug und zu Turnieren senden wir gelegentlich an registrierte Spieler (Art. 6 Abs. 1 lit. f DSGVO, Information über unser eigenes Angebot). Sie
+      können sie jederzeit in den Einstellungen abschalten.
     </p>
-    <h2>4. Datenerfassung auf dieser Website</h2>
-    <h3>Server-Log-Dateien</h3>
+
+    <h2>9. Unterstützer-Abo über PayPal</h2>
     <p>
-      Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns &uuml;bermittelt. Dies
-      sind:
+      Ein freiwilliges Unterstützer-Abo wickeln wir über PayPal ab: PayPal (Europe) S.à r.l. et Cie, S.C.A., 22–24 Boulevard Royal, 2449 Luxemburg. Beim Öffnen der
+      Unterstützer-Seite lädt Ihr Browser die Bezahl-Schaltflächen direkt von PayPal; dabei erhält PayPal Ihre IP-Adresse und kann eigene Cookies setzen. Die Bezahlung selbst
+      und Ihre Zahlungsdaten verarbeitet allein PayPal nach seiner eigenen Datenschutzerklärung:
+      <a
+        href="https://www.paypal.com/de/legalhub/privacy-full"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        paypal.com/de/legalhub/privacy-full
+      </a>
+    </p>
+    <p>
+      Wir speichern nur die Abo-Nummer von PayPal, den Status und die Laufzeit Ihres Abos, um Ihnen die Vorteile freizuschalten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b
+      DSGVO. Steuerlich relevante Unterlagen bewahren wir aufgrund gesetzlicher Pflichten auf (Art. 6 Abs. 1 lit. c DSGVO, bis zu 10 Jahre nach § 147 AO).
+    </p>
+
+    <h2>10. Speicher im Browser</h2>
+    <p>
+      Wir setzen keine Tracking-Cookies. Im Speicher Ihres Browsers legen wir nur ab, was für die Funktion nötig ist oder was Sie selbst einstellen (§ 25 Abs. 2 Nr. 2 TDDDG,
+      keine Einwilligung nötig):
     </p>
     <ul>
-      <li>Browsertyp und Browserversion</li>
-      <li>verwendetes Betriebssystem</li>
-      <li>Referrer URL</li>
-      <li>Hostname des zugreifenden Rechners</li>
-      <li>Uhrzeit der Serveranfrage</li>
-      <li>IP-Adresse</li>
+      <li>Ihre Anmeldung (Session Storage, wird beim Schließen des Tabs gelöscht),</li>
+      <li>Darstellung und Bedienung: Farbschema, Lautstärke, Farbenblind-Modus, Emojis im Spiel, Position und Größe des Chats, ob Sie die Seite schon besucht haben,</li>
+      <li>Ihr Fortschritt im Training und in Partien gegen den Computer, auch ohne Konto.</li>
     </ul>
-    <p>Eine Zusammenf&uuml;hrung dieser Daten mit anderen Datenquellen wird nicht vorgenommen.</p>
     <p>
-      Die Erfassung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber hat ein berechtigtes Interesse an der technisch fehlerfreien
-      Darstellung und der Optimierung seiner Website &ndash; hierzu m&uuml;ssen die Server-Log-Files erfasst werden.
+      Diese Daten bleiben in Ihrem Browser. Nur wenn Sie angemeldet sind, gleichen wir den Fortschritt mit Ihrem Konto ab (siehe Abschnitt 5). Sie können die Daten jederzeit
+      in den Browser-Einstellungen löschen.
+    </p>
+
+    <h2>11. Statistiken ohne Personenbezug</h2>
+    <p>
+      Für die öffentliche Plattform-Statistik zählen wir, welche Browser, Betriebssysteme und Gerätetypen genutzt werden. Dazu werten wir die Browser-Kennung (User-Agent) aus
+      und speichern nur die zusammengefasste Anzahl, ohne IP-Adresse oder Konto. Von Partien gegen den Computer im Browser speichern wir für diese Statistik nur Spielmodus,
+      Stufe und Ergebnis, ohne Bezug zu einer Person.
+    </p>
+
+    <h2>12. Fehler- und Betriebsprotokolle</h2>
+    <p>
+      Der Spielserver protokolliert technische Ereignisse und Fehler, zum Beispiel Verbindungen zu Partien. Diese Einträge können Ihre Konto-Nummer enthalten. Wir nutzen sie
+      zur Fehlersuche und zum Schutz vor Missbrauch (Art. 6 Abs. 1 lit. f DSGVO) und löschen sie automatisch nach 90 Tagen.
+    </p>
+
+    <h2>13. Links zu anderen Websites</h2>
+    <p>
+      Unsere Seiten verlinken auf andere Angebote, zum Beispiel den Shop des TAC-Verlags oder GitHub. Erst wenn Sie einen solchen Link anklicken, werden Daten an den
+      jeweiligen Anbieter übertragen. Für dessen Datenverarbeitung ist dieser selbst verantwortlich.
+    </p>
+
+    <h2>14. Speicherdauer im Überblick</h2>
+    <table class="retentionTable">
+      <thead>
+        <tr>
+          <th>Daten</th>
+          <th>Löschung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Benutzerkonto, Profil, Einstellungen, Fortschritt</td>
+          <td>bei Löschung des Kontos</td>
+        </tr>
+        <tr>
+          <td>Nicht aktivierte Konten</td>
+          <td>nach 1 Woche</td>
+        </tr>
+        <tr>
+          <td>Links zum Zurücksetzen des Passworts</td>
+          <td>nach Nutzung oder nach 15 Minuten</td>
+        </tr>
+        <tr>
+          <td>Chat- und Kanalnachrichten</td>
+          <td>nach 1 Jahr</td>
+        </tr>
+        <tr>
+          <td>Sperren (mit E-Mail-Adresse)</td>
+          <td>1 Jahr nach Ende der Sperre</td>
+        </tr>
+        <tr>
+          <td>Bearbeitete Meldungen</td>
+          <td>1 Jahr nach Bearbeitung; offene Meldungen bis zur Bearbeitung</td>
+        </tr>
+        <tr>
+          <td>Fehler- und Betriebsprotokolle</td>
+          <td>nach 90 Tagen</td>
+        </tr>
+        <tr>
+          <td>Abodaten</td>
+          <td>bei Löschung des Kontos; steuerlich relevante Unterlagen nach Ablauf der gesetzlichen Frist</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>15. Ihre Rechte</h2>
+    <p>Sie haben jederzeit das Recht auf</p>
+    <ul>
+      <li>Auskunft über Ihre gespeicherten Daten (Art. 15 DSGVO),</li>
+      <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO),</li>
+      <li>Löschung (Art. 17 DSGVO); Ihr Konto können Sie auch selbst in den Einstellungen löschen,</li>
+      <li>Einschränkung der Verarbeitung (Art. 18 DSGVO),</li>
+      <li>Datenübertragbarkeit in einem gängigen, maschinenlesbaren Format (Art. 20 DSGVO),</li>
+      <li>Widerruf einer Einwilligung mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO).</li>
+    </ul>
+    <p>Wenden Sie sich dazu einfach per E-Mail an uns.</p>
+    <h3>Widerspruchsrecht (Art. 21 DSGVO)</h3>
+    <p class="objection">
+      Soweit wir Daten auf Grundlage unseres berechtigten Interesses verarbeiten (Art. 6 Abs. 1 lit. f DSGVO), können Sie aus Gründen, die sich aus Ihrer besonderen Situation
+      ergeben, jederzeit widersprechen. Wir verarbeiten die Daten dann nicht mehr, es sei denn, wir können zwingende schutzwürdige Gründe nachweisen, die Ihre Interessen
+      überwiegen, oder die Verarbeitung dient der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen. Dem Erhalt von Neuigkeiten per E-Mail können Sie jederzeit
+      ohne Angabe von Gründen widersprechen, indem Sie sie in den Einstellungen abschalten.
+    </p>
+    <h3>Beschwerderecht</h3>
+    <p>
+      Sie können sich bei einer Datenschutz-Aufsichtsbehörde beschweren. Für uns zuständig ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA), Promenade 18, 91522
+      Ansbach.
+    </p>
+
+    <h2>16. Sicherheit</h2>
+    <p>
+      Alle Verbindungen zu Tac-With-Bug sind per TLS verschlüsselt (erkennbar an „https://“ und dem Schloss-Symbol im Browser). Eine automatisierte Entscheidungsfindung
+      einschließlich Profiling (Art. 22 DSGVO) findet nicht statt.
     </p>
   </div>
 </template>
+
+<style scoped>
+.retentionTable {
+  border-collapse: collapse;
+  margin-bottom: 1em;
+}
+
+.retentionTable th,
+.retentionTable td {
+  border: 1px solid var(--p-content-border-color);
+  padding: 4px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.objection {
+  font-weight: bold;
+}
+</style>

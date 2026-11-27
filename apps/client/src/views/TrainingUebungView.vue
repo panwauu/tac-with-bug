@@ -126,6 +126,8 @@ import { useCards } from '@/services/compositionGame/useCards'
 import { useInstructions } from '@/services/compositionGame/useInstructions'
 import router from '@/router/index'
 import { uebung, txt, markiere, naechstes, training } from '@/training'
+// Meldet Erledigtes dem Konto, auch wenn diese Seite direkt geöffnet wurde
+import '@/training/konto'
 import { baelleFuer, baueSpiel, fuehreAus, ICH, kugel, zwischenschritte } from '@/training/spielstand'
 import { istGeloest, type Verlauf } from '@/training/pruefung'
 import { DREHUNG_TRAINING, FARBEN, type Kugel, type Uebung, type Vorzug } from '@/training/typen'

@@ -52,7 +52,7 @@
     },
     "aboutLorenzHeader": "Merhaba TAC topluluğu,",
     "aboutLorenz1": "ben Lorenz, önümüzdeki aylarda Tac-With-Bug'ı adım adım Oskar'dan devralacağım. Arkadaşlarımla TAC oynamaya bayılırım ve son zamanlarda özellikle bir TAC uygulaması ile oyun için bilgisayar rakipleri üzerinde çalıştım.",
-    "aboutLorenz2": "Geçiş döneminde Oskar da yanımızda: her değişikliği yayına girmeden önce inceliyor. Çevrimiçi oynamak ücretsiz kalıyor ve hesaplarınıza ve verilerinize Oskar'ın şimdiye kadar gösterdiği özenle yaklaşacağım.",
+    "aboutLorenz2": "Geçiş döneminde Oskar da yanımızda: Her değişikliği yayına girmeden önce inceliyor. Çevrimiçi oynamak ücretsiz kalıyor ve hesaplarınıza ve verilerinize Oskar'ın şimdiye kadar gösterdiği özenle yaklaşacağım.",
     "aboutLorenz3": "Önerilerinizi, isteklerinizi ya da yorumlarınızı bana gönderin, hayata geçirilebilirler mi bakarım.",
     "aboutLorenzSignature": "Selamlar, Lorenz",
     "aboutMe3": "Artık bu zamanı ayıramıyorum ve Tac-With-Bug'ın yeni bir enerjiye ihtiyacı var.",
@@ -149,8 +149,11 @@
     "signUpDeadline": "Kayıt bitişi",
     "gameTime": "Oyun",
     "timePerGame": "Oyun başına süre",
+    "fluidSize": "Turnuva büyüklüğü: {min} ile {max} takım arası. Daha az takımla son turlar kaldırılır ve bazı takımlar ilk turu bay geçer.",
+    "conditionalRound": "yalnızca {n} veya daha fazla takımla oynanır",
     "waitingPlayers": "Oyuncu bekleme listesi",
     "registrationList": "Kayıt listesi ({x} takım daha gerekli)",
+    "registrationListFluid": "Kayıt listesi ({x} takım tamamlandı, en az {min}, en fazla {max})",
     "otherTeams": "Diğer takımlar",
     "signUpConfirmationText": "Oyun tarihlerinde vaktin olduğundan emin misin? Bu herkesin deneyimi için çok önemli!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Çeyrek final",
       "bracketList3": "Son 16",
       "bracketList4": "Son 32",
-      "bracketTBDTeam": "Henüz belli değil"
+      "bracketTBDTeam": "Henüz belli değil",
+      "bye": "Bay"
     },
     "Toast": {
       "you-created-a-team-summary": "Takım oluşturuldu",
@@ -252,6 +256,29 @@
       "nTeams": "Takım sayısı:",
       "createPrivateButton": "Turnuva oluştur"
     },
+    "CreatePublic": {
+      "title": "Turnuva adı",
+      "titleInvalid": "Turnuva adı 8 ile 50 karakter arasında olmalıdır.",
+      "nTeams": "Takım sayısı",
+      "maxTeams": "Maksimum takım sayısı",
+      "minTeams": "Minimum takım sayısı",
+      "minutesPerGame": "Oyun başına süre",
+      "fluidSize": "Esnek turnuva büyüklüğü",
+      "fluidSizeHint": "Son kayıt tarihine kadar daha az takım kaydolursa, minimuma ulaşıldığı sürece turnuva daha az turla başlar. İlk turu bay geçen takımlar kurayla belirlenir.",
+      "roundDates": "Oyun tarihleri",
+      "round": "Tur {n}",
+      "preview": "Turnuva akışı",
+      "previewLine": "{teams} takım: {rounds} tur, bay: {byes}",
+      "createButton": "Turnuva oluştur",
+      "createdSummary": "Turnuva oluşturuldu",
+      "createdDetail": "Kayıt, kayıt başlangıcında otomatik olarak başlar.",
+      "createError": "Turnuva oluşturulamadı: {error}",
+      "errors": {
+        "missing": "Lütfen tüm tarihleri ve oyun başına süreyi girin.",
+        "order": "Tarihler sırayla olmalıdır: kayıt başlangıcı, son kayıt tarihi, tur 1, tur 2, …",
+        "overlap": "Bir tur, önceki turun süresi dolmadan başlıyor."
+      }
+    },
     "TournamentsTable": {
       "title": "Turnuva başlığı",
       "date": "Başlangıç tarihi"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Turnuvalara genel bakış",
       "tournaments": "Turnuvalar",
-      "createPrivate": "Özel turnuva oluştur"
+      "createPrivate": "Özel turnuva oluştur",
+      "createPublic": "Herkese açık turnuva oluştur"
     },
     "EditPrivate": {
       "notCompleteMessage": "Hâlâ eksik takımlar var, takımlar tamamlanmadı ya da tüm katılımcılar katılımlarını onaylamadı.",
@@ -347,7 +375,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Oyuncu ekle",
-      "leaveButton": "Sohbetten ayrıl"
+      "leaveButton": "Sohbetten ayrıl",
+      "changePicture": "Resmi değiştir",
+      "removePicture": "Resmi kaldır",
+      "pictureError": "Resim kaydedilemedi."
     },
     "ChatCreator": {
       "startButton": "Sohbet başlat",
@@ -710,6 +741,7 @@
       "nb": "Norveççe",
       "da": "Danca",
       "tr": "Türkçe",
+      "pt": "Portekizce",
       "applicationLanguage": "Uygulama dili:",
       "originCountry": "Profil için ülke"
     },
@@ -744,6 +776,16 @@
       "light": "Açık",
       "dark": "Koyu",
       "explanation": "Renk şeması uygulamanın görünümünü belirler. “Açık” aydınlık bir tasarım gösterir, “Koyu” karanlık modu açar ve “Sistem” renk şemasını cihazının ayarlarına göre otomatik uyarlar."
+    },
+    "InGameEmojis": {
+      "header": "Oyunda emojiler",
+      "explanation": "Bu emojileri bir oyun sırasında gönderebilirsin. Seçim bu cihaz için geçerlidir.",
+      "onlySubscribers": "Destekçiler kendi emojilerini seçebilir. Abonelik olmadan standart emojiler geçerlidir.",
+      "toSubscription": "Aboneliğe git",
+      "add": "Emoji ekle",
+      "remove": "Kaldır",
+      "moveLeft": "Sola taşı",
+      "reset": "Varsayılana dön"
     }
   },
   "Profile": {
@@ -1028,7 +1070,20 @@
     "bis": "{datum} tarihine kadar",
     "keinVerlauf": "Hiç bildirilmedi ya da engellenmedi.",
     "sperre": "Engelleme",
-    "nachrichtMelden": "Mesajı bildir"
+    "nachrichtMelden": "Mesajı bildir",
+    "kontext": {
+      "zeigen": "Sohbet geçmişini göster",
+      "ausblenden": "Sohbet geçmişini gizle",
+      "laedt": "Yükleniyor …",
+      "nichtGefunden": "Mesaj artık sohbette bulunamıyor.",
+      "aeltere": "Daha eski mesajlar gösterilmiyor",
+      "neuere": "Daha yeni mesajlar gösterilmiyor",
+      "partie": "Oyun sohbeti, oyun {nr}",
+      "warteraum": "Bekleme odası sohbeti",
+      "kanal": "Genel sohbet “{name}”",
+      "privat": "Özel sohbet: {leute}",
+      "gruppe": "Grup sohbeti “{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Oyuncu bulunamadı"
@@ -1038,7 +1093,7 @@
     "beschreibung": "Karşındaki partnerinle iki rakibe karşı oynarsın. Partner ve rakipler yapay zekâdır.",
     "hinweis": "Güçlü seviyeler iki saniyeye kadar düşünür.",
     "infoMenschen": "Diğer insanlara karşı bekleme odası üzerinden çevrimiçi oynarsın. İstatistiklerine yalnızca çevrimiçi oyunlar sayılır.",
-    "infoSpeichern": "Kaydedilmez: sayfayı kapatır ya da yenilersen oyun biter.",
+    "infoSpeichern": "Kaydedilmez: Sayfayı kapatır ya da yenilersen oyun biter.",
     "infoStatistik": "İstatistiklerine ve sıralamaya sayılmaz. Sonunda sunucuya yalnızca hangi seviyeye karşı oynadığın ve oyunun nasıl bittiği, anonim olarak ve hesabın olmadan gider. Botların istatistikleri bundan oluşur.",
     "infoBrowser": "Yapay zekâ oyuncularıyla tek başına oynarsın. Oyun yalnızca tarayıcında çalışır, hesap gerekmez.",
     "infoTitel": "Yapay zekâya karşı oyun böyle işler",
@@ -1059,7 +1114,7 @@
       "drei": "3'e 3",
       "koop": "Ortak oyun"
     },
-    "widgetText": "Klasik, 3'e 3 ya da ortak oyun: yapay zekâya karşı tek başına, doğrudan tarayıcında ve hesapsız oyna. Bu oyunlar istatistiklere sayılmaz.",
+    "widgetText": "Klasik, 3'e 3 ya da ortak oyun: Yapay zekâya karşı tek başına, doğrudan tarayıcında ve hesapsız oyna. Bu oyunlar istatistiklere sayılmaz.",
     "zurAuswahl": "Yapay zekâ rakibi seç",
     "koopKarten": "Oynanan kartlar",
     "koopZiel": "Tüm bilyeler eve girene kadar ne kadar az kart, o kadar iyi.",
@@ -1074,6 +1129,7 @@
     "titel": "Eğitimler",
     "einleitung": "TAC'ı adım adım öğren: kısa dersler ve doğrudan tahta üzerinde görevler. TAC uygulamasındaki derslerin aynısı.",
     "hinweis": "İlerlemen yalnızca bu tarayıcıda kaydedilir.",
+    "hinweisKonto": "İlerlemen hesabına kaydedilir.",
     "uebersicht": "Genel bakış",
     "weiter": "İleri",
     "nochmal": "Tekrar",
@@ -1162,16 +1218,16 @@
       "kurzVorHaus": "Mavi evinin hemen önünde",
       "engelDreizehn": "Melek Maviyi 13 alan ilerletir",
       "kriegerSucht": "Savaşçı sonraki bilyeyi arar",
-      "selbstwurf": "Yalnızca seninkiler: kendini vurursun",
+      "selbstwurf": "Yalnızca seninkiler: Kendini vurursun",
       "keineKugel": "Dışarıda bilye yok: 5 işe yaramaz, yani TAC yok",
       "dreizehnStatt": "Yani 13: TAC yerine çık",
       "letzteKarte": "Kırmızı turun son kartını oynar",
-      "neueRunde": "Yeni tur: kartlar dağıtılır",
+      "neueRunde": "Yeni tur: Kartlar dağıtılır",
       "tacZuSpaet": "Dağıtımdan sonra hamle geri alınamaz",
       "achtLaufen": "8'i kullanırsın: 8 alan ilerle",
       "blauWirftAb": "Mavi bir kart atmak zorunda",
       "engelDich": "Kırmızının Meleği senin bilyeni çıkarır",
-      "tacEngel": "TAC: bilyen geri döner, Mavi çıkar",
+      "tacEngel": "TAC: Bilyen geri döner, Mavi çıkar",
       "rotTeufel": "Kırmızı Şeytanı oynar ve kartlarını görür",
       "rotNimmtTac": "Kırmızı senin elinden TAC'ı oynar",
       "duFuerBlau": "Şimdi Mavinin bir kartını oynarsın",
@@ -1189,7 +1245,7 @@
       "tacSieg": "Senin TAC'ın bilyeyi halkaya geri getirir",
       "gruenSiegt": "Yeşil son bilyesini eve sokar: zafer",
       "rotVerhindert": "Kırmızının TAC'ı zaferi engeller ve 10'u kullanır",
-      "tacGesperrt": "Senin TAC'ın işe yaramaz: tüm bilyelerin evde",
+      "tacGesperrt": "Senin TAC'ın işe yaramaz: Tüm bilyelerin evde",
       "nurTac": "Elinde yalnızca TAC kaldı",
       "rotHeraus": "Kırmızı 13 ile çıkar",
       "rotLegtAb": "Kırmızının dışarıda bilyesi yok, 5'i atar",
@@ -1212,7 +1268,7 @@
       "b3": "Birkaç hamle ileriye bakar ve ona göre plan yapar.",
       "b10": "Sağlam ve sade: her hamleyi sabit kurallara göre değerlendirir.",
       "b11": "Bir hamle ilerisini düşünür.",
-      "b12": "Durumu bir bakışta okur: hamleyi bir sinir ağı seçer.",
+      "b12": "Durumu bir bakışta okur: Hamleyi bir sinir ağı seçer.",
       "b13": "Hâlâ öğreniyor, yarım bilgiyle: 200 olası gidişatı dener.",
       "b14": "Hamle yapmadan önce yüzlerce gidişatı hesaplar.",
       "b15": "Her eli altmış dört kez sınar: 64 olası kart dağılımı üzerinde sinir ağıyla arama.",

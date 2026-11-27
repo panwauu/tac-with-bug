@@ -52,7 +52,7 @@
     },
     "aboutLorenzHeader": "Hej TAC-fællesskabet,",
     "aboutLorenz1": "jeg hedder Lorenz og vil i de kommende måneder overtage Tac-With-Bug fra Oskar trin for trin. Jeg elsker selv at spille TAC med mine venner og har på det seneste især arbejdet på en TAC-app og på computermodstandere til spillet.",
-    "aboutLorenz2": "I overgangsperioden bliver Oskar ombord: han gennemgår hver ændring, før den går live. Det er fortsat gratis at spille online, og jeg passer lige så godt på jeres konti og data, som Oskar har gjort hidtil.",
+    "aboutLorenz2": "I overgangsperioden bliver Oskar ombord: Han gennemgår hver ændring, før den går live. Det er fortsat gratis at spille online, og jeg passer lige så godt på jeres konti og data, som Oskar har gjort hidtil.",
     "aboutLorenz3": "Send mig gerne jeres forslag, ønsker eller bemærkninger, så ser jeg, om de kan gennemføres.",
     "aboutLorenzSignature": "Mange hilsner, Lorenz",
     "aboutMe3": "Nu har jeg ikke længere tid, og Tac-With-Bug har brug for ny energi.",
@@ -149,8 +149,11 @@
     "signUpDeadline": "Tilmeldingsfrist",
     "gameTime": "Spil",
     "timePerGame": "Tid pr. spil",
+    "fluidSize": "Turneringsstørrelse: {min} til {max} hold. Med færre hold bortfalder de sidste runder, og nogle hold får en bye i første runde.",
+    "conditionalRound": "spilles kun med {n} hold eller flere",
     "waitingPlayers": "Venteliste for spillere",
     "registrationList": "Tilmeldingsliste ({x} hold mangler stadig)",
+    "registrationListFluid": "Tilmeldingsliste ({x} hold komplette, mindst {min}, højst {max})",
     "otherTeams": "Andre hold",
     "signUpConfirmationText": "Er du sikker på, at du har tid på spilledatoerne? Det er meget vigtigt for alles oplevelse!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Kvartfinale",
       "bracketList3": "Ottendedelsfinale",
       "bracketList4": "Sekstendedelsfinale",
-      "bracketTBDTeam": "Endnu ikke kendt"
+      "bracketTBDTeam": "Endnu ikke kendt",
+      "bye": "Bye"
     },
     "Toast": {
       "you-created-a-team-summary": "Hold oprettet",
@@ -252,6 +256,29 @@
       "nTeams": "Antal hold:",
       "createPrivateButton": "Opret turnering"
     },
+    "CreatePublic": {
+      "title": "Turneringsnavn",
+      "titleInvalid": "Turneringsnavnet skal have 8 til 50 tegn.",
+      "nTeams": "Antal hold",
+      "maxTeams": "Maksimalt antal hold",
+      "minTeams": "Minimalt antal hold",
+      "minutesPerGame": "Tid pr. spil",
+      "fluidSize": "Fleksibel turneringsstørrelse",
+      "fluidSizeHint": "Hvis færre hold tilmelder sig inden fristen, starter turneringen med færre runder, så længe minimumsantallet er nået. Holdene, der får en bye i første runde, trækkes tilfældigt.",
+      "roundDates": "Spilletidspunkter",
+      "round": "Runde {n}",
+      "preview": "Turneringsforløb",
+      "previewLine": "{teams} hold: {rounds} runder, byes: {byes}",
+      "createButton": "Opret turnering",
+      "createdSummary": "Turnering oprettet",
+      "createdDetail": "Tilmeldingen starter automatisk ved tilmeldingsstart.",
+      "createError": "Turneringen kunne ikke oprettes: {error}",
+      "errors": {
+        "missing": "Angiv venligst alle tidspunkter og tiden pr. spil.",
+        "order": "Tidspunkterne skal følge efter hinanden: tilmeldingsstart, tilmeldingsfrist, runde 1, runde 2, …",
+        "overlap": "En runde starter, før tiden for den forrige runde er udløbet."
+      }
+    },
     "TournamentsTable": {
       "title": "Turneringstitel",
       "date": "Startdato"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Turneringsoverblik",
       "tournaments": "Turneringer",
-      "createPrivate": "Opret privat turnering"
+      "createPrivate": "Opret privat turnering",
+      "createPublic": "Opret offentlig turnering"
     },
     "EditPrivate": {
       "notCompleteMessage": "Der mangler stadig hold, holdene er ikke fuldtallige, eller ikke alle deltagere har bekræftet deres deltagelse.",
@@ -347,7 +375,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Tilføj spiller",
-      "leaveButton": "Forlad chatten"
+      "leaveButton": "Forlad chatten",
+      "changePicture": "Skift billede",
+      "removePicture": "Fjern billede",
+      "pictureError": "Billedet kunne ikke gemmes."
     },
     "ChatCreator": {
       "startButton": "Start chat",
@@ -710,6 +741,7 @@
       "nb": "Norsk",
       "da": "Dansk",
       "tr": "Tyrkisk",
+      "pt": "Portugisisk",
       "applicationLanguage": "Programmets sprog:",
       "originCountry": "Land for profilen"
     },
@@ -744,6 +776,16 @@
       "light": "Lyst",
       "dark": "Mørkt",
       "explanation": "Farvetemaet bestemmer, hvordan programmet ser ud. »Lyst« viser et lyst design, »Mørkt« slår mørk tilstand til, og »System« tilpasser automatisk farvetemaet til indstillingerne på din enhed."
+    },
+    "InGameEmojis": {
+      "header": "Emojis i spillet",
+      "explanation": "Disse emojis kan du sende under et spil. Valget gælder på denne enhed.",
+      "onlySubscribers": "Støtter kan sammensætte deres egne emojis. Uden abonnement gælder standard-emojierne.",
+      "toSubscription": "Til abonnementet",
+      "add": "Tilføj emoji",
+      "remove": "Fjern",
+      "moveLeft": "Flyt til venstre",
+      "reset": "Gendan standard"
     }
   },
   "Profile": {
@@ -1028,7 +1070,20 @@
     "bis": "indtil {datum}",
     "keinVerlauf": "Aldrig anmeldt eller spærret.",
     "sperre": "Spærring",
-    "nachrichtMelden": "Anmeld besked"
+    "nachrichtMelden": "Anmeld besked",
+    "kontext": {
+      "zeigen": "Vis chathistorik",
+      "ausblenden": "Skjul chathistorik",
+      "laedt": "Indlæser …",
+      "nichtGefunden": "Beskeden findes ikke længere i chatten.",
+      "aeltere": "Ældre beskeder vises ikke",
+      "neuere": "Nyere beskeder vises ikke",
+      "partie": "Spilchat, spil {nr}",
+      "warteraum": "Chat i venteværelset",
+      "kanal": "Offentlig chat »{name}«",
+      "privat": "Privat chat: {leute}",
+      "gruppe": "Gruppechat »{name}«: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Ingen spillere fundet"
@@ -1038,7 +1093,7 @@
     "beschreibung": "Du spiller med din partner over for dig mod to modstandere. Partner og modstandere er AI.",
     "hinweis": "Stærke niveauer tænker i op til to sekunder.",
     "infoMenschen": "Mod andre mennesker spiller du online via venteværelset. Kun onlinespil tæller i din statistik.",
-    "infoSpeichern": "Det gemmes ikke: lukker eller genindlæser du siden, er spillet slut.",
+    "infoSpeichern": "Det gemmes ikke: Lukker eller genindlæser du siden, er spillet slut.",
     "infoStatistik": "Det tæller hverken i din statistik eller på ranglisten. Til sidst sendes kun niveauet, du spillede mod, og hvordan spillet endte, til serveren, anonymt og uden din konto. Det bliver til botternes statistik.",
     "infoBrowser": "Du spiller alene med AI-spillere. Spillet kører kun i din browser, du behøver ingen konto.",
     "infoTitel": "Sådan foregår et spil mod AI'en",
@@ -1059,7 +1114,7 @@
       "drei": "3 mod 3",
       "koop": "Samarbejde"
     },
-    "widgetText": "Klassisk, 3 mod 3 eller samarbejde: spil alene mod AI'en, direkte i browseren og uden konto. Disse spil tæller ikke i statistikken.",
+    "widgetText": "Klassisk, 3 mod 3 eller samarbejde: Spil alene mod AI'en, direkte i browseren og uden konto. Disse spil tæller ikke i statistikken.",
     "zurAuswahl": "Vælg AI-modstander",
     "koopKarten": "Spillede kort",
     "koopZiel": "Jo færre kort, indtil alle kugler er hjemme, jo bedre.",
@@ -1074,6 +1129,7 @@
     "titel": "Vejledninger",
     "einleitung": "Lær TAC trin for trin: korte lektioner og opgaver direkte på brættet. De samme lektioner som i TAC-appen.",
     "hinweis": "Dine fremskridt gemmes kun i denne browser.",
+    "hinweisKonto": "Dine fremskridt gemmes på din konto.",
     "uebersicht": "Overblik",
     "weiter": "Næste",
     "nochmal": "Igen",
@@ -1162,11 +1218,11 @@
       "kurzVorHaus": "Blå står lige før sit hjem",
       "engelDreizehn": "Englen lader Blå rykke 13 felter",
       "kriegerSucht": "Krigeren leder efter den næste kugle",
-      "selbstwurf": "Kun dine: du slår dig selv ud",
+      "selbstwurf": "Kun dine: Du slår dig selv ud",
       "keineKugel": "Ingen kugle ude: 5'eren passer ikke, altså intet TAC",
       "dreizehnStatt": "Altså 13'eren: kom ud i stedet for TAC",
       "letzteKarte": "Rød spiller rundens sidste kort",
-      "neueRunde": "Ny runde: der gives kort",
+      "neueRunde": "Ny runde: Der gives kort",
       "tacZuSpaet": "Efter uddelingen kan trækket ikke længere fortrydes",
       "achtLaufen": "Du bruger 8'eren: ryk 8 felter",
       "blauWirftAb": "Blå skal kaste et kort",
@@ -1189,7 +1245,7 @@
       "tacSieg": "Dit TAC bringer kuglen tilbage på ringen",
       "gruenSiegt": "Grøn får sin sidste kugle hjem: sejr",
       "rotVerhindert": "Røds TAC forhindrer sejren og bruger 10'eren",
-      "tacGesperrt": "Dit TAC virker ikke: alle dine kugler er hjemme",
+      "tacGesperrt": "Dit TAC virker ikke: Alle dine kugler er hjemme",
       "nurTac": "Du har kun TAC tilbage",
       "rotHeraus": "Rød kommer ud med 13'eren",
       "rotLegtAb": "Rød har ingen kugle ude og lægger 5'eren",
@@ -1212,7 +1268,7 @@
       "b3": "Ser nogle træk frem og planlægger derefter.",
       "b10": "Solid husmandskost: vurderer hvert træk efter faste regler.",
       "b11": "Tænker et træk frem.",
-      "b12": "Ser stillingen med ét blik: et neuralt netværk vælger trækket.",
+      "b12": "Ser stillingen med ét blik: Et neuralt netværk vælger trækket.",
       "b13": "Lærer stadig, med halv viden: spiller 200 mulige forløb igennem.",
       "b14": "Regner hundredvis af forløb igennem, før den trækker.",
       "b15": "Tjekker hver hånd fireogtres gange: søgning med neuralt netværk over 64 mulige kortfordelinger.",

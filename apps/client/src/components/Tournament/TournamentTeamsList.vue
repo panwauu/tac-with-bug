@@ -4,7 +4,10 @@
     class="signUpWrapper"
   >
     <div class="signUpList">
-      <h3>{{ t('Tournament.registrationList', { x: openTeams }) }}:</h3>
+      <h3 v-if="tournament.minTeams < tournament.nTeams">
+        {{ t('Tournament.registrationListFluid', { x: completeTeams, min: tournament.minTeams, max: tournament.nTeams }) }}:
+      </h3>
+      <h3 v-else>{{ t('Tournament.registrationList', { x: tournament.nTeams - completeTeams }) }}:</h3>
       <TournamentTeam
         v-if="ownTeam != null"
         :tournament="tournament"
@@ -39,10 +42,8 @@ const ownTeam = computed(() => {
 const otherTeams = computed(() => {
   return props.tournament.registerTeams.filter((team) => username.value === null || !team.players.includes(username.value))
 })
-const openTeams = computed(() => {
-  return (
-    props.tournament.nTeams - props.tournament.registerTeams.filter((team) => team.activated.every((a) => a) && team.players.length === props.tournament.playersPerTeam).length
-  )
+const completeTeams = computed(() => {
+  return props.tournament.registerTeams.filter((team) => team.activated.every((a) => a) && team.players.length === props.tournament.playersPerTeam).length
 })
 </script>
 

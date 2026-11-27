@@ -52,7 +52,7 @@
     },
     "aboutLorenzHeader": "Hej TAC-communityn,",
     "aboutLorenz1": "jag heter Lorenz och kommer under de närmaste månaderna att steg för steg ta över Tac-With-Bug från Oskar. Jag älskar själv att spela TAC med mina vänner och har på senare tid främst arbetat med en TAC-app och med datormotståndare till spelet.",
-    "aboutLorenz2": "Under övergångstiden är Oskar kvar: han granskar varje ändring innan den går live. Att spela online förblir gratis, och jag hanterar era konton och data lika omsorgsfullt som Oskar har gjort hittills.",
+    "aboutLorenz2": "Under övergångstiden är Oskar kvar: Han granskar varje ändring innan den går live. Att spela online förblir gratis, och jag hanterar era konton och data lika omsorgsfullt som Oskar har gjort hittills.",
     "aboutLorenz3": "Skicka gärna era förbättringsförslag, önskemål eller synpunkter till mig, så ser jag om de går att genomföra.",
     "aboutLorenzSignature": "Hälsningar, Lorenz",
     "aboutMe3": "Numera hinner jag inte längre, och Tac-With-Bug behöver ny energi.",
@@ -149,8 +149,11 @@
     "signUpDeadline": "Sista anmälningsdag",
     "gameTime": "Parti",
     "timePerGame": "Tid per parti",
+    "fluidSize": "Turneringsstorlek: {min} till {max} lag. Med färre lag stryks de sista omgångarna och några lag går vidare utan match i första omgången.",
+    "conditionalRound": "spelas bara med {n} lag eller fler",
     "waitingPlayers": "Väntelista för spelare",
     "registrationList": "Anmälningslista ({x} lag saknas fortfarande)",
+    "registrationListFluid": "Anmälningslista ({x} lag kompletta, minst {min}, högst {max})",
     "otherTeams": "Andra lag",
     "signUpConfirmationText": "Är du säker på att du har tid på speldagarna? Det är mycket viktigt för allas upplevelse!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Kvartsfinal",
       "bracketList3": "Åttondelsfinal",
       "bracketList4": "Sextondelsfinal",
-      "bracketTBDTeam": "Ännu inte känt"
+      "bracketTBDTeam": "Ännu inte känt",
+      "bye": "Walkover"
     },
     "Toast": {
       "you-created-a-team-summary": "Laget skapat",
@@ -252,6 +256,29 @@
       "nTeams": "Antal lag:",
       "createPrivateButton": "Skapa turnering"
     },
+    "CreatePublic": {
+      "title": "Turneringsnamn",
+      "titleInvalid": "Turneringsnamnet måste ha 8 till 50 tecken.",
+      "nTeams": "Antal lag",
+      "maxTeams": "Maximalt antal lag",
+      "minTeams": "Minsta antal lag",
+      "minutesPerGame": "Tid per spel",
+      "fluidSize": "Flexibel turneringsstorlek",
+      "fluidSizeHint": "Om färre lag anmäler sig före sista anmälningsdag startar turneringen med färre omgångar, så länge minimiantalet nås. Lagen som går vidare utan match i första omgången lottas.",
+      "roundDates": "Speltider",
+      "round": "Omgång {n}",
+      "preview": "Turneringsförlopp",
+      "previewLine": "{teams} lag: {rounds} omgångar, walkover: {byes}",
+      "createButton": "Skapa turnering",
+      "createdSummary": "Turnering skapad",
+      "createdDetail": "Anmälan startar automatiskt vid anmälningsstart.",
+      "createError": "Turneringen kunde inte skapas: {error}",
+      "errors": {
+        "missing": "Ange alla tider och tiden per spel.",
+        "order": "Tiderna måste följa på varandra: anmälningsstart, sista anmälningsdag, omgång 1, omgång 2, …",
+        "overlap": "En omgång börjar innan tiden för föregående omgång är slut."
+      }
+    },
     "TournamentsTable": {
       "title": "Turneringstitel",
       "date": "Startdatum"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Turneringsöversikt",
       "tournaments": "Turneringar",
-      "createPrivate": "Skapa privat turnering"
+      "createPrivate": "Skapa privat turnering",
+      "createPublic": "Skapa offentlig turnering"
     },
     "EditPrivate": {
       "notCompleteMessage": "Det saknas fortfarande lag, lagen är inte kompletta eller så har inte alla deltagare bekräftat sitt deltagande.",
@@ -347,7 +375,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Lägg till spelare",
-      "leaveButton": "Lämna chatten"
+      "leaveButton": "Lämna chatten",
+      "changePicture": "Byt bild",
+      "removePicture": "Ta bort bild",
+      "pictureError": "Bilden kunde inte sparas."
     },
     "ChatCreator": {
       "startButton": "Starta chatt",
@@ -710,6 +741,7 @@
       "nb": "Norska",
       "da": "Danska",
       "tr": "Turkiska",
+      "pt": "Portugisiska",
       "applicationLanguage": "Programmets språk:",
       "originCountry": "Land för profilen"
     },
@@ -744,6 +776,16 @@
       "light": "Ljust",
       "dark": "Mörkt",
       "explanation": "Färgschemat bestämmer hur programmet ser ut. ”Ljust” visar en ljus design, ”Mörkt” aktiverar mörkt läge och ”System” anpassar färgschemat automatiskt efter enhetens inställningar."
+    },
+    "InGameEmojis": {
+      "header": "Emojis i spelet",
+      "explanation": "Dessa emojis kan du skicka under ett parti. Urvalet gäller på den här enheten.",
+      "onlySubscribers": "Supportrar kan sätta ihop sina egna emojis. Utan prenumeration gäller standardemojierna.",
+      "toSubscription": "Till prenumerationen",
+      "add": "Lägg till emoji",
+      "remove": "Ta bort",
+      "moveLeft": "Flytta åt vänster",
+      "reset": "Återställ standard"
     }
   },
   "Profile": {
@@ -1028,7 +1070,20 @@
     "bis": "till {datum}",
     "keinVerlauf": "Aldrig anmäld eller spärrad.",
     "sperre": "Spärr",
-    "nachrichtMelden": "Anmäl meddelande"
+    "nachrichtMelden": "Anmäl meddelande",
+    "kontext": {
+      "zeigen": "Visa chatthistorik",
+      "ausblenden": "Dölj chatthistorik",
+      "laedt": "Laddar …",
+      "nichtGefunden": "Meddelandet finns inte längre i chatten.",
+      "aeltere": "Äldre meddelanden visas inte",
+      "neuere": "Nyare meddelanden visas inte",
+      "partie": "Partichatt, parti {nr}",
+      "warteraum": "Chatt i väntrummet",
+      "kanal": "Offentlig chatt ”{name}”",
+      "privat": "Privat chatt: {leute}",
+      "gruppe": "Gruppchatt ”{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Inga spelare hittades"
@@ -1038,7 +1093,7 @@
     "beschreibung": "Du spelar med din partner mittemot dig mot två motståndare. Partner och motståndare är AI.",
     "hinweis": "Starka nivåer tänker i upp till två sekunder.",
     "infoMenschen": "Mot andra människor spelar du online via väntrummet. Bara onlinepartier räknas i din statistik.",
-    "infoSpeichern": "Det sparas inte: om du stänger eller laddar om sidan är partiet slut.",
+    "infoSpeichern": "Det sparas inte: Om du stänger eller laddar om sidan är partiet slut.",
     "infoStatistik": "Det räknas inte i din statistik eller på topplistan. I slutet skickas bara vilken nivå du spelade mot och hur partiet slutade till servern, anonymt och utan ditt konto. Av det blir botarnas statistik.",
     "infoBrowser": "Du spelar ensam med AI-spelare. Partiet körs bara i din webbläsare, du behöver inget konto.",
     "infoTitel": "Så går ett parti mot AI:n till",
@@ -1059,7 +1114,7 @@
       "drei": "3 mot 3",
       "koop": "Samarbete"
     },
-    "widgetText": "Klassiskt, 3 mot 3 eller samarbete: spela ensam mot AI:n, direkt i webbläsaren och utan konto. De här partierna räknas inte i statistiken.",
+    "widgetText": "Klassiskt, 3 mot 3 eller samarbete: Spela ensam mot AI:n, direkt i webbläsaren och utan konto. De här partierna räknas inte i statistiken.",
     "zurAuswahl": "Välj AI-motståndare",
     "koopKarten": "Spelade kort",
     "koopZiel": "Ju färre kort tills alla kulor är hemma, desto bättre.",
@@ -1074,6 +1129,7 @@
     "titel": "Handledningar",
     "einleitung": "Lär dig TAC steg för steg: korta lektioner och uppgifter direkt på brädet. Samma lektioner som i TAC-appen.",
     "hinweis": "Dina framsteg sparas bara i den här webbläsaren.",
+    "hinweisKonto": "Dina framsteg sparas i ditt konto.",
     "uebersicht": "Översikt",
     "weiter": "Nästa",
     "nochmal": "Igen",
@@ -1162,11 +1218,11 @@
       "kurzVorHaus": "Blå står strax före sitt hem",
       "engelDreizehn": "Ängeln låter Blå flytta 13 rutor",
       "kriegerSucht": "Krigaren söker nästa kula",
-      "selbstwurf": "Bara dina: du slår ut dig själv",
+      "selbstwurf": "Bara dina: Du slår ut dig själv",
       "keineKugel": "Ingen kula ute: 5:an passar inte, alltså inget TAC",
       "dreizehnStatt": "Alltså 13:an: kom ut i stället för TAC",
       "letzteKarte": "Röd spelar rundans sista kort",
-      "neueRunde": "Ny runda: korten delas ut",
+      "neueRunde": "Ny runda: Korten delas ut",
       "tacZuSpaet": "Efter given kan draget inte längre ångras",
       "achtLaufen": "Du använder 8:an: flytta 8 rutor",
       "blauWirftAb": "Blå måste kasta ett kort",
@@ -1189,7 +1245,7 @@
       "tacSieg": "Ditt TAC tar tillbaka kulan till ringen",
       "gruenSiegt": "Grön tar sin sista kula hem: seger",
       "rotVerhindert": "Röds TAC stoppar segern och använder 10:an",
-      "tacGesperrt": "Ditt TAC går inte: alla dina kulor är hemma",
+      "tacGesperrt": "Ditt TAC går inte: Alla dina kulor är hemma",
       "nurTac": "Du har bara TAC kvar",
       "rotHeraus": "Röd kommer ut med 13:an",
       "rotLegtAb": "Röd har ingen kula ute och lägger 5:an",
@@ -1212,7 +1268,7 @@
       "b3": "Tittar några drag framåt och planerar därefter.",
       "b10": "Stadig husmanskost: bedömer varje drag efter fasta regler.",
       "b11": "Tänker ett drag framåt.",
-      "b12": "Ser ställningen med en blick: ett neuralt nätverk väljer draget.",
+      "b12": "Ser ställningen med en blick: Ett neuralt nätverk väljer draget.",
       "b13": "Lär sig fortfarande, med halvkunskap: spelar igenom 200 möjliga förlopp.",
       "b14": "Räknar igenom hundratals förlopp innan den drar.",
       "b15": "Prövar varje hand sextiofyra gånger: sökning med neuralt nätverk över 64 möjliga kortfördelningar.",

@@ -52,7 +52,7 @@
     },
     "aboutLorenzHeader": "Hey TAC community,",
     "aboutLorenz1": "I'm Lorenz and over the next few months I will step by step take over Tac-With-Bug from Oskar. I love playing TAC with my friends myself and have recently been working mainly on a TAC app and on computer opponents for the game.",
-    "aboutLorenz2": "During the transition Oskar stays on board: he reviews every change before it goes live. Playing online stays free, and I will treat your accounts and data just as carefully as Oskar has so far.",
+    "aboutLorenz2": "During the transition Oskar stays on board: He reviews every change before it goes live. Playing online stays free, and I will treat your accounts and data just as carefully as Oskar has so far.",
     "aboutLorenz3": "Feel free to send me your suggestions, wishes or remarks and I will see whether they can be implemented.",
     "aboutLorenzSignature": "Best regards, Lorenz",
     "aboutMe3": "By now I can no longer find the time, and Tac-With-Bug needs fresh energy.",
@@ -149,8 +149,11 @@
     "signUpDeadline": "Registration deadline",
     "gameTime": "game",
     "timePerGame": "Time per game",
+    "fluidSize": "Tournament size: {min} to {max} teams. With fewer teams the last rounds are dropped and some teams get a bye in the first round.",
+    "conditionalRound": "only takes place with {n} teams or more",
     "waitingPlayers": "Player waiting list",
     "registrationList": "Registration list ({x} more teams are required)",
+    "registrationListFluid": "Registration list ({x} teams complete, at least {min}, at most {max})",
     "otherTeams": "Other teams",
     "signUpConfirmationText": "Are you sure you have time on game dates? This is very important for everyone's experience!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Quarter finals",
       "bracketList3": "Round of 16",
       "bracketList4": "Round of 16",
-      "bracketTBDTeam": "Not yet known"
+      "bracketTBDTeam": "Not yet known",
+      "bye": "Bye"
     },
     "Toast": {
       "you-created-a-team-summary": "Team created",
@@ -247,10 +251,33 @@
       "tournamentNameInvalid": "The tournament name must have at least 8 characters.",
       "playersAndTeams": "Players and Teams:",
       "4p": "4 players per game",
-      "6p2t": "6 players per game - 2 teams per game",
-      "6p3t": "6 players per game - 3 teams per game",
+      "6p2t": "6 players per game, 2 teams per game",
+      "6p3t": "6 players per game, 3 teams per game",
       "nTeams": "Number of teams:",
       "createPrivateButton": "Create Tournament"
+    },
+    "CreatePublic": {
+      "title": "Tournament name",
+      "titleInvalid": "The tournament name must have 8 to 50 characters.",
+      "nTeams": "Number of teams",
+      "maxTeams": "Maximum number of teams",
+      "minTeams": "Minimum number of teams",
+      "minutesPerGame": "Time per game",
+      "fluidSize": "Flexible tournament size",
+      "fluidSizeHint": "If fewer teams sign up until the deadline, the tournament starts with fewer rounds as long as the minimum is reached. The teams that get a bye in the first round are drawn randomly.",
+      "roundDates": "Game dates",
+      "round": "Round {n}",
+      "preview": "Tournament course",
+      "previewLine": "{teams} teams: {rounds} rounds, byes: {byes}",
+      "createButton": "Create tournament",
+      "createdSummary": "Tournament created",
+      "createdDetail": "Registration opens automatically at the configured start date.",
+      "createError": "The tournament could not be created: {error}",
+      "errors": {
+        "missing": "Please enter all dates and the time per game.",
+        "order": "The dates must follow each other: sign up start, sign up deadline, round 1, round 2, …",
+        "overlap": "A round starts before the time of the previous round is over."
+      }
     },
     "TournamentsTable": {
       "title": "Tournament title",
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Tournament Overview",
       "tournaments": "Tournaments",
-      "createPrivate": "Create private tournament"
+      "createPrivate": "Create private tournament",
+      "createPublic": "Create public tournament"
     },
     "EditPrivate": {
       "notCompleteMessage": "Teams are still missing, the teams are not yet complete or not all participants have confirmed their participation.",
@@ -347,7 +375,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Add Player",
-      "leaveButton": "Leave this chat"
+      "leaveButton": "Leave this chat",
+      "changePicture": "Change picture",
+      "removePicture": "Remove picture",
+      "pictureError": "The picture could not be saved."
     },
     "ChatCreator": {
       "startButton": "Start chat",
@@ -503,7 +534,7 @@
       "narrWaitingFor": "They still have to pass on their cards:",
       "currentlyPlaying": "It is currently playing:",
       "needToSkip": "You have to sit out!",
-      "needToTeufel": "You played the devil - play now for {name}!",
+      "needToTeufel": "You played the devil. Play now for {name}!",
       "yourTurn": "It's your turn!",
       "needToDiscard": "You have to discard a card!",
       "buttonOrOtherCard": "Press the button in the middle or choose another card",
@@ -710,6 +741,7 @@
       "nb": "Norwegian",
       "da": "Danish",
       "tr": "Turkish",
+      "pt": "Portuguese",
       "applicationLanguage": "Application language:",
       "originCountry": "Country for the profile"
     },
@@ -744,6 +776,16 @@
       "light": "Light",
       "dark": "Dark",
       "explanation": "The color scheme determines the appearance of the application. 'Light' displays a bright design, 'Dark' activates dark mode, and 'System' automatically adapts the color scheme to your device settings."
+    },
+    "InGameEmojis": {
+      "header": "Emojis in game",
+      "explanation": "You can send these emojis during a game. The selection applies to this device.",
+      "onlySubscribers": "Supporters can put together their own emojis. Without a subscription, the standard emojis apply.",
+      "toSubscription": "To the subscription",
+      "add": "Add emoji",
+      "remove": "Remove",
+      "moveLeft": "Move left",
+      "reset": "Restore default"
     }
   },
   "Profile": {
@@ -858,7 +900,7 @@
     "Contribute": {
       "header": "Contribute to Tac-With-Bug",
       "localesQ": "How can I correct mistakes in individual languages?",
-      "localesA": "The individual text elements can be managed open source by all players. I am very happy when all languages are improved! You need a GitHub account for this - you can find more information <a target='_blank' rel='noopener noreferrer' href='{link}'>here</a> . If you want other languages, you can just write to me.",
+      "localesA": "The individual text elements can be managed open source by all players. I am very happy when all languages are improved! You need a GitHub account for this. You can find more information <a target='_blank' rel='noopener noreferrer' href='{link}'>here</a> . If you want other languages, you can just write to me.",
       "bugsQ": "What can I do if I discover errors?",
       "bugsA": "Errors will occur from time to time. I apologize. Usually reloading the page solves the problem. If you notice a mistake several times, just write me an email. Please describe the error as precisely as possible and include which browser you are using."
     },
@@ -1028,7 +1070,20 @@
     "bis": "until {datum}",
     "keinVerlauf": "Never reported or blocked.",
     "sperre": "Block",
-    "nachrichtMelden": "Report message"
+    "nachrichtMelden": "Report message",
+    "kontext": {
+      "zeigen": "Show chat history",
+      "ausblenden": "Hide chat history",
+      "laedt": "Loading …",
+      "nichtGefunden": "The message can no longer be found in the chat.",
+      "aeltere": "Older messages not shown",
+      "neuere": "Newer messages not shown",
+      "partie": "Game chat, game {nr}",
+      "warteraum": "Chat in the waiting room",
+      "kanal": "Public chat “{name}”",
+      "privat": "Private chat: {leute}",
+      "gruppe": "Group chat “{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "No players found"
@@ -1038,7 +1093,7 @@
     "beschreibung": "You play with your partner opposite you against two opponents. Partner and opponents are AI.",
     "hinweis": "Strong levels think for up to two seconds.",
     "infoMenschen": "To play against other people, go online via “Find a game”. Only online games count for your statistics.",
-    "infoSpeichern": "It is not saved: if you close or reload the page, the game is over.",
+    "infoSpeichern": "It is not saved: If you close or reload the page, the game is over.",
     "infoStatistik": "It does not count for your statistics or the leaderboard. At the end only the level you played against and how the game ended go to the server, anonymously and without your account. This feeds the statistics of the bots.",
     "infoBrowser": "You play alone with AI players. The game runs only in your browser, no account needed.",
     "infoTitel": "How a game against the AI works",
@@ -1059,7 +1114,7 @@
       "drei": "3 vs 3",
       "koop": "Cooperative"
     },
-    "widgetText": "Classic, 3 vs 3 or cooperative: play alone against the AI, right in your browser and without an account. These games do not count for the statistics.",
+    "widgetText": "Classic, 3 vs 3 or cooperative: Play alone against the AI, right in your browser and without an account. These games do not count for the statistics.",
     "zurAuswahl": "Choose an AI opponent",
     "koopKarten": "Cards played",
     "koopZiel": "The fewer cards until all marbles are home, the better.",
@@ -1074,6 +1129,7 @@
     "titel": "Tutorials",
     "einleitung": "Learn TAC step by step: short lessons and tasks right on the board. The same lessons as in the TAC app.",
     "hinweis": "Your progress is only stored in this browser.",
+    "hinweisKonto": "Your progress is stored in your account.",
     "uebersicht": "Overview",
     "weiter": "Next",
     "nochmal": "Try again",
@@ -1110,7 +1166,7 @@
       "uhrzeigersinn": "Clockwise",
       "rueckwaerts": "The 4: backwards",
       "geben": "Deal",
-      "melden": "Announce: the 13 shows who can get out (1 or 13)",
+      "melden": "Announce: The 13 shows who can get out (1 or 13)",
       "tauschen": "Swap",
       "spielen": "Play",
       "normal": "Number cards",
@@ -1162,16 +1218,16 @@
       "kurzVorHaus": "Blue is just before its home",
       "engelDreizehn": "The Angel makes Blue move 13 fields",
       "kriegerSucht": "The Warrior looks for the next marble",
-      "selbstwurf": "Only yours: you knock yourself out",
-      "keineKugel": "No marble out: the 5 is no use, so no TAC",
+      "selbstwurf": "Only yours: You knock yourself out",
+      "keineKugel": "No marble out: The 5 is no use, so no TAC",
       "dreizehnStatt": "So the 13: come out instead of TAC",
       "letzteKarte": "Red plays the last card of the round",
-      "neueRunde": "New round: cards are dealt",
+      "neueRunde": "New round: Cards are dealt",
       "tacZuSpaet": "After dealing, the move can no longer be undone",
       "achtLaufen": "You use the 8: move 8 fields",
       "blauWirftAb": "Blue has to discard a card",
       "engelDich": "Red's Angel brings your marble out",
-      "tacEngel": "TAC: your marble goes back, Blue comes out",
+      "tacEngel": "TAC: Your marble goes back, Blue comes out",
       "rotTeufel": "Red plays the Devil and sees your cards",
       "rotNimmtTac": "From your hand, Red plays the TAC",
       "duFuerBlau": "Now you play one of Blue's cards",
@@ -1181,7 +1237,7 @@
       "rotTac": "Red: TAC pulls Green out of its home",
       "zweiterTac": "Your TAC cancels Red's TAC: Green is home again",
       "tacKette": "TAC cancels the previous TAC",
-      "kettenEnde": "The chain ends with you: the 13 is yours",
+      "kettenEnde": "The chain ends with you: The 13 is yours",
       "tacAbgelegt": "Red discards its TAC unused",
       "gruenBleibt": "Your TAC uses Green's 5, Green stays home",
       "rotLetzteKugel": "Blue is finished, Red needs just one more marble",
@@ -1189,7 +1245,7 @@
       "tacSieg": "Your TAC brings the marble back onto the track",
       "gruenSiegt": "Green moves its last marble home: victory",
       "rotVerhindert": "Red's TAC prevents the victory and uses the 10",
-      "tacGesperrt": "Your TAC doesn't work: all your marbles are home",
+      "tacGesperrt": "Your TAC doesn't work: All your marbles are home",
       "nurTac": "All you have left is TAC",
       "rotHeraus": "Red comes out with the 13",
       "rotLegtAb": "Red has no marble out and discards the 5",
@@ -1212,7 +1268,7 @@
       "b3": "Looks a few moves into the future and plans accordingly.",
       "b10": "Solid and steady: rates every move by fixed rules.",
       "b11": "Thinks one move ahead.",
-      "b12": "Reads the position at a glance: a neural network picks the move.",
+      "b12": "Reads the position at a glance: A neural network picks the move.",
       "b13": "Still learning, with half-knowledge: plays through 200 possible lines.",
       "b14": "Calculates hundreds of lines before moving.",
       "b15": "Checks every hand sixty-four times: search with a neural network over 64 possible card distributions.",

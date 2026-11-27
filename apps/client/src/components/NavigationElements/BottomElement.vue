@@ -1,50 +1,49 @@
 <template>
   <div class="bottomMenu">
-    <div
-      class="bottomMenuElement clickable"
-      @click="router.push({ name: 'Impressum' })"
+    <router-link
+      class="bottomMenuElement"
+      :to="{ name: 'Impressum' }"
     >
       <i
         class="pi pi-id-card icon"
         aria-hidden="true"
       />
       {{ t('Home.Impressum') }}
-    </div>
-    <div
-      class="bottomMenuElement clickable"
-      @click="router.push({ name: 'Copyright' })"
+    </router-link>
+    <router-link
+      class="bottomMenuElement"
+      :to="{ name: 'Copyright' }"
     >
       <i
         class="pi pi-file icon"
         aria-hidden="true"
       />
       {{ t('Home.Copyright') }}
-    </div>
-    <div
-      class="bottomMenuElement clickable"
-      @click="router.push({ name: 'Datenschutz' })"
+    </router-link>
+    <router-link
+      class="bottomMenuElement"
+      :to="{ name: 'Datenschutz' }"
     >
       <i
         class="pi pi-book icon"
         aria-hidden="true"
       />
       {{ t('Home.Datenschutz') }}
-    </div>
-    <div
-      class="bottomMenuElement clickable"
-      @click="router.push({ name: 'FAQ' })"
+    </router-link>
+    <router-link
+      class="bottomMenuElement"
+      :to="{ name: 'FAQ' }"
     >
       <i
         class="pi pi-book icon"
         aria-hidden="true"
       />
       {{ t('Home.FAQ') }}
-    </div>
+    </router-link>
   </div>
 </template>
 
 <script setup lang="ts">
-import router from '@/router'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -63,6 +62,12 @@ const { t } = useI18n()
 
 .bottomMenuElement {
   margin: 0 10px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.bottomMenuElement:hover {
+  text-decoration: underline;
 }
 
 .bottomMenuElement > .icon {

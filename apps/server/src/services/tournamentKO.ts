@@ -4,15 +4,51 @@ import { ballPlayer } from '@repo/core/game/ballUtils'
 import type { GameForPlay } from '@repo/core/types'
 import type { KoBracket, PrivateTournament, PublicTournament, TournamentDataKO } from '../sharedTypes/typesTournament'
 import { shuffleArray } from '@repo/core/game/cardUtils'
+import { byeMatchOrder, isValidTeamCountKO, numberOfByesKO, numberOfRoundsKO } from '../sharedDefinitions/tournamentKO'
 
 export type CreateTournamentDataKOError = 'N_TEAMS_NOT_VALID_FOR_KO' | 'RANDOM_TEAM_CREATION_ERROR'
 export function createTournamentDataKO(nTeams: number, teamsPerMatch: 2 | 3): Result<TournamentDataKO, CreateTournamentDataKOError> {
-  let nRounds = Math.log(nTeams) / Math.log(teamsPerMatch)
-  if (nRounds % 1 > 10e-10) {
+  if (teamsPerMatch === 3) {
+    return createTournamentDataKOThreeTeams(nTeams)
+  }
+  if (!isValidTeamCountKO(nTeams)) {
     return err('N_TEAMS_NOT_VALID_FOR_KO')
   }
-  nRounds = Math.round(nRounds)
 
+  const nRounds = numberOfRoundsKO(nTeams)
+  const brackets = createEmptyBrackets(nRounds, 2)
+
+  // Draw the teams with a bye: the shuffled teams are placed first on the bye matches, which are spread over the bracket
+  const shuffledTeams = [...new Array(nTeams).keys()]
+  shuffleArray(shuffledTeams)
+  const byeMatches = new Set(byeMatchOrder(brackets[0].length).slice(0, numberOfByesKO(nTeams)))
+  const matchesInDrawOrder = [...byeMatches, ...[...brackets[0].keys()].filter((i) => !byeMatches.has(i))]
+
+  for (const matchIndex of matchesInDrawOrder) {
+    const match = brackets[0][matchIndex]
+    if (byeMatches.has(matchIndex)) {
+      const team = shuffledTeams.pop()
+      if (team === undefined) {
+        return err('RANDOM_TEAM_CREATION_ERROR')
+      }
+      brackets[0][matchIndex] = { teams: [team], score: [0], winner: team, gameID: -1, bye: true }
+      // A bye only exists with at least three rounds, so the next round is never the final round with the match for the third place
+      brackets[1][Math.floor(matchIndex / 2)].teams[matchIndex % 2] = team
+      continue
+    }
+    for (const [teamIndex] of match.teams.entries()) {
+      const team = shuffledTeams.pop()
+      if (team === undefined) {
+        return err('RANDOM_TEAM_CREATION_ERROR')
+      }
+      match.teams[teamIndex] = team
+    }
+  }
+
+  return ok({ brackets: brackets })
+}
+
+function createEmptyBrackets(nRounds: number, teamsPerMatch: 2 | 3): KoBracket[][] {
   const brackets: KoBracket[][] = []
   for (let iRound = 0; iRound < nRounds; iRound++) {
     brackets.push([])
@@ -24,6 +60,17 @@ export function createTournamentDataKO(nTeams: number, teamsPerMatch: 2 | 3): Re
     // Create Bracket for 3rd place game
     brackets[nRounds - 1].push({ score: [0, 0], winner: -1, teams: [-1, -1], gameID: -1 })
   }
+  return brackets
+}
+
+function createTournamentDataKOThreeTeams(nTeams: number): Result<TournamentDataKO, CreateTournamentDataKOError> {
+  let nRounds = Math.log(nTeams) / Math.log(3)
+  if (nRounds % 1 > 10e-10) {
+    return err('N_TEAMS_NOT_VALID_FOR_KO')
+  }
+  nRounds = Math.round(nRounds)
+
+  const brackets = createEmptyBrackets(nRounds, 3)
 
   const shuffledPlayers = [...new Array(nTeams).keys()]
   shuffleArray(shuffledPlayers)

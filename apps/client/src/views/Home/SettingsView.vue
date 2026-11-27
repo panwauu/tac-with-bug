@@ -73,6 +73,12 @@
           <SettingsColorScheme />
         </AccordionContent>
       </AccordionPanel>
+      <AccordionPanel :value="9">
+        <AccordionHeader>{{ t('Settings.InGameEmojis.header') }}</AccordionHeader>
+        <AccordionContent>
+          <SettingsInGameEmojis />
+        </AccordionContent>
+      </AccordionPanel>
     </Accordion>
   </div>
 </template>
@@ -92,6 +98,7 @@ import SettingsEmailNotification from '@/components/SettingsView/SettingsEmailNo
 import LanguagePicker from '@/components/LanguagePicker.vue'
 import SettingsAudioVolume from '@/components/SettingsView/SettingsAudioVolume.vue'
 import SettingsColorScheme from '@/components/SettingsView/SettingsColorScheme.vue'
+import SettingsInGameEmojis from '@/components/SettingsView/SettingsInGameEmojis.vue'
 
 import { ref } from 'vue'
 import { isLoggedIn } from '@/services/useUser'

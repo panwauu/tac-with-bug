@@ -149,8 +149,11 @@
     "signUpDeadline": "Ilmoittautuminen päättyy",
     "gameTime": "Peli",
     "timePerGame": "Aika peliä kohden",
+    "fluidSize": "Turnauksen koko: {min}–{max} joukkuetta. Pienemmällä joukkuemäärällä viimeiset kierrokset jäävät pois ja osa joukkueista pääsee ensimmäisen kierroksen ohi vapaalipulla.",
+    "conditionalRound": "pelataan vain, jos joukkueita on vähintään {n}",
     "waitingPlayers": "Pelaajien jonotuslista",
     "registrationList": "Ilmoittautuneet ({x} joukkuetta puuttuu vielä)",
+    "registrationListFluid": "Ilmoittautumislista ({x} joukkuetta valmiina, vähintään {min}, enintään {max})",
     "otherTeams": "Muut joukkueet",
     "signUpConfirmationText": "Oletko varma, että ehdit pelipäivinä? Se on tosi tärkeää kaikkien kokemukselle!",
     "SignUp": {
@@ -197,7 +200,8 @@
       "bracketList2": "Puolivälierä",
       "bracketList3": "Neljännesvälierä",
       "bracketList4": "Kuudesosavälierä",
-      "bracketTBDTeam": "Ei vielä tiedossa"
+      "bracketTBDTeam": "Ei vielä tiedossa",
+      "bye": "Vapaalippu"
     },
     "Toast": {
       "you-created-a-team-summary": "Joukkue luotu",
@@ -252,6 +256,29 @@
       "nTeams": "Joukkueiden määrä:",
       "createPrivateButton": "Luo turnaus"
     },
+    "CreatePublic": {
+      "title": "Turnauksen nimi",
+      "titleInvalid": "Turnauksen nimessä on oltava 8–50 merkkiä.",
+      "nTeams": "Joukkueiden määrä",
+      "maxTeams": "Joukkueiden enimmäismäärä",
+      "minTeams": "Joukkueiden vähimmäismäärä",
+      "minutesPerGame": "Aika per peli",
+      "fluidSize": "Joustava turnauksen koko",
+      "fluidSizeHint": "Jos määräaikaan mennessä ilmoittautuu vähemmän joukkueita, turnaus alkaa vähemmillä kierroksilla, kunhan vähimmäismäärä täyttyy. Ensimmäisen kierroksen vapaaliput arvotaan.",
+      "roundDates": "Peliajat",
+      "round": "Kierros {n}",
+      "preview": "Turnauksen kulku",
+      "previewLine": "{teams} joukkuetta: {rounds} kierrosta, vapaalippuja: {byes}",
+      "createButton": "Luo turnaus",
+      "createdSummary": "Turnaus luotu",
+      "createdDetail": "Ilmoittautuminen alkaa automaattisesti ilmoittautumisen alkaessa.",
+      "createError": "Turnausta ei voitu luoda: {error}",
+      "errors": {
+        "missing": "Anna kaikki ajankohdat ja aika per peli.",
+        "order": "Ajankohtien on oltava järjestyksessä: ilmoittautumisen alku, määräaika, kierros 1, kierros 2, …",
+        "overlap": "Kierros alkaa ennen kuin edellisen kierroksen peliaika on päättynyt."
+      }
+    },
     "TournamentsTable": {
       "title": "Turnauksen nimi",
       "date": "Alkamispäivä"
@@ -265,7 +292,8 @@
     "Overview": {
       "header": "Turnausten yleiskatsaus",
       "tournaments": "Turnaukset",
-      "createPrivate": "Luo yksityinen turnaus"
+      "createPrivate": "Luo yksityinen turnaus",
+      "createPublic": "Luo julkinen turnaus"
     },
     "EditPrivate": {
       "notCompleteMessage": "Joukkueita puuttuu vielä, joukkueet eivät ole täynnä tai kaikki osallistujat eivät ole vahvistaneet osallistumistaan.",
@@ -347,7 +375,10 @@
     },
     "GroupChatEditor": {
       "addPlayer": "Lisää pelaaja",
-      "leaveButton": "Poistu keskustelusta"
+      "leaveButton": "Poistu keskustelusta",
+      "changePicture": "Vaihda kuva",
+      "removePicture": "Poista kuva",
+      "pictureError": "Kuvaa ei voitu tallentaa."
     },
     "ChatCreator": {
       "startButton": "Aloita keskustelu",
@@ -710,6 +741,7 @@
       "nb": "Norja",
       "da": "Tanska",
       "tr": "Turkki",
+      "pt": "Portugali",
       "applicationLanguage": "Sovelluksen kieli:",
       "originCountry": "Profiilin maa"
     },
@@ -744,6 +776,16 @@
       "light": "Vaalea",
       "dark": "Tumma",
       "explanation": "Värimaailma määrää sovelluksen ulkoasun. ”Vaalea” näyttää vaalean ulkoasun, ”Tumma” ottaa tumman tilan käyttöön ja ”Järjestelmä” mukauttaa värit automaattisesti laitteesi asetuksiin."
+    },
+    "InGameEmojis": {
+      "header": "Emojit pelissä",
+      "explanation": "Voit lähettää näitä emojeja pelin aikana. Valinta koskee tätä laitetta.",
+      "onlySubscribers": "Tukijat voivat koota omat emojinsa. Ilman tilausta käytetään vakioemojeja.",
+      "toSubscription": "Tilaukseen",
+      "add": "Lisää emoji",
+      "remove": "Poista",
+      "moveLeft": "Siirrä vasemmalle",
+      "reset": "Palauta oletus"
     }
   },
   "Profile": {
@@ -1028,7 +1070,20 @@
     "bis": "{datum} asti",
     "keinVerlauf": "Ei koskaan ilmiannettu eikä estetty.",
     "sperre": "Esto",
-    "nachrichtMelden": "Ilmianna viesti"
+    "nachrichtMelden": "Ilmianna viesti",
+    "kontext": {
+      "zeigen": "Näytä keskusteluhistoria",
+      "ausblenden": "Piilota keskusteluhistoria",
+      "laedt": "Ladataan …",
+      "nichtGefunden": "Viestiä ei enää löydy keskustelusta.",
+      "aeltere": "Vanhempia viestejä ei näytetä",
+      "neuere": "Uudempia viestejä ei näytetä",
+      "partie": "Pelin chat, peli {nr}",
+      "warteraum": "Odotushuoneen chat",
+      "kanal": "Julkinen chat ”{name}”",
+      "privat": "Yksityinen chat: {leute}",
+      "gruppe": "Ryhmächat ”{name}”: {leute}"
+    }
   },
   "PlayerSearch": {
     "noResults": "Pelaajia ei löytynyt"
@@ -1074,6 +1129,7 @@
     "titel": "Opetusohjelmat",
     "einleitung": "Opi TAC askel kerrallaan: lyhyitä oppitunteja ja tehtäviä suoraan laudalla. Samat oppitunnit kuin TAC-sovelluksessa.",
     "hinweis": "Edistymisesi tallennetaan vain tähän selaimeen.",
+    "hinweisKonto": "Edistymisesi tallennetaan tilillesi.",
     "uebersicht": "Yleiskatsaus",
     "weiter": "Seuraava",
     "nochmal": "Uudelleen",

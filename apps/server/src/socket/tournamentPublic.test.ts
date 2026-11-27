@@ -2,7 +2,7 @@ import * as mail from '../communicationUtils/email'
 import { getUnauthenticatedSocket, getUsersWithSockets, UserWithSocket } from '../test/handleUserSockets'
 import { getGame } from '../services/game'
 import { getPublicTournamentByID, startTournament, startTournamentRound, checkForceGameEnd, updateTournamentFromGame } from '../services/tournamentsPublic'
-import { startSignUpOnCondition, endSignUpOnCondition } from '../services/tournamentsRegister'
+import { startSignUpOnCondition, endSignUpOnCondition, endSignupIfComplete } from '../services/tournamentsRegister'
 import { getDifferentName } from '../services/SweetNameGenerator'
 import type { PublicTournament } from '../sharedTypes/typesTournament'
 import { closeSockets } from '../test/handleSocket'
@@ -617,6 +617,133 @@ describe('TournamentPublic test suite via Socket.io', () => {
       expect(tournament.status).toBe('ended')
       expect(tournament.data.brackets[1][0].score).toStrictEqual([8, 7])
       expect(tournament.data.brackets[1][0].winner).toBe(tournament.data.brackets[1][0].teams[0])
+    })
+  })
+
+  describe('Tournament with a fluid size', () => {
+    let usersWithSockets: UserWithSocket[]
+    const roundDates = [1, 2, 3, 4].map((h) => new Date(Date.now() + h * 60 * 60 * 1000).toISOString())
+
+    beforeAll(async () => {
+      usersWithSockets = await getUsersWithSockets({ n: 1 })
+    })
+
+    afterAll(async () => {
+      await closeSockets(usersWithSockets)
+    })
+
+    async function createFluidTournament(): Promise<number> {
+      const apiRes = await testAgent
+        .post('/gameApi/createTournament')
+        .set({ Authorization: usersWithSockets[0].authHeader })
+        .send({
+          title: 'FluidTournament',
+          begin: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+          deadline: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+          creationDates: roundDates,
+          secondsPerGame: 3000,
+          nTeams: 16,
+          minTeams: 4,
+        })
+      expect(apiRes.statusCode).toBe(200)
+      expect(apiRes.body.nTeams).toBe(16)
+      expect(apiRes.body.minTeams).toBe(4)
+      expect(apiRes.body.data.brackets).toHaveLength(4)
+      await startSignUpOnCondition(testServer.pgPool)
+      return apiRes.body.id
+    }
+
+    // Registers complete teams of the test users 1 to 2 * nTeams
+    async function registerCompleteTeams(tournamentID: number, nTeams: number) {
+      for (let i = 0; i < nTeams; i++) {
+        await testServer.pgPool.query('INSERT INTO tournaments_register (tournamentid, team_name, userid, activated) VALUES ($1, $2, $3, true), ($1, $2, $4, true);', [
+          tournamentID,
+          `FluidTeam${i}`,
+          2 * i + 1,
+          2 * i + 2,
+        ])
+      }
+    }
+
+    async function reachDeadline(tournamentID: number) {
+      await testServer.pgPool.query("UPDATE tournaments SET signup_deadline = current_timestamp - interval '1 minute' WHERE id = $1;", [tournamentID])
+      await endSignUpOnCondition(testServer.pgPool)
+      const tournament = await getPublicTournamentByID(testServer.pgPool, tournamentID)
+      if (tournament.isErr()) throw new Error(tournament.error)
+      return tournament.value
+    }
+
+    test('Sign up fails with less than the minimum of teams', async () => {
+      const tournamentID = await createFluidTournament()
+      await registerCompleteTeams(tournamentID, 3)
+      // An incomplete team does not count
+      await testServer.pgPool.query(
+        "INSERT INTO tournaments_register (tournamentid, team_name, userid, activated) VALUES ($1, 'Incomplete', 7, true), ($1, 'Incomplete', 8, false);",
+        [tournamentID]
+      )
+
+      const tournament = await reachDeadline(tournamentID)
+      expect(tournament.status).toBe('signUpFailed')
+    })
+
+    test('Tournament starts at the deadline with fewer teams, fewer rounds and byes', async () => {
+      const spyReminder = vitest.spyOn(mail, 'sendTournamentReminder')
+      const tournamentID = await createFluidTournament()
+      await registerCompleteTeams(tournamentID, 5)
+
+      let tournament = await reachDeadline(tournamentID)
+      expect(tournament.status).toBe('signUpEnded')
+      expect(tournament.teams).toHaveLength(5)
+      expect(tournament.registerTeams).toHaveLength(0)
+      expect(spyReminder).toHaveBeenCalledTimes(10)
+      spyReminder.mockRestore()
+
+      // 5 teams: 3 rounds in a bracket for 8 teams, the date of the 4th round is dropped
+      expect(tournament.data.brackets).toHaveLength(3)
+      expect(tournament.creationDates.map((d) => new Date(d).toISOString())).toStrictEqual(roundDates.slice(0, 3))
+      const byes = tournament.data.brackets[0].filter((m) => m.bye === true)
+      expect(byes).toHaveLength(3)
+      expect(tournament.data.brackets[1].flatMap((m) => m.teams).filter((t) => t !== -1)).toHaveLength(3)
+
+      // Only the one real match of the first round gets a game
+      await testServer.pgPool.query("UPDATE tournaments SET creation_dates[1] = current_timestamp - interval '1 minute' WHERE id = $1;", [tournamentID])
+      await startTournament(testServer.pgPool)
+      const started = await getPublicTournamentByID(testServer.pgPool, tournamentID)
+      if (started.isErr()) throw new Error(started.error)
+      tournament = started.value
+      expect(tournament.status).toBe('running')
+      expect(tournament.data.brackets[0].filter((m) => m.gameID !== -1)).toHaveLength(1)
+      expect(tournament.data.brackets[0].filter((m) => m.bye === true).every((m) => m.gameID === -1)).toBe(true)
+
+      const dbRes = await testServer.pgPool.query('SELECT count(*)::int AS n FROM games WHERE public_tournament_id = $1;', [tournamentID])
+      expect(dbRes.rows[0].n).toBe(1)
+    })
+
+    test('Sign up ends immediately when the maximum is reached', async () => {
+      const apiRes = await testAgent
+        .post('/gameApi/createTournament')
+        .set({ Authorization: usersWithSockets[0].authHeader })
+        .send({
+          title: 'FluidTournamentFull',
+          begin: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+          deadline: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+          creationDates: roundDates.slice(0, 3),
+          secondsPerGame: 3000,
+          nTeams: 6,
+          minTeams: 4,
+        })
+      expect(apiRes.statusCode).toBe(200)
+      const tournamentID = apiRes.body.id
+      await startSignUpOnCondition(testServer.pgPool)
+      await registerCompleteTeams(tournamentID, 6)
+
+      const before = await getPublicTournamentByID(testServer.pgPool, tournamentID)
+      if (before.isErr()) throw new Error(before.error)
+      const tournament = await endSignupIfComplete(testServer.pgPool, before.value)
+      expect(tournament.status).toBe('signUpEnded')
+      expect(tournament.teams).toHaveLength(6)
+      expect(tournament.data.brackets).toHaveLength(3)
+      expect(tournament.data.brackets[0].filter((m) => m.bye === true)).toHaveLength(2)
     })
   })
 })

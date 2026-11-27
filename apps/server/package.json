@@ -31,8 +31,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@dicebear/core": "^10.7.0",
-    "@dicebear/styles": "^10.6.0",
+    "@dicebear/core": "^11.0.0",
+    "@dicebear/styles": "^11.0.0",
     "@repo/core": "*",
     "axios": "^1.8.4",
     "bcrypt": "^6.0.0",
