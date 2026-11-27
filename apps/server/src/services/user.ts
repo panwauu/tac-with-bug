@@ -8,6 +8,7 @@ import { expectOneChangeInDatabase } from '../dbUtils/dbHelpers'
 import { deletePlayerFromTournament } from './tournamentsPrivate'
 import { sendPasswordReset } from '../communicationUtils/email'
 import logger from '../helpers/logger'
+import { passwordResetValidityInSeconds } from '../sharedDefinitions/dataRetention'
 
 export function resolveUserIdentifier(identifier: UserIdentifier, insertionIndex?: number): { key: string; sql: string; value: number | string } {
   if (identifier.id != null) {
@@ -93,7 +94,7 @@ export async function applyPasswordReset(pgPool: pg.Pool, token: string, passwor
   if (request == null) return err('CHANGE_REQUEST_NOT_FOUND')
   if (!request.valid) return err('CHANGE_REQUEST_NOT_VALID')
 
-  if (request.age_in_s > 15 * 60) {
+  if (request.age_in_s > passwordResetValidityInSeconds) {
     await pgPool.query('UPDATE password_reset_requests SET valid=FALSE WHERE token=$1;', [token])
     return err('CHANGE_REQUEST_NOT_VALID')
   }

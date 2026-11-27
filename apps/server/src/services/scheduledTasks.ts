@@ -12,6 +12,7 @@ import { updateSubscriptions } from '../paypal/paypal'
 import { deleteOldChatMessages, notifyUsersOfMissedMessages } from './chat'
 import { deleteOldChannelMessages } from './channel'
 import { messageRetention } from '../sharedDefinitions/chat'
+import { deleteOldLogs, deleteOldModerationData, deleteOldPasswordResetRequests } from './dataRetention'
 import { expireWaitingGames } from '../socket/waiting'
 import { refreshPlatformStatisticCaches } from './platformStatistic'
 
@@ -32,6 +33,7 @@ export async function registerJobs(sqlClient: pg.Pool) {
     jobs.push(
       schedule.scheduleJob({ rule: '0 30 3 * * *', tz: 'Europe/Berlin' }, async () => {
         await deleteOldMessages(sqlClient)
+        await deleteOldPersonalData(sqlClient)
       })
     )
     jobs.push(
@@ -104,6 +106,18 @@ async function deleteOldMessages(sqlClient: pg.Pool) {
     logger.info(`Deleted messages older than ${messageRetention}: ${nChatMessages} chat messages, ${nChannelMessages} channel messages`)
   } catch (err) {
     logger.error('Could not delete the old messages', err)
+  }
+}
+
+// The retention periods are stated in the privacy policy (sharedDefinitions/dataRetention.ts)
+async function deleteOldPersonalData(sqlClient: pg.Pool) {
+  try {
+    const nLogs = await deleteOldLogs(sqlClient)
+    const nResetRequests = await deleteOldPasswordResetRequests(sqlClient)
+    const moderation = await deleteOldModerationData(sqlClient)
+    logger.info(`Deleted old data: ${nLogs} log entries, ${nResetRequests} password reset requests, ${moderation.blocks} blocks, ${moderation.reports} reports`)
+  } catch (err) {
+    logger.error('Could not delete the old data', err)
   }
 }
 
