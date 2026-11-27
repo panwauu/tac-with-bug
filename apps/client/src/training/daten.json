@@ -313,7 +313,7 @@
     "tr": "Beş bölge"
    },
    "text": {
-    "de": "Das Brett hat fünf wichtige Bereiche: Das Vorfeld (wo deine Kugeln starten), das Startfeld (Einstiegspunkt), den Spielkreis (64 Felder rund ums Brett), das Haus (dein Ziel) und die Kartenablage in der Mitte.",
+    "de": "Das Brett hat fünf wichtige Bereiche: das Vorfeld (wo deine Kugeln starten), das Startfeld (Einstiegspunkt), den Spielkreis (64 Felder rund ums Brett), das Haus (dein Ziel) und die Kartenablage in der Mitte.",
     "en": "The board has five key areas: the starting area (where your marbles start), the start field (entry point), the track (64 fields around the board), the home (your goal) and the discard pile in the middle.",
     "ru": "На поле пять важных зон: стартовая зона (откуда начинают шары), стартовое поле (точка входа), игровой круг (64 клетки вокруг поля), дом (твоя цель) и стопка сброса в центре.",
     "fr": "Le plateau a cinq zones importantes : l'aire de départ (où tes billes commencent), la case de départ (point d'entrée), le circuit (64 cases autour du plateau), la maison (ton but) et la défausse au centre.",
@@ -438,7 +438,7 @@
    },
    "text": {
     "de": "Das Startfeld ist dein Tor zum Spielkreis. Nur mit einer 1 oder 13 kannst du eine Kugel vom Vorfeld hierher setzen. Wichtig: Das Startfeld ist gleichzeitig das letzte Feld vor deinem Haus, du musst es also auf dem Rückweg wieder passieren, um ins Haus einzuziehen.",
-    "en": "The start field is your gateway to the track. Only with a 1 or 13 can you place a marble from the starting area here. Important: the start field is also the last field before your home. So you must pass it again on the way back to enter your home.",
+    "en": "The start field is your gateway to the track. Only with a 1 or 13 can you place a marble from the starting area here. Important: The start field is also the last field before your home. So you must pass it again on the way back to enter your home.",
     "ru": "Стартовое поле, твои ворота на круг. Только картой 1 или 13 можно поставить сюда шар из стартовой зоны. Важно: стартовое поле, это и последняя клетка перед домом. Поэтому на обратном пути нужно снова пройти его, чтобы войти в дом.",
     "fr": "La case de départ est ta porte vers le circuit. Ce n'est qu'avec un 1 ou un 13 que tu peux y placer une bille depuis l'aire de départ. Important : la case de départ est aussi la dernière case avant ta maison. Tu dois donc la repasser au retour pour entrer dans la maison.",
     "es": "La casilla de salida es tu puerta al circuito. Solo con un 1 o un 13 puedes colocar aquí una canica desde la antesala. Importante: la casilla de salida es también la última casilla antes de tu casa. Por eso debes volver a pasarla al regresar para entrar en casa.",
@@ -448,7 +448,7 @@
     "fi": "Aloitusruutu on porttisi kehälle. Vain 1:llä tai 13:lla voit siirtää kuulan pesästä tänne. Tärkeää: aloitusruutu on myös viimeinen ruutu ennen kotiasi. Sinun on siis kuljettava sen kautta palatessasi kotiin.",
     "nb": "Startfeltet er porten din til ringen. Bare med en 1 eller 13 kan du plassere en kule fra boet hit. Viktig: Startfeltet er også siste felt før hjemmet ditt. Du må altså passere det igjen på vei tilbake for å komme inn i hjemmet.",
     "da": "Startfeltet er din port til ringen. Kun med en 1 eller 13 kan du placere en kugle fra boet hertil. Vigtigt: Startfeltet er også det sidste felt før dit hjemmet. Du skal altså passere det igen på vejen tilbage for at komme ind i hjemmet.",
-    "tr": "Çıkış alanı, halkaya açılan kapındır. Bir bilyeyi yuvadan buraya yalnızca 1 ya da 13 ile koyabilirsin. Önemli: çıkış alanı aynı zamanda evinden önceki son alandır, eve girmek için dönüş yolunda tekrar buradan geçmen gerekir."
+    "tr": "Çıkış alanı, halkaya açılan kapındır. Bir bilyeyi yuvadan buraya yalnızca 1 ya da 13 ile koyabilirsin. Önemli: Çıkış alanı aynı zamanda evinden önceki son alandır, eve girmek için dönüş yolunda tekrar buradan geçmen gerekir."
    },
    "zusammenfassung": {
     "de": "Einstieg aufs Brett und letztes Feld vor dem Haus.",
@@ -748,7 +748,7 @@
    },
    "text": {
     "de": "Kugeln bewegen sich immer im Uhrzeigersinn über den Spielkreis. Es gibt genau eine Ausnahme: Die Karte 4 zieht rückwärts, aber dazu kommen wir später. Auch die Spielreihenfolge läuft im Uhrzeigersinn.",
-    "en": "Marbles always move clockwise around the track. There is exactly one exception: the 4 moves backward, but more on that later. The turn order also runs clockwise.",
+    "en": "Marbles always move clockwise around the track. There is exactly one exception: The 4 moves backward, but more on that later. The turn order also runs clockwise.",
     "ru": "Шары всегда движутся по часовой стрелке по кругу. Есть ровно одно исключение: карта 4 ходит назад, но об этом позже. Порядок ходов тоже идёт по часовой стрелке.",
     "fr": "Les billes se déplacent toujours dans le sens horaire sur le circuit. Il y a exactement une exception : le 4 recule, mais on y reviendra. L'ordre de jeu va aussi dans le sens horaire.",
     "es": "Las canicas se mueven siempre en sentido horario por el circuito. Hay exactamente una excepción: el 4 va hacia atrás, pero eso lo vemos luego. El orden de juego también va en sentido horario.",
@@ -810,16 +810,16 @@
    },
    "text": {
     "de": "Der Weg einer Kugel beginnt im Vorfeld. Mit einer 1 oder 13 bringst du sie auf dein Startfeld und damit ins Spiel. Sobald sie eine vollständige Runde zurückgelegt und ihr eigenes Startfeld passiert hat, kann sie ins Haus einziehen.\nWichtig: Jede Kugel muss ihr Startfeld mindestens einmal verlassen haben, bevor sie ins Haus ziehen darf.",
-    "en": "A marble’s journey begins in the starting area. With a 1 or 13 you move it onto your start field and into play. Once it has completed a full lap and passed its own start field, it can move into the home.\nImportant: every marble must have left its start field at least once before it may move into the home.",
+    "en": "A marble’s journey begins in the starting area. With a 1 or 13 you move it onto your start field and into play. Once it has completed a full lap and passed its own start field, it can move into the home.\nImportant: Every marble must have left its start field at least once before it may move into the home.",
     "ru": "Путь шара начинается в стартовой зоне. Картой 1 или 13 ты выставляешь его на своё стартовое поле и тем самым вводишь в игру. Как только он пройдёт полный круг и минует своё стартовое поле, он может войти в дом.\nВажно: каждый шар должен хотя бы раз покинуть своё стартовое поле, прежде чем ему можно войти в дом.",
     "fr": "Le parcours d’une bille commence dans l’aire de départ. Avec un 1 ou un 13, tu la poses sur ta case de départ et la mets ainsi en jeu. Dès qu’elle a fait un tour complet et dépassé sa propre case de départ, elle peut entrer à la maison.\nImportant : chaque bille doit avoir quitté sa case de départ au moins une fois avant de pouvoir entrer à la maison.",
     "es": "El recorrido de una canica empieza en la antesala. Con un 1 o un 13 la llevas a tu casilla de salida y así entra en juego. En cuanto ha dado una vuelta completa y ha pasado su propia casilla de salida, puede entrar en casa.\nImportante: cada canica debe haber abandonado su casilla de salida al menos una vez antes de poder entrar en casa.",
     "it": "Il viaggio di una biglia inizia nell’area di partenza. Con un 1 o un 13 la porti sulla tua casella di partenza e quindi in gioco. Appena ha compiuto un giro completo e superato la propria casella di partenza, può entrare in casa.\nImportante: ogni biglia deve aver lasciato la propria casella di partenza almeno una volta prima di poter entrare in casa.",
     "hi": "एक कंचे का सफ़र प्रारंभिक क्षेत्र से शुरू होता है। 1 या 13 से आप उसे अपने प्रारंभ खाने पर रखकर खेल में लाते हैं। जैसे ही वह पूरा एक चक्कर लगाकर अपने प्रारंभ खाने को पार कर लेता है, वह घर में प्रवेश कर सकता है।\nज़रूरी: हर कंचे को घर में जाने से पहले कम से कम एक बार अपना प्रारंभ खाना छोड़ चुका होना चाहिए।",
-    "sv": "En kulas väg börjar i boet. Med en 1:a eller 13:a för du den till din startruta och därmed in i spelet. Så snart den har gått ett helt varv och passerat sin egen startruta kan den gå in i hemmet.\nViktigt: varje kula måste ha lämnat sin startruta minst en gång innan den får gå in i hemmet.",
+    "sv": "En kulas väg börjar i boet. Med en 1:a eller 13:a för du den till din startruta och därmed in i spelet. Så snart den har gått ett helt varv och passerat sin egen startruta kan den gå in i hemmet.\nViktigt: Varje kula måste ha lämnat sin startruta minst en gång innan den får gå in i hemmet.",
     "fi": "Kuulan polku alkaa pesästä. Kortilla 1 tai 13 tuot sen aloitusruudullesi ja samalla peliin. Kun se on kiertänyt täyden kierroksen ja ohittanut oman aloitusruutunsa, se voi siirtyä kotiin.\nTärkeää: jokaisen kuulan on täytynyt poistua aloitusruudultaan vähintään kerran ennen kuin se saa siirtyä kotiin.",
-    "nb": "En kules vei begynner i boet. Med en 1 eller 13 setter du den på startfeltet ditt og dermed i spill. Så snart den har gått en hel runde og passert sitt eget startfelt, kan den gå inn i hjemmet.\nViktig: hver kule må ha forlatt startfeltet sitt minst én gang før den kan gå inn i hjemmet.",
-    "da": "En kugles vej begynder i boet. Med en 1 eller 13 sætter du den på dit startfelt og dermed i spil. Så snart den har gået en hel runde og passeret sit eget startfelt, kan den gå ind i hjemmet.\nVigtigt: hver kugle skal have forladt sit startfelt mindst én gang, før den må gå ind i hjemmet.",
+    "nb": "En kules vei begynner i boet. Med en 1 eller 13 setter du den på startfeltet ditt og dermed i spill. Så snart den har gått en hel runde og passert sitt eget startfelt, kan den gå inn i hjemmet.\nViktig: Hver kule må ha forlatt startfeltet sitt minst én gang før den kan gå inn i hjemmet.",
+    "da": "En kugles vej begynder i boet. Med en 1 eller 13 sætter du den på dit startfelt og dermed i spil. Så snart den har gået en hel runde og passeret sit eget startfelt, kan den gå ind i hjemmet.\nVigtigt: Hver kugle skal have forladt sit startfelt mindst én gang, før den må gå ind i hjemmet.",
     "tr": "Bir bilyenin yolu yuvada başlar. 1 ya da 13 ile onu kendi çıkış alanına koyar ve böylece oyuna sokarsın. Tam bir tur atıp kendi çıkış alanını geçtiği anda eve girebilir.\nÖnemli: Her bilye eve girmeden önce kendi çıkış alanını en az bir kez terk etmiş olmalı."
    },
    "zusammenfassung": {
@@ -937,18 +937,18 @@
     "tr": "Normal · Özel · Usta"
    },
    "text": {
-    "de": "Es gibt drei Kartengruppen:\n• Normalkarten (2, 3, 5, 6, 9, 10, 12): einfach vorwärts ziehen.\n• Sonderkarten (1, 4, 7, 8, 13, Trickser, TAC): mit Spezialfunktionen.\n• Meisterkarten (Engel, Teufel, Krieger, Narr): von jeder gibt es nur eine im Spiel.",
-    "en": "There are three card groups:\n• Normal cards (2, 3, 5, 6, 9, 10, 12): simply move forward.\n• Special cards (1, 4, 7, 8, 13, Trickster, TAC): with special functions.\n• Master cards (Angel, Devil, Warrior, Fool): there is only one of each in the game.",
+    "de": "Es gibt drei Kartengruppen:\n• Normalkarten (2, 3, 5, 6, 9, 10, 12): einfach vorwärts ziehen.\n• Sonderkarten (1, 4, 7, 8, 13, Trickser, TAC): mit Spezialfunktionen.\n• Meisterkarten (Engel, Teufel, Krieger, Narr): Von jeder gibt es nur eine im Spiel.",
+    "en": "There are three card groups:\n• Normal cards (2, 3, 5, 6, 9, 10, 12): simply move forward.\n• Special cards (1, 4, 7, 8, 13, Trickster, TAC): with special functions.\n• Master cards (Angel, Devil, Warrior, Fool): There is only one of each in the game.",
     "ru": "Есть три группы карт:\n• Обычные карты (2, 3, 5, 6, 9, 10, 12): просто ход вперёд.\n• Особые карты (1, 4, 7, 8, 13, Хитрец, TAC): с особыми функциями.\n• Карты мастера (Ангел, Дьявол, Воин, Шут): каждой в игре только одна.",
     "fr": "Il y a trois groupes de cartes :\n• Cartes normales (2, 3, 5, 6, 9, 10, 12) : avancer, tout simplement.\n• Cartes spéciales (1, 4, 7, 8, 13, Filou, TAC) : avec des fonctions spéciales.\n• Cartes maîtresses (Ange, Diable, Guerrier, Fou) : chacune n'existe qu'une fois dans le jeu.",
     "es": "Hay tres grupos de cartas:\n• Cartas normales (2, 3, 5, 6, 9, 10, 12): simplemente avanzar.\n• Cartas especiales (1, 4, 7, 8, 13, Pícaro, TAC): con funciones especiales.\n• Cartas maestras (Ángel, Diablo, Guerrero, Loco): solo hay una de cada en el juego.",
     "it": "Ci sono tre gruppi di carte:\n• Carte normali (2, 3, 5, 6, 9, 10, 12): semplicemente avanti.\n• Carte speciali (1, 4, 7, 8, 13, Imbroglione, TAC): con funzioni speciali.\n• Carte maestre (Angelo, Diavolo, Guerriero, Matto): ce n'è solo una di ciascuna nel gioco.",
     "hi": "कार्डों के तीन समूह हैं:\n• सामान्य कार्ड (2, 3, 5, 6, 9, 10, 12): बस आगे चलें।\n• विशेष कार्ड (1, 4, 7, 8, 13, चालबाज़, TAC): विशेष कार्यों के साथ।\n• मास्टर कार्ड (फ़रिश्ता, शैतान, योद्धा, विदूषक): खेल में हर एक का केवल एक कार्ड है।",
-    "sv": "Det finns tre kortgrupper:\n• Vanliga kort (2, 3, 5, 6, 9, 10, 12): flytta helt enkelt framåt.\n• Specialkort (1, 4, 7, 8, 13, Lurifax, TAC): med specialfunktioner.\n• Mästarkort (Ängel, Djävul, Krigare, Narr): det finns bara ett av varje i spelet.",
+    "sv": "Det finns tre kortgrupper:\n• Vanliga kort (2, 3, 5, 6, 9, 10, 12): flytta helt enkelt framåt.\n• Specialkort (1, 4, 7, 8, 13, Lurifax, TAC): med specialfunktioner.\n• Mästarkort (Ängel, Djävul, Krigare, Narr): Det finns bara ett av varje i spelet.",
     "fi": "Kortteja on kolmea ryhmää:\n• Tavalliset kortit (2, 3, 5, 6, 9, 10, 12): liiku vain eteenpäin.\n• Erikoiskortit (1, 4, 7, 8, 13, Huijari, TAC): erikoistoiminnoilla.\n• Mestarikortit (Enkeli, Piru, Soturi, Narri): kutakin on pelissä vain yksi.",
-    "nb": "Det finnes tre kortgrupper:\n• Vanlige kort (2, 3, 5, 6, 9, 10, 12): bare flytt fremover.\n• Spesialkort (1, 4, 7, 8, 13, Luring, TAC): med spesialfunksjoner.\n• Mesterkort (Engel, Djevel, Kriger, Narr): det finnes bare ett av hvert i spillet.",
-    "da": "Der er tre kortgrupper:\n• Normale kort (2, 3, 5, 6, 9, 10, 12): ryk bare fremad.\n• Specialkort (1, 4, 7, 8, 13, Luring, TAC): med specialfunktioner.\n• Mesterkort (Engel, Djævel, Kriger, Nar): der er kun ét af hvert i spillet.",
-    "tr": "Üç kart grubu vardır:\n• Normal kartlar (2, 3, 5, 6, 9, 10, 12): sadece ileri git.\n• Özel kartlar (1, 4, 7, 8, 13, Düzenbaz, TAC): özel işlevlerle.\n• Usta kartları (Melek, Şeytan, Savaşçı, Soytarı): oyunda her birinden yalnızca bir tane var."
+    "nb": "Det finnes tre kortgrupper:\n• Vanlige kort (2, 3, 5, 6, 9, 10, 12): bare flytt fremover.\n• Spesialkort (1, 4, 7, 8, 13, Luring, TAC): med spesialfunksjoner.\n• Mesterkort (Engel, Djevel, Kriger, Narr): Det finnes bare ett av hvert i spillet.",
+    "da": "Der er tre kortgrupper:\n• Normale kort (2, 3, 5, 6, 9, 10, 12): ryk bare fremad.\n• Specialkort (1, 4, 7, 8, 13, Luring, TAC): med specialfunktioner.\n• Mesterkort (Engel, Djævel, Kriger, Nar): Der er kun ét af hvert i spillet.",
+    "tr": "Üç kart grubu vardır:\n• Normal kartlar (2, 3, 5, 6, 9, 10, 12): sadece ileri git.\n• Özel kartlar (1, 4, 7, 8, 13, Düzenbaz, TAC): özel işlevlerle.\n• Usta kartları (Melek, Şeytan, Savaşçı, Soytarı): Oyunda her birinden yalnızca bir tane var."
    },
    "zusammenfassung": {
     "de": "3 Gruppen: Normal, Sonder, Meister.",
@@ -1318,17 +1318,17 @@
    },
    "text": {
     "de": "Du hast zwei Möglichkeiten, einen Zug auszuführen: Tippe auf den Aktions-Button unten auf dem Bildschirm oder tippe direkt auf die leuchtende Projektion auf dem Spielfeld. Beides macht dasselbe!",
-    "en": "You have two ways to make a move: tap the action button at the bottom of the screen, or tap directly on the glowing projection on the board. Both do the same thing!",
+    "en": "You have two ways to make a move: Tap the action button at the bottom of the screen, or tap directly on the glowing projection on the board. Both do the same thing!",
     "ru": "Сделать ход можно двумя способами: нажми кнопку действия внизу экрана или нажми прямо на светящуюся проекцию на поле. И то, и другое делает одно и то же!",
     "fr": "Tu as deux façons d'effectuer un coup : appuie sur le bouton d'action en bas de l'écran, ou appuie directement sur la projection lumineuse sur le plateau. Les deux font la même chose !",
     "es": "Tienes dos formas de realizar un movimiento: toca el botón de acción en la parte inferior de la pantalla o toca directamente la proyección brillante en el tablero. ¡Ambas hacen lo mismo!",
     "it": "Hai due modi per eseguire una mossa: tocca il pulsante d'azione in basso sullo schermo oppure tocca direttamente la proiezione luminosa sul tabellone. Entrambi fanno la stessa cosa!",
     "hi": "चाल चलने के दो तरीके हैं: स्क्रीन के नीचे ऐक्शन बटन दबाएँ, या बोर्ड पर चमकती प्रोजेक्शन पर सीधे टैप करें। दोनों एक ही काम करते हैं!",
-    "sv": "Du har två sätt att göra ett drag: tryck på åtgärdsknappen längst ned på skärmen eller tryck direkt på den lysande projektionen på spelplanen. Båda gör samma sak!",
+    "sv": "Du har två sätt att göra ett drag: Tryck på åtgärdsknappen längst ned på skärmen eller tryck direkt på den lysande projektionen på spelplanen. Båda gör samma sak!",
     "fi": "Sinulla on kaksi tapaa tehdä siirto: napauta toimintopainiketta näytön alareunassa tai napauta suoraan pelilaudalla hehkuvaa projektiota. Molemmat tekevät saman asian!",
-    "nb": "Du har to måter å gjøre et trekk på: trykk på handlingsknappen nederst på skjermen, eller trykk direkte på den lysende projeksjonen på spillebrettet. Begge gjør det samme!",
-    "da": "Du har to måder at lave et træk på: tryk på handlingsknappen nederst på skærmen, eller tryk direkte på den lysende projektion på spillebrættet. Begge gør det samme!",
-    "tr": "Bir hamleyi iki şekilde yapabilirsin: ekranın altındaki aksiyon düğmesine dokun ya da doğrudan tahtadaki parlayan projeksiyona dokun. İkisi de aynı şeyi yapar!"
+    "nb": "Du har to måter å gjøre et trekk på: Trykk på handlingsknappen nederst på skjermen, eller trykk direkte på den lysende projeksjonen på spillebrettet. Begge gjør det samme!",
+    "da": "Du har to måder at lave et træk på: Tryk på handlingsknappen nederst på skærmen, eller tryk direkte på den lysende projektion på spillebrættet. Begge gør det samme!",
+    "tr": "Bir hamleyi iki şekilde yapabilirsin: Ekranın altındaki aksiyon düğmesine dokun ya da doğrudan tahtadaki parlayan projeksiyona dokun. İkisi de aynı şeyi yapar!"
    },
    "zusammenfassung": {
     "de": "Aktions-Button oder Projektion antippen.",
@@ -2278,17 +2278,17 @@
    },
    "text": {
     "de": "Hole mit der 1 oder 13 eine Kugel heraus, dann spiele die 4 rückwärts: Deine Kugel steht fast am Haus! Statt 60+ Felder vorwärts nur 4 zurück. Achtung: Eine frisch eingesetzte Kugel darf nicht direkt mit der 4 rückwärts ins Haus, sie muss das Startfeld erst verlassen haben.",
-    "en": "Bring a marble out with the 1 or 13, then play the 4 backward: your marble is almost at the home! Instead of 60+ fields forward, just 4 back. Note: a freshly placed marble may not go straight into the home with a backward 4; it must have left the start field first.",
+    "en": "Bring a marble out with the 1 or 13, then play the 4 backward: Your marble is almost at the home! Instead of 60+ fields forward, just 4 back. Note: A freshly placed marble may not go straight into the home with a backward 4; it must have left the start field first.",
     "ru": "Выведи шарик единицей или 13, затем сыграй 4 назад: твой шарик почти у дома! Вместо 60+ полей вперёд, всего 4 назад. Внимание: только что выставленный шарик нельзя сразу завести в дом четвёркой назад, сначала он должен покинуть стартовое поле.",
     "fr": "Fais sortir une bille avec le 1 ou le 13, puis joue le 4 en arrière : ta bille est presque à la maison ! Au lieu de 60 cases et plus en avant, seulement 4 en arrière. Attention : une bille tout juste sortie ne peut pas entrer directement dans la maison avec un 4 en arrière ; elle doit d'abord avoir quitté la case de départ.",
     "es": "Saca una bola con el 1 o el 13 y luego juega el 4 hacia atrás: ¡tu bola está casi en la casa! En lugar de más de 60 casillas hacia adelante, solo 4 hacia atrás. Atención: una bola recién colocada no puede entrar directamente en la casa con un 4 hacia atrás; primero debe haber dejado la casilla de salida.",
     "it": "Fai uscire una biglia con l'1 o il 13, poi gioca il 4 all'indietro: la tua biglia è quasi alla casa! Invece di oltre 60 caselle in avanti, solo 4 indietro. Attenzione: una biglia appena messa in gioco non può entrare direttamente nella casa con un 4 all'indietro; deve prima aver lasciato la casella di partenza.",
     "hi": "1 या 13 से गोली बाहर निकालें, फिर 4 पीछे खेलें: आपकी गोली लगभग घर के पास! 60+ खाने आगे के बजाय सिर्फ़ 4 पीछे। ध्यान दें: अभी-अभी रखी गई गोली 4 पीछे से सीधे घर में नहीं जा सकती; पहले उसे स्टार्ट खाना छोड़ना होगा।",
-    "sv": "Ta ut en kula med 1:an eller 13:an och spela sedan 4:an bakåt: din kula är nästan hemma! Istället för 60+ rutor framåt, bara 4 bakåt. Obs: en nytagen kula får inte gå direkt in i hemmet med 4:an bakåt, den måste ha lämnat startrutan först.",
+    "sv": "Ta ut en kula med 1:an eller 13:an och spela sedan 4:an bakåt: Din kula är nästan hemma! Istället för 60+ rutor framåt, bara 4 bakåt. Obs: En nytagen kula får inte gå direkt in i hemmet med 4:an bakåt, den måste ha lämnat startrutan först.",
     "fi": "Ota kuula ulos 1:llä tai 13:lla, pelaa sitten 4 taaksepäin: kuulasi on melkein kotona! 60+ ruutua eteenpäin sijaan vain 4 taaksepäin. Huom: tuore kuula ei saa mennä suoraan kotiin 4:llä taaksepäin, sen täytyy ensin poistua aloitusruudusta.",
-    "nb": "Ta ut en kule med 1-eren eller 13-eren, spill så 4-eren bakover: kulen din er nesten hjemme! I stedet for 60+ felt fremover, bare 4 bakover. Merk: en nylig plassert kule kan ikke gå rett inn i hjemmet med en bakover 4, den må ha forlatt startfeltet først.",
-    "da": "Tag en kugle ud med 1-eren eller 13-eren, spil derefter 4-eren bagud: din kugle er næsten hjemme! I stedet for 60+ felter fremad, kun 4 bagud. Bemærk: en nyligt udsat kugle må ikke gå direkte ind i hjemmet med 4-eren bagud, den skal først have forladt startfeltet.",
-    "tr": "1 ya da 13 ile bir bilye çıkar, sonra 4'ü geriye oyna: bilyen neredeyse evin önünde! 60+ alan ileri gitmek yerine sadece 4 geri. Dikkat: yeni çıkmış bir bilye 4 ile doğrudan geriye eve giremez, önce çıkış alanını terk etmiş olmalı."
+    "nb": "Ta ut en kule med 1-eren eller 13-eren, spill så 4-eren bakover: Kulen din er nesten hjemme! I stedet for 60+ felt fremover, bare 4 bakover. Merk: En nylig plassert kule kan ikke gå rett inn i hjemmet med en bakover 4, den må ha forlatt startfeltet først.",
+    "da": "Tag en kugle ud med 1-eren eller 13-eren, spil derefter 4-eren bagud: Din kugle er næsten hjemme! I stedet for 60+ felter fremad, kun 4 bagud. Bemærk: En nyligt udsat kugle må ikke gå direkte ind i hjemmet med 4-eren bagud, den skal først have forladt startfeltet.",
+    "tr": "1 ya da 13 ile bir bilye çıkar, sonra 4'ü geriye oyna: Bilyen neredeyse evin önünde! 60+ alan ileri gitmek yerine sadece 4 geri. Dikkat: Yeni çıkmış bir bilye 4 ile doğrudan geriye eve giremez, önce çıkış alanını terk etmiş olmalı."
    },
    "zusammenfassung": {
     "de": "Heraus holen + 4 rückwärts = Abkürzung. Nicht direkt ins Haus!",
@@ -3110,17 +3110,17 @@
    },
    "text": {
     "de": "Statt zu ziehen, kannst du den nächsten Spieler aussetzen lassen. Er muss eine Karte ungenutzt ablegen. Bedingung: Du brauchst selbst eine Kugel im Kreis!",
-    "en": "Instead of moving, you can make the next player skip a turn. They must discard a card unused. Condition: you need a marble on the ring yourself!",
+    "en": "Instead of moving, you can make the next player skip a turn. They must discard a card unused. Condition: You need a marble on the ring yourself!",
     "ru": "Вместо хода ты можешь заставить следующего игрока пропустить ход. Он должен сбросить карту неиспользованной. Условие: у тебя самого должен быть шарик на круге!",
     "fr": "Au lieu de jouer, tu peux faire passer son tour au joueur suivant. Il doit défausser une carte sans l'utiliser. Condition : il te faut toi-même une bille sur le cercle !",
     "es": "En lugar de mover, puedes hacer que el siguiente jugador pierda el turno. Debe descartar una carta sin usarla. Condición: ¡tú mismo necesitas una bola en el círculo!",
     "it": "Invece di muovere, puoi far saltare il turno al giocatore successivo. Deve scartare una carta senza usarla. Condizione: ti serve una tua biglia sul cerchio!",
     "hi": "चलने के बजाय आप अगले खिलाड़ी की बारी छुड़वा सकते हैं। उसे एक कार्ड बिना उपयोग के त्यागना होगा। शर्त: आपके पास स्वयं वृत्त पर एक गोली होनी चाहिए!",
-    "sv": "Istället för att flytta kan du låta näste spelare hoppa över. Han måste kasta ett kort oanvänt. Villkor: du måste själv ha en kula i ringen!",
+    "sv": "Istället för att flytta kan du låta näste spelare hoppa över. Han måste kasta ett kort oanvänt. Villkor: Du måste själv ha en kula i ringen!",
     "fi": "Sen sijaan että liikut, voit antaa seuraavan pelaajan jättää väliin. Hänen täytyy hylätä kortti käyttämättä. Ehto: sinulla täytyy olla kuula kehässä!",
-    "nb": "I stedet for å flytte kan du la neste spiller hoppe over. Han må kaste et kort ubrukt. Betingelse: du må selv ha en kule på ringen!",
-    "da": "I stedet for at flytte kan du lade næste spiller springe over. Han skal kaste et kort ubrugt. Betingelse: du skal selv have en kugle i ringen!",
-    "tr": "Yürümek yerine sıradaki oyuncuyu pas geçirebilirsin. O, bir kartı kullanmadan atmak zorunda kalır. Şart: halkada kendi bilyen olmalı!"
+    "nb": "I stedet for å flytte kan du la neste spiller hoppe over. Han må kaste et kort ubrukt. Betingelse: Du må selv ha en kule på ringen!",
+    "da": "I stedet for at flytte kan du lade næste spiller springe over. Han skal kaste et kort ubrugt. Betingelse: Du skal selv have en kugle i ringen!",
+    "tr": "Yürümek yerine sıradaki oyuncuyu pas geçirebilirsin. O, bir kartı kullanmadan atmak zorunda kalır. Şart: Halkada kendi bilyen olmalı!"
    },
    "zusammenfassung": {
     "de": "8 = Aussetzen lassen (nur mit eigener Kugel im Kreis).",
@@ -3188,16 +3188,16 @@
    },
    "zusammenfassung": {
     "de": "Nächster ohne Karten: 8 Felder ziehen ist Pflicht.",
-    "en": "Next player has no cards: moving 8 fields is mandatory.",
+    "en": "Next player has no cards: Moving 8 fields is mandatory.",
     "ru": "У следующего нет карт: идти на 8 полей обязательно.",
     "fr": "Le suivant n'a plus de cartes : avancer de 8 cases est obligatoire.",
     "es": "El siguiente no tiene cartas: mover 8 casillas es obligatorio.",
     "it": "Il successivo non ha carte: muovere di 8 caselle è obbligatorio.",
     "hi": "अगले के पास कार्ड नहीं: 8 खाने चलना अनिवार्य है।",
-    "sv": "Nästa har inga kort: att flytta 8 rutor är tvång.",
+    "sv": "Nästa har inga kort: Att flytta 8 rutor är tvång.",
     "fi": "Seuraavalla ei ole kortteja: 8 ruudun siirto on pakollinen.",
-    "nb": "Neste har ingen kort: å flytte 8 felt er plikt.",
-    "da": "Den næste har ingen kort: at rykke 8 felter er pligt.",
+    "nb": "Neste har ingen kort: Å flytte 8 felt er plikt.",
+    "da": "Den næste har ingen kort: At rykke 8 felter er pligt.",
     "tr": "Sıradakinin kartı yok: 8 alan ilerlemek zorunlu."
    },
    "bild": "eightLastCard",
@@ -3335,14 +3335,14 @@
    "id": "f20",
    "stufe": 2,
    "titel": {
-    "de": "Trickser-Kombi: Heraus holen und Tauschen",
+    "de": "Trickser-Kombi: heraus holen und tauschen",
     "en": "Trickster combo: bring out and swap",
     "ru": "Комбо Хитреца: вывести и поменять",
     "fr": "Combo Filou : sortir et échanger",
     "es": "Combo Pícaro: sacar e intercambiar",
     "it": "Combo Imbroglione: far uscire e scambiare",
     "hi": "चालबाज़ कॉम्बो: बाहर निकालना और बदलना",
-    "sv": "Lurifax-kombo: Ta ut och byt",
+    "sv": "Lurifax-kombo: ta ut och byt",
     "fi": "Huijari-yhdistelmä: ota ulos ja vaihda",
     "nb": "Luring-kombo: ta ut og bytt",
     "da": "Luring-kombo: tag ud og byt",
@@ -3589,14 +3589,14 @@
    "id": "f24b",
    "stufe": 3,
    "titel": {
-    "de": "Engel-Taktik: Am Haus vorbei",
+    "de": "Engel-Taktik: am Haus vorbei",
     "en": "Angel tactic: past the home",
     "ru": "Тактика Ангела: мимо дома",
     "fr": "Tactique de l'Ange : devant la maison",
     "es": "Táctica del Ángel: pasar de largo la casa",
     "it": "Tattica dell'Angelo: oltre la casa",
     "hi": "फ़रिश्ता रणनीति: घर के आगे से",
-    "sv": "Ängel-taktik: Förbi hemmet",
+    "sv": "Ängel-taktik: förbi hemmet",
     "fi": "Enkelitaktiikka: kodin ohi",
     "nb": "Engel-taktikk: forbi hjemmet",
     "da": "Engel-taktik: forbi hjemmet",
@@ -3618,17 +3618,17 @@
    },
    "text": {
     "de": "Der Engel hat eine zweite Funktion: Hat der nächste Spieler keine Kugeln im Vorfeld, bestimmst du, ob seine Kugel 1 oder 13 Felder zieht. Steht eine gegnerische Kugel kurz vor dem Haus, kannst du sie so gezielt daran vorbeiziehen lassen!",
-    "en": "The Angel has a second function: if the next player has no marbles in the start area, you decide whether their marble moves 1 or 13 fields. If an opponent's marble is just before the home, you can deliberately make it move past!",
+    "en": "The Angel has a second function: If the next player has no marbles in the start area, you decide whether their marble moves 1 or 13 fields. If an opponent's marble is just before the home, you can deliberately make it move past!",
     "ru": "У Ангела есть вторая функция: если у следующего игрока нет шариков в стартовой зоне, ты решаешь, пройдёт ли его шарик 1 или 13 полей. Если шарик соперника стоит прямо перед домом, ты можешь намеренно провести его мимо!",
     "fr": "L'Ange a une seconde fonction : si le joueur suivant n'a pas de billes dans l'aire de départ, tu décides si sa bille avance de 1 ou 13 cases. Si une bille adverse est juste devant la maison, tu peux ainsi la faire passer devant à dessein !",
     "es": "El Ángel tiene una segunda función: si el siguiente jugador no tiene bolas en la antesala, tú decides si su bola avanza 1 o 13 casillas. Si una bola rival está justo antes de la casa, ¡así puedes hacer que pase de largo a propósito!",
     "it": "L'Angelo ha una seconda funzione: se il giocatore successivo non ha biglie nell'area di partenza, decidi tu se la sua biglia avanza di 1 o 13 caselle. Se una biglia avversaria è poco prima della casa, puoi così farla passare oltre di proposito!",
     "hi": "फ़रिश्ता की दूसरी क्षमता भी है: यदि अगले खिलाड़ी के प्रारंभिक क्षेत्र में कोई गोली नहीं है, तो आप तय करते हैं कि उसकी गोली 1 या 13 खाने चले। यदि किसी विरोधी की गोली घर से ठीक पहले है, तो आप उसे जानबूझकर घर के आगे से निकलवा सकते हैं!",
-    "sv": "Ängeln har en andra funktion: har näste spelare inga kulor i boet bestämmer du om hans kula ska flytta 1 eller 13 rutor. Står en motståndarkulа strax innan hemmet kan du låta den flytta förbi med flit!",
+    "sv": "Ängeln har en andra funktion: Har näste spelare inga kulor i boet bestämmer du om hans kula ska flytta 1 eller 13 rutor. Står en motståndarkulа strax innan hemmet kan du låta den flytta förbi med flit!",
     "fi": "Enkelillä on toinen toiminto: jos seuraavalla pelaajalla ei ole kuulia pesässä, päätät, liikkuuko hänen kuulansa 1 vai 13 ruutua. Jos vastustajan kuula on juuri ennen kotia, voit tarkoituksella ajaa sen ohi!",
-    "nb": "Engelen har en annen funksjon: har neste spiller ingen kuler i boet, bestemmer du om hans kule skal flytte 1 eller 13 felt. Står en motstanders kule rett foran hjemmet, kan du la den flytte forbi med vilje!",
-    "da": "Englen har en anden funktion: har næste spiller ingen kugler i boet, bestemmer du, om hans kugle skal flytte 1 eller 13 felter. Står en modstanders kugle lige foran hjemmet, kan du bevidst lade den flytte forbi!",
-    "tr": "Melek'in ikinci bir işlevi var: sıradaki oyuncunun yuvasında bilyesi yoksa, bilyesinin 1 mi yoksa 13 alan mı gideceğine sen karar verirsin. Rakip bir bilye evinin hemen önündeyse, onu bilerek evin önünden geçirtebilirsin!"
+    "nb": "Engelen har en annen funksjon: Har neste spiller ingen kuler i boet, bestemmer du om hans kule skal flytte 1 eller 13 felt. Står en motstanders kule rett foran hjemmet, kan du la den flytte forbi med vilje!",
+    "da": "Englen har en anden funktion: Har næste spiller ingen kugler i boet, bestemmer du, om hans kugle skal flytte 1 eller 13 felter. Står en modstanders kugle lige foran hjemmet, kan du bevidst lade den flytte forbi!",
+    "tr": "Melek'in ikinci bir işlevi var: Sıradaki oyuncunun yuvasında bilyesi yoksa, bilyesinin 1 mi yoksa 13 alan mı gideceğine sen karar verirsin. Rakip bir bilye evinin hemen önündeyse, onu bilerek evin önünden geçirtebilirsin!"
    },
    "zusammenfassung": {
     "de": "Engel nutzen, um Gegner am Haus vorbeizuschicken.",
@@ -3910,17 +3910,17 @@
    "stufe": 3,
    "titel": {
     "de": "Meisterkarten: Wer kann, der muss!",
-    "en": "Master cards: if you can, you must!",
+    "en": "Master cards: If you can, you must!",
     "ru": "Карты мастера: можешь, значит обязан!",
     "fr": "Cartes maîtresses : qui peut, doit !",
     "es": "Cartas maestras: ¡quien puede, debe!",
     "it": "Carte maestre: chi può, deve!",
     "hi": "मास्टर कार्ड: जो कर सकते हैं, उन्हें करना ही होगा!",
     "sv": "Mästarkort: Kan man, så måste man!",
-    "fi": "Mestarikortit: Jos voi, on pakko!",
+    "fi": "Mestarikortit: jos voi, on pakko!",
     "nb": "Mesterkort: Kan man, må man!",
     "da": "Mesterkort: Kan man, skal man!",
-    "tr": "Usta kartları: oynayabilen oynamak zorunda!"
+    "tr": "Usta kartları: Oynayabilen oynamak zorunda!"
    },
    "kicker": {
     "de": "Pflicht",
@@ -4616,10 +4616,10 @@
     "es": "TAC tras el 8: avanzar",
     "it": "TAC dopo l'8: muoversi",
     "hi": "8 के बाद TAC: चलना",
-    "sv": "TAC efter 8:an: Gå",
+    "sv": "TAC efter 8:an: gå",
     "fi": "TAC 8:n jälkeen: liikkuminen",
-    "nb": "TAC etter 8-eren: Gå",
-    "da": "TAC efter 8-eren: Gå",
+    "nb": "TAC etter 8-eren: gå",
+    "da": "TAC efter 8-eren: gå",
     "tr": "8'den sonra TAC: yürü"
    },
    "kicker": {
@@ -4680,10 +4680,10 @@
     "es": "TAC tras el 8: perder turno",
     "it": "TAC dopo l'8: far saltare",
     "hi": "8 के बाद TAC: बारी छुड़वाना",
-    "sv": "TAC efter 8:an: Hoppa över",
+    "sv": "TAC efter 8:an: hoppa över",
     "fi": "TAC 8:n jälkeen: jättää väliin",
-    "nb": "TAC etter 8-eren: Hoppe over",
-    "da": "TAC efter 8-eren: Springe over",
+    "nb": "TAC etter 8-eren: hoppe over",
+    "da": "TAC efter 8-eren: springe over",
     "tr": "8'den sonra TAC: pas geçir"
    },
    "kicker": {
@@ -4744,10 +4744,10 @@
     "es": "TAC tras el 8: descartar",
     "it": "TAC dopo l'8: scartare",
     "hi": "8 के बाद TAC: त्यागना",
-    "sv": "TAC efter 8:an: Kasta",
+    "sv": "TAC efter 8:an: kasta",
     "fi": "TAC 8:n jälkeen: hylätä",
-    "nb": "TAC etter 8-eren: Kaste",
-    "da": "TAC efter 8-eren: Kaste",
+    "nb": "TAC etter 8-eren: kaste",
+    "da": "TAC efter 8-eren: kaste",
     "tr": "8'den sonra TAC: at"
    },
    "kicker": {
@@ -4894,17 +4894,17 @@
    },
    "text": {
     "de": "TAC nach dem Engel kann auch schaden: Deine eigene Kugel geht zurück ins Vorfeld und der nächste Spieler bekommt eine Kugel heraus. Das kann dem Gegner helfen! Trotzdem musst du TAC spielen, wenn es deine einzige spielbare Karte ist.",
-    "en": "TAC after the Angel can also backfire: your own marble goes back to the start area and the next player gets a marble out. That can help the opponent! Still, you must play TAC if it's your only playable card.",
+    "en": "TAC after the Angel can also backfire: Your own marble goes back to the start area and the next player gets a marble out. That can help the opponent! Still, you must play TAC if it's your only playable card.",
     "ru": "TAC после Ангела может и навредить: твой собственный шарик возвращается в стартовую зону, а следующий игрок выводит шарик. Это может помочь сопернику! И всё же ты обязан сыграть TAC, если это твоя единственная карта.",
     "fr": "TAC après l'Ange peut aussi nuire : ta propre bille retourne dans l'aire de départ et le joueur suivant fait sortir une bille. Cela peut aider l'adversaire ! Tu dois quand même jouer TAC si c'est ta seule carte jouable.",
     "es": "TAC tras el Ángel también puede perjudicar: tu propia bola vuelve a la antesala y el siguiente jugador saca una bola. ¡Eso puede ayudar al rival! Aun así, debes jugar TAC si es tu única carta jugable.",
     "it": "TAC dopo l'Angelo può anche danneggiare: la tua biglia torna nell'area di partenza e il giocatore successivo fa uscire una biglia. Questo può aiutare l'avversario! Devi comunque giocare TAC se è la tua unica carta giocabile.",
     "hi": "फ़रिश्ता के बाद TAC नुकसान भी कर सकता है: आपकी अपनी गोली वापस प्रारंभिक क्षेत्र में चली जाती है और अगला खिलाड़ी एक गोली बाहर निकाल लेता है। इससे विरोधी को मदद मिल सकती है! फिर भी, यदि TAC आपका एकमात्र खेलने योग्य कार्ड है तो आपको उसे खेलना ही होगा।",
-    "sv": "TAC efter Ängeln kan också skada: din egen kula går tillbaka till boet och näste spelare får en kula ut. Det kan hjälpa motståndaren! Ändå måste du spela TAC om det är ditt enda spelbara kort.",
+    "sv": "TAC efter Ängeln kan också skada: Din egen kula går tillbaka till boet och näste spelare får en kula ut. Det kan hjälpa motståndaren! Ändå måste du spela TAC om det är ditt enda spelbara kort.",
     "fi": "TAC Enkelin jälkeen voi myös vahingoittaa: oma kuulasi menee takaisin pesään ja seuraava pelaaja saa kuulan ulos. Se voi auttaa vastustajaa! Silti sinun täytyy pelata TAC, jos se on ainoa pelattavissa oleva korttisi.",
-    "nb": "TAC etter Engelen kan også skade: din egen kule går tilbake til boet og neste spiller får en kule ut. Det kan hjelpe motstanderen! Du må likevel spille TAC hvis det er ditt eneste spillbare kort.",
-    "da": "TAC efter Englen kan også skade: din egen kugle går tilbage til boet og næste spiller får en kugle ud. Det kan hjælpe modstanderen! Du skal alligevel spille TAC, hvis det er dit eneste spillbare kort.",
-    "tr": "Melek'ten sonra TAC zarar da verebilir: kendi bilyen yuvaya döner ve sıradaki oyuncu bir bilye çıkarır. Bu rakibe yarayabilir! Yine de TAC oynanabilir tek kartınsa onu oynamak zorundasın."
+    "nb": "TAC etter Engelen kan også skade: Din egen kule går tilbake til boet og neste spiller får en kule ut. Det kan hjelpe motstanderen! Du må likevel spille TAC hvis det er ditt eneste spillbare kort.",
+    "da": "TAC efter Englen kan også skade: Din egen kugle går tilbage til boet og næste spiller får en kugle ud. Det kan hjælpe modstanderen! Du skal alligevel spille TAC, hvis det er dit eneste spillbare kort.",
+    "tr": "Melek'ten sonra TAC zarar da verebilir: Kendi bilyen yuvaya döner ve sıradaki oyuncu bir bilye çıkarır. Bu rakibe yarayabilir! Yine de TAC oynanabilir tek kartınsa onu oynamak zorundasın."
    },
    "zusammenfassung": {
     "de": "TAC nach Engel schadet dir, muss aber gespielt werden.",
@@ -4958,7 +4958,7 @@
    },
    "text": {
     "de": "Spezialregel: Wählt der Teufel-Spieler deine TAC-Karte, darfst du als Opfer den Teufel für dessen Teampartner spielen. Du wählst eine Karte aus der Hand des Partners und spielst sie für ihn. Eine seltene, aber mächtige Wendung!",
-    "en": "Special rule: if the Devil player picks your TAC card, you as the victim may play the Devil for that player's teammate. You choose a card from the partner's hand and play it for them. A rare but powerful twist!",
+    "en": "Special rule: If the Devil player picks your TAC card, you as the victim may play the Devil for that player's teammate. You choose a card from the partner's hand and play it for them. A rare but powerful twist!",
     "ru": "Особое правило: если игрок Дьявола выбирает твою карту TAC, ты как жертва можешь сыграть Дьявола за напарника этого игрока. Ты выбираешь карту из руки напарника и играешь её за него. Редкий, но мощный поворот!",
     "fr": "Règle spéciale : si le joueur du Diable choisit ta carte TAC, en tant que victime tu peux jouer le Diable pour le coéquipier de ce joueur. Tu choisis une carte dans la main du partenaire et la joues pour lui. Un retournement rare mais puissant !",
     "es": "Regla especial: si el jugador del Diablo elige tu carta TAC, tú como víctima puedes jugar el Diablo para el compañero de ese jugador. Eliges una carta de la mano del compañero y la juegas por él. ¡Un giro raro pero poderoso!",
@@ -5406,17 +5406,17 @@
    },
    "text": {
     "de": "Wurde ein Siegeszug per TAC verhindert, kann die nächste TAC-Karte nicht mehr gespielt werden. Der Grund: Der wiederhergestellte Zustand hat alle Kugeln im Haus, es gibt keine Kugel mehr zum Bewegen! Du musst eine andere Karte spielen.",
-    "en": "If a winning move was prevented via TAC, the next TAC card can no longer be played. The reason: the restored state has all marbles in the home, there's no marble left to move! You must play another card.",
+    "en": "If a winning move was prevented via TAC, the next TAC card can no longer be played. The reason: The restored state has all marbles in the home, there's no marble left to move! You must play another card.",
     "ru": "Если победный ход был предотвращён через TAC, следующую карту TAC сыграть уже нельзя. Причина: в восстановленном состоянии все шарики в доме, двигать нечем! Придётся сыграть другую карту.",
     "fr": "Si un coup gagnant a été empêché via TAC, la carte TAC suivante ne peut plus être jouée. La raison : l'état rétabli a toutes les billes dans la maison, il n'y a plus de bille à déplacer ! Tu dois jouer une autre carte.",
     "es": "Si se impidió una jugada ganadora mediante TAC, la siguiente carta TAC ya no se puede jugar. La razón: el estado restablecido tiene todas las bolas en la casa, ¡ya no queda ninguna bola para mover! Debes jugar otra carta.",
     "it": "Se una mossa vincente è stata impedita tramite TAC, la carta TAC successiva non può più essere giocata. Il motivo: lo stato ripristinato ha tutte le biglie nella casa, non c'è più nessuna biglia da muovere! Devi giocare un'altra carta.",
     "hi": "यदि कोई विजयी चाल TAC से रोकी गई, तो अगला TAC कार्ड अब नहीं खेला जा सकता। कारण: बहाल स्थिति में सभी गोलियाँ घर में हैं, हिलाने के लिए कोई गोली नहीं बची! आपको कोई दूसरा कार्ड खेलना होगा।",
-    "sv": "Om ett vinnande drag hindrades via TAC, kan nästa TAC-kort inte längre spelas. Anledningen: det återställda läget har alla kulor i hemmet, det finns ingen kula kvar att flytta! Du måste spela ett annat kort.",
+    "sv": "Om ett vinnande drag hindrades via TAC, kan nästa TAC-kort inte längre spelas. Anledningen: Det återställda läget har alla kulor i hemmet, det finns ingen kula kvar att flytta! Du måste spela ett annat kort.",
     "fi": "Jos voittava siirto estettiin TAC:illa, seuraavaa TAC-korttia ei voi enää pelata. Syy: palautetussa tilassa kaikki kuulat ovat kotona, eikä yhtään kuulaa ole enää liikuteltavana! Sinun täytyy pelata toinen kortti.",
-    "nb": "Hvis et vinnende trekk ble hindret via TAC, kan ikke neste TAC-kort spilles lenger. Grunnen: den gjenopprettede tilstanden har alle kulene i hjemmet, det er ingen kule igjen å flytte! Du må spille et annet kort.",
-    "da": "Hvis et vindende træk blev forhindret via TAC, kan næste TAC-kort ikke længere spilles. Grunden: den gendannede tilstand har alle kugler i hjemmet, der er ingen kugle tilbage at flytte! Du skal spille et andet kort.",
-    "tr": "Bir zafer hamlesi TAC ile engellendiyse, bir sonraki TAC kartı artık oynanamaz. Sebep: geri yüklenen durumda tüm bilyeler evde, oynatacak bilye kalmadı! Başka bir kart oynamak zorundasın."
+    "nb": "Hvis et vinnende trekk ble hindret via TAC, kan ikke neste TAC-kort spilles lenger. Grunnen: Den gjenopprettede tilstanden har alle kulene i hjemmet, det er ingen kule igjen å flytte! Du må spille et annet kort.",
+    "da": "Hvis et vindende træk blev forhindret via TAC, kan næste TAC-kort ikke længere spilles. Grunden: Den gendannede tilstand har alle kugler i hjemmet, der er ingen kugle tilbage at flytte! Du skal spille et andet kort.",
+    "tr": "Bir zafer hamlesi TAC ile engellendiyse, bir sonraki TAC kartı artık oynanamaz. Sebep: Geri yüklenen durumda tüm bilyeler evde, oynatacak bilye kalmadı! Başka bir kart oynamak zorundasın."
    },
    "zusammenfassung": {
     "de": "Nach TAC-Verhinderung ist TAC nicht mehr spielbar.",
@@ -5444,17 +5444,17 @@
    "stufe": 0,
    "titel": {
     "de": "Melden: Wer kann raus?",
-    "en": "Declaring: who can get out?",
+    "en": "Declaring: Who can get out?",
     "ru": "Заявка: кто может выйти?",
     "fr": "Annoncer : qui peut sortir ?",
     "es": "Anunciar: ¿quién puede salir?",
     "it": "Annunciare: chi può uscire?",
     "hi": "घोषणा: कौन बाहर आ सकता है?",
-    "sv": "Mäla: vem kan komma ut?",
+    "sv": "Mäla: Vem kan komma ut?",
     "fi": "Ilmoita: kuka pääsee ulos?",
-    "nb": "Melde: hvem kan komme ut?",
-    "da": "Meld: hvem kan komme ud?",
-    "tr": "Bildir: kim çıkabilir?"
+    "nb": "Melde: Hvem kan komme ut?",
+    "da": "Meld: Hvem kan komme ud?",
+    "tr": "Bildir: Kim çıkabilir?"
    },
    "kicker": {
     "de": "Quiz",
@@ -5870,17 +5870,17 @@
    },
    "regel": {
     "de": "Rundenablauf: Der Zeigefinger markiert den Startspieler",
-    "en": "Round order: the pointing finger marks the starting player",
+    "en": "Round order: The pointing finger marks the starting player",
     "ru": "Ход раунда: указательный палец отмечает начинающего игрока",
     "fr": "Déroulement : le doigt pointé indique le premier joueur",
     "es": "Desarrollo: el dedo índice marca al jugador inicial",
     "it": "Svolgimento: il dito indica il primo giocatore",
     "hi": "राउंड क्रम: तर्जनी पहले खिलाड़ी को दिखाती है",
-    "sv": "Rundans gång: pekfingret visar startspelaren",
+    "sv": "Rundans gång: Pekfingret visar startspelaren",
     "fi": "Kierroksen kulku: etusormi osoittaa aloittavan pelaajan",
-    "nb": "Rundens gang: pekefingeren viser startspilleren",
-    "da": "Rundens forløb: pegefingeren viser startspilleren",
-    "tr": "Tur akışı: işaret parmağı başlayan oyuncuyu gösterir"
+    "nb": "Rundens gang: Pekefingeren viser startspilleren",
+    "da": "Rundens forløb: Pegefingeren viser startspilleren",
+    "tr": "Tur akışı: İşaret parmağı başlayan oyuncuyu gösterir"
    },
    "kugeln": [
     {
@@ -6723,7 +6723,7 @@
     "tr": "Tam isabet! Rakip bilye yuvaya geri döner."
    },
    "regel": {
-    "de": "Werfen: Genau auf Gegnerfeld landen",
+    "de": "Werfen: genau auf Gegnerfeld landen",
     "en": "Capturing: land exactly on the opponent's field",
     "ru": "Сбить: встать точно на поле соперника",
     "fr": "Capturer : tomber pile sur la case adverse",
@@ -10042,18 +10042,18 @@
     "tr": "Doğru! Düzenbaz, halkada en az bir kendi bilyeni gerektirir."
    },
    "regel": {
-    "de": "Trickser: Eigene Kugel erforderlich",
-    "en": "Trickster: your own marble is required",
+    "de": "Trickser: eigene Kugel erforderlich",
+    "en": "Trickster: Your own marble is required",
     "ru": "Хитрец: нужен свой шарик",
     "fr": "Filou : une bille à toi est nécessaire",
     "es": "Pícaro: se necesita una bola propia",
     "it": "Imbroglione: serve una tua biglia",
     "hi": "चालबाज़: अपनी गोली ज़रूरी",
-    "sv": "Lurifax: egen kula krävs",
+    "sv": "Lurifax: Egen kula krävs",
     "fi": "Huijari: oma kuula tarvitaan",
-    "nb": "Luring: egen kule kreves",
-    "da": "Luring: egen kugle kræves",
-    "tr": "Düzenbaz: kendi bilyen gerekli"
+    "nb": "Luring: Egen kule kreves",
+    "da": "Luring: Egen kugle kræves",
+    "tr": "Düzenbaz: Kendi bilyen gerekli"
    },
    "kugeln": [
     {
@@ -11016,7 +11016,7 @@
     "tr": "İlahi! Melek, sıradaki oyuncuyu bir bilye çıkarmaya zorlar."
    },
    "regel": {
-    "de": "Der Engel: Heraus holen erzwingen",
+    "de": "Der Engel: heraus holen erzwingen",
     "en": "The Angel: forcing a marble out",
     "ru": "Ангел: заставить вывести шарик",
     "fr": "L'Ange : forcer une sortie",
@@ -11260,7 +11260,7 @@
    "id": "s_f24b",
    "stufe": 3,
    "titel": {
-    "de": "Engel: Am Haus vorbei!",
+    "de": "Engel: am Haus vorbei!",
     "en": "Angel: past the home!",
     "ru": "Ангел: мимо дома!",
     "fr": "Ange : devant la maison !",
@@ -11302,18 +11302,18 @@
     "tr": "Mavi'nin bilyesini evin önünden geçirt."
    },
    "tipp": {
-    "de": "Blau hat 3 Kugeln im Haus (Plätze 2–4), aber Platz 1 ist noch frei. Spiele den Engel und setze die 13 ein, damit Blaus Kugel am Haus vorbeizieht!",
-    "en": "Blue has 3 marbles in the home (spots 2–4), but spot 1 is still free. Play the Angel and use the 13 so that Blue's marble moves past the home!",
-    "ru": "У Синего 3 шарика в доме (места 2–4), но место 1 ещё свободно. Сыграй Ангела и используй 13, чтобы шарик Синего прошёл мимо дома!",
-    "fr": "Bleu a 3 billes dans la maison (places 2–4), mais la place 1 est encore libre. Joue l'Ange et utilise le 13 pour que la bille de Bleu passe devant la maison !",
-    "es": "Azul tiene 3 bolas en la casa (lugares 2–4), pero el lugar 1 sigue libre. ¡Juega el Ángel y usa el 13 para que la bola de Azul pase de largo la casa!",
-    "it": "Blu ha 3 biglie nella casa (posti 2–4), ma il posto 1 è ancora libero. Gioca l'Angelo e usa il 13 in modo che la biglia di Blu oltrepassi la casa!",
-    "hi": "नीले की 3 गोलियाँ घर में हैं (स्थान 2–4), पर स्थान 1 अब भी खाली है। फ़रिश्ता खेलें और 13 का उपयोग करें ताकि नीले की गोली घर के आगे से निकल जाए!",
-    "sv": "Blå har 3 kulor i hemmet (plats 2–4), men plats 1 är fortfarande ledig. Spela Ängeln och använd 13:an så att Blås kula drar förbi hemmet!",
-    "fi": "Sinisellä on 3 kuulaa kotona (paikat 2–4), mutta paikka 1 on vielä vapaa. Pelaa Enkeli ja käytä 13:ta niin, että Sinisen kuula kulkee kodin ohi!",
-    "nb": "Blå har 3 kuler i hjemmet (plass 2–4), men plass 1 er fortsatt ledig. Spill Engelen og bruk 13-kortet slik at Blås kule passerer hjemmet!",
-    "da": "Blå har 3 kugler i hjemmet (pladser 2–4), men plads 1 er stadig fri. Spil Englen og brug 13-kortet, så Blås kugle passerer hjemmet!",
-    "tr": "Mavi'nin evde 3 bilyesi var (2–4. sıralar) ama 1. sıra hâlâ boş. Melek'i oyna ve 13'ü kullan ki Mavi'nin bilyesi evin önünden geçsin!"
+    "de": "Blau hat 3 Kugeln im Haus (Plätze 2 bis 4), aber Platz 1 ist noch frei. Spiele den Engel und setze die 13 ein, damit Blaus Kugel am Haus vorbeizieht!",
+    "en": "Blue has 3 marbles in the home (spots 2 to 4), but spot 1 is still free. Play the Angel and use the 13 so that Blue's marble moves past the home!",
+    "ru": "У Синего 3 шарика в доме (места со 2 по 4), но место 1 ещё свободно. Сыграй Ангела и используй 13, чтобы шарик Синего прошёл мимо дома!",
+    "fr": "Bleu a 3 billes dans la maison (places 2 à 4), mais la place 1 est encore libre. Joue l'Ange et utilise le 13 pour que la bille de Bleu passe devant la maison !",
+    "es": "Azul tiene 3 bolas en la casa (lugares 2 a 4), pero el lugar 1 sigue libre. ¡Juega el Ángel y usa el 13 para que la bola de Azul pase de largo la casa!",
+    "it": "Blu ha 3 biglie nella casa (posti da 2 a 4), ma il posto 1 è ancora libero. Gioca l'Angelo e usa il 13 in modo che la biglia di Blu oltrepassi la casa!",
+    "hi": "नीले की 3 गोलियाँ घर में हैं (स्थान 2 से 4), पर स्थान 1 अब भी खाली है। फ़रिश्ता खेलें और 13 का उपयोग करें ताकि नीले की गोली घर के आगे से निकल जाए!",
+    "sv": "Blå har 3 kulor i hemmet (plats 2 till 4), men plats 1 är fortfarande ledig. Spela Ängeln och använd 13:an så att Blås kula drar förbi hemmet!",
+    "fi": "Sinisellä on 3 kuulaa kotona (paikat 2, 3 ja 4), mutta paikka 1 on vielä vapaa. Pelaa Enkeli ja käytä 13:ta niin, että Sinisen kuula kulkee kodin ohi!",
+    "nb": "Blå har 3 kuler i hjemmet (plass 2 til 4), men plass 1 er fortsatt ledig. Spill Engelen og bruk 13-kortet slik at Blås kule passerer hjemmet!",
+    "da": "Blå har 3 kugler i hjemmet (pladser 2 til 4), men plads 1 er stadig fri. Spil Englen og brug 13-kortet, så Blås kugle passerer hjemmet!",
+    "tr": "Mavi'nin evde 3 bilyesi var (2., 3. ve 4. sıralar) ama 1. sıra hâlâ boş. Melek'i oyna ve 13'ü kullan ki Mavi'nin bilyesi evin önünden geçsin!"
    },
    "erfolg": {
     "de": "Taktisch! Mit dem Engel hast du Blau am Hauseinzug gehindert.",
@@ -11608,7 +11608,7 @@
     "tr": "Savaşa hazır! Savaşçı sıradaki bilyeyi kırar ve onun yerine atlar."
    },
    "regel": {
-    "de": "Der Krieger: Nächste Kugel werfen",
+    "de": "Der Krieger: nächste Kugel werfen",
     "en": "The Warrior: capturing the next marble",
     "ru": "Воин: сбить следующий шарик",
     "fr": "Le Guerrier : capturer la bille suivante",
@@ -12001,17 +12001,17 @@
    },
    "regel": {
     "de": "Meisterkarten: Wer kann, der muss",
-    "en": "Master cards: if you can, you must",
+    "en": "Master cards: If you can, you must",
     "ru": "Карты мастера: кто может, тот обязан",
     "fr": "Cartes maîtresses : qui peut, doit",
     "es": "Cartas maestras: quien puede, debe",
     "it": "Carte maestre: chi può, deve",
     "hi": "मास्टर कार्ड: जो कर सकता है, उसे करना होगा",
-    "sv": "Mästarkort: den som kan, måste",
+    "sv": "Mästarkort: Den som kan, måste",
     "fi": "Mestarikortit: joka voi, sen on pakko",
-    "nb": "Mesterkort: den som kan, må",
-    "da": "Mesterkort: den, der kan, skal",
-    "tr": "Usta kartları: yapabilen yapmak zorunda"
+    "nb": "Mesterkort: Den som kan, må",
+    "da": "Mesterkort: Den, der kan, skal",
+    "tr": "Usta kartları: Yapabilen yapmak zorunda"
    },
    "kugeln": [
     {
@@ -12304,7 +12304,7 @@
     "tr": "Ele geçirildi! TAC rakip hamlesini geri alır ve kartı sana verir."
    },
    "regel": {
-    "de": "TAC: Letzten Zug rückgängig machen",
+    "de": "TAC: letzten Zug rückgängig machen",
     "en": "TAC: undoing the last move",
     "ru": "TAC: отменить последний ход",
     "fr": "TAC : annuler le dernier coup",
@@ -12457,7 +12457,7 @@
     "tr": "Doğru! TAC yalnızca devralınan kart senin için kullanılabilirse oynanabilir."
    },
    "regel": {
-    "de": "TAC: Nur wenn Karte anwendbar",
+    "de": "TAC: nur wenn Karte anwendbar",
     "en": "TAC: only if the card is usable",
     "ru": "TAC: только если карту можно применить",
     "fr": "TAC : seulement si la carte est utilisable",
@@ -12644,17 +12644,17 @@
    },
    "regel": {
     "de": "TAC: Wer kann, der muss",
-    "en": "TAC: if you can, you must",
+    "en": "TAC: If you can, you must",
     "ru": "TAC: кто может, тот обязан",
     "fr": "TAC : qui peut, doit",
     "es": "TAC: quien puede, debe",
     "it": "TAC: chi può, deve",
     "hi": "TAC: जो कर सकता है, उसे करना होगा",
-    "sv": "TAC: den som kan, måste",
+    "sv": "TAC: Den som kan, måste",
     "fi": "TAC: joka voi, sen on pakko",
-    "nb": "TAC: den som kan, må",
-    "da": "TAC: den, der kan, skal",
-    "tr": "TAC: yapabilen yapmak zorunda"
+    "nb": "TAC: Den som kan, må",
+    "da": "TAC: Den, der kan, skal",
+    "tr": "TAC: Yapabilen yapmak zorunda"
    },
    "kugeln": [
     {
@@ -12800,18 +12800,18 @@
     "tr": "Kırılan bilyeni TAC ile kurtar."
    },
    "tipp": {
-    "de": "TAC macht alles rückgängig: deine Kugel kehrt auf Feld 30 zurück, Rot auf 25. Danach kannst du eine beliebige eigene Kugel 5 Felder bewegen, es muss nicht die zurückgeholte sein.",
-    "en": "TAC undoes everything: your marble returns to field 30, Red to 25. Then you can move any of your own marbles 5 fields, it doesn't have to be the recovered one.",
+    "de": "TAC macht alles rückgängig: Deine Kugel kehrt auf Feld 30 zurück, Rot auf 25. Danach kannst du eine beliebige eigene Kugel 5 Felder bewegen, es muss nicht die zurückgeholte sein.",
+    "en": "TAC undoes everything: Your marble returns to field 30, Red to 25. Then you can move any of your own marbles 5 fields, it doesn't have to be the recovered one.",
     "ru": "TAC отменяет всё: твой шарик возвращается на поле 30, Красный, на 25. Затем ты можешь подвинуть любой свой шарик на 5 полей, не обязательно возвращённый.",
     "fr": "TAC annule tout : ta bille revient sur la case 30, Rouge sur la 25. Ensuite, tu peux déplacer n'importe quelle bille à toi de 5 cases, pas forcément celle récupérée.",
     "es": "TAC lo deshace todo: tu bola vuelve a la casilla 30, Rojo a la 25. Después puedes mover cualquier bola propia 5 casillas, no tiene que ser la recuperada.",
     "it": "TAC annulla tutto: la tua biglia torna sulla casella 30, Rosso sulla 25. Poi puoi muovere una qualsiasi tua biglia di 5 caselle, non deve essere quella recuperata.",
     "hi": "TAC सब कुछ रद्द कर देता है: आपकी गोली खाने 30 पर लौटती है, लाल 25 पर। उसके बाद आप अपनी किसी भी गोली को 5 खाने चला सकते हैं, ज़रूरी नहीं कि वही लौटाई हुई हो।",
-    "sv": "TAC ångrar allt: din kula återvänder till ruta 30, Röds till 25. Sedan kan du flytta vilken som helst av dina kulor 5 rutor, det behöver inte vara den räddade.",
+    "sv": "TAC ångrar allt: Din kula återvänder till ruta 30, Röds till 25. Sedan kan du flytta vilken som helst av dina kulor 5 rutor, det behöver inte vara den räddade.",
     "fi": "TAC kumoaa kaiken: kuulasi palaa ruutuun 30, Punaisen ruutuun 25. Sen voit siirtää mitä tahansa omaa kuulaasi 5 ruutua, ei tarvitse olla palautettu.",
-    "nb": "TAC angrer alt: kulen din returnerer til felt 30, Røds til 25. Deretter kan du flytte hvilken som helst av dine egne kuler 5 felt, det trenger ikke være den gjenvunne.",
-    "da": "TAC fortryder alt: din kugle vender tilbage til felt 30, Røds til 25. Derefter kan du flytte en hvilken som helst af dine egne kugler 5 felter, det behøver ikke være den reddede.",
-    "tr": "TAC her şeyi geri alır: bilyen 30. alana, Kırmızı 25'e döner. Sonra herhangi bir kendi bilyeni 5 alan oynatabilirsin, geri gelen olmak zorunda değil."
+    "nb": "TAC angrer alt: Kulen din returnerer til felt 30, Røds til 25. Deretter kan du flytte hvilken som helst av dine egne kuler 5 felt, det trenger ikke være den gjenvunne.",
+    "da": "TAC fortryder alt: Din kugle vender tilbage til felt 30, Røds til 25. Derefter kan du flytte en hvilken som helst af dine egne kugler 5 felter, det behøver ikke være den reddede.",
+    "tr": "TAC her şeyi geri alır: Bilyen 30. alana, Kırmızı 25'e döner. Sonra herhangi bir kendi bilyeni 5 alan oynatabilirsin, geri gelen olmak zorunda değil."
    },
    "erfolg": {
     "de": "Revanche! TAC rettet deine Kugel und gibt dir den Zug.",
@@ -12911,7 +12911,7 @@
    "id": "s_e05",
    "stufe": 4,
    "titel": {
-    "de": "TAC: Aus dem Haus holen!",
+    "de": "TAC: aus dem Haus holen!",
     "en": "TAC: bring out of the home!",
     "ru": "TAC: вывести из дома!",
     "fr": "TAC : sortir de la maison !",
@@ -12981,7 +12981,7 @@
     "tr": "İnanılmaz! TAC, bilyeleri evden çıkaran tek karttır."
    },
    "regel": {
-    "de": "TAC: Einzige Ausnahme zur Haus-Regel",
+    "de": "TAC: einzige Ausnahme zur Haus-Regel",
     "en": "TAC: the only exception to the home rule",
     "ru": "TAC: единственное исключение из правила дома",
     "fr": "TAC : seule exception à la règle de la maison",
@@ -14104,17 +14104,17 @@
    },
    "tipp": {
     "de": "TAC ist deine einzige Karte und spielbar, also musst du sie spielen! Leider schlecht für dich: Deine Kugel geht zurück ins Vorfeld und Blau (der nächste Spieler) wird gezwungen, eine Kugel heraus zu holen. Manchmal schadet TAC dem eigenen Team.",
-    "en": "TAC is your only card and it's playable, so you must play it! Unfortunately bad for you: your marble goes back to the start area and Blue (the next player) is forced to bring out a marble. Sometimes TAC hurts your own team.",
+    "en": "TAC is your only card and it's playable, so you must play it! Unfortunately bad for you: Your marble goes back to the start area and Blue (the next player) is forced to bring out a marble. Sometimes TAC hurts your own team.",
     "ru": "TAC, твоя единственная карта, и ею можно сыграть, поэтому ты обязан её разыграть! Увы, для тебя это плохо: твой шарик возвращается в стартовую зону, а Синий (следующий игрок) вынужден вывести шарик. Иногда TAC вредит собственной команде.",
     "fr": "TAC est ta seule carte et elle est jouable, donc tu dois la jouer ! Hélas, mauvais pour toi : ta bille retourne dans l'aire de départ et Bleu (le joueur suivant) est forcé de faire sortir une bille. Parfois, TAC nuit à sa propre équipe.",
     "es": "TAC es tu única carta y es jugable, ¡así que debes jugarla! Lamentablemente malo para ti: tu bola vuelve a la antesala y Azul (el siguiente jugador) está obligado a sacar una bola. A veces TAC perjudica a tu propio equipo.",
     "it": "TAC è la tua unica carta ed è giocabile, quindi devi giocarla! Purtroppo male per te: la tua biglia torna nell'area di partenza e Blu (il giocatore successivo) è costretto a far uscire una biglia. A volte TAC danneggia la propria squadra.",
     "hi": "TAC आपका एकमात्र कार्ड है और खेला जा सकता है, इसलिए आपको उसे खेलना ही होगा! दुर्भाग्य से आपके लिए बुरा: आपकी गोली वापस प्रारंभिक क्षेत्र में चली जाती है और नीला (अगला खिलाड़ी) एक गोली निकालने को मजबूर होता है। कभी-कभी TAC अपनी ही टीम को नुकसान पहुँचाता है।",
-    "sv": "TAC är ditt enda kort och spelbar, så du måste spela den! Tyvärr är det dåligt för dig: din kula går tillbaka till boet och Blå (näste spelare) tvingas ta ut en kula. Ibland skadar TAC det egna laget.",
+    "sv": "TAC är ditt enda kort och spelbar, så du måste spela den! Tyvärr är det dåligt för dig: Din kula går tillbaka till boet och Blå (näste spelare) tvingas ta ut en kula. Ibland skadar TAC det egna laget.",
     "fi": "TAC on ainoa korttisi ja pelattavissa, joten sinun täytyy pelata se! Valitettavasti tämä on huono sinulle: kuulasi palaa pesään ja Sininen (seuraava pelaaja) pakotetaan ottamaan kuula ulos. Joskus TAC vahingoittaa omaa joukkuetta.",
-    "nb": "TAC er ditt eneste kort og er spillbart, så du må spille det! Dessverre dårlig for deg: kulen din går tilbake til boet og Blå (neste spiller) tvinges til å ta ut en kule. Noen ganger skader TAC ditt eget lag.",
-    "da": "TAC er dit eneste kort og er spillbart, så du skal spille det! Desværre dårligt for dig: din kugle går tilbage til boet og Blå (den næste spiller) tvinges til at tage en kugle ud. Nogle gange skader TAC ens eget hold.",
-    "tr": "TAC tek kartın ve oynanabilir, yani oynamak zorundasın! Ne yazık ki senin için kötü: bilyen yuvaya döner ve Mavi (sıradaki oyuncu) bir bilye çıkarmaya zorlanır. Bazen TAC kendi takımına zarar verir."
+    "nb": "TAC er ditt eneste kort og er spillbart, så du må spille det! Dessverre dårlig for deg: Kulen din går tilbake til boet og Blå (neste spiller) tvinges til å ta ut en kule. Noen ganger skader TAC ditt eget lag.",
+    "da": "TAC er dit eneste kort og er spillbart, så du skal spille det! Desværre dårligt for dig: Din kugle går tilbage til boet og Blå (den næste spiller) tvinges til at tage en kugle ud. Nogle gange skader TAC ens eget hold.",
+    "tr": "TAC tek kartın ve oynanabilir, yani oynamak zorundasın! Ne yazık ki senin için kötü: Bilyen yuvaya döner ve Mavi (sıradaki oyuncu) bir bilye çıkarmaya zorlanır. Bazen TAC kendi takımına zarar verir."
    },
    "erfolg": {
     "de": "Bitter, aber Pflicht! TAC muss gespielt werden, wenn es die einzige spielbare Karte ist, auch wenn es dem Gegner hilft.",
@@ -14317,17 +14317,17 @@
    },
    "regel": {
     "de": "TAC nach Teufel: Opfer spielt für Teufel-Partner",
-    "en": "TAC after the Devil: the victim plays for the Devil's partner",
+    "en": "TAC after the Devil: The victim plays for the Devil's partner",
     "ru": "TAC после Дьявола: жертва играет за партнёра Дьявола",
     "fr": "TAC après le Diable : la victime joue pour le partenaire du Diable",
     "es": "TAC tras el Diablo: la víctima juega para el compañero del Diablo",
     "it": "TAC dopo il Diavolo: la vittima gioca per il compagno del Diavolo",
     "hi": "शैतान के बाद TAC: शिकार शैतान के साथी के लिए खेलता है",
-    "sv": "TAC efter djävulen: offret spelar för djävulens partner",
+    "sv": "TAC efter djävulen: Offret spelar för djävulens partner",
     "fi": "TAC Pirun jälkeen: uhri pelaa Pirun kumppanin puolesta",
-    "nb": "TAC etter djevelen: offeret spiller for djevelens partner",
-    "da": "TAC efter djævelen: offeret spiller for djævelens partner",
-    "tr": "Şeytandan sonra TAC: kurban Şeytanın partneri için oynar"
+    "nb": "TAC etter djevelen: Offeret spiller for djevelens partner",
+    "da": "TAC efter djævelen: Offeret spiller for djævelens partner",
+    "tr": "Şeytandan sonra TAC: Kurban Şeytanın partneri için oynar"
    },
    "kugeln": [
     {
@@ -14471,17 +14471,17 @@
     "tr": "Savaşçı'yı TAC ile geri al."
    },
    "tipp": {
-    "de": "TAC macht den Krieger rückgängig. Grün kommt zurück auf Feld 30, Rot auf Feld 20. Du nutzt den Krieger: deine Kugel auf Feld 10 springt zur nächsten Kugel im Uhrzeigersinn (Rot auf 20) und wirft sie!",
-    "en": "TAC undoes the Warrior. Green returns to field 30, Red to field 20. You use the Warrior: your marble on field 10 jumps to the next marble clockwise (Red on 20) and captures it!",
+    "de": "TAC macht den Krieger rückgängig. Grün kommt zurück auf Feld 30, Rot auf Feld 20. Du nutzt den Krieger: Deine Kugel auf Feld 10 springt zur nächsten Kugel im Uhrzeigersinn (Rot auf 20) und wirft sie!",
+    "en": "TAC undoes the Warrior. Green returns to field 30, Red to field 20. You use the Warrior: Your marble on field 10 jumps to the next marble clockwise (Red on 20) and captures it!",
     "ru": "TAC отменяет Воина. Зелёный возвращается на поле 30, Красный, на поле 20. Ты используешь Воина: твой шарик на поле 10 перепрыгивает к следующему по часовой стрелке шарику (Красный на 20) и сбивает его!",
     "fr": "TAC annule le Guerrier. Vert revient sur la case 30, Rouge sur la case 20. Tu utilises le Guerrier : ta bille sur la case 10 saute à la bille suivante dans le sens des aiguilles d'une montre (Rouge sur la 20) et la capture !",
     "es": "TAC deshace el Guerrero. Verde vuelve a la casilla 30, Rojo a la casilla 20. Usas el Guerrero: tu bola en la casilla 10 salta a la siguiente bola en sentido horario (Rojo en la 20) ¡y la captura!",
     "it": "TAC annulla il Guerriero. Verde torna sulla casella 30, Rosso sulla casella 20. Usi il Guerriero: la tua biglia sulla casella 10 salta alla biglia successiva in senso orario (Rosso sulla 20) e la cattura!",
     "hi": "TAC योद्धा को रद्द कर देता है। हरा खाने 30 पर लौटता है, लाल खाने 20 पर। आप योद्धा का उपयोग करते हैं: खाने 10 की आपकी गोली दक्षिणावर्त अगली गोली (खाने 20 पर लाल) पर कूदकर उसे मार देती है!",
-    "sv": "TAC ångrar Krigaren. Grön återvänder till ruta 30, Röd till ruta 20. Du använder Krigaren: din kula på ruta 10 hoppar till nästa kula medsols (Röd på 20) och slår ut den!",
+    "sv": "TAC ångrar Krigaren. Grön återvänder till ruta 30, Röd till ruta 20. Du använder Krigaren: Din kula på ruta 10 hoppar till nästa kula medsols (Röd på 20) och slår ut den!",
     "fi": "TAC kumoaa Soturin. Vihreä palaa ruutuun 30, Punainen ruutuun 20. Käytät Soturin: kuulasi ruudussa 10 hyppää seuraavaan kuulaan myötäpäivään (Punainen 20:ssa) ja lyö sen ulos!",
-    "nb": "TAC angrer Krigaren. Grønn returnerer til felt 30, Rød til felt 20. Du bruker Krigaren: kulen din på felt 10 hopper til den neste kulen med urviserne (Rød på 20) og slår den ut!",
-    "da": "TAC fortryder Krigaren. Grøn vender tilbage til felt 30, Rød til felt 20. Du bruger Krigaren: din kugle på felt 10 hopper til den næste kugle med uret (Rød på 20) og slår den ud!",
+    "nb": "TAC angrer Krigaren. Grønn returnerer til felt 30, Rød til felt 20. Du bruker Krigaren: Kulen din på felt 10 hopper til den neste kulen med urviserne (Rød på 20) og slår den ut!",
+    "da": "TAC fortryder Krigaren. Grøn vender tilbage til felt 30, Rød til felt 20. Du bruger Krigaren: Din kugle på felt 10 hopper til den næste kugle med uret (Rød på 20) og slår den ud!",
     "tr": "TAC Savaşçı'yı geri alır. Yeşil 30. alana, Kırmızı 20'ye döner. Savaşçı'yı sen kullanırsın: 10. alandaki bilyen saat yönündeki ilk bilyeye (20'deki Kırmızı) atlar ve onu kırar!"
    },
    "erfolg": {
@@ -14652,7 +14652,7 @@
     "tr": "TAC zinciri! Her TAC bir öncekini geri alır, kazanan sensin."
    },
    "regel": {
-    "de": "TAC nach TAC: Die Kette",
+    "de": "TAC nach TAC: die Kette",
     "en": "TAC after TAC: the chain",
     "ru": "TAC после TAC: цепочка",
     "fr": "TAC après TAC : la chaîne",
@@ -15641,7 +15641,7 @@
     "tr": "Aynen! Engellenmiş bir zafer hamlesinden sonra TAC kilitlidir, tüm bilyeler evde ve kopyalanan kartın hedefi olmazdı."
    },
    "regel": {
-    "de": "TAC: Nach vereiteltem Sieg nicht spielbar",
+    "de": "TAC: nach vereiteltem Sieg nicht spielbar",
     "en": "TAC: not playable after a prevented win",
     "ru": "TAC: нельзя сыграть после сорванной победы",
     "fr": "TAC : injouable après une victoire empêchée",
