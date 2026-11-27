@@ -26,6 +26,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Trykk først på en svart kule i boet ditt og deretter på startfeltet ditt. 1-eren er allerede valgt fordi den er ditt eneste spillbare kort.',
       da: "Tryk først på en sort kugle i dit bo og derefter på dit startfelt. 1'eren er allerede valgt, fordi det er dit eneste spilbare kort.",
       tr: 'Önce yuvandaki siyah bir bilyeye, sonra çıkış alanına dokun. 1 zaten seçili, çünkü oynanabilir tek kartın o.',
+      pt: 'Primeiro toque numa bolinha preta da sua base e depois no seu espaço de saída. O 1 já está selecionado, porque é a sua única carta jogável.',
     },
   },
   s_a02: {
@@ -42,6 +43,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: '13-eren er også et åpningskort! Trykk først på en svart kule i boet ditt og deretter på startfeltet ditt.',
       da: "13'eren er også et åbningskort! Tryk først på en sort kugle i dit bo og derefter på dit startfelt.",
       tr: '13 de bir çıkış kartıdır! Önce yuvandaki siyah bir bilyeye, sonra çıkış alanına dokun.',
+      pt: 'O 13 também é uma carta de saída! Primeiro toque numa bolinha preta da sua base e depois no seu espaço de saída.',
     },
   },
   s_a09: {
@@ -58,6 +60,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Alle kulene dine er i boet og du har verken 1 eller 13, så du kan bare kaste. Trykk på et valgfritt kort og deretter på den røde knappen «Kast kortet».',
       da: 'Alle dine kugler er i boet, og du har hverken 1 eller 13, så du kan kun kaste. Tryk på et valgfrit kort og derefter på den røde knap »Kast kortet«.',
       tr: 'Tüm bilyelerin yuvada ve elinde 1 ya da 13 yok, yani yalnızca kart atabilirsin. Herhangi bir karta, sonra kırmızı “Kartı at” düğmesine dokun.',
+      pt: 'Todas as bolinhas estão na base e você não tem 1 nem 13, então só resta descartar. Toque em qualquer carta e depois no botão vermelho „Descartar“.',
     },
   },
   s_a03: {
@@ -74,6 +77,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Trykk på et vanlig kort, så på den svarte kulen din og deretter på projeksjonen på brettet, altså feltet der kulen ville landet. Vanlige kort flytter nøyaktig tallverdien sin.',
       da: 'Tryk på et normalt kort, så på din sorte kugle og derefter på projektionen på brættet, altså feltet hvor kuglen ville lande. Normale kort rykker præcis deres talværdi.',
       tr: 'Bir normal karta, sonra siyah bilyene, ardından tahtadaki projeksiyona, yani bilyenin varacağı alana dokun. Normal kartlar tam olarak sayı değerleri kadar ilerler.',
+      pt: 'Toque numa carta normal, depois na sua bolinha preta e em seguida na projeção no tabuleiro, ou seja, o espaço onde a bolinha cairia. As cartas normais andam exatamente o seu valor.',
     },
   },
   s_a03c: {
@@ -90,6 +94,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Trykk på et kort, så på en av de svarte kulene dine på brettet og deretter på den hvite projeksjonen, altså feltet kulen ville gått til.',
       da: 'Tryk på et kort, så på en af dine sorte kugler på brættet og derefter på den hvide projektion, altså feltet, kuglen ville rykke til.',
       tr: 'Bir karta, sonra tahtadaki siyah bilyelerinden birine, ardından beyaz projeksiyona, yani bilyenin gideceği alana dokun.',
+      pt: 'Toque numa carta, depois numa das suas bolinhas pretas no tabuleiro e em seguida na projeção branca, ou seja, o espaço para onde a bolinha andaria.',
     },
   },
   s_a07: {
@@ -106,6 +111,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Du har allerede en kule på felt 5. Trykk på 1-eren, så på en svart kule i boet ditt og deretter på den hvite projeksjonen på startfeltet ditt.',
       da: "Du har allerede en kugle på felt 5. Tryk på 1'eren, så på en sort kugle i dit bo og derefter på den hvide projektion på dit startfelt.",
       tr: "Zaten 5. alanda bir bilyen var. 1'e, sonra yuvandaki siyah bir bilyeye, ardından çıkış alanındaki beyaz projeksiyona dokun.",
+      pt: 'Você já tem uma bolinha no espaço 5. Toque no 1, depois numa bolinha preta da sua base e em seguida na projeção branca no seu espaço de saída.',
     },
   },
   // Engel: bei Tac-With-Bug wählt man die Kugel des anderen im Vorfeld und dann sein Startfeld.
@@ -123,6 +129,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Velg engelen. Neste spiller (Blå) blir tvunget til å ta ut en kule. Trykk på en blå kule i Blås bo og deretter på Blås startfelt.',
       da: 'Vælg englen. Den næste spiller (Blå) tvinges til at tage en kugle ud. Tryk på en blå kugle i Blås bo og derefter på Blås startfelt.',
       tr: 'Meleği seç. Sıradaki oyuncu (Mavi) bir bilye çıkarmak zorunda. Bunun için Mavinin yuvasındaki mavi bir bilyeye, sonra Mavinin çıkış alanına dokun.',
+      pt: 'Escolha o Anjo. O próximo jogador (Azul) é obrigado a tirar uma bolinha. Para isso, toque numa bolinha azul da base do Azul e depois no espaço de saída do Azul.',
     },
   },
   s_f24: {
@@ -139,6 +146,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Blå er ferdig, så engelen går automatisk videre til Rød. Rød må ta ut en kule. Trykk på en rød kule i Røds bo og deretter på Røds startfelt.',
       da: 'Blå er færdig, så englen går automatisk videre til Rød. Rød skal tage en kugle ud. Tryk på en rød kugle i Røds bo og derefter på Røds startfelt.',
       tr: 'Mavi bitirdi, bu yüzden Melek otomatik olarak Kırmızıya geçer. Kırmızı bir bilye çıkarmak zorunda. Bunun için Kırmızının yuvasındaki kırmızı bir bilyeye, sonra Kırmızının çıkış alanına dokun.',
+      pt: 'O Azul já terminou, então o Anjo passa automaticamente para o Vermelho. O Vermelho precisa tirar uma bolinha. Para isso, toque numa bolinha vermelha da base do Vermelho e depois no espaço de saída do Vermelho.',
     },
   },
   // TAC kopiert die 8: bei Tac-With-Bug gibt es keinen Knopf „Laufen“, man zieht direkt über die Projektion.
@@ -156,6 +164,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Spill TAC for å kopiere 8-eren. Trykk så på den svarte kulen din og deretter på projeksjonen, 8 felt lenger frem på felt 18.',
       da: "Spil TAC for at kopiere 8'eren. Tryk så på din sorte kugle og derefter på projektionen, 8 felter længere fremme på felt 18.",
       tr: "8'i kopyalamak için TAC oyna. Sonra siyah bilyene, ardından 8 alan ilerideki 18. alandaki projeksiyona dokun.",
+      pt: 'Jogue o TAC para copiar o 8. Depois toque na sua bolinha preta e em seguida na projeção, 8 espaços adiante, no espaço 18.',
     },
   },
   s_e12: {
@@ -172,6 +181,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'TAC er ditt eneste kort og det er spillbart, så du må spille det! TAC overtar engelen: Trykk på TAC, så på en blå kule i Blås bo og deretter på Blås startfelt. Dessverre dårlig for deg: Kulen din går tilbake til boet og Blå (neste spiller) kommer ut. Noen ganger skader TAC eget lag.',
       da: 'TAC er dit eneste kort, og det kan spilles, så du skal spille det! TAC overtager englen: Tryk på TAC, så på en blå kugle i Blås bo og derefter på Blås startfelt. Desværre dårligt for dig: Din kugle går tilbage til boet, og Blå (den næste spiller) kommer ud. Nogle gange skader TAC ens eget hold.',
       tr: "TAC tek kartın ve oynanabilir, bu yüzden oynamak zorundasın! TAC Meleği devralır: TAC'a, sonra Mavinin yuvasındaki mavi bir bilyeye, ardından Mavinin çıkış alanına dokun. Ne yazık ki senin için kötü: Bilyen yuvaya döner ve Mavi (sıradaki oyuncu) çıkar. Bazen TAC kendi takımına zarar verir.",
+      pt: 'O TAC é sua única carta e é jogável, então você precisa jogá-lo! O TAC assume o Anjo: toque no TAC, depois numa bolinha azul da base do Azul e em seguida no espaço de saída do Azul. Infelizmente é ruim para você: sua bolinha volta para a base e o Azul (o próximo jogador) sai. Às vezes o TAC prejudica a própria equipe.',
     },
   },
   // Blau hat nur den TAC: nach dem Narren hast du keine andere Karte und musst ihn spielen.
@@ -190,6 +200,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Spill narren. Alle gir kortene sine videre. Gjennom byttet får du Blås eneste kort, en TAC. Bruk den til å angre siste trekk før narren!',
       da: 'Spil narren. Alle giver deres kort videre. Gennem byttet får du Blås eneste kort, et TAC. Brug det til at fortryde det sidste træk før narren!',
       tr: "Soytarıyı oyna. Herkes kartlarını devreder. Takas sayesinde Mavinin tek kartını, bir TAC'ı alırsın. Soytarıdan önceki son hamleyi geri almak için onu kullan!",
+      pt: 'Jogue o Bobo. Todos passam suas cartas adiante. Na troca você recebe a única carta do Azul, um TAC. Use-o para desfazer a última jogada antes do Bobo!',
     },
   },
   // Teufel + TAC: in der Aufgabe sagen, dass Rot deinen TAC gespielt hat.
@@ -207,6 +218,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Rød spilte djevelen og deretter TAC fra hånden din (Svart). Derfor kan du nå spille for Blå: Spill et av Blås kort!',
       da: 'Rød spillede djævelen og derefter TAC fra din hånd (Sort). Derfor må du nu spille for Blå: Spil et af Blås kort!',
       tr: "Kırmızı Şeytanı, ardından senin elinden (Siyah) TAC'ı oynadı. Bu yüzden artık Mavi için oynayabilirsin: Mavinin bir kartını oyna!",
+      pt: 'O Vermelho jogou o Diabo e depois o TAC da sua mão (Preto). Por isso agora você pode jogar pelo Azul: jogue uma carta do Azul!',
     },
   },
   // Vier TACs: die 13 ist im ersten Teil gespielt, danach bleibt nur der TAC.
@@ -231,6 +243,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Rød står på felt 51, tre felt før startfeltet sitt. Med 4-eren bakover ville Rød gått rett inn i hjemmet. Spill 5-eren (45 → 50) for å stille deg rett bak Rød. Slik blokkerer du −4! 2-eren hjelper ikke: På felt 47 står du ikke mellom Rød og hjemmet.',
       da: "Rød står på felt 51, tre felter før sit startfelt. Med 4'eren baglæns ville Rød gå direkte ind i hjemmet. Spil 5'eren (45 → 50) for at stille dig lige bag Rød. Så blokerer du −4! 2'eren hjælper ikke: På felt 47 står du ikke mellem Rød og dens hjem.",
       tr: "Kırmızı 51. alanda, çıkış alanından üç alan önce. 4 geri ile Kırmızı doğrudan eve girerdi. Kırmızının hemen arkasına geçmek için 5'i oyna (45 → 50). Böylece −4'ü engellersin! 2 işe yaramaz: 47. alanda Kırmızı ile evi arasında değilsin.",
+      pt: 'O Vermelho está no espaço 51, três espaços antes do espaço de saída dele. Com o 4 para trás, o Vermelho entraria direto na casa. Jogue o 5 (45 → 50) para ficar logo atrás do Vermelho. Assim você bloqueia o -4! O 2 não ajuda: no espaço 47 você não fica entre o Vermelho e a casa dele.',
     },
   },
   s_g12a: {
@@ -247,6 +260,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Kortene byttes. Den som har en 1 eller 13 kan komme ut. Det ser du på 13-eren blant de skjulte kortene: Det vises alltid bare en 13, uansett om de har en 1 eller en 13. Hvor mange spillere kan komme ut?',
       da: "Kortene byttes. Den, der har en 1 eller 13, kan komme ud. Det kan du se på 13'eren blandt de skjulte kort: Der vises altid kun en 13, uanset om de har en 1 eller en 13. Hvor mange spillere kan komme ud?",
       tr: "Kartlar değiştiriliyor. 1 ya da 13'ü olan çıkabilir. Bunu kapalı kartları arasındaki 13'ten anlarsın: Elinde 1 de olsa 13 de olsa her zaman yalnızca 13 gösterilir. Kaç oyuncu çıkabilir?",
+      pt: 'As cartas são trocadas. Quem tem um 1 ou um 13 pode sair. Você vê isso pelo 13 nas cartas viradas para baixo do jogador: sempre aparece só um 13, não importa se ele tem um 1 ou um 13. Quantos jogadores podem sair?',
     },
     tipp: {
       de: 'Schau auf die verdeckten Karten der anderen neben ihren Namen. Bei Grün und Rot ist eine 13 zu sehen, bei Blau nicht. Grün hat eigentlich eine 1, angezeigt wird trotzdem die 13. Deine eigenen Karten siehst du offen: Hast du eine 1 oder 13?',
@@ -261,6 +275,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Se på de andres skjulte kort ved siden av navnene. Hos Grønn og Rød vises en 13, hos Blå ikke. Grønn har egentlig en 1, men 13-eren vises likevel. Dine egne kort ser du åpent: Har du en 1 eller 13?',
       da: "Se på de andres skjulte kort ved siden af deres navne. Hos Grøn og Rød ses en 13, hos Blå ikke. Grøn har faktisk en 1, men 13'eren vises alligevel. Dine egne kort ser du åbent: Har du en 1 eller 13?",
       tr: "Diğerlerinin isimlerinin yanındaki kapalı kartlarına bak. Yeşilde ve Kırmızıda bir 13 görünüyor, Mavide görünmüyor. Yeşilin aslında 1'i var ama yine de 13 gösteriliyor. Kendi kartlarını açık görürsün: Sende 1 ya da 13 var mı?",
+      pt: 'Olhe as cartas viradas para baixo dos outros ao lado dos nomes. No Verde e no Vermelho aparece um 13, no Azul não. Na verdade o Verde tem um 1, mas mesmo assim aparece o 13. Suas próprias cartas você vê abertas: você tem um 1 ou um 13?',
     },
     erfolg: {
       de: 'Richtig! Bei Grün und Rot ist die 13 zu sehen, auch wenn Grün nur eine 1 hat. Du und Blau habt keine. Also können 2 Spieler raus.',
@@ -275,6 +290,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Riktig! Hos Grønn og Rød vises 13-eren, selv om Grønn bare har en 1. Du og Blå har ingen. Altså kan 2 spillere komme ut.',
       da: "Rigtigt! Hos Grøn og Rød ses 13'eren, selvom Grøn kun har en 1. Du og Blå har ingen. Altså kan 2 spillere komme ud.",
       tr: "Doğru! Yeşil yalnızca 1'e sahip olsa da Yeşilde ve Kırmızıda 13 görünüyor. Sende ve Mavide yok. Yani 2 oyuncu çıkabilir.",
+      pt: 'Correto! No Verde e no Vermelho aparece o 13, mesmo que o Verde só tenha um 1. Você e o Azul não têm nenhum. Então 2 jogadores podem sair.',
     },
   },
   s_g12c: {
@@ -291,6 +307,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Hvem starter?',
       da: 'Hvem starter?',
       tr: 'Kim başlar?',
+      pt: 'Quem começa?',
     },
     aufgabe: {
       de: 'Die Karten sind gerade gegeben. Wer fängt diese Runde an?',
@@ -305,6 +322,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Kortene er nettopp delt ut. Hvem starter denne runden?',
       da: 'Kortene er lige blevet givet. Hvem starter denne runde?',
       tr: 'Kartlar az önce dağıtıldı. Bu turu kim başlatıyor?',
+      pt: 'As cartas acabaram de ser distribuídas. Quem começa esta rodada?',
     },
     tipp: {
       de: 'Wer am Zug ist, bei dem steht die oberste verdeckte Karte schräg. Zu Beginn der Runde ist das der Spieler nach dem Geber. Der Kartenstapel liegt beim Geber.',
@@ -319,6 +337,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Den som står for tur har det øverste skjulte kortet på skrå. I begynnelsen av runden er det spilleren etter giveren. Kortstokken ligger hos giveren.',
       da: 'Den, der er i tur, har sit øverste skjulte kort på skrå. I starten af runden er det spilleren efter giveren. Bunken ligger hos giveren.',
       tr: 'Sırası gelen oyuncunun en üstteki kapalı kartı eğik durur. Tur başında bu, dağıtandan sonraki oyuncudur. Deste dağıtanın yanındadır.',
+      pt: 'Quem está na vez tem a carta de cima, virada para baixo, inclinada. No começo da rodada é o jogador depois de quem deu as cartas. O baralho fica com quem deu as cartas.',
     },
     erfolg: {
       de: 'Richtig! Bei Rot steht die oberste Karte schräg: Rot fängt an. Gegeben hat Grün, dort liegt der Stapel.',
@@ -333,6 +352,7 @@ export const anpassungen: Record<string, Felder> = {
       nb: 'Riktig! Hos Rød står det øverste kortet på skrå: Rød starter. Grønn ga, der ligger kortstokken.',
       da: 'Rigtigt! Hos Rød står det øverste kort på skrå: Rød starter. Grøn gav, der ligger bunken.',
       tr: 'Doğru! Kırmızıda en üstteki kart eğik: Kırmızı başlar. Yeşil dağıttı, deste orada.',
+      pt: 'Correto! No Vermelho a carta de cima está inclinada: o Vermelho começa. Quem deu as cartas foi o Verde, o baralho está lá.',
     },
   },
 }
@@ -365,6 +385,7 @@ const lektionsAnpassungen: Record<string, Partial<Record<'text', Text>>> = {
       nb: 'Til TAC hører et rundt spillebrett, 16 glasskuler i 4 forskjellige farger (4 kuler per farge) og totalt 104 spillkort. Hver farge har sitt eget område på brettet. Med kortene bestemmer du hvor langt og i hvilken retning du flytter kulene dine. I alle opplæringene spiller du med de svarte kulene.',
       da: 'Til TAC hører et rundt spillebræt, 16 glaskugler i 4 forskellige farver (4 kugler i hver farve) og i alt 104 spillekort. Hver farve har sit eget område på brættet. Med kortene bestemmer du, hvor langt og i hvilken retning du flytter dine kugler. I alle vejledninger spiller du med de sorte kugler.',
       tr: 'TAC oyununda yuvarlak bir oyun tahtası, 4 farklı renkte 16 cam bilye (her renkten 4 bilye) ve toplam 104 oyun kartı bulunur. Her rengin tahtada kendi bölgesi vardır. Kartlarla bilyelerini ne kadar ve hangi yöne ilerleteceğini belirlersin. Tüm eğitimlerde siyah bilyelerle oynarsın.',
+      pt: 'O jogo TAC tem um tabuleiro redondo, 16 bolinhas de vidro em 4 cores diferentes (4 bolinhas de cada cor) e 104 cartas no total. Cada cor tem sua própria área no tabuleiro. Com as cartas você decide até onde e em que direção move suas bolinhas. Em todos os tutoriais você joga com as bolinhas pretas.',
     },
   },
   // Teufel und TAC: Rot spielt erst den Teufel, dann aus deiner Hand den TAC, erst dadurch spielst du für Blau.
@@ -382,6 +403,7 @@ const lektionsAnpassungen: Record<string, Partial<Record<'text', Text>>> = {
       nb: 'Spesialregel: Rød spiller djevelen. Dermed kan Rød spille et kort fra hånden din for deg og velger din TAC. TAC angrer djevelen og snur den: Nå kan du spille djevelen for Røds lagkamerat Blå. Du velger et kort fra Blås hånd og spiller det for Blå. En sjelden, men kraftig vending!',
       da: 'Specialregel: Rød spiller djævelen. Så må Rød spille et kort fra din hånd for dig og vælger dit TAC. TAC fortryder djævelen og vender den om: Nu må du spille djævelen for Røds holdmakker Blå. Du vælger et kort fra Blås hånd og spiller det for Blå. En sjælden, men stærk vending!',
       tr: "Özel kural: Kırmızı Şeytanı oynar. Böylece Kırmızı senin elinden bir kartı senin için oynayabilir ve senin TAC'ını seçer. TAC Şeytanı geri alır ve tersine çevirir: Artık Kırmızının takım arkadaşı Mavi için Şeytanı oynayabilirsin. Mavinin elinden bir kart seçip onu Mavi için oynarsın. Nadir ama güçlü bir dönüş!",
+      pt: 'Regra especial: o Vermelho joga o Diabo. Com isso o Vermelho pode jogar uma carta da sua mão por você e escolhe o seu TAC. O TAC desfaz o Diabo e o vira ao contrário: agora você pode jogar o Diabo pelo Azul, parceiro do Vermelho. Você escolhe uma carta da mão do Azul e a joga por ele. Uma virada rara, mas poderosa!',
     },
   },
   a03c: {
@@ -398,6 +420,7 @@ const lektionsAnpassungen: Record<string, Partial<Record<'text', Text>>> = {
       nb: 'Hvis du har flere kuler på brettet, bestemmer du hvilken som flytter. Trykk på et kort, så på den svarte kulen som skal flytte, og deretter på projeksjonen.',
       da: 'Hvis du har flere kugler på brættet, bestemmer du, hvilken der rykker. Tryk på et kort, så på den sorte kugle, der skal rykke, og derefter på projektionen.',
       tr: 'Tahtada birden fazla bilyen varsa hangisinin ilerleyeceğine sen karar verirsin. Bir karta, sonra ilerlemesi gereken siyah bilyeye, ardından projeksiyona dokun.',
+      pt: 'Quando você tem várias bolinhas no tabuleiro, você decide qual anda. Toque numa carta, depois na bolinha preta que deve andar e em seguida na projeção.',
     },
   },
 }
