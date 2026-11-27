@@ -1,11 +1,3 @@
-<!--
-  Die Speicherfristen in dieser Erklärung stehen auch im Code. Bei Änderungen beides anpassen:
-  - Chat- und Kanalnachrichten: apps/server/src/sharedDefinitions/chat.ts (messageRetention)
-  - Logs, Passwort-Links, Moderation: apps/server/src/sharedDefinitions/dataRetention.ts
-  - Nicht aktivierte Konten: apps/server/src/services/scheduledTasks.ts (DeleteUnactivatedUsers)
-  Prettier ist mit htmlWhitespaceSensitivity "ignore" eingestellt: kein Satzzeichen direkt hinter ein Inline-Element
-  (<a>, <strong>) setzen, sonst entsteht beim Umbrechen ein Leerzeichen davor.
--->
 <template>
   <div>
     <h1>Datenschutz&shy;erklärung</h1>

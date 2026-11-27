@@ -16,10 +16,6 @@
     <p>
       E-Mail:
       <a href="mailto:oskar@spieltac.de">oskar@spieltac.de</a>
-      <!-- § 5 DDG verlangt neben der E-Mail einen zweiten schnellen Kontaktweg, z. B. eine Telefonnummer:
-      <br />
-      Telefon: <a href="tel:+49...">+49 ...</a>
-      -->
     </p>
   </div>
 </template>
