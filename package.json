@@ -26,5 +26,10 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "overrides": {
+    "email-templates": {
+      "nodemailer": "^10.6.1"
+    }
+  }
 }
