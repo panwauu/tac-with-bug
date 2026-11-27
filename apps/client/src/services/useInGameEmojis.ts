@@ -12,7 +12,7 @@ export const MAX_EMOJIS = 7
  * ohne Abo zusammenstellen (das konnte vorher jeder). Gleicher Wert in den Apps;
  * auf den Tag setzen, an dem diese Änderung live geht.
  */
-export const EMOJI_STICHTAG = Date.parse('2027-01-01T00:00:00Z')
+export const EMOJI_STICHTAG = Date.parse('2026-11-27T00:00:00Z')
 
 const eigeneEmojis = useStorage<string[]>('TWB-EmojisInGame', [...STANDARD_EMOJIS], localStorage)
 
